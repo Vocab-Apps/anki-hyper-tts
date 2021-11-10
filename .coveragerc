@@ -1,0 +1,6 @@
+[run]
+omit = 
+    *python-env*
+    conftest.py
+    test_*.py
+    testing_utils.py

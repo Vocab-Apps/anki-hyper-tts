@@ -1,0 +1,14 @@
+{
+    "api_key": "",
+    "deck_languages": {},
+    "wanted_languages": {
+        "en": true
+    },
+    "batch_translations": {},
+    "batch_transliterations": {},
+    "batch_audio": {},
+    "voice_selection": {},
+    "apply_updates_automatically": true,
+    "live_update_delay": 1250,
+    "text_processing": {}
+}

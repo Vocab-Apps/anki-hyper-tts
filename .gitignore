@@ -1,0 +1,12 @@
+meta.json
+__pycache__/
+temp/
+.coverage
+.vscode/
+htmlcov/
+user_files/*.mp3
+web/node_modules/
+web/package-lock.json
+# these get built
+languagetools.js
+languagetools.css

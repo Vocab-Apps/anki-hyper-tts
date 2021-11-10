@@ -1,0 +1,5 @@
+pytest
+pytest-qt
+aqt
+anki
+coverage

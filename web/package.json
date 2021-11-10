@@ -1,0 +1,12 @@
+{
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "dependencies": {
+    "esbuild": "^0.12.14",
+    "esbuild-svelte": "^0.5.3",
+    "svelte": "3.39.0"
+  },
+  "private": true
+}
