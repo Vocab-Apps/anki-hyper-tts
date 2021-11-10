@@ -45,21 +45,6 @@ class AnkiUtils():
             filename = file_list[0]
             aqt.sound.av_player.play_file(filename)
 
-    def get_deckid_modelid_pairs(self):
-        return aqt.mw.col.db.all("select did, mid from notes inner join cards on notes.id = cards.nid group by mid, did")
-
-    def get_noteids_for_deck_note_type(self, deck_id, model_id, sample_size):
-        sql_query = f'SELECT notes.id FROM notes INNER JOIN cards ON notes.id = cards.nid WHERE notes.mid={model_id} AND cards.did={deck_id} ORDER BY RANDOM() LIMIT {sample_size}'
-
-        note_id_result = aqt.mw.col.db.all(sql_query)
-        note_ids = []
-        query_strings = []
-        for entry in note_id_result:
-            note_id = entry[0]
-            note_ids.append(note_id)
-
-        return note_ids
-
     def get_note_by_id(self, note_id):
         note = aqt.mw.col.getNote(note_id)
         return note

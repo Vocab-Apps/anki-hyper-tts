@@ -1,16 +1,22 @@
 
 
 template_str = """
-if article == 'das':
-    result = f'Das {word}'
+word = template_fields['word']
+word = word.replace('Hund', 'chien')
+if template_fields['article'] == 'das':
+    result = f"Das {word}"
 else:
-    result = f'{das} {word}'
+    result = f"{template_fields['article']} {word}"
 """
 
 def main():
     local_variables = {
-        'article': 'das',
-        'word': 'Hund'
+        'template_deck_name': 'German',
+        'template_note_type': 'German-Words',
+        'template_fields': {
+            'article': 'das',
+            'word': 'Hund'
+        }
     }
     expanded_template = exec(template_str, {}, local_variables)
     result = local_variables['result']
