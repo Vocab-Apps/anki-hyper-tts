@@ -5,54 +5,19 @@ if hasattr(sys, '_pytest_mode'):
 else:
     from . import constants
 
-# all exceptions inherit from this one
-class LanguageToolsError(Exception):
+# all known exceptions inherit from this one
+class HyperTTSError(Exception):
     pass
 
-# when something we expected to find is not found, like a deck, model, or field
-# can happen when language mapping is not updated to reflect note type changes
-class AnkiItemNotFoundError(LanguageToolsError):
-    pass
-
-class AnkiNoteEditorError(LanguageToolsError):
-    pass
-
-class LanguageMappingError(LanguageToolsError):
-    pass
-
-class FieldNotFoundError(AnkiItemNotFoundError):
-    def __init__(self, dntf):
-        message = f'Field not found: <b>{dntf}</b>. {constants.DOCUMENTATION_EDIT_RULES}'
+class FieldNotFoundError(HyperTTSError):
+    def __init__(self, field_name):
+        message = f'Field <b>{field_name}</b> not found'
         super().__init__(message)    
 
-class FieldLanguageMappingError(LanguageMappingError):
-    def __init__(self, dntf):
-        message = f'No language set for {dntf}. {constants.DOCUMENTATION_PERFORM_LANGUAGE_MAPPING}'
-        super().__init__(message)
-
-class FieldLanguageSpecialMappingError(LanguageMappingError):
-    def __init__(self, dntf, language_code):
-        message = f'<b>{dntf}</b> is mapped to <b>{language_code}</b>. {constants.DOCUMENTATION_SPECIAL_LANGUAGE}'
-        super().__init__(message)
-
-class LanguageToolsValidationFieldEmpty(LanguageToolsError):
-    def __init__(self):
-        message = f'Field is empty'
+class FieldEmptyError(HyperTTSError):
+    def __init__(self, field_name):
+        message = f'Field <b>{field_name}</b> is empty'
         super().__init__(message)    
-
-class NoVoiceSetError(LanguageToolsError):
-    def __init__(self, language_name):
-        message = f'No voice set for {language_name}. {constants.DOCUMENTATION_VOICE_SELECTION}'
-        super().__init__(message)
-
-class LanguageToolsRequestError(LanguageToolsError):
-    pass
-
-class AudioLanguageToolsRequestError(LanguageToolsRequestError):
-    pass
-
-class VoiceListRequestError(LanguageToolsRequestError):
-    pass
 
 
 # these ActionContext objects implement the "with " interface and help catch exceptions
@@ -67,7 +32,7 @@ class SingleActionContext():
 
     def __exit__(self, exception_type, exception_value, traceback):
         if exception_value != None:
-            if isinstance(exception_value, LanguageToolsError):
+            if isinstance(exception_value, HyperTTSError):
                 self.error_manager.report_single_exception(exception_value, self.action)
             else:
                 self.error_manager.report_unknown_exception_interactive(exception_value, self.action)
@@ -75,55 +40,48 @@ class SingleActionContext():
         return False
 
 class BatchActionContext():
-    def __init__(self, batch_error_manager, action):
+    def __init__(self, batch_error_manager):
         self.batch_error_manager = batch_error_manager
-        self.action = action
 
     def __enter__(self):
         pass
 
     def __exit__(self, exception_type, exception_value, traceback):
         if exception_value != None:
-            if isinstance(exception_value, LanguageToolsError):
-                self.batch_error_manager.report_batch_exception(exception_value, self.action)
+            if isinstance(exception_value, HyperTTSError):
+                self.batch_error_manager.report_batch_exception(exception_value)
             else:
-                self.batch_error_manager.report_unknown_exception(exception_value, self.action)
+                self.batch_error_manager.report_unknown_exception(exception_value)
             return True
         # no error, report success
-        self.batch_error_manager.report_success(self.action)
+        self.batch_error_manager.report_success()
         return False
 
 class BatchErrorManager():
     def __init__(self, error_manager, batch_action):
         self.error_manager = error_manager
         self.batch_action = batch_action
-        self.action_stats = {}
+        self.action_stats = {
+            'success': 0,
+            'error': {}
+        }
 
-    def get_batch_action_context(self, action):
-        return BatchActionContext(self, action)
+    def get_batch_action_context(self):
+        return BatchActionContext(self)
 
-    def init_action(self, action):
-        if action not in self.action_stats:
-            self.action_stats[action] = {
-                'success': 0,
-                'error': {}
-            }
+    def report_success(self):
+        self.action_stats['success'] += 1
 
-    def report_success(self, action):
-        self.init_action(action)
-        self.action_stats[action]['success'] = self.action_stats[action]['success'] + 1
+    def track_error_stats(self, error_key):
+        error_count = self.action_stats['error'].get(error_key, 0)
+        self.action_stats['error'][error_key] = error_count + 1
 
-    def track_error_stats(self, error_key, action):
-        self.init_action(action)
-        error_count = self.action_stats[action]['error'].get(error_key, 0)
-        self.action_stats[action]['error'][error_key] = error_count + 1
+    def report_batch_exception(self, exception):
+        self.track_error_stats(str(exception))
 
-    def report_batch_exception(self, exception, action):
-        self.track_error_stats(str(exception), action)
-
-    def report_unknown_exception(self, exception, action):
+    def report_unknown_exception(self, exception):
         error_key = f'Unknown Error: {str(exception)}'
-        self.track_error_stats(error_key, action)
+        self.track_error_stats(error_key)
         self.error_manager.report_unknown_exception_batch(exception)
 
     # producing a human-readable error message

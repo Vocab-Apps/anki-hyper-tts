@@ -49,6 +49,7 @@ class HyperTTS():
                     sound_tag = self.generate_sound_tag_add_collection(source_text, batch_config['voice'])
                     note[target_field] = sound_tag
                 note.flush()
+        return batch_error_manager
                     
 
     def generate_sound_tag_add_collection(self, source_text, voice):
