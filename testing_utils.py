@@ -2,8 +2,7 @@ import logging
 import json
 
 import constants
-import deck_utils
-import languagetools
+import hypertts
 
 class MockFuture():
     def __init__(self, result_data):
@@ -482,44 +481,9 @@ class TestConfigGenerator():
     # =========================================
 
     def get_default_config(self):
-        languagetools_config = {
-            'api_key': 'yoyo',
-            constants.CONFIG_DECK_LANGUAGES: {
-                self.model_name: {
-                    self.deck_name: {
-                        self.field_chinese: 'zh_cn',
-                        self.field_english: 'en',
-                        self.field_sound: 'sound',
-                        self.field_pinyin: 'transliteration',
-                    }
-                }
-            },
-            constants.CONFIG_VOICE_SELECTION: {
-                'zh_cn': {
-                    'voice_key': self.chinese_voice_key,
-                    'voice_description': self.chinese_voice_description,
-                    'service': 'Azure',
-                    'language_code': 'zh_cn'
-                }
-            },
-            constants.CONFIG_WANTED_LANGUAGES: {
-                'en': True,
-                'zh_cn': True
-            }
-
+        hypertts_config = {
         }
-        return languagetools_config
-
-    def get_noapikey_config(self):
-        languagetools_config = self.get_default_config()
-        languagetools_config['api_key'] = ''
-        return languagetools_config
-
-
-    def get_config_no_language_mapping(self):
-        base_config = self.get_default_config()
-        base_config[constants.CONFIG_DECK_LANGUAGES] = {}
-        return base_config
+        return hypertts_config
 
     def get_config_batch_audio(self):
         base_config = self.get_default_config()
@@ -531,65 +495,6 @@ class TestConfigGenerator():
             }
         }
         return base_config
-
-    def get_config_batch_translation(self):
-        base_config = self.get_default_config()
-        base_config[constants.CONFIG_BATCH_TRANSLATION] = {
-            self.model_name: {
-                self.deck_name: {
-                   self.field_english: {
-                       'from_field': self.field_chinese,
-                        "translation_option": {
-                            "service": "Azure",
-                            "source_language_id": "zh-Hans",
-                            "target_language_id": "en"
-                        }
-                   }
-                }
-            }
-        }
-        return base_config        
-
-    def get_config_batch_transliteration(self):
-        base_config = self.get_default_config()
-        base_config[constants.CONFIG_BATCH_TRANSLITERATION] = {
-            self.model_name: {
-                self.deck_name: {
-                   self.field_pinyin: {
-                       'from_field': self.field_chinese,
-                        "transliteration_option": {
-                            "language_code": "zh_cn",
-                            "language_name": "Chinese (Simplified)",
-                            "service": "MandarinCantonese",
-                            "transliteration_key": {
-                                "conversion_type": "pinyin",
-                                "spaces": False,
-                                "tone_numbers": False
-                            },
-                            "transliteration_name": "Chinese (Simplified) to Pinyin (Diacritics ), MandarinCantonese"
-                        }
-                   }
-                }
-            }
-        }
-        return base_config        
-
-    def get_config_batch_audio_translation_transliteration(self):
-        config_batch_audio = self.get_config_batch_audio()
-        config_batch_translation = self.get_config_batch_translation()
-        config_batch_transliteration = self.get_config_batch_transliteration()
-        
-        config = config_batch_audio
-        config.update(config_batch_translation)
-        config.update(config_batch_transliteration)
-
-        return config
-
-    def get_config_language_no_voices(self):
-        base_config = self.get_default_config()
-        base_config[constants.CONFIG_WANTED_LANGUAGES]['mg'] = True
-        base_config[constants.CONFIG_DECK_LANGUAGES][self.model_name][self.deck_name][self.field_english] = 'mg'
-        return base_config  
 
     def get_config_text_replacement(self):
         base_config = self.get_default_config()    
@@ -604,17 +509,10 @@ class TestConfigGenerator():
         }
         return base_config
 
-    def get_languagetools_config(self, scenario):
+    def get_addon_config(self, scenario):
 
         fn_map = {
             'default': self.get_default_config,
-            'noapikey': self.get_noapikey_config,
-            'no_language_mapping': self.get_config_no_language_mapping,
-            'batch_audio': self.get_config_batch_audio,
-            'batch_translation': self.get_config_batch_translation,
-            'batch_transliteration': self.get_config_batch_transliteration,
-            'batch_audio_translation_transliteration': self.get_config_batch_audio_translation_transliteration,
-            'get_config_language_no_voices': self.get_config_language_no_voices,
             'text_replacement': self.get_config_text_replacement
         }
 
@@ -635,14 +533,6 @@ class TestConfigGenerator():
             }
         }
     
-    def get_language_detection_result(self):
-        return {
-            '老人家': 'zh_cn',
-            'old people': 'en',
-            '你好': 'zh_cn',
-            'hello': 'en'
-        }
-
     def get_deck_map(self):
         return {
             self.deck_id: {
@@ -677,11 +567,6 @@ class TestConfigGenerator():
         }
         return self.notes_by_id, notes
 
-    def get_dntf_chinese(self):
-        dnt = deck_utils.DeckNoteType(self.deck_id, self.deck_name, self.model_id, self.model_name)
-        dntf = deck_utils.DeckNoteTypeField(dnt, self.field_chinese)
-        return dntf
-
     def get_mock_editor_with_note(self, note_id):
         editor = MockEditor()
         editor.card = MockCard(self.deck_id)
@@ -695,15 +580,11 @@ class TestConfigGenerator():
         return editor
 
 
-    def build_languagetools_instance(self, scenario):
-        languagetools_config = self.get_languagetools_config(scenario)
-        mock_cloudlanguagetools = MockCloudLanguageTools()
+    def build_hypertts_instance(self, scenario):
+        addon_config = self.get_addon_config(scenario)
 
-        anki_utils = MockAnkiUtils(languagetools_config)
-        deckutils = deck_utils.DeckUtils(anki_utils)
-        mock_language_tools = languagetools.LanguageTools(anki_utils, deckutils, mock_cloudlanguagetools)
-        mock_language_tools.initialize()
-        mock_language_tools.clean_user_files_audio()
+        anki_utils = MockAnkiUtils(addon_config)
+        mock_hypertts = hypertts.HyperTTS(anki_utils)
 
         anki_utils.models = self.get_model_map()
         anki_utils.decks = self.get_deck_map()
@@ -711,6 +592,5 @@ class TestConfigGenerator():
         anki_utils.deck_by_name = self.get_deck_by_name()
         anki_utils.deckid_modelid_pairs = self.get_deckid_modelid_pairs()
         anki_utils.notes_by_id, anki_utils.notes = self.get_notes()
-        mock_cloudlanguagetools.language_detection_result = self.get_language_detection_result()
 
-        return mock_language_tools
+        return mock_hypertts

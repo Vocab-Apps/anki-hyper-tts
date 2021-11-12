@@ -32,27 +32,6 @@ def all_service_files(directory):
                 module_name = filename.replace('.py', '')
                 #yield os.path.join(path, filename)
                 yield module_name
-# Found here: 
-# https://stackoverflow.com/questions/3137731/is-this-correct-way-to-import-python-scripts-residing-in-arbitrary-folders
-def import_from_absolute_path(fullpath, global_name=None):
-    script_dir, filename = os.path.split(fullpath)
-    script, ext = os.path.splitext(filename)
-
-    sys.path.insert(0, script_dir)
-    try:
-        module = __import__(script)
-        if global_name is None:
-            global_name = script
-        globals()[global_name] = module
-        sys.modules[global_name] = module
-    except ModuleNotFoundError as mnf:
-        print(mnf)
-    except ImportError as ie:
-        print(ie)
-    except FileNotFoundError as fnf:
-        print(fnf)
-    finally:
-        del sys.path[0]
 
 def test_discover_services():
     current_script_path = os.path.realpath(__file__)
@@ -66,7 +45,11 @@ def test_discover_services():
         fp, pathname, description = imp.find_module(module_name)
         imp.load_module(module_name, fp, pathname, description)
     # find subclasses of ServiceBase
-    print(service.ServiceBase.__subclasses__())
+    for subclass in service.ServiceBase.__subclasses__():
+        subclass_instance = subclass()
+        print(subclass_instance)
+        voices = subclass_instance.voice_list()
+        print(voices)
 
 
 if __name__ == '__main__':
