@@ -38,6 +38,8 @@ def test_simple(qtbot):
     # target field has the sound tag
     # note.flush() has been called
 
+    # check note 1
+
     note_1 = mock_hypertts.anki_utils.get_note_by_id(config_gen.note_id_1)
     assert 'Sound' in note_1.set_values 
 
@@ -47,7 +49,16 @@ def test_simple(qtbot):
 
     assert audio_data['source_text'] == '老人家'
     assert audio_data['voice'] == batch_config['voice']
-
-    # assert note_1.set_values['Sound'] == '[sound:yoyo.mp3]'
     assert note_1.flush_called == True
+
+    note_2 = mock_hypertts.anki_utils.get_note_by_id(config_gen.note_id_2)
+    assert 'Sound' in note_2.set_values 
+
+    sound_tag = note_2.set_values['Sound']
+    audio_full_path = mock_hypertts.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+    audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
+
+    assert audio_data['source_text'] == '你好'
+    assert audio_data['voice'] == batch_config['voice']
+    assert note_2.flush_called == True    
 
