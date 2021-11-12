@@ -5,8 +5,9 @@ def test_simple(qtbot):
     # ==========================
 
     batch_config = {
-        'source_field': 'french',
-        'target_field': 'french_audio',
+        'mode': 'simple',
+        'source_field': 'Chinese',
+        'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
         'voice': {
@@ -32,8 +33,11 @@ def test_simple(qtbot):
     # =================================
     mock_hypertts.process_batch_audio(note_id_list, batch_config)
 
-
     # verify effect on notes
     # ======================
     # target field has the sound tag
     # note.flush() has been called
+
+    note_1 = mock_hypertts.anki_utils.get_note_by_id(config_gen.note_id_1)
+    assert 'Sound' in note_1.set_values 
+    assert note_1.set_values['Sound'] == '[sound:yoyo.mp3]'
