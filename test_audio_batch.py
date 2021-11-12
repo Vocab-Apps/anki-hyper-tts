@@ -31,7 +31,7 @@ def test_simple(qtbot):
 
     # run batch add audio (simple mode)
     # =================================
-    mock_hypertts.process_batch_audio(note_id_list, batch_config)
+    batch_error_manager = mock_hypertts.process_batch_audio(note_id_list, batch_config)
 
     # verify effect on notes
     # ======================
@@ -62,3 +62,6 @@ def test_simple(qtbot):
     assert audio_data['voice'] == batch_config['voice']
     assert note_2.flush_called == True    
 
+    # verify batch error manager stats
+    assert batch_error_manager.action_stats['success'] == 2
+    assert len(batch_error_manager.action_stats['error']) == 0

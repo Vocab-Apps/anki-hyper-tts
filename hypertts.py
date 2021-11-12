@@ -41,7 +41,7 @@ class HyperTTS():
         batch_error_manager = self.error_manager.get_batch_error_manager('adding audio to notes')
         # for each note, generate audio
         for note_id in note_id_list:
-            with batch_error_manager.get_batch_action_context(f'adding audio to note {note_id}'):
+            with batch_error_manager.get_batch_action_context():
                 note = self.anki_utils.get_note_by_id(note_id)
                 target_field = batch_config['target_field']
                 if batch_config['mode'] == 'simple':
