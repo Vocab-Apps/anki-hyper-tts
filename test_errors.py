@@ -11,7 +11,7 @@ def test_exceptions(qtbot):
         raise errors.FieldEmptyError('field2')
     except Exception as e:
         error_message = str(e)
-        assert error_message == 'Field field2 is empty'
+        assert error_message == 'Field <b>field2</b> is empty'
 
     # FieldNotFoundError
 
@@ -19,7 +19,7 @@ def test_exceptions(qtbot):
         raise errors.FieldNotFoundError('field1')
     except Exception as e:
         error_message = str(e)
-        assert error_message == f'Field not found: <b>field1</b>'
+        assert error_message == f'Field <b>field1</b> not found'
 
 
 def test_error_manager(qtbot):
