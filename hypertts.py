@@ -1,5 +1,6 @@
 
 # python imports
+import os
 import sys
 import hashlib
 from typing import List, Dict
@@ -27,8 +28,9 @@ import aqt
 
 class HyperTTS():
 
-    def __init__(self, anki_utils):
+    def __init__(self, anki_utils, service_manager):
         self.anki_utils = anki_utils
+        self.service_manager = service_manager
         self.error_manager = errors.ErrorManager(self.anki_utils)
         self.config = self.anki_utils.get_config()
         #self.text_utils = text_utils.TextUtils(self.get_text_processing_settings())
@@ -44,13 +46,31 @@ class HyperTTS():
                 target_field = batch_config['target_field']
                 if batch_config['mode'] == 'simple':
                     source_text = note[batch_config['source_field']]
-                    sound_tag = self.generate_sound_tag(batch_config['voice'], source_text)
+                    sound_tag = self.generate_sound_tag_add_collection(source_text, batch_config['voice'])
                     note[target_field] = sound_tag
                 note.flush()
                     
 
-    def generate_sound_tag(self, voice, source_text):
-        return f'[sound:yoyo.mp3]'
+    def generate_sound_tag_add_collection(self, source_text, voice):
+        # write to user files directory
+        hash_str = self.get_hash_for_audio_request(voice, source_text)
+        audio_filename = self.get_audio_filename(hash_str)
+        full_filename = self.get_full_audio_file_name(hash_str)
+        with open(full_filename, 'wb') as f:
+            f.write(self.service_manager.get_tts_audio(source_text, voice))
+        # add to collection
+        self.anki_utils.media_add_file(full_filename)
+        return f'[sound:{audio_filename}]'
+
+    def get_full_audio_file_name(self, hash_str):
+        # return the absolute path of the audio file in the user_files directory
+        user_files_dir = self.anki_utils.get_user_files_dir()
+        filename = self.get_audio_filename(hash_str)
+        return os.path.join(user_files_dir, filename)
+    
+    def get_audio_filename(self, hash_str):
+        filename = f'hypertts-{hash_str}.mp3'
+        return filename
 
     def get_hash_for_audio_request(self, source_text, voice):
         combined_data = {
@@ -58,4 +78,3 @@ class HyperTTS():
             'voice': voice
         }
         return hashlib.sha224(str(combined_data).encode('utf-8')).hexdigest()
-

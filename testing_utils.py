@@ -1,8 +1,12 @@
 import logging
 import json
+import tempfile
+import re
+import os
 
 import constants
 import hypertts
+
 
 class MockFuture():
     def __init__(self, result_data):
@@ -21,6 +25,9 @@ class MockAnkiUtils():
         self.show_loading_indicator_called = None
         self.hide_loading_indicator_called = None
 
+        # user_files dir
+        self.user_files_dir = tempfile.gettempdir()
+
         # exception handling
         self.last_exception = None
         self.last_action = None
@@ -30,6 +37,9 @@ class MockAnkiUtils():
 
     def write_config(self, config):
         self.written_config = config
+
+    def get_user_files_dir(self):
+        return self.user_files_dir
 
     def get_green_stylesheet(self):
         return constants.GREEN_STYLESHEET
@@ -150,16 +160,29 @@ class MockAnkiUtils():
 
     def report_unknown_exception_background(self, exception):
         self.last_exception = exception
+        # logging.exception('yoyo')
 
-class MockTranslationResponse():
-    def __init__(self, status_code, content_obj):
-        self.status_code = status_code
-        self.content = json.dumps(content_obj)
+    def extract_sound_tag_audio_full_path(self, sound_tag):
+        filename = re.match('\[sound:([^\]]+)\]', sound_tag).groups()[0]
+        return os.path.join(self.get_user_files_dir(), filename)
 
-class MockBreakdownResponse():
-    def __init__(self, status_code, content_obj):
-        self.status_code = status_code
-        self.content = json.dumps(content_obj)
+
+class MockServiceManager():
+    def __init__(self):
+        pass
+
+    def get_tts_audio(self, source_text, voice):
+        self.requested_audio = {
+            'source_text': source_text,
+            'voice': voice
+        }
+        encoded_dict = json.dumps(self.requested_audio, indent=2).encode('utf-8')
+        return encoded_dict    
+
+    def extract_mock_tts_audio(self, full_path):
+        file_content = open(full_path, 'r').read()
+        return json.loads(file_content)
+
 
 
 class MockCloudLanguageTools():
@@ -584,7 +607,8 @@ class TestConfigGenerator():
         addon_config = self.get_addon_config(scenario)
 
         anki_utils = MockAnkiUtils(addon_config)
-        mock_hypertts = hypertts.HyperTTS(anki_utils)
+        service_manager = MockServiceManager()
+        mock_hypertts = hypertts.HyperTTS(anki_utils, service_manager)
 
         anki_utils.models = self.get_model_map()
         anki_utils.decks = self.get_deck_map()
