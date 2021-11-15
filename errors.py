@@ -19,6 +19,11 @@ class FieldEmptyError(HyperTTSError):
         message = f'Field <b>{field_name}</b> is empty'
         super().__init__(message)    
 
+class SourceTextEmpty(HyperTTSError):
+    def __init__(self):
+        message = 'Source text is empty'
+        super().__init__(message)    
+
 class TextReplacementError(HyperTTSError):
     def __init__(self, text, pattern, replacement, error_msg):
         message = f'Could not process text replacement (pattern: {pattern}, replacement: {replacement}, text: {text}): {error_msg}'

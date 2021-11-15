@@ -3,6 +3,7 @@
 import os
 import sys
 import hashlib
+import logging
 from typing import List, Dict
 
 # anki imports
@@ -23,9 +24,6 @@ else:
     from . import errors
     from . import text_utils
 
-# anki imports
-import aqt
-
 class HyperTTS():
 
     def __init__(self, anki_utils, service_manager):
@@ -33,7 +31,7 @@ class HyperTTS():
         self.service_manager = service_manager
         self.error_manager = errors.ErrorManager(self.anki_utils)
         self.config = self.anki_utils.get_config()
-        #self.text_utils = text_utils.TextUtils(self.get_text_processing_settings())
+        self.text_utils = text_utils.TextUtils(self.get_text_processing_settings())
         self.error_manager = errors.ErrorManager(self.anki_utils)
 
 
@@ -51,8 +49,15 @@ class HyperTTS():
                 note.flush()
         return batch_error_manager
                     
+    def process_text(self, source_text):
+        processed_text = self.text_utils.process(source_text)
+        logging.info(f'before text processing: [{source_text}], after text processing: [{processed_text}]')
+        if self.text_utils.is_empty(processed_text):
+            raise errors.SourceTextEmpty()
+        return processed_text
 
     def generate_sound_tag_add_collection(self, source_text, voice):
+        source_text = self.process_text(source_text)
         # write to user files directory
         hash_str = self.get_hash_for_audio_request(voice, source_text)
         audio_filename = self.get_audio_filename(hash_str)
@@ -79,3 +84,15 @@ class HyperTTS():
             'voice': voice
         }
         return hashlib.sha224(str(combined_data).encode('utf-8')).hexdigest()
+
+
+    # functions related to addon config
+    # =================================
+
+    def get_text_processing_settings(self):
+        return self.config.get(constants.CONFIG_TEXT_PROCESSING, {})
+
+    def store_text_processing_settings(self, settings):
+        self.config[constants.CONFIG_TEXT_PROCESSING] = settings
+        self.anki_utils.write_config(self.config)
+        self.text_utils = text_utils.TextUtils(settings)        
