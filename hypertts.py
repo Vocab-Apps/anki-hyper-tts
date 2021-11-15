@@ -63,7 +63,20 @@ class HyperTTS():
     def get_source_text(self, note, batch_config):
         if batch_config['mode'] == constants.BatchMode.simple.name:
             source_text = note[batch_config['source_field']]
+        elif batch_config['mode'] == constants.BatchMode.template.name:
+            source_text = self.expand_template(note, batch_config['source_template'])
         return source_text
+
+    def expand_template(self, note, source_template):
+        field_values = {}
+        for field in note.fields:
+            field_values[field] = note[field]
+        local_variables = {
+            'template_fields': field_values
+        }
+        expanded_template = exec(source_template, {}, local_variables)
+        result = local_variables['result']
+        return result
 
     def process_text(self, source_text):
         processed_text = self.text_utils.process(source_text)

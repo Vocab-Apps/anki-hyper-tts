@@ -452,18 +452,28 @@ class TestConfigGenerator():
     def __init__(self):
         self.deck_id = 42001
         self.model_id = 43001
+
+        self.model_id_german = 50001
+
         self.model_name = 'note-type'
         self.deck_name = 'deck 1'
         self.field_chinese = 'Chinese'
         self.field_english = 'English'
         self.field_sound = 'Sound'
         self.field_pinyin = 'Pinyin'
-
+        self.field_german_article = 'Article'
+        self.field_german_word = 'Word'
+        
         self.note_id_1 = 42005
         self.note_id_2 = 43005
         self.note_id_3 = 44005 # empty chinese note
 
+        # german notes
+        self.note_id_german_1 = 51001
+        self.note_id_german_2 = 51002
+
         self.all_fields = [self.field_chinese, self.field_english, self.field_sound, self.field_pinyin]
+        self.all_fields_german = [self.field_german_article, self.field_german_word, self.field_english, self.field_sound]
 
         self.notes_by_id = {
             self.note_id_1: MockNote(self.note_id_1, self.model_id,{
@@ -483,7 +493,14 @@ class TestConfigGenerator():
                 self.field_english: 'empty',
                 self.field_sound: '',
                 self.field_pinyin: ''
-            }, self.all_fields)
+            }, self.all_fields),
+            # german notes
+            self.note_id_german_1: MockNote(self.note_id_german_1, self.model_id_german, {
+                self.field_german_article: 'Das',
+                self.field_german_word: 'Hund',
+                self.field_english: "The Dog",
+                self.field_sound: ''
+            }, self.all_fields_german)
         }        
 
         self.chinese_voice_key = 'chinese voice'
