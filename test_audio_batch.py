@@ -109,3 +109,4 @@ def test_simple_error_handling(qtbot):
     # verify batch error manager stats
     assert batch_error_manager.action_stats['success'] == 2
     assert len(batch_error_manager.action_stats['error']) == 1
+    assert batch_error_manager.action_stats['error']['Source text is empty'] == 1
