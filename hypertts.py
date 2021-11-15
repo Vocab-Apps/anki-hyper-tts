@@ -43,20 +43,25 @@ class HyperTTS():
             with batch_error_manager.get_batch_action_context():
                 note = self.anki_utils.get_note_by_id(note_id)
                 target_field = batch_config['target_field']
-                if batch_config['mode'] == constants.BatchMode.simple.name:
-                    source_text = note[batch_config['source_field']]
-                    sound_tag = self.generate_sound_tag_add_collection(source_text, batch_config['voice'])
-                    if batch_config[constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG] == True:
-                        # remove existing sound tag
-                        current_target_field_content = note[target_field]
-                        field_content = self.strip_sound_tag(current_target_field_content)
-                        note[target_field] = f'{field_content} {sound_tag}'
-                    else:
-                        note[target_field] = sound_tag
+                source_text = self.get_source_text(note, batch_config)
+                processed_text = self.process_text(source_text)
+                sound_tag = self.generate_sound_tag_add_collection(source_text, batch_config['voice'])
+                if batch_config[constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG] == True:
+                    # remove existing sound tag
+                    current_target_field_content = note[target_field]
+                    field_content = self.strip_sound_tag(current_target_field_content)
+                    note[target_field] = f'{field_content} {sound_tag}'
+                else:
+                    note[target_field] = sound_tag
                 note.flush()
             progress_fn(batch_error_manager.iteration_count)
         return batch_error_manager
                     
+    def get_source_text(self, note, batch_config):
+        if batch_config['mode'] == constants.BatchMode.simple.name:
+            source_text = note[batch_config['source_field']]
+        return source_text
+
     def process_text(self, source_text):
         processed_text = self.text_utils.process(source_text)
         logging.info(f'before text processing: [{source_text}], after text processing: [{processed_text}]')
@@ -65,7 +70,6 @@ class HyperTTS():
         return processed_text
 
     def generate_sound_tag_add_collection(self, source_text, voice):
-        source_text = self.process_text(source_text)
         # write to user files directory
         hash_str = self.get_hash_for_audio_request(voice, source_text)
         audio_filename = self.get_audio_filename(hash_str)
