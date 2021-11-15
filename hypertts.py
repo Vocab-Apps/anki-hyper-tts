@@ -96,4 +96,4 @@ class HyperTTS():
     def store_text_processing_settings(self, settings):
         self.config[constants.CONFIG_TEXT_PROCESSING] = settings
         self.anki_utils.write_config(self.config)
-        self.text_utils = text_utils.TextUtils(settings)        
+        self.text_utils = text_utils.TextUtils(settings)

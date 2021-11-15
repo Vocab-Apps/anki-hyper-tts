@@ -117,11 +117,6 @@ def test_simple_error_handling(qtbot):
     # check progress bar
     assert progress_bar.iteration == 3
 
-    # verify effect on notes
-    # ======================
-    # target field has the sound tag
-    # note.flush() has been called
-
     # verify batch error manager stats
     assert batch_error_manager.action_stats['success'] == 2
     assert len(batch_error_manager.action_stats['error']) == 1
