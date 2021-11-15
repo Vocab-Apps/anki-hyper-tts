@@ -128,7 +128,7 @@ def test_simple_append(qtbot):
     # ==========================
 
     batch_config = {
-        'mode': 'simple',
+        'mode': constants.BatchMode.simple.name,
         'source_field': 'Chinese',
         'target_field': 'Chinese',
         constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG: True,

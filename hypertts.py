@@ -43,7 +43,7 @@ class HyperTTS():
             with batch_error_manager.get_batch_action_context():
                 note = self.anki_utils.get_note_by_id(note_id)
                 target_field = batch_config['target_field']
-                if batch_config['mode'] == 'simple':
+                if batch_config['mode'] == constants.BatchMode.simple.name:
                     source_text = note[batch_config['source_field']]
                     sound_tag = self.generate_sound_tag_add_collection(source_text, batch_config['voice'])
                     if batch_config[constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG] == True:
