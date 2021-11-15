@@ -74,16 +74,19 @@ class BatchErrorManager():
             'success': 0,
             'error': {}
         }
+        self.iteration_count = 0
 
     def get_batch_action_context(self):
         return BatchActionContext(self)
 
     def report_success(self):
         self.action_stats['success'] += 1
+        self.iteration_count += 1
 
     def track_error_stats(self, error_key):
         error_count = self.action_stats['error'].get(error_key, 0)
         self.action_stats['error'][error_key] = error_count + 1
+        self.iteration_count += 1        
 
     def report_batch_exception(self, exception):
         self.track_error_stats(str(exception))

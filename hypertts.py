@@ -35,7 +35,7 @@ class HyperTTS():
         self.error_manager = errors.ErrorManager(self.anki_utils)
 
 
-    def process_batch_audio(self, note_id_list, batch_config):
+    def process_batch_audio(self, note_id_list, batch_config, progress_fn):
         batch_error_manager = self.error_manager.get_batch_error_manager('adding audio to notes')
         # for each note, generate audio
         for note_id in note_id_list:
@@ -47,6 +47,7 @@ class HyperTTS():
                     sound_tag = self.generate_sound_tag_add_collection(source_text, batch_config['voice'])
                     note[target_field] = sound_tag
                 note.flush()
+            progress_fn(batch_error_manager.iteration_count)
         return batch_error_manager
                     
     def process_text(self, source_text):

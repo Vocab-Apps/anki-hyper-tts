@@ -1,5 +1,13 @@
 import testing_utils
 
+class mock_progress_bar():
+    def __init__(self):
+        self.iteration = 0
+
+    def callback_fn(self, iteration):
+        self.iteration = iteration
+
+
 def test_simple(qtbot):
     # create batch configuration
     # ==========================
@@ -31,7 +39,11 @@ def test_simple(qtbot):
 
     # run batch add audio (simple mode)
     # =================================
-    batch_error_manager = mock_hypertts.process_batch_audio(note_id_list, batch_config)
+    progress_bar = mock_progress_bar()
+    batch_error_manager = mock_hypertts.process_batch_audio(note_id_list, batch_config, progress_bar.callback_fn)
+
+    # check progress bar
+    assert progress_bar.iteration == 2
 
     # verify effect on notes
     # ======================
@@ -99,7 +111,11 @@ def test_simple_error_handling(qtbot):
 
     # run batch add audio (simple mode)
     # =================================
-    batch_error_manager = mock_hypertts.process_batch_audio(note_id_list, batch_config)
+    progress_bar = mock_progress_bar()
+    batch_error_manager = mock_hypertts.process_batch_audio(note_id_list, batch_config, progress_bar.callback_fn)
+
+    # check progress bar
+    assert progress_bar.iteration == 3
 
     # verify effect on notes
     # ======================
