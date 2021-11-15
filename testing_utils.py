@@ -151,7 +151,7 @@ class MockAnkiUtils():
         self.last_exception = exception
 
     def extract_sound_tag_audio_full_path(self, sound_tag):
-        filename = re.match('\[sound:([^\]]+)\]', sound_tag).groups()[0]
+        filename = re.match('.*\[sound:([^\]]+)\]', sound_tag).groups()[0]
         return os.path.join(self.get_user_files_dir(), filename)
 
 

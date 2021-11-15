@@ -1,4 +1,5 @@
 import testing_utils
+import constants
 
 class mock_progress_bar():
     def __init__(self):
@@ -121,3 +122,59 @@ def test_simple_error_handling(qtbot):
     assert batch_error_manager.action_stats['success'] == 2
     assert len(batch_error_manager.action_stats['error']) == 1
     assert batch_error_manager.action_stats['error']['Source text is empty'] == 1
+
+def test_simple_append(qtbot):
+    # create batch configuration
+    # ==========================
+
+    batch_config = {
+        'mode': 'simple',
+        'source_field': 'Chinese',
+        'target_field': 'Chinese',
+        constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG: True,
+        'remove_sound_tag': True,
+        'voice': {
+            'service': 'ServiceA',
+            'voice_key': {
+                'name': 'voice_1'
+            },
+            'options': {}
+        }
+    }
+    
+    # create hypertts instance
+    # ========================
+
+    config_gen = testing_utils.TestConfigGenerator()
+    mock_hypertts = config_gen.build_hypertts_instance('default')
+
+    # create list of notes
+    # ====================
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
+
+    # run batch add audio (simple mode)
+    # =================================
+    progress_bar = mock_progress_bar()
+    batch_error_manager = mock_hypertts.process_batch_audio(note_id_list, batch_config, progress_bar.callback_fn)
+
+    # check progress bar
+    assert progress_bar.iteration == 2
+
+    # verify effect on notes
+    # ======================
+    # target field has the sound tag
+    # note.flush() has been called
+
+    # check note 1
+
+    note_1 = mock_hypertts.anki_utils.get_note_by_id(config_gen.note_id_1)
+    assert 'Chinese' in note_1.set_values 
+
+    text_and_sound_tag = note_1.set_values['Chinese']
+    assert '老人家 ' in text_and_sound_tag
+    audio_full_path = mock_hypertts.anki_utils.extract_sound_tag_audio_full_path(text_and_sound_tag)
+    audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
+
+    assert audio_data['source_text'] == '老人家'
+    assert audio_data['voice'] == batch_config['voice']
+    assert note_1.flush_called == True

@@ -2,6 +2,7 @@
 # python imports
 import os
 import sys
+import re
 import hashlib
 import logging
 from typing import List, Dict
@@ -45,7 +46,13 @@ class HyperTTS():
                 if batch_config['mode'] == 'simple':
                     source_text = note[batch_config['source_field']]
                     sound_tag = self.generate_sound_tag_add_collection(source_text, batch_config['voice'])
-                    note[target_field] = sound_tag
+                    if batch_config[constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG] == True:
+                        # remove existing sound tag
+                        current_target_field_content = note[target_field]
+                        field_content = self.strip_sound_tag(current_target_field_content)
+                        note[target_field] = f'{field_content} {sound_tag}'
+                    else:
+                        note[target_field] = sound_tag
                 note.flush()
             progress_fn(batch_error_manager.iteration_count)
         return batch_error_manager
@@ -85,6 +92,10 @@ class HyperTTS():
             'voice': voice
         }
         return hashlib.sha224(str(combined_data).encode('utf-8')).hexdigest()
+
+    def strip_sound_tag(self, field_value):
+        field_value = re.sub('\[sound:[^\]]+\]', '', field_value)
+        return field_value.strip()
 
 
     # functions related to addon config
