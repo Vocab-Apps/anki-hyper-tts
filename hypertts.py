@@ -57,6 +57,9 @@ class HyperTTS():
             progress_fn(batch_error_manager.iteration_count)
         return batch_error_manager
                     
+    # text processing
+    # ===============
+
     def get_source_text(self, note, batch_config):
         if batch_config['mode'] == constants.BatchMode.simple.name:
             source_text = note[batch_config['source_field']]
@@ -68,6 +71,9 @@ class HyperTTS():
         if self.text_utils.is_empty(processed_text):
             raise errors.SourceTextEmpty()
         return processed_text
+
+    # processing of sound tags / collection stuff
+    # ===========================================
 
     def generate_sound_tag_add_collection(self, source_text, voice):
         # write to user files directory

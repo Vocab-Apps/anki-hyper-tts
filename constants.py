@@ -8,6 +8,7 @@ class BatchMode(enum.Enum):
     template = enum.auto()
     raw_ssml_template = enum.auto()
 
+#
 CONFIG_BATCH_TEXT_AND_SOUND_TAG = 'text_and_sound_tag'
 
 CONFIG_BATCH_AUDIO = 'batch_audio'
