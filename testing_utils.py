@@ -129,17 +129,6 @@ class MockAnkiUtils():
     def hide_loading_indicator(self, editor, field_index, original_field_value):
         self.hide_loading_indicator_called = True
 
-    def display_dialog(self, dialog):
-        # currently only used for the choose translation dialog
-
-        if self.display_dialog_behavior == 'choose_serviceB':
-            # choose second translation available
-            dialog.selected_translation = dialog.all_translations['serviceB']
-            return True
-        
-        if self.display_dialog_behavior == 'cancel':
-            return False
-
     def ask_user(self, message, parent):
         return True
 
@@ -160,7 +149,6 @@ class MockAnkiUtils():
 
     def report_unknown_exception_background(self, exception):
         self.last_exception = exception
-        # logging.exception('yoyo')
 
     def extract_sound_tag_audio_full_path(self, sound_tag):
         filename = re.match('\[sound:([^\]]+)\]', sound_tag).groups()[0]
