@@ -91,13 +91,13 @@ def test_simple_error_handling(qtbot):
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
-        'voice': {
+        'voices': [{
             'service': 'ServiceA',
             'voice_key': {
                 'name': 'voice_1'
             },
             'options': {}
-        }
+        }]
     }
     
     # create hypertts instance
@@ -133,13 +133,13 @@ def test_simple_append(qtbot):
         'target_field': 'Chinese',
         constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG: True,
         'remove_sound_tag': True,
-        'voice': {
+        'voices': [{
             'service': 'ServiceA',
             'voice_key': {
                 'name': 'voice_1'
             },
             'options': {}
-        }
+        }]
     }
     
     # create hypertts instance
@@ -176,7 +176,7 @@ def test_simple_append(qtbot):
     audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == '老人家'
-    assert audio_data['voice'] == batch_config['voice']
+    assert audio_data['voice'] == batch_config['voices'][0]
     assert note_1.flush_called == True
 
 def test_template(qtbot):
@@ -194,13 +194,13 @@ result = f"{article} {word}"
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
-        'voice': {
+        'voices': [{
             'service': 'ServiceA',
             'voice_key': {
                 'name': 'voice_1'
             },
             'options': {}
-        }
+        }]
     }
     
     # create hypertts instance
@@ -226,7 +226,7 @@ result = f"{article} {word}"
     audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == 'Das Hund'
-    assert audio_data['voice'] == batch_config['voice']
+    assert audio_data['voice'] == batch_config['voices'][0]
     assert note_1.flush_called == True    
 
 
@@ -247,13 +247,13 @@ result = f"{article} {word}"
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
-        'voice': {
+        'voices': [{
             'service': 'ServiceA',
             'voice_key': {
                 'name': 'voice_1'
             },
             'options': {}
-        }
+        }]
     }
     
     # create hypertts instance
@@ -279,6 +279,6 @@ result = f"{article} {word}"
     audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == 'das Hund' # lowercase d
-    assert audio_data['voice'] == batch_config['voice']
+    assert audio_data['voice'] == batch_config['voices'][0]
     assert note_1.flush_called == True        
 
