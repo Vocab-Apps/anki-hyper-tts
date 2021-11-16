@@ -9,7 +9,7 @@ class mock_progress_bar():
         self.iteration = iteration
 
 
-def test_simple(qtbot):
+def test_simple_1(qtbot):
     # create batch configuration
     # ==========================
 
@@ -19,13 +19,13 @@ def test_simple(qtbot):
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
-        'voice': {
+        'voices': [{
             'service': 'ServiceA',
             'voice_key': {
                 'name': 'voice_1'
             },
             'options': {}
-        }
+        }]
     }
     
     # create hypertts instance
@@ -61,7 +61,7 @@ def test_simple(qtbot):
     audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == '老人家'
-    assert audio_data['voice'] == batch_config['voice']
+    assert audio_data['voice'] == batch_config['voices'][0]
     assert note_1.flush_called == True
 
     note_2 = mock_hypertts.anki_utils.get_note_by_id(config_gen.note_id_2)
@@ -72,7 +72,7 @@ def test_simple(qtbot):
     audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == '你好'
-    assert audio_data['voice'] == batch_config['voice']
+    assert audio_data['voice'] == batch_config['voices'][0]
     assert note_2.flush_called == True    
 
     # verify batch error manager stats

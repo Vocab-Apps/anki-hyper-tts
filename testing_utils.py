@@ -149,7 +149,7 @@ class MockAnkiUtils():
 
     def report_unknown_exception_background(self, exception):
         self.last_exception = exception
-        logging.error(exception)
+        logging.critical(exception, exc_info=True)
 
     def extract_sound_tag_audio_full_path(self, sound_tag):
         filename = re.match('.*\[sound:([^\]]+)\]', sound_tag).groups()[0]

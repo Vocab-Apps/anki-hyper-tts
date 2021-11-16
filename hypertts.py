@@ -5,6 +5,7 @@ import sys
 import re
 import hashlib
 import logging
+import random
 from typing import List, Dict
 
 # anki imports
@@ -45,7 +46,8 @@ class HyperTTS():
                 target_field = batch_config['target_field']
                 source_text = self.get_source_text(note, batch_config)
                 processed_text = self.process_text(source_text)
-                sound_tag = self.generate_sound_tag_add_collection(source_text, batch_config['voice'])
+                voice = self.choose_voice(batch_config['voices'])
+                sound_tag = self.generate_sound_tag_add_collection(source_text, voice)
                 if batch_config[constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG] == True:
                     # remove existing sound tag
                     current_target_field_content = note[target_field]
@@ -56,7 +58,18 @@ class HyperTTS():
                 note.flush()
             progress_fn(batch_error_manager.iteration_count)
         return batch_error_manager
-                    
+
+    def choose_voice(self, voices):
+        logging.info(f'choosing from {len(voices)} voices')
+        voice_list = []
+        weights = []
+        for voice in voices:
+            voice_list.append(voice)
+            weight = voice.get('weight', 1)
+            weights.append(weight)
+        choice = random.choices(voice_list, weights=weights)
+        return choice[0]
+
     # text processing
     # ===============
 
