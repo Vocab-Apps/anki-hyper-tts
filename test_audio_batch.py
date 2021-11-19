@@ -179,6 +179,62 @@ def test_simple_append(qtbot):
     assert audio_data['voice'] == batch_config['voices'][0]
     assert note_1.flush_called == True
 
+def test_random_voices(qtbot):
+    batch_config = {
+        'mode': 'simple',
+        'source_field': 'Chinese',
+        'target_field': 'Sound',
+        'text_and_sound_tag': False,
+        'remove_sound_tag': True,
+        'voices': [
+            {
+                'service': 'ServiceA',
+                'voice_key': {
+                    'name': 'voice_1'
+                },
+                'options': {}
+            },
+            {
+                'service': 'ServiceA',
+                'voice_key': {
+                    'name': 'voice_2'
+                },
+                'options': {}
+            },
+            {
+                'service': 'ServiceA',
+                'voice_key': {
+                    'name': 'voice_3'
+                },
+                'options': {}
+            }
+        ]
+    }
+    
+    # create hypertts instance
+    # ========================
+
+    config_gen = testing_utils.TestConfigGenerator()
+    mock_hypertts = config_gen.build_hypertts_instance('default')
+
+    # create list of notes
+    # ====================
+    note_id_list = [config_gen.note_id_1]
+
+    # run batch add audio (simple mode)
+    # =================================
+    progress_bar = mock_progress_bar()
+    batch_error_manager = mock_hypertts.process_batch_audio(note_id_list, batch_config, progress_bar.callback_fn)
+
+    note_1 = mock_hypertts.anki_utils.get_note_by_id(config_gen.note_id_1)
+    assert 'Sound' in note_1.set_values 
+
+    sound_tag = note_1.set_values['Sound']
+    audio_full_path = mock_hypertts.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+    audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
+
+    assert audio_data['voice'] == batch_config['voices'][0] or batch_config['voices'][1] or batch_config['voices'][2]
+
 def test_template(qtbot):
     # create batch configuration
     # ==========================
