@@ -13,6 +13,7 @@ class ServiceManager():
     def __init__(self, services_directory, package_name=None):
         self.services_directory = services_directory
         self.package_name = package_name
+        self.services = {}
 
     def discover_services(self):
         module_names = []
@@ -23,6 +24,10 @@ class ServiceManager():
                     module_names.append(module_name)
         return module_names
 
+    def init_services(self):
+        self.import_services()
+        self.instantiate_services()
+
     def import_services(self):
         module_names = self.discover_services()
         for module_name in module_names:
@@ -30,14 +35,20 @@ class ServiceManager():
             logging.info(f'importing module {module_name}')
             importlib.import_module(module_name)
 
+    def instantiate_services(self):
+        for subclass in service.ServiceBase.__subclasses__():
+            subclass_instance = subclass()
+            subclass_name = type(subclass_instance).__name__
+            logging.info(f'instantiating service {subclass_name}')
+            self.services[subclass_name] = subclass_instance
+
     def get_tts_audio(self, source_text, voice):
         # to be implemented
         return None
 
     def full_voice_list(self) -> typing.List[voice.VoiceBase]:
         full_list = []
-        for subclass in service.ServiceBase.__subclasses__():
-            subclass_instance = subclass()
-            voices = subclass_instance.voice_list()
+        for service_name, service_instance in self.services.items():
+            voices = service_instance.voice_list()
             full_list.extend(voices)
         return full_list

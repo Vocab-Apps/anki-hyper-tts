@@ -17,12 +17,12 @@ def test_discover(qtbot):
 
 def test_import(qtbot):
     manager = servicemanager.ServiceManager(test_services_dir(), 'test_services')
-    manager.import_services()
+    manager.init_services()
 
 
 def test_full_voice_list(qtbot):
     manager = servicemanager.ServiceManager(test_services_dir(), 'test_services')
-    manager.import_services()
+    manager.init_services()
     voice_list = manager.full_voice_list()
 
     # find ServiceA's voice_1
