@@ -38,9 +38,8 @@ class ServiceManager():
     def instantiate_services(self):
         for subclass in service.ServiceBase.__subclasses__():
             subclass_instance = subclass()
-            subclass_name = type(subclass_instance).__name__
-            logging.info(f'instantiating service {subclass_name}')
-            self.services[subclass_name] = subclass_instance
+            logging.info(f'instantiating service {subclass_instance.name}')
+            self.services[subclass_instance.name] = subclass_instance
 
     def get_tts_audio(self, source_text, voice):
         return voice.service.get_tts_audio(source_text, voice)
