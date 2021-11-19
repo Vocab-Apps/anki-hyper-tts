@@ -1,3 +1,2 @@
-# anki-language-tools
-Anki Language Tools addon
-https://ankiweb.net/shared/info/771677663
+# anki-hyper-tts
+Think of it like AwesomeTTS 2.0
