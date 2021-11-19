@@ -1,4 +1,5 @@
 import service
+import voice
 
 class ServiceB(service.ServiceBase):
     def __init__(self):
@@ -6,3 +7,6 @@ class ServiceB(service.ServiceBase):
 
     def voice_list(self):
         return []
+
+    def get_tts_audio(self, source_text, voice: voice.VoiceBase):
+        raise Exception('not implemented')        

@@ -1,7 +1,7 @@
 import abc
 import constants
 
-class VoiceBase():
+class VoiceBase(abc.ABC):
     """
     abstract base class which defines all the mandatory properties
     """
@@ -59,4 +59,3 @@ class Voice(VoiceBase):
     language = property(fget=_get_language)
     service = property(fget=_get_service)
     voice_key = property(fget=_get_voice_key)
-    
