@@ -26,7 +26,16 @@ else:
     from . import errors
     from . import text_utils
 
+
+
 class HyperTTS():
+    """
+    should have awareness of:
+    - anki concepts such as notes, editor
+    - understand how user has configured their presets
+    should not have awareness of:
+    - services (route through servicemanager)
+    """
 
     def __init__(self, anki_utils, service_manager):
         self.anki_utils = anki_utils
