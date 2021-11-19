@@ -31,3 +31,9 @@ def test_full_voice_list(qtbot):
     servicea_voice_1 = subset[0]
     assert servicea_voice_1.name == 'voice_a_1'
     assert servicea_voice_1.language == constants.Language.fr
+
+    subset = [voice for voice in voice_list if voice.service == 'ServiceB' and voice.name == 'jane']
+    assert len(subset) == 1
+    servicea_voice_1 = subset[0]
+    assert servicea_voice_1.name == 'jane'
+    assert servicea_voice_1.language == constants.Language.ja
