@@ -5,4 +5,4 @@ class ServiceB(service.ServiceBase):
         pass
 
     def voice_list(self):
-        return ['voice B 1', 'voice B 2']
+        return []

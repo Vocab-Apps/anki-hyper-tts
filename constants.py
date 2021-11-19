@@ -34,7 +34,15 @@ class ReplaceType(enum.Enum):
     simple = enum.auto()
     regex = enum.auto()
 
-# these are special languages that we store on a field level, which don't allow translating to/from
-class SpecialLanguage(enum.Enum):
-    transliteration = enum.auto()
-    sound = enum.auto()
+class Language(enum.Enum):
+    fr = ("French")
+    en = ("English")
+    ja = ("Japanese")
+    def __init__(self, lang_name):
+        self.lang_name = lang_name    
+
+class Gender(enum.Enum):
+    male = enum.auto()
+    female = enum.auto()
+    any = enum.auto()
+

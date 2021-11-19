@@ -1,6 +1,9 @@
 import os
 import importlib
 import logging
+import typing
+import voice
+import service
 
 class ServiceManager():
     """
@@ -30,3 +33,11 @@ class ServiceManager():
     def get_tts_audio(self, source_text, voice):
         # to be implemented
         return None
+
+    def full_voice_list(self) -> typing.List[voice.VoiceBase]:
+        full_list = []
+        for subclass in service.ServiceBase.__subclasses__():
+            subclass_instance = subclass()
+            voices = subclass_instance.voice_list()
+            full_list.extend(voices)
+        return full_list
