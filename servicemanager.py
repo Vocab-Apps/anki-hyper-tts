@@ -1,12 +1,15 @@
 import os
+import importlib
+import logging
 
 class ServiceManager():
     """
     this class will discover the services that are available and query their voices. it can also route a request
     to the correct service.
     """
-    def __init__(self, services_directory):
+    def __init__(self, services_directory, package_name=None):
         self.services_directory = services_directory
+        self.package_name = package_name
 
     def discover_services(self):
         module_names = []
@@ -16,6 +19,13 @@ class ServiceManager():
                     module_name = filename.replace('.py', '')        
                     module_names.append(module_name)
         return module_names
+
+    def import_services(self):
+        module_names = self.discover_services()
+        for module_name in module_names:
+            module_name = f'{self.package_name}.{module_name}'
+            logging.info(f'importing module {module_name}')
+            importlib.import_module(module_name)
 
     def get_tts_audio(self, source_text, voice):
         # to be implemented
