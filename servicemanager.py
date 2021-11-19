@@ -43,8 +43,7 @@ class ServiceManager():
             self.services[subclass_name] = subclass_instance
 
     def get_tts_audio(self, source_text, voice):
-        # to be implemented
-        return None
+        return voice.service.get_tts_audio(source_text, voice)
 
     def full_voice_list(self) -> typing.List[voice.VoiceBase]:
         full_list = []

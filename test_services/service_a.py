@@ -2,6 +2,7 @@ import constants
 import service
 import voice
 import typing
+import json
 
 
 class ServiceA(service.ServiceBase):
@@ -15,4 +16,10 @@ class ServiceA(service.ServiceBase):
         ]
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase):
-        raise Exception('not implemented')
+        self.requested_audio = {
+            'source_text': source_text,
+            'voice_key': voice.voice_key,
+            'language': voice.language.name
+        }
+        encoded_dict = json.dumps(self.requested_audio, indent=2).encode('utf-8')
+        return encoded_dict    

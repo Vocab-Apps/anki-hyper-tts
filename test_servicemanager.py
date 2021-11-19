@@ -1,5 +1,6 @@
 
 import os
+import json
 import constants
 import servicemanager
 
@@ -37,3 +38,23 @@ def test_full_voice_list(qtbot):
     servicea_voice_1 = subset[0]
     assert servicea_voice_1.name == 'jane'
     assert servicea_voice_1.language == constants.Language.ja
+
+
+def test_get_tts_audio(qtbot):
+    manager = servicemanager.ServiceManager(test_services_dir(), 'test_services')
+    manager.init_services()
+    voice_list = manager.full_voice_list()
+
+    # find ServiceA's voice_1
+    subset = [voice for voice in voice_list if voice.service.name == 'ServiceA' and voice.gender == constants.Gender.male]
+    assert len(subset) == 1
+    servicea_voice_1 = subset[0]
+
+    audio_result = manager.get_tts_audio('test sentence 123', servicea_voice_1)
+
+    audio_result_dict = json.loads(audio_result)
+
+    assert audio_result_dict['source_text'] == 'test sentence 123'
+    assert audio_result_dict['language'] == 'fr'
+    assert audio_result_dict['voice_key'] == {'name': 'voice_1'}
+
