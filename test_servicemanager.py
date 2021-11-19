@@ -26,13 +26,13 @@ def test_full_voice_list(qtbot):
     voice_list = manager.full_voice_list()
 
     # find ServiceA's voice_1
-    subset = [voice for voice in voice_list if voice.service == 'ServiceA' and voice.gender == constants.Gender.male]
+    subset = [voice for voice in voice_list if voice.service.name == 'ServiceA' and voice.gender == constants.Gender.male]
     assert len(subset) == 1
     servicea_voice_1 = subset[0]
     assert servicea_voice_1.name == 'voice_a_1'
     assert servicea_voice_1.language == constants.Language.fr
 
-    subset = [voice for voice in voice_list if voice.service == 'ServiceB' and voice.name == 'jane']
+    subset = [voice for voice in voice_list if voice.service.name == 'ServiceB' and voice.name == 'jane']
     assert len(subset) == 1
     servicea_voice_1 = subset[0]
     assert servicea_voice_1.name == 'jane'

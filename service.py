@@ -11,3 +11,9 @@ class ServiceBase(abc.ABC):
     @abc.abstractmethod
     def get_tts_audio(self, source_text, voice: voice.VoiceBase):
         pass
+
+    """service name"""
+    def _get_name(self):
+        return type(self).__name__
+
+    name = property(fget=_get_name)
