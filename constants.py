@@ -23,11 +23,6 @@ RED_STYLESHEET = 'background-color: #FFCDD2;'
 GREEN_STYLESHEET_NIGHTMODE = 'background-color: #2E7D32;'
 RED_STYLESHEET_NIGHTMODE = 'background-color: #B71C1C;'
 
-DOCUMENTATION_PERFORM_LANGUAGE_MAPPING = 'Please setup Language Mappings, from the Anki main screen: <b>Tools -> Language Tools: Language Mapping</b>'
-DOCUMENTATION_EDIT_RULES = 'Please edit rules by selecting a note and clicking <b>Language Tools -> Show Rules for Selected Notes</b>'
-DOCUMENTATION_SPECIAL_LANGUAGE = 'You cannot generate audio/translations/transliterations from this field. Please select an actual language, from the Anki main screen: <b>Tools -> Language Tools: Language Mapping</b>'
-DOCUMENTATION_VOICE_SELECTION = 'Please select a voice, from the Anki main screen: <b>Tools -> Language Tools: Voice Selection</b>'
-
 CLIENT_NAME = 'hypertts'
 
 class ReplaceType(enum.Enum):
@@ -35,9 +30,9 @@ class ReplaceType(enum.Enum):
     regex = enum.auto()
 
 class Gender(enum.Enum):
-    male = enum.auto()
-    female = enum.auto()
-    any = enum.auto()
+    Male = enum.auto()
+    Female = enum.auto()
+    Any = enum.auto()
 
 
 class Language(enum.Enum):

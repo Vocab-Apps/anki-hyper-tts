@@ -15,7 +15,7 @@ class VoiceBase(abc.ABC):
         pass
 
     @abc.abstractproperty
-    def language() -> constants.Language:
+    def language() -> constants.AudioLanguage:
         pass
 
     @abc.abstractproperty

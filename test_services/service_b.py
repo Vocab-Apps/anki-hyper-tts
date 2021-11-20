@@ -12,10 +12,10 @@ class VoiceB(voice.VoiceBase):
         return self._voice_id
 
     def _get_gender(self):
-        return constants.Gender.male
+        return constants.Gender.Male
 
     def _get_language(self):
-        return constants.Language.ja
+        return constants.AudioLanguage.ja_JP
 
     def _get_service(self):
         return self._service

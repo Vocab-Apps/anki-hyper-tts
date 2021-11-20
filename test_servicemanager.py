@@ -27,17 +27,17 @@ def test_full_voice_list(qtbot):
     voice_list = manager.full_voice_list()
 
     # find ServiceA's voice_1
-    subset = [voice for voice in voice_list if voice.service.name == 'ServiceA' and voice.gender == constants.Gender.male]
+    subset = [voice for voice in voice_list if voice.service.name == 'ServiceA' and voice.gender == constants.Gender.Male]
     assert len(subset) == 1
     servicea_voice_1 = subset[0]
     assert servicea_voice_1.name == 'voice_a_1'
-    assert servicea_voice_1.language == constants.Language.fr
+    assert servicea_voice_1.language == constants.AudioLanguage.fr_FR
 
     subset = [voice for voice in voice_list if voice.service.name == 'ServiceB' and voice.name == 'jane']
     assert len(subset) == 1
     servicea_voice_1 = subset[0]
     assert servicea_voice_1.name == 'jane'
-    assert servicea_voice_1.language == constants.Language.ja
+    assert servicea_voice_1.language == constants.AudioLanguage.ja_JP
 
 
 def test_get_tts_audio(qtbot):
@@ -46,7 +46,7 @@ def test_get_tts_audio(qtbot):
     voice_list = manager.full_voice_list()
 
     # find ServiceA's voice_1
-    subset = [voice for voice in voice_list if voice.service.name == 'ServiceA' and voice.gender == constants.Gender.male]
+    subset = [voice for voice in voice_list if voice.service.name == 'ServiceA' and voice.gender == constants.Gender.Male]
     assert len(subset) == 1
     servicea_voice_1 = subset[0]
 
@@ -55,6 +55,6 @@ def test_get_tts_audio(qtbot):
     audio_result_dict = json.loads(audio_result)
 
     assert audio_result_dict['source_text'] == 'test sentence 123'
-    assert audio_result_dict['language'] == 'fr'
+    assert audio_result_dict['language'] == 'fr_FR'
     assert audio_result_dict['voice_key'] == {'name': 'voice_1'}
 
