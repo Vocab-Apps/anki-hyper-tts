@@ -15,6 +15,9 @@ class ServiceManager():
         self.package_name = package_name
         self.services = {}
 
+    # service discovery
+    # =================
+
     def discover_services(self):
         module_names = []
         for path, dirs, files in os.walk(self.services_directory):
@@ -30,6 +33,7 @@ class ServiceManager():
 
     def import_services(self):
         module_names = self.discover_services()
+        logging.info(f'discovered {len(module_names)} services')
         for module_name in module_names:
             module_name = f'{self.package_name}.{module_name}'
             logging.info(f'importing module {module_name}')
@@ -40,6 +44,9 @@ class ServiceManager():
             subclass_instance = subclass()
             logging.info(f'instantiating service {subclass_instance.name}')
             self.services[subclass_instance.name] = subclass_instance
+
+    # getting TTS audio and voice list
+    # ================================
 
     def get_tts_audio(self, source_text, voice):
         return voice.service.get_tts_audio(source_text, voice)
