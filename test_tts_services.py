@@ -1,4 +1,5 @@
 import os
+import logging
 import servicemanager
 
 def services_dir():
@@ -10,6 +11,8 @@ def test_google():
     manager = servicemanager.ServiceManager(services_dir(), 'services')
     manager.init_services()
     voice_list = manager.full_voice_list()
+    google_voices = [voice for voice in voice_list if voice.service.name == 'Google']
     # print(voice_list)
-    assert len(voice_list) > 0
+    logging.info(f'found {len(google_voices)}')
+    assert len(google_voices) > 300
 
