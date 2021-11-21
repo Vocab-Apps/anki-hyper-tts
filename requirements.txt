@@ -3,3 +3,5 @@ pytest-qt
 aqt
 anki
 coverage
+azure-cognitiveservices-speech
+pydub
