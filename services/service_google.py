@@ -10,6 +10,9 @@ class Google(service.ServiceBase):
     def __init__(self):
         pass
 
+    def configure(self, config):
+        self.config = config
+
     def voice_list(self):
         google_voices_json = [voice for voice in services.voicelist.VOICE_LIST if voice['service'] == self.name]
         google_voices = [voice.Voice(v['name'], 
@@ -25,22 +28,21 @@ class Google(service.ServiceBase):
         payload = {
             "audioConfig": {
                 "audioEncoding": "MP3",
-                "pitch": voice['options']['pitch']['default'],
-                "speakingRate": voice['options']['speed']['default'],
+                "pitch": voice.options['pitch']['default'],
+                "speakingRate": voice.options['speaking_rate']['default'],
             },
             "input": {
                 "ssml": f"<speak>{source_text}</speak>"
             },
             "voice": {
-                "languageCode": voice.get_voice_key()['language_code'],
-                "name": voice.get_voice_key()['name'],
+                "languageCode": voice.voice_key['language_code'],
+                "name": voice.voice_key['name'],
             }
         }
 
-        r = requests.post("https://texttospeech.googleapis.com/v1/text:synthesize?key={}".format(options['key']), headers=headers, json=payload)
-        r.raise_for_status()
+        response = requests.post("https://texttospeech.googleapis.com/v1/text:synthesize?key={}".format(self.config['api_key']), json=payload)
 
-        data = r.json()
+        data = response.json()
         encoded = data['audioContent']
         audio_content = base64.b64decode(encoded)
 

@@ -45,6 +45,9 @@ class ServiceManager():
             logging.info(f'instantiating service {subclass_instance.name}')
             self.services[subclass_instance.name] = subclass_instance
 
+    def get_service(self, service_name):
+        return self.services[service_name]
+
     # getting TTS audio and voice list
     # ================================
 
