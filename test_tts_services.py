@@ -43,7 +43,8 @@ def verify_audio_output(manager, voice, source_text):
     sound.export(wav_filepath, format="wav")
 
     recognition_language_map = {
-        constants.AudioLanguage.en_US: 'en-US'
+        constants.AudioLanguage.en_US: 'en-US',
+        constants.AudioLanguage.fr_FR: 'fr-FR'
     }
 
     recognition_language = recognition_language_map[voice.language]
@@ -65,6 +66,10 @@ def verify_audio_output(manager, voice, source_text):
         error_message = "Speech Recognition canceled: {}".format(cancellation_details)
         raise Exception(error_message)
 
+def pick_random_voice(voice_list, service_name, language):
+    voice_subset = [voice for voice in voice_list if voice.service.name == service_name and voice.language == language]
+    random_voice = random.choice(voice_subset)
+    return random_voice
 
 def test_google():
     manager = servicemanager.ServiceManager(services_dir(), 'services')
@@ -78,10 +83,9 @@ def test_google():
     assert len(google_voices) > 300
 
     # pick a random en_US voice
-    us_voices = [voice for voice in google_voices if voice.language == constants.AudioLanguage.en_US]
-    random_us_voice = random.choice(us_voices)
+    voice = pick_random_voice(voice_list, 'Google', constants.AudioLanguage.en_US)
+    verify_audio_output(manager, voice, 'This is the first sentence')
 
-    # audio_data = manager.get_tts_audio('This is the first sentence.', random_us_voice)
-    verify_audio_output(manager, random_us_voice, 'This is the first sentence')
-
-
+    # french
+    voice = pick_random_voice(voice_list, 'Google', constants.AudioLanguage.fr_FR)
+    verify_audio_output(manager, voice, 'Je ne suis pas intéressé.')
