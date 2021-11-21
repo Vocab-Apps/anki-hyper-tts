@@ -62,6 +62,9 @@ class Voice(VoiceBase):
     def _get_options(self):
         return self._options
 
+    def __str__(self):
+        return f'{self._service.name}: {self.name}'
+
     name = property(fget=_get_name)
     gender = property(fget=_get_gender)
     language = property(fget=_get_language)

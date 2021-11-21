@@ -3,6 +3,7 @@ import logging
 import constants
 import servicemanager
 
+import re
 import random
 import tempfile
 
@@ -15,6 +16,16 @@ def services_dir():
     current_script_path = os.path.realpath(__file__)
     current_script_dir = os.path.dirname(current_script_path)    
     return os.path.join(current_script_dir, 'services')
+
+def sanitize_recognized_text(recognized_text):
+    recognized_text = re.sub('<[^<]+?>', '', recognized_text)
+    result_text = recognized_text.replace('.', '').\
+        replace('。', '').\
+        replace('?', '').\
+        replace('？', '').\
+        replace('您', '你').\
+        replace(':', '').lower()
+    return result_text
 
 def verify_audio_output(manager, voice, source_text):
     audio_data = manager.get_tts_audio(source_text, voice)
@@ -43,8 +54,9 @@ def verify_audio_output(manager, voice, source_text):
 
     # Checks result.
     if result.reason == azure.cognitiveservices.speech.ResultReason.RecognizedSpeech:
-        recognized_text =  result.text
-        assert source_text == recognized_text
+        recognized_text =  sanitize_recognized_text(result.text)
+        expected_text = sanitize_recognized_text(source_text)
+        assert expected_text == recognized_text, f'voice: {str(voice)}'
     elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
         error_message = "No speech could be recognized: {}".format(result.no_match_details)
         raise Exception(error_message)
@@ -52,8 +64,6 @@ def verify_audio_output(manager, voice, source_text):
         cancellation_details = result.cancellation_details
         error_message = "Speech Recognition canceled: {}".format(cancellation_details)
         raise Exception(error_message)
-
-    raise "unknown error"
 
 
 def test_google():
