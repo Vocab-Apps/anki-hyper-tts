@@ -3,6 +3,8 @@ import service
 import voice
 import services.voicelist
 import json
+import requests
+import base64
 
 class Google(service.ServiceBase):
     def __init__(self):
@@ -14,10 +16,27 @@ class Google(service.ServiceBase):
         return google_voices
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase):
-        self.requested_audio = {
-            'source_text': source_text,
-            'voice_key': voice.voice_key,
-            'language': voice.language.name
+
+        payload = {
+            "audioConfig": {
+                "audioEncoding": "MP3",
+                "pitch": options['pitch'],
+                "speakingRate": options['speed'],
+            },
+            "input": {
+                "ssml": f"<speak>{source_text}</speak>"
+            },
+            "voice": {
+                "languageCode": voice.get_voice_key()['language_code'],
+                "name": voice.get_voice_key()['name'],
+            }
         }
-        encoded_dict = json.dumps(self.requested_audio, indent=2).encode('utf-8')
-        return encoded_dict    
+
+        r = requests.post("https://texttospeech.googleapis.com/v1/text:synthesize?key={}".format(options['key']), headers=headers, json=payload)
+        r.raise_for_status()
+
+        data = r.json()
+        encoded = data['audioContent']
+        audio_content = base64.b64decode(encoded)
+
+        return audio_content
