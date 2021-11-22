@@ -16,14 +16,7 @@ class Google(service.ServiceBase):
         self.config = config
 
     def voice_list(self):
-        google_voices_json = [voice for voice in services.voicelist.VOICE_LIST if voice['service'] == self.name]
-        google_voices = [voice.Voice(v['name'], 
-                                     constants.Gender[v['gender']], 
-                                     constants.AudioLanguage[v['language']], 
-                                     self, 
-                                     v['key'],
-                                     v['options']) for v in google_voices_json]
-        return google_voices
+        return self.basic_voice_list()
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase):
 
