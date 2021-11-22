@@ -113,3 +113,47 @@ def test_google():
         exception_caught = True
     assert exception_caught
 
+
+def test_azure():
+    service_name = 'Azure'
+    manager = servicemanager.ServiceManager(services_dir(), 'services')
+    manager.init_services()
+    manager.get_service(service_name).configure({
+        'api_key': os.environ['AZURE_SERVICES_KEY'],
+        'region': os.environ['AZURE_SERVICES_REGION']
+    })
+
+    voice_list = manager.full_voice_list()
+    service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+    assert len(service_voices) > 300
+
+    # pick a random en_US voice
+    selected_voice = pick_random_voice(voice_list, service_name, constants.AudioLanguage.en_US)
+    verify_audio_output(manager, selected_voice, 'This is the first sentence')
+
+    # french
+    selected_voice = pick_random_voice(voice_list, service_name, constants.AudioLanguage.fr_FR)
+    verify_audio_output(manager, selected_voice, 'Je ne suis pas intéressé.')
+
+    # error checking
+    # try a voice which doesn't exist
+    selected_voice = pick_random_voice(voice_list, service_name, constants.AudioLanguage.en_US)
+    voice_key = selected_voice.voice_key
+    voice_key['name'] = 'non existent'
+    altered_voice = voice.Voice('non existent', 
+                                selected_voice.gender, 
+                                selected_voice.language, 
+                                selected_voice.service, 
+                                voice_key,
+                                selected_voice.options)
+
+    exception_caught = False
+    try:
+        audio_data = manager.get_tts_audio('This is the second sentence', altered_voice)
+    except errors.RequestError as e:
+        assert 'Could not request audio for' in str(e)
+        assert e.source_text == 'This is the second sentence'
+        assert e.voice.service.name == service_name
+        exception_caught = True
+    assert exception_caught
+
