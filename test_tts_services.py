@@ -62,7 +62,7 @@ def verify_audio_output(manager, voice, source_text):
     if result.reason == azure.cognitiveservices.speech.ResultReason.RecognizedSpeech:
         recognized_text =  sanitize_recognized_text(result.text)
         expected_text = sanitize_recognized_text(source_text)
-        assert expected_text == recognized_text, f'voice: {str(voice)}'
+        assert expected_text == recognized_text, f'expected and actual text not matching (voice: {str(voice)})'
         logging.info(f'actual and expected text match [{recognized_text}]')
     elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
         error_message = "No speech could be recognized: {}".format(result.no_match_details)
@@ -106,7 +106,7 @@ def test_google():
     # try a voice which doesn't exist
     selected_voice = pick_random_voice(voice_list, 'Google', constants.AudioLanguage.en_US)
     selected_voice = copy.copy(selected_voice)
-    voice_key = selected_voice.voice_key
+    voice_key = copy.copy(selected_voice.voice_key)
     voice_key['name'] = 'non existent'
     altered_voice = voice.Voice('non existent', 
                                 selected_voice.gender, 
@@ -151,7 +151,7 @@ def test_azure():
     # try a voice which doesn't exist
     selected_voice = pick_random_voice(voice_list, service_name, constants.AudioLanguage.en_US)
     selected_voice = copy.copy(selected_voice)
-    voice_key = selected_voice.voice_key
+    voice_key = copy.copy(selected_voice.voice_key)
     voice_key['name'] = 'non existent'
     altered_voice = voice.Voice('non existent', 
                                 selected_voice.gender, 
