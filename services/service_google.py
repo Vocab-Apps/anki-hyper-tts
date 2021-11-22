@@ -35,11 +35,14 @@ class Google(service.ServiceBase):
             }
         }
 
-        response = requests.post("https://texttospeech.googleapis.com/v1/text:synthesize?key={}".format(self.config['api_key']), json=payload)
+        logging.debug(f'requesting audio with payload {payload}')
 
+        response = requests.post("https://texttospeech.googleapis.com/v1/text:synthesize?key={}".format(self.config['api_key']), json=payload)
+        
         if response.status_code != 200:
             data = response.json()
             error_message = data.get('error', {}).get('message', str(data))
+            logging.error(error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
         data = response.json()

@@ -73,6 +73,7 @@ class Azure(service.ServiceBase):
         response = requests.post(constructed_url, headers=headers, data=body)
         if response.status_code != 200:
             error_message = f'status code {response.status_code}: {response.reason}'
+            logging.error(error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
         return response.content

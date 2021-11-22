@@ -8,6 +8,8 @@ import errors
 import re
 import random
 import tempfile
+import copy
+import pytest
 
 import pydub
 import azure.cognitiveservices.speech
@@ -103,6 +105,7 @@ def test_google():
     # error checking
     # try a voice which doesn't exist
     selected_voice = pick_random_voice(voice_list, 'Google', constants.AudioLanguage.en_US)
+    selected_voice = copy.copy(selected_voice)
     voice_key = selected_voice.voice_key
     voice_key['name'] = 'non existent'
     altered_voice = voice.Voice('non existent', 
@@ -147,6 +150,7 @@ def test_azure():
     # error checking
     # try a voice which doesn't exist
     selected_voice = pick_random_voice(voice_list, service_name, constants.AudioLanguage.en_US)
+    selected_voice = copy.copy(selected_voice)
     voice_key = selected_voice.voice_key
     voice_key['name'] = 'non existent'
     altered_voice = voice.Voice('non existent', 
@@ -176,7 +180,31 @@ def get_configured_servicemanager():
     manager.get_service('Google').configure({'api_key': os.environ['GOOGLE_SERVICES_KEY']})
     return manager
 
-def test_all_services():
+def verify_all_services_language(language, source_text):
+    manager = get_configured_servicemanager()
+    voice_list = manager.full_voice_list()
+    service_name_list = [service.name for service in manager.get_all_services()]
+
+    for service_name in service_name_list:
+        logging.info(f'testing language {language.name}, service {service_name}')
+        random_voices = pick_random_voices_sample(voice_list, service_name, language, 3)
+        for voice in random_voices:
+            verify_audio_output(manager, voice, source_text)    
+
+def test_all_services_english():
+    verify_all_services_language(constants.AudioLanguage.en_US, 'The weather is good today.')
+
+def test_all_services_french():
+    verify_all_services_language(constants.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
+
+def test_all_services_mandarin():
+    verify_all_services_language(constants.AudioLanguage.zh_CN, '老人家')
+
+def test_all_services_japanese():
+    verify_all_services_language(constants.AudioLanguage.ja_JP, 'おはようございます')
+
+@pytest.mark.skip(reason="covered by per-language tests")
+def manual_test_all_services():
     # pytest test_tts_services.py -k test_all_services -rPP -s
 
     input_map = {
