@@ -59,6 +59,7 @@ def verify_audio_output(manager, voice, source_text):
         recognized_text =  sanitize_recognized_text(result.text)
         expected_text = sanitize_recognized_text(source_text)
         assert expected_text == recognized_text, f'voice: {str(voice)}'
+        logging.info(f'actual and expected text match [{recognized_text}]')
     elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
         error_message = "No speech could be recognized: {}".format(result.no_match_details)
         raise Exception(error_message)
@@ -71,6 +72,12 @@ def pick_random_voice(voice_list, service_name, language):
     voice_subset = [voice for voice in voice_list if voice.service.name == service_name and voice.language == language]
     random_voice = random.choice(voice_subset)
     return random_voice
+
+def pick_random_voices_sample(voice_list, service_name, language, count):
+    voice_subset = [voice for voice in voice_list if voice.service.name == service_name and voice.language == language]
+    random_voice_sample = random.sample(voice_subset, count)
+    return random_voice_sample
+
 
 def test_google():
     manager = servicemanager.ServiceManager(services_dir(), 'services')
@@ -157,3 +164,31 @@ def test_azure():
         exception_caught = True
     assert exception_caught
 
+def get_configured_servicemanager():
+    manager = servicemanager.ServiceManager(services_dir(), 'services')
+    manager.init_services()
+    manager.get_service('Azure').configure({
+        'api_key': os.environ['AZURE_SERVICES_KEY'],
+        'region': os.environ['AZURE_SERVICES_REGION']
+    })    
+    manager.get_service('Google').configure({'api_key': os.environ['GOOGLE_SERVICES_KEY']})
+    return manager
+
+def test_all_services():
+    # pytest test_tts_services.py -k test_all_services -rPP -s
+
+    input_map = {
+        constants.AudioLanguage.en_US: 'The weather is good today.',
+        constants.AudioLanguage.fr_FR: 'Il va pleuvoir demain.',
+    }
+
+    manager = get_configured_servicemanager()
+    voice_list = manager.full_voice_list()
+    service_name_list = [service.name for service in manager.get_all_services()]
+
+    for language, source_text in input_map.items():
+        for service_name in service_name_list:
+            logging.info(f'testing language {language.name}, service {service_name}')
+            random_voices = pick_random_voices_sample(voice_list, service_name, language, 3)
+            for voice in random_voices:
+                verify_audio_output(manager, voice, source_text)

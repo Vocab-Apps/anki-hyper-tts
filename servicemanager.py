@@ -48,6 +48,9 @@ class ServiceManager():
     def get_service(self, service_name):
         return self.services[service_name]
 
+    def get_all_services(self):
+        return self.services.values()
+
     # getting TTS audio and voice list
     # ================================
 
