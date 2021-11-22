@@ -6,6 +6,7 @@ import servicemanager
 import re
 import random
 import tempfile
+import voice
 
 
 import pydub
@@ -83,9 +84,23 @@ def test_google():
     assert len(google_voices) > 300
 
     # pick a random en_US voice
-    voice = pick_random_voice(voice_list, 'Google', constants.AudioLanguage.en_US)
-    verify_audio_output(manager, voice, 'This is the first sentence')
+    selected_voice = pick_random_voice(voice_list, 'Google', constants.AudioLanguage.en_US)
+    verify_audio_output(manager, selected_voice, 'This is the first sentence')
 
     # french
-    voice = pick_random_voice(voice_list, 'Google', constants.AudioLanguage.fr_FR)
-    verify_audio_output(manager, voice, 'Je ne suis pas intéressé.')
+    selected_voice = pick_random_voice(voice_list, 'Google', constants.AudioLanguage.fr_FR)
+    verify_audio_output(manager, selected_voice, 'Je ne suis pas intéressé.')
+
+    # error checking
+    # try a voice which doesn't exist
+    selected_voice = pick_random_voice(voice_list, 'Google', constants.AudioLanguage.en_US)
+    voice_key = selected_voice.voice_key
+    voice_key['name'] = 'non existent'
+    altered_voice = voice.Voice('non existent', 
+                                selected_voice.gender, 
+                                selected_voice.language, 
+                                selected_voice.service, 
+                                voice_key,
+                                selected_voice.options)
+    audio_data = manager.get_tts_audio('This is the second sentence', altered_voice)
+

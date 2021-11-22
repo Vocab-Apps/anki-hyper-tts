@@ -29,6 +29,11 @@ class TextReplacementError(HyperTTSError):
         message = f'Could not process text replacement (pattern: {pattern}, replacement: {replacement}, text: {text}): {error_msg}'
         super().__init__(message)
 
+class RequestError(HyperTTSError):
+    def __init__(self, source_text, voice, error_message):
+        message = f'Could not request audio for [{source_text}]: {error_message} (voice: {voice})'
+        super().__init__(message)
+
 # these ActionContext objects implement the "with " interface and help catch exceptions
 
 class SingleActionContext():

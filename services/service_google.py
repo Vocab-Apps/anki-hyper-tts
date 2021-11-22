@@ -1,10 +1,12 @@
 import constants
 import service
+import errors
 import voice
 import services.voicelist
 import json
 import requests
 import base64
+import logging
 
 class Google(service.ServiceBase):
     def __init__(self):
@@ -41,6 +43,11 @@ class Google(service.ServiceBase):
         }
 
         response = requests.post("https://texttospeech.googleapis.com/v1/text:synthesize?key={}".format(self.config['api_key']), json=payload)
+
+        if response.status_code != 200:
+            data = response.json()
+            error_message = data.get('error', {}).get('message', str(data))
+            raise errors.RequestError(source_text, voice, error_message)
 
         data = response.json()
         encoded = data['audioContent']
