@@ -45,7 +45,9 @@ def verify_audio_output(manager, voice, source_text):
 
     recognition_language_map = {
         constants.AudioLanguage.en_US: 'en-US',
-        constants.AudioLanguage.fr_FR: 'fr-FR'
+        constants.AudioLanguage.fr_FR: 'fr-FR',
+        constants.AudioLanguage.zh_CN: 'zh-CN',
+        constants.AudioLanguage.ja_JP: 'ja-JP',
     }
 
     recognition_language = recognition_language_map[voice.language]
@@ -180,6 +182,8 @@ def test_all_services():
     input_map = {
         constants.AudioLanguage.en_US: 'The weather is good today.',
         constants.AudioLanguage.fr_FR: 'Il va pleuvoir demain.',
+        constants.AudioLanguage.zh_CN: '老人家',
+        constants.AudioLanguage.ja_JP: 'おはようございます',
     }
 
     manager = get_configured_servicemanager()
