@@ -1,13 +1,13 @@
 import os
 import logging
 import constants
+import voice
 import servicemanager
+import errors
 
 import re
 import random
 import tempfile
-import voice
-
 
 import pydub
 import azure.cognitiveservices.speech
@@ -102,5 +102,14 @@ def test_google():
                                 selected_voice.service, 
                                 voice_key,
                                 selected_voice.options)
-    audio_data = manager.get_tts_audio('This is the second sentence', altered_voice)
+
+    exception_caught = False
+    try:
+        audio_data = manager.get_tts_audio('This is the second sentence', altered_voice)
+    except errors.RequestError as e:
+        assert 'Could not request audio for' in str(e)
+        assert e.source_text == 'This is the second sentence'
+        assert e.voice.service.name == 'Google'
+        exception_caught = True
+    assert exception_caught
 
