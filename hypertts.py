@@ -94,8 +94,7 @@ class HyperTTS():
 
     def expand_simple_template(self, note, source_template):
         field_values = self.get_field_values(note)
-        template = string.Template(source_template)
-        return template.substitute(**field_values)
+        return source_template.format_map(field_values)
 
     def expand_advanced_template(self, note, source_template):
         local_variables = {

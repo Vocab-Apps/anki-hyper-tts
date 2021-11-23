@@ -241,7 +241,7 @@ def test_simple_template(qtbot):
 
     batch_config = {
         'mode': constants.BatchMode.template.name,
-        'source_template': """$Article $Word""",
+        'source_template': """{Article} {Word}""",
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
