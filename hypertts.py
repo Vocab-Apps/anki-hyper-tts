@@ -6,6 +6,7 @@ import re
 import hashlib
 import logging
 import random
+import string
 from typing import List, Dict
 
 # anki imports
@@ -85,20 +86,30 @@ class HyperTTS():
     def get_source_text(self, note, batch_config):
         if batch_config['mode'] == constants.BatchMode.simple.name:
             source_text = note[batch_config['source_field']]
+        elif batch_config['mode'] == constants.BatchMode.template.name:
+            source_text = self.expand_simple_template(note, batch_config['source_template'])
         elif batch_config['mode'] == constants.BatchMode.advanced_template.name:
-            source_text = self.expand_template(note, batch_config['source_template'])
+            source_text = self.expand_advanced_template(note, batch_config['source_template'])
         return source_text
 
-    def expand_template(self, note, source_template):
-        field_values = {}
-        for field in note.fields:
-            field_values[field] = note[field]
+    def expand_simple_template(self, note, source_template):
+        field_values = self.get_field_values(note)
+        template = string.Template(source_template)
+        return template.substitute(**field_values)
+
+    def expand_advanced_template(self, note, source_template):
         local_variables = {
-            'template_fields': field_values
+            'template_fields': self.get_field_values(note)
         }
         expanded_template = exec(source_template, {}, local_variables)
         result = local_variables['result']
         return result
+
+    def get_field_values(self, note):
+        field_values = {}
+        for field in note.fields:
+            field_values[field] = note[field]
+        return field_values
 
     def process_text(self, source_text):
         processed_text = self.text_utils.process(source_text)
