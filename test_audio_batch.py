@@ -240,7 +240,7 @@ def test_template(qtbot):
     # ==========================
 
     batch_config = {
-        'mode': constants.BatchMode.template.name,
+        'mode': constants.BatchMode.advanced_template.name,
         'source_template': """
 word = template_fields['Word']
 article = template_fields['Article']
@@ -291,7 +291,7 @@ def test_template_imports(qtbot):
     # ==========================
 
     batch_config = {
-        'mode': constants.BatchMode.template.name,
+        'mode': constants.BatchMode.advanced_template.name,
         'source_template': """
 import re
 word = template_fields['Word']

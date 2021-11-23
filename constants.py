@@ -6,7 +6,7 @@ ENV_VAR_ANKI_LANGUAGE_TOOLS_BASE_URL = 'ANKI_LANGUAGE_TOOLS_BASE_URL'
 class BatchMode(enum.Enum):
     simple = enum.auto()
     template = enum.auto()
-    raw_ssml_template = enum.auto()
+    advanced_template = enum.auto()
 
 #
 CONFIG_BATCH_TEXT_AND_SOUND_TAG = 'text_and_sound_tag'

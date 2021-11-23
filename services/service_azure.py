@@ -61,7 +61,7 @@ class Azure(service.ServiceBase):
             'Authorization': 'Bearer ' + self.access_token,
             'Content-Type': 'application/ssml+xml',
             'X-Microsoft-OutputFormat': 'audio-24khz-96kbitrate-mono-mp3',
-            'User-Agent': 'anki-awesome-tts'
+            'User-Agent': 'anki-hyper-tts'
         }
 
         ssml_str = f"""<speak version="1.0" xmlns="https://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="en-US">
