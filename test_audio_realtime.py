@@ -3,6 +3,7 @@ import re
 
 def test_template_regexps(qtbot):
     template_output = """
+{{Text}}
 <hypertts-template-advanced>
 field1 = template_fields['Text']
 field2 = template_fields['Extra']
@@ -17,3 +18,13 @@ result = f"{field1} {field2}"
     assert match_result != None
     actual_content = match_result.group(1)
     assert actual_content == expected_content
+
+    template_output = """
+{{Text}}
+<hypertts-template>{Text} {Extra}</hypertts-template>
+"""
+    expected_content = """{Text} {Extra}"""
+    match_result = re.match('.*<hypertts-template>(.*)</hypertts-template>.*', template_output, re.DOTALL)
+    assert match_result != None
+    actual_content = match_result.group(1)
+    assert actual_content == expected_content    
