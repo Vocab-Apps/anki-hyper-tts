@@ -2,7 +2,10 @@ import sys
 import os
 import traceback
 import anki
+import anki.hooks
 import aqt
+import logging
+import re
 
 if hasattr(sys, '_pytest_mode'):
     # called from within a test run
@@ -42,28 +45,44 @@ else:
 
         return event
 
-    sentry_sdk.init(
-        "https://dbee54f0eff84f0db037e995ae46df11@o968582.ingest.sentry.io/5920286",
-        traces_sample_rate=1.0,
-        release=f'anki-language-tools@{version.ANKI_LANGUAGE_TOOLS_VERSION}-{anki.version}',
-        environment=os.environ.get('SENTRY_ENV', 'production'),
-        before_send=sentry_filter
-    )
+    # need to create an anki-hyper-tts project in sentry.io first
+    # sentry_sdk.init(
+    #     "https://dbee54f0eff84f0db037e995ae46df11@o968582.ingest.sentry.io/5920286",
+    #     traces_sample_rate=1.0,
+    #     release=f'anki-language-tools@{version.ANKI_LANGUAGE_TOOLS_VERSION}-{anki.version}',
+    #     environment=os.environ.get('SENTRY_ENV', 'production'),
+    #     before_send=sentry_filter
+    # )
 
-    # initialize languagetools
-    # ========================
+    # initialize hypertts
+    # ===================
 
-    from . import languagetools
-    from . import gui
-    from . import editor
-    from . import anki_utils
-    from . import deck_utils
-    from . import cloudlanguagetools
-    from . import errors
+    # from . import languagetools
+    # from . import gui
+    # from . import editor
+    # from . import anki_utils
+    # from . import deck_utils
+    # from . import cloudlanguagetools
+    # from . import errors
 
-    ankiutils = anki_utils.AnkiUtils()
-    deckutils = deck_utils.DeckUtils(ankiutils)
-    cloud_language_tools = cloudlanguagetools.CloudLanguageTools()
-    languagetools = languagetools.LanguageTools(ankiutils, deckutils, cloud_language_tools)
-    gui.init(languagetools)
-    editor.init(languagetools)
+    # ankiutils = anki_utils.AnkiUtils()
+    # deckutils = deck_utils.DeckUtils(ankiutils)
+    # cloud_language_tools = cloudlanguagetools.CloudLanguageTools()
+    # languagetools = languagetools.LanguageTools(ankiutils, deckutils, cloud_language_tools)
+    # gui.init(languagetools)
+    # editor.init(languagetools)
+
+    def on_card_render(output, context):
+        logging.info('on_card_render')
+        # logging.info(context.fields())
+        # logging.info(context.card())
+        #logging.info(dir(context))
+        #logging.info(context.qfmt())
+        #logging.info(context.extra_state)
+        logging.info(output)
+        # extract advanced template content
+        match_result = re.match('<hypertts-template-advanced>(.*)</hypertts-template-advanced>', output)
+        print(match_result)
+
+
+    anki.hooks.card_did_render.append(on_card_render)
