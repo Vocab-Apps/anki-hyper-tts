@@ -12,6 +12,22 @@ else:
     from . import errors
 
 
+REGEXP_REALTIME_SIMPLE_TEMPLATE = '.*<hypertts-template>(.*)</hypertts-template>.*'
+REGEXP_REALTIME_ADVANCED_TEMPLATE = '.*<hypertts-template-advanced>\n(.*)</hypertts-template-advanced>.*'
+
+def extract_template_regexp(input, regexp):
+    match_result = re.match(regexp, input, re.DOTALL)
+    if match_result == None:
+        return None
+    return match_result.group(1).strip()
+
+def extract_simple_template(input):
+    return extract_template_regexp(input, REGEXP_REALTIME_SIMPLE_TEMPLATE)
+
+def extract_advanced_template(input):
+    return extract_template_regexp(input, REGEXP_REALTIME_ADVANCED_TEMPLATE)
+
+
 def create_text_replacement():
     return TextReplacement({
         'pattern': None,
