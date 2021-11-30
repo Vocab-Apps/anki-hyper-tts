@@ -1,9 +1,6 @@
 import sys
 import os
 import traceback
-import anki
-import anki.hooks
-import aqt
 import logging
 import re
 
@@ -11,6 +8,10 @@ if hasattr(sys, '_pytest_mode'):
     # called from within a test run
     pass
 else:
+    # running from within Anki
+    import anki
+    import anki.hooks
+    import aqt
     # setup sentry crash reporting
     # ============================
 
