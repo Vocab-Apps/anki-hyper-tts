@@ -23,3 +23,10 @@ class ServiceA(service.ServiceBase):
         }
         encoded_dict = json.dumps(self.requested_audio, indent=2).encode('utf-8')
         return encoded_dict    
+
+    def configuration_options(self):
+        return {
+            'api_key': str,
+            'region': ['us', 'europe'],
+            'delay': int
+        }

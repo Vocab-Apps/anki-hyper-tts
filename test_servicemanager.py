@@ -58,3 +58,17 @@ def test_get_tts_audio(qtbot):
     assert audio_result_dict['language'] == 'fr_FR'
     assert audio_result_dict['voice_key'] == {'name': 'voice_1'}
 
+def test_services_configuration(qtbot):
+    manager = servicemanager.ServiceManager(test_services_dir(), 'test_services')
+    manager.init_services()    
+
+    service_a_options = manager.service_configuration_options('ServiceA')
+    assert service_a_options == {'api_key': str, 'region': ['us', 'europe'], 'delay': int}
+
+    for key, value in service_a_options.items():
+        if value == str:
+            print(f'{key} is a string')
+        elif value == int:
+            print(f'{key} is integer')
+        elif isinstance(value, list):
+            print(f'{key} is list')
