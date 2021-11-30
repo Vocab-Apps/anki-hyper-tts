@@ -23,11 +23,15 @@ class VoiceB(voice.VoiceBase):
     def _get_voice_key(self):
         return {'voice_id': self._voice_id}
 
+    def _get_options(self):
+        return {}
+
     name = property(fget=_get_name)
     gender = property(fget=_get_gender)
     language = property(fget=_get_language)
     service = property(fget=_get_service)
-    voice_key = property(fget=_get_voice_key)    
+    voice_key = property(fget=_get_voice_key)
+    options = property(fget=_get_options)
 
 class ServiceB(service.ServiceBase):
     def __init__(self):
