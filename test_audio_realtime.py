@@ -17,10 +17,8 @@ result = f"{field1} {field2}"
     expected_content = """field1 = template_fields['Text']
 field2 = template_fields['Extra']
 result = f"{field1} {field2}"
-"""
-    match_result = re.match(text_utils.REGEXP_REALTIME_ADVANCED_TEMPLATE, template_output, re.DOTALL)
-    assert match_result != None
-    actual_content = match_result.group(1)
+""".strip()
+    actual_content = text_utils.extract_advanced_template(template_output)
     assert actual_content == expected_content
 
     template_output = """
