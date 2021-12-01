@@ -66,6 +66,7 @@ class ServiceManager():
     def full_voice_list(self) -> typing.List[voice.VoiceBase]:
         full_list = []
         for service_name, service_instance in self.services.items():
-            voices = service_instance.voice_list()
-            full_list.extend(voices)
+            if service_instance.enabled:
+                voices = service_instance.voice_list()
+                full_list.extend(voices)
         return full_list
