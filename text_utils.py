@@ -12,14 +12,16 @@ else:
     from . import errors
 
 
-REGEXP_REALTIME_SIMPLE_TEMPLATE = '.*<hypertts-template>(.*)</hypertts-template>.*'
-REGEXP_REALTIME_ADVANCED_TEMPLATE = '.*<hypertts-template-advanced>\n(.*)</hypertts-template-advanced>.*'
+REGEXP_REALTIME_SIMPLE_TEMPLATE = '.*<hypertts-template\s+setting="(.*)">(.*)</hypertts-template>.*'
+REGEXP_REALTIME_ADVANCED_TEMPLATE = '.*<hypertts-template-advanced\s+setting="(.*)">\n(.*)</hypertts-template-advanced>.*'
 
 def extract_template_regexp(input, regexp):
     match_result = re.match(regexp, input, re.DOTALL)
     if match_result == None:
         return None
-    return match_result.group(1).strip()
+    setting = match_result.group(1).strip()
+    content = match_result.group(2).strip()
+    return setting, content
 
 def extract_simple_template(input):
     return extract_template_regexp(input, REGEXP_REALTIME_SIMPLE_TEMPLATE)
