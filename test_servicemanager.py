@@ -46,7 +46,7 @@ def test_get_tts_audio(qtbot):
     manager = servicemanager.ServiceManager(test_services_dir(), 'test_services')
     manager.init_services()
     manager.get_service('ServiceA').set_enabled(True)
-    manager.get_service('ServiceB').set_enabled(True)    
+    manager.get_service('ServiceB').set_enabled(True)
     voice_list = manager.full_voice_list()
 
     # find ServiceA's voice_1
