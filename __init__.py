@@ -95,4 +95,4 @@ else:
         # TTSTag(field_text='你係唔係時時飲咖啡 do you often drink coffee ?', lang='zh_HK', voices=[], speed=1.0, other_args=[])
 
 
-    anki.hooks.card_did_render.append(on_card_render)
+    # anki.hooks.card_did_render.append(on_card_render)
