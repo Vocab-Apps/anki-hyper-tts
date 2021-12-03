@@ -56,7 +56,7 @@ class HyperTTS():
                 target_field = batch_config['target_field']
                 source_text = self.get_source_text(note, batch_config)
                 processed_text = self.process_text(source_text)
-                voice = self.choose_voice(batch_config['voice_list'])
+                voice = self.choose_voice(batch_config['voice_selection'], batch_config['voice_list'])
                 sound_tag = self.generate_sound_tag_add_collection(source_text, voice)
                 if batch_config[constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG] == True:
                     # remove existing sound tag
@@ -69,7 +69,7 @@ class HyperTTS():
             progress_fn(batch_error_manager.iteration_count)
         return batch_error_manager
 
-    def choose_voice(self, voices):
+    def choose_voice(self, voice_selection, voices):
         logging.info(f'choosing from {len(voices)} voices')
         voice_list = []
         weights = []

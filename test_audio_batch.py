@@ -19,6 +19,7 @@ def test_simple_1(qtbot):
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
+        'voice_selection': constants.VoiceSelectionMode.random.name,
         'voice_list': [{
             'service': 'ServiceA',
             'voice_key': {
@@ -91,6 +92,7 @@ def test_simple_error_handling(qtbot):
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
+        'voice_selection': constants.VoiceSelectionMode.random.name,
         'voice_list': [{
             'service': 'ServiceA',
             'voice_key': {
@@ -133,6 +135,7 @@ def test_simple_append(qtbot):
         'target_field': 'Chinese',
         constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG: True,
         'remove_sound_tag': True,
+        'voice_selection': constants.VoiceSelectionMode.random.name,
         'voice_list': [{
             'service': 'ServiceA',
             'voice_key': {
@@ -186,6 +189,7 @@ def test_random_voices(qtbot):
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
+        'voice_selection': constants.VoiceSelectionMode.random.name,
         'voice_list': [
             {
                 'service': 'ServiceA',
@@ -245,6 +249,7 @@ def test_simple_template(qtbot):
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
+        'voice_selection': constants.VoiceSelectionMode.random.name,
         'voice_list': [{
             'service': 'ServiceA',
             'voice_key': {
@@ -295,6 +300,7 @@ result = f"{article} {word}"
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
+        'voice_selection': constants.VoiceSelectionMode.random.name,
         'voice_list': [{
             'service': 'ServiceA',
             'voice_key': {
@@ -347,6 +353,7 @@ result = f"{article} {word}"
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
+        'voice_selection': constants.VoiceSelectionMode.random.name,
         'voice_list': [{
             'service': 'ServiceA',
             'voice_key': {
