@@ -56,7 +56,7 @@ class HyperTTS():
                 target_field = batch_config['target_field']
                 source_text = self.get_source_text(note, batch_config)
                 processed_text = self.process_text(source_text)
-                voice = self.choose_voice(batch_config['voices'])
+                voice = self.choose_voice(batch_config['voice_list'])
                 sound_tag = self.generate_sound_tag_add_collection(source_text, voice)
                 if batch_config[constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG] == True:
                     # remove existing sound tag
@@ -84,11 +84,12 @@ class HyperTTS():
     # ===============
 
     def get_source_text(self, note, batch_config):
-        if batch_config['mode'] == constants.BatchMode.simple.name:
+        batch_mode = constants.BatchMode[batch_config['mode']]
+        if batch_mode == constants.BatchMode.simple:
             source_text = note[batch_config['source_field']]
-        elif batch_config['mode'] == constants.BatchMode.template.name:
+        elif batch_mode == constants.BatchMode.template:
             source_text = self.expand_simple_template(note, batch_config['source_template'])
-        elif batch_config['mode'] == constants.BatchMode.advanced_template.name:
+        elif batch_mode == constants.BatchMode.advanced_template:
             source_text = self.expand_advanced_template(note, batch_config['source_template'])
         return source_text
 

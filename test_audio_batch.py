@@ -19,7 +19,7 @@ def test_simple_1(qtbot):
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
-        'voices': [{
+        'voice_list': [{
             'service': 'ServiceA',
             'voice_key': {
                 'name': 'voice_1'
@@ -61,7 +61,7 @@ def test_simple_1(qtbot):
     audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == '老人家'
-    assert audio_data['voice'] == batch_config['voices'][0]
+    assert audio_data['voice'] == batch_config['voice_list'][0]
     assert note_1.flush_called == True
 
     note_2 = mock_hypertts.anki_utils.get_note_by_id(config_gen.note_id_2)
@@ -72,7 +72,7 @@ def test_simple_1(qtbot):
     audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == '你好'
-    assert audio_data['voice'] == batch_config['voices'][0]
+    assert audio_data['voice'] == batch_config['voice_list'][0]
     assert note_2.flush_called == True    
 
     # verify batch error manager stats
@@ -91,7 +91,7 @@ def test_simple_error_handling(qtbot):
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
-        'voices': [{
+        'voice_list': [{
             'service': 'ServiceA',
             'voice_key': {
                 'name': 'voice_1'
@@ -133,7 +133,7 @@ def test_simple_append(qtbot):
         'target_field': 'Chinese',
         constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG: True,
         'remove_sound_tag': True,
-        'voices': [{
+        'voice_list': [{
             'service': 'ServiceA',
             'voice_key': {
                 'name': 'voice_1'
@@ -176,7 +176,7 @@ def test_simple_append(qtbot):
     audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == '老人家'
-    assert audio_data['voice'] == batch_config['voices'][0]
+    assert audio_data['voice'] == batch_config['voice_list'][0]
     assert note_1.flush_called == True
 
 def test_random_voices(qtbot):
@@ -186,7 +186,7 @@ def test_random_voices(qtbot):
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
-        'voices': [
+        'voice_list': [
             {
                 'service': 'ServiceA',
                 'voice_key': {
@@ -233,7 +233,7 @@ def test_random_voices(qtbot):
     audio_full_path = mock_hypertts.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
     audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
 
-    assert audio_data['voice'] == batch_config['voices'][0] or batch_config['voices'][1] or batch_config['voices'][2]
+    assert audio_data['voice'] == batch_config['voice_list'][0] or batch_config['voice_list'][1] or batch_config['voice_list'][2]
 
 def test_simple_template(qtbot):
     # create batch configuration
@@ -245,7 +245,7 @@ def test_simple_template(qtbot):
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
-        'voices': [{
+        'voice_list': [{
             'service': 'ServiceA',
             'voice_key': {
                 'name': 'voice_1'
@@ -277,7 +277,7 @@ def test_simple_template(qtbot):
     audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == 'Das Hund'
-    assert audio_data['voice'] == batch_config['voices'][0]
+    assert audio_data['voice'] == batch_config['voice_list'][0]
     assert note_1.flush_called == True    
 
 
@@ -295,7 +295,7 @@ result = f"{article} {word}"
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
-        'voices': [{
+        'voice_list': [{
             'service': 'ServiceA',
             'voice_key': {
                 'name': 'voice_1'
@@ -327,7 +327,7 @@ result = f"{article} {word}"
     audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == 'Das Hund'
-    assert audio_data['voice'] == batch_config['voices'][0]
+    assert audio_data['voice'] == batch_config['voice_list'][0]
     assert note_1.flush_called == True    
 
 
@@ -347,7 +347,7 @@ result = f"{article} {word}"
         'target_field': 'Sound',
         'text_and_sound_tag': False,
         'remove_sound_tag': True,
-        'voices': [{
+        'voice_list': [{
             'service': 'ServiceA',
             'voice_key': {
                 'name': 'voice_1'
@@ -379,6 +379,6 @@ result = f"{article} {word}"
     audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == 'das Hund' # lowercase d
-    assert audio_data['voice'] == batch_config['voices'][0]
+    assert audio_data['voice'] == batch_config['voice_list'][0]
     assert note_1.flush_called == True        
 
