@@ -6,7 +6,7 @@ import re
 import hashlib
 import logging
 import random
-import string
+import copy
 from typing import List, Dict
 
 # anki imports
@@ -56,29 +56,48 @@ class HyperTTS():
                 target_field = batch_config['target_field']
                 source_text = self.get_source_text(note, batch_config)
                 processed_text = self.process_text(source_text)
-                voice = self.choose_voice(batch_config['voice_selection'], batch_config['voice_list'])
-                sound_tag = self.generate_sound_tag_add_collection(source_text, voice)
-                if batch_config[constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG] == True:
-                    # remove existing sound tag
-                    current_target_field_content = note[target_field]
-                    field_content = self.strip_sound_tag(current_target_field_content)
-                    note[target_field] = f'{field_content} {sound_tag}'
-                else:
-                    note[target_field] = sound_tag
-                note.flush()
+                voice_selection = constants.VoiceSelectionMode[batch_config['voice_selection']]
+                voice_list = copy.copy(batch_config['voice_list'])
+                sound_found = False
+                # loop while we haven't found the sound. this will be used for priority mode
+                while sound_found == False and len(voice_list) > 0:
+                    try:
+                        voice = self.choose_voice(voice_selection, voice_list)
+                        sound_tag = self.generate_sound_tag_add_collection(source_text, voice)
+                        if batch_config[constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG] == True:
+                            # remove existing sound tag
+                            current_target_field_content = note[target_field]
+                            field_content = self.strip_sound_tag(current_target_field_content)
+                            note[target_field] = f'{field_content} {sound_tag}'
+                        else:
+                            note[target_field] = sound_tag
+                        note.flush()
+                        sound_found = True
+                    except errors.AudioNotFoundError as exc:
+                        # try the next voice, as long as one is available
+                        pass
+                if sound_found == False:
+                    raise errors.AudioNotFoundAnyVoiceError(source_text)
             progress_fn(batch_error_manager.iteration_count)
         return batch_error_manager
 
     def choose_voice(self, voice_selection, voices):
-        logging.info(f'choosing from {len(voices)} voices')
-        voice_list = []
-        weights = []
-        for voice in voices:
-            voice_list.append(voice)
-            weight = voice.get('weight', 1)
-            weights.append(weight)
-        choice = random.choices(voice_list, weights=weights)
-        return choice[0]
+        if voice_selection == constants.VoiceSelectionMode.random:
+            logging.info(f'choosing from {len(voices)} voices')
+            voice_list = []
+            weights = []
+            for voice in voices:
+                voice_list.append(voice)
+                weight = voice.get('weight', 1)
+                weights.append(weight)
+            choice = random.choices(voice_list, weights=weights)
+            return choice[0]
+        elif voice_selection == constants.VoiceSelectionMode.priority:
+            voice = voices[0]
+            # remove that voice from possible list
+            voices.pop(0)
+            return voice
+
 
     # text processing
     # ===============

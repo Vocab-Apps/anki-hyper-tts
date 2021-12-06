@@ -29,6 +29,19 @@ class TextReplacementError(HyperTTSError):
         message = f'Could not process text replacement (pattern: {pattern}, replacement: {replacement}, text: {text}): {error_msg}'
         super().__init__(message)
 
+class AudioNotFoundError(HyperTTSError):
+    def __init__(self, source_text, voice):
+        message = f'Audio not found for [{source_text}] (voice: {voice})'
+        super().__init__(message)
+        self.source_text = source_text
+        self.voice = voice
+
+class AudioNotFoundAnyVoiceError(HyperTTSError):
+    def __init__(self, source_text):
+        message = f'Audio not found in any voices for [{source_text}]'
+        super().__init__(message)
+        self.source_text = source_text
+
 class RequestError(HyperTTSError):
     def __init__(self, source_text, voice, error_message):
         message = f'Could not request audio for [{source_text}]: {error_message} (voice: {voice})'
@@ -36,6 +49,8 @@ class RequestError(HyperTTSError):
         self.source_text = source_text
         self.voice = voice
         self.error_message = error_message
+
+
 
 # these ActionContext objects implement the "with " interface and help catch exceptions
 

@@ -6,6 +6,7 @@ import os
 
 import constants
 import hypertts
+import errors
 
 
 class MockFuture():
@@ -161,6 +162,9 @@ class MockServiceManager():
         pass
 
     def get_tts_audio(self, source_text, voice):
+        if voice['voice_key']['name'] == 'notfound':
+            # simulate audio not found
+            raise errors.AudioNotFoundError(source_text, voice)
         self.requested_audio = {
             'source_text': source_text,
             'voice': voice
