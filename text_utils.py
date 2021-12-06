@@ -20,7 +20,8 @@ def extract_template_regexp(input, regexp):
     if match_result == None:
         return None
     setting = match_result.group(1).strip()
-    version = match_result.group(2).strip()
+    version_str = match_result.group(2).strip()
+    version = constants.TemplateFormatVersion[version_str]
     content = match_result.group(3).strip()
     return setting, version, content
 

@@ -246,6 +246,7 @@ def test_simple_template(qtbot):
 
     batch_config = {
         'mode': constants.BatchMode.template.name,
+        'template_format_version': constants.TemplateFormatVersion.v1.name,
         'source_template': """{Article} {Word}""",
         'target_field': 'Sound',
         'text_and_sound_tag': False,
@@ -293,6 +294,7 @@ def test_advanced_template(qtbot):
 
     batch_config = {
         'mode': constants.BatchMode.advanced_template.name,
+        'template_format_version': constants.TemplateFormatVersion.v1.name,
         'source_template': """
 word = template_fields['Word']
 article = template_fields['Article']
@@ -344,6 +346,7 @@ def test_advanced_template_imports(qtbot):
 
     batch_config = {
         'mode': constants.BatchMode.advanced_template.name,
+        'template_format_version': constants.TemplateFormatVersion.v1.name,
         'source_template': """
 import re
 word = template_fields['Word']

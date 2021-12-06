@@ -8,6 +8,9 @@ class BatchMode(enum.Enum):
     template = enum.auto()
     advanced_template = enum.auto()
 
+class TemplateFormatVersion(enum.Enum):
+    v1 = enum.auto()
+
 class VoiceSelectionMode(enum.Enum):
     single = enum.auto() # a single voice is selected
     random = enum.auto() # a random voice is selected, with optional weights
