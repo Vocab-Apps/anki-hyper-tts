@@ -76,9 +76,22 @@ class VoiceSelection():
     def filter_and_draw_voices(self, current_index):
         logging.info('filter_and_draw_voices')
         voice_list = self.voice_list
+        # check filtering by audio language
         if self.audio_languages_combobox.currentIndex() != 0:
             audio_language = self.audio_languages[self.audio_languages_combobox.currentIndex() - 2]
             voice_list = [voice for voice in voice_list if voice.language == audio_language]
+        # check filtering by language
+        if self.languages_combobox.currentIndex() != 0:
+            language = self.languages[self.languages_combobox.currentIndex() - 2]
+            voice_list = [voice for voice in voice_list if voice.language.lang == language]
+        # check filtering by service
+        if self.services_combobox.currentIndex() != 0:
+            service = self.services[self.services_combobox.currentIndex() - 2]
+            voice_list = [voice for voice in voice_list if voice.service.name == service] 
+        # check filtering by gender
+        if self.genders_combobox.currentIndex() != 0:
+            gender = self.genders[self.genders_combobox.currentIndex() - 2]
+            voice_list = [voice for voice in voice_list if voice.gender == gender]
         self.draw_all_voices(voice_list)
 
     def draw_all_voices(self, voice_list):
