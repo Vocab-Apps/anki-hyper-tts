@@ -9,6 +9,11 @@ import hypertts
 import errors
 
 
+def get_test_services_dir():
+    current_script_path = os.path.realpath(__file__)
+    current_script_dir = os.path.dirname(current_script_path)    
+    return os.path.join(current_script_dir, 'test_services')
+
 class MockFuture():
     def __init__(self, result_data):
         self.result_data = result_data

@@ -3,26 +3,24 @@ import os
 import json
 import constants
 import servicemanager
+import testing_utils
 
-def test_services_dir():
-    current_script_path = os.path.realpath(__file__)
-    current_script_dir = os.path.dirname(current_script_path)    
-    return os.path.join(current_script_dir, 'test_services')
+
 
 def test_discover(qtbot):
     # discover available services
-    manager = servicemanager.ServiceManager(test_services_dir())
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir())
     module_names = manager.discover_services()
     assert module_names == ['service_a', 'service_b']
 
 
 def test_import(qtbot):
-    manager = servicemanager.ServiceManager(test_services_dir(), 'test_services')
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
     manager.init_services()
 
 
 def test_full_voice_list(qtbot):
-    manager = servicemanager.ServiceManager(test_services_dir(), 'test_services')
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
     manager.init_services()
     manager.get_service('ServiceA').set_enabled(True)
     manager.get_service('ServiceB').set_enabled(True)
@@ -43,7 +41,7 @@ def test_full_voice_list(qtbot):
 
 
 def test_get_tts_audio(qtbot):
-    manager = servicemanager.ServiceManager(test_services_dir(), 'test_services')
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
     manager.init_services()
     manager.get_service('ServiceA').set_enabled(True)
     manager.get_service('ServiceB').set_enabled(True)
@@ -63,7 +61,7 @@ def test_get_tts_audio(qtbot):
     assert audio_result_dict['voice_key'] == {'name': 'voice_1'}
 
 def test_services_configuration(qtbot):
-    manager = servicemanager.ServiceManager(test_services_dir(), 'test_services')
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
     manager.init_services()    
 
     service_a_options = manager.service_configuration_options('ServiceA')
