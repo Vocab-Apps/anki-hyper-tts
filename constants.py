@@ -31,6 +31,8 @@ RED_STYLESHEET = 'background-color: #FFCDD2;'
 GREEN_STYLESHEET_NIGHTMODE = 'background-color: #2E7D32;'
 RED_STYLESHEET_NIGHTMODE = 'background-color: #B71C1C;'
 
+LABEL_FILTER_ALL = 'All'
+
 CLIENT_NAME = 'hypertts'
 
 class ReplaceType(enum.Enum):
