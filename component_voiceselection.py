@@ -1,4 +1,5 @@
 import PyQt5
+import logging
 import constants
 
 class VoiceSelection():
@@ -73,7 +74,12 @@ class VoiceSelection():
 
 
     def filter_and_draw_voices(self, current_index):
-        self.draw_all_voices(self.voice_list)
+        logging.info('filter_and_draw_voices')
+        voice_list = self.voice_list
+        if self.audio_languages_combobox.currentIndex() != 0:
+            audio_language = self.audio_languages[self.audio_languages_combobox.currentIndex() - 2]
+            voice_list = [voice for voice in voice_list if voice.language == audio_language]
+        self.draw_all_voices(voice_list)
 
     def draw_all_voices(self, voice_list):
         self.voices_combobox.clear()
