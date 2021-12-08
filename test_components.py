@@ -45,5 +45,19 @@ def test_voice_selection(qtbot):
     for voice in voiceselection.filtered_voice_list:
         assert voice.language.lang == constants.Language.ja
 
+    # reset filters
+    qtbot.mouseClick(voiceselection.reset_filters_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # ensure all voices are available now
+    assert len(voiceselection.filtered_voice_list) == len(voiceselection.voice_list)
+
+    # filter gender to male
+    voiceselection.genders_combobox.setCurrentText('Male')
+
+    # ensure only male voices appear
+    assert len(voiceselection.filtered_voice_list) < len(voiceselection.voice_list)
+    assert len(voiceselection.filtered_voice_list) == voiceselection.voices_combobox.count()
+    for voice in voiceselection.filtered_voice_list:
+        assert voice.gender == constants.Gender.Male
 
     # dialog.exec_()

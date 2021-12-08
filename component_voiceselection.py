@@ -54,6 +54,8 @@ class VoiceSelection():
         self.genders_combobox = PyQt5.QtWidgets.QComboBox()
         self.voices_combobox = PyQt5.QtWidgets.QComboBox()
 
+        self.reset_filters_button = PyQt5.QtWidgets.QPushButton('Reset Filters')
+
         self.populate_combobox(self.audio_languages_combobox, [audio_lang.audio_lang_name for audio_lang in self.audio_languages])
         self.populate_combobox(self.languages_combobox, [language.lang_name for language in self.languages])
         self.populate_combobox(self.services_combobox, self.services)
@@ -70,7 +72,15 @@ class VoiceSelection():
         self.services_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
         self.genders_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
 
+        self.reset_filters_button.pressed.connect(self.reset_filters)
+
         self.filter_and_draw_voices(0)
+
+    def reset_filters(self):
+        self.audio_languages_combobox.setCurrentIndex(0)
+        self.languages_combobox.setCurrentIndex(0)
+        self.services_combobox.setCurrentIndex(0)
+        self.genders_combobox.setCurrentIndex(0)
 
 
     def filter_and_draw_voices(self, current_index):
