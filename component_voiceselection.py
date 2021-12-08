@@ -65,12 +65,18 @@ class VoiceSelection():
         self.voices_layout.addWidget(self.languages_combobox)
         self.voices_layout.addWidget(self.services_combobox)
         self.voices_layout.addWidget(self.genders_combobox)
+        self.voices_layout.addWidget(self.reset_filters_button)
         self.voices_layout.addWidget(self.voices_combobox)
+
+        self.voice_options_layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.voices_layout.addLayout(self.voice_options_layout)
 
         self.audio_languages_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
         self.languages_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
         self.services_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
         self.genders_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
+
+        self.voices_combobox.currentIndexChanged.connect(self.voice_selected)
 
         self.reset_filters_button.pressed.connect(self.reset_filters)
 
@@ -82,7 +88,29 @@ class VoiceSelection():
         self.services_combobox.setCurrentIndex(0)
         self.genders_combobox.setCurrentIndex(0)
 
+    def voice_selected(self, current_index):
+        voice = self.filtered_voice_list[current_index]
+        logging.info(f'voice_selected: {voice} options: {voice.options}')
 
+        # clear the options layout
+        for i in reversed(range(self.voice_options_layout.count())): 
+            self.voice_options_layout.itemAt(i).widget().setParent(None)
+
+        # populate voice options layout
+        for key, value in voice.options.items():
+            widget_name = f'voice_option_{key}'
+            option_type = constants.VoiceOptionTypes[value['type']]
+            if option_type == constants.VoiceOptionTypes.number:
+                # create a spinner
+                widget = PyQt5.QtWidgets.QDoubleSpinBox()
+                widget.setObjectName(widget_name)
+                widget.setRange(value['min'], value['max'])
+                widget.setValue(value['default'])
+                self.voice_options_layout.addWidget(widget)
+            else:
+                raise Exception(f"voice option type not supported: {value['type']}")
+
+        
     def filter_and_draw_voices(self, current_index):
         logging.info('filter_and_draw_voices')
         voice_list = self.voice_list

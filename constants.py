@@ -44,6 +44,8 @@ class Gender(enum.Enum):
     Female = enum.auto()
     Any = enum.auto()
 
+class VoiceOptionTypes(enum.Enum):
+    number = enum.auto()
 
 class Language(enum.Enum):
     af = ("Afrikaans")

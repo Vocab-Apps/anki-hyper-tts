@@ -76,4 +76,4 @@ def test_voice_selection(qtbot):
         assert voice.gender == constants.Gender.Female
         assert voice.language.lang == constants.Language.ja
 
-    # dialog.exec_()
+    dialog.exec_()
