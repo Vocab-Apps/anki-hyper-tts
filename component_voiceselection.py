@@ -92,7 +92,8 @@ class VoiceSelection():
         if self.genders_combobox.currentIndex() != 0:
             gender = self.genders[self.genders_combobox.currentIndex() - 2]
             voice_list = [voice for voice in voice_list if voice.gender == gender]
-        self.draw_all_voices(voice_list)
+        self.filtered_voice_list = voice_list
+        self.draw_all_voices(self.filtered_voice_list)
 
     def draw_all_voices(self, voice_list):
         self.voices_combobox.clear()

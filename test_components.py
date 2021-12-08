@@ -2,6 +2,7 @@ import PyQt5
 import servicemanager
 import testing_utils
 import hypertts
+import constants
 import component_voiceselection
 
 class EmptyDialog(PyQt5.QtWidgets.QDialog):
@@ -29,4 +30,20 @@ def test_voice_selection(qtbot):
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
     voiceselection.draw(dialog.getLayout())
 
-    dialog.exec_()
+    # ensure filters are set to All by default
+    assert voiceselection.audio_languages_combobox.currentText() == constants.LABEL_FILTER_ALL
+    assert voiceselection.languages_combobox.currentText() == constants.LABEL_FILTER_ALL
+    assert voiceselection.services_combobox.currentText() == constants.LABEL_FILTER_ALL
+    assert voiceselection.genders_combobox.currentText() == constants.LABEL_FILTER_ALL
+
+    # filter language to Japanese
+    voiceselection.languages_combobox.setCurrentText('Japanese')
+
+    # ensure japanese filter is enabled
+    assert len(voiceselection.filtered_voice_list) < len(voiceselection.voice_list)
+    assert len(voiceselection.filtered_voice_list) == voiceselection.voices_combobox.count()
+    for voice in voiceselection.filtered_voice_list:
+        assert voice.language.lang == constants.Language.ja
+
+
+    # dialog.exec_()
