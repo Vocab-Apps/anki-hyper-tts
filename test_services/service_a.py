@@ -12,7 +12,8 @@ class ServiceA(service.ServiceBase):
     def voice_list(self):
         return [
             voice.Voice('voice_a_1', constants.Gender.Male, constants.AudioLanguage.fr_FR, self, {'name': 'voice_1'}, {}),
-            voice.Voice('voice_a_2', constants.Gender.Female, constants.AudioLanguage.en_US, self, {'name': 'voice_2'}, {})
+            voice.Voice('voice_a_2', constants.Gender.Female, constants.AudioLanguage.en_US, self, {'name': 'voice_2'}, {}),
+            voice.Voice('voice_a_3', constants.Gender.Female, constants.AudioLanguage.ja_JP, self, {'name': 'voice_3'}, {}),
         ]
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase):

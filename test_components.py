@@ -60,4 +60,20 @@ def test_voice_selection(qtbot):
     for voice in voiceselection.filtered_voice_list:
         assert voice.gender == constants.Gender.Male
 
+    # reset filters again
+    qtbot.mouseClick(voiceselection.reset_filters_button, PyQt5.QtCore.Qt.LeftButton)
+    # ensure all voices are available now
+    assert len(voiceselection.filtered_voice_list) == len(voiceselection.voice_list)
+    
+    # filter with two different conditions
+    voiceselection.languages_combobox.setCurrentText('Japanese')
+    voiceselection.genders_combobox.setCurrentText('Female')
+
+    # ensure only female japanese voices are present
+    assert len(voiceselection.filtered_voice_list) < len(voiceselection.voice_list)
+    assert len(voiceselection.filtered_voice_list) == voiceselection.voices_combobox.count()
+    for voice in voiceselection.filtered_voice_list:
+        assert voice.gender == constants.Gender.Female
+        assert voice.language.lang == constants.Language.ja
+
     # dialog.exec_()
