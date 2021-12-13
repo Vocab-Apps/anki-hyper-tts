@@ -71,6 +71,38 @@ class VoiceSelection():
         self.voice_options_layout = PyQt5.QtWidgets.QVBoxLayout()
         self.voices_layout.addLayout(self.voice_options_layout)
 
+
+        # voice selection mode
+        # ====================
+        mode_group = PyQt5.QtWidgets.QButtonGroup()
+        self.radio_button_single = PyQt5.QtWidgets.QRadioButton('Single')
+        self.radio_button_random = PyQt5.QtWidgets.QRadioButton('Random')
+        self.radio_button_priority = PyQt5.QtWidgets.QRadioButton('Priority')
+        mode_group.addButton(self.radio_button_single)
+        mode_group.addButton(self.radio_button_random)
+        mode_group.addButton(self.radio_button_priority)
+        #self.voices_layout.addWidget(mode_group)
+        self.voices_layout.addWidget(self.radio_button_single)
+        self.voices_layout.addWidget(self.radio_button_random)
+        self.voices_layout.addWidget(self.radio_button_priority)
+
+        # additional layouts screens for the various modes
+        # ================================================
+        self.voice_mode_random_widget = PyQt5.QtWidgets.QWidget()
+        self.voice_mode_random_layout = PyQt5.QtWidgets.QVBoxLayout(self.voice_mode_random_widget)
+        self.voice_mode_random_layout.addWidget(PyQt5.QtWidgets.QLabel('Voice List (Random)'))
+        self.voices_layout.addWidget(self.voice_mode_random_widget)
+        self.voice_mode_random_widget.setVisible(False)
+
+        self.voice_mode_priority_widget = PyQt5.QtWidgets.QWidget()
+        self.voice_mode_priority_layout = PyQt5.QtWidgets.QVBoxLayout(self.voice_mode_priority_widget)
+        self.voice_mode_priority_layout.addWidget(PyQt5.QtWidgets.QLabel('Voice List (Priority)'))
+        self.voices_layout.addWidget(self.voice_mode_priority_widget)
+        self.voice_mode_priority_widget.setVisible(False)
+        
+        # wire all events
+        # ===============
+
         self.audio_languages_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
         self.languages_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
         self.services_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
@@ -80,7 +112,22 @@ class VoiceSelection():
 
         self.reset_filters_button.pressed.connect(self.reset_filters)
 
+        self.radio_button_single.toggled.connect(self.voice_selection_mode_change)
+        self.radio_button_random.toggled.connect(self.voice_selection_mode_change)
+        self.radio_button_priority.toggled.connect(self.voice_selection_mode_change)
+
         self.filter_and_draw_voices(0)
+
+    def voice_selection_mode_change(self):
+        if self.radio_button_single.isChecked():
+            self.voice_mode_random_widget.setVisible(False)
+            self.voice_mode_priority_widget.setVisible(False)
+        elif self.radio_button_random.isChecked():
+            self.voice_mode_random_widget.setVisible(True)
+            self.voice_mode_priority_widget.setVisible(False)
+        elif self.radio_button_priority.isChecked():
+            self.voice_mode_random_widget.setVisible(False)
+            self.voice_mode_priority_widget.setVisible(True)
 
     def reset_filters(self):
         self.audio_languages_combobox.setCurrentIndex(0)
