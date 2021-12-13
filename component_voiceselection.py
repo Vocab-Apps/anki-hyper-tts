@@ -91,12 +91,18 @@ class VoiceSelection():
         self.voice_mode_random_widget = PyQt5.QtWidgets.QWidget()
         self.voice_mode_random_layout = PyQt5.QtWidgets.QVBoxLayout(self.voice_mode_random_widget)
         self.voice_mode_random_layout.addWidget(PyQt5.QtWidgets.QLabel('Voice List (Random)'))
+        self.voice_mode_random_add_button = PyQt5.QtWidgets.QPushButton('Add Voice')
+        self.voice_mode_random_layout.addWidget(self.voice_mode_random_add_button)
         self.voices_layout.addWidget(self.voice_mode_random_widget)
         self.voice_mode_random_widget.setVisible(False)
 
         self.voice_mode_priority_widget = PyQt5.QtWidgets.QWidget()
         self.voice_mode_priority_layout = PyQt5.QtWidgets.QVBoxLayout(self.voice_mode_priority_widget)
         self.voice_mode_priority_layout.addWidget(PyQt5.QtWidgets.QLabel('Voice List (Priority)'))
+
+        self.voice_mode_priority_add_button = PyQt5.QtWidgets.QPushButton('Add Voice')
+        self.voice_mode_priority_layout.addWidget(self.voice_mode_priority_add_button)
+
         self.voices_layout.addWidget(self.voice_mode_priority_widget)
         self.voice_mode_priority_widget.setVisible(False)
         
