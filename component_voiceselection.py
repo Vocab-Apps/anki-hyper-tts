@@ -141,6 +141,10 @@ class VoiceSelection():
         self.services_combobox.setCurrentIndex(0)
         self.genders_combobox.setCurrentIndex(0)
 
+    def set_current_voice_option(self, key, value):
+        self.current_voice_options[key] = value
+        logging.info(f'set option {key} to {value}')
+
     def voice_selected(self, current_index):
         voice = self.filtered_voice_list[current_index]
         logging.info(f'voice_selected: {voice} options: {voice.options}')
@@ -148,6 +152,15 @@ class VoiceSelection():
         # clear the options layout
         for i in reversed(range(self.voice_options_layout.count())): 
             self.voice_options_layout.itemAt(i).widget().setParent(None)
+
+        # clear the current voice options
+        self.current_voice_options = {}
+
+        def get_set_option_lambda(key):
+            def set_value(value):
+                self.current_voice_options[key] = value
+                logging.info(f'set option {key} to {value}')
+            return set_value
 
         # populate voice options layout
         for key, value in voice.options.items():
@@ -159,6 +172,7 @@ class VoiceSelection():
                 widget.setObjectName(widget_name)
                 widget.setRange(value['min'], value['max'])
                 widget.setValue(value['default'])
+                widget.valueChanged.connect(get_set_option_lambda(key))
                 self.voice_options_layout.addWidget(widget)
             else:
                 raise Exception(f"voice option type not supported: {value['type']}")
