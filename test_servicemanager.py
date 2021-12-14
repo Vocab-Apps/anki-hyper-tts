@@ -3,6 +3,7 @@ import os
 import json
 import constants
 import servicemanager
+import voice
 import testing_utils
 
 
@@ -49,9 +50,9 @@ def test_voice_serialization(qtbot):
 
     subset = [voice for voice in voice_list if voice.name == 'voice_a_1']
     assert len(subset) == 1
-    voice = subset[0]
+    selected_voice = subset[0]
 
-    voice_data = voice.serialize()
+    voice_data = selected_voice.serialize()
     expected_voice_data = {
         'name': 'voice_a_1',
         'gender': 'Male',
@@ -60,6 +61,18 @@ def test_voice_serialization(qtbot):
         'voice_key': {'name': 'voice_1'}
     }
     assert voice_data == expected_voice_data
+
+    voice_with_options = voice.VoiceWithOptions(selected_voice, {'pitch': 1.0, 'speaking_rate': 2.0})
+
+    expected_voice_with_option_data = {
+        'voice': voice_data,
+        'options': {
+            'pitch': 1.0,
+            'speaking_rate': 2.0
+        }
+    }
+
+    assert voice_with_options.serialize() == expected_voice_with_option_data
 
 
 def test_get_tts_audio(qtbot):

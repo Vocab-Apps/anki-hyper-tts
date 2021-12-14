@@ -44,6 +44,12 @@ class VoiceWithOptions():
         self.voice = voice
         self.options = options
 
+    def serialize(self):
+        return {
+            'voice': self.voice.serialize(),
+            'options': self.options
+        }
+
 class Voice(VoiceBase):
     """
     this basic implementation can be used by services which don't have a particular requirement
