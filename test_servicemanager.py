@@ -62,6 +62,8 @@ def test_voice_serialization(qtbot):
     }
     assert voice_data == expected_voice_data
 
+    assert str(selected_voice) == 'ServiceA, French (France), Male, voice_a_1'
+
     # test VoiceWithOptions
     # =====================
 

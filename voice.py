@@ -39,6 +39,9 @@ class VoiceBase(abc.ABC):
             'voice_key': self.voice_key
         }
 
+    def __str__(self):
+        return f'{self.service.name}, {self.language.audio_lang_name}, {self.gender.name}, {self.name}'
+
 class VoiceWithOptions():
     def __init__(self, voice: VoiceBase, options):
         self.voice = voice
@@ -80,9 +83,6 @@ class Voice(VoiceBase):
 
     def _get_options(self):
         return self._options
-
-    def __str__(self):
-        return f'{self._service.name}: {self.name}'
 
     name = property(fget=_get_name)
     gender = property(fget=_get_gender)
