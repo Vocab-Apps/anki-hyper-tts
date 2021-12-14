@@ -30,6 +30,19 @@ class VoiceBase(abc.ABC):
     def options():
         pass
 
+    def serialize(self):
+        return {
+            'name': self.name,
+            'gender': self.gender.name,
+            'language': self.language.name,
+            'service': self.service.name,
+            'voice_key': self.voice_key
+        }
+
+class VoiceWithOptions():
+    def __init__(self, voice: VoiceBase, options):
+        self.voice = voice
+        self.options = options
 
 class Voice(VoiceBase):
     """

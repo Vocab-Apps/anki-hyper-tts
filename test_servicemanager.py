@@ -40,6 +40,28 @@ def test_full_voice_list(qtbot):
     assert servicea_voice_1.language == constants.AudioLanguage.ja_JP
 
 
+def test_voice_serialization(qtbot):
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
+    manager.init_services()
+    manager.get_service('ServiceA').set_enabled(True)
+    manager.get_service('ServiceB').set_enabled(True)
+    voice_list = manager.full_voice_list()
+
+    subset = [voice for voice in voice_list if voice.name == 'voice_a_1']
+    assert len(subset) == 1
+    voice = subset[0]
+
+    voice_data = voice.serialize()
+    expected_voice_data = {
+        'name': 'voice_a_1',
+        'gender': 'Male',
+        'language': 'fr_FR',
+        'service': 'ServiceA',
+        'voice_key': {'name': 'voice_1'}
+    }
+    assert voice_data == expected_voice_data
+
+
 def test_get_tts_audio(qtbot):
     manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
     manager.init_services()
