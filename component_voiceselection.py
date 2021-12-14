@@ -1,6 +1,7 @@
 import PyQt5
 import logging
 import constants
+import voice
 
 class VoiceSelection():
     def __init__(self, hypertts):
@@ -93,6 +94,11 @@ class VoiceSelection():
         self.voice_mode_random_layout.addWidget(PyQt5.QtWidgets.QLabel('Voice List (Random)'))
         self.voice_mode_random_add_button = PyQt5.QtWidgets.QPushButton('Add Voice')
         self.voice_mode_random_layout.addWidget(self.voice_mode_random_add_button)
+        self.voice_mode_random_add_button.pressed.connect(self.add_voice_random)
+
+        self.voice_mode_random_voice_list = PyQt5.QtWidgets.QVBoxLayout()
+        self.voice_mode_random_layout.addLayout(self.voice_mode_random_voice_list)
+
         self.voices_layout.addWidget(self.voice_mode_random_widget)
         self.voice_mode_random_widget.setVisible(False)
 
@@ -141,9 +147,14 @@ class VoiceSelection():
         self.services_combobox.setCurrentIndex(0)
         self.genders_combobox.setCurrentIndex(0)
 
-    def set_current_voice_option(self, key, value):
-        self.current_voice_options[key] = value
-        logging.info(f'set option {key} to {value}')
+    def add_voice_random(self):
+        selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
+        options = self.current_voice_options
+
+        voice_with_options = voice.VoiceWithOptions(selected_voice, options)
+
+        self.voice_mode_random_voice_list.addWidget(PyQt5.QtWidgets.QLabel(str(voice_with_options)))
+        
 
     def voice_selected(self, current_index):
         voice = self.filtered_voice_list[current_index]
