@@ -62,6 +62,9 @@ def test_voice_serialization(qtbot):
     }
     assert voice_data == expected_voice_data
 
+    # test VoiceWithOptions
+    # =====================
+
     voice_with_options = voice.VoiceWithOptions(selected_voice, {'pitch': 1.0, 'speaking_rate': 2.0})
 
     expected_voice_with_option_data = {
@@ -73,6 +76,14 @@ def test_voice_serialization(qtbot):
     }
 
     assert voice_with_options.serialize() == expected_voice_with_option_data
+
+    # test deserializing of voice
+    # ===========================
+
+    deserialized_voice = manager.deserialize_voice(voice_data)
+    assert deserialized_voice.voice_key == {'name': 'voice_1'}
+    assert deserialized_voice.name == 'voice_a_1'
+    assert deserialized_voice.service.name == 'ServiceA'
 
 
 def test_get_tts_audio(qtbot):

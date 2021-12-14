@@ -4,6 +4,7 @@ import logging
 import typing
 import voice
 import service
+import errors
 
 class ServiceManager():
     """
@@ -70,3 +71,10 @@ class ServiceManager():
                 voices = service_instance.voice_list()
                 full_list.extend(voices)
         return full_list
+
+    def deserialize_voice(self, voice_data):
+        voice_list = self.full_voice_list()
+        voice_subset = [voice for voice in voice_list if voice.voice_key == voice_data['voice_key'] and voice.service.name == voice_data['service']]
+        if len(voice_subset) == 0:
+            raise errors.VoiceNotFound(voice_data)
+        return voice_subset[0]

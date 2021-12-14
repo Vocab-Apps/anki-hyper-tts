@@ -42,6 +42,13 @@ class AudioNotFoundAnyVoiceError(HyperTTSError):
         super().__init__(message)
         self.source_text = source_text
 
+class VoiceNotFound(HyperTTSError):
+    def __init__(self, voice_data):
+        message = f'Voice not found: {voice_data}]'
+        super().__init__(message)
+        self.voice_data = voice_data
+
+
 class RequestError(HyperTTSError):
     def __init__(self, source_text, voice, error_message):
         message = f'Could not request audio for [{source_text}]: {error_message} (voice: {voice})'
