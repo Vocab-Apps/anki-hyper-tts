@@ -78,7 +78,7 @@ def test_voice_serialization(qtbot):
     }
 
     assert voice_with_options.serialize() == expected_voice_with_option_data
-    assert str(voice_with_options) == "ServiceA, French (France), Male, voice_a_1 ({'pitch': 1.0, 'speaking_rate': 2.0})"
+    assert str(voice_with_options) == "ServiceA, French (France), Male, voice_a_1 (pitch: 1.0, speaking_rate: 2.0)"
 
     # test deserializing of voice
     # ===========================

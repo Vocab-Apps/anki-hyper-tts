@@ -53,8 +53,18 @@ class VoiceWithOptions():
             'options': self.options
         }
 
+    def options_str(self):
+        options_array = []
+        for key, value in self.options.items():
+            if value != self.voice.options[key]['default']:
+                options_array.append(f'{key}: {value}')
+        if len(options_array) > 0:
+            return ' (' + ', '.join(options_array) + ')'
+        return ''
+
+
     def __str__(self):
-        return f'{self.voice} ({self.options})'
+        return f'{self.voice}{self.options_str()}'
 
 class Voice(VoiceBase):
     """
