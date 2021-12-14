@@ -53,6 +53,9 @@ class VoiceWithOptions():
             'options': self.options
         }
 
+    def __str__(self):
+        return f'{self.voice} ({self.options})'
+
 class Voice(VoiceBase):
     """
     this basic implementation can be used by services which don't have a particular requirement
