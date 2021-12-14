@@ -213,4 +213,4 @@ class VoiceSelection():
 
     def draw_all_voices(self, voice_list):
         self.voices_combobox.clear()
-        self.voices_combobox.addItems([voice.name for voice in voice_list])
+        self.voices_combobox.addItems([str(voice) for voice in voice_list])
