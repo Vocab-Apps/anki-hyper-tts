@@ -76,4 +76,11 @@ def test_voice_selection(qtbot):
         assert voice.gender == constants.Gender.Female
         assert voice.language.lang == constants.Language.ja
 
+    # reset filters again
+    qtbot.mouseClick(voiceselection.reset_filters_button, PyQt5.QtCore.Qt.LeftButton)    
+
+    # select random mode and add some voices
+    # ======================================
+
+
     dialog.exec_()
