@@ -19,30 +19,16 @@ class SelectedVoiceOptionPriority(SelectedVoiceOptionBase):
 class ComponentVoiceListBase():
     def __init__(self):
         self.voice_with_option_list = []
-
-class ComponentRandomVoiceList(ComponentVoiceListBase):
-    def __init__(self):
-        ComponentVoiceListBase.__init__(self)
         self.widget = PyQt5.QtWidgets.QWidget()
         self.layout = PyQt5.QtWidgets.QVBoxLayout(self.widget)
-        self.layout.addWidget(PyQt5.QtWidgets.QLabel('Voice List (Random)'))
 
     def draw(self, layout):
-        
-        # buttons
-
         self.voice_list_grid_layout = PyQt5.QtWidgets.QGridLayout()
         self.layout.addLayout(self.voice_list_grid_layout)
 
         # add ourselves to the parent
         layout.addWidget(self.widget)
         self.widget.setVisible(False)
-
-    def add_voice_with_options(self, voice_with_options):
-        logging.info('add_voice_with_options')
-        row = len(self.voice_with_option_list)
-        self.voice_with_option_list.append(voice_with_options)
-        self.voice_list_grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(voice_with_options)), row, 0, 1, 1)
 
     def clear_voices(self):
         logging.info('clear_voices')
@@ -54,6 +40,29 @@ class ComponentRandomVoiceList(ComponentVoiceListBase):
 
     def setVisible(self, visible):
         self.widget.setVisible(visible)
+
+class ComponentRandomVoiceList(ComponentVoiceListBase):
+    def __init__(self):
+        ComponentVoiceListBase.__init__(self)
+        self.layout.addWidget(PyQt5.QtWidgets.QLabel('Voice List (Random)'))
+
+    def add_voice_with_options(self, voice_with_options):
+        logging.info('add_voice_with_options')
+        row = len(self.voice_with_option_list)
+        self.voice_with_option_list.append(voice_with_options)
+        self.voice_list_grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(voice_with_options)), row, 0, 1, 1)
+
+class ComponentPriorityVoiceList(ComponentVoiceListBase):
+    def __init__(self):
+        ComponentVoiceListBase.__init__(self)
+        self.layout.addWidget(PyQt5.QtWidgets.QLabel('Voice List (Priority)'))
+
+    def add_voice_with_options(self, voice_with_options):
+        logging.info('add_voice_with_options')
+        row = len(self.voice_with_option_list)
+        self.voice_with_option_list.append(voice_with_options)
+        self.voice_list_grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(voice_with_options)), row, 0, 1, 1)
+
 
 class VoiceSelection():
     def __init__(self, hypertts):
@@ -79,6 +88,7 @@ class VoiceSelection():
         self.genders = list(genders)
 
         self.component_random_voice_list = ComponentRandomVoiceList()
+        self.component_priority_voice_list = ComponentPriorityVoiceList()
 
     def populate_combobox(self, combobox, items):
         combobox.addItem(constants.LABEL_FILTER_ALL)
@@ -151,45 +161,16 @@ class VoiceSelection():
         self.voices_layout.addWidget(self.add_voice_button)
         self.voices_layout.addWidget(self.clear_voices_button)
 
+        # hide buttons by default
+        self.add_voice_button.setVisible(False)
+        self.clear_voices_button.setVisible(False)
+
         # additional layouts screens for the various modes
         # ================================================
 
         self.component_random_voice_list.draw(self.voices_layout)
+        self.component_priority_voice_list.draw(self.voices_layout)
 
-        # # random selection mode
-        # # ---------------------
-
-        # self.voice_mode_random_widget = PyQt5.QtWidgets.QWidget()
-        # self.voice_mode_random_layout = PyQt5.QtWidgets.QVBoxLayout(self.voice_mode_random_widget)
-        # self.voice_mode_random_layout.addWidget(PyQt5.QtWidgets.QLabel('Voice List (Random)'))
-        
-        # # buttons
-        # self.voice_mode_random_add_button = PyQt5.QtWidgets.QPushButton('Add Voice')
-        # self.voice_mode_random_layout.addWidget(self.voice_mode_random_add_button)
-        # self.voice_mode_random_clear_button = PyQt5.QtWidgets.QPushButton('Remove all Voices')
-        # self.voice_mode_random_layout.addWidget(self.voice_mode_random_clear_button)
-        # self.voice_mode_random_add_button.pressed.connect(self.add_voice_random)
-        # self.voice_mode_random_clear_button.pressed.connect(self.clear_voices)
-
-        # self.voice_mode_random_voice_list = PyQt5.QtWidgets.QGridLayout()
-        # self.voice_mode_random_layout.addLayout(self.voice_mode_random_voice_list)
-
-        # self.voices_layout.addWidget(self.voice_mode_random_widget)
-        # self.voice_mode_random_widget.setVisible(False)
-
-        # # priority selection mode
-        # # -----------------------
-
-        # self.voice_mode_priority_widget = PyQt5.QtWidgets.QWidget()
-        # self.voice_mode_priority_layout = PyQt5.QtWidgets.QVBoxLayout(self.voice_mode_priority_widget)
-        # self.voice_mode_priority_layout.addWidget(PyQt5.QtWidgets.QLabel('Voice List (Priority)'))
-
-        # self.voice_mode_priority_add_button = PyQt5.QtWidgets.QPushButton('Add Voice')
-        # self.voice_mode_priority_layout.addWidget(self.voice_mode_priority_add_button)
-
-        # self.voices_layout.addWidget(self.voice_mode_priority_widget)
-        # self.voice_mode_priority_widget.setVisible(False)
-        
         # wire all events
         # ===============
 
@@ -214,13 +195,19 @@ class VoiceSelection():
     def voice_selection_mode_change(self):
         if self.radio_button_single.isChecked():
             self.component_random_voice_list.setVisible(False)
-            self.voice_mode_priority_widget.setVisible(False)
+            self.component_priority_voice_list.setVisible(False)
+            self.add_voice_button.setVisible(False)
+            self.clear_voices_button.setVisible(False)
         elif self.radio_button_random.isChecked():
             self.component_random_voice_list.setVisible(True)
-            self.voice_mode_priority_widget.setVisible(False)
+            self.component_priority_voice_list.setVisible(False)
+            self.add_voice_button.setVisible(True)
+            self.clear_voices_button.setVisible(True)
         elif self.radio_button_priority.isChecked():
             self.component_random_voice_list.setVisible(False)
-            self.voice_mode_priority_widget.setVisible(True)
+            self.component_priority_voice_list.setVisible(True)
+            self.add_voice_button.setVisible(True)
+            self.clear_voices_button.setVisible(True)
 
     def reset_filters(self):
         self.audio_languages_combobox.setCurrentIndex(0)
@@ -234,20 +221,17 @@ class VoiceSelection():
         options = self.current_voice_options
         voice_with_options = voice.VoiceWithOptions(selected_voice, options)
 
-        self.component_random_voice_list.add_voice_with_options(voice_with_options)
+        if self.radio_button_random.isChecked():
+            self.component_random_voice_list.add_voice_with_options(voice_with_options)
+        elif self.radio_button_priority.isChecked():
+            self.component_priority_voice_list.add_voice_with_options(voice_with_options)
 
 
     def clear_voices(self):
-        self.component_random_voice_list.clear_voices()
-
-    def add_voice_random(self):
-
-        self.component_random_voice_list.add_voice_with_options(voice_with_options)
-
-        self.selected_random_voice_list.append(SelectedVoiceOptionRandom(voice_with_options))
-
-        # draw the last item
-        self.selected_random_voice_list[-1].draw(self.voice_mode_random_voice_list, len(self.selected_random_voice_list))
+        if self.radio_button_random.isChecked():
+            self.component_random_voice_list.clear_voices()
+        elif self.radio_button_priority.isChecked():
+            self.component_priority_voice_list.clear_voices()
 
     def voice_selected(self, current_index):
         voice = self.filtered_voice_list[current_index]
