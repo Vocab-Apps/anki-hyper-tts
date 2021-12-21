@@ -4,22 +4,38 @@ import constants
 import voice
 
 class SelectedVoiceOptionBase():
-    def __init__(self, voice_with_options):
+    def __init__(self, voice_with_options, remove_callback):
         self.voice_with_options = voice_with_options
+        self.remove_button = PyQt5.QtWidgets.QPushButton('Remove')
+        self.remove_callback = remove_callback
     
 class SelectedVoiceOptionRandom(SelectedVoiceOptionBase):
-    def __init__(self, voice_with_options):
-        SelectedVoiceOptionBase.__init__(self, voice_with_options)
+    def __init__(self, voice_with_options, remove_callback):
+        SelectedVoiceOptionBase.__init__(self, voice_with_options, remove_callback)
         self.random_weight_widget = PyQt5.QtWidgets.QSpinBox()
-        self.random_weight_widget.setValue(1)
+        self.random_weight = 1
+        self.random_weight_widget.setValue(self.random_weight)
+
+    def set_weight(self, value):
+        logging.info(f'set_weight: {value}')
+        self.random_weight = value
 
     def draw(self, grid_layout, row):
         grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(self.voice_with_options)), row, 0, 1, 1)
+        # weight
         grid_layout.addWidget(self.random_weight_widget, row, 1, 1, 1)
+        # add handler for changing weight
+        self.random_weight_widget.valueChanged.connect(self.set_weight)
+        # remove button
+        grid_layout.addWidget(self.remove_button, row, 2, 1, 1)
+        self.remove_button.pressed.connect(self.remove)
+
+    def remove(self):
+        self.remove_callback(self)
 
 class SelectedVoiceOptionPriority(SelectedVoiceOptionBase):
-    def __init__(self, voice_with_options):
-        SelectedVoiceOptionBase.__init__(self, voice_with_options)
+    def __init__(self, voice_with_options, remove_callback):
+        SelectedVoiceOptionBase.__init__(self, voice_with_options, remove_callback)
 
     def draw(self, grid_layout, row):
         grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(self.voice_with_options)), row, 0, 1, 1)
@@ -42,12 +58,25 @@ class ComponentVoiceListBase():
     def clear_voices(self):
         logging.info('clear_voices')
         # remove everything from layout self.voice_mode_random_voice_list
+        self.clear_voices_widget()
+        self.selected_voice_list = []
+
+    def clear_voices_widget(self):
         for i in reversed(range(self.voice_list_grid_layout.count())): 
             self.voice_list_grid_layout.itemAt(i).widget().setParent(None)
-        self.selected_voice_list = []
+
+    def redraw_voices(self):
+        for row in range(len(self.selected_voice_list)):
+            self.selected_voice_list[row].draw(self.voice_list_grid_layout, row)
 
     def setVisible(self, visible):
         self.widget.setVisible(visible)
+
+    def remove_voice(self, obj):
+        self.clear_voices_widget()
+        self.selected_voice_list.remove(obj) # locate by pointer
+        self.redraw_voices()
+
 
 class ComponentRandomVoiceList(ComponentVoiceListBase):
     def __init__(self):
@@ -57,7 +86,7 @@ class ComponentRandomVoiceList(ComponentVoiceListBase):
     def add_voice_with_options(self, voice_with_options):
         logging.info('add_voice_with_options')
         row = len(self.selected_voice_list)
-        self.selected_voice_list.append(SelectedVoiceOptionRandom(voice_with_options))
+        self.selected_voice_list.append(SelectedVoiceOptionRandom(voice_with_options, self.remove_voice))
         self.selected_voice_list[-1].draw(self.voice_list_grid_layout, row)
 
 
