@@ -8,19 +8,28 @@ class SelectedVoiceOptionBase():
         self.voice_with_options = voice_with_options
     
 class SelectedVoiceOptionRandom(SelectedVoiceOptionBase):
+    def __init__(self, voice_with_options):
+        SelectedVoiceOptionBase.__init__(self, voice_with_options)
+        self.random_weight_widget = PyQt5.QtWidgets.QSpinBox()
+        self.random_weight_widget.setValue(1)
+
     def draw(self, grid_layout, row):
         grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(self.voice_with_options)), row, 0, 1, 1)
+        grid_layout.addWidget(self.random_weight_widget, row, 1, 1, 1)
 
 class SelectedVoiceOptionPriority(SelectedVoiceOptionBase):
+    def __init__(self, voice_with_options):
+        SelectedVoiceOptionBase.__init__(self, voice_with_options)
+
     def draw(self, grid_layout, row):
-        pass
+        grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(self.voice_with_options)), row, 0, 1, 1)
 
 
 class ComponentVoiceListBase():
     def __init__(self):
-        self.voice_with_option_list = []
         self.widget = PyQt5.QtWidgets.QWidget()
         self.layout = PyQt5.QtWidgets.QVBoxLayout(self.widget)
+        self.selected_voice_list = []
 
     def draw(self, layout):
         self.voice_list_grid_layout = PyQt5.QtWidgets.QGridLayout()
@@ -35,8 +44,7 @@ class ComponentVoiceListBase():
         # remove everything from layout self.voice_mode_random_voice_list
         for i in reversed(range(self.voice_list_grid_layout.count())): 
             self.voice_list_grid_layout.itemAt(i).widget().setParent(None)
-        self.selected_random_voice_list = []
-        self.selected_priority_voice_list = []
+        self.selected_voice_list = []
 
     def setVisible(self, visible):
         self.widget.setVisible(visible)
@@ -48,9 +56,10 @@ class ComponentRandomVoiceList(ComponentVoiceListBase):
 
     def add_voice_with_options(self, voice_with_options):
         logging.info('add_voice_with_options')
-        row = len(self.voice_with_option_list)
-        self.voice_with_option_list.append(voice_with_options)
-        self.voice_list_grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(voice_with_options)), row, 0, 1, 1)
+        row = len(self.selected_voice_list)
+        self.selected_voice_list.append(SelectedVoiceOptionRandom(voice_with_options))
+        self.selected_voice_list[-1].draw(self.voice_list_grid_layout, row)
+
 
 class ComponentPriorityVoiceList(ComponentVoiceListBase):
     def __init__(self):
