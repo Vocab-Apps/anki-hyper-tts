@@ -90,3 +90,53 @@ def test_voice_selection(qtbot):
     del expected_output['voice_list'][1]
 
     assert random.serialize() == expected_output
+
+    # priority voice mode
+    # ===================
+
+    priority = config_models.VoiceSelectionPriority()
+    priority.add_voice(config_models.VoiceWithOptionsPriority(voice_a_1, {'speed': 43}))
+    priority.add_voice(config_models.VoiceWithOptionsPriority(voice_a_1, {'speed': 84}))
+    priority.add_voice(config_models.VoiceWithOptionsPriority(voice_jane, {}))
+
+    expected_output = {
+        'voice_selection_mode': 'priority',
+        'voice_list': [
+            {
+                'voice': {
+                    'gender': 'Male', 
+                    'language': 'fr_FR', 
+                    'name': 'voice_a_1', 
+                    'service': 'ServiceA',
+                    'voice_key': {'name': 'voice_1'}
+                },
+                'options': {
+                    'speed': 43
+                },
+            },
+            {
+                'voice': {
+                    'gender': 'Male', 
+                    'language': 'fr_FR', 
+                    'name': 'voice_a_1', 
+                    'service': 'ServiceA',
+                    'voice_key': {'name': 'voice_1'}
+                },
+                'options': {
+                    'speed': 84
+                },
+            },            
+            {
+                'voice': {
+                    'gender': 'Male', 
+                    'language': 'ja_JP', 
+                    'name': 'jane', 
+                    'service': 'ServiceB',
+                    'voice_key': {'voice_id': 'jane'}
+                },
+                'options': {
+                },
+            },            
+        ]
+    }
+    assert priority.serialize() == expected_output
