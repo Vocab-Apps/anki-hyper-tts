@@ -38,8 +38,16 @@ class VoiceWithOptionsRandom(VoiceWithOptions):
         return {
             'voice': self.voice.serialize(),
             'options': self.options,
-            'weight': self._random_weight
+            'weight': self.random_weight
         }        
+
+    def get_random_weight(self):
+        return self._random_weight
+
+    def set_random_weight(self, weight):
+        self._random_weight = weight
+
+    random_weight = property(get_random_weight, set_random_weight)
 
 class VoiceWithOptionsPriority(VoiceWithOptions):
     def __init__(self, voice: voice.VoiceBase, options):
@@ -89,6 +97,9 @@ class VoiceSelectionMultipleBase(VoiceSelectionBase):
     def add_voice(self, voice: VoiceWithOptionsRandom):
         self._voice_list.append(voice)
 
+    def remove_voice(self, index):
+        del self._voice_list[index]
+
     voice_list = property(get_voice_list, None)
 
     def serialize(self):
@@ -101,6 +112,9 @@ class VoiceSelectionRandom(VoiceSelectionMultipleBase):
     def __init__(self):
         VoiceSelectionMultipleBase.__init__(self)
         self._selection_mode = constants.VoiceSelectionMode.random
+
+    def set_random_weight(self, voice_index, weight):
+        self._voice_list[voice_index].random_weight = weight
 
 class VoiceSelectionPriority(VoiceSelectionMultipleBase):
     def __init__(self):

@@ -80,3 +80,13 @@ def test_voice_selection(qtbot):
         ]
     }
     assert random.serialize() == expected_output
+
+    random.set_random_weight(1, 3)
+    expected_output['voice_list'][1]['weight'] = 3
+
+    assert random.serialize() == expected_output
+
+    random.remove_voice(1)
+    del expected_output['voice_list'][1]
+
+    assert random.serialize() == expected_output
