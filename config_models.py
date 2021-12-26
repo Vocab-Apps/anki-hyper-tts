@@ -100,6 +100,22 @@ class VoiceSelectionMultipleBase(VoiceSelectionBase):
     def remove_voice(self, index):
         del self._voice_list[index]
 
+    def move_up_voice(self, index):
+        if index == 0:
+            return
+        entry_1 = self._voice_list[index - 1]
+        entry_2 = self._voice_list[index]
+        self._voice_list[index - 1] = entry_2
+        self._voice_list[index] = entry_1
+
+    def move_down_voice(self, index):
+        if index == len(self._voice_list) - 1:
+            return
+        entry_1 = self._voice_list[index]
+        entry_2 = self._voice_list[index + 1]
+        self._voice_list[index] = entry_2
+        self._voice_list[index + 1] = entry_1
+
     voice_list = property(get_voice_list, None)
 
     def serialize(self):
