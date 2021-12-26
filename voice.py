@@ -42,29 +42,6 @@ class VoiceBase(abc.ABC):
     def __str__(self):
         return f'{self.service.name}, {self.language.audio_lang_name}, {self.gender.name}, {self.name}'
 
-class VoiceWithOptions():
-    def __init__(self, voice: VoiceBase, options):
-        self.voice = voice
-        self.options = options
-
-    def serialize(self):
-        return {
-            'voice': self.voice.serialize(),
-            'options': self.options
-        }
-
-    def options_str(self):
-        options_array = []
-        for key, value in self.options.items():
-            if value != self.voice.options[key]['default']:
-                options_array.append(f'{key}: {value}')
-        if len(options_array) > 0:
-            return ' (' + ', '.join(options_array) + ')'
-        return ''
-
-
-    def __str__(self):
-        return f'{self.voice}{self.options_str()}'
 
 class Voice(VoiceBase):
     """
