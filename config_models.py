@@ -32,6 +32,14 @@ class VoiceWithOptions():
 class VoiceWithOptionsRandom(VoiceWithOptions):
     def __init__(self, voice: voice.VoiceBase, options):
         VoiceWithOptions.__init__(self, voice, options)
+        self._random_weight = 1
+
+    def serialize(self):
+        return {
+            'voice': self.voice.serialize(),
+            'options': self.options,
+            'weight': self._random_weight
+        }        
 
 class VoiceWithOptionsPriority(VoiceWithOptions):
     def __init__(self, voice: voice.VoiceBase, options):

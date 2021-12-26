@@ -62,7 +62,8 @@ def test_voice_selection(qtbot):
                 },
                 'options': {
                     'speed': 43
-                }
+                },
+                'weight': 1
             },
             {
                 'voice': {
@@ -73,7 +74,8 @@ def test_voice_selection(qtbot):
                     'voice_key': {'voice_id': 'jane'}
                 },
                 'options': {
-                }
+                },
+                'weight': 1
             },            
         ]
     }
