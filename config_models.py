@@ -78,19 +78,24 @@ class VoiceSelectionMultipleBase(VoiceSelectionBase):
     def clear_voice_list(self):
         self._voice_list = []
 
-    def add_voice(self):
-        pass
+    def add_voice(self, voice: VoiceWithOptionsRandom):
+        self._voice_list.append(voice)
 
     voice_list = property(get_voice_list, None)
 
+    def serialize(self):
+        return {
+            'voice_selection_mode': self._selection_mode.name,
+            'voice_list': [x.serialize() for x in self._voice_list]
+        }
 
 class VoiceSelectionRandom(VoiceSelectionMultipleBase):
     def __init__(self):
-        VoiceSelectionBase.__init__(self)
+        VoiceSelectionMultipleBase.__init__(self)
         self._selection_mode = constants.VoiceSelectionMode.random
 
 class VoiceSelectionPriority(VoiceSelectionMultipleBase):
     def __init__(self):
-        VoiceSelectionBase.__init__(self)
+        VoiceSelectionMultipleBase.__init__(self)
         self._selection_mode = constants.VoiceSelectionMode.priority
 

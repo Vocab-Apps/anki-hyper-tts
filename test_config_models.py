@@ -17,6 +17,10 @@ def test_voice_selection(qtbot):
 
 
     voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_jane = [x for x in voice_list if x.name == 'jane'][0]
+
+    # single voice mode
+    # =================
 
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))
@@ -36,5 +40,41 @@ def test_voice_selection(qtbot):
             }
         }
     }
-
     assert single.serialize() == expected_output
+
+    # random voice mode
+    # =================
+
+    random = config_models.VoiceSelectionRandom()
+    random.add_voice(config_models.VoiceWithOptionsRandom(voice_a_1, {'speed': 43}))
+    random.add_voice(config_models.VoiceWithOptionsRandom(voice_jane, {}))
+
+    expected_output = {
+        'voice_selection_mode': 'random',
+        'voice_list': [
+            {
+                'voice': {
+                    'gender': 'Male', 
+                    'language': 'fr_FR', 
+                    'name': 'voice_a_1', 
+                    'service': 'ServiceA',
+                    'voice_key': {'name': 'voice_1'}
+                },
+                'options': {
+                    'speed': 43
+                }
+            },
+            {
+                'voice': {
+                    'gender': 'Male', 
+                    'language': 'ja_JP', 
+                    'name': 'jane', 
+                    'service': 'ServiceB',
+                    'voice_key': {'voice_id': 'jane'}
+                },
+                'options': {
+                }
+            },            
+        ]
+    }
+    assert random.serialize() == expected_output
