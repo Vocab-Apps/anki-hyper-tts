@@ -16,6 +16,8 @@ import aqt.addcards
 import anki.notes
 import anki.cards
 
+import config_models
+
 if hasattr(sys, '_pytest_mode'):
     import constants
     import version
@@ -183,3 +185,14 @@ class HyperTTS():
         self.config[constants.CONFIG_TEXT_PROCESSING] = settings
         self.anki_utils.write_config(self.config)
         self.text_utils = text_utils.TextUtils(settings)
+
+    # deserialization routines for loading from config
+    # ================================================
+
+    def deserialize_voice_selection(self, voice_selection_config):
+        voice_selection_mode = constants.VoiceSelectionMode[voice_selection_config['voice_selection_mode']]
+        if voice_selection_mode == constants.VoiceSelectionMode.single:
+            single = config_models.VoiceSelectionSingle()
+            voice = self.service_manager.deserialize_voice(voice_selection_config['voice']['voice'])
+            single.set_voice(config_models.VoiceWithOptions(voice, voice_selection_config['voice']['options']))
+            return single

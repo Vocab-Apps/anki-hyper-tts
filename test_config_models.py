@@ -3,6 +3,7 @@ import logging
 import servicemanager
 import testing_utils
 import config_models
+import hypertts
 
 
 def test_voice_selection(qtbot):
@@ -15,6 +16,8 @@ def test_voice_selection(qtbot):
     manager.get_service('ServiceB').set_enabled(True)
     voice_list = manager.full_voice_list()    
 
+    anki_utils = testing_utils.MockAnkiUtils({})
+    hypertts_instance = hypertts.HyperTTS(anki_utils, manager)
 
     voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
     voice_jane = [x for x in voice_list if x.name == 'jane'][0]
@@ -41,6 +44,14 @@ def test_voice_selection(qtbot):
         }
     }
     assert single.serialize() == expected_output
+
+    # test deserialization
+    single_deserialized = hypertts_instance.deserialize_voice_selection(single.serialize())
+
+    # check that it gives the same output
+    assert single_deserialized.serialize() == expected_output
+
+
 
     # random voice mode
     # =================
@@ -228,4 +239,5 @@ def test_voice_selection(qtbot):
             },            
         ]
     }
-    assert priority.serialize() == expected_output        
+    assert priority.serialize() == expected_output
+
