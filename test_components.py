@@ -27,12 +27,7 @@ def get_hypertts_instance():
 
 
 def test_voice_selection_defaults_single(qtbot):
-    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
-    manager.init_services()
-    manager.get_service('ServiceA').set_enabled(True)
-    manager.get_service('ServiceB').set_enabled(True)
-    anki_utils = testing_utils.MockAnkiUtils({})
-    hypertts_instance = hypertts.HyperTTS(anki_utils, manager)
+    hypertts_instance = get_hypertts_instance()
 
     dialog = EmptyDialog()
     dialog.setupUi()
@@ -40,9 +35,7 @@ def test_voice_selection_defaults_single(qtbot):
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
     voiceselection.draw(dialog.getLayout())
 
-    # voiceselection = get_voice_selection_dialog()
-    voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
-
+    # voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
     expected_output = {
         'voice_selection_mode': 'single',
         'voice': {
@@ -60,6 +53,35 @@ def test_voice_selection_defaults_single(qtbot):
 
     assert voiceselection.serialize() == expected_output
     
+def test_voice_selection_single_1(qtbot):
+    hypertts_instance = get_hypertts_instance()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.draw(dialog.getLayout())
+
+    voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
+
+    # dialog.exec_()
+
+    expected_output = {
+        'voice_selection_mode': 'single',
+        'voice': {
+            'voice': {
+                'gender': 'Female', 
+                'language': 'en_US',
+                'name': 'voice_a_2', 
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_2'}
+            },
+            'options': {
+            }
+        }        
+    }
+
+    assert voiceselection.serialize() == expected_output    
 
 def test_voice_selection(qtbot):
     manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')

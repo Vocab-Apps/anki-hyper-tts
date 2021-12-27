@@ -312,7 +312,10 @@ class VoiceSelection():
             else:
                 raise Exception(f"voice option type not supported: {value['type']}")
 
-        
+        # if we are in the single voice mode, set the mode on the voice selection model
+        if self.voice_selection_model.selection_mode == constants.VoiceSelectionMode.single:
+            self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice, {}))
+
     def filter_and_draw_voices(self, current_index):
         logging.info('filter_and_draw_voices')
         voice_list = self.voice_list
