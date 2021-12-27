@@ -22,11 +22,11 @@ class ServiceA(service.ServiceBase):
             voice.Voice('voice_a_3', constants.Gender.Female, constants.AudioLanguage.ja_JP, self, {'name': 'voice_3'}, VOICE_OPTIONS),
         ]
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase):
+    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
         self.requested_audio = {
             'source_text': source_text,
-            'voice_key': voice.voice_key,
-            'language': voice.language.name
+            'voice': voice.serialize(),
+            'options': options
         }
         encoded_dict = json.dumps(self.requested_audio, indent=2).encode('utf-8')
         return encoded_dict    

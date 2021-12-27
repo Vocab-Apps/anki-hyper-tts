@@ -34,6 +34,9 @@ def test_voice_selection_defaults_single(qtbot):
     dialog.setupUi()
 
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.configure(
+        ['Bonjour', 'Comment allez vous?', 'Au revoir']
+    )    
     voiceselection.draw(dialog.getLayout())
 
     # voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
@@ -61,6 +64,9 @@ def test_voice_selection_single_1(qtbot):
     dialog.setupUi()
 
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.configure(
+        ['Bonjour', 'Comment allez vous?', 'Au revoir']
+    )    
     voiceselection.draw(dialog.getLayout())
 
     voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
@@ -111,6 +117,9 @@ def test_voice_selection_random_1(qtbot):
     dialog.setupUi()
 
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.configure(
+        ['Bonjour', 'Comment allez vous?', 'Au revoir']
+    )    
     voiceselection.draw(dialog.getLayout())
 
     # choose random mode
@@ -163,6 +172,9 @@ def test_voice_selection_random_2(qtbot):
     dialog.setupUi()
 
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.configure(
+        ['Bonjour', 'Comment allez vous?', 'Au revoir']
+    )    
     voiceselection.draw(dialog.getLayout())
 
     # choose random mode
@@ -196,6 +208,9 @@ def test_voice_selection_priority_1(qtbot):
     dialog.setupUi()
 
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.configure(
+        ['Bonjour', 'Comment allez vous?', 'Au revoir']
+    )    
     voiceselection.draw(dialog.getLayout())
 
     # choose random mode
@@ -222,7 +237,7 @@ def test_voice_selection_priority_1(qtbot):
     assert voiceselection.voice_selection_model.serialize() == expected_model.serialize()
 
     # dialog.exec_()
-    
+
 
 def test_voice_selection_filters(qtbot):
     manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
@@ -237,6 +252,9 @@ def test_voice_selection_filters(qtbot):
     dialog.setupUi()
 
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.configure(
+        ['Bonjour', 'Comment allez vous?', 'Au revoir']
+    )    
     voiceselection.draw(dialog.getLayout())
 
     # ensure filters are set to All by default
@@ -291,5 +309,33 @@ def test_voice_selection_filters(qtbot):
     # select random mode and add some voices
     # ======================================
 
+
+    # dialog.exec_()
+
+def test_voice_selection_samples(qtbot):
+    hypertts_instance = get_hypertts_instance()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.configure(
+        ['Bonjour', 'Comment allez vous?', 'Au revoir']
+    )
+    voiceselection.draw(dialog.getLayout())
+
+    qtbot.mouseClick(voiceselection.play_sample_button, PyQt5.QtCore.Qt.LeftButton)
+
+    assert hypertts_instance.anki_utils.played_sound == {
+        'source_text': 'Bonjour',
+        'voice': {
+            'gender': 'Male', 
+            'language': 'fr_FR', 
+            'name': 'voice_a_1', 
+            'service': 'ServiceA',
+            'voice_key': {'name': 'voice_1'}
+        },
+        'options': {}
+    }
 
     # dialog.exec_()

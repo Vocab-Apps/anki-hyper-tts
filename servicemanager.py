@@ -61,8 +61,8 @@ class ServiceManager():
     # getting TTS audio and voice list
     # ================================
 
-    def get_tts_audio(self, source_text, voice):
-        return voice.service.get_tts_audio(source_text, voice)
+    def get_tts_audio(self, source_text, voice, options):
+        return voice.service.get_tts_audio(source_text, voice, options)
 
     def full_voice_list(self) -> typing.List[voice.VoiceBase]:
         full_list = []

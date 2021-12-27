@@ -109,6 +109,9 @@ class VoiceSelection():
     def __init__(self, hypertts):
         self.hypertts = hypertts
 
+    def configure(self, source_text_samples):
+        self.source_text_samples = source_text_samples
+
     def get_voices(self):
         self.voice_list = self.hypertts.service_manager.full_voice_list()
 
@@ -165,6 +168,11 @@ class VoiceSelection():
         self.genders_combobox = PyQt5.QtWidgets.QComboBox()
         self.voices_combobox = PyQt5.QtWidgets.QComboBox()
 
+        self.samples_combobox = PyQt5.QtWidgets.QComboBox()
+        self.samples_combobox.setEditable(True)
+        self.play_sample_button = PyQt5.QtWidgets.QPushButton('Play Sample')
+
+
         self.reset_filters_button = PyQt5.QtWidgets.QPushButton('Reset Filters')
 
         self.populate_combobox(self.audio_languages_combobox, [audio_lang.audio_lang_name for audio_lang in self.audio_languages])
@@ -172,12 +180,16 @@ class VoiceSelection():
         self.populate_combobox(self.services_combobox, self.services)
         self.populate_combobox(self.genders_combobox, [gender.name for gender in self.genders])
 
+        self.samples_combobox.addItems(self.source_text_samples)
+
         self.voices_layout.addWidget(self.audio_languages_combobox)
         self.voices_layout.addWidget(self.languages_combobox)
         self.voices_layout.addWidget(self.services_combobox)
         self.voices_layout.addWidget(self.genders_combobox)
         self.voices_layout.addWidget(self.reset_filters_button)
         self.voices_layout.addWidget(self.voices_combobox)
+        self.voices_layout.addWidget(self.samples_combobox)
+        self.voices_layout.addWidget(self.play_sample_button)
 
         self.voice_options_layout = PyQt5.QtWidgets.QVBoxLayout()
         self.voices_layout.addLayout(self.voice_options_layout)
@@ -231,6 +243,8 @@ class VoiceSelection():
 
         self.voices_combobox.currentIndexChanged.connect(self.voice_selected)
 
+        self.play_sample_button.pressed.connect(self.play_sample)
+
         self.reset_filters_button.pressed.connect(self.reset_filters)
 
         self.radio_button_single.toggled.connect(self.voice_selection_mode_change)
@@ -263,6 +277,16 @@ class VoiceSelection():
         self.services_combobox.setCurrentIndex(0)
         self.genders_combobox.setCurrentIndex(0)
 
+
+    def play_sample(self):
+        logging.info('play_sample')
+        # get sample
+        sample_text = self.samples_combobox.currentText()
+        # get voice
+        selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
+        # get options
+        options = self.current_voice_options
+        self.hypertts.play_sound(sample_text, selected_voice, options)
 
     def add_voice(self):
         selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
