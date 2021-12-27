@@ -196,3 +196,9 @@ class HyperTTS():
             voice = self.service_manager.deserialize_voice(voice_selection_config['voice']['voice'])
             single.set_voice(config_models.VoiceWithOptions(voice, voice_selection_config['voice']['options']))
             return single
+        elif voice_selection_mode == constants.VoiceSelectionMode.random:
+            random = config_models.VoiceSelectionRandom()
+            for voice_data in voice_selection_config['voice_list']:
+                voice = self.service_manager.deserialize_voice(voice_data['voice'])
+                random.add_voice(config_models.VoiceWithOptionsRandom(voice, voice_data['options'], voice_data['weight']))
+            return random

@@ -30,9 +30,9 @@ class VoiceWithOptions():
         return f'{self.voice}{self.options_str()}'
 
 class VoiceWithOptionsRandom(VoiceWithOptions):
-    def __init__(self, voice: voice.VoiceBase, options):
+    def __init__(self, voice: voice.VoiceBase, options, random_weight=1):
         VoiceWithOptions.__init__(self, voice, options)
-        self._random_weight = 1
+        self._random_weight = random_weight
 
     def serialize(self):
         return {
@@ -94,7 +94,7 @@ class VoiceSelectionMultipleBase(VoiceSelectionBase):
     def clear_voice_list(self):
         self._voice_list = []
 
-    def add_voice(self, voice: VoiceWithOptionsRandom):
+    def add_voice(self, voice):
         self._voice_list.append(voice)
 
     def remove_voice(self, index):
