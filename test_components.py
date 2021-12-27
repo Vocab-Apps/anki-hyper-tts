@@ -15,6 +15,52 @@ class EmptyDialog(PyQt5.QtWidgets.QDialog):
     def getLayout(self):
         return self.main_layout
 
+def get_hypertts_instance():
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
+    manager.init_services()
+    manager.get_service('ServiceA').set_enabled(True)
+    manager.get_service('ServiceB').set_enabled(True)
+    anki_utils = testing_utils.MockAnkiUtils({})
+    hypertts_instance = hypertts.HyperTTS(anki_utils, manager)
+
+    return hypertts_instance    
+
+
+def test_voice_selection_defaults_single(qtbot):
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
+    manager.init_services()
+    manager.get_service('ServiceA').set_enabled(True)
+    manager.get_service('ServiceB').set_enabled(True)
+    anki_utils = testing_utils.MockAnkiUtils({})
+    hypertts_instance = hypertts.HyperTTS(anki_utils, manager)
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.draw(dialog.getLayout())
+
+    # voiceselection = get_voice_selection_dialog()
+    voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
+
+    expected_output = {
+        'voice_selection_mode': 'single',
+        'voice': {
+            'voice': {
+                'gender': 'Male', 
+                'language': 'fr_FR',
+                'name': 'voice_a_1', 
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_1'}
+            },
+            'options': {
+            }
+        }        
+    }
+
+    assert voiceselection.serialize() == expected_output
+    
+
 def test_voice_selection(qtbot):
     manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
     manager.init_services()
@@ -83,4 +129,4 @@ def test_voice_selection(qtbot):
     # ======================================
 
 
-    dialog.exec_()
+    # dialog.exec_()

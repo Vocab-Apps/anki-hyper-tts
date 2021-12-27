@@ -126,7 +126,13 @@ class VoiceSelection():
         self.services = list(services)
         self.genders = list(genders)
 
-        self.voice_selection_model = None
+        self.set_default_selection_model()
+
+
+    def set_default_selection_model(self):
+        self.voice_selection_model = config_models.VoiceSelectionSingle() # default
+        # pick first voice
+        self.voice_selection_model.set_voice(config_models.VoiceWithOptions(self.voice_list[0], {}))
 
     def populate_combobox(self, combobox, items):
         combobox.addItem(constants.LABEL_FILTER_ALL)
@@ -208,6 +214,10 @@ class VoiceSelection():
 
         self.voice_list_grid_layout = PyQt5.QtWidgets.QGridLayout()
         self.voices_layout.addLayout(self.voice_list_grid_layout)
+
+        # set some defaults
+        # =================
+        self.radio_button_single.setChecked(True)
 
         # wire all events
         # ===============
@@ -330,6 +340,10 @@ class VoiceSelection():
         self.voices_combobox.addItems([str(voice) for voice in voice_list])
 
     def redraw_selected_voices(self):
+        if isinstance(self.voice_selection_model, config_models.VoiceSelectionSingle):
+            # don't draw if used chose single voice
+            return
+
         def get_remove_lambda(selection_model, voice_with_options_random, redraw_fn):
             def remove():
                 # remove this entry (locate by equality)
@@ -360,3 +374,6 @@ class VoiceSelection():
             remove_button.pressed.connect(get_remove_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices))
 
             row += 1
+
+    def serialize(self):
+        return self.voice_selection_model.serialize()
