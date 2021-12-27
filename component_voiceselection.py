@@ -341,12 +341,17 @@ class VoiceSelection():
                 # add weight widget
                 weight_widget = PyQt5.QtWidgets.QSpinBox()
                 weight_widget.setValue(voice_with_options_random.random_weight)
-                # def get_set_random_weight_lambda(voice_with_options_random):
-                #     def set_value(value):
-
-                # weight_widget.valueChanged.connect(lambda value: voice_with_options_random.set_random_weight(value))
                 weight_widget.valueChanged.connect(voice_with_options_random.set_random_weight)
                 self.voice_list_grid_layout.addWidget(weight_widget, row, 1, 1, 1)
                 # add remove button
+                remove_button = PyQt5.QtWidgets.QPushButton('Remove')
+                self.voice_list_grid_layout.addWidget(remove_button, row, 2, 1, 1)
+                def get_remove_lambda(selection_model, voice_with_options_random, redraw_fn):
+                    def remove():
+                        # remove this entry (locate by equality)
+                        selection_model.voice_list.remove(voice_with_options_random)
+                        redraw_fn()
+                    return remove
+                remove_button.pressed.connect(get_remove_lambda(self.voice_selection_model, voice_with_options_random, self.redraw_selected_voices))
 
                 row += 1
