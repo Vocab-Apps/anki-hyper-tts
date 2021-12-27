@@ -330,28 +330,33 @@ class VoiceSelection():
         self.voices_combobox.addItems([str(voice) for voice in voice_list])
 
     def redraw_selected_voices(self):
+        def get_remove_lambda(selection_model, voice_with_options_random, redraw_fn):
+            def remove():
+                # remove this entry (locate by equality)
+                selection_model.voice_list.remove(voice_with_options_random)
+                redraw_fn()
+            return remove
+        
         # clear all voices first
         for i in reversed(range(self.voice_list_grid_layout.count())): 
             self.voice_list_grid_layout.itemAt(i).widget().setParent(None)
         # draw all voices
-        if isinstance(self.voice_selection_model, config_models.VoiceSelectionRandom):
-            row = 0
-            for voice_with_options_random in self.voice_selection_model.voice_list:
-                self.voice_list_grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(voice_with_options_random)), row, 0, 1, 1)
+        row = 0
+        for voice_entry in self.voice_selection_model.voice_list:
+            column_index = 0
+            self.voice_list_grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(voice_entry)), row, column_index, 1, 1)
+            column_index += 1
+            if isinstance(self.voice_selection_model, config_models.VoiceSelectionRandom):
                 # add weight widget
                 weight_widget = PyQt5.QtWidgets.QSpinBox()
-                weight_widget.setValue(voice_with_options_random.random_weight)
-                weight_widget.valueChanged.connect(voice_with_options_random.set_random_weight)
-                self.voice_list_grid_layout.addWidget(weight_widget, row, 1, 1, 1)
-                # add remove button
-                remove_button = PyQt5.QtWidgets.QPushButton('Remove')
-                self.voice_list_grid_layout.addWidget(remove_button, row, 2, 1, 1)
-                def get_remove_lambda(selection_model, voice_with_options_random, redraw_fn):
-                    def remove():
-                        # remove this entry (locate by equality)
-                        selection_model.voice_list.remove(voice_with_options_random)
-                        redraw_fn()
-                    return remove
-                remove_button.pressed.connect(get_remove_lambda(self.voice_selection_model, voice_with_options_random, self.redraw_selected_voices))
+                weight_widget.setValue(voice_entry.random_weight)
+                weight_widget.valueChanged.connect(voice_entry.set_random_weight)
+                self.voice_list_grid_layout.addWidget(weight_widget, row, column_index, 1, 1)
+                column_index += 1
+            # add remove button
+            remove_button = PyQt5.QtWidgets.QPushButton('Remove')
+            self.voice_list_grid_layout.addWidget(remove_button, row, column_index, 1, 1)
+            column_index += 1
+            remove_button.pressed.connect(get_remove_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices))
 
-                row += 1
+            row += 1
