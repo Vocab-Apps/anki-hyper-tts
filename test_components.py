@@ -103,7 +103,60 @@ def test_voice_selection_single_1(qtbot):
     }
     assert voiceselection.serialize() == expected_output        
 
-def test_voice_selection(qtbot):
+def test_voice_selection_random_1(qtbot):
+    hypertts_instance = get_hypertts_instance()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.draw(dialog.getLayout())
+
+    # choose random mode
+    # qtbot.mouseClick(voiceselection.radio_button_random, PyQt5.QtCore.Qt.LeftButton)
+    voiceselection.radio_button_random.setChecked(True)
+
+    # pick second voice and add it
+    voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
+    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # pick third voice and add it
+    voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
+    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)    
+
+    expected_output = {
+        'voice_selection_mode': 'random',
+        'voice_list': [
+            {
+                'voice': {
+                    'gender': 'Female', 
+                    'language': 'en_US',
+                    'name': 'voice_a_2', 
+                    'service': 'ServiceA',
+                    'voice_key': {'name': 'voice_2'}
+                },
+                'options': {
+                },
+                'weight': 1
+            },
+            {
+                'voice': {
+                    'gender': 'Female', 
+                    'language': 'ja_JP',
+                    'name': 'voice_a_3', 
+                    'service': 'ServiceA',
+                    'voice_key': {'name': 'voice_3'}
+                },
+                'options': {
+                },
+                'weight': 1
+            }            
+        ]
+    }
+    assert voiceselection.serialize() == expected_output    
+
+
+def test_voice_selection_filters(qtbot):
     manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
     manager.init_services()
     manager.get_service('ServiceA').set_enabled(True)
