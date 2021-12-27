@@ -291,10 +291,12 @@ class VoiceSelection():
         # clear the current voice options
         self.current_voice_options = {}
 
-        def get_set_option_lambda(key):
+        def get_set_option_lambda(voice, key):
             def set_value(value):
                 self.current_voice_options[key] = value
                 logging.info(f'set option {key} to {value}')
+                if self.voice_selection_model.selection_mode == constants.VoiceSelectionMode.single:
+                    self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice, self.current_voice_options))
             return set_value
 
         # populate voice options layout
@@ -307,7 +309,7 @@ class VoiceSelection():
                 widget.setObjectName(widget_name)
                 widget.setRange(value['min'], value['max'])
                 widget.setValue(value['default'])
-                widget.valueChanged.connect(get_set_option_lambda(key))
+                widget.valueChanged.connect(get_set_option_lambda(voice, key))
                 self.voice_options_layout.addWidget(widget)
             else:
                 raise Exception(f"voice option type not supported: {value['type']}")

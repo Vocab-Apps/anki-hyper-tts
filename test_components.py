@@ -80,8 +80,28 @@ def test_voice_selection_single_1(qtbot):
             }
         }        
     }
-
     assert voiceselection.serialize() == expected_output    
+
+    # change options
+    speaking_rate_widget = dialog.findChild(PyQt5.QtWidgets.QDoubleSpinBox, "voice_option_speaking_rate")
+    speaking_rate_widget.setValue(0.25)
+
+    expected_output = {
+        'voice_selection_mode': 'single',
+        'voice': {
+            'voice': {
+                'gender': 'Female', 
+                'language': 'en_US',
+                'name': 'voice_a_2', 
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_2'}
+            },
+            'options': {
+                'speaking_rate': 0.25
+            }
+        }        
+    }
+    assert voiceselection.serialize() == expected_output        
 
 def test_voice_selection(qtbot):
     manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
