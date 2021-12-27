@@ -2,6 +2,7 @@ import PyQt5
 import logging
 import constants
 import voice
+import config_models
 
 class SelectedVoiceOptionBase():
     def __init__(self, voice_with_options, remove_callback):
@@ -125,8 +126,7 @@ class VoiceSelection():
         self.services = list(services)
         self.genders = list(genders)
 
-        self.component_random_voice_list = ComponentRandomVoiceList()
-        self.component_priority_voice_list = ComponentPriorityVoiceList()
+        self.voice_selection_model = None
 
     def populate_combobox(self, combobox, items):
         combobox.addItem(constants.LABEL_FILTER_ALL)
@@ -206,8 +206,8 @@ class VoiceSelection():
         # additional layouts screens for the various modes
         # ================================================
 
-        self.component_random_voice_list.draw(self.voices_layout)
-        self.component_priority_voice_list.draw(self.voices_layout)
+        self.voice_list_grid_layout = PyQt5.QtWidgets.QGridLayout()
+        self.voices_layout.addLayout(self.voice_list_grid_layout)
 
         # wire all events
         # ===============
@@ -232,20 +232,18 @@ class VoiceSelection():
 
     def voice_selection_mode_change(self):
         if self.radio_button_single.isChecked():
-            self.component_random_voice_list.setVisible(False)
-            self.component_priority_voice_list.setVisible(False)
             self.add_voice_button.setVisible(False)
             self.clear_voices_button.setVisible(False)
+            self.voice_selection_model = config_models.VoiceSelectionSingle()
         elif self.radio_button_random.isChecked():
-            self.component_random_voice_list.setVisible(True)
-            self.component_priority_voice_list.setVisible(False)
             self.add_voice_button.setVisible(True)
             self.clear_voices_button.setVisible(True)
+            self.voice_selection_model = config_models.VoiceSelectionRandom()
         elif self.radio_button_priority.isChecked():
-            self.component_random_voice_list.setVisible(False)
-            self.component_priority_voice_list.setVisible(True)
             self.add_voice_button.setVisible(True)
             self.clear_voices_button.setVisible(True)
+            self.voice_selection_model = config_models.VoiceSelectionPriority()
+        self.redraw_selected_voices()
 
     def reset_filters(self):
         self.audio_languages_combobox.setCurrentIndex(0)
@@ -257,12 +255,13 @@ class VoiceSelection():
     def add_voice(self):
         selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
         options = self.current_voice_options
-        voice_with_options = voice.VoiceWithOptions(selected_voice, options)
 
         if self.radio_button_random.isChecked():
-            self.component_random_voice_list.add_voice_with_options(voice_with_options)
+            self.voice_selection_model.add_voice(config_models.VoiceWithOptionsRandom(selected_voice, options))
         elif self.radio_button_priority.isChecked():
-            self.component_priority_voice_list.add_voice_with_options(voice_with_options)
+            self.voice_selection_model.add_voice(config_models.VoiceWithOptionsPriority(selected_voice, options))
+
+        self.redraw_selected_voices()
 
 
     def clear_voices(self):
@@ -329,3 +328,25 @@ class VoiceSelection():
     def draw_all_voices(self, voice_list):
         self.voices_combobox.clear()
         self.voices_combobox.addItems([str(voice) for voice in voice_list])
+
+    def redraw_selected_voices(self):
+        # clear all voices first
+        for i in reversed(range(self.voice_list_grid_layout.count())): 
+            self.voice_list_grid_layout.itemAt(i).widget().setParent(None)
+        # draw all voices
+        if isinstance(self.voice_selection_model, config_models.VoiceSelectionRandom):
+            row = 0
+            for voice_with_options_random in self.voice_selection_model.voice_list:
+                self.voice_list_grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(voice_with_options_random)), row, 0, 1, 1)
+                # add weight widget
+                weight_widget = PyQt5.QtWidgets.QSpinBox()
+                weight_widget.setValue(voice_with_options_random.random_weight)
+                # def get_set_random_weight_lambda(voice_with_options_random):
+                #     def set_value(value):
+
+                # weight_widget.valueChanged.connect(lambda value: voice_with_options_random.set_random_weight(value))
+                weight_widget.valueChanged.connect(voice_with_options_random.set_random_weight)
+                self.voice_list_grid_layout.addWidget(weight_widget, row, 1, 1, 1)
+                # add remove button
+
+                row += 1
