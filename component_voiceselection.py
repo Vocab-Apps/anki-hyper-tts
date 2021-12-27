@@ -1,5 +1,7 @@
 import PyQt5
 import logging
+import copy 
+
 import constants
 import voice
 import config_models
@@ -264,7 +266,7 @@ class VoiceSelection():
 
     def add_voice(self):
         selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
-        options = self.current_voice_options
+        options = copy.copy(self.current_voice_options)
 
         if self.radio_button_random.isChecked():
             self.voice_selection_model.add_voice(config_models.VoiceWithOptionsRandom(selected_voice, options))

@@ -1,4 +1,5 @@
 import PyQt5
+import config_models
 import servicemanager
 import testing_utils
 import hypertts
@@ -155,6 +156,70 @@ def test_voice_selection_random_1(qtbot):
     }
     assert voiceselection.serialize() == expected_output    
 
+def test_voice_selection_random_2(qtbot):
+    hypertts_instance = get_hypertts_instance()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.draw(dialog.getLayout())
+
+    # choose random mode
+    voiceselection.radio_button_random.setChecked(True)
+
+    # add the first voice twice, but with different options
+    voiceselection.voices_combobox.setCurrentIndex(0)
+    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # change options
+    speaking_rate_widget = dialog.findChild(PyQt5.QtWidgets.QDoubleSpinBox, "voice_option_speaking_rate")
+    speaking_rate_widget.setValue(0.25)    
+
+    # add again
+    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # build expected voice selection model
+    expected_model = config_models.VoiceSelectionRandom()
+    voice = [x for x in hypertts_instance.service_manager.full_voice_list() if x.service.name == 'ServiceA' and x.name == 'voice_a_1'][0]
+
+    expected_model.add_voice(config_models.VoiceWithOptionsRandom(voice, {}))
+    expected_model.add_voice(config_models.VoiceWithOptionsRandom(voice, {'speaking_rate': 0.25}))    
+
+    assert voiceselection.voice_selection_model.serialize() == expected_model.serialize()
+
+
+def test_voice_selection_priority_1(qtbot):
+    hypertts_instance = get_hypertts_instance()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.draw(dialog.getLayout())
+
+    # choose random mode
+    # qtbot.mouseClick(voiceselection.radio_button_random, PyQt5.QtCore.Qt.LeftButton)
+    voiceselection.radio_button_priority.setChecked(True)
+
+    # dialog.exec_()
+
+    # pick second voice and add it
+    voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
+    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # pick third voice and add it
+    voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
+    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)    
+
+    expected_model = config_models.VoiceSelectionPriority()
+    voice_2 = [x for x in hypertts_instance.service_manager.full_voice_list() if x.service.name == 'ServiceA' and x.name == 'voice_a_2'][0]
+    voice_3 = [x for x in hypertts_instance.service_manager.full_voice_list() if x.service.name == 'ServiceA' and x.name == 'voice_a_3'][0]
+
+    expected_model.add_voice(config_models.VoiceWithOptionsPriority(voice_2, {}))
+    expected_model.add_voice(config_models.VoiceWithOptionsPriority(voice_3, {}))
+
+    assert voiceselection.voice_selection_model.serialize() == expected_model.serialize()
 
 def test_voice_selection_filters(qtbot):
     manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
