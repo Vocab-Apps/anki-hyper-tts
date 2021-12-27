@@ -247,3 +247,8 @@ def test_voice_selection(qtbot):
     }
     assert priority.serialize() == expected_output
 
+    # test deserialization
+    priority_deserialized = hypertts_instance.deserialize_voice_selection(priority.serialize())
+
+    # check that it gives the same output
+    assert priority_deserialized.serialize() == expected_output
