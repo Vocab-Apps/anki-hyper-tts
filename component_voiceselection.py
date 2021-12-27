@@ -358,10 +358,17 @@ class VoiceSelection():
                 redraw_fn()
             return remove
 
-        def get_up_lambda(selection_model, voice_with_options_priority, redraw_fn):
+        def get_move_up_lambda(selection_model, voice_with_options_priority, redraw_fn):
             def up():
-                pass
+                selection_model.move_up_voice(voice_with_options_priority)
+                redraw_fn()
             return up
+
+        def get_move_down_lambda(selection_model, voice_with_options_priority, redraw_fn):
+            def down():
+                selection_model.move_down_voice(voice_with_options_priority)
+                redraw_fn()
+            return down
 
         
         # clear all voices first
@@ -390,7 +397,8 @@ class VoiceSelection():
                 # add weight widget
                 up_button = PyQt5.QtWidgets.QPushButton('Up')
                 down_button = PyQt5.QtWidgets.QPushButton('Down')
-                # up_button.pressed.connect()
+                up_button.pressed.connect(get_move_up_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices))
+                down_button.pressed.connect(get_move_down_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices))
 
                 self.voice_list_grid_layout.addWidget(up_button, row, column_index, 1, 1)
                 column_index += 1
