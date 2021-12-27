@@ -102,8 +102,7 @@ def test_voice_selection(qtbot):
     # check that it gives the same output
     assert random_deserialized.serialize() == expected_output
 
-
-    random.remove_voice(1)
+    random.remove_voice(random.voice_list[1])
     del expected_output['voice_list'][1]
 
     assert random.serialize() == expected_output
@@ -158,7 +157,7 @@ def test_voice_selection(qtbot):
     }
     assert priority.serialize() == expected_output
 
-    priority.move_up_voice(2)
+    priority.move_up_voice(priority.voice_list[2])
 
     expected_output = {
         'voice_selection_mode': 'priority',
@@ -203,7 +202,7 @@ def test_voice_selection(qtbot):
     assert priority.serialize() == expected_output    
 
 
-    priority.move_down_voice(0)
+    priority.move_down_voice(priority.voice_list[0])
 
     expected_output = {
         'voice_selection_mode': 'priority',

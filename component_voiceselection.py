@@ -357,6 +357,12 @@ class VoiceSelection():
                 selection_model.voice_list.remove(voice_with_options_random)
                 redraw_fn()
             return remove
+
+        def get_up_lambda(selection_model, voice_with_options_priority, redraw_fn):
+            def up():
+                pass
+            return up
+
         
         # clear all voices first
         for i in reversed(range(self.voice_list_grid_layout.count())): 
@@ -379,6 +385,17 @@ class VoiceSelection():
             self.voice_list_grid_layout.addWidget(remove_button, row, column_index, 1, 1)
             column_index += 1
             remove_button.pressed.connect(get_remove_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices))
+            # add up/down buttons
+            if isinstance(self.voice_selection_model, config_models.VoiceSelectionPriority):
+                # add weight widget
+                up_button = PyQt5.QtWidgets.QPushButton('Up')
+                down_button = PyQt5.QtWidgets.QPushButton('Down')
+                # up_button.pressed.connect()
+
+                self.voice_list_grid_layout.addWidget(up_button, row, column_index, 1, 1)
+                column_index += 1
+                self.voice_list_grid_layout.addWidget(down_button, row, column_index, 1, 1)
+                column_index += 1
 
             row += 1
 

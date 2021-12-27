@@ -97,10 +97,11 @@ class VoiceSelectionMultipleBase(VoiceSelectionBase):
     def add_voice(self, voice):
         self._voice_list.append(voice)
 
-    def remove_voice(self, index):
-        del self._voice_list[index]
+    def remove_voice(self, voice):
+        self._voice_list.remove(voice)
 
-    def move_up_voice(self, index):
+    def move_up_voice(self, voice):
+        index = self._voice_list.index(voice)
         if index == 0:
             return
         entry_1 = self._voice_list[index - 1]
@@ -108,7 +109,8 @@ class VoiceSelectionMultipleBase(VoiceSelectionBase):
         self._voice_list[index - 1] = entry_2
         self._voice_list[index] = entry_1
 
-    def move_down_voice(self, index):
+    def move_down_voice(self, voice):
+        index = self._voice_list.index(voice)
         if index == len(self._voice_list) - 1:
             return
         entry_1 = self._voice_list[index]

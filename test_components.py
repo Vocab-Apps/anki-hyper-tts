@@ -221,6 +221,8 @@ def test_voice_selection_priority_1(qtbot):
 
     assert voiceselection.voice_selection_model.serialize() == expected_model.serialize()
 
+    dialog.exec_()
+
 def test_voice_selection_filters(qtbot):
     manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
     manager.init_services()
