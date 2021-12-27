@@ -1,6 +1,7 @@
 
 import os
 import json
+import config_models
 import constants
 import servicemanager
 import voice
@@ -67,7 +68,7 @@ def test_voice_serialization(qtbot):
     # test VoiceWithOptions
     # =====================
 
-    voice_with_options = voice.VoiceWithOptions(selected_voice, {'pitch': 1.0, 'speaking_rate': 2.0})
+    voice_with_options = config_models.VoiceWithOptions(selected_voice, {'pitch': 1.0, 'speaking_rate': 2.0})
 
     expected_voice_with_option_data = {
         'voice': voice_data,
@@ -101,13 +102,12 @@ def test_get_tts_audio(qtbot):
     assert len(subset) == 1
     servicea_voice_1 = subset[0]
 
-    audio_result = manager.get_tts_audio('test sentence 123', servicea_voice_1)
+    audio_result = manager.get_tts_audio('test sentence 123', servicea_voice_1, {})
 
     audio_result_dict = json.loads(audio_result)
 
     assert audio_result_dict['source_text'] == 'test sentence 123'
-    assert audio_result_dict['language'] == 'fr_FR'
-    assert audio_result_dict['voice_key'] == {'name': 'voice_1'}
+    assert audio_result_dict['voice']['voice_key'] == {'name': 'voice_1'}
 
 def test_services_configuration(qtbot):
     manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')

@@ -43,5 +43,5 @@ class ServiceB(service.ServiceBase):
             VoiceB('jane', self)
         ]
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase):
+    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
         raise Exception('not implemented')        
