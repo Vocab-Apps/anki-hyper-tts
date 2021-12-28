@@ -309,3 +309,7 @@ def test_batch_config(qtbot):
         }
     }
     assert batch_config.serialize() == expected_output
+
+    batch_config_deserialized = hypertts_instance.deserialize_batch_config(batch_config.serialize())
+
+    assert batch_config_deserialized.serialize() == batch_config.serialize()

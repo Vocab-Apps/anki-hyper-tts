@@ -200,6 +200,22 @@ class HyperTTS():
     # deserialization routines for loading from config
     # ================================================
 
+    def deserialize_batch_config(self, batch_config):
+        batch = config_models.BatchConfig(constants.BatchMode[batch_config['mode']])
+        if batch.mode == constants.BatchMode.simple:
+            source = config_models.BatchSourceSimple(batch_config['source']['source_field'])
+        else:
+            source = config_models.BatchSourceTemplate(batch_config['source']['source_template'],
+                constants.TemplateFormatVersion[batch_config['source']['batch_template_version']])
+        target = config_models.BatchTarget('Sound', False, False)
+        voice_selection = self.deserialize_voice_selection(batch_config['voice_selection'])
+
+        batch.set_source(source)
+        batch.set_target(target)
+        batch.set_voice_selection(voice_selection)
+        
+        return batch
+
     def deserialize_voice_selection(self, voice_selection_config):
         voice_selection_mode = constants.VoiceSelectionMode[voice_selection_config['voice_selection_mode']]
         if voice_selection_mode == constants.VoiceSelectionMode.single:
