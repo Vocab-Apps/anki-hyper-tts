@@ -177,43 +177,26 @@ def test_simple_append(qtbot):
     assert note_1.flush_called == True
 
 def test_random_voices(qtbot):
-    batch_config = {
-        'mode': 'simple',
-        'source_field': 'Chinese',
-        'target_field': 'Sound',
-        'text_and_sound_tag': False,
-        'remove_sound_tag': True,
-        'voice_selection': constants.VoiceSelectionMode.random.name,
-        'voice_list': [
-            {
-                'service': 'ServiceA',
-                'voice_key': {
-                    'name': 'voice_1'
-                },
-                'options': {}
-            },
-            {
-                'service': 'ServiceA',
-                'voice_key': {
-                    'name': 'voice_2'
-                },
-                'options': {}
-            },
-            {
-                'service': 'ServiceA',
-                'voice_key': {
-                    'name': 'voice_3'
-                },
-                'options': {}
-            }
-        ]
-    }
-    
-    # create hypertts instance
-    # ========================
-
     config_gen = testing_utils.TestConfigGenerator()
-    mock_hypertts = config_gen.build_hypertts_instance('default')
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        
+    # build voice selection model
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_2 = [x for x in voice_list if x.name == 'voice_a_2'][0]
+    voice_a_3 = [x for x in voice_list if x.name == 'voice_a_3'][0]
+    random = config_models.VoiceSelectionRandom()
+    random.add_voice(config_models.VoiceWithOptionsRandom(voice_a_1, {}))
+    random.add_voice(config_models.VoiceWithOptionsRandom(voice_a_2, {}))
+    random.add_voice(config_models.VoiceWithOptionsRandom(voice_a_3, {}))
+
+    batch = config_models.BatchConfig(constants.BatchMode.simple)
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget('Sound', False, True)
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(random)
 
     # create list of notes
     # ====================
@@ -222,16 +205,16 @@ def test_random_voices(qtbot):
     # run batch add audio (simple mode)
     # =================================
     progress_bar = mock_progress_bar()
-    batch_error_manager = mock_hypertts.process_batch_audio(note_id_list, batch_config, progress_bar.callback_fn)
+    batch_error_manager = hypertts_instance.process_batch_audio(note_id_list, batch, progress_bar.callback_fn)
 
-    note_1 = mock_hypertts.anki_utils.get_note_by_id(config_gen.note_id_1)
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     assert 'Sound' in note_1.set_values 
 
     sound_tag = note_1.set_values['Sound']
-    audio_full_path = mock_hypertts.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
-    audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
+    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
-    assert audio_data['voice'] == batch_config['voice_list'][0] or batch_config['voice_list'][1] or batch_config['voice_list'][2]
+    assert audio_data['voice']['name'] == 'voice_a_1' or 'voice_a_2' or 'voice_a_2'
 
 def test_simple_template(qtbot):
     # create batch configuration
