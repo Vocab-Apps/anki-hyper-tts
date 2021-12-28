@@ -127,27 +127,23 @@ def test_simple_append(qtbot):
     # create batch configuration
     # ==========================
 
-    batch_config = {
-        'mode': constants.BatchMode.simple.name,
-        'source_field': 'Chinese',
-        'target_field': 'Chinese',
-        constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG: True,
-        'remove_sound_tag': True,
-        'voice_selection': constants.VoiceSelectionMode.random.name,
-        'voice_list': [{
-            'service': 'ServiceA',
-            'voice_key': {
-                'name': 'voice_1'
-            },
-            'options': {}
-        }]
-    }
-    
-    # create hypertts instance
-    # ========================
-
     config_gen = testing_utils.TestConfigGenerator()
-    mock_hypertts = config_gen.build_hypertts_instance('default')
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        
+    # build voice selection model
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
+
+    batch = config_models.BatchConfig(constants.BatchMode.simple)
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget('Chinese', True, True)
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(single)
+
 
     # create list of notes
     # ====================
@@ -156,7 +152,7 @@ def test_simple_append(qtbot):
     # run batch add audio (simple mode)
     # =================================
     progress_bar = mock_progress_bar()
-    batch_error_manager = mock_hypertts.process_batch_audio(note_id_list, batch_config, progress_bar.callback_fn)
+    batch_error_manager = hypertts_instance.process_batch_audio(note_id_list, batch, progress_bar.callback_fn)
 
     # check progress bar
     assert progress_bar.iteration == 2
@@ -168,16 +164,16 @@ def test_simple_append(qtbot):
 
     # check note 1
 
-    note_1 = mock_hypertts.anki_utils.get_note_by_id(config_gen.note_id_1)
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     assert 'Chinese' in note_1.set_values 
 
     text_and_sound_tag = note_1.set_values['Chinese']
     assert '老人家 ' in text_and_sound_tag
-    audio_full_path = mock_hypertts.anki_utils.extract_sound_tag_audio_full_path(text_and_sound_tag)
-    audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
+    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(text_and_sound_tag)
+    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == '老人家'
-    assert audio_data['voice'] == batch_config['voice_list'][0]
+    assert audio_data['voice']['name'] == 'voice_a_1'
     assert note_1.flush_called == True
 
 def test_random_voices(qtbot):
