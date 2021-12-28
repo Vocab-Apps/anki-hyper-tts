@@ -19,8 +19,7 @@ def test_simple_1(qtbot):
 
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-    
-    
+        
     # build voice selection model
     voice_list = hypertts_instance.service_manager.full_voice_list()
     voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
@@ -90,27 +89,22 @@ def test_simple_error_handling(qtbot):
     # create batch configuration
     # ==========================
 
-    batch_config = {
-        'mode': 'simple',
-        'source_field': 'Chinese',
-        'target_field': 'Sound',
-        'text_and_sound_tag': False,
-        'remove_sound_tag': True,
-        'voice_selection': constants.VoiceSelectionMode.random.name,
-        'voice_list': [{
-            'service': 'ServiceA',
-            'voice_key': {
-                'name': 'voice_1'
-            },
-            'options': {}
-        }]
-    }
-    
-    # create hypertts instance
-    # ========================
-
     config_gen = testing_utils.TestConfigGenerator()
-    mock_hypertts = config_gen.build_hypertts_instance('default')
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        
+    # build voice selection model
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
+
+    batch = config_models.BatchConfig(constants.BatchMode.simple)
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget('Sound', False, True)
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(single)
 
     # create list of notes
     # ====================
@@ -119,7 +113,7 @@ def test_simple_error_handling(qtbot):
     # run batch add audio (simple mode)
     # =================================
     progress_bar = mock_progress_bar()
-    batch_error_manager = mock_hypertts.process_batch_audio(note_id_list, batch_config, progress_bar.callback_fn)
+    batch_error_manager = hypertts_instance.process_batch_audio(note_id_list, batch, progress_bar.callback_fn)
 
     # check progress bar
     assert progress_bar.iteration == 3
