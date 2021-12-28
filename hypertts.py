@@ -49,24 +49,27 @@ class HyperTTS():
         self.error_manager = errors.ErrorManager(self.anki_utils)
 
 
-    def process_batch_audio(self, note_id_list, batch_config, progress_fn):
+    def process_batch_audio(self, note_id_list, batch, progress_fn):
         batch_error_manager = self.error_manager.get_batch_error_manager('adding audio to notes')
         # for each note, generate audio
         for note_id in note_id_list:
             with batch_error_manager.get_batch_action_context():
                 note = self.anki_utils.get_note_by_id(note_id)
-                target_field = batch_config['target_field']
-                source_text = self.get_source_text(note, batch_config)
+                target_field = batch.target.target_field
+                source_text = self.get_source_text(note, batch)
                 processed_text = self.process_text(source_text)
-                voice_selection = constants.VoiceSelectionMode[batch_config['voice_selection']]
-                voice_list = copy.copy(batch_config['voice_list'])
+                # this voice_list copy is only used for priority mode
+                voice_list = None
+                if batch.voice_selection.selection_mode == constants.VoiceSelectionMode.priority:
+                    voice_list = copy.copy(batch.voice_selection.voice_list)
                 sound_found = False
                 # loop while we haven't found the sound. this will be used for priority mode
-                while sound_found == False and len(voice_list) > 0:
+                loop_condition = True
+                while loop_condition:
                     try:
-                        voice = self.choose_voice(voice_selection, voice_list)
-                        sound_tag = self.generate_sound_tag_add_collection(source_text, voice)
-                        if batch_config[constants.CONFIG_BATCH_TEXT_AND_SOUND_TAG] == True:
+                        voice_with_options = self.choose_voice(batch.voice_selection, voice_list)
+                        sound_tag = self.generate_sound_tag_add_collection(source_text, voice_with_options.voice, voice_with_options.options)
+                        if batch.target.remove_sound_tag == True:
                             # remove existing sound tag
                             current_target_field_content = note[target_field]
                             field_content = self.strip_sound_tag(current_target_field_content)
@@ -78,51 +81,47 @@ class HyperTTS():
                     except errors.AudioNotFoundError as exc:
                         # try the next voice, as long as one is available
                         pass
+                    loop_condition = sound_found == False and len(voice_list) > 0
                 if sound_found == False:
                     raise errors.AudioNotFoundAnyVoiceError(source_text)
             progress_fn(batch_error_manager.iteration_count)
         return batch_error_manager
 
-    def choose_voice(self, voice_selection, voices):
-        if voice_selection == constants.VoiceSelectionMode.random:
-            logging.info(f'choosing from {len(voices)} voices')
-            voice_list = []
-            weights = []
-            for voice in voices:
-                voice_list.append(voice)
-                weight = voice.get('weight', 1)
-                weights.append(weight)
-            choice = random.choices(voice_list, weights=weights)
+    def choose_voice(self, voice_selection, voice_list) -> config_models.VoiceWithOptions:
+        if voice_selection.selection_mode == constants.VoiceSelectionMode.single:
+            return voice_selection.voice
+        if voice_selection.selection_mode == constants.VoiceSelectionMode.random:
+            logging.info(f'choosing from {len(voice_selection.voice_list)} voices')
+            choice = random.choices(voice_selection.voice_list, weights=[x.random_weight for x in voice_selection.voice_list])
             return choice[0]
         elif voice_selection == constants.VoiceSelectionMode.priority:
-            voice = voices[0]
+            voice = voice_list[0]
             # remove that voice from possible list
-            voices.pop(0)
+            voice_list.pop(0)
             return voice
 
 
     # text processing
     # ===============
 
-    def get_source_text(self, note, batch_config):
-        batch_mode = constants.BatchMode[batch_config['mode']]
-        if batch_mode == constants.BatchMode.simple:
-            source_text = note[batch_config['source_field']]
-        elif batch_mode == constants.BatchMode.template:
-            source_text = self.expand_simple_template(note, batch_config['source_template'])
-        elif batch_mode == constants.BatchMode.advanced_template:
-            source_text = self.expand_advanced_template(note, batch_config['source_template'])
+    def get_source_text(self, note, batch):
+        if batch.mode == constants.BatchMode.simple:
+            source_text = note[batch.source.source_field]
+        elif batch.mode == constants.BatchMode.template:
+            source_text = self.expand_simple_template(note, batch.source)
+        elif batch.mode == constants.BatchMode.advanced_template:
+            source_text = self.expand_advanced_template(note, batch.source)
         return source_text
 
-    def expand_simple_template(self, note, source_template):
+    def expand_simple_template(self, note, source):
         field_values = self.get_field_values(note)
-        return source_template.format_map(field_values)
+        return source.source_template.format_map(field_values)
 
-    def expand_advanced_template(self, note, source_template):
+    def expand_advanced_template(self, note, source):
         local_variables = {
             'template_fields': self.get_field_values(note)
         }
-        expanded_template = exec(source_template, {}, local_variables)
+        expanded_template = exec(source.source_template, {}, local_variables)
         result = local_variables['result']
         return result
 

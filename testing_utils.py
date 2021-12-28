@@ -7,6 +7,7 @@ import os
 import constants
 import hypertts
 import errors
+import servicemanager
 
 
 def get_test_services_dir():
@@ -161,6 +162,9 @@ class MockAnkiUtils():
         filename = re.match('.*\[sound:([^\]]+)\]', sound_tag).groups()[0]
         return os.path.join(self.get_user_files_dir(), filename)
 
+    def extract_mock_tts_audio(self, full_path):
+        file_content = open(full_path, 'r').read()
+        return json.loads(file_content)
 
 class MockServiceManager():
     def __init__(self):
@@ -177,9 +181,6 @@ class MockServiceManager():
         encoded_dict = json.dumps(self.requested_audio, indent=2).encode('utf-8')
         return encoded_dict    
 
-    def extract_mock_tts_audio(self, full_path):
-        file_content = open(full_path, 'r').read()
-        return json.loads(file_content)
 
 
 
@@ -633,3 +634,24 @@ class TestConfigGenerator():
         anki_utils.notes_by_id, anki_utils.notes = self.get_notes()
 
         return mock_hypertts
+
+    def build_hypertts_instance_test_servicemanager(self, scenario):
+        addon_config = self.get_addon_config(scenario)
+
+        anki_utils = MockAnkiUtils(addon_config)
+        manager = servicemanager.ServiceManager(get_test_services_dir(), 'test_services')
+        manager.init_services()
+        manager.get_service('ServiceA').set_enabled(True)
+        manager.get_service('ServiceB').set_enabled(True)
+
+        mock_hypertts = hypertts.HyperTTS(anki_utils, manager)
+
+        anki_utils.models = self.get_model_map()
+        anki_utils.decks = self.get_deck_map()
+        anki_utils.model_by_name = self.get_model_by_name()
+        anki_utils.deck_by_name = self.get_deck_by_name()
+        anki_utils.deckid_modelid_pairs = self.get_deckid_modelid_pairs()
+        anki_utils.notes_by_id, anki_utils.notes = self.get_notes()
+
+        return mock_hypertts
+

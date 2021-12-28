@@ -1,5 +1,6 @@
 import constants
 import voice
+import copy
 
 """
 the various objects here dictate how HyperTTS is configured and these objects will serialize to/from the anki config
@@ -79,7 +80,7 @@ class BatchTarget():
 class VoiceWithOptions():
     def __init__(self, voice: voice.VoiceBase, options):
         self.voice = voice
-        self.options = options
+        self.options = copy.copy(options)
 
     def serialize(self):
         return {
