@@ -18,7 +18,7 @@ class Google(service.ServiceBase):
     def voice_list(self):
         return self.basic_voice_list()
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase):
+    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
 
         payload = {
             "audioConfig": {

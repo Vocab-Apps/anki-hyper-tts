@@ -41,7 +41,7 @@ class Azure(service.ServiceBase):
     def voice_list(self):
         return self.basic_voice_list()
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase):
+    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
 
         region = self.config['region']
         subscription_key = self.config['api_key']

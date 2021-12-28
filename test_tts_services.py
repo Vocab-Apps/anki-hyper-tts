@@ -31,7 +31,7 @@ def sanitize_recognized_text(recognized_text):
     return result_text
 
 def verify_audio_output(manager, voice, source_text):
-    audio_data = manager.get_tts_audio(source_text, voice)
+    audio_data = manager.get_tts_audio(source_text, voice, {})
     assert len(audio_data) > 0
 
     output_temp_file = tempfile.NamedTemporaryFile()
@@ -86,6 +86,7 @@ def pick_random_voices_sample(voice_list, service_name, language, count):
 def test_google():
     manager = servicemanager.ServiceManager(services_dir(), 'services')
     manager.init_services()
+    manager.get_service('Google').set_enabled(True)
     manager.get_service('Google').configure({'api_key': os.environ['GOOGLE_SERVICES_KEY']})
 
     voice_list = manager.full_voice_list()
@@ -117,7 +118,7 @@ def test_google():
 
     exception_caught = False
     try:
-        audio_data = manager.get_tts_audio('This is the second sentence', altered_voice)
+        audio_data = manager.get_tts_audio('This is the second sentence', altered_voice, {})
     except errors.RequestError as e:
         assert 'Could not request audio for' in str(e)
         assert e.source_text == 'This is the second sentence'
@@ -130,6 +131,7 @@ def test_azure():
     service_name = 'Azure'
     manager = servicemanager.ServiceManager(services_dir(), 'services')
     manager.init_services()
+    manager.get_service(service_name).set_enabled(True)
     manager.get_service(service_name).configure({
         'api_key': os.environ['AZURE_SERVICES_KEY'],
         'region': os.environ['AZURE_SERVICES_REGION']
@@ -162,7 +164,7 @@ def test_azure():
 
     exception_caught = False
     try:
-        audio_data = manager.get_tts_audio('This is the second sentence', altered_voice)
+        audio_data = manager.get_tts_audio('This is the second sentence', altered_voice, {})
     except errors.RequestError as e:
         assert 'Could not request audio for' in str(e)
         assert e.source_text == 'This is the second sentence'
@@ -173,10 +175,12 @@ def test_azure():
 def get_configured_servicemanager():
     manager = servicemanager.ServiceManager(services_dir(), 'services')
     manager.init_services()
+    manager.get_service('Azure').set_enabled(True)
     manager.get_service('Azure').configure({
         'api_key': os.environ['AZURE_SERVICES_KEY'],
         'region': os.environ['AZURE_SERVICES_REGION']
     })    
+    manager.get_service('Google').set_enabled(True)
     manager.get_service('Google').configure({'api_key': os.environ['GOOGLE_SERVICES_KEY']})
     return manager
 
