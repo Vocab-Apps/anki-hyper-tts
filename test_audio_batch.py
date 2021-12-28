@@ -397,36 +397,24 @@ def test_priority_voices_success(qtbot):
 
 
 def test_priority_voices_not_found(qtbot):
-    batch_config = {
-        'mode': 'simple',
-        'source_field': 'Chinese',
-        'target_field': 'Sound',
-        'text_and_sound_tag': False,
-        'remove_sound_tag': True,
-        'voice_selection': constants.VoiceSelectionMode.priority.name,
-        'voice_list': [
-            {
-                'service': 'ServiceA',
-                'voice_key': {
-                    'name': 'notfound' # magic voice name which will raise AudioNotFoundError
-                },
-                'options': {}
-            },
-            {
-                'service': 'ServiceA',
-                'voice_key': {
-                    'name': 'notfound'
-                },
-                'options': {}
-            }
-        ]
-    }
-    
-    # create hypertts instance
-    # ========================
 
     config_gen = testing_utils.TestConfigGenerator()
-    mock_hypertts = config_gen.build_hypertts_instance('default')
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        
+    # build voice selection model
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_1 = [x for x in voice_list if x.name == 'notfound'][0] # special voice in serviceB
+    priority = config_models.VoiceSelectionPriority()
+    priority.add_voice(config_models.VoiceWithOptionsPriority(voice_1, {}))
+    priority.add_voice(config_models.VoiceWithOptionsPriority(voice_1, {}))
+
+    batch = config_models.BatchConfig(constants.BatchMode.simple)
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget('Sound', False, True)
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(priority)
 
     # create list of notes
     # ====================
@@ -435,9 +423,9 @@ def test_priority_voices_not_found(qtbot):
     # run batch add audio (simple mode)
     # =================================
     progress_bar = mock_progress_bar()
-    batch_error_manager = mock_hypertts.process_batch_audio(note_id_list, batch_config, progress_bar.callback_fn)
+    batch_error_manager = hypertts_instance.process_batch_audio(note_id_list, batch, progress_bar.callback_fn)
 
-    note_1 = mock_hypertts.anki_utils.get_note_by_id(config_gen.note_id_1)
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     assert 'Sound' not in note_1.set_values 
 
     # make sure we got a AudioNotFoundError in the batch error manager

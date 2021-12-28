@@ -68,7 +68,6 @@ class HyperTTS():
                 while loop_condition:
                     try:
                         voice_with_options = self.choose_voice(batch.voice_selection, voice_list)
-                        logging.info(f'selected {voice_with_options} (voice_list: {voice_list})')
                         sound_tag = self.generate_sound_tag_add_collection(source_text, voice_with_options.voice, voice_with_options.options)
                         if batch.target.remove_sound_tag == True:
                             # remove existing sound tag
