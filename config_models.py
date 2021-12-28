@@ -5,6 +5,77 @@ import voice
 the various objects here dictate how HyperTTS is configured and these objects will serialize to/from the anki config
 """
 
+class BatchConfig():
+    def __init__(self, mode: constants.BatchMode):
+        self.mode = mode
+        self._source = None
+        self._target = None
+        self._voice_selection = None
+
+    def get_source(self):
+        return self._source
+    def set_source(self, source):
+        self._source = source
+
+    def get_target(self):
+        return self._target
+    def set_target(self, target):
+        self._target = target
+
+    def get_voice_selection(self):
+        return self._voice_selection
+    def set_voice_selection(self, voice_selection):
+        self._voice_selection = voice_selection
+
+    source = property(get_source, set_source)
+    target = property(get_target, set_target)
+    voice_selection = property(get_voice_selection, set_voice_selection)
+
+    def serialize(self):
+        return {
+            'mode': self.mode.name,
+            'source': self.source.serialize(),
+            'target': self.target.serialize(),
+            'voice_selection': self.voice_selection.serialize()
+        }
+
+class BatchSourceSimple():
+    def __init__(self, source_field):
+        self.source_field = source_field
+
+    def serialize(self):
+        return {
+            'source_field': self.source_field
+        }
+
+class BatchSourceTemplate():
+    def __init__(self, source_template: str, template_format_version: constants.TemplateFormatVersion):
+        self.source_template = source_template
+        self.template_format_version = template_format_version
+
+    def serialize(self):
+        return {
+            'template_format_version': self.template_format_version.name,
+            'source_template': self.source_template
+        }
+
+class BatchTarget():
+    def __init__(self, target_field, text_and_sound_tag, remove_sound_tag):
+        self.target_field = target_field
+        self.text_and_sound_tag = text_and_sound_tag
+        self.remove_sound_tag = remove_sound_tag
+
+    def serialize(self):
+        return {
+            'target_field': self.target_field,
+            'text_and_sound_tag': self.text_and_sound_tag,
+            'remove_sound_tag': self.remove_sound_tag
+        }
+
+
+# voice selection models
+# ======================
+
 class VoiceWithOptions():
     def __init__(self, voice: voice.VoiceBase, options):
         self.voice = voice
