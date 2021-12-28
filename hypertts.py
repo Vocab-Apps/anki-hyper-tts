@@ -68,6 +68,7 @@ class HyperTTS():
                 while loop_condition:
                     try:
                         voice_with_options = self.choose_voice(batch.voice_selection, voice_list)
+                        logging.info(f'selected {voice_with_options} (voice_list: {voice_list})')
                         sound_tag = self.generate_sound_tag_add_collection(source_text, voice_with_options.voice, voice_with_options.options)
                         if batch.target.remove_sound_tag == True:
                             # remove existing sound tag
@@ -90,14 +91,13 @@ class HyperTTS():
     def choose_voice(self, voice_selection, voice_list) -> config_models.VoiceWithOptions:
         if voice_selection.selection_mode == constants.VoiceSelectionMode.single:
             return voice_selection.voice
-        if voice_selection.selection_mode == constants.VoiceSelectionMode.random:
+        elif voice_selection.selection_mode == constants.VoiceSelectionMode.random:
             logging.info(f'choosing from {len(voice_selection.voice_list)} voices')
             choice = random.choices(voice_selection.voice_list, weights=[x.random_weight for x in voice_selection.voice_list])
             return choice[0]
-        elif voice_selection == constants.VoiceSelectionMode.priority:
-            voice = voice_list[0]
+        elif voice_selection.selection_mode == constants.VoiceSelectionMode.priority:
             # remove that voice from possible list
-            voice_list.pop(0)
+            voice = voice_list.pop(0)
             return voice
 
 

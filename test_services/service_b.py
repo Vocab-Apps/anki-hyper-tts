@@ -1,6 +1,7 @@
 import constants
 import service
 import voice
+import errors
 
 class VoiceB(voice.VoiceBase):
 
@@ -40,8 +41,11 @@ class ServiceB(service.ServiceBase):
     def voice_list(self):
         return [
             VoiceB('alex', self),
-            VoiceB('jane', self)
+            VoiceB('jane', self),
+            VoiceB('notfound', self)
         ]
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
-        raise Exception('not implemented')        
+        if voice.voice_key['voice_id'] == 'notfound':
+            raise errors.AudioNotFoundError(source_text, voice)
+        raise Exception('not implemented')

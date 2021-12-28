@@ -356,37 +356,25 @@ result = f"{article} {word}"
     assert note_1.flush_called == True        
 
 
-def test_priority_voices(qtbot):
-    batch_config = {
-        'mode': 'simple',
-        'source_field': 'Chinese',
-        'target_field': 'Sound',
-        'text_and_sound_tag': False,
-        'remove_sound_tag': True,
-        'voice_selection': constants.VoiceSelectionMode.priority.name,
-        'voice_list': [
-            {
-                'service': 'ServiceA',
-                'voice_key': {
-                    'name': 'notfound' # magic voice name which will raise AudioNotFoundError
-                },
-                'options': {}
-            },
-            {
-                'service': 'ServiceA',
-                'voice_key': {
-                    'name': 'voice_2'
-                },
-                'options': {}
-            }
-        ]
-    }
-    
-    # create hypertts instance
-    # ========================
-
+def test_priority_voices_success(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
-    mock_hypertts = config_gen.build_hypertts_instance('default')
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        
+    # build voice selection model
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_1 = [x for x in voice_list if x.name == 'notfound'][0] # special voice in serviceB
+    voice_2 = [x for x in voice_list if x.name == 'voice_a_3'][0]
+    priority = config_models.VoiceSelectionPriority()
+    priority.add_voice(config_models.VoiceWithOptionsPriority(voice_1, {}))
+    priority.add_voice(config_models.VoiceWithOptionsPriority(voice_2, {}))
+
+    batch = config_models.BatchConfig(constants.BatchMode.simple)
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget('Sound', False, True)
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(priority)
 
     # create list of notes
     # ====================
@@ -395,17 +383,17 @@ def test_priority_voices(qtbot):
     # run batch add audio (simple mode)
     # =================================
     progress_bar = mock_progress_bar()
-    batch_error_manager = mock_hypertts.process_batch_audio(note_id_list, batch_config, progress_bar.callback_fn)
+    batch_error_manager = hypertts_instance.process_batch_audio(note_id_list, batch, progress_bar.callback_fn)
 
-    note_1 = mock_hypertts.anki_utils.get_note_by_id(config_gen.note_id_1)
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     assert 'Sound' in note_1.set_values 
 
     sound_tag = note_1.set_values['Sound']
-    audio_full_path = mock_hypertts.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
-    audio_data = mock_hypertts.service_manager.extract_mock_tts_audio(audio_full_path)
+    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
     # should always fallback to the second voice
-    assert audio_data['voice'] == batch_config['voice_list'][1]
+    assert audio_data['voice']['name'] == 'voice_a_3'
 
 
 def test_priority_voices_not_found(qtbot):
