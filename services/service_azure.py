@@ -12,7 +12,7 @@ class Azure(service.ServiceBase):
     def __init__(self):
         self.access_token = None
 
-    def _get_cloudlanguagetools_enabled(self):
+    def cloudlanguagetools_enabled(self):
         return True
 
     def configure(self, config):
