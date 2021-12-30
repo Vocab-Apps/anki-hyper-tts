@@ -12,6 +12,9 @@ class Google(service.ServiceBase):
     def __init__(self):
         pass
 
+    def cloudlanguagetools_enabled(self):
+        return True
+
     def configure(self, config):
         self.config = config
 

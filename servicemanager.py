@@ -5,6 +5,7 @@ import typing
 import voice
 import service
 import errors
+import requests
 
 class ServiceManager():
     """
@@ -15,6 +16,7 @@ class ServiceManager():
         self.services_directory = services_directory
         self.package_name = package_name
         self.services = {}
+        self.cloudlanguagetools_enabled = False
 
     # service discovery
     # =================
@@ -55,6 +57,17 @@ class ServiceManager():
     # service configuration
     # =====================
 
+    def configure_cloudlanguagetools(self, api_key):
+        logging.info('configure_cloudlanguagetools')
+        self.cloudlanguagetools_base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_BASE_URL', 'https://cloud-language-tools-tts-prod.anki.study')
+        self.cloudlanguagetools_api_key = api_key
+        self.cloudlanguagetools_enabled = True
+        # enable all services which are supported by cloud language tools
+        for service in self.get_all_services():
+            if service.cloudlanguagetools_enabled():
+                logging.info(f'enabling {service.name} with cloud language tools')
+                service.set_enabled(True)
+
     def service_configuration_options(self, service_name):
         return self.services[service_name].configuration_options()
 
@@ -62,7 +75,32 @@ class ServiceManager():
     # ================================
 
     def get_tts_audio(self, source_text, voice, options):
-        return voice.service.get_tts_audio(source_text, voice, options)
+        if self.cloudlanguagetools_enabled:
+            return self.get_tts_audio_cloudlanguagetools(source_text, voice, options)
+        else:
+            return voice.service.get_tts_audio(source_text, voice, options)
+
+    def get_tts_audio_cloudlanguagetools(self, source_text, voice, options):
+        # query cloud language tools API
+        url_path = '/audio_v2'
+        full_url = self.cloudlanguagetools_base_url + url_path
+        data = {
+            'text': source_text,
+            'service': voice.service.name,
+            'request_mode': 'batch',
+            'language_code': voice.language.lang.name,
+            'voice_key': voice.voice_key,
+            'options': options
+        }
+        logging.info(f'request url: {full_url}, data: {data}')
+        response = requests.post(full_url, json=data, headers={'api_key': self.cloudlanguagetools_api_key, 'client': 'languagetools', 'client_version': 'v0.01'})
+
+        if response.status_code == 200:
+            return response.content
+        else:
+            error_message = f"Status code: {response.status_code} ({response.content})"
+            logging.error(error_message)
+            raise errors.RequestError(source_text, voice, error_message)
 
     def full_voice_list(self) -> typing.List[voice.VoiceBase]:
         full_list = []

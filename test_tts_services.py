@@ -107,7 +107,7 @@ class TTSTests(unittest.TestCase):
         voice_list = self.manager.full_voice_list()
         google_voices = [voice for voice in voice_list if voice.service.name == 'Google']
         # print(voice_list)
-        logging.info(f'found {len(google_voices)}')
+        logging.info(f'found {len(google_voices)} voices for Google services')
         assert len(google_voices) > 300
 
         # pick a random en_US voice
@@ -204,4 +204,10 @@ class TTSTests(unittest.TestCase):
 
 
 class TTSTestsCloudLanguageTools(TTSTests):
-    pass
+    def configure_service_manager(self):
+        # configure using cloud language tools
+        self.manager = servicemanager.ServiceManager(services_dir(), 'services')
+        self.manager.init_services()
+        self.manager.configure_cloudlanguagetools(os.environ['ANKI_LANGUAGE_TOOLS_API_KEY'])
+
+    # pytest test_tts_services.py  -k 'TTSTestsCloudLanguageTools and test_google'

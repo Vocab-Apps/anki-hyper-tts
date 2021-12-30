@@ -24,12 +24,17 @@ class ServiceBase(abc.ABC):
 
     enabled = property(fget=_get_enabled, fset=_set_enabled)
 
+    # whether the service is supported by cloud-language-tools
+
+    def cloudlanguagetools_enabled(self):
+        return False # default
+
     @abc.abstractmethod
     def voice_list(self) -> typing.List[voice.VoiceBase]:
         pass
 
     @abc.abstractmethod
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase):
+    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
         pass
 
     # some helper functions
