@@ -1,230 +1,207 @@
 import os
 import logging
-import constants
-import voice
-import servicemanager
-import errors
-
 import re
 import random
 import tempfile
 import copy
 import pytest
-
+import unittest
 import pydub
 import azure.cognitiveservices.speech
 import azure.cognitiveservices.speech.audio
+
+import constants
+import voice
+import servicemanager
+import errors
+
 
 def services_dir():
     current_script_path = os.path.realpath(__file__)
     current_script_dir = os.path.dirname(current_script_path)    
     return os.path.join(current_script_dir, 'services')
 
-def sanitize_recognized_text(recognized_text):
-    recognized_text = re.sub('<[^<]+?>', '', recognized_text)
-    result_text = recognized_text.replace('.', '').\
-        replace('。', '').\
-        replace('?', '').\
-        replace('？', '').\
-        replace('您', '你').\
-        replace(':', '').lower()
-    return result_text
+class TTSTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.configure_service_manager(cls)
 
-def verify_audio_output(manager, voice, source_text):
-    audio_data = manager.get_tts_audio(source_text, voice, {})
-    assert len(audio_data) > 0
+    def configure_service_manager(self):
+        # use individual service keys
+        self.manager = servicemanager.ServiceManager(services_dir(), 'services')
+        self.manager.init_services()
+        # google
+        self.manager.get_service('Google').set_enabled(True)
+        self.manager.get_service('Google').configure({'api_key': os.environ['GOOGLE_SERVICES_KEY']})
+        # azure
+        self.manager.get_service('Azure').set_enabled(True)
+        self.manager.get_service('Azure').configure({
+            'api_key': os.environ['AZURE_SERVICES_KEY'],
+            'region': os.environ['AZURE_SERVICES_REGION']
+        })        
 
-    output_temp_file = tempfile.NamedTemporaryFile()
-    output_temp_filename = output_temp_file.name
-    with open(output_temp_filename, "wb") as out:
-        out.write(audio_data)
+    def sanitize_recognized_text(self, recognized_text):
+        recognized_text = re.sub('<[^<]+?>', '', recognized_text)
+        result_text = recognized_text.replace('.', '').\
+            replace('。', '').\
+            replace('?', '').\
+            replace('？', '').\
+            replace('您', '你').\
+            replace(':', '').lower()
+        return result_text
 
-    speech_config = azure.cognitiveservices.speech.SpeechConfig(subscription=os.environ['AZURE_SERVICES_KEY'], region='eastus')
+    def verify_audio_output(self, voice, source_text):
+        audio_data = self.manager.get_tts_audio(source_text, voice, {})
+        assert len(audio_data) > 0
 
-    sound = pydub.AudioSegment.from_mp3(output_temp_filename)
-    wav_filepath = tempfile.NamedTemporaryFile(suffix='.wav').name
-    sound.export(wav_filepath, format="wav")
+        output_temp_file = tempfile.NamedTemporaryFile()
+        output_temp_filename = output_temp_file.name
+        with open(output_temp_filename, "wb") as out:
+            out.write(audio_data)
 
-    recognition_language_map = {
-        constants.AudioLanguage.en_US: 'en-US',
-        constants.AudioLanguage.fr_FR: 'fr-FR',
-        constants.AudioLanguage.zh_CN: 'zh-CN',
-        constants.AudioLanguage.ja_JP: 'ja-JP',
-    }
+        speech_config = azure.cognitiveservices.speech.SpeechConfig(subscription=os.environ['AZURE_SERVICES_KEY'], region='eastus')
 
-    recognition_language = recognition_language_map[voice.language]
+        sound = pydub.AudioSegment.from_mp3(output_temp_filename)
+        wav_filepath = tempfile.NamedTemporaryFile(suffix='.wav').name
+        sound.export(wav_filepath, format="wav")
 
-    audio_input = azure.cognitiveservices.speech.audio.AudioConfig(filename=wav_filepath)
-    speech_recognizer = azure.cognitiveservices.speech.SpeechRecognizer(speech_config=speech_config, audio_config=audio_input, language=recognition_language)
-    result = speech_recognizer.recognize_once()
+        recognition_language_map = {
+            constants.AudioLanguage.en_US: 'en-US',
+            constants.AudioLanguage.fr_FR: 'fr-FR',
+            constants.AudioLanguage.zh_CN: 'zh-CN',
+            constants.AudioLanguage.ja_JP: 'ja-JP',
+        }
 
-    # Checks result.
-    if result.reason == azure.cognitiveservices.speech.ResultReason.RecognizedSpeech:
-        recognized_text =  sanitize_recognized_text(result.text)
-        expected_text = sanitize_recognized_text(source_text)
-        assert expected_text == recognized_text, f'expected and actual text not matching (voice: {str(voice)})'
-        logging.info(f'actual and expected text match [{recognized_text}]')
-    elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
-        error_message = "No speech could be recognized: {}".format(result.no_match_details)
-        raise Exception(error_message)
-    elif result.reason == azure.cognitiveservices.speech.ResultReason.Canceled:
-        cancellation_details = result.cancellation_details
-        error_message = "Speech Recognition canceled: {}".format(cancellation_details)
-        raise Exception(error_message)
+        recognition_language = recognition_language_map[voice.language]
 
-def pick_random_voice(voice_list, service_name, language):
-    voice_subset = [voice for voice in voice_list if voice.service.name == service_name and voice.language == language]
-    random_voice = random.choice(voice_subset)
-    return random_voice
+        audio_input = azure.cognitiveservices.speech.audio.AudioConfig(filename=wav_filepath)
+        speech_recognizer = azure.cognitiveservices.speech.SpeechRecognizer(speech_config=speech_config, audio_config=audio_input, language=recognition_language)
+        result = speech_recognizer.recognize_once()
 
-def pick_random_voices_sample(voice_list, service_name, language, count):
-    voice_subset = [voice for voice in voice_list if voice.service.name == service_name and voice.language == language]
-    random_voice_sample = random.sample(voice_subset, count)
-    return random_voice_sample
+        # Checks result.
+        if result.reason == azure.cognitiveservices.speech.ResultReason.RecognizedSpeech:
+            recognized_text =  self.sanitize_recognized_text(result.text)
+            expected_text = self.sanitize_recognized_text(source_text)
+            assert expected_text == recognized_text, f'expected and actual text not matching (voice: {str(voice)})'
+            logging.info(f'actual and expected text match [{recognized_text}]')
+        elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
+            error_message = "No speech could be recognized: {}".format(result.no_match_details)
+            raise Exception(error_message)
+        elif result.reason == azure.cognitiveservices.speech.ResultReason.Canceled:
+            cancellation_details = result.cancellation_details
+            error_message = "Speech Recognition canceled: {}".format(cancellation_details)
+            raise Exception(error_message)
 
+    def pick_random_voice(self, voice_list, service_name, language):
+        voice_subset = [voice for voice in voice_list if voice.service.name == service_name and voice.language == language]
+        random_voice = random.choice(voice_subset)
+        return random_voice
 
-def test_google():
-    manager = servicemanager.ServiceManager(services_dir(), 'services')
-    manager.init_services()
-    manager.get_service('Google').set_enabled(True)
-    manager.get_service('Google').configure({'api_key': os.environ['GOOGLE_SERVICES_KEY']})
-
-    voice_list = manager.full_voice_list()
-    google_voices = [voice for voice in voice_list if voice.service.name == 'Google']
-    # print(voice_list)
-    logging.info(f'found {len(google_voices)}')
-    assert len(google_voices) > 300
-
-    # pick a random en_US voice
-    selected_voice = pick_random_voice(voice_list, 'Google', constants.AudioLanguage.en_US)
-    verify_audio_output(manager, selected_voice, 'This is the first sentence')
-
-    # french
-    selected_voice = pick_random_voice(voice_list, 'Google', constants.AudioLanguage.fr_FR)
-    verify_audio_output(manager, selected_voice, 'Je ne suis pas intéressé.')
-
-    # error checking
-    # try a voice which doesn't exist
-    selected_voice = pick_random_voice(voice_list, 'Google', constants.AudioLanguage.en_US)
-    selected_voice = copy.copy(selected_voice)
-    voice_key = copy.copy(selected_voice.voice_key)
-    voice_key['name'] = 'non existent'
-    altered_voice = voice.Voice('non existent', 
-                                selected_voice.gender, 
-                                selected_voice.language, 
-                                selected_voice.service, 
-                                voice_key,
-                                selected_voice.options)
-
-    exception_caught = False
-    try:
-        audio_data = manager.get_tts_audio('This is the second sentence', altered_voice, {})
-    except errors.RequestError as e:
-        assert 'Could not request audio for' in str(e)
-        assert e.source_text == 'This is the second sentence'
-        assert e.voice.service.name == 'Google'
-        exception_caught = True
-    assert exception_caught
+    def pick_random_voices_sample(self, voice_list, service_name, language, count):
+        voice_subset = [voice for voice in voice_list if voice.service.name == service_name and voice.language == language]
+        random_voice_sample = random.sample(voice_subset, count)
+        return random_voice_sample
 
 
-def test_azure():
-    service_name = 'Azure'
-    manager = servicemanager.ServiceManager(services_dir(), 'services')
-    manager.init_services()
-    manager.get_service(service_name).set_enabled(True)
-    manager.get_service(service_name).configure({
-        'api_key': os.environ['AZURE_SERVICES_KEY'],
-        'region': os.environ['AZURE_SERVICES_REGION']
-    })
+    def test_google(self):
+        voice_list = self.manager.full_voice_list()
+        google_voices = [voice for voice in voice_list if voice.service.name == 'Google']
+        # print(voice_list)
+        logging.info(f'found {len(google_voices)}')
+        assert len(google_voices) > 300
 
-    voice_list = manager.full_voice_list()
-    service_voices = [voice for voice in voice_list if voice.service.name == service_name]
-    assert len(service_voices) > 300
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, 'Google', constants.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence')
 
-    # pick a random en_US voice
-    selected_voice = pick_random_voice(voice_list, service_name, constants.AudioLanguage.en_US)
-    verify_audio_output(manager, selected_voice, 'This is the first sentence')
+        # french
+        selected_voice = self.pick_random_voice(voice_list, 'Google', constants.AudioLanguage.fr_FR)
+        self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
 
-    # french
-    selected_voice = pick_random_voice(voice_list, service_name, constants.AudioLanguage.fr_FR)
-    verify_audio_output(manager, selected_voice, 'Je ne suis pas intéressé.')
+        # error checking
+        # try a voice which doesn't exist
+        selected_voice = self.pick_random_voice(voice_list, 'Google', constants.AudioLanguage.en_US)
+        selected_voice = copy.copy(selected_voice)
+        voice_key = copy.copy(selected_voice.voice_key)
+        voice_key['name'] = 'non existent'
+        altered_voice = voice.Voice('non existent', 
+                                    selected_voice.gender, 
+                                    selected_voice.language, 
+                                    selected_voice.service, 
+                                    voice_key,
+                                    selected_voice.options)
 
-    # error checking
-    # try a voice which doesn't exist
-    selected_voice = pick_random_voice(voice_list, service_name, constants.AudioLanguage.en_US)
-    selected_voice = copy.copy(selected_voice)
-    voice_key = copy.copy(selected_voice.voice_key)
-    voice_key['name'] = 'non existent'
-    altered_voice = voice.Voice('non existent', 
-                                selected_voice.gender, 
-                                selected_voice.language, 
-                                selected_voice.service, 
-                                voice_key,
-                                selected_voice.options)
+        exception_caught = False
+        try:
+            audio_data = self.manager.get_tts_audio('This is the second sentence', altered_voice, {})
+        except errors.RequestError as e:
+            assert 'Could not request audio for' in str(e)
+            assert e.source_text == 'This is the second sentence'
+            assert e.voice.service.name == 'Google'
+            exception_caught = True
+        assert exception_caught
 
-    exception_caught = False
-    try:
-        audio_data = manager.get_tts_audio('This is the second sentence', altered_voice, {})
-    except errors.RequestError as e:
-        assert 'Could not request audio for' in str(e)
-        assert e.source_text == 'This is the second sentence'
-        assert e.voice.service.name == service_name
-        exception_caught = True
-    assert exception_caught
 
-def get_configured_servicemanager():
-    manager = servicemanager.ServiceManager(services_dir(), 'services')
-    manager.init_services()
-    manager.get_service('Azure').set_enabled(True)
-    manager.get_service('Azure').configure({
-        'api_key': os.environ['AZURE_SERVICES_KEY'],
-        'region': os.environ['AZURE_SERVICES_REGION']
-    })    
-    manager.get_service('Google').set_enabled(True)
-    manager.get_service('Google').configure({'api_key': os.environ['GOOGLE_SERVICES_KEY']})
-    return manager
+    def test_azure(self):
+        service_name = 'Azure'
 
-def verify_all_services_language(language, source_text):
-    manager = get_configured_servicemanager()
-    voice_list = manager.full_voice_list()
-    service_name_list = [service.name for service in manager.get_all_services()]
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        assert len(service_voices) > 300
 
-    for service_name in service_name_list:
-        logging.info(f'testing language {language.name}, service {service_name}')
-        random_voices = pick_random_voices_sample(voice_list, service_name, language, 3)
-        for voice in random_voices:
-            verify_audio_output(manager, voice, source_text)    
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, constants.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence')
 
-def test_all_services_english():
-    verify_all_services_language(constants.AudioLanguage.en_US, 'The weather is good today.')
+        # french
+        selected_voice = self.pick_random_voice(voice_list, service_name, constants.AudioLanguage.fr_FR)
+        self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
 
-def test_all_services_french():
-    verify_all_services_language(constants.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
+        # error checking
+        # try a voice which doesn't exist
+        selected_voice = self.pick_random_voice(voice_list, service_name, constants.AudioLanguage.en_US)
+        selected_voice = copy.copy(selected_voice)
+        voice_key = copy.copy(selected_voice.voice_key)
+        voice_key['name'] = 'non existent'
+        altered_voice = voice.Voice('non existent', 
+                                    selected_voice.gender, 
+                                    selected_voice.language, 
+                                    selected_voice.service, 
+                                    voice_key,
+                                    selected_voice.options)
 
-def test_all_services_mandarin():
-    verify_all_services_language(constants.AudioLanguage.zh_CN, '老人家')
+        exception_caught = False
+        try:
+            audio_data = self.manager.get_tts_audio('This is the second sentence', altered_voice, {})
+        except errors.RequestError as e:
+            assert 'Could not request audio for' in str(e)
+            assert e.source_text == 'This is the second sentence'
+            assert e.voice.service.name == service_name
+            exception_caught = True
+        assert exception_caught
 
-def test_all_services_japanese():
-    verify_all_services_language(constants.AudioLanguage.ja_JP, 'おはようございます')
+    def verify_all_services_language(self, language, source_text):
+        voice_list = self.manager.full_voice_list()
+        service_name_list = [service.name for service in self.manager.get_all_services()]
 
-@pytest.mark.skip(reason="covered by per-language tests")
-def manual_test_all_services():
-    # pytest test_tts_services.py -k test_all_services -rPP -s
-
-    input_map = {
-        constants.AudioLanguage.en_US: 'The weather is good today.',
-        constants.AudioLanguage.fr_FR: 'Il va pleuvoir demain.',
-        constants.AudioLanguage.zh_CN: '老人家',
-        constants.AudioLanguage.ja_JP: 'おはようございます',
-    }
-
-    manager = get_configured_servicemanager()
-    voice_list = manager.full_voice_list()
-    service_name_list = [service.name for service in manager.get_all_services()]
-
-    for language, source_text in input_map.items():
         for service_name in service_name_list:
             logging.info(f'testing language {language.name}, service {service_name}')
-            random_voices = pick_random_voices_sample(voice_list, service_name, language, 3)
+            random_voices = self.pick_random_voices_sample(voice_list, service_name, language, 3)
             for voice in random_voices:
-                verify_audio_output(manager, voice, source_text)
+                self.verify_audio_output(voice, source_text)    
+
+    def test_all_services_english(self):
+        self.verify_all_services_language(constants.AudioLanguage.en_US, 'The weather is good today.')
+
+    def test_all_services_french(self):
+        self.verify_all_services_language(constants.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
+
+    def test_all_services_mandarin(self):
+        self.verify_all_services_language(constants.AudioLanguage.zh_CN, '老人家')
+
+    def test_all_services_japanese(self):
+        self.verify_all_services_language(constants.AudioLanguage.ja_JP, 'おはようございます')
+
+
+class TTSTestsCloudLanguageTools(TTSTests):
+    pass
