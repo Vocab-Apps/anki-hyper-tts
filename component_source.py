@@ -18,7 +18,6 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         self.source_records = source_records
         start_index = self.createIndex(0, 0)
         end_index = self.createIndex(len(self.source_records)-1, 1)
-        logging.debug(start_index)
         self.dataChanged.emit(start_index, end_index, [PyQt5.QtCore.Qt.DisplayRole])
         self.layoutChanged.emit()
 
