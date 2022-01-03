@@ -1,4 +1,5 @@
 import PyQt5
+import logging
 
 import constants
 
@@ -13,30 +14,37 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         return PyQt5.QtCore.Qt.ItemIsSelectable | PyQt5.QtCore.Qt.ItemIsEnabled
 
     def setSourceRecords(self, source_records):
+        logging.debug('SourceTextPreviewTableModel.setSourceRecords')
         self.source_records = source_records
         start_index = self.createIndex(0, 0)
-        end_index = self.createIndex(len(self.source_records)-1, 0)
-        self.dataChanged.emit(start_index, end_index)        
+        end_index = self.createIndex(len(self.source_records)-1, 1)
+        logging.debug(start_index)
+        self.dataChanged.emit(start_index, end_index, [PyQt5.QtCore.Qt.DisplayRole])
+        self.layoutChanged.emit()
 
     def rowCount(self, parent):
+        # logging.debug('SourceTextPreviewTableModel.rowCount')
         return len(self.source_records)
 
     def columnCount(self, parent):
+        # logging.debug('SourceTextPreviewTableModel.columnCount')
         return 2
 
     def data(self, index, role):
+        # logging.debug('SourceTextPreviewTableModel.data')
         if not index.isValid():
             return PyQt5.QtCore.QVariant()
         elif role != PyQt5.QtCore.Qt.DisplayRole:
            return PyQt5.QtCore.QVariant()
         if index.column() == 0:
             # note_id
-            return PyQt5.QtCore.QVariant(self.self.source_records[index.row()][0])
+            return PyQt5.QtCore.QVariant(self.source_records[index.row()][0])
         else:
             # source text field
-            return PyQt5.QtCore.QVariant(self.self.source_records[index.row()][1])
+            return PyQt5.QtCore.QVariant(self.source_records[index.row()][1])
 
     def headerData(self, col, orientation, role):
+        # logging.debug('SourceTextPreviewTableModel.headerData')
         if orientation == PyQt5.QtCore.Qt.Horizontal and role == PyQt5.QtCore.Qt.DisplayRole:
             if col == 0:
                 return PyQt5.QtCore.QVariant(self.note_id_header)
