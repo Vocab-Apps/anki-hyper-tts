@@ -80,6 +80,10 @@ class BatchSource():
         self.simple_template_input = PyQt5.QtWidgets.QLineEdit()
         self.batch_source_layout.addWidget(self.simple_template_input)
 
+        # advanced template
+        self.advanced_template_input = PyQt5.QtWidgets.QPlainTextEdit()
+        self.batch_source_layout.addWidget(self.advanced_template_input)
+
         # preview table
         self.table_view = PyQt5.QtWidgets.QTableView()
         self.table_view.setModel(self.source_text_preview_table_model)
@@ -92,19 +96,25 @@ class BatchSource():
         self.batch_mode_combobox.currentIndexChanged.connect(self.batch_mode_change)
         self.source_field_combobox.currentIndexChanged.connect(self.source_field_change)
         self.simple_template_input.textChanged.connect(self.simple_template_change)
+        self.advanced_template_input.textChanged.connect(self.advanced_template_change)
+
+        # default visibility
+        self.simple_template_input.setVisible(False)
+        self.advanced_template_input.setVisible(False)        
 
     def batch_mode_change(self, current_index):
         selected_batch_mode = constants.BatchMode[self.batch_mode_combobox.currentText()]
 
         self.source_field_combobox.setVisible(False)
         self.simple_template_input.setVisible(False)
+        self.advanced_template_input.setVisible(False)
 
         if selected_batch_mode == constants.BatchMode.simple:
             self.source_field_combobox.setVisible(True)
         elif selected_batch_mode == constants.BatchMode.template:
             self.simple_template_input.setVisible(True)
         elif selected_batch_mode == constants.BatchMode.advanced_template:
-            pass
+            self.advanced_template_input.setVisible(True)
 
     def source_field_change(self, current_index):
         field_name = self.field_list[current_index]
@@ -114,6 +124,11 @@ class BatchSource():
     def simple_template_change(self, simple_template_text):
         self.batch_source_model = config_models.BatchSourceTemplate(constants.BatchMode.template, simple_template_text, constants.TemplateFormatVersion.v1)
         self.update_source_text_preview()
+
+    def advanced_template_change(self):
+        template_text = self.advanced_template_input.toPlainText()
+        self.batch_source_model = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, template_text, constants.TemplateFormatVersion.v1)
+        self.update_source_text_preview()        
 
     def update_source_text_preview(self):
         field_values = self.hypertts.get_source_text_array(self.note_id_list, self.batch_source_model)
