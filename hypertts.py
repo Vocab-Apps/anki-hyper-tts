@@ -198,8 +198,13 @@ class HyperTTS():
         result = []
         for note_id in note_id_list:
             note = self.anki_utils.get_note_by_id(note_id)
-            source_text = self.get_source_text(note, batch_source)
-            result.append([note_id, source_text])
+            try:
+                source_text = self.get_source_text(note, batch_source)
+                error = None
+            except Exception as e:
+                source_text = None
+                error = str(e)
+            result.append([note_id, source_text, error])
         return result
 
 

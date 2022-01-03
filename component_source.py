@@ -10,6 +10,7 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         self.source_records = []
         self.note_id_header = 'Note Id'
         self.source_text_header = 'Source Text'
+        self.error_header = 'Error'
 
     def flags(self, index):
         return PyQt5.QtCore.Qt.ItemIsSelectable | PyQt5.QtCore.Qt.ItemIsEnabled
@@ -28,7 +29,7 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
 
     def columnCount(self, parent):
         # logging.debug('SourceTextPreviewTableModel.columnCount')
-        return 2
+        return 3
 
     def data(self, index, role):
         # logging.debug('SourceTextPreviewTableModel.data')
@@ -36,20 +37,20 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
             return PyQt5.QtCore.QVariant()
         elif role != PyQt5.QtCore.Qt.DisplayRole:
            return PyQt5.QtCore.QVariant()
-        if index.column() == 0:
-            # note_id
-            return PyQt5.QtCore.QVariant(self.source_records[index.row()][0])
-        else:
-            # source text field
-            return PyQt5.QtCore.QVariant(self.source_records[index.row()][1])
+        data = self.source_records[index.row()][index.column()]
+        if data != None:
+            return PyQt5.QtCore.QVariant(data)
+        return PyQt5.QtCore.QVariant()
 
     def headerData(self, col, orientation, role):
         # logging.debug('SourceTextPreviewTableModel.headerData')
         if orientation == PyQt5.QtCore.Qt.Horizontal and role == PyQt5.QtCore.Qt.DisplayRole:
             if col == 0:
                 return PyQt5.QtCore.QVariant(self.note_id_header)
-            else:
+            elif col == 1:
                 return PyQt5.QtCore.QVariant(self.source_text_header)
+            elif col == 2:
+                return PyQt5.QtCore.QVariant(self.error_header)
         return PyQt5.QtCore.QVariant()
 
 class BatchSource():
