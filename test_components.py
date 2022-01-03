@@ -364,4 +364,18 @@ def test_target(qtbot):
     batch_target = component_target.BatchTarget(hypertts_instance, note_id_list)
     batch_target.draw(dialog.getLayout())
 
-    dialog.exec_()
+    # pick the Sound field
+    batch_target.target_field_combobox.setCurrentText('Sound')
+
+    assert batch_target.batch_target_model.target_field == 'Sound'
+    assert batch_target.batch_target_model.text_and_sound_tag == False
+    assert batch_target.batch_target_model.remove_sound_tag == True
+
+    # change some options
+    batch_target.radio_button_text_sound.setChecked(True)
+    assert batch_target.batch_target_model.text_and_sound_tag == True
+
+    batch_target.radio_button_keep_sound.setChecked(True)
+    assert batch_target.batch_target_model.remove_sound_tag == False
+
+    # dialog.exec_()

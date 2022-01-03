@@ -1,4 +1,7 @@
 import PyQt5
+import logging
+
+import config_models
 
 class BatchTarget():
     def __init__(self, hypertts, note_id_list):
@@ -37,6 +40,21 @@ class BatchTarget():
         self.batch_target_layout.addWidget(self.radio_button_remove_sound)
         self.batch_target_layout.addWidget(self.radio_button_keep_sound)
 
+        # connect events
+        self.target_field_combobox.currentIndexChanged.connect(lambda x: self.update_model())
+        self.radio_button_sound_only.toggled.connect(self.update_model)
+        self.radio_button_text_sound.toggled.connect(self.update_model)
+        self.radio_button_remove_sound.toggled.connect(self.update_model)
+        self.radio_button_keep_sound.toggled.connect(self.update_model)
 
+        # run once
+        self.update_model()
+
+    def update_model(self):
+        logging.info(f'update_model {self.radio_button_sound_only.isChecked()} {self.radio_button_text_sound.isChecked()} ')
+        field_name = self.field_list[self.target_field_combobox.currentIndex()]
+        text_and_sound_tag = self.radio_button_text_sound.isChecked()
+        remove_sound_tag = self.radio_button_remove_sound.isChecked()
+        self.batch_target_model = config_models.BatchTarget(field_name, text_and_sound_tag, remove_sound_tag)
 
     
