@@ -56,7 +56,7 @@ class HyperTTS():
             with batch_error_manager.get_batch_action_context():
                 note = self.anki_utils.get_note_by_id(note_id)
                 target_field = batch.target.target_field
-                source_text = self.get_source_text(note, batch)
+                source_text = self.get_source_text(note, batch.source)
                 processed_text = self.process_text(source_text)
                 # this voice_list copy is only used for priority mode
                 voice_list = None
@@ -103,24 +103,24 @@ class HyperTTS():
     # text processing
     # ===============
 
-    def get_source_text(self, note, batch):
-        if batch.mode == constants.BatchMode.simple:
-            source_text = note[batch.source.source_field]
-        elif batch.mode == constants.BatchMode.template:
-            source_text = self.expand_simple_template(note, batch.source)
-        elif batch.mode == constants.BatchMode.advanced_template:
-            source_text = self.expand_advanced_template(note, batch.source)
+    def get_source_text(self, note, batch_source):
+        if batch_source.mode == constants.BatchMode.simple:
+            source_text = note[batch_source.source_field]
+        elif batch_source.mode == constants.BatchMode.template:
+            source_text = self.expand_simple_template(note, batch_source.source_template)
+        elif batch_source.mode == constants.BatchMode.advanced_template:
+            source_text = self.expand_advanced_template(note, batch_source.source_template)
         return source_text
 
-    def expand_simple_template(self, note, source):
+    def expand_simple_template(self, note, source_template):
         field_values = self.get_field_values(note)
-        return source.source_template.format_map(field_values)
+        return source_template.format_map(field_values)
 
-    def expand_advanced_template(self, note, source):
+    def expand_advanced_template(self, note, source_template):
         local_variables = {
             'template_fields': self.get_field_values(note)
         }
-        expanded_template = exec(source.source_template, {}, local_variables)
+        expanded_template = exec(source_template, {}, local_variables)
         result = local_variables['result']
         return result
 

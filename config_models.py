@@ -66,16 +66,13 @@ class BatchSourceSimple(BatchSource):
         self.source_field = source_field
 
 
-class BatchSourceTemplate():
-    def __init__(self, source_template: str, template_format_version: constants.TemplateFormatVersion):
+class BatchSourceTemplate(BatchSource):
+    def __init__(self, mode, source_template: str, template_format_version: constants.TemplateFormatVersion):
+        BatchSource.__init__(self)
+        self.mode = mode
         self.source_template = source_template
         self.template_format_version = template_format_version
 
-    def serialize(self):
-        return {
-            'template_format_version': self.template_format_version.name,
-            'source_template': self.source_template
-        }
 
 class BatchTarget():
     def __init__(self, target_field, text_and_sound_tag, remove_sound_tag):

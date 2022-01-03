@@ -26,7 +26,7 @@ def test_simple_1(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig(constants.BatchMode.simple)
+    batch = config_models.BatchConfig()
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -98,7 +98,7 @@ def test_simple_error_handling(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig(constants.BatchMode.simple)
+    batch = config_models.BatchConfig()
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -136,7 +136,7 @@ def test_simple_append(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
 
-    batch = config_models.BatchConfig(constants.BatchMode.simple)
+    batch = config_models.BatchConfig()
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Chinese', True, True)
 
@@ -190,7 +190,7 @@ def test_random_voices(qtbot):
     random.add_voice(config_models.VoiceWithOptionsRandom(voice_a_2, {}))
     random.add_voice(config_models.VoiceWithOptionsRandom(voice_a_3, {}))
 
-    batch = config_models.BatchConfig(constants.BatchMode.simple)
+    batch = config_models.BatchConfig()
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -229,8 +229,8 @@ def test_simple_template(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig(constants.BatchMode.template)
-    source = config_models.BatchSourceTemplate("""{Article} {Word}""", constants.TemplateFormatVersion.v1)
+    batch = config_models.BatchConfig()
+    source = config_models.BatchSourceTemplate(constants.BatchMode.template, """{Article} {Word}""", constants.TemplateFormatVersion.v1)
     target = config_models.BatchTarget('Sound', False, True)
 
     batch.set_source(source)
@@ -277,8 +277,8 @@ result = f"{article} {word}"
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig(constants.BatchMode.advanced_template)
-    source = config_models.BatchSourceTemplate(source_template, constants.TemplateFormatVersion.v1)
+    batch = config_models.BatchConfig()
+    source = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, source_template, constants.TemplateFormatVersion.v1)
     target = config_models.BatchTarget('Sound', False, True)
 
     batch.set_source(source)
@@ -327,8 +327,8 @@ result = f"{article} {word}"
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig(constants.BatchMode.advanced_template)
-    source = config_models.BatchSourceTemplate(source_template, constants.TemplateFormatVersion.v1)
+    batch = config_models.BatchConfig()
+    source = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, source_template, constants.TemplateFormatVersion.v1)
     target = config_models.BatchTarget('Sound', False, True)
 
     batch.set_source(source)
@@ -368,7 +368,7 @@ def test_priority_voices_success(qtbot):
     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_1, {}))
     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_2, {}))
 
-    batch = config_models.BatchConfig(constants.BatchMode.simple)
+    batch = config_models.BatchConfig()
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -408,7 +408,7 @@ def test_priority_voices_not_found(qtbot):
     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_1, {}))
     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_1, {}))
 
-    batch = config_models.BatchConfig(constants.BatchMode.simple)
+    batch = config_models.BatchConfig()
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 
