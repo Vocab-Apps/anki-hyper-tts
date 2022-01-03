@@ -6,6 +6,7 @@ import hypertts
 import constants
 import component_voiceselection
 import component_source
+import component_target
 
 class EmptyDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self):
@@ -348,5 +349,19 @@ def test_batch_source_1(qtbot):
     batch_source = component_source.BatchSource(hypertts_instance, note_id_list)
     batch_source.draw(dialog.getLayout())
 
+
+    #dialog.exec_()
+
+def test_target(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
+
+    batch_target = component_target.BatchTarget(hypertts_instance, note_id_list)
+    batch_target.draw(dialog.getLayout())
 
     dialog.exec_()
