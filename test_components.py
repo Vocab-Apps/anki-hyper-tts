@@ -5,6 +5,7 @@ import testing_utils
 import hypertts
 import constants
 import component_voiceselection
+import component_source
 
 class EmptyDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self):
@@ -17,14 +18,9 @@ class EmptyDialog(PyQt5.QtWidgets.QDialog):
         return self.main_layout
 
 def get_hypertts_instance():
-    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
-    manager.init_services()
-    manager.get_service('ServiceA').set_enabled(True)
-    manager.get_service('ServiceB').set_enabled(True)
-    anki_utils = testing_utils.MockAnkiUtils({})
-    hypertts_instance = hypertts.HyperTTS(anki_utils, manager)
-
-    return hypertts_instance    
+    # return hypertts_instance    
+    config_gen = testing_utils.TestConfigGenerator()
+    return config_gen.build_hypertts_instance_test_servicemanager('default')
 
 
 def test_voice_selection_defaults_single(qtbot):
@@ -339,3 +335,18 @@ def test_voice_selection_samples(qtbot):
     }
 
     # dialog.exec_()
+
+def test_batch_source_1(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
+
+    batch_source = component_source.BatchSource(hypertts_instance, note_id_list)
+    batch_source.draw(dialog.getLayout())
+
+
+    dialog.exec_()

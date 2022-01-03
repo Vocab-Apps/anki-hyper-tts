@@ -83,6 +83,14 @@ class MockAnkiUtils():
     def get_deck_id(self, deck_name):
         return self.deck_by_name[deck_name]
 
+    def get_all_fields_from_notes(self, note_id_list):
+        field_name_set = {}
+        for note_id in note_id_list:
+            note = self.get_note_by_id(note_id)
+            for field in note.fields:
+                field_name_set[field] = True
+        return sorted(field_name_set.keys())
+
     def media_add_file(self, filename):
         self.added_media_file = filename
         return filename

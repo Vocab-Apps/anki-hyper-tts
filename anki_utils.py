@@ -58,6 +58,14 @@ class AnkiUtils():
     def get_model_id(self, model_name):
         return aqt.mw.col.models.id_for_name(model_name)
 
+    def get_all_fields_from_notes(self, note_id_list):
+        field_name_set = {}
+        for note_id in note_id_list:
+            note = self.get_note_by_id(note_id)
+            for field in note.fields:
+                field_name_set[field] = True
+        return field_name_set.keys()
+
     def get_deck_id(self, deck_name):
         return aqt.mw.col.decks.id_for_name(deck_name)
 
