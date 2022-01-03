@@ -6,7 +6,7 @@ class BatchSource():
     def __init__(self, hypertts, note_id_list):
         self.hypertts = hypertts
         self.note_id_list = note_id_list
-        self.field_list = self.hypertts.anki_utils.get_all_fields_from_notes(self.note_id_list)
+        self.field_list = self.hypertts.get_all_fields_from_notes(self.note_id_list)
 
     def draw(self, layout):
         self.batch_source_layout = PyQt5.QtWidgets.QVBoxLayout()
@@ -24,6 +24,7 @@ class BatchSource():
 
         # wire events
         self.batch_mode_combobox.currentIndexChanged.connect(self.batch_mode_change)
+        self.source_field_combobox.currentIndexChanged.connect(self.source_field_change)
 
     def batch_mode_change(self, current_index):
         selected_batch_mode = constants.BatchMode[self.batch_mode_combobox.currentText()]
@@ -38,4 +39,6 @@ class BatchSource():
             pass
 
     def source_field_change(self, current_index):
-        pass
+        field_name = self.field_list[current_index]
+        field_values = self.hypertts.get_field_values_array(self.note_id_list, field_name)
+        print(field_values)

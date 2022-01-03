@@ -183,6 +183,24 @@ class HyperTTS():
         field_value = re.sub('\[sound:[^\]]+\]', '', field_value)
         return field_value.strip()
 
+    # functions related to getting data from notes
+    # ============================================
+
+    def get_all_fields_from_notes(self, note_id_list):
+        field_name_set = {}
+        for note_id in note_id_list:
+            note = self.anki_utils.get_note_by_id(note_id)
+            for field in note.fields:
+                field_name_set[field] = True
+        return sorted(field_name_set.keys())
+
+    def get_field_values_array(self, note_id_list, field_name):
+        result = []
+        for note_id in note_id_list:
+            note = self.anki_utils.get_note_by_id(note_id)
+            result.append([note_id, note[field_name]])
+        return result
+
 
     # functions related to addon config
     # =================================
