@@ -76,6 +76,11 @@ class BatchSource():
         self.source_field_combobox.addItems(self.field_list)
         self.batch_source_layout.addWidget(self.source_field_combobox)
 
+        # simple template
+        self.simple_template_input = PyQt5.QtWidgets.QLineEdit()
+        self.batch_source_layout.addWidget(self.simple_template_input)
+
+        # preview table
         self.table_view = PyQt5.QtWidgets.QTableView()
         self.table_view.setModel(self.source_text_preview_table_model)
         header = self.table_view.horizontalHeader()
@@ -86,22 +91,28 @@ class BatchSource():
         # wire events
         self.batch_mode_combobox.currentIndexChanged.connect(self.batch_mode_change)
         self.source_field_combobox.currentIndexChanged.connect(self.source_field_change)
+        self.simple_template_input.textChanged.connect(self.simple_template_change)
 
     def batch_mode_change(self, current_index):
         selected_batch_mode = constants.BatchMode[self.batch_mode_combobox.currentText()]
 
         self.source_field_combobox.setVisible(False)
+        self.simple_template_input.setVisible(False)
 
         if selected_batch_mode == constants.BatchMode.simple:
             self.source_field_combobox.setVisible(True)
         elif selected_batch_mode == constants.BatchMode.template:
-            pass
+            self.simple_template_input.setVisible(True)
         elif selected_batch_mode == constants.BatchMode.advanced_template:
             pass
 
     def source_field_change(self, current_index):
         field_name = self.field_list[current_index]
         self.batch_source_model = config_models.BatchSourceSimple(field_name)
+        self.update_source_text_preview()
+
+    def simple_template_change(self, simple_template_text):
+        self.batch_source_model = config_models.BatchSourceTemplate(constants.BatchMode.template, simple_template_text, constants.TemplateFormatVersion.v1)
         self.update_source_text_preview()
 
     def update_source_text_preview(self):

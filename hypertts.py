@@ -194,13 +194,6 @@ class HyperTTS():
                 field_name_set[field] = True
         return sorted(field_name_set.keys())
 
-    def get_field_values_array(self, note_id_list, field_name):
-        result = []
-        for note_id in note_id_list:
-            note = self.anki_utils.get_note_by_id(note_id)
-            result.append([note_id, note[field_name]])
-        return result
-
     def get_source_text_array(self, note_id_list, batch_source):
         result = []
         for note_id in note_id_list:
