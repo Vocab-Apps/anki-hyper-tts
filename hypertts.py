@@ -217,8 +217,9 @@ class HyperTTS():
     # ================================================
 
     def deserialize_batch_config(self, batch_config):
-        batch = config_models.BatchConfig(constants.BatchMode[batch_config['mode']])
-        if batch.mode == constants.BatchMode.simple:
+        batch = config_models.BatchConfig()
+        batch_mode = constants.BatchMode[batch_config['source']['mode']]
+        if batch_mode == constants.BatchMode.simple:
             source = config_models.BatchSourceSimple(batch_config['source']['source_field'])
         else:
             source = config_models.BatchSourceTemplate(batch_config['source']['source_template'],

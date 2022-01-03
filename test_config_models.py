@@ -273,7 +273,7 @@ def test_batch_config(qtbot):
     voice_selection = config_models.VoiceSelectionSingle()
     voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
 
-    batch_config = config_models.BatchConfig(constants.BatchMode.simple)
+    batch_config = config_models.BatchConfig()
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, False)
 
@@ -282,8 +282,8 @@ def test_batch_config(qtbot):
     batch_config.set_voice_selection(voice_selection)
 
     expected_output = {
-        'mode': 'simple',
         'source': {
+            'mode': 'simple',            
             'source_field': 'Chinese'
         },
         'target': {

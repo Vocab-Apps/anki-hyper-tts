@@ -7,8 +7,7 @@ the various objects here dictate how HyperTTS is configured and these objects wi
 """
 
 class BatchConfig():
-    def __init__(self, mode: constants.BatchMode):
-        self.mode = mode
+    def __init__(self):
         self._source = None
         self._target = None
         self._voice_selection = None
@@ -34,20 +33,38 @@ class BatchConfig():
 
     def serialize(self):
         return {
-            'mode': self.mode.name,
             'source': self.source.serialize(),
             'target': self.target.serialize(),
             'voice_selection': self.voice_selection.serialize()
         }
 
-class BatchSourceSimple():
-    def __init__(self, source_field):
-        self.source_field = source_field
+class BatchSource():
+    def __init__(self):
+        self.mode = None
+        self.source_field = None
+        self.source_template = None
+        self.template_format_version = constants.TemplateFormatVersion.v1
 
     def serialize(self):
-        return {
-            'source_field': self.source_field
-        }
+        if self.mode == constants.BatchMode.simple:
+            return {
+                'mode': self.mode.name,
+                'source_field': self.source_field
+            }
+        else:
+            return {
+                'mode': self.mode.name,
+                'template_format_version': self.template_format_version.name,
+                'source_template': self.source_template
+            }
+
+
+class BatchSourceSimple(BatchSource):
+    def __init__(self, source_field):
+        BatchSource.__init__(self)
+        self.mode = constants.BatchMode.simple
+        self.source_field = source_field
+
 
 class BatchSourceTemplate():
     def __init__(self, source_template: str, template_format_version: constants.TemplateFormatVersion):
