@@ -1,5 +1,6 @@
 import PyQt5
 import logging
+import config_models
 
 import constants
 
@@ -59,6 +60,8 @@ class BatchSource():
 
         self.source_text_preview_table_model = SourceTextPreviewTableModel()
 
+        self.batch_source_model = None
+
     def draw(self, layout):
         self.batch_source_layout = PyQt5.QtWidgets.QVBoxLayout()
         layout.addLayout(self.batch_source_layout)
@@ -98,6 +101,9 @@ class BatchSource():
 
     def source_field_change(self, current_index):
         field_name = self.field_list[current_index]
-        field_values = self.hypertts.get_field_values_array(self.note_id_list, field_name)
-        self.source_text_preview_table_model.setSourceRecords(field_values)
-        
+        self.batch_source_model = config_models.BatchSourceSimple(field_name)
+        self.update_source_text_preview()
+
+    def update_source_text_preview(self):
+        field_values = self.hypertts.get_source_text_array(self.note_id_list, self.batch_source_model)
+        self.source_text_preview_table_model.setSourceRecords(field_values)        
