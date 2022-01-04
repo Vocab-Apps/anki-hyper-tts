@@ -103,6 +103,9 @@ class BatchSource():
         self.simple_template_input.setVisible(False)
         self.advanced_template_input.setVisible(False)        
 
+        # select default
+        self.source_field_change(0)
+
     def batch_mode_change(self, current_index):
         selected_batch_mode = constants.BatchMode[self.batch_mode_combobox.currentText()]
 

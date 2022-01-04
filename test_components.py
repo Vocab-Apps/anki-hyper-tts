@@ -349,8 +349,34 @@ def test_batch_source_1(qtbot):
     batch_source = component_source.BatchSource(hypertts_instance, note_id_list)
     batch_source.draw(dialog.getLayout())
 
+    # the field selected should be "Chinese"
+    expected_source_model = config_models.BatchSource()
+    expected_source_model.mode = constants.BatchMode.simple
+    expected_source_model.source_field = 'Chinese'
 
-    #dialog.exec_()
+    assert batch_source.batch_source_model.serialize() == expected_source_model.serialize()
+
+    # select another field, 'English'
+    batch_source.source_field_combobox.setCurrentText('English')
+    expected_source_model.source_field = 'English'
+
+    assert batch_source.batch_source_model.serialize() == expected_source_model.serialize()
+
+    # select template mode
+    batch_source.batch_mode_combobox.setCurrentText('template')
+
+    # enter template format
+    qtbot.keyClicks(batch_source.simple_template_input, '{Chinese}')
+
+    expected_source_model = config_models.BatchSource()
+    expected_source_model.mode = constants.BatchMode.template
+    expected_source_model.source_template = '{Chinese}'
+    expected_source_model.template_format_version = constants.TemplateFormatVersion.v1
+
+    assert batch_source.batch_source_model.serialize() == expected_source_model.serialize()
+
+
+    # dialog.exec_()
 
 def test_target(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
