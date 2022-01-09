@@ -375,6 +375,36 @@ def test_batch_source_1(qtbot):
 
     assert batch_source.batch_source_model.serialize() == expected_source_model.serialize()
 
+    # load model tests
+    # ================
+    # the field selected should be "Chinese"
+    model = config_models.BatchSource()
+    model.mode = constants.BatchMode.simple
+    model.source_field = 'English'
+
+    batch_source.load_model(model)
+
+    assert batch_source.batch_mode_combobox.currentText() == 'simple'
+    assert batch_source.source_field_combobox.currentText() == 'English'
+    assert batch_source.source_text_preview_table_model.source_records[0][1] == 'old people'
+
+    model.source_field = 'Chinese'
+
+    batch_source.load_model(model)
+
+    assert batch_source.batch_mode_combobox.currentText() == 'simple'
+    assert batch_source.source_field_combobox.currentText() == 'Chinese'
+    assert batch_source.source_text_preview_table_model.source_records[0][1] == '老人家'
+
+    model.mode = constants.BatchMode.template
+    model.source_template = '{English}'
+    model.template_format_version = constants.TemplateFormatVersion.v1
+
+    batch_source.load_model(model)
+
+    assert batch_source.batch_mode_combobox.currentText() == 'template'
+    assert batch_source.simple_template_input.text() == '{English}'
+    assert batch_source.source_text_preview_table_model.source_records[0][1] == 'old people'
 
     # dialog.exec_()
 

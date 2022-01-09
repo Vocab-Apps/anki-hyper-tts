@@ -1,6 +1,7 @@
 import PyQt5
 import logging
 import config_models
+import component_common
 
 import constants
 
@@ -53,7 +54,7 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
                 return PyQt5.QtCore.QVariant(self.error_header)
         return PyQt5.QtCore.QVariant()
 
-class BatchSource():
+class BatchSource(component_common.ComponentBase):
     def __init__(self, hypertts, note_id_list):
         self.hypertts = hypertts
         self.note_id_list = note_id_list
@@ -62,6 +63,22 @@ class BatchSource():
         self.source_text_preview_table_model = SourceTextPreviewTableModel()
 
         self.batch_source_model = None
+
+    def get_model(self):
+        return self.batch_source_model
+
+    def load_model(self, model):
+        self.batch_source_model = model
+        batch_mode = model.mode
+        self.batch_mode_combobox.setCurrentText(batch_mode.name)
+        if batch_mode == constants.BatchMode.simple:
+            self.source_field_combobox.setCurrentText(model.source_field)
+        elif batch_mode == constants.BatchMode.template:
+            self.simple_template_input.setText(model.source_template)
+        elif batch_mode == constants.BatchMode.advanced_template:
+            self.advanced_template_input.setText(model.source_template)
+
+        self.update_source_text_preview()
 
     def draw(self, layout):
         self.batch_source_layout = PyQt5.QtWidgets.QVBoxLayout()
