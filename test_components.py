@@ -404,4 +404,19 @@ def test_target(qtbot):
     batch_target.radio_button_keep_sound.setChecked(True)
     assert batch_target.batch_target_model.remove_sound_tag == False
 
-    # dialog.exec_()
+    # load model tests
+    # ================
+
+    model = config_models.BatchTarget('Chinese', False, True)
+    batch_target.load_model(model)
+
+    assert batch_target.target_field_combobox.currentText() == 'Chinese'
+    assert batch_target.radio_button_sound_only.isChecked() == True
+    assert batch_target.radio_button_remove_sound.isChecked() == True
+
+    model = config_models.BatchTarget('Pinyin', True, True)
+    batch_target.load_model(model)
+
+    assert batch_target.target_field_combobox.currentText() == 'Pinyin'
+    assert batch_target.radio_button_sound_only.isChecked() == False
+    assert batch_target.radio_button_remove_sound.isChecked() == True
