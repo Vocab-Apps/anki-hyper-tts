@@ -354,6 +354,10 @@ def test_voice_selection_load_model(qtbot):
 
     voice_list = hypertts_instance.service_manager.full_voice_list()
     voice_a_2 = [x for x in voice_list if x.name == 'voice_a_2'][0]
+    voice_a_3 = [x for x in voice_list if x.name == 'voice_a_3'][0]
+
+    # single voice
+    # ============
 
     model = config_models.VoiceSelectionSingle()
     model.voice = config_models.VoiceWithOptions(voice_a_2, {'speaking_rate': 3.5})
@@ -363,12 +367,29 @@ def test_voice_selection_load_model(qtbot):
     assert voiceselection.radio_button_single.isChecked()
     assert voiceselection.voices_combobox.currentText() == str(voice_a_2)
 
-    # dialog.exec_()
+
     speaking_rate_widget = voiceselection.voice_options_widgets['voice_option_speaking_rate']
     assert speaking_rate_widget != None
     assert speaking_rate_widget.value() == 3.5
 
+    # random
+    # =======
+
+    model = config_models.VoiceSelectionRandom()
+    model.add_voice(config_models.VoiceWithOptionsRandom(voice_a_2, {'speaking_rate': 2.5}))
+    model.add_voice(config_models.VoiceWithOptionsRandom(voice_a_3, {}))
+
+    voiceselection.load_model(model)
     
+    assert voiceselection.radio_button_random.isChecked()
+
+    assert voiceselection.voice_list_grid_layout.itemAt(0).widget().text() == str(voice_a_2) + ' (speaking_rate: 2.5)'
+    assert voiceselection.voice_list_grid_layout.itemAt(3).widget().text() == str(voice_a_3)
+
+    # dialog.exec_()
+
+
+
 
 
 def test_batch_source_1(qtbot):

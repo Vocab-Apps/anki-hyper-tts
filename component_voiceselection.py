@@ -144,6 +144,7 @@ class VoiceSelection(component_common.ComponentBase):
         if model.selection_mode == constants.VoiceSelectionMode.single:
             logging.info(f'options: {model.voice.options}')
             # single voice
+            self.radio_button_single.setChecked(True)
             voice_index = self.voice_list.index(model.voice.voice)
             self.voices_combobox.setCurrentIndex(voice_index)
             # self.voice_options_layout
@@ -153,6 +154,10 @@ class VoiceSelection(component_common.ComponentBase):
                 widget_name = f'voice_option_{key}'
                 logging.info(f'setting value of {key} to {value}')
                 self.voice_options_widgets[widget_name].setValue(value)
+        elif model.selection_mode == constants.VoiceSelectionMode.random:
+            self.radio_button_random.setChecked(True)
+            self.voice_selection_model = model
+            self.redraw_selected_voices()
         
 
     def set_default_selection_model(self):
