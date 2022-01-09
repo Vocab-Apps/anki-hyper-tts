@@ -1,4 +1,5 @@
 import PyQt5
+import logging
 import config_models
 import servicemanager
 import testing_utils
@@ -53,6 +54,8 @@ def test_voice_selection_defaults_single(qtbot):
     }
 
     assert voiceselection.serialize() == expected_output
+
+    # dialog.exec_()
     
 def test_voice_selection_single_1(qtbot):
     hypertts_instance = get_hypertts_instance()
@@ -336,6 +339,37 @@ def test_voice_selection_samples(qtbot):
     }
 
     # dialog.exec_()
+
+def test_voice_selection_load_model(qtbot):
+    hypertts_instance = get_hypertts_instance()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
+    voiceselection.configure(
+        ['Bonjour', 'Comment allez vous?', 'Au revoir']
+    )
+    voiceselection.draw(dialog.getLayout())
+
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_2 = [x for x in voice_list if x.name == 'voice_a_2'][0]
+
+    model = config_models.VoiceSelectionSingle()
+    model.voice = config_models.VoiceWithOptions(voice_a_2, {'speaking_rate': 3.5})
+
+    voiceselection.load_model(model)
+
+    assert voiceselection.radio_button_single.isChecked()
+    assert voiceselection.voices_combobox.currentText() == str(voice_a_2)
+
+    # dialog.exec_()
+    speaking_rate_widget = voiceselection.voice_options_widgets['voice_option_speaking_rate']
+    assert speaking_rate_widget != None
+    assert speaking_rate_widget.value() == 3.5
+
+    
+
 
 def test_batch_source_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()

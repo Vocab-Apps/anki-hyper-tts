@@ -5,6 +5,7 @@ import copy
 import constants
 import voice
 import config_models
+import component_common
 
 class SelectedVoiceOptionBase():
     def __init__(self, voice_with_options, remove_callback):
@@ -105,7 +106,7 @@ class ComponentPriorityVoiceList(ComponentVoiceListBase):
         self.voice_list_grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(voice_with_options)), row, 0, 1, 1)
 
 
-class VoiceSelection():
+class VoiceSelection(component_common.ComponentBase):
     def __init__(self, hypertts):
         self.hypertts = hypertts
 
@@ -133,6 +134,26 @@ class VoiceSelection():
 
         self.set_default_selection_model()
 
+    def get_model(self):
+        return self.voice_selection_model
+
+    def load_model(self, model):
+        logging.info(f'load_model')
+        # self.voice_selection_model = model
+
+        if model.selection_mode == constants.VoiceSelectionMode.single:
+            logging.info(f'options: {model.voice.options}')
+            # single voice
+            voice_index = self.voice_list.index(model.voice.voice)
+            self.voices_combobox.setCurrentIndex(voice_index)
+            # self.voice_options_layout
+            #self.voice_options_widgets[widget_name]
+            logging.info(f'options: {model.voice.options}')
+            for key, value in model.voice.options.items():
+                widget_name = f'voice_option_{key}'
+                logging.info(f'setting value of {key} to {value}')
+                self.voice_options_widgets[widget_name].setValue(value)
+        
 
     def set_default_selection_model(self):
         self.voice_selection_model = config_models.VoiceSelectionSingle() # default
@@ -311,6 +332,7 @@ class VoiceSelection():
         logging.info(f'voice_selected: {voice} options: {voice.options}')
 
         # clear the options layout
+        self.voice_options_widgets = {}
         for i in reversed(range(self.voice_options_layout.count())): 
             self.voice_options_layout.itemAt(i).widget().setParent(None)
 
@@ -333,10 +355,12 @@ class VoiceSelection():
                 # create a spinner
                 widget = PyQt5.QtWidgets.QDoubleSpinBox()
                 widget.setObjectName(widget_name)
+                # logging.info(f'objec name: {widget_name}')
                 widget.setRange(value['min'], value['max'])
                 widget.setValue(value['default'])
                 widget.valueChanged.connect(get_set_option_lambda(voice, key))
                 self.voice_options_layout.addWidget(widget)
+                self.voice_options_widgets[widget_name] = widget
             else:
                 raise Exception(f"voice option type not supported: {value['type']}")
 

@@ -42,6 +42,9 @@ class VoiceBase(abc.ABC):
     def __str__(self):
         return f'{self.service.name}, {self.language.audio_lang_name}, {self.gender.name}, {self.name}'
 
+    def __eq__(self, other):
+        return self.service.name == other.service.name and self.voice_key == other.voice_key
+
 
 class Voice(VoiceBase):
     """
