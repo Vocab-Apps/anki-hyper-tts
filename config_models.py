@@ -1,3 +1,5 @@
+import abc
+
 import constants
 import voice
 import copy
@@ -6,7 +8,13 @@ import copy
 the various objects here dictate how HyperTTS is configured and these objects will serialize to/from the anki config
 """
 
-class BatchConfig():
+class ConfigModelBase(abc.ABC):
+    @abc.abstractmethod
+    def serialize(self):
+        pass
+
+
+class BatchConfig(ConfigModelBase):
     def __init__(self):
         self._source = None
         self._target = None
@@ -38,7 +46,7 @@ class BatchConfig():
             'voice_selection': self.voice_selection.serialize()
         }
 
-class BatchSource():
+class BatchSource(ConfigModelBase):
     def __init__(self):
         self.mode = None
         self.source_field = None
@@ -74,7 +82,7 @@ class BatchSourceTemplate(BatchSource):
         self.template_format_version = template_format_version
 
 
-class BatchTarget():
+class BatchTarget(ConfigModelBase):
     def __init__(self, target_field, text_and_sound_tag, remove_sound_tag):
         self.target_field = target_field
         self.text_and_sound_tag = text_and_sound_tag
@@ -140,7 +148,7 @@ class VoiceWithOptionsPriority(VoiceWithOptions):
         VoiceWithOptions.__init__(self, voice, options)
 
 
-class VoiceSelectionBase():
+class VoiceSelectionBase(ConfigModelBase):
     def __init__(self):
         self._selection_mode = None
 
