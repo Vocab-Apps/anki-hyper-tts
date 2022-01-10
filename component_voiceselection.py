@@ -106,7 +106,7 @@ class ComponentPriorityVoiceList(ComponentVoiceListBase):
         self.voice_list_grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(voice_with_options)), row, 0, 1, 1)
 
 
-class VoiceSelection(component_common.ComponentBase):
+class VoiceSelection(component_common.ConfigComponentBase):
     def __init__(self, hypertts):
         self.hypertts = hypertts
 

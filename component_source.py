@@ -54,7 +54,7 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
                 return PyQt5.QtCore.QVariant(self.error_header)
         return PyQt5.QtCore.QVariant()
 
-class BatchSource(component_common.ComponentBase):
+class BatchSource(component_common.ConfigComponentBase):
     def __init__(self, hypertts, note_id_list):
         self.hypertts = hypertts
         self.note_id_list = note_id_list

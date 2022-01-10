@@ -4,7 +4,7 @@ import logging
 import config_models
 import component_common
 
-class BatchTarget(component_common.ComponentBase):
+class BatchTarget(component_common.ConfigComponentBase):
     def __init__(self, hypertts, note_id_list):
         self.hypertts = hypertts
         self.note_id_list = note_id_list

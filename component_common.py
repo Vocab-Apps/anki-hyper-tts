@@ -1,6 +1,6 @@
 import abc
 
-class ComponentBase(abc.ABC):
+class ConfigComponentBase(abc.ABC):
     @abc.abstractmethod
     def load_model(self, model):
         pass
