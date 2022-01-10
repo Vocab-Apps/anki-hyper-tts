@@ -386,6 +386,20 @@ def test_voice_selection_load_model(qtbot):
     assert voiceselection.voice_list_grid_layout.itemAt(0).widget().text() == str(voice_a_2) + ' (speaking_rate: 2.5)'
     assert voiceselection.voice_list_grid_layout.itemAt(3).widget().text() == str(voice_a_3)
 
+    # priority
+    # ========
+
+    model = config_models.VoiceSelectionPriority()
+    model.add_voice(config_models.VoiceWithOptionsPriority(voice_a_2, {'speaking_rate': 2.5}))
+    model.add_voice(config_models.VoiceWithOptionsPriority(voice_a_3, {}))
+
+    voiceselection.load_model(model)
+    
+    assert voiceselection.radio_button_priority.isChecked()
+
+    assert voiceselection.voice_list_grid_layout.itemAt(0).widget().text() == str(voice_a_2) + ' (speaking_rate: 2.5)'
+    assert voiceselection.voice_list_grid_layout.itemAt(4).widget().text() == str(voice_a_3)    
+
     # dialog.exec_()
 
 

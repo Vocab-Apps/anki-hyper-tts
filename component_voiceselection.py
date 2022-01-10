@@ -158,6 +158,11 @@ class VoiceSelection(component_common.ComponentBase):
             self.radio_button_random.setChecked(True)
             self.voice_selection_model = model
             self.redraw_selected_voices()
+        elif model.selection_mode == constants.VoiceSelectionMode.priority:
+            self.radio_button_priority.setChecked(True)
+            self.voice_selection_model = model
+            self.redraw_selected_voices()
+
         
 
     def set_default_selection_model(self):
