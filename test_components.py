@@ -1,5 +1,6 @@
 import PyQt5
 import logging
+import component_batch_preview
 import config_models
 import servicemanager
 import testing_utils
@@ -519,3 +520,32 @@ def test_target(qtbot):
     assert batch_target.target_field_combobox.currentText() == 'Pinyin'
     assert batch_target.radio_button_sound_only.isChecked() == False
     assert batch_target.radio_button_remove_sound.isChecked() == True
+
+def test_batch_preview(qtbot):
+
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_selection = config_models.VoiceSelectionSingle()
+    voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
+
+    batch_config = config_models.BatchConfig()
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget('Sound', False, False)
+
+    batch_config.set_source(source)
+    batch_config.set_target(target)
+    batch_config.set_voice_selection(voice_selection)    
+
+    batch_preview = component_batch_preview.BatchPreview(hypertts_instance, batch_config, note_id_list)
+    batch_preview.draw(dialog.getLayout())
+
+    dialog.exec_()
