@@ -69,6 +69,7 @@ class BatchPreview(component_common.ComponentBase):
         self.batch_preview_layout = PyQt5.QtWidgets.QVBoxLayout()
         self.table_view = PyQt5.QtWidgets.QTableView()
         self.table_view.setModel(self.batch_preview_table_model)
+        self.table_view.setSelectionBehavior(PyQt5.QtWidgets.QTableView.SelectRows)
         self.batch_preview_layout.addWidget(self.table_view)
 
         layout.addLayout(self.batch_preview_layout)
