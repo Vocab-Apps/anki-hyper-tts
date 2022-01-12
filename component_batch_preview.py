@@ -3,13 +3,14 @@ import PyQt5
 
 import component_common
 
+
 class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
     def __init__(self):
         PyQt5.QtCore.QAbstractTableModel.__init__(self, None)
         self.source_records = []
         self.note_id_header = 'Note Id'
-        self.source_text_header = 'Source Text'
-        self.error_header = 'Error'
+        self.source_text_header = 'Text'
+        self.status_header = 'Status'
 
     def flags(self, index):
         return PyQt5.QtCore.Qt.ItemIsSelectable | PyQt5.QtCore.Qt.ItemIsEnabled
@@ -31,14 +32,15 @@ class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         return 3
 
     def data(self, index, role):
+        if role != PyQt5.QtCore.Qt.DisplayRole:
+            return None
         # logging.debug('SourceTextPreviewTableModel.data')
         if not index.isValid():
             return PyQt5.QtCore.QVariant()
-        elif role != PyQt5.QtCore.Qt.DisplayRole:
-           return PyQt5.QtCore.QVariant()
-        data = self.source_records[index.row()][index.column()]
-        if data != None:
-            return PyQt5.QtCore.QVariant(data)
+        if index.column() <= 2:
+            data = self.source_records[index.row()][index.column()]
+            if data != None:
+                return PyQt5.QtCore.QVariant(data)
         return PyQt5.QtCore.QVariant()
 
     def headerData(self, col, orientation, role):
@@ -49,7 +51,7 @@ class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
             elif col == 1:
                 return PyQt5.QtCore.QVariant(self.source_text_header)
             elif col == 2:
-                return PyQt5.QtCore.QVariant(self.error_header)
+                return PyQt5.QtCore.QVariant(self.status_header)
         return PyQt5.QtCore.QVariant()
 
 class BatchPreview(component_common.ComponentBase):
