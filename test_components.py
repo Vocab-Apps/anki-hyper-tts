@@ -456,7 +456,7 @@ def test_batch_source_1(qtbot):
 
     assert batch_source.batch_mode_combobox.currentText() == 'simple'
     assert batch_source.source_field_combobox.currentText() == 'English'
-    assert batch_source.source_text_preview_table_model.source_records[0][1] == 'old people'
+    assert batch_source.batch_status[0].source_text == 'old people'
 
     model.source_field = 'Chinese'
 
@@ -464,7 +464,7 @@ def test_batch_source_1(qtbot):
 
     assert batch_source.batch_mode_combobox.currentText() == 'simple'
     assert batch_source.source_field_combobox.currentText() == 'Chinese'
-    assert batch_source.source_text_preview_table_model.source_records[0][1] == '老人家'
+    assert batch_source.batch_status[0].source_text == '老人家'
 
     model.mode = constants.BatchMode.template
     model.source_template = '{English}'
@@ -474,7 +474,7 @@ def test_batch_source_1(qtbot):
 
     assert batch_source.batch_mode_combobox.currentText() == 'template'
     assert batch_source.simple_template_input.text() == '{English}'
-    assert batch_source.source_text_preview_table_model.source_records[0][1] == 'old people'
+    assert batch_source.batch_status[0].source_text == 'old people'
 
     # dialog.exec_()
 
@@ -548,4 +548,4 @@ def test_batch_preview(qtbot):
     batch_preview = component_batch_preview.BatchPreview(hypertts_instance, batch_config, note_id_list)
     batch_preview.draw(dialog.getLayout())
 
-    dialog.exec_()
+    # dialog.exec_()

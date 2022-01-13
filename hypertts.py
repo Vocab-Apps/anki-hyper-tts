@@ -53,7 +53,7 @@ class HyperTTS():
         batch_error_manager = self.error_manager.get_batch_error_manager('adding audio to notes')
         # for each note, generate audio
         for note_id in note_id_list:
-            with batch_error_manager.get_batch_action_context():
+            with batch_error_manager.get_batch_action_context(note_id):
                 note = self.anki_utils.get_note_by_id(note_id)
                 target_field = batch.target.target_field
                 source_text = self.get_source_text(note, batch.source)
@@ -194,18 +194,15 @@ class HyperTTS():
                 field_name_set[field] = True
         return sorted(field_name_set.keys())
 
-    def get_source_text_array(self, note_id_list, batch_source):
-        result = []
+    def populate_batch_status_source_text(self, note_id_list, batch_source, batch_status):
         for note_id in note_id_list:
             note = self.anki_utils.get_note_by_id(note_id)
             try:
                 source_text = self.get_source_text(note, batch_source)
-                error = None
+                batch_status.set_source_text_blank_error(note_id, source_text)
             except Exception as e:
-                source_text = None
                 error = str(e)
-            result.append([note_id, source_text, error])
-        return result
+                batch_status.set_error_blank_source_text(note_id, error)
 
 
     # functions related to addon config

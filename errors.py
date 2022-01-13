@@ -79,8 +79,9 @@ class SingleActionContext():
         return False
 
 class BatchActionContext():
-    def __init__(self, batch_error_manager):
+    def __init__(self, batch_error_manager, note_id):
         self.batch_error_manager = batch_error_manager
+        self.note_id = note_id
 
     def __enter__(self):
         pass
@@ -106,8 +107,8 @@ class BatchErrorManager():
         }
         self.iteration_count = 0
 
-    def get_batch_action_context(self):
-        return BatchActionContext(self)
+    def get_batch_action_context(self, note_id):
+        return BatchActionContext(self, note_id)
 
     def report_success(self):
         self.action_stats['success'] += 1

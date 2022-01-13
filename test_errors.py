@@ -63,15 +63,15 @@ def test_error_manager(qtbot):
 
     batch_error_manager = error_manager.get_batch_error_manager('batch test 1')
 
-    with batch_error_manager.get_batch_action_context():
+    with batch_error_manager.get_batch_action_context(42):
         logging.info('batch iteration 1')
         raise errors.FieldEmptyError('field 3')
 
-    with batch_error_manager.get_batch_action_context():
+    with batch_error_manager.get_batch_action_context(43):
         logging.info('batch iteration 2')
         logging.info('ok')
 
-    with batch_error_manager.get_batch_action_context():
+    with batch_error_manager.get_batch_action_context(44):
         logging.info('batch iteration 3')
         raise errors.FieldNotFoundError('field 4')
 
@@ -92,11 +92,11 @@ def test_error_manager(qtbot):
 
     batch_error_manager = error_manager.get_batch_error_manager('batch test 2')
 
-    with batch_error_manager.get_batch_action_context():
+    with batch_error_manager.get_batch_action_context(45):
         logging.info('batch iteration 1')
         logging.info('ok')
 
-    with batch_error_manager.get_batch_action_context():
+    with batch_error_manager.get_batch_action_context(46):
         logging.info('batch iteration 2')
         raise Exception('this is unhandled')
 

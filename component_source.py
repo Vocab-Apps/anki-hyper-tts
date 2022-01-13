@@ -2,13 +2,14 @@ import PyQt5
 import logging
 import config_models
 import component_common
+import batch_status
 
 import constants
 
 class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
-    def __init__(self):
+    def __init__(self, batch_status):
         PyQt5.QtCore.QAbstractTableModel.__init__(self, None)
-        self.source_records = []
+        self.batch_status = batch_status
         self.note_id_header = 'Note Id'
         self.source_text_header = 'Source Text'
         self.error_header = 'Error'
@@ -24,12 +25,15 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         self.dataChanged.emit(start_index, end_index, [PyQt5.QtCore.Qt.DisplayRole])
         self.layoutChanged.emit()
 
+    def notifyChange(self, row):
+        start_index = self.createIndex(row, 0)
+        end_index = self.createIndex(row, 2)
+        self.dataChanged.emit(start_index, end_index, [PyQt5.QtCore.Qt.DisplayRole])
+
     def rowCount(self, parent):
-        # logging.debug('SourceTextPreviewTableModel.rowCount')
-        return len(self.source_records)
+        return len(self.batch_status.note_id_list)
 
     def columnCount(self, parent):
-        # logging.debug('SourceTextPreviewTableModel.columnCount')
         return 3
 
     def data(self, index, role):
@@ -38,7 +42,13 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
             return PyQt5.QtCore.QVariant()
         elif role != PyQt5.QtCore.Qt.DisplayRole:
            return PyQt5.QtCore.QVariant()
-        data = self.source_records[index.row()][index.column()]
+        note_status = self.batch_status[index.row()]
+        if index.column() == 0:
+            data = note_status.note_id
+        elif index.column() == 1:
+            data = note_status.source_text
+        elif index.column() == 2:
+            data = note_status.error
         if data != None:
             return PyQt5.QtCore.QVariant(data)
         return PyQt5.QtCore.QVariant()
@@ -60,7 +70,8 @@ class BatchSource(component_common.ConfigComponentBase):
         self.note_id_list = note_id_list
         self.field_list = self.hypertts.get_all_fields_from_notes(self.note_id_list)
 
-        self.source_text_preview_table_model = SourceTextPreviewTableModel()
+        self.batch_status = batch_status.BatchStatus(note_id_list, self.change_listener)
+        self.source_text_preview_table_model = SourceTextPreviewTableModel(self.batch_status)
 
         self.batch_source_model = None
 
@@ -132,17 +143,22 @@ class BatchSource(component_common.ConfigComponentBase):
 
         if selected_batch_mode == constants.BatchMode.simple:
             self.source_field_combobox.setVisible(True)
+            self.source_field_change(0)
         elif selected_batch_mode == constants.BatchMode.template:
             self.simple_template_input.setVisible(True)
+            self.simple_template_change(None)
         elif selected_batch_mode == constants.BatchMode.advanced_template:
+            self.advanced_template_change()
             self.advanced_template_input.setVisible(True)
 
     def source_field_change(self, current_index):
+        current_index = self.source_field_combobox.currentIndex()
         field_name = self.field_list[current_index]
         self.batch_source_model = config_models.BatchSourceSimple(field_name)
         self.update_source_text_preview()
 
     def simple_template_change(self, simple_template_text):
+        simple_template_text = self.simple_template_input.text()
         self.batch_source_model = config_models.BatchSourceTemplate(constants.BatchMode.template, simple_template_text, constants.TemplateFormatVersion.v1)
         self.update_source_text_preview()
 
@@ -151,6 +167,9 @@ class BatchSource(component_common.ConfigComponentBase):
         self.batch_source_model = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, template_text, constants.TemplateFormatVersion.v1)
         self.update_source_text_preview()        
 
+    def change_listener(self, note_id, row):
+        # logging.info(f'change_listener row {row}')
+        self.source_text_preview_table_model.notifyChange(row)
+
     def update_source_text_preview(self):
-        field_values = self.hypertts.get_source_text_array(self.note_id_list, self.batch_source_model)
-        self.source_text_preview_table_model.setSourceRecords(field_values)        
+        self.hypertts.populate_batch_status_source_text(self.note_id_list, self.batch_source_model, self.batch_status)
