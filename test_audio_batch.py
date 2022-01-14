@@ -52,7 +52,7 @@ def test_simple_1(qtbot):
     # =================================
     listener = MockBatchStatusListener()
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener.change_listener_fn)
-    batch_error_manager = hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
 
     assert listener.current_row == 1
     assert listener.callbacks_received[config_gen.note_id_1] == True
@@ -121,16 +121,18 @@ def test_simple_error_handling(qtbot):
 
     # run batch add audio (simple mode)
     # =================================
-    progress_bar = mock_progress_bar()
-    batch_error_manager = hypertts_instance.process_batch_audio(note_id_list, batch, progress_bar.callback_fn)
+    listener = MockBatchStatusListener()
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener.change_listener_fn)    
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
 
     # check progress bar
-    assert progress_bar.iteration == 3
+    assert listener.current_row == 2
 
     # verify batch error manager stats
-    assert batch_error_manager.action_stats['success'] == 2
-    assert len(batch_error_manager.action_stats['error']) == 1
-    assert batch_error_manager.action_stats['error']['Source text is empty'] == 1
+    # verify per-note status
+    assert batch_status_obj[0].sound_file != None
+    assert batch_status_obj[1].sound_file != None
+    assert str(batch_status_obj[2].error) == 'Source text is empty'
 
 def test_simple_append(qtbot):
     # create batch configuration
