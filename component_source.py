@@ -48,7 +48,10 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         elif index.column() == 1:
             data = note_status.source_text
         elif index.column() == 2:
-            data = note_status.error
+            if note_status.error == None:
+                data = None
+            else:
+                data = str(note_status.error)
         if data != None:
             return PyQt5.QtCore.QVariant(data)
         return PyQt5.QtCore.QVariant()
@@ -70,7 +73,7 @@ class BatchSource(component_common.ConfigComponentBase):
         self.note_id_list = note_id_list
         self.field_list = self.hypertts.get_all_fields_from_notes(self.note_id_list)
 
-        self.batch_status = batch_status.BatchStatus(note_id_list, self.change_listener)
+        self.batch_status = batch_status.BatchStatus(hypertts.anki_utils, note_id_list, self.change_listener)
         self.source_text_preview_table_model = SourceTextPreviewTableModel(self.batch_status)
 
         self.batch_source_model = None

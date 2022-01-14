@@ -49,11 +49,10 @@ class HyperTTS():
         self.error_manager = errors.ErrorManager(self.anki_utils)
 
 
-    def process_batch_audio(self, note_id_list, batch, progress_fn):
-        batch_error_manager = self.error_manager.get_batch_error_manager('adding audio to notes')
+    def process_batch_audio(self, note_id_list, batch, batch_status):
         # for each note, generate audio
         for note_id in note_id_list:
-            with batch_error_manager.get_batch_action_context(note_id):
+            with batch_status.get_note_action_context(note_id, False) as note_action_context:
                 note = self.anki_utils.get_note_by_id(note_id)
                 target_field = batch.target.target_field
                 source_text = self.get_source_text(note, batch.source)
@@ -68,7 +67,7 @@ class HyperTTS():
                 while loop_condition:
                     try:
                         voice_with_options = self.choose_voice(batch.voice_selection, voice_list)
-                        sound_tag = self.generate_sound_tag_add_collection(source_text, voice_with_options.voice, voice_with_options.options)
+                        sound_tag, sound_file = self.generate_sound_tag_add_collection(source_text, voice_with_options.voice, voice_with_options.options)
                         if batch.target.remove_sound_tag == True:
                             # remove existing sound tag
                             current_target_field_content = note[target_field]
@@ -78,14 +77,13 @@ class HyperTTS():
                             note[target_field] = sound_tag
                         note.flush()
                         sound_found = True
+                        note_action_context.report_success(sound_file)
                     except errors.AudioNotFoundError as exc:
                         # try the next voice, as long as one is available
                         pass
                     loop_condition = sound_found == False and len(voice_list) > 0
                 if sound_found == False:
                     raise errors.AudioNotFoundAnyVoiceError(source_text)
-            progress_fn(batch_error_manager.iteration_count)
-        return batch_error_manager
 
     def choose_voice(self, voice_selection, voice_list) -> config_models.VoiceWithOptions:
         if voice_selection.selection_mode == constants.VoiceSelectionMode.single:
@@ -160,7 +158,7 @@ class HyperTTS():
         full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options)
         # add to collection
         self.anki_utils.media_add_file(full_filename)
-        return f'[sound:{audio_filename}]'
+        return f'[sound:{audio_filename}]', audio_filename
 
     def get_full_audio_file_name(self, hash_str):
         # return the absolute path of the audio file in the user_files directory
@@ -196,14 +194,12 @@ class HyperTTS():
 
     def populate_batch_status_source_text(self, note_id_list, batch_source, batch_status):
         for note_id in note_id_list:
-            note = self.anki_utils.get_note_by_id(note_id)
-            try:
+            with batch_status.get_note_action_context(note_id, True) as note_action_context:
+                note = self.anki_utils.get_note_by_id(note_id)
                 source_text = self.get_source_text(note, batch_source)
-                batch_status.set_source_text_blank_error(note_id, source_text)
-            except Exception as e:
-                error = str(e)
-                batch_status.set_error_blank_source_text(note_id, error)
+                note_action_context.set_source_text(source_text)
 
+    
 
     # functions related to addon config
     # =================================

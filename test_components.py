@@ -476,7 +476,7 @@ def test_batch_source_1(qtbot):
     assert batch_source.simple_template_input.text() == '{English}'
     assert batch_source.batch_status[0].source_text == 'old people'
 
-    # dialog.exec_()
+    dialog.exec_()
 
 def test_target(qtbot):
     config_gen = testing_utils.TestConfigGenerator()

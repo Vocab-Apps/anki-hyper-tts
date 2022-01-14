@@ -2,6 +2,7 @@ import hypertts
 import testing_utils
 import constants
 import config_models
+import batch_status
 import logging
 import pprint
 
@@ -12,6 +13,15 @@ class mock_progress_bar():
     def callback_fn(self, iteration):
         self.iteration = iteration
 
+
+class MockBatchStatusListener():
+    def __init__(self):
+        self.callbacks_received = {}
+        self.current_row = None
+
+    def change_listener_fn(self, note_id, row):
+        self.callbacks_received[note_id] = True
+        self.current_row = row
 
 def test_simple_1(qtbot):
     # create batch configuration
@@ -40,14 +50,13 @@ def test_simple_1(qtbot):
 
     # run batch add audio (simple mode)
     # =================================
-    progress_bar = mock_progress_bar()
-    batch_error_manager = hypertts_instance.process_batch_audio(note_id_list, batch, progress_bar.callback_fn)
+    listener = MockBatchStatusListener()
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener.change_listener_fn)
+    batch_error_manager = hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
 
-    if len(batch_error_manager.action_stats['error']) > 0:
-        logging.error(batch_error_manager.action_stats)
-
-    # check progress bar
-    assert progress_bar.iteration == 2
+    assert listener.current_row == 1
+    assert listener.callbacks_received[config_gen.note_id_1] == True
+    assert listener.callbacks_received[config_gen.note_id_2] == True
 
     # verify effect on notes
     # ======================

@@ -1,4 +1,4 @@
-
+import errors
 
 class NoteStatus():
     def __init__(self, note_id):
@@ -8,8 +8,32 @@ class NoteStatus():
         self.sound_file = None
         self.error = None
 
+class BatchNoteActionContext():
+    def __init__(self, batch_status, note_id):
+        self.batch_status = batch_status
+        self.note_id = note_id
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exception_type, exception_value, traceback):
+        if exception_value != None:
+            if isinstance(exception_value, errors.HyperTTSError):
+                self.batch_status.report_known_error(self.note_id, exception_value)
+            else:
+                self.batch_status.report_unknown_exception(self.note_id, exception_value)
+            return True
+        return False    
+
+    def report_success(self, sound_file):
+        self.batch_status.set_sound(self.note_id, sound_file)
+
+    def set_source_text(self, source_text):
+        self.batch_status.set_source_text(self.note_id, source_text)
+
 class BatchStatus():
-    def __init__(self, note_id_list, change_listener_fn):
+    def __init__(self, anki_utils, note_id_list, change_listener_fn):
+        self.anki_utils = anki_utils
         self.note_id_list = note_id_list
         self.change_listener_fn = change_listener_fn
         self.note_status_array = []
@@ -26,20 +50,34 @@ class BatchStatus():
     def __getitem__(self, array_index):
         return self.note_status_array[array_index]
 
-    def set_source_text_blank_error(self, note_id, source_text):
-        self.note_status_map[note_id].source_text = source_text
+    def get_note_action_context(self, note_id, blank_fields):
         self.note_status_map[note_id].error = None
+        if blank_fields:
+            self.note_status_map[note_id].source_text = None
+            self.note_status_map[note_id].processed_text = None
+            self.note_status_map[note_id].sound_file = None
+        return BatchNoteActionContext(self, note_id)
+
+    # error reporting
+
+    def report_known_error(self, note_id, exception_value):
+        self.note_status_map[note_id].error = exception_value
+        self.notify_change(note_id)
+
+    def report_unknown_exception(self, note_id, exception_value):
+        self.note_status_map[note_id].error = exception_value
+        self.anki_utils.report_unknown_exception_background(exception_value)
+        self.notify_change(note_id)
+
+    # set the various fields on the NoteStatus
+
+    def set_source_text(self, note_id, source_text):
+        self.note_status_map[note_id].source_text = source_text
         self.notify_change(note_id)
 
     def set_processed_text(self, note_id, processed_text):
         self.note_status_map[note_id].processed_text = processed_text
         self.notify_change(note_id)
-
-    def set_error_blank_source_text(self, note_id, error):
-        self.note_status_map[note_id].error = error
-        self.note_status_map[note_id].source_text = None
-        self.notify_change(note_id)
-
 
     def set_sound(self, note_id, sound):
         self.note_status_map[note_id].sound = sound
