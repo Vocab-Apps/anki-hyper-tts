@@ -26,7 +26,7 @@ class BatchNoteActionContext():
         return False    
 
     def report_success(self, sound_file):
-        self.batch_status.set_sound(self.note_id, sound_file)
+        self.batch_status.set_sound_file(self.note_id, sound_file)
 
     def set_source_text(self, source_text):
         self.batch_status.set_source_text(self.note_id, source_text)
@@ -79,8 +79,8 @@ class BatchStatus():
         self.note_status_map[note_id].processed_text = processed_text
         self.notify_change(note_id)
 
-    def set_sound(self, note_id, sound):
-        self.note_status_map[note_id].sound = sound
+    def set_sound_file(self, note_id, sound_file):
+        self.note_status_map[note_id].sound_file = sound_file
         self.notify_change(note_id)
 
     def notify_change(self, note_id):

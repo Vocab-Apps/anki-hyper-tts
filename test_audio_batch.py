@@ -89,8 +89,8 @@ def test_simple_1(qtbot):
     assert note_2.flush_called == True    
 
     # verify batch error manager stats
-    assert batch_error_manager.action_stats['success'] == 2
-    assert len(batch_error_manager.action_stats['error']) == 0
+    assert batch_status_obj[0].sound_file != None
+    assert batch_status_obj[1].sound_file != None
 
 def test_simple_error_handling(qtbot):
     # include one empty field 
