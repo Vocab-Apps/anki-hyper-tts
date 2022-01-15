@@ -58,33 +58,39 @@ class HyperTTS():
                 target_field = batch.target.target_field
                 source_text = self.get_source_text(note, batch.source)
                 processed_text = self.process_text(source_text)
-                # this voice_list copy is only used for priority mode
-                voice_list = None
-                if batch.voice_selection.selection_mode == constants.VoiceSelectionMode.priority:
-                    voice_list = copy.copy(batch.voice_selection.voice_list)
-                sound_found = False
-                # loop while we haven't found the sound. this will be used for priority mode
-                loop_condition = True
-                while loop_condition:
-                    try:
-                        voice_with_options = self.choose_voice(batch.voice_selection, voice_list)
-                        sound_tag, sound_file = self.generate_sound_tag_add_collection(source_text, voice_with_options.voice, voice_with_options.options)
-                        if batch.target.remove_sound_tag == True:
-                            # remove existing sound tag
-                            current_target_field_content = note[target_field]
-                            field_content = self.strip_sound_tag(current_target_field_content)
-                            note[target_field] = f'{field_content} {sound_tag}'
-                        else:
-                            note[target_field] = sound_tag
-                        note.flush()
-                        sound_found = True
-                        note_action_context.report_success_sound(sound_file)
-                    except errors.AudioNotFoundError as exc:
-                        # try the next voice, as long as one is available
-                        pass
-                    loop_condition = sound_found == False and len(voice_list) > 0
-                if sound_found == False:
-                    raise errors.AudioNotFoundAnyVoiceError(source_text)
+
+                full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection)
+                sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)
+
+                if batch.target.remove_sound_tag == True:
+                    # remove existing sound tag
+                    current_target_field_content = note[target_field]
+                    field_content = self.strip_sound_tag(current_target_field_content)
+                    note[target_field] = f'{field_content} {sound_tag}'
+                else:
+                    note[target_field] = sound_tag
+                note.flush()
+                sound_found = True
+                note_action_context.report_success_sound(sound_file)
+
+    def get_audio_file(self, processed_text, voice_selection):
+        # this voice_list copy is only used for priority mode
+        voice_list = None
+        if voice_selection.selection_mode == constants.VoiceSelectionMode.priority:
+            voice_list = copy.copy(voice_selection.voice_list)
+        sound_found = False
+        # loop while we haven't found the sound. this will be used for priority mode
+        loop_condition = True
+        while loop_condition:
+            try:
+                voice_with_options = self.choose_voice(voice_selection, voice_list)
+                full_filename, audio_filename = self.generate_audio_write_file(processed_text, voice_with_options.voice, voice_with_options.options)
+                return full_filename, audio_filename
+            except errors.AudioNotFoundError as exc:
+                # try the next voice, as long as one is available
+                pass
+            loop_condition = sound_found == False and len(voice_list) > 0
+        raise errors.AudioNotFoundAnyVoiceError(processed_text)
 
     def choose_voice(self, voice_selection, voice_list) -> config_models.VoiceWithOptions:
         if voice_selection.selection_mode == constants.VoiceSelectionMode.single:
@@ -154,6 +160,10 @@ class HyperTTS():
         with open(full_filename, 'wb') as f:
             f.write(self.service_manager.get_tts_audio(source_text, voice, options))
         return full_filename, audio_filename
+
+    def get_collection_sound_tag(self, full_filename, audio_filename):
+        self.anki_utils.media_add_file(full_filename)
+        return f'[sound:{audio_filename}]', audio_filename
 
     def generate_sound_tag_add_collection(self, source_text, voice, options):
         full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options)
