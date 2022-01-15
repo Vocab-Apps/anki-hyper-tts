@@ -27,7 +27,7 @@ class BatchNoteActionContext():
             return True
         return False    
 
-    def report_success(self, sound_file):
+    def report_success_sound(self, sound_file):
         self.batch_status.set_sound_file(self.note_id, sound_file)
 
     def set_source_text(self, source_text):

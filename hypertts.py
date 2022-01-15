@@ -78,7 +78,7 @@ class HyperTTS():
                             note[target_field] = sound_tag
                         note.flush()
                         sound_found = True
-                        note_action_context.report_success(sound_file)
+                        note_action_context.report_success_sound(sound_file)
                     except errors.AudioNotFoundError as exc:
                         # try the next voice, as long as one is available
                         pass

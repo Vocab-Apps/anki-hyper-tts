@@ -524,7 +524,10 @@ def test_target(qtbot):
 def test_batch_preview(qtbot):
 
     config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    # configure delay on service A
+    # hypertts_instance.service_manager.get_service('ServiceA').configure({'delay': 1.0})
 
     dialog = EmptyDialog()
     dialog.setupUi()
