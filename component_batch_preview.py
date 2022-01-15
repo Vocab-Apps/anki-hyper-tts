@@ -92,16 +92,16 @@ class BatchPreview(component_common.ComponentBase):
         layout.addLayout(self.batch_preview_layout)
 
     def preview_audio_button_pressed(self):
-        self.hypertts.anki_utils.run_in_background(self.play_sample_task, self.play_sample_task_done)
+        self.hypertts.anki_utils.run_in_background(self.play_preview_task, self.play_preview_task_done)
 
-    def play_sample_task(self):
+    def play_preview_task(self):
         row_indices = self.table_view.selectionModel().selectedIndexes()
         if len(row_indices) >= 1:
             selected_row = row_indices[0].row()
             processed_text = self.batch_status[selected_row].processed_text
             self.hypertts.play_sound_batch_preview(processed_text, self.batch_model.voice_selection)
 
-    def play_sample_task_done(self, result):
+    def play_preview_task_done(self, result):
         pass
 
     def load_audio_button_pressed(self):
