@@ -1,3 +1,4 @@
+import constants
 import errors
 
 class NoteStatus():
@@ -35,6 +36,9 @@ class BatchNoteActionContext():
     def set_processed_text(self, processed_text):
         self.batch_status.set_processed_text(self.note_id, processed_text)
 
+    def set_status(self, status):
+        self.batch_status.set_status(self.note_id, status)
+
 class BatchStatus():
     def __init__(self, anki_utils, note_id_list, change_listener_fn):
         self.anki_utils = anki_utils
@@ -65,10 +69,12 @@ class BatchStatus():
     # error reporting
 
     def report_known_error(self, note_id, exception_value):
+        self.note_status_map[note_id].status = constants.BatchNoteStatus.Error
         self.note_status_map[note_id].error = exception_value
         self.notify_change(note_id)
 
     def report_unknown_exception(self, note_id, exception_value):
+        self.note_status_map[note_id].status = constants.BatchNoteStatus.Error
         self.note_status_map[note_id].error = exception_value
         self.anki_utils.report_unknown_exception_background(exception_value)
         self.notify_change(note_id)
@@ -84,7 +90,12 @@ class BatchStatus():
         self.notify_change(note_id)
 
     def set_sound_file(self, note_id, sound_file):
+        self.note_status_map[note_id].status = constants.BatchNoteStatus.Done
         self.note_status_map[note_id].sound_file = sound_file
+        self.notify_change(note_id)
+
+    def set_status(self, note_id, status):
+        self.note_status_map[note_id].status = status
         self.notify_change(note_id)
 
     def notify_change(self, note_id):

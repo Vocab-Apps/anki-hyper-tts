@@ -78,7 +78,23 @@ class BatchPreview(component_common.ComponentBase):
         self.table_view.setSelectionBehavior(PyQt5.QtWidgets.QTableView.SelectRows)
         self.batch_preview_layout.addWidget(self.table_view)
 
+        self.load_audio_button = PyQt5.QtWidgets.QPushButton('Load Audio')
+        self.batch_preview_layout.addWidget(self.load_audio_button)
+
+        # wire events
+        self.load_audio_button.pressed.connect(self.load_audio_button_pressed)
+
         layout.addLayout(self.batch_preview_layout)
+
+    def load_audio_button_pressed(self):
+        self.hypertts.anki_utils.run_in_background(self.load_audio_task, self.load_audio_task_done)
+
+    def load_audio_task(self):
+        logging.info('load_audio_task')
+        self.hypertts.process_batch_audio(self.note_id_list, self.batch_model, self.batch_status)
+
+    def load_audio_task_done(self, result):
+        logging.info('load_audio_task_done')
 
     def change_listener(self, note_id, row):
         # logging.info(f'change_listener row {row}')
