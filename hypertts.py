@@ -145,6 +145,11 @@ class HyperTTS():
     # sound generation
     # ================
 
+    def play_sound_batch_preview(self, processed_text, voice_selection):
+        logging.info(f'playing audio for {processed_text}')
+        full_filename, audio_filename = self.get_audio_file(processed_text, voice_selection)
+        self.anki_utils.play_sound(full_filename)
+
     def play_sound(self, source_text, voice, options):
         full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options)
         self.anki_utils.play_sound(full_filename)

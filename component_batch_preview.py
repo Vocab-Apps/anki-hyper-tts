@@ -75,6 +75,7 @@ class BatchPreview(component_common.ComponentBase):
         self.batch_preview_layout = PyQt5.QtWidgets.QVBoxLayout()
         self.table_view = PyQt5.QtWidgets.QTableView()
         self.table_view.setModel(self.batch_preview_table_model)
+        self.table_view.setSelectionMode(PyQt5.QtWidgets.QTableView.SingleSelection)
         self.table_view.setSelectionBehavior(PyQt5.QtWidgets.QTableView.SelectRows)
         self.batch_preview_layout.addWidget(self.table_view)
 
@@ -91,8 +92,17 @@ class BatchPreview(component_common.ComponentBase):
         layout.addLayout(self.batch_preview_layout)
 
     def preview_audio_button_pressed(self):
-        pass
+        self.hypertts.anki_utils.run_in_background(self.play_sample_task, self.play_sample_task_done)
 
+    def play_sample_task(self):
+        row_indices = self.table_view.selectionModel().selectedIndexes()
+        if len(row_indices) >= 1:
+            selected_row = row_indices[0].row()
+            processed_text = self.batch_status[selected_row].processed_text
+            self.hypertts.play_sound_batch_preview(processed_text, self.batch_model.voice_selection)
+
+    def play_sample_task_done(self, result):
+        pass
 
     def load_audio_button_pressed(self):
         self.hypertts.anki_utils.run_in_background(self.load_audio_task, self.load_audio_task_done)
