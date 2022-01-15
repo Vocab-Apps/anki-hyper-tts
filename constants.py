@@ -16,6 +16,12 @@ class VoiceSelectionMode(enum.Enum):
     random = enum.auto() # a random voice is selected, with optional weights
     priority = enum.auto() # the first voice is selected, and if audio is not found, move to the second one
 
+class BatchNoteStatus(enum.Enum):
+    Waiting = enum.auto()
+    Processing = enum.auto()
+    Done = enum.auto()
+    Error = enum.auto()
+
 #
 CONFIG_BATCH_TEXT_AND_SOUND_TAG = 'text_and_sound_tag'
 

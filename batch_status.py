@@ -7,6 +7,7 @@ class NoteStatus():
         self.processed_text = None
         self.sound_file = None
         self.error = None
+        self.status = None
 
 class BatchNoteActionContext():
     def __init__(self, batch_status, note_id):
@@ -30,6 +31,9 @@ class BatchNoteActionContext():
 
     def set_source_text(self, source_text):
         self.batch_status.set_source_text(self.note_id, source_text)
+
+    def set_processed_text(self, processed_text):
+        self.batch_status.set_processed_text(self.note_id, processed_text)
 
 class BatchStatus():
     def __init__(self, anki_utils, note_id_list, change_listener_fn):

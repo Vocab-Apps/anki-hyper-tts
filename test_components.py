@@ -548,4 +548,4 @@ def test_batch_preview(qtbot):
     batch_preview = component_batch_preview.BatchPreview(hypertts_instance, batch_config, note_id_list)
     batch_preview.draw(dialog.getLayout())
 
-    # dialog.exec_()
+    dialog.exec_()
