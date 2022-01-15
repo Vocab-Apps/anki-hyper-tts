@@ -551,4 +551,24 @@ def test_batch_preview(qtbot):
     batch_preview = component_batch_preview.BatchPreview(hypertts_instance, batch_config, note_id_list)
     batch_preview.draw(dialog.getLayout())
 
-    dialog.exec_()
+    # dialog.exec_()
+
+    # play sound preview
+    # select second row
+    index_second_row = batch_preview.batch_preview_table_model.createIndex(1, 0)
+    batch_preview.table_view.selectionModel().select(index_second_row, PyQt5.QtCore.QItemSelectionModel.Select)
+    # press preview button
+    qtbot.mouseClick(batch_preview.preview_audio_button, PyQt5.QtCore.Qt.LeftButton)
+
+    assert hypertts_instance.anki_utils.played_sound == {
+        'source_text': '你好',
+        'voice': {
+            'gender': 'Male', 
+            'language': 'fr_FR', 
+            'name': 'voice_a_1', 
+            'service': 'ServiceA',
+            'voice_key': {'name': 'voice_1'}
+        },
+        'options': {}
+    }    
+
