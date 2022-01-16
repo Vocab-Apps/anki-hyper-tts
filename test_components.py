@@ -542,7 +542,7 @@ def test_batch_preview(qtbot):
 
     batch_config = config_models.BatchConfig()
     source = config_models.BatchSourceSimple('Chinese')
-    target = config_models.BatchTarget('Sound', False, False)
+    target = config_models.BatchTarget('Sound', False, True)
 
     batch_config.set_source(source)
     batch_config.set_target(target)
@@ -554,6 +554,8 @@ def test_batch_preview(qtbot):
     # dialog.exec_()
 
     # play sound preview
+    # ==================
+
     # select second row
     index_second_row = batch_preview.batch_preview_table_model.createIndex(1, 0)
     batch_preview.table_view.selectionModel().select(index_second_row, PyQt5.QtCore.QItemSelectionModel.Select)
@@ -571,4 +573,28 @@ def test_batch_preview(qtbot):
         },
         'options': {}
     }    
+
+    # load audio
+    # ==========
+
+    qtbot.mouseClick(batch_preview.load_audio_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # make sure notes were updated
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    assert 'Sound' in note_1.set_values 
+
+    sound_tag = note_1.set_values['Sound']
+    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+    assert audio_data['source_text'] == '老人家'
+
+    note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
+    assert 'Sound' in note_2.set_values 
+
+    sound_tag = note_2.set_values['Sound']
+    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+    assert audio_data['source_text'] == '你好'        
 
