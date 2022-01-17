@@ -3,6 +3,7 @@ import PyQt5
 
 import batch_status
 import component_common
+import constants
 
 
 class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
@@ -72,7 +73,9 @@ class BatchPreview(component_common.ComponentBase):
 
         self.batch_status = batch_status.BatchStatus(hypertts.anki_utils, note_id_list, self.change_listener)
         self.batch_preview_table_model = BatchPreviewTableModel(self.batch_status)
-    
+
+        self.selected_row = None
+
     def load_model(self, model):
         self.batch_model = model
         self.hypertts.populate_batch_status_processed_text(self.note_id_list, self.batch_model.source, self.batch_status)
@@ -87,6 +90,9 @@ class BatchPreview(component_common.ComponentBase):
         self.table_view.setSelectionBehavior(PyQt5.QtWidgets.QTableView.SelectRows)
         self.table_view.selectionModel().selectionChanged.connect(self.selection_changed)
         self.batch_preview_layout.addWidget(self.table_view)
+        
+        self.error_label = PyQt5.QtWidgets.QLabel()
+        self.batch_preview_layout.addWidget(self.error_label)
 
         self.preview_audio_button = PyQt5.QtWidgets.QPushButton('Preview Audio')
         self.batch_preview_layout.addWidget(self.preview_audio_button)
@@ -102,19 +108,32 @@ class BatchPreview(component_common.ComponentBase):
 
     def selection_changed(self):
         logging.info('selection_changed')
-        text = self.get_selected_processed_text()
-        if text != None:
+        self.report_sample_text()
+        self.update_error_label_for_selected()
+
+    def report_sample_text(self):
+        note_status = self.get_selected_note_status()
+        if note_status != None:
+            text = note_status.processed_text
             self.sample_selection_fn(text)
+
+    def update_error_label_for_selected(self):
+        note_status = self.get_selected_note_status()
+        if note_status != None:        
+            if note_status.status == constants.BatchNoteStatus.Error:
+                # show error label
+                self.error_label.setText('<b>Error:</b> ' + str(note_status.error))
+            else:
+                self.error_label.setText('')
 
     def preview_audio_button_pressed(self):
         self.hypertts.anki_utils.run_in_background(self.play_preview_task, self.play_preview_task_done)
 
-    def get_selected_processed_text(self):
+    def get_selected_note_status(self):
         row_indices = self.table_view.selectionModel().selectedIndexes()
         if len(row_indices) >= 1:
-            selected_row = row_indices[0].row()
-            processed_text = self.batch_status[selected_row].processed_text
-            return processed_text
+            self.selected_row = row_indices[0].row()
+            return self.batch_status[self.selected_row]
         return None
 
     def play_preview_task(self):
@@ -140,3 +159,5 @@ class BatchPreview(component_common.ComponentBase):
     def change_listener(self, note_id, row):
         # logging.info(f'change_listener row {row}')
         self.batch_preview_table_model.notifyChange(row)
+        if row == self.selected_row:
+            self.update_error_label_for_selected()
