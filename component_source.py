@@ -68,9 +68,10 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         return PyQt5.QtCore.QVariant()
 
 class BatchSource(component_common.ConfigComponentBase):
-    def __init__(self, hypertts, note_id_list):
+    def __init__(self, hypertts, note_id_list, model_change_callback):
         self.hypertts = hypertts
         self.note_id_list = note_id_list
+        self.model_change_callback = model_change_callback
         self.field_list = self.hypertts.get_all_fields_from_notes(self.note_id_list)
 
         self.batch_status = batch_status.BatchStatus(hypertts.anki_utils, note_id_list, self.change_listener)
@@ -159,17 +160,23 @@ class BatchSource(component_common.ConfigComponentBase):
         current_index = self.source_field_combobox.currentIndex()
         field_name = self.field_list[current_index]
         self.batch_source_model = config_models.BatchSourceSimple(field_name)
+        self.notify_model_update()
         self.update_source_text_preview()
 
     def simple_template_change(self, simple_template_text):
         simple_template_text = self.simple_template_input.text()
         self.batch_source_model = config_models.BatchSourceTemplate(constants.BatchMode.template, simple_template_text, constants.TemplateFormatVersion.v1)
+        self.notify_model_update()
         self.update_source_text_preview()
 
     def advanced_template_change(self):
         template_text = self.advanced_template_input.toPlainText()
         self.batch_source_model = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, template_text, constants.TemplateFormatVersion.v1)
+        self.notify_model_update()
         self.update_source_text_preview()        
+
+    def notify_model_update(self):
+        self.model_change_callback(self.batch_source_model)
 
     def change_listener(self, note_id, row):
         # logging.info(f'change_listener row {row}')

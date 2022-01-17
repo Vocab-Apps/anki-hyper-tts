@@ -13,7 +13,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.hypertts = hypertts
         self.note_id_list = note_id_list
 
-        self.source = component_source.BatchSource(self.hypertts, self.note_id_list)
+        self.source = component_source.BatchSource(self.hypertts, self.note_id_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, self.note_id_list)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts)
         self.voice_selection.configure(['yo', 'yo'])
@@ -24,6 +24,15 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
     def get_model(self):
         return None
+
+    def source_model_updated(self, model):
+        logging.info(f'source_model_updated: {model}')
+
+    def target_model_updated(self, model):
+        pass
+
+    def voice_selection_model_updated(self, model):
+        pass
 
     def draw(self, layout):
         self.tabs = PyQt5.QtWidgets.QTabWidget()
