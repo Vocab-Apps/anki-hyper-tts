@@ -60,17 +60,19 @@ class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         return PyQt5.QtCore.QVariant()
 
 class BatchPreview(component_common.ComponentBase):
-    def __init__(self, hypertts, batch_model, note_id_list):
+    def __init__(self, hypertts, note_id_list):
         self.hypertts = hypertts
-        self.batch_model = batch_model
         self.note_id_list = note_id_list
 
         self.batch_status = batch_status.BatchStatus(hypertts.anki_utils, note_id_list, self.change_listener)
         self.batch_preview_table_model = BatchPreviewTableModel(self.batch_status)
     
-    def draw(self, layout):
-        # populate processed text
+    def load_model(self, model):
+        self.batch_model = model
         self.hypertts.populate_batch_status_processed_text(self.note_id_list, self.batch_model.source, self.batch_status)
+
+    def draw(self):
+        # populate processed text
 
         self.batch_preview_layout = PyQt5.QtWidgets.QVBoxLayout()
         self.table_view = PyQt5.QtWidgets.QTableView()
@@ -89,7 +91,7 @@ class BatchPreview(component_common.ComponentBase):
         self.preview_audio_button.pressed.connect(self.preview_audio_button_pressed)
         self.load_audio_button.pressed.connect(self.load_audio_button_pressed)
 
-        layout.addLayout(self.batch_preview_layout)
+        return self.batch_preview_layout
 
     def preview_audio_button_pressed(self):
         self.hypertts.anki_utils.run_in_background(self.play_preview_task, self.play_preview_task_done)

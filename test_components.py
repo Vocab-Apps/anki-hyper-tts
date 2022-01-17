@@ -15,8 +15,17 @@ class EmptyDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self):
         super(PyQt5.QtWidgets.QDialog, self).__init__()
 
+    def setupUi(self):
+        self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
+
+    def getLayout(self):
+        return self.main_layout
+
     def setLayout(self, layout):
         self.main_layout = layout
+
+    def addChildLayout(self, layout):
+        self.main_layout.addLayout(layout)
 
 def get_hypertts_instance():
     # return hypertts_instance    
@@ -410,11 +419,12 @@ def test_batch_source_1(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
     dialog = EmptyDialog()
+    dialog.setupUi()
 
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
 
     batch_source = component_source.BatchSource(hypertts_instance, note_id_list)
-    dialog.setLayout(batch_source.draw())
+    dialog.addChildLayout(batch_source.draw())
 
     # the field selected should be "Chinese"
     expected_source_model = config_models.BatchSource()
@@ -473,7 +483,7 @@ def test_batch_source_1(qtbot):
     assert batch_source.simple_template_input.text() == '{English}'
     assert batch_source.batch_status[0].source_text == 'old people'
 
-    # dialog.exec_()
+    dialog.exec_()
 
 def test_target(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
@@ -607,5 +617,7 @@ def test_batch_dialog(qtbot):
 
     batch = component_batch.ComponentBatch(hypertts_instance, note_id_list)
     batch.draw(dialog.getLayout())
+    # dialog.setLayout(batch.draw())
+    # batch.draw(dialog.getLayout())
 
     dialog.exec_()

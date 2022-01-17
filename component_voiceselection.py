@@ -175,7 +175,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         combobox.insertSeparator(1)
         combobox.addItems(items)
 
-    def draw(self, layout):
+    def draw(self):
         # filters:
         # - language
         # - locale
@@ -191,7 +191,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.get_voices()
 
         self.voices_layout = PyQt5.QtWidgets.QVBoxLayout()
-        layout.addLayout(self.voices_layout)
 
         self.audio_languages_combobox = PyQt5.QtWidgets.QComboBox()
         self.languages_combobox = PyQt5.QtWidgets.QComboBox()
@@ -286,6 +285,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.clear_voices_button.pressed.connect(self.clear_voices)
 
         self.filter_and_draw_voices(0)
+
+        return self.voices_layout
 
     def voice_selection_mode_change(self):
         if self.radio_button_single.isChecked():

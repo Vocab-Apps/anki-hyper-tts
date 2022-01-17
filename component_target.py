@@ -27,9 +27,8 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.radio_button_remove_sound.setChecked(not self.batch_target_model.remove_sound_tag)
 
 
-    def draw(self, layout):
+    def draw(self):
         self.batch_target_layout = PyQt5.QtWidgets.QVBoxLayout()
-        layout.addLayout(self.batch_target_layout)
         
         # target field
         self.target_field_combobox = PyQt5.QtWidgets.QComboBox()
@@ -63,6 +62,7 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.radio_button_remove_sound.toggled.connect(self.update_remove_sound)
         self.radio_button_keep_sound.toggled.connect(self.update_remove_sound)
 
+        return self.batch_target_layout
 
     def update_text_sound(self):
         self.batch_target_model.text_and_sound_tag = self.radio_button_text_sound.isChecked()
