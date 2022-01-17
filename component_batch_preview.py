@@ -44,7 +44,7 @@ class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
             data = note_status.source_text
         elif index.column() == 2:
             data = note_status.processed_text            
-        elif index.column() == 2:
+        elif index.column() == 3:
             if note_status.status != None:
                 data = note_status.status.name
         if data != None:
