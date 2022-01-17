@@ -10,7 +10,8 @@ class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         PyQt5.QtCore.QAbstractTableModel.__init__(self, None)
         self.batch_status = batch_status
         self.note_id_header = 'Note Id'
-        self.source_text_header = 'Text'
+        self.source_text_header = 'Source Text'
+        self.processed_text_header = 'Processed Text'
         self.status_header = 'Status'
 
     def flags(self, index):
@@ -22,7 +23,7 @@ class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
 
     def columnCount(self, parent):
         # logging.debug('SourceTextPreviewTableModel.columnCount')
-        return 3
+        return 4
     
     def notifyChange(self, row):
         start_index = self.createIndex(row, 0)
@@ -40,7 +41,9 @@ class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         if index.column() == 0:
             data = note_status.note_id
         elif index.column() == 1:
-            data = note_status.processed_text
+            data = note_status.source_text
+        elif index.column() == 2:
+            data = note_status.processed_text            
         elif index.column() == 2:
             if note_status.status != None:
                 data = note_status.status.name
@@ -56,13 +59,16 @@ class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
             elif col == 1:
                 return PyQt5.QtCore.QVariant(self.source_text_header)
             elif col == 2:
+                return PyQt5.QtCore.QVariant(self.processed_text_header)
+            elif col == 3:
                 return PyQt5.QtCore.QVariant(self.status_header)
         return PyQt5.QtCore.QVariant()
 
 class BatchPreview(component_common.ComponentBase):
-    def __init__(self, hypertts, note_id_list):
+    def __init__(self, hypertts, note_id_list, sample_selection_fn):
         self.hypertts = hypertts
         self.note_id_list = note_id_list
+        self.sample_selection_fn = sample_selection_fn
 
         self.batch_status = batch_status.BatchStatus(hypertts.anki_utils, note_id_list, self.change_listener)
         self.batch_preview_table_model = BatchPreviewTableModel(self.batch_status)
@@ -79,6 +85,7 @@ class BatchPreview(component_common.ComponentBase):
         self.table_view.setModel(self.batch_preview_table_model)
         self.table_view.setSelectionMode(PyQt5.QtWidgets.QTableView.SingleSelection)
         self.table_view.setSelectionBehavior(PyQt5.QtWidgets.QTableView.SelectRows)
+        self.table_view.selectionModel().selectionChanged.connect(self.selection_changed)
         self.batch_preview_layout.addWidget(self.table_view)
 
         self.preview_audio_button = PyQt5.QtWidgets.QPushButton('Preview Audio')
@@ -93,8 +100,22 @@ class BatchPreview(component_common.ComponentBase):
 
         return self.batch_preview_layout
 
+    def selection_changed(self):
+        logging.info('selection_changed')
+        text = self.get_selected_processed_text()
+        if text != None:
+            self.sample_selection_fn(text)
+
     def preview_audio_button_pressed(self):
         self.hypertts.anki_utils.run_in_background(self.play_preview_task, self.play_preview_task_done)
+
+    def get_selected_processed_text(self):
+        row_indices = self.table_view.selectionModel().selectedIndexes()
+        if len(row_indices) >= 1:
+            selected_row = row_indices[0].row()
+            processed_text = self.batch_status[selected_row].processed_text
+            return processed_text
+        return None
 
     def play_preview_task(self):
         row_indices = self.table_view.selectionModel().selectedIndexes()

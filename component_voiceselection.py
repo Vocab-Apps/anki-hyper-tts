@@ -123,8 +123,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.genders_combobox = PyQt5.QtWidgets.QComboBox()
         self.voices_combobox = PyQt5.QtWidgets.QComboBox()
 
-        self.samples_combobox = PyQt5.QtWidgets.QComboBox()
-        self.samples_combobox.setEditable(True)
         self.play_sample_button = PyQt5.QtWidgets.QPushButton('Play Sample')
 
         self.reset_filters_button = PyQt5.QtWidgets.QPushButton('Reset Filters')        
@@ -179,14 +177,10 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.voice_selection_model = model
             self.redraw_selected_voices()
 
-    def batch_status_change_callback(self, note_id, row):
-        processed_text = self.batch_status_obj[row].processed_text
-        self.samples_combobox.addItem(processed_text)
-
-    def load_source_model(self, source_model):
-        self.samples_combobox.clear()
-        self.batch_status_obj = batch_status.BatchStatus(self.hypertts.anki_utils, self.note_id_list, self.batch_status_change_callback)
-        self.hypertts.populate_batch_status_processed_text(self.note_id_list, source_model, self.batch_status_obj)
+    def sample_text_selected(self, text):
+        self.sample_text = text
+        self.play_sample_button.setText('Play Audio Sample')
+        self.play_sample_button.setEnabled(True)
 
 
     def notify_model_update(self):
@@ -228,7 +222,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.voices_layout.addWidget(self.genders_combobox)
         self.voices_layout.addWidget(self.reset_filters_button)
         self.voices_layout.addWidget(self.voices_combobox)
-        self.voices_layout.addWidget(self.samples_combobox)
         self.voices_layout.addWidget(self.play_sample_button)
 
         self.voice_options_layout = PyQt5.QtWidgets.QVBoxLayout()
@@ -283,6 +276,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         self.voices_combobox.currentIndexChanged.connect(self.voice_selected)
 
+        self.play_sample_button.setEnabled(False)
+        self.play_sample_button.setText('Select note to play sample')
         self.play_sample_button.pressed.connect(self.play_sample)
 
         self.reset_filters_button.pressed.connect(self.reset_filters)
@@ -322,13 +317,11 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
     def play_sample(self):
         logging.info('play_sample')
-        # get sample
-        sample_text = self.samples_combobox.currentText()
         # get voice
         selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
         # get options
         options = self.current_voice_options
-        self.hypertts.play_sound(sample_text, selected_voice, options)
+        self.hypertts.play_sound(self.sample_text, selected_voice, options)
 
     def add_voice(self):
         selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]

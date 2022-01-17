@@ -18,7 +18,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.source = component_source.BatchSource(self.hypertts, self.note_id_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, self.note_id_list, self.target_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.note_id_list, self.voice_selection_model_updated)
-        self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list)
+        self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, self.sample_selected)
 
         self.batch_model = config_models.BatchConfig()
 
@@ -32,7 +32,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
         logging.info(f'source_model_updated: {model}')
         self.batch_model.set_source(model)
         self.preview.load_model(self.batch_model)
-        self.voice_selection.load_source_model(model)
 
     def target_model_updated(self, model):
         logging.info('target_model_updated')
@@ -43,6 +42,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
         logging.info('voice_selection_model_updated')
         self.batch_model.set_voice_selection(model)
         self.preview.load_model(self.batch_model)
+
+    def sample_selected(self, text):
+        self.voice_selection.sample_text_selected(text)
 
     def draw(self, layout):
         self.tabs = PyQt5.QtWidgets.QTabWidget()
