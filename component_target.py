@@ -63,6 +63,9 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.radio_button_remove_sound.toggled.connect(self.update_remove_sound)
         self.radio_button_keep_sound.toggled.connect(self.update_remove_sound)
 
+        # select default to trigger model update
+        self.update_field()
+
         return self.batch_target_layout
 
     def update_text_sound(self):

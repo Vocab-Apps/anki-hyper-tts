@@ -53,7 +53,6 @@ class HyperTTS():
         # for each note, generate audio
         for note_id in note_id_list:
             with batch_status.get_note_action_context(note_id, False) as note_action_context:
-                note_action_context.set_status(constants.BatchNoteStatus.Processing)
                 note = self.anki_utils.get_note_by_id(note_id)
                 target_field = batch.target.target_field
                 source_text = self.get_source_text(note, batch.source)
@@ -222,7 +221,7 @@ class HyperTTS():
                 note = self.anki_utils.get_note_by_id(note_id)
                 source_text = self.get_source_text(note, batch_source)
                 processed_text = self.process_text(source_text)
-                note_action_context.set_processed_text(processed_text)
+                note_action_context.set_processed_text(processed_text, constants.BatchNoteStatus.Waiting)
 
     # functions related to addon config
     # =================================
