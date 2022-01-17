@@ -5,6 +5,7 @@ import copy
 import constants
 import voice
 import config_models
+import batch_status
 import component_common
 
 class SelectedVoiceOptionBase():
@@ -107,9 +108,26 @@ class ComponentPriorityVoiceList(ComponentVoiceListBase):
 
 
 class VoiceSelection(component_common.ConfigComponentBase):
-    def __init__(self, hypertts, model_change_callback):
+    def __init__(self, hypertts, note_id_list, model_change_callback):
         self.hypertts = hypertts
+        self.note_id_list = note_id_list
         self.model_change_callback = model_change_callback
+
+        # initialize widgets
+
+        self.voices_layout = PyQt5.QtWidgets.QVBoxLayout()
+
+        self.audio_languages_combobox = PyQt5.QtWidgets.QComboBox()
+        self.languages_combobox = PyQt5.QtWidgets.QComboBox()
+        self.services_combobox = PyQt5.QtWidgets.QComboBox()
+        self.genders_combobox = PyQt5.QtWidgets.QComboBox()
+        self.voices_combobox = PyQt5.QtWidgets.QComboBox()
+
+        self.samples_combobox = PyQt5.QtWidgets.QComboBox()
+        self.samples_combobox.setEditable(True)
+        self.play_sample_button = PyQt5.QtWidgets.QPushButton('Play Sample')
+
+        self.reset_filters_button = PyQt5.QtWidgets.QPushButton('Reset Filters')        
 
     def configure(self, source_text_samples):
         self.source_text_samples = source_text_samples
@@ -164,6 +182,16 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.voice_selection_model = model
             self.redraw_selected_voices()
 
+    def batch_status_change_callback(self, note_id, row):
+        processed_text = self.batch_status_obj[row].processed_text
+        self.samples_combobox.addItem(processed_text)
+
+    def load_source_model(self, source_model):
+        self.samples_combobox.clear()
+        self.batch_status_obj = batch_status.BatchStatus(self.hypertts.anki_utils, self.note_id_list, self.batch_status_change_callback)
+        self.hypertts.populate_batch_status_processed_text(self.note_id_list, source_model, self.batch_status_obj)
+
+
     def notify_model_update(self):
         self.model_change_callback(self.voice_selection_model)
 
@@ -191,21 +219,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
 
         self.get_voices()
-
-        self.voices_layout = PyQt5.QtWidgets.QVBoxLayout()
-
-        self.audio_languages_combobox = PyQt5.QtWidgets.QComboBox()
-        self.languages_combobox = PyQt5.QtWidgets.QComboBox()
-        self.services_combobox = PyQt5.QtWidgets.QComboBox()
-        self.genders_combobox = PyQt5.QtWidgets.QComboBox()
-        self.voices_combobox = PyQt5.QtWidgets.QComboBox()
-
-        self.samples_combobox = PyQt5.QtWidgets.QComboBox()
-        self.samples_combobox.setEditable(True)
-        self.play_sample_button = PyQt5.QtWidgets.QPushButton('Play Sample')
-
-
-        self.reset_filters_button = PyQt5.QtWidgets.QPushButton('Reset Filters')
 
         self.populate_combobox(self.audio_languages_combobox, [audio_lang.audio_lang_name for audio_lang in self.audio_languages])
         self.populate_combobox(self.languages_combobox, [language.lang_name for language in self.languages])
