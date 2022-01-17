@@ -12,7 +12,7 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         self.batch_status = batch_status
         self.note_id_header = 'Note Id'
         self.source_text_header = 'Source Text'
-        self.error_header = 'Error'
+        self.status_header = 'Status'
 
     def flags(self, index):
         return PyQt5.QtCore.Qt.ItemIsSelectable | PyQt5.QtCore.Qt.ItemIsEnabled
@@ -42,16 +42,15 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
             return PyQt5.QtCore.QVariant()
         elif role != PyQt5.QtCore.Qt.DisplayRole:
            return PyQt5.QtCore.QVariant()
+        data = None
         note_status = self.batch_status[index.row()]
         if index.column() == 0:
             data = note_status.note_id
         elif index.column() == 1:
             data = note_status.source_text
         elif index.column() == 2:
-            if note_status.error == None:
-                data = None
-            else:
-                data = str(note_status.error)
+            if note_status.status != None:
+                data = note_status.status.name
         if data != None:
             return PyQt5.QtCore.QVariant(data)
         return PyQt5.QtCore.QVariant()
@@ -64,7 +63,7 @@ class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
             elif col == 1:
                 return PyQt5.QtCore.QVariant(self.source_text_header)
             elif col == 2:
-                return PyQt5.QtCore.QVariant(self.error_header)
+                return PyQt5.QtCore.QVariant(self.status_header)
         return PyQt5.QtCore.QVariant()
 
 class BatchSource(component_common.ConfigComponentBase):
@@ -119,6 +118,8 @@ class BatchSource(component_common.ConfigComponentBase):
         # preview table
         self.table_view = PyQt5.QtWidgets.QTableView()
         self.table_view.setModel(self.source_text_preview_table_model)
+        self.table_view.setSelectionMode(PyQt5.QtWidgets.QTableView.SingleSelection)
+        self.table_view.setSelectionBehavior(PyQt5.QtWidgets.QTableView.SelectRows)        
         header = self.table_view.horizontalHeader()
         header.setSectionResizeMode(0, PyQt5.QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, PyQt5.QtWidgets.QHeaderView.Stretch)
