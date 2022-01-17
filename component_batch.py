@@ -48,24 +48,20 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.tab_source = PyQt5.QtWidgets.QWidget()
         self.tab_target = PyQt5.QtWidgets.QWidget()
         self.tab_voice_selection = PyQt5.QtWidgets.QWidget()
-        # self.tab_preview = PyQt5.QtWidgets.QWidget()
 
         self.tab_source.setLayout(self.source.draw())
         self.tab_target.setLayout(self.target.draw())
         self.tab_voice_selection.setLayout(self.voice_selection.draw())
-        # self.tab_preview.setLayout(self.preview.draw())
 
         self.tabs.addTab(self.tab_source, 'Source')
         self.tabs.addTab(self.tab_target, 'Target')
         self.tabs.addTab(self.tab_voice_selection, 'Voice Selection')
-        # self.tabs.addTab(self.tab_preview, 'Preview')
 
         self.splitter = PyQt5.QtWidgets.QSplitter(PyQt5.QtCore.Qt.Horizontal)
         self.splitter.addWidget(self.tabs)
         self.preview_widget = PyQt5.QtWidgets.QWidget()
         self.preview_widget.setLayout(self.preview.draw())
         self.splitter.addWidget(self.preview_widget)
-
 
         # return self.tabs
         layout.addWidget(self.splitter)
