@@ -6,6 +6,7 @@ import component_source
 import component_target
 import component_voiceselection
 import component_batch_preview
+import config_models
 
 
 class ComponentBatch(component_common.ConfigComponentBase):
@@ -14,10 +15,12 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.note_id_list = note_id_list
 
         self.source = component_source.BatchSource(self.hypertts, self.note_id_list, self.source_model_updated)
-        self.target = component_target.BatchTarget(self.hypertts, self.note_id_list)
-        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts)
+        self.target = component_target.BatchTarget(self.hypertts, self.note_id_list, self.target_model_updated)
+        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
         self.voice_selection.configure(['yo', 'yo'])
         self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list)
+
+        self.batch_model = config_models.BatchConfig()
 
     def load_model(self, model):
         pass
@@ -27,12 +30,15 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
     def source_model_updated(self, model):
         logging.info(f'source_model_updated: {model}')
+        self.batch_model.set_source(model)
 
     def target_model_updated(self, model):
-        pass
+        logging.info('target_model_updated')
+        self.batch_model.set_target(model)
 
     def voice_selection_model_updated(self, model):
-        pass
+        logging.info('voice_selection_model_updated')
+        self.batch_model.set_voice_selection(model)
 
     def draw(self, layout):
         self.tabs = PyQt5.QtWidgets.QTabWidget()

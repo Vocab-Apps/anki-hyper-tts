@@ -107,8 +107,9 @@ class ComponentPriorityVoiceList(ComponentVoiceListBase):
 
 
 class VoiceSelection(component_common.ConfigComponentBase):
-    def __init__(self, hypertts):
+    def __init__(self, hypertts, model_change_callback):
         self.hypertts = hypertts
+        self.model_change_callback = model_change_callback
 
     def configure(self, source_text_samples):
         self.source_text_samples = source_text_samples
@@ -163,7 +164,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.voice_selection_model = model
             self.redraw_selected_voices()
 
-        
+    def notify_model_update(self):
+        self.model_change_callback(self.voice_selection_model)
 
     def set_default_selection_model(self):
         self.voice_selection_model = config_models.VoiceSelectionSingle() # default
@@ -330,6 +332,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.voice_selection_model.add_voice(config_models.VoiceWithOptionsPriority(selected_voice, options))
 
         self.redraw_selected_voices()
+        
+        self.notify_model_update()
 
 
     def clear_voices(self):
@@ -337,6 +341,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.component_random_voice_list.clear_voices()
         elif self.radio_button_priority.isChecked():
             self.component_priority_voice_list.clear_voices()
+
+        self.notify_model_update()
 
     def voice_selected(self, current_index):
         voice = self.filtered_voice_list[current_index]
@@ -356,6 +362,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 logging.info(f'set option {key} to {value}')
                 if self.voice_selection_model.selection_mode == constants.VoiceSelectionMode.single:
                     self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice, self.current_voice_options))
+                    self.notify_model_update()
             return set_value
 
         # populate voice options layout
@@ -378,6 +385,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # if we are in the single voice mode, set the mode on the voice selection model
         if self.voice_selection_model.selection_mode == constants.VoiceSelectionMode.single:
             self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice, {}))
+            self.notify_model_update()
 
     def filter_and_draw_voices(self, current_index):
         logging.info('filter_and_draw_voices')
