@@ -94,9 +94,8 @@ class BatchSource(component_common.ConfigComponentBase):
 
         self.update_source_text_preview()
 
-    def draw(self, layout):
+    def draw(self):
         self.batch_source_layout = PyQt5.QtWidgets.QVBoxLayout()
-        layout.addLayout(self.batch_source_layout)
 
         # batch mode
         self.batch_mode_combobox = PyQt5.QtWidgets.QComboBox()
@@ -136,6 +135,8 @@ class BatchSource(component_common.ConfigComponentBase):
 
         # select default
         self.source_field_change(0)
+
+        return self.batch_source_layout
 
     def batch_mode_change(self, current_index):
         selected_batch_mode = constants.BatchMode[self.batch_mode_combobox.currentText()]

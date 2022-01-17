@@ -2,7 +2,7 @@ import abc
 
 class ComponentBase(abc.ABC):
     @abc.abstractmethod
-    def draw(self, layout):
+    def draw(self):
         pass
 
 class ConfigComponentBase(ComponentBase):

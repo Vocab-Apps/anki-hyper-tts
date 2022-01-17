@@ -9,16 +9,14 @@ import constants
 import component_voiceselection
 import component_source
 import component_target
+import component_batch
 
 class EmptyDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self):
         super(PyQt5.QtWidgets.QDialog, self).__init__()
 
-    def setupUi(self):
-        self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
-
-    def getLayout(self):
-        return self.main_layout
+    def setLayout(self, layout):
+        self.main_layout = layout
 
 def get_hypertts_instance():
     # return hypertts_instance    
@@ -412,12 +410,11 @@ def test_batch_source_1(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
     dialog = EmptyDialog()
-    dialog.setupUi()
 
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
 
     batch_source = component_source.BatchSource(hypertts_instance, note_id_list)
-    batch_source.draw(dialog.getLayout())
+    dialog.setLayout(batch_source.draw())
 
     # the field selected should be "Chinese"
     expected_source_model = config_models.BatchSource()
@@ -598,3 +595,17 @@ def test_batch_preview(qtbot):
 
     assert audio_data['source_text'] == '你好'        
 
+
+def test_batch_dialog(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+
+    batch = component_batch.ComponentBatch(hypertts_instance, note_id_list)
+    batch.draw(dialog.getLayout())
+
+    dialog.exec_()
