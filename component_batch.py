@@ -17,7 +17,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.source = component_source.BatchSource(self.hypertts, self.note_id_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, self.note_id_list, self.target_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.note_id_list, self.voice_selection_model_updated)
-        self.voice_selection.configure(['yo', 'yo'])
         self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list)
 
         self.batch_model = config_models.BatchConfig()

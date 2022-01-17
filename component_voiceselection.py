@@ -129,9 +129,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         self.reset_filters_button = PyQt5.QtWidgets.QPushButton('Reset Filters')        
 
-    def configure(self, source_text_samples):
-        self.source_text_samples = source_text_samples
-
     def get_voices(self):
         self.voice_list = self.hypertts.service_manager.full_voice_list()
 
@@ -224,8 +221,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.populate_combobox(self.languages_combobox, [language.lang_name for language in self.languages])
         self.populate_combobox(self.services_combobox, self.services)
         self.populate_combobox(self.genders_combobox, [gender.name for gender in self.genders])
-
-        self.samples_combobox.addItems(self.source_text_samples)
 
         self.voices_layout.addWidget(self.audio_languages_combobox)
         self.voices_layout.addWidget(self.languages_combobox)
