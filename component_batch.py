@@ -1,6 +1,7 @@
 import PyQt5
 import logging
 
+import batch_status
 import component_common
 import component_source
 import component_target

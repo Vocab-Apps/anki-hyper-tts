@@ -6,75 +6,12 @@ import batch_status
 
 import constants
 
-class SourceTextPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
-    def __init__(self, batch_status):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self, None)
-        self.batch_status = batch_status
-        self.note_id_header = 'Note Id'
-        self.source_text_header = 'Source Text'
-        self.status_header = 'Status'
-
-    def flags(self, index):
-        return PyQt5.QtCore.Qt.ItemIsSelectable | PyQt5.QtCore.Qt.ItemIsEnabled
-
-    def setSourceRecords(self, source_records):
-        logging.debug('SourceTextPreviewTableModel.setSourceRecords')
-        self.source_records = source_records
-        start_index = self.createIndex(0, 0)
-        end_index = self.createIndex(len(self.source_records)-1, 1)
-        self.dataChanged.emit(start_index, end_index, [PyQt5.QtCore.Qt.DisplayRole])
-        self.layoutChanged.emit()
-
-    def notifyChange(self, row):
-        start_index = self.createIndex(row, 0)
-        end_index = self.createIndex(row, 2)
-        self.dataChanged.emit(start_index, end_index, [PyQt5.QtCore.Qt.DisplayRole])
-
-    def rowCount(self, parent):
-        return len(self.batch_status.note_id_list)
-
-    def columnCount(self, parent):
-        return 3
-
-    def data(self, index, role):
-        # logging.debug('SourceTextPreviewTableModel.data')
-        if not index.isValid():
-            return PyQt5.QtCore.QVariant()
-        elif role != PyQt5.QtCore.Qt.DisplayRole:
-           return PyQt5.QtCore.QVariant()
-        data = None
-        note_status = self.batch_status[index.row()]
-        if index.column() == 0:
-            data = note_status.note_id
-        elif index.column() == 1:
-            data = note_status.source_text
-        elif index.column() == 2:
-            if note_status.status != None:
-                data = note_status.status.name
-        if data != None:
-            return PyQt5.QtCore.QVariant(data)
-        return PyQt5.QtCore.QVariant()
-
-    def headerData(self, col, orientation, role):
-        # logging.debug('SourceTextPreviewTableModel.headerData')
-        if orientation == PyQt5.QtCore.Qt.Horizontal and role == PyQt5.QtCore.Qt.DisplayRole:
-            if col == 0:
-                return PyQt5.QtCore.QVariant(self.note_id_header)
-            elif col == 1:
-                return PyQt5.QtCore.QVariant(self.source_text_header)
-            elif col == 2:
-                return PyQt5.QtCore.QVariant(self.status_header)
-        return PyQt5.QtCore.QVariant()
-
 class BatchSource(component_common.ConfigComponentBase):
     def __init__(self, hypertts, note_id_list, model_change_callback):
         self.hypertts = hypertts
         self.note_id_list = note_id_list
         self.model_change_callback = model_change_callback
         self.field_list = self.hypertts.get_all_fields_from_notes(self.note_id_list)
-
-        self.batch_status = batch_status.BatchStatus(hypertts.anki_utils, note_id_list, self.change_listener)
-        self.source_text_preview_table_model = SourceTextPreviewTableModel(self.batch_status)
 
         self.batch_source_model = None
 
@@ -92,7 +29,6 @@ class BatchSource(component_common.ConfigComponentBase):
         elif batch_mode == constants.BatchMode.advanced_template:
             self.advanced_template_input.setText(model.source_template)
 
-        self.update_source_text_preview()
 
     def draw(self):
         self.batch_source_layout = PyQt5.QtWidgets.QVBoxLayout()
@@ -114,16 +50,6 @@ class BatchSource(component_common.ConfigComponentBase):
         # advanced template
         self.advanced_template_input = PyQt5.QtWidgets.QPlainTextEdit()
         self.batch_source_layout.addWidget(self.advanced_template_input)
-
-        # preview table
-        self.table_view = PyQt5.QtWidgets.QTableView()
-        self.table_view.setModel(self.source_text_preview_table_model)
-        self.table_view.setSelectionMode(PyQt5.QtWidgets.QTableView.SingleSelection)
-        self.table_view.setSelectionBehavior(PyQt5.QtWidgets.QTableView.SelectRows)        
-        header = self.table_view.horizontalHeader()
-        header.setSectionResizeMode(0, PyQt5.QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(1, PyQt5.QtWidgets.QHeaderView.Stretch)
-        self.batch_source_layout.addWidget(self.table_view)
 
         # wire events
         self.batch_mode_combobox.currentIndexChanged.connect(self.batch_mode_change)
@@ -162,19 +88,16 @@ class BatchSource(component_common.ConfigComponentBase):
         field_name = self.field_list[current_index]
         self.batch_source_model = config_models.BatchSourceSimple(field_name)
         self.notify_model_update()
-        self.update_source_text_preview()
 
     def simple_template_change(self, simple_template_text):
         simple_template_text = self.simple_template_input.text()
         self.batch_source_model = config_models.BatchSourceTemplate(constants.BatchMode.template, simple_template_text, constants.TemplateFormatVersion.v1)
         self.notify_model_update()
-        self.update_source_text_preview()
 
     def advanced_template_change(self):
         template_text = self.advanced_template_input.toPlainText()
         self.batch_source_model = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, template_text, constants.TemplateFormatVersion.v1)
         self.notify_model_update()
-        self.update_source_text_preview()        
 
     def notify_model_update(self):
         self.model_change_callback(self.batch_source_model)
@@ -182,6 +105,3 @@ class BatchSource(component_common.ConfigComponentBase):
     def change_listener(self, note_id, row):
         # logging.info(f'change_listener row {row}')
         self.source_text_preview_table_model.notifyChange(row)
-
-    def update_source_text_preview(self):
-        self.hypertts.populate_batch_status_source_text(self.note_id_list, self.batch_source_model, self.batch_status)
