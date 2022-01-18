@@ -56,7 +56,10 @@ class HyperTTS():
                 note = self.anki_utils.get_note_by_id(note_id)
                 target_field = batch.target.target_field
                 source_text = self.get_source_text(note, batch.source)
+                note_action_context.set_source_text(source_text)
                 processed_text = self.process_text(source_text)
+                note_action_context.set_processed_text(processed_text)
+
 
                 full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection)
                 sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)
@@ -70,7 +73,8 @@ class HyperTTS():
                     note[target_field] = sound_tag
                 note.flush()
                 sound_found = True
-                note_action_context.report_success_sound(sound_file)
+                note_action_context.set_sound(sound_file)
+                note_action_context.set_status(constants.BatchNoteStatus.Done)
 
     def get_audio_file(self, processed_text, voice_selection):
         # this voice_list copy is only used for priority mode
@@ -214,6 +218,7 @@ class HyperTTS():
                 note = self.anki_utils.get_note_by_id(note_id)
                 source_text = self.get_source_text(note, batch_source)
                 note_action_context.set_source_text(source_text)
+                note_action_context.set_status(constants.BatchNoteStatus.OK)
 
     def populate_batch_status_processed_text(self, note_id_list, batch_source, batch_status):
         for note_id in note_id_list:
@@ -221,7 +226,9 @@ class HyperTTS():
                 note = self.anki_utils.get_note_by_id(note_id)
                 source_text = self.get_source_text(note, batch_source)
                 processed_text = self.process_text(source_text)
-                note_action_context.set_processed_text(processed_text, constants.BatchNoteStatus.Waiting)
+                note_action_context.set_source_text(source_text)
+                note_action_context.set_processed_text(processed_text)
+                note_action_context.set_status(constants.BatchNoteStatus.OK)
 
     # functions related to addon config
     # =================================

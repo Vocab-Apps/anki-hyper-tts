@@ -21,6 +21,7 @@ class BatchNoteStatus(enum.Enum):
     Processing = enum.auto()
     Done = enum.auto()
     Error = enum.auto()
+    OK = enum.auto()
 
 #
 CONFIG_BATCH_TEXT_AND_SOUND_TAG = 'text_and_sound_tag'

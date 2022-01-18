@@ -24,17 +24,19 @@ class BatchNoteActionContext():
                 self.batch_status.report_known_error(self.note_id, exception_value)
             else:
                 self.batch_status.report_unknown_exception(self.note_id, exception_value)
+            self.batch_status.notify_change(self.note_id)
             return True
+        self.batch_status.notify_change(self.note_id)
         return False    
 
-    def report_success_sound(self, sound_file):
+    def set_sound(self, sound_file):
         self.batch_status.set_sound_file(self.note_id, sound_file)
 
     def set_source_text(self, source_text):
         self.batch_status.set_source_text(self.note_id, source_text)
 
-    def set_processed_text(self, processed_text, status):
-        self.batch_status.set_processed_text(self.note_id, processed_text, status)
+    def set_processed_text(self, processed_text):
+        self.batch_status.set_processed_text(self.note_id, processed_text)
 
     def set_status(self, status):
         self.batch_status.set_status(self.note_id, status)
@@ -84,17 +86,14 @@ class BatchStatus():
     # set the various fields on the NoteStatus
 
     def set_source_text(self, note_id, source_text):
-        self.note_status_map[note_id].status = constants.BatchNoteStatus.Done
         self.note_status_map[note_id].source_text = source_text
         self.notify_change(note_id)
 
-    def set_processed_text(self, note_id, processed_text, status):
+    def set_processed_text(self, note_id, processed_text):
         self.note_status_map[note_id].processed_text = processed_text
-        self.note_status_map[note_id].status = status
         self.notify_change(note_id)
 
     def set_sound_file(self, note_id, sound_file):
-        self.note_status_map[note_id].status = constants.BatchNoteStatus.Done
         self.note_status_map[note_id].sound_file = sound_file
         self.notify_change(note_id)
 
