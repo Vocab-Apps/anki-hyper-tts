@@ -24,6 +24,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.note_id_list = note_id_list
 
         field_list = self.hypertts.get_all_fields_from_notes(note_id_list)
+        logging.info(f'field_list: {field_list}')
 
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)

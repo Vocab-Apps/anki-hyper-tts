@@ -209,7 +209,7 @@ class HyperTTS():
         field_name_set = {}
         for note_id in note_id_list:
             note = self.anki_utils.get_note_by_id(note_id)
-            for field in note.fields:
+            for field in list(note.keys()):
                 field_name_set[field] = True
         return sorted(field_name_set.keys())
 
