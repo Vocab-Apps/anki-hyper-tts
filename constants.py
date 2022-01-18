@@ -2,6 +2,8 @@ import enum
 
 ENV_VAR_ANKI_LANGUAGE_TOOLS_BASE_URL = 'ANKI_LANGUAGE_TOOLS_BASE_URL'
 
+ENABLE_SENTRY_CRASH_REPORTING = False
+
 # batch modes
 class BatchMode(enum.Enum):
     simple = enum.auto()

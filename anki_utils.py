@@ -3,10 +3,11 @@ import aqt
 import anki.template
 import anki.sound
 import logging
-import sentry_sdk
 import PyQt5
 from . import constants    
 
+if constants.ENABLE_SENTRY_CRASH_REPORTING:
+    import sentry_sdk
     
 class AnkiUtils():
     def __init__(self):
@@ -139,8 +140,10 @@ class AnkiUtils():
 
     def report_unknown_exception_interactive(self, exception, action):
         error_message = f'Encountered an unknown error while {action}: {str(exception)}'
-        sentry_sdk.capture_exception(exception)
+        if constants.ENABLE_SENTRY_CRASH_REPORTING:
+            sentry_sdk.capture_exception(exception)
         self.critical_message(error_message, None)
 
     def report_unknown_exception_background(self, exception):
-        sentry_sdk.capture_exception(exception)
+        if constants.ENABLE_SENTRY_CRASH_REPORTING:
+            sentry_sdk.capture_exception(exception)
