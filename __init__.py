@@ -87,6 +87,7 @@ else:
         return os.path.join(current_script_dir, 'services')
     service_manager = servicemanager.ServiceManager(services_dir(), 'services')
     service_manager.init_services()    
+    service_manager.configure_cloudlanguagetools(os.environ['ANKI_LANGUAGE_TOOLS_API_KEY'])
     hyper_tts = hypertts.HyperTTS(ankiutils, service_manager)
     gui.init(hyper_tts)
     # deckutils = deck_utils.DeckUtils(ankiutils)
