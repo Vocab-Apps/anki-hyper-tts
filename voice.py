@@ -1,5 +1,11 @@
+import sys
 import abc
-import constants
+
+if hasattr(sys, '_pytest_mode'):
+    import constants
+else:
+    # import running from within Anki
+    from . import constants
 
 class VoiceBase(abc.ABC):
     """

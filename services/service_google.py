@@ -1,12 +1,17 @@
-import constants
-import service
-import errors
-import voice
-import services.voicelist
-import json
+import sys
 import requests
 import base64
 import logging
+
+if hasattr(sys, '_pytest_mode'):
+    import service
+    import errors
+    import voice
+else:
+    # import running from within Anki
+    from . import voice
+    from . import service
+    from . import errors
 
 class Google(service.ServiceBase):
     def __init__(self):

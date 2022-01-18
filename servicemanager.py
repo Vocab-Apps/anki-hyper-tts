@@ -1,11 +1,21 @@
+import sys
 import os
 import importlib
 import logging
 import typing
-import voice
-import service
-import errors
 import requests
+
+
+if hasattr(sys, '_pytest_mode'):
+    import voice
+    import service
+    import errors
+else:
+    # import running from within Anki
+    from . import voice
+    from . import service
+    from . import errors
+
 
 class ServiceManager():
     """
@@ -37,10 +47,21 @@ class ServiceManager():
     def import_services(self):
         module_names = self.discover_services()
         logging.info(f'discovered {len(module_names)} services')
+        sys.path.insert(0, self.services_directory)
         for module_name in module_names:
-            module_name = f'{self.package_name}.{module_name}'
             logging.info(f'importing module {module_name}')
-            importlib.import_module(module_name)
+            if hasattr(sys, '_pytest_mode'):
+                # unit test mode
+                full_name = f'{self.package_name}.{module_name}'
+                importlib.import_module(full_name)
+            else:
+                # anki mode
+                __import__(self.package_name, globals(), locals(), [module_name], 1)
+                # the following statements seem to work, not sure how to translate to __import__
+                # from .services import service_azure
+                # from .services import service_google
+
+
 
     def instantiate_services(self):
         for subclass in service.ServiceBase.__subclasses__():

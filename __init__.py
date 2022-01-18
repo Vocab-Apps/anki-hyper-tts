@@ -15,6 +15,7 @@ else:
     import anki.sound
     from . import constants
     from . import anki_utils
+    from . import servicemanager
     
     # setup sentry crash reporting
     # ============================
@@ -71,7 +72,19 @@ else:
     # from . import cloudlanguagetools
     # from . import errors
 
+    # logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+    #                     datefmt='%Y%m%d-%H:%M:%S',
+    #                      stream=sys.stdout,
+    #                     level=logging.DEBUG)    
+
     ankiutils = anki_utils.AnkiUtils()
+
+    def services_dir():
+        current_script_path = os.path.realpath(__file__)
+        current_script_dir = os.path.dirname(current_script_path)    
+        return os.path.join(current_script_dir, 'services')
+    service_manager = servicemanager.ServiceManager(services_dir(), 'services')
+    service_manager.init_services()    
     # deckutils = deck_utils.DeckUtils(ankiutils)
     # cloud_language_tools = cloudlanguagetools.CloudLanguageTools()
     # languagetools = languagetools.LanguageTools(ankiutils, deckutils, cloud_language_tools)

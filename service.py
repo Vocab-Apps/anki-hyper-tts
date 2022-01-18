@@ -1,9 +1,19 @@
+import sys
 import abc
 from posixpath import dirname
 import typing
-import voice
-import services
-import constants
+
+if hasattr(sys, '_pytest_mode'):
+    import voice
+    import services
+    import services.voicelist
+    import constants
+else:
+    # import running from within Anki
+    from . import voice
+    from . import services
+    from .services import voicelist
+    from . import constants
 
 class ServiceBase(abc.ABC):
     
