@@ -146,10 +146,17 @@ class VoiceSelection(component_common.ConfigComponentBase):
             services.add(voice.service.name)
             genders.add(voice.gender)
 
-        self.audio_languages = list(audio_languages)
-        self.languages = list(languages)
-        self.services = list(services)
-        self.genders = list(genders)
+        def get_name(entry):
+            return entry.name
+        def get_language_name(entry):
+            return entry.lang_name
+        def get_audio_language_name(entry):
+            return entry.audio_lang_name
+
+        self.audio_languages = sorted(list(audio_languages), key=get_audio_language_name)
+        self.languages = sorted(list(languages), key=get_language_name)
+        self.services = sorted(list(services))
+        self.genders = sorted(list(genders), key=get_name)
 
         self.set_default_selection_model()
 
