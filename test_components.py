@@ -49,7 +49,6 @@ def test_voice_selection_defaults_single(qtbot):
     model_change_callback = MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
-    # voiceselection.draw(dialog.getLayout())
 
     # voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
     expected_output = {
@@ -77,11 +76,9 @@ def test_voice_selection_single_1(qtbot):
     dialog = EmptyDialog()
     dialog.setupUi()
 
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
-    voiceselection.configure(
-        ['Bonjour', 'Comment allez vous?', 'Au revoir']
-    )    
-    voiceselection.draw(dialog.getLayout())
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    dialog.addChildLayout(voiceselection.draw())
 
     voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
 
@@ -130,11 +127,9 @@ def test_voice_selection_random_1(qtbot):
     dialog = EmptyDialog()
     dialog.setupUi()
 
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
-    voiceselection.configure(
-        ['Bonjour', 'Comment allez vous?', 'Au revoir']
-    )    
-    voiceselection.draw(dialog.getLayout())
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    dialog.addChildLayout(voiceselection.draw())
 
     # choose random mode
     # qtbot.mouseClick(voiceselection.radio_button_random, PyQt5.QtCore.Qt.LeftButton)
@@ -185,11 +180,9 @@ def test_voice_selection_random_2(qtbot):
     dialog = EmptyDialog()
     dialog.setupUi()
 
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
-    voiceselection.configure(
-        ['Bonjour', 'Comment allez vous?', 'Au revoir']
-    )    
-    voiceselection.draw(dialog.getLayout())
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    dialog.addChildLayout(voiceselection.draw())
 
     # choose random mode
     voiceselection.radio_button_random.setChecked(True)
@@ -221,11 +214,9 @@ def test_voice_selection_priority_1(qtbot):
     dialog = EmptyDialog()
     dialog.setupUi()
 
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
-    voiceselection.configure(
-        ['Bonjour', 'Comment allez vous?', 'Au revoir']
-    )    
-    voiceselection.draw(dialog.getLayout())
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    dialog.addChildLayout(voiceselection.draw())
 
     # choose random mode
     # qtbot.mouseClick(voiceselection.radio_button_random, PyQt5.QtCore.Qt.LeftButton)
@@ -265,11 +256,9 @@ def test_voice_selection_filters(qtbot):
     dialog = EmptyDialog()
     dialog.setupUi()
 
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
-    voiceselection.configure(
-        ['Bonjour', 'Comment allez vous?', 'Au revoir']
-    )    
-    voiceselection.draw(dialog.getLayout())
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    dialog.addChildLayout(voiceselection.draw())
 
     # ensure filters are set to All by default
     assert voiceselection.audio_languages_combobox.currentText() == constants.LABEL_FILTER_ALL
@@ -332,11 +321,12 @@ def test_voice_selection_samples(qtbot):
     dialog = EmptyDialog()
     dialog.setupUi()
 
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
-    voiceselection.configure(
-        ['Bonjour', 'Comment allez vous?', 'Au revoir']
-    )
-    voiceselection.draw(dialog.getLayout())
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    dialog.addChildLayout(voiceselection.draw())
+
+    # simulate selection from the preview grid
+    voiceselection.sample_text_selected('Bonjour')
 
     qtbot.mouseClick(voiceselection.play_sample_button, PyQt5.QtCore.Qt.LeftButton)
 
@@ -360,11 +350,9 @@ def test_voice_selection_load_model(qtbot):
     dialog = EmptyDialog()
     dialog.setupUi()
 
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
-    voiceselection.configure(
-        ['Bonjour', 'Comment allez vous?', 'Au revoir']
-    )
-    voiceselection.draw(dialog.getLayout())
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    dialog.addChildLayout(voiceselection.draw())
 
     voice_list = hypertts_instance.service_manager.full_voice_list()
     voice_a_2 = [x for x in voice_list if x.name == 'voice_a_2'][0]
