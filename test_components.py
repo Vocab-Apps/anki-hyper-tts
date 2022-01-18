@@ -487,8 +487,10 @@ def test_target(qtbot):
 
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
 
-    batch_target = component_target.BatchTarget(hypertts_instance, note_id_list)
-    batch_target.draw(dialog.getLayout())
+    model_change_callback = MockModelChangeCallback()
+    field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
+    batch_target = component_target.BatchTarget(hypertts_instance, field_list, model_change_callback.model_updated)
+    dialog.addChildLayout(batch_target.draw())
 
     # pick the Sound field
     batch_target.target_field_combobox.setCurrentText('Sound')
