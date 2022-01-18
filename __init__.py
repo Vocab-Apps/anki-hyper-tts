@@ -17,6 +17,7 @@ else:
     from . import anki_utils
     from . import servicemanager
     from . import hypertts
+    from . import gui
     
     # setup sentry crash reporting
     # ============================
@@ -87,10 +88,11 @@ else:
     service_manager = servicemanager.ServiceManager(services_dir(), 'services')
     service_manager.init_services()    
     hyper_tts = hypertts.HyperTTS(ankiutils, service_manager)
+    gui.init(hyper_tts)
     # deckutils = deck_utils.DeckUtils(ankiutils)
     # cloud_language_tools = cloudlanguagetools.CloudLanguageTools()
     # languagetools = languagetools.LanguageTools(ankiutils, deckutils, cloud_language_tools)
-    # gui.init(languagetools)
+
     # editor.init(languagetools)
 
     def on_card_render(output, context):

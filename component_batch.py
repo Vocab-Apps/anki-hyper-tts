@@ -1,13 +1,21 @@
+import sys
 import PyQt5
 import logging
 
-import batch_status
-import component_common
-import component_source
-import component_target
-import component_voiceselection
-import component_batch_preview
-import config_models
+
+import_level = 0
+if hasattr(sys, '_pytest_mode'):
+    import_level = 0
+else:
+    # import running from within Anki
+    import_level = 1
+
+component_common = __import__('component_common', globals(), locals(), [], import_level)
+component_source = __import__('component_source', globals(), locals(), [], import_level)
+component_target = __import__('component_target', globals(), locals(), [], import_level)
+component_voiceselection = __import__('component_voiceselection', globals(), locals(), [], import_level)
+component_batch_preview = __import__('component_batch_preview', globals(), locals(), [], import_level)
+config_models = __import__('config_models', globals(), locals(), [], import_level)
 
 
 class ComponentBatch(component_common.ConfigComponentBase):

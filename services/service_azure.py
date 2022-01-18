@@ -3,15 +3,16 @@ import requests
 import datetime
 import logging
 
+import_level = 0
 if hasattr(sys, '_pytest_mode'):
-    import service
-    import errors
-    import voice
+    import_level = 0
 else:
     # import running from within Anki
-    from .. import voice
-    from .. import service
-    from .. import errors
+    import_level = 2
+
+voice = __import__('voice', globals(), locals(), [], import_level)
+service = __import__('service', globals(), locals(), [], import_level)
+errors = __import__('errors', globals(), locals(), [], import_level)
 
 class Azure(service.ServiceBase):
     def __init__(self):

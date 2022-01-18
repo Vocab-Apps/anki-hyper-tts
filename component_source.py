@@ -1,10 +1,16 @@
+import sys
 import PyQt5
-import logging
-import config_models
-import component_common
-import batch_status
 
-import constants
+import_level = 0
+if hasattr(sys, '_pytest_mode'):
+    import_level = 0
+else:
+    # import running from within Anki
+    import_level = 1
+
+component_common = __import__('component_common', globals(), locals(), [], import_level)
+constants = __import__('constants', globals(), locals(), [], import_level)
+config_models = __import__('config_models', globals(), locals(), [], import_level)
 
 class BatchSource(component_common.ConfigComponentBase):
     def __init__(self, hypertts, field_list, model_change_callback):

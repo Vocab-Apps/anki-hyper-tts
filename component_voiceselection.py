@@ -1,12 +1,18 @@
+import sys
 import PyQt5
 import logging
 import copy 
 
-import constants
-import voice
-import config_models
-import batch_status
-import component_common
+import_level = 0
+if hasattr(sys, '_pytest_mode'):
+    import_level = 0
+else:
+    # import running from within Anki
+    import_level = 1
+
+constants = __import__('constants', globals(), locals(), [], import_level)
+component_common = __import__('component_common', globals(), locals(), [], import_level)
+config_models = __import__('config_models', globals(), locals(), [], import_level)
 
 class SelectedVoiceOptionBase():
     def __init__(self, voice_with_options, remove_callback):
