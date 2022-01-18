@@ -417,7 +417,9 @@ def test_batch_source_1(qtbot):
 
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
 
-    batch_source = component_source.BatchSource(hypertts_instance, note_id_list)
+    model_change_callback = MockModelChangeCallback()
+    field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
+    batch_source = component_source.BatchSource(hypertts_instance, field_list, model_change_callback.model_updated)
     dialog.addChildLayout(batch_source.draw())
 
     # the field selected should be "Chinese"
@@ -457,7 +459,6 @@ def test_batch_source_1(qtbot):
 
     assert batch_source.batch_mode_combobox.currentText() == 'simple'
     assert batch_source.source_field_combobox.currentText() == 'English'
-    assert batch_source.batch_status[0].source_text == 'old people'
 
     model.source_field = 'Chinese'
 
@@ -465,7 +466,6 @@ def test_batch_source_1(qtbot):
 
     assert batch_source.batch_mode_combobox.currentText() == 'simple'
     assert batch_source.source_field_combobox.currentText() == 'Chinese'
-    assert batch_source.batch_status[0].source_text == '老人家'
 
     model.mode = constants.BatchMode.template
     model.source_template = '{English}'
@@ -475,9 +475,8 @@ def test_batch_source_1(qtbot):
 
     assert batch_source.batch_mode_combobox.currentText() == 'template'
     assert batch_source.simple_template_input.text() == '{English}'
-    assert batch_source.batch_status[0].source_text == 'old people'
 
-    dialog.exec_()
+    # dialog.exec_()
 
 def test_target(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
