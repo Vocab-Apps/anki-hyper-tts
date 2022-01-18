@@ -27,6 +27,13 @@ class EmptyDialog(PyQt5.QtWidgets.QDialog):
     def addChildLayout(self, layout):
         self.main_layout.addLayout(layout)
 
+class MockModelChangeCallback():
+    def __init__(self):
+        self.model = None
+
+    def model_updated(self, model):
+        self.model = model
+
 def get_hypertts_instance():
     # return hypertts_instance    
     config_gen = testing_utils.TestConfigGenerator()
@@ -39,11 +46,10 @@ def test_voice_selection_defaults_single(qtbot):
     dialog = EmptyDialog()
     dialog.setupUi()
 
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance)
-    voiceselection.configure(
-        ['Bonjour', 'Comment allez vous?', 'Au revoir']
-    )    
-    voiceselection.draw(dialog.getLayout())
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    dialog.addChildLayout(voiceselection.draw())
+    # voiceselection.draw(dialog.getLayout())
 
     # voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
     expected_output = {
