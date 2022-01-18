@@ -57,10 +57,6 @@ class ServiceManager():
             else:
                 # anki mode
                 __import__(self.package_name, globals(), locals(), [module_name], 1)
-                # the following statements seem to work, not sure how to translate to __import__
-                # from .services import service_azure
-                # from .services import service_google
-
 
 
     def instantiate_services(self):

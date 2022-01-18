@@ -9,9 +9,9 @@ if hasattr(sys, '_pytest_mode'):
     import voice
 else:
     # import running from within Anki
-    from . import voice
-    from . import service
-    from . import errors
+    from .. import voice
+    from .. import service
+    from .. import errors
 
 class Azure(service.ServiceBase):
     def __init__(self):
