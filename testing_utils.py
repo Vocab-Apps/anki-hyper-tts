@@ -450,6 +450,9 @@ class MockNote():
     def __setitem__(self, key, value):
         self.set_values[key] = value
 
+    def keys(self):
+        return self.field_dict.keys()
+
     def flush(self):
         self.flush_called = True
 
