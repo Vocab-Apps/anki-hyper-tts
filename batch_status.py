@@ -50,6 +50,19 @@ class BatchNoteActionContext():
     def set_status(self, status):
         self.batch_status.set_status(self.note_id, status)
 
+class BatchRunningActionContext():
+    def __init__(self, batch_status):
+        self.batch_status = batch_status
+
+    def __enter__(self):
+        self.batch_status.task_running = True
+        self.batch_status.must_continue = True
+        return self
+
+    def __exit__(self, exception_type, exception_value, traceback):
+        self.batch_status.task_running = False
+        return False        
+
 class BatchStatus():
     def __init__(self, anki_utils, note_id_list, change_listener_fn):
         self.anki_utils = anki_utils
@@ -58,6 +71,8 @@ class BatchStatus():
         self.note_status_array = []
         self.note_status_map = {}
         self.note_id_map = {}
+        self.task_running = False
+        self.must_continue = False
         i = 0
         for note_id in self.note_id_list:
             note_status = NoteStatus(note_id)
@@ -68,6 +83,9 @@ class BatchStatus():
     
     def __getitem__(self, array_index):
         return self.note_status_array[array_index]
+
+    def get_batch_running_action_context(self):
+        return BatchRunningActionContext(self)
 
     def get_note_action_context(self, note_id, blank_fields):
         note_status = self.note_status_map[note_id]

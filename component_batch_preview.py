@@ -1,6 +1,7 @@
 import sys
 import logging
 import PyQt5
+import time
 
 import_level = 0
 if hasattr(sys, '_pytest_mode'):
@@ -86,7 +87,21 @@ class BatchPreview(component_common.ComponentBase):
 
     def load_model(self, model):
         self.batch_model = model
+        self.hypertts.anki_utils.run_in_background(self.update_batch_status_task, self.update_batch_status_task_done)
+
+    def update_batch_status_task(self):
+        if self.batch_status.task_running:
+            logging.info('stopping current batch')
+            # stop current batch
+            self.batch_status.must_continue = False
+        while self.batch_status.task_running:
+            time.sleep(0.1)
+
+        logging.info('update_batch_status_task')
         self.hypertts.populate_batch_status_processed_text(self.note_id_list, self.batch_model.source, self.batch_status)
+
+    def update_batch_status_task_done(self, result):
+        logging.info('update_batch_status_task_done')
 
     def draw(self):
         # populate processed text

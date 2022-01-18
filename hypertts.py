@@ -141,7 +141,7 @@ class HyperTTS():
 
     def process_text(self, source_text):
         processed_text = self.text_utils.process(source_text)
-        logging.info(f'before text processing: [{source_text}], after text processing: [{processed_text}]')
+        # logging.info(f'before text processing: [{source_text}], after text processing: [{processed_text}]')
         if self.text_utils.is_empty(processed_text):
             raise errors.SourceTextEmpty()
         return processed_text
@@ -222,14 +222,15 @@ class HyperTTS():
                 note_action_context.set_status(constants.BatchNoteStatus.OK)
 
     def populate_batch_status_processed_text(self, note_id_list, batch_source, batch_status):
-        for note_id in note_id_list:
-            with batch_status.get_note_action_context(note_id, True) as note_action_context:
-                note = self.anki_utils.get_note_by_id(note_id)
-                source_text = self.get_source_text(note, batch_source)
-                processed_text = self.process_text(source_text)
-                note_action_context.set_source_text(source_text)
-                note_action_context.set_processed_text(processed_text)
-                note_action_context.set_status(constants.BatchNoteStatus.OK)
+        with batch_status.get_batch_running_action_context():
+            for note_id in note_id_list:
+                with batch_status.get_note_action_context(note_id, True) as note_action_context:
+                    note = self.anki_utils.get_note_by_id(note_id)
+                    source_text = self.get_source_text(note, batch_source)
+                    processed_text = self.process_text(source_text)
+                    note_action_context.set_source_text(source_text)
+                    note_action_context.set_processed_text(processed_text)
+                    note_action_context.set_status(constants.BatchNoteStatus.OK)
 
     # functions related to addon config
     # =================================
