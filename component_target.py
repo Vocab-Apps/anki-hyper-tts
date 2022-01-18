@@ -56,6 +56,8 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.batch_target_layout.addWidget(self.radio_button_remove_sound)
         self.batch_target_layout.addWidget(self.radio_button_keep_sound)
 
+        self.batch_target_layout.addStretch()
+
         # connect events
         self.target_field_combobox.currentIndexChanged.connect(lambda x: self.update_field())
         self.radio_button_sound_only.toggled.connect(self.update_text_sound)

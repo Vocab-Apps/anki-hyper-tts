@@ -51,6 +51,8 @@ class BatchSource(component_common.ConfigComponentBase):
         self.advanced_template_input = PyQt5.QtWidgets.QPlainTextEdit()
         self.batch_source_layout.addWidget(self.advanced_template_input)
 
+        self.batch_source_layout.addStretch()
+
         # wire events
         self.batch_mode_combobox.currentIndexChanged.connect(self.batch_mode_change)
         self.source_field_combobox.currentIndexChanged.connect(self.source_field_change)

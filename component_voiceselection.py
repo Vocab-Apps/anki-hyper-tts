@@ -262,6 +262,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.voice_list_grid_layout = PyQt5.QtWidgets.QGridLayout()
         self.voices_layout.addLayout(self.voice_list_grid_layout)
 
+        self.voices_layout.addStretch()
+
         # set some defaults
         # =================
         self.radio_button_single.setChecked(True)
