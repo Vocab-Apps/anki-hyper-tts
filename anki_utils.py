@@ -1,4 +1,5 @@
 import sys
+import os
 import aqt
 import anki.template
 import anki.sound
@@ -34,6 +35,11 @@ class AnkiUtils():
         if night_mode:
             return constants.RED_STYLESHEET_NIGHTMODE
         return constants.RED_STYLESHEET
+
+    def get_user_files_dir(self):
+        addon_dir = os.path.dirname(os.path.realpath(__file__))
+        user_files_dir = os.path.join(addon_dir, 'user_files')
+        return user_files_dir        
 
     def play_anki_sound_tag(self, text):
         out = aqt.mw.col.backend.extract_av_tags(text=text, question_side=True)
