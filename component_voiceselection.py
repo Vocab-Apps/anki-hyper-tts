@@ -108,9 +108,8 @@ class ComponentPriorityVoiceList(ComponentVoiceListBase):
 
 
 class VoiceSelection(component_common.ConfigComponentBase):
-    def __init__(self, hypertts, note_id_list, model_change_callback):
+    def __init__(self, hypertts, model_change_callback):
         self.hypertts = hypertts
-        self.note_id_list = note_id_list
         self.model_change_callback = model_change_callback
 
         # initialize widgets

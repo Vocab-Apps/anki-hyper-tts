@@ -15,9 +15,11 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.hypertts = hypertts
         self.note_id_list = note_id_list
 
-        self.source = component_source.BatchSource(self.hypertts, self.note_id_list, self.source_model_updated)
-        self.target = component_target.BatchTarget(self.hypertts, self.note_id_list, self.target_model_updated)
-        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.note_id_list, self.voice_selection_model_updated)
+        field_list = self.hypertts.get_all_fields_from_notes(note_id_list)
+
+        self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
+        self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
+        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
         self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, self.sample_selected)
 
         self.batch_model = config_models.BatchConfig()

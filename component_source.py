@@ -7,11 +7,10 @@ import batch_status
 import constants
 
 class BatchSource(component_common.ConfigComponentBase):
-    def __init__(self, hypertts, note_id_list, model_change_callback):
+    def __init__(self, hypertts, field_list, model_change_callback):
         self.hypertts = hypertts
-        self.note_id_list = note_id_list
+        self.field_list = field_list
         self.model_change_callback = model_change_callback
-        self.field_list = self.hypertts.get_all_fields_from_notes(self.note_id_list)
 
         self.batch_source_model = None
 
