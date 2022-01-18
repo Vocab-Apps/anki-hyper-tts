@@ -34,6 +34,13 @@ class MockModelChangeCallback():
     def model_updated(self, model):
         self.model = model
 
+class MockSampleSelectedCallback():
+    def __init__(self):
+        self.sample_text = None
+
+    def sample_selected(self, text):
+        self.sample_text = text
+
 def get_hypertts_instance():
     # return hypertts_instance    
     config_gen = testing_utils.TestConfigGenerator()
@@ -550,8 +557,10 @@ def test_batch_preview(qtbot):
     batch_config.set_target(target)
     batch_config.set_voice_selection(voice_selection)    
 
-    batch_preview = component_batch_preview.BatchPreview(hypertts_instance, batch_config, note_id_list)
-    batch_preview.draw(dialog.getLayout())
+    sample_text_callback = MockSampleSelectedCallback()
+    batch_preview = component_batch_preview.BatchPreview(hypertts_instance, note_id_list, sample_text_callback.sample_selected)
+    batch_preview.load_model(batch_config)
+    dialog.addChildLayout(batch_preview.draw())
 
     # dialog.exec_()
 
