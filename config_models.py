@@ -1,8 +1,14 @@
+import sys
 import abc
-
-import constants
-import voice
 import copy
+
+if hasattr(sys, '_pytest_mode'):
+    import constants
+    import voice
+else:
+    # anki
+    from . import constants
+    from . import voice
 
 """
 the various objects here dictate how HyperTTS is configured and these objects will serialize to/from the anki config

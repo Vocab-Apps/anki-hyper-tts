@@ -16,6 +16,7 @@ else:
     from . import constants
     from . import anki_utils
     from . import servicemanager
+    from . import hypertts
     
     # setup sentry crash reporting
     # ============================
@@ -85,6 +86,7 @@ else:
         return os.path.join(current_script_dir, 'services')
     service_manager = servicemanager.ServiceManager(services_dir(), 'services')
     service_manager.init_services()    
+    hyper_tts = hypertts.HyperTTS(ankiutils, service_manager)
     # deckutils = deck_utils.DeckUtils(ankiutils)
     # cloud_language_tools = cloudlanguagetools.CloudLanguageTools()
     # languagetools = languagetools.LanguageTools(ankiutils, deckutils, cloud_language_tools)

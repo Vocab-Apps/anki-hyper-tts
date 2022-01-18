@@ -16,18 +16,19 @@ import aqt.addcards
 import anki.notes
 import anki.cards
 
-import config_models
 
 if hasattr(sys, '_pytest_mode'):
     import constants
     import version
     import errors
     import text_utils
+    import config_models
 else:
     from . import constants
     from . import version
     from . import errors
     from . import text_utils
+    from . import config_models
 
 
 
