@@ -50,14 +50,7 @@ class ServiceManager():
         # sys.path.insert(0, self.services_directory)
         for module_name in module_names:
             logging.info(f'importing module {module_name}')
-            import_level = 0
-            if hasattr(sys, '_pytest_mode'):
-                # unit test mode
-                import_level = 0
-            else:
-                # anki mode
-                import_level = 1
-            __import__(self.package_name, globals(), locals(), [module_name], import_level)
+            __import__(self.package_name, globals(), locals(), [module_name], sys._addon_import_level_base)
 
 
     def instantiate_services(self):

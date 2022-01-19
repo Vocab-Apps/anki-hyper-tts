@@ -3,16 +3,9 @@ import requests
 import datetime
 import logging
 
-import_level = 0
-if hasattr(sys, '_pytest_mode'):
-    import_level = 0
-else:
-    # import running from within Anki
-    import_level = 2
-
-voice = __import__('voice', globals(), locals(), [], import_level)
-service = __import__('service', globals(), locals(), [], import_level)
-errors = __import__('errors', globals(), locals(), [], import_level)
+voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
+service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
+errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
 
 class Azure(service.ServiceBase):
     def __init__(self):

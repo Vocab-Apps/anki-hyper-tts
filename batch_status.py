@@ -1,15 +1,8 @@
 import sys
 import logging
 
-import_level = 0
-if hasattr(sys, '_pytest_mode'):
-    import_level = 0
-else:
-    # import running from within Anki
-    import_level = 1
-
-constants = __import__('constants', globals(), locals(), [], import_level)
-errors = __import__('errors', globals(), locals(), [], import_level)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 
 class NoteStatus():
     def __init__(self, note_id):

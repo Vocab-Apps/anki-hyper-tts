@@ -11,16 +11,9 @@ import aqt.gui_hooks
 import aqt.sound
 import anki.hooks
 
-import_level = 0
-if hasattr(sys, '_pytest_mode'):
-    import_level = 0
-else:
-    # import running from within Anki
-    import_level = 1
-
 # addon imports
-constants = __import__('constants', globals(), locals(), [], import_level)
-component_batch = __import__('component_batch', globals(), locals(), [], import_level)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class BatchDialog(PyQt5.QtWidgets.QDialog):

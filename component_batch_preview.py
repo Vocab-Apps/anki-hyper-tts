@@ -3,16 +3,10 @@ import logging
 import PyQt5
 import time
 
-import_level = 0
-if hasattr(sys, '_pytest_mode'):
-    import_level = 0
-else:
-    # import running from within Anki
-    import_level = 1
 
-constants = __import__('constants', globals(), locals(), [], import_level)
-component_common = __import__('component_common', globals(), locals(), [], import_level)
-batch_status = __import__('batch_status', globals(), locals(), [], import_level)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
+batch_status = __import__('batch_status', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
