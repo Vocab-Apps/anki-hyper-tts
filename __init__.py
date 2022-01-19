@@ -8,6 +8,12 @@ if hasattr(sys, '_pytest_mode'):
     # called from within a test run
     pass
 else:
+    # configure imports
+    # =================
+    # we need to import internal modules in a particular way which differs whether we're running within anki or pytest
+    sys._addon_import_level_base = 1
+    sys._addon_import_level_services = 2
+
     # running from within Anki
     import anki
     import anki.hooks
