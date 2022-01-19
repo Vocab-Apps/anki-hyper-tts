@@ -123,6 +123,7 @@ class HyperTTS():
 
     def expand_simple_template(self, note, source_template):
         field_values = self.get_field_values(note)
+        # logging.info(f'field_values: {field_values}')
         return source_template.format_map(field_values)
 
     def expand_advanced_template(self, note, source_template):
@@ -135,8 +136,8 @@ class HyperTTS():
 
     def get_field_values(self, note):
         field_values = {}
-        for field in note.fields:
-            field_values[field] = note[field]
+        for field_name in list(note.keys()):
+            field_values[field_name] = note[field_name]
         return field_values
 
     def process_text(self, source_text):

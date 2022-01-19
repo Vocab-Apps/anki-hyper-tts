@@ -153,3 +153,5 @@ class AnkiUtils():
     def report_unknown_exception_background(self, exception):
         if constants.ENABLE_SENTRY_CRASH_REPORTING:
             sentry_sdk.capture_exception(exception)
+        else:
+            logging.critical(exception, exc_info=True)
