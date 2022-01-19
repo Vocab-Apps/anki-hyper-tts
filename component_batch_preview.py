@@ -90,11 +90,10 @@ class BatchPreview(component_common.ComponentBase):
         self.hypertts.anki_utils.run_in_background(self.update_batch_status_task, self.update_batch_status_task_done)
 
     def update_batch_status_task(self):
-        if self.batch_status.task_running:
-            logging.info('stopping current batch')
+        if self.batch_status.is_running():
             # stop current batch
-            self.batch_status.must_continue = False
-        while self.batch_status.task_running:
+            self.batch_status.stop()
+        while self.batch_status.is_running():
             time.sleep(0.1)
 
         logging.info('update_batch_status_task')

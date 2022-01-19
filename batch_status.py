@@ -1,4 +1,5 @@
 import sys
+import logging
 
 import_level = 0
 if hasattr(sys, '_pytest_mode'):
@@ -81,6 +82,13 @@ class BatchStatus():
             self.note_id_map[note_id] = i
             i += 1
     
+    def is_running(self):
+        return self.task_running
+
+    def stop(self):
+        logging.info('stopping current batch')
+        self.must_continue = False
+
     def __getitem__(self, array_index):
         return self.note_status_array[array_index]
 

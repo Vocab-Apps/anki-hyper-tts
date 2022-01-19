@@ -231,6 +231,9 @@ class HyperTTS():
                     note_action_context.set_source_text(source_text)
                     note_action_context.set_processed_text(processed_text)
                     note_action_context.set_status(constants.BatchNoteStatus.OK)
+                if batch_status.must_continue == False:
+                    logging.info('batch_status execution interrupted')
+                    break
 
     # functions related to addon config
     # =================================
