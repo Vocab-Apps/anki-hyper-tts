@@ -182,4 +182,4 @@ class BatchPreview(component_common.ComponentBase):
         # logging.info(f'change_listener row {row}')
         self.batch_preview_table_model.notifyChange(row)
         if row == self.selected_row:
-            self.update_error_label_for_selected()
+            self.hypertts.anki_utils.run_on_main(self.update_error_label_for_selected)
