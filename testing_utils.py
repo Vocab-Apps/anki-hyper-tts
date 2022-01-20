@@ -32,6 +32,10 @@ class MockAnkiUtils():
         self.show_loading_indicator_called = None
         self.hide_loading_indicator_called = None
 
+        # undo handling
+        self.undo_started = False
+        self.undo_finished = False
+
         # user_files dir
         self.user_files_dir = tempfile.gettempdir()
 
@@ -86,6 +90,16 @@ class MockAnkiUtils():
     def media_add_file(self, filename):
         self.added_media_file = filename
         return filename
+
+    def undo_start(self):
+        self.undo_started = True
+
+    def undo_end(self, undo_id):
+        self.undo_finished = True
+
+    def update_note(self, note):
+        # even though we don't call note.flush anymore, some of the tests expect this
+        note.flush()
 
     def run_in_background(self, task_fn, task_done_fn):
         # just run the two tasks immediately

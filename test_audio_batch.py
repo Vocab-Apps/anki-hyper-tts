@@ -58,6 +58,11 @@ def test_simple_1(qtbot):
     assert listener.callbacks_received[config_gen.note_id_1] == True
     assert listener.callbacks_received[config_gen.note_id_2] == True
 
+    # undo handling
+    # =============
+    assert hypertts_instance.anki_utils.undo_started == True
+    assert hypertts_instance.anki_utils.undo_finished == True
+
     # verify effect on notes
     # ======================
     # target field has the sound tag
