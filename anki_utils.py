@@ -3,6 +3,7 @@ import os
 import aqt
 import anki.template
 import anki.sound
+import anki.collection
 import logging
 import PyQt5
 from . import constants    
@@ -71,6 +72,17 @@ class AnkiUtils():
     def media_add_file(self, filename):
         full_filename = aqt.mw.col.media.addFile(filename)
         return full_filename
+
+    def undo_start(self):
+        return aqt.mw.col.add_custom_undo_entry(constants.UNDO_ENTRY_NAME)
+
+    def undo_end(self, undo_id):
+        aqt.mw.col.merge_undo_entries(undo_id)
+        aqt.mw.update_undo_actions()
+        aqt.mw.autosave()
+
+    def update_note(self, note):
+        aqt.mw.col.update_note(note)
 
     def run_in_background(self, task_fn, task_done_fn):
         aqt.mw.taskman.run_in_background(task_fn, task_done_fn)

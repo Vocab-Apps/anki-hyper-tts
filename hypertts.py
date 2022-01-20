@@ -52,6 +52,7 @@ class HyperTTS():
 
     def process_batch_audio(self, note_id_list, batch, batch_status):
         # for each note, generate audio
+        undo_id = self.anki_utils.undo_start()
         for note_id in note_id_list:
             with batch_status.get_note_action_context(note_id, False) as note_action_context:
                 note = self.anki_utils.get_note_by_id(note_id)
@@ -72,10 +73,10 @@ class HyperTTS():
                     note[target_field] = f'{field_content} {sound_tag}'
                 else:
                     note[target_field] = sound_tag
-                note.flush()
-                sound_found = True
+                self.anki_utils.update_note(note)
                 note_action_context.set_sound(sound_file)
                 note_action_context.set_status(constants.BatchNoteStatus.Done)
+        self.anki_utils.undo_end(undo_id)
 
     def get_audio_file(self, processed_text, voice_selection):
         # this voice_list copy is only used for priority mode
