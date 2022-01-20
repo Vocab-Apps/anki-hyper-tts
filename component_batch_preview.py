@@ -116,9 +116,13 @@ class BatchPreview(component_common.ComponentBase):
         self.load_audio_button = PyQt5.QtWidgets.QPushButton('Load Audio')
         self.batch_preview_layout.addWidget(self.load_audio_button)
 
+        self.stop_button = PyQt5.QtWidgets.QPushButton('Stop')
+        self.batch_preview_layout.addWidget(self.stop_button)
+
         # wire events
         self.preview_audio_button.pressed.connect(self.preview_audio_button_pressed)
         self.load_audio_button.pressed.connect(self.load_audio_button_pressed)
+        self.stop_button.pressed.connect(self.stop_button_pressed)
 
         return self.batch_preview_layout
 
@@ -164,6 +168,9 @@ class BatchPreview(component_common.ComponentBase):
 
     def load_audio_button_pressed(self):
         self.hypertts.anki_utils.run_in_background(self.load_audio_task, self.load_audio_task_done)
+
+    def stop_button_pressed(self):
+        self.batch_status.stop()
 
     def load_audio_task(self):
         logging.info('load_audio_task')
