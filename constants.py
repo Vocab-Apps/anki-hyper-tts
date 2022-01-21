@@ -25,10 +25,8 @@ class BatchNoteStatus(enum.Enum):
     Error = enum.auto()
     OK = enum.auto()
 
-#
-CONFIG_BATCH_TEXT_AND_SOUND_TAG = 'text_and_sound_tag'
 
-CONFIG_BATCH_AUDIO = 'batch_audio'
+CONFIG_BATCH_CONFIG = 'batch_config'
 
 CONFIG_TEXT_PROCESSING = 'text_processing'
 ADDON_NAME = 'HyperTTS'

@@ -26,10 +26,15 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.batch_model = config_models.BatchConfig()
 
     def load_model(self, model):
-        pass
+        self.batch_model = model
+        # disseminate to all components
+        self.source.load_model(model.source)
+        self.target.load_model(model.target)
+        self.voice_selection.load_model(model.voice_selection)
+        self.preview.load_model(self.batch_model)
 
     def get_model(self):
-        return None
+        return self.batch_model
 
     def source_model_updated(self, model):
         logging.info(f'source_model_updated: {model}')
@@ -62,6 +67,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
         hlayout.addWidget(self.profile_save_button)
         self.vlayout.addLayout(hlayout)
 
+        self.profile_load_button.pressed.connect(self.load_profile_button_pressed)
+        self.profile_save_button.pressed.connect(self.save_profile_button_pressed)
+
         self.tabs = PyQt5.QtWidgets.QTabWidget()
         self.tab_source = PyQt5.QtWidgets.QWidget()
         self.tab_target = PyQt5.QtWidgets.QWidget()
@@ -86,3 +94,12 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
         layout.addLayout(self.vlayout)
 
+    def load_profile_button_pressed(self):
+        profile_name = self.profile_name_combobox.currentText()
+        self.load_model(self.hypertts.load_batch_config(profile_name))
+
+    def save_profile_button_pressed(self):
+        profile_name = self.profile_name_combobox.currentText()
+        self.hypertts.save_batch_config(profile_name, self.get_model())
+
+    

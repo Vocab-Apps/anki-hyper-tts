@@ -252,6 +252,17 @@ class HyperTTS():
         self.anki_utils.write_config(self.config)
         self.text_utils = text_utils.TextUtils(settings)
 
+    def save_batch_config(self, batch_name, batch):
+        if constants.CONFIG_BATCH_CONFIG not in self.config:
+            self.config[constants.CONFIG_BATCH_CONFIG] = {}
+        self.config[constants.CONFIG_BATCH_CONFIG][batch_name] = batch.serialize()
+        self.anki_utils.write_config(self.config)
+        logging.info(f'saved batch config [{batch_name}]')
+
+    def load_batch_config(self, batch_name):
+        logging.info(f'loading batch config [{batch_name}]')
+        return self.deserialize_batch_config(self.config[constants.CONFIG_BATCH_CONFIG][batch_name])
+
     # deserialization routines for loading from config
     # ================================================
 
