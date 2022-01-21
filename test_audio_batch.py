@@ -19,7 +19,16 @@ class MockBatchStatusListener():
         self.callbacks_received = {}
         self.current_row = None
 
-    def change_listener_fn(self, note_id, row):
+        self.batch_started = None
+        self.batch_ended = None
+
+    def batch_start(self):
+        self.batch_started = True
+
+    def batch_end(self):
+        self.batch_ended = True
+
+    def batch_change(self, note_id, row):
         self.callbacks_received[note_id] = True
         self.current_row = row
 
@@ -51,7 +60,7 @@ def test_simple_1(qtbot):
     # run batch add audio (simple mode)
     # =================================
     listener = MockBatchStatusListener()
-    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener.change_listener_fn)
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
     hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
 
     assert listener.current_row == 1

@@ -51,17 +51,19 @@ class BatchRunningActionContext():
     def __enter__(self):
         self.batch_status.task_running = True
         self.batch_status.must_continue = True
+        self.batch_status.notify_start()
         return self
 
     def __exit__(self, exception_type, exception_value, traceback):
         self.batch_status.task_running = False
+        self.batch_status.notify_end()
         return False        
 
 class BatchStatus():
-    def __init__(self, anki_utils, note_id_list, change_listener_fn):
+    def __init__(self, anki_utils, note_id_list, change_listener):
         self.anki_utils = anki_utils
         self.note_id_list = note_id_list
-        self.change_listener_fn = change_listener_fn
+        self.change_listener = change_listener
         self.note_status_array = []
         self.note_status_map = {}
         self.note_id_map = {}
@@ -129,6 +131,12 @@ class BatchStatus():
         self.note_status_map[note_id].status = status
         self.notify_change(note_id)
 
+    def notify_start(self):
+        self.change_listener.batch_start()
+
     def notify_change(self, note_id):
         row = self.note_id_map[note_id]
-        self.change_listener_fn(note_id, row)
+        self.change_listener.batch_change(note_id, row)
+
+    def notify_end(self):
+        self.change_listener.batch_end()

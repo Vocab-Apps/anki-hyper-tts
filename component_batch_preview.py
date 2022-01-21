@@ -74,7 +74,7 @@ class BatchPreview(component_common.ComponentBase):
         self.note_id_list = note_id_list
         self.sample_selection_fn = sample_selection_fn
 
-        self.batch_status = batch_status.BatchStatus(hypertts.anki_utils, note_id_list, self.change_listener)
+        self.batch_status = batch_status.BatchStatus(hypertts.anki_utils, note_id_list, self)
         self.batch_preview_table_model = BatchPreviewTableModel(self.batch_status)
 
         self.selected_row = None
@@ -179,7 +179,14 @@ class BatchPreview(component_common.ComponentBase):
     def load_audio_task_done(self, result):
         logging.info('load_audio_task_done')
 
-    def change_listener(self, note_id, row):
+
+    def batch_start(self):
+        pass
+
+    def batch_end(self):
+        pass
+
+    def batch_change(self, note_id, row):
         # logging.info(f'change_listener row {row}')
         self.batch_preview_table_model.notifyChange(row)
         if row == self.selected_row:
