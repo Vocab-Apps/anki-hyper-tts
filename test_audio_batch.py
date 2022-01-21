@@ -66,6 +66,8 @@ def test_simple_1(qtbot):
     assert listener.current_row == 1
     assert listener.callbacks_received[config_gen.note_id_1] == True
     assert listener.callbacks_received[config_gen.note_id_2] == True
+    assert listener.batch_started == True
+    assert listener.batch_ended == True
 
     # undo handling
     # =============
@@ -136,7 +138,7 @@ def test_simple_error_handling(qtbot):
     # run batch add audio (simple mode)
     # =================================
     listener = MockBatchStatusListener()
-    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener.change_listener_fn)    
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)    
     hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
 
     # check progress bar
@@ -177,7 +179,7 @@ def test_simple_append(qtbot):
     # run batch add audio (simple mode)
     # =================================
     listener = MockBatchStatusListener()
-    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener.change_listener_fn)
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
     hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
 
     # check progress bar
@@ -231,7 +233,7 @@ def test_random_voices(qtbot):
     # run batch add audio (simple mode)
     # =================================
     listener = MockBatchStatusListener()
-    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener.change_listener_fn)
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
     hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
 
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
@@ -271,7 +273,7 @@ def test_simple_template(qtbot):
     # run batch add audio (simple mode)
     # =================================
     listener = MockBatchStatusListener()
-    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener.change_listener_fn)
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
     hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
 
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_german_1)
@@ -320,7 +322,7 @@ result = f"{article} {word}"
     # run batch add audio (simple mode)
     # =================================
     listener = MockBatchStatusListener()
-    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener.change_listener_fn)
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
     hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
 
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_german_1)
@@ -371,7 +373,7 @@ result = f"{article} {word}"
     # run batch add audio (simple mode)
     # =================================
     listener = MockBatchStatusListener()
-    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener.change_listener_fn)
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
     hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
 
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_german_1)
@@ -413,7 +415,7 @@ def test_priority_voices_success(qtbot):
     # run batch add audio (simple mode)
     # =================================
     listener = MockBatchStatusListener()
-    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener.change_listener_fn)
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
     hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
 
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
@@ -454,7 +456,7 @@ def test_priority_voices_not_found(qtbot):
     # run batch add audio (simple mode)
     # =================================
     listener = MockBatchStatusListener()
-    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener.change_listener_fn)
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
     hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
 
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
