@@ -60,6 +60,10 @@ class ComponentBatch(component_common.ConfigComponentBase):
         hlayout = PyQt5.QtWidgets.QHBoxLayout()
         self.profile_name_combobox = PyQt5.QtWidgets.QComboBox()
         self.profile_name_combobox.setEditable(True)
+        # populate with existing profile names
+        profile_name_list = [self.hypertts.get_next_batch_name()] + self.hypertts.get_batch_config_list()
+        self.profile_name_combobox.addItems(profile_name_list)
+
         hlayout.addWidget(self.profile_name_combobox)
         self.profile_load_button = PyQt5.QtWidgets.QPushButton('Load')
         hlayout.addWidget(self.profile_load_button)
