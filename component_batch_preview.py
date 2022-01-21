@@ -77,7 +77,10 @@ class BatchPreview(component_common.ComponentBase):
         self.batch_status = batch_status.BatchStatus(hypertts.anki_utils, note_id_list, self)
         self.batch_preview_table_model = BatchPreviewTableModel(self.batch_status)
 
+        # create certain widgets right away
         self.stack = PyQt5.QtWidgets.QStackedWidget()
+        self.progress_bar = PyQt5.QtWidgets.QProgressBar()
+        self.progress_bar.setMaximum(len(self.note_id_list))        
 
         self.selected_row = None
 
@@ -130,6 +133,7 @@ class BatchPreview(component_common.ComponentBase):
         runningLayout = PyQt5.QtWidgets.QVBoxLayout()
         self.stop_button = PyQt5.QtWidgets.QPushButton('Stop')
         runningLayout.addWidget(self.stop_button)
+        runningLayout.addWidget(self.progress_bar)
         self.batchRunningStack.setLayout(runningLayout)
 
         self.stack.addWidget(self.batchNotRunningStack)
@@ -210,8 +214,12 @@ class BatchPreview(component_common.ComponentBase):
     def batch_end(self):
         self.hypertts.anki_utils.run_on_main(self.show_not_running_stack)
 
+    def update_progress_bar(self, row):
+        self.progress_bar.setValue(row)
+
     def batch_change(self, note_id, row):
         # logging.info(f'change_listener row {row}')
         self.batch_preview_table_model.notifyChange(row)
+        self.hypertts.anki_utils.run_on_main(lambda: self.update_progress_bar(row))
         if row == self.selected_row:
             self.hypertts.anki_utils.run_on_main(self.update_error_label_for_selected)
