@@ -77,6 +77,8 @@ class BatchPreview(component_common.ComponentBase):
         self.batch_status = batch_status.BatchStatus(hypertts.anki_utils, note_id_list, self)
         self.batch_preview_table_model = BatchPreviewTableModel(self.batch_status)
 
+        self.stack = PyQt5.QtWidgets.QStackedWidget()
+
         self.selected_row = None
 
     def load_model(self, model):
@@ -113,11 +115,27 @@ class BatchPreview(component_common.ComponentBase):
         self.preview_audio_button = PyQt5.QtWidgets.QPushButton('Preview Audio')
         self.batch_preview_layout.addWidget(self.preview_audio_button)
 
-        self.load_audio_button = PyQt5.QtWidgets.QPushButton('Load Audio')
-        self.batch_preview_layout.addWidget(self.load_audio_button)
+        # create stack of widgets which will be toggled when we're running the batch
+        self.batchNotRunningStack = PyQt5.QtWidgets.QWidget()
+        self.batchRunningStack = PyQt5.QtWidgets.QWidget()
 
+
+        # populate the "notRunning" stack
+        notRunningLayout = PyQt5.QtWidgets.QVBoxLayout()
+        self.load_audio_button = PyQt5.QtWidgets.QPushButton('Load Audio')
+        notRunningLayout.addWidget(self.load_audio_button)
+        self.batchNotRunningStack.setLayout(notRunningLayout)
+
+        # poulate the "running" stack
+        runningLayout = PyQt5.QtWidgets.QVBoxLayout()
         self.stop_button = PyQt5.QtWidgets.QPushButton('Stop')
-        self.batch_preview_layout.addWidget(self.stop_button)
+        runningLayout.addWidget(self.stop_button)
+        self.batchRunningStack.setLayout(runningLayout)
+
+        self.stack.addWidget(self.batchNotRunningStack)
+        self.stack.addWidget(self.batchRunningStack)
+        self.show_not_running_stack()
+        self.batch_preview_layout.addWidget(self.stack)
 
         # wire events
         self.preview_audio_button.pressed.connect(self.preview_audio_button_pressed)
@@ -125,6 +143,12 @@ class BatchPreview(component_common.ComponentBase):
         self.stop_button.pressed.connect(self.stop_button_pressed)
 
         return self.batch_preview_layout
+
+    def show_not_running_stack(self):
+        self.stack.setCurrentIndex(0)
+
+    def show_running_stack(self):
+        self.stack.setCurrentIndex(1)
 
     def selection_changed(self):
         logging.info('selection_changed')
@@ -181,10 +205,10 @@ class BatchPreview(component_common.ComponentBase):
 
 
     def batch_start(self):
-        pass
+        self.hypertts.anki_utils.run_on_main(self.show_running_stack)
 
     def batch_end(self):
-        pass
+        self.hypertts.anki_utils.run_on_main(self.show_not_running_stack)
 
     def batch_change(self, note_id, row):
         # logging.info(f'change_listener row {row}')
