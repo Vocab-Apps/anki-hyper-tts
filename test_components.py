@@ -626,4 +626,4 @@ def test_batch_dialog(qtbot):
 
     # test to be expanded at a later time
 
-    # dialog.exec_()
+    dialog.exec_()

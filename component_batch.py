@@ -50,6 +50,18 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.voice_selection.sample_text_selected(text)
 
     def draw(self, layout):
+        self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
+
+        hlayout = PyQt5.QtWidgets.QHBoxLayout()
+        self.profile_name_combobox = PyQt5.QtWidgets.QComboBox()
+        self.profile_name_combobox.setEditable(True)
+        hlayout.addWidget(self.profile_name_combobox)
+        self.profile_load_button = PyQt5.QtWidgets.QPushButton('Load')
+        hlayout.addWidget(self.profile_load_button)
+        self.profile_save_button = PyQt5.QtWidgets.QPushButton('Save')
+        hlayout.addWidget(self.profile_save_button)
+        self.vlayout.addLayout(hlayout)
+
         self.tabs = PyQt5.QtWidgets.QTabWidget()
         self.tab_source = PyQt5.QtWidgets.QWidget()
         self.tab_target = PyQt5.QtWidgets.QWidget()
@@ -70,5 +82,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.splitter.addWidget(self.preview_widget)
 
         # return self.tabs
-        layout.addWidget(self.splitter)
+        self.vlayout.addWidget(self.splitter)
+
+        layout.addLayout(self.vlayout)
 
