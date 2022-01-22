@@ -22,7 +22,7 @@ class ServiceManager():
     this class will discover the services that are available and query their voices. it can also route a request
     to the correct service.
     """
-    def __init__(self, services_directory, package_name=None):
+    def __init__(self, services_directory, package_name):
         self.services_directory = services_directory
         self.package_name = package_name
         self.services = {}
