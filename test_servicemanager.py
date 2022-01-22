@@ -17,7 +17,7 @@ class ServiceManagerTests(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.manager.unload_services()
+        pass
 
     def test_discover(self):
         # discover available services

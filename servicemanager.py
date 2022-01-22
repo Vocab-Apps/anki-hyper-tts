@@ -52,15 +52,6 @@ class ServiceManager():
             logging.info(f'importing module {module_name}')
             __import__(self.package_name, globals(), locals(), [module_name], sys._addon_import_level_base)
 
-    # only used in testing
-    def unload_services(self):
-        module_names = self.discover_services()
-        logging.info(sys.modules.keys())
-        for module_name in module_names:
-            full_name = f'{self.package_name}.{module_name}'
-            logging.info(f'unloading module {full_name}')
-            del sys.modules[full_name]
-
     def instantiate_services(self):
         for subclass in service.ServiceBase.__subclasses__():
             subclass_instance = subclass()
