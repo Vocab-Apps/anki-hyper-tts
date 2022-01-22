@@ -1,29 +1,39 @@
 <script context="module">
     import { writable } from 'svelte/store';
     
-    export const liveUpdatesEnabledStore = writable(false);
-    export const typingDelayStore = writable(0);
+    export const batchNameListStore = writable([]);
 
-    export function setLanguageToolsEditorSettings(liveUpdatesEnabled, typingDelay) {
-        console.log('setLanguageToolsEditorSettings: ', liveUpdatesEnabled, typingDelay);
-        liveUpdatesEnabledStore.set(liveUpdatesEnabled);
-        typingDelayStore.set(typingDelay);
+    export function configureEditorHyperTTS(batchConfigList) {
+        console.log('setLanguageToolsEditorSettings: ', batchConfigList);
+        batchNameListStore.set(batchConfigList)
+        /*
+        let batchConfigListArray = [];
+        for (let i = 0; i < batchConfigList.length; i++) {
+            console.log('batch_config: ', batchConfigList[i]);
+            batchConfigListArray.push(
+                {
+                    id: i,
+                    name: batchConfigList[i]
+                }
+            )
+        }        
+        batchNameListStore.set(batchConfigListArray);
+        */
     }
 
 </script>
 
 <script>
 
-    function toggleLiveUpdates() {
-        $liveUpdatesEnabledStore = ! $liveUpdatesEnabledStore;
-        bridgeCommand('languagetools:liveupdates:' + $liveUpdatesEnabledStore);
-    }
+    let selectedBatchName;
 
-    function typingDelayChange(event){
-        const value = $typingDelayStore;
-        // console.log('typingDelayChange: ', value);
-        const cmdString = 'languagetools:typingdelay:' + value;
-        bridgeCommand(cmdString);
+	let batchNameList;
+	batchNameListStore.subscribe(value => {
+		batchNameList = value;
+	});    
+
+    function addAudio() {
+            console.log("addAudio");
     }
 
     function triggerAllFieldUpdate() {
@@ -33,8 +43,8 @@
             // console.log('field_id: ', field_id, ' field_value: ', field_value);
             const cmdString = 'languagetools:forcefieldupdate:' + field_id + ':' + field_value;
             bridgeCommand(cmdString);
-    });
-}    
+        });
+    }
 
 </script>
 
@@ -55,35 +65,22 @@ div {
     padding-left: 5px;
     padding-right: 5px;
 }
-.live-updates-on {
-    color: #00c853;
-    font-weight: bold;
-}
-.live-updates-off {
-    color: #757575;
-    font-weight: bold;
-}
-
 </style>
 
 
 <div class="language-tools-block">
     <div>
-        <b>Language Tools</b>
+        <b>HyperTTS</b>
     </div>
     <div>
-        {#if $liveUpdatesEnabledStore} 
-        <span class="live-updates-on">Live Updates: on</span>
-        {:else}
-        <span class="live-updates-off">Live Updates: off</span>
-        {/if}
+        <select>
+            {#each batchNameList as batch}
+                <option value={batch}>
+                    {batch}
+                </option>
+            {/each}
+        </select>        
     </div>
 
-    <button on:click={toggleLiveUpdates} class="lt-field-button">
-        turn {$liveUpdatesEnabledStore === true ? 'off' : 'on'}
-    </button>
-    <button on:click={triggerAllFieldUpdate} class="lt-field-button">run now</button>
-    <div>delay (ms):
-        <input type=number bind:value={$typingDelayStore} on:input={typingDelayChange} min=250 max=4000 step=250>
-    </div>
+    <button on:click={addAudio} class="lt-field-button">Add Audio</button>
 </div>

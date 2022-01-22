@@ -1,9 +1,9 @@
 // build using:
 // npm run build
 
-import HyperTTS, {setLanguageToolsEditorSettings} from "./HyperTTS.svelte";
+import HyperTTS, {configureEditorHyperTTS} from "./HyperTTS.svelte";
 
 $editorToolbar.then((editorToolbar) => {
-    console.log(setLanguageToolsEditorSettings);
-    editorToolbar.toolbar.insertGroup({component: LanguageTools, id: "languagetools"});
+    console.log(configureEditorHyperTTS);
+    editorToolbar.toolbar.insertGroup({component: HyperTTS, id: "hypertts"});
 });

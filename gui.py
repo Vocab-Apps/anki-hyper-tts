@@ -1,4 +1,5 @@
 import sys
+import json
 
 # pyqt
 import PyQt5
@@ -35,7 +36,13 @@ def launch_batch_dialog(hypertts, note_id_list):
     dialog.exec_()
 
 
+def configure_editor(editor: aqt.editor.Editor, batch_name_list):
+    js_command = f"configureEditorHyperTTS({json.dumps(batch_name_list)})"
+    print(js_command)
+    editor.web.eval(js_command)    
+
 def init(hypertts):
+    aqt.mw.addonManager.setWebExports(__name__, r".*(css|js)")
 
     def browerMenusInit(browser: aqt.browser.Browser):
         menu = aqt.qt.QMenu(constants.ADDON_NAME, browser.form.menubar)
@@ -49,8 +56,29 @@ def init(hypertts):
         logging.info('editor shortcuts setup')
         cuts.append(("Ctrl+l", lambda: aqt.utils.tooltip("test")))
 
-        
+
+    def on_webview_will_set_content(web_content: aqt.webview.WebContent, context):
+        if not isinstance(context, aqt.editor.Editor):
+            return
+        addon_package = aqt.mw.addonManager.addonFromModule(__name__)
+        javascript_path = [
+            f"/_addons/{addon_package}/hypertts.js",
+        ]
+        css_path =  [
+            f"/_addons/{addon_package}/hypertts.css",
+        ]
+        web_content.js.extend(javascript_path)
+        web_content.css.extend(css_path)
+
+    def loadNote(editor: aqt.editor.Editor):
+        batch_name_list = hypertts.get_batch_config_list()
+        configure_editor(editor, batch_name_list)
+
     # browser menus
     aqt.gui_hooks.browser_menus_did_init.append(browerMenusInit)
     # shortcuts
     aqt.gui_hooks.editor_did_init_shortcuts.append(shortcut_test)
+
+    # editor setup
+    aqt.gui_hooks.editor_did_load_note.append(loadNote)
+    aqt.gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
