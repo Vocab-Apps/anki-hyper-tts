@@ -7,6 +7,7 @@ import hashlib
 import logging
 import random
 import copy
+import json
 from typing import List, Dict
 
 # anki imports
@@ -57,18 +58,22 @@ class HyperTTS():
             for note_id in note_id_list:
                 with batch_status.get_note_action_context(note_id, False) as note_action_context:
                     note = self.anki_utils.get_note_by_id(note_id)
-                    self.process_note_audio(batch, note, note_action_context)
+                    # process note
+                    source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note)
+                    # update note action context
+                    note_action_context.set_source_text(source_text)
+                    note_action_context.set_processed_text(processed_text)
+                    note_action_context.set_sound(sound_file)
+                    note_action_context.set_status(constants.BatchNoteStatus.Done)                    
                 if batch_status.must_continue == False:
                     logging.info('batch_status execution interrupted')
                     break
             self.anki_utils.undo_end(undo_id)
 
-    def process_note_audio(self, batch, note, note_action_context):
+    def process_note_audio(self, batch, note):
         target_field = batch.target.target_field
         source_text = self.get_source_text(note, batch.source)
-        note_action_context.set_source_text(source_text)
         processed_text = self.process_text(source_text)
-        note_action_context.set_processed_text(processed_text)
 
         full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection)
         sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)
@@ -81,8 +86,9 @@ class HyperTTS():
         else:
             note[target_field] = sound_tag
         self.anki_utils.update_note(note)
-        note_action_context.set_sound(sound_file)
-        note_action_context.set_status(constants.BatchNoteStatus.Done)
+
+        return source_text, processed_text, sound_file, full_filename
+
 
     def get_audio_file(self, processed_text, voice_selection):
         # this voice_list copy is only used for priority mode
@@ -119,7 +125,13 @@ class HyperTTS():
         logging.info(f'editor_add_audio: {pycmd_str}')
         with self.error_manager.get_single_action_context('Adding Audio'):
             # get
-            pass
+            json_str = pycmd_str.replace('hypertts:addaudio:', '')
+            add_audio_data = json.loads(json_str)
+            batch_name = add_audio_data['batch_name']
+            batch = self.load_batch_config(batch_name)
+            source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note)
+            self.anki_utils.play_sound(full_filename)
+            logging.info(f'finished getting audio: {sound_file}')
             
 
     # text processing
