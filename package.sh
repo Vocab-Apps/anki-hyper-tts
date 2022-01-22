@@ -7,7 +7,7 @@ GIT_TAG=v${VERSION_NUMBER}
 cd web; npm run build || { echo 'npm build failed' ; exit 1; }
 cd ..
 
-echo "ANKI_LANGUAGE_TOOLS_VERSION='${VERSION_NUMBER}'" > version.py
+echo "ANKI_HYPER_TTS_VERSION='${VERSION_NUMBER}'" > version.py
 git commit -a -m "upgraded version to ${VERSION_NUMBER}"
 git push
 git tag -a ${GIT_TAG} -m "version ${GIT_TAG}"
