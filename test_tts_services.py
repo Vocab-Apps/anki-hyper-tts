@@ -1,3 +1,4 @@
+import sys
 import os
 import logging
 import re
@@ -185,10 +186,11 @@ class TTSTests(unittest.TestCase):
         service_name_list = [service.name for service in self.manager.get_all_services()]
 
         for service_name in service_name_list:
-            logging.info(f'testing language {language.name}, service {service_name}')
-            random_voices = self.pick_random_voices_sample(voice_list, service_name, language, 3)
-            for voice in random_voices:
-                self.verify_audio_output(voice, source_text)    
+            if self.manager.get_service(service_name).enabled:
+                logging.info(f'testing language {language.name}, service {service_name}')
+                random_voices = self.pick_random_voices_sample(voice_list, service_name, language, 3)
+                for voice in random_voices:
+                    self.verify_audio_output(voice, source_text)    
 
     def test_all_services_english(self):
         self.verify_all_services_language(constants.AudioLanguage.en_US, 'The weather is good today.')
