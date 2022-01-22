@@ -14,7 +14,10 @@ class ServiceManagerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
-        pass
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.manager.unload_services()
 
     def test_discover(self):
         # discover available services
