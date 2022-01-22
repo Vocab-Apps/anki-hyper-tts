@@ -9,6 +9,7 @@ import aqt.qt
 import aqt.editor
 import aqt.gui_hooks
 import aqt.sound
+import aqt.utils
 import anki.hooks
 
 # addon imports
@@ -44,6 +45,12 @@ def init(hypertts):
         action.triggered.connect(lambda: launch_batch_dialog(hypertts, browser.selectedNotes()))
         menu.addAction(action)
 
+    def shortcut_test(cuts, editor):
+        logging.info('editor shortcuts setup')
+        cuts.append(("Ctrl+l", lambda: aqt.utils.tooltip("test")))
+
         
     # browser menus
     aqt.gui_hooks.browser_menus_did_init.append(browerMenusInit)
+    # shortcuts
+    aqt.gui_hooks.editor_did_init_shortcuts.append(shortcut_test)

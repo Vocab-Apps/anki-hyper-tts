@@ -4,7 +4,7 @@ const sveltePlugin = require("esbuild-svelte");
 
 esbuild
   .build({
-    entryPoints: ["./languagetools.js"],
+    entryPoints: ["./hypertts.js"],
     outdir: "../",
     format: "esm",
     minify: false /* do not set this to true */,

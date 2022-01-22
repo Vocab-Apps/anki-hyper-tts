@@ -8,5 +8,5 @@ user_files/*.mp3
 web/node_modules/
 web/package-lock.json
 # these get built
-languagetools.js
-languagetools.css
+/hypertts.js
+/hypertts.css
