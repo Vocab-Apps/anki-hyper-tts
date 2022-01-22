@@ -6,19 +6,6 @@
     export function configureEditorHyperTTS(batchConfigList) {
         console.log('setLanguageToolsEditorSettings: ', batchConfigList);
         batchNameListStore.set(batchConfigList)
-        /*
-        let batchConfigListArray = [];
-        for (let i = 0; i < batchConfigList.length; i++) {
-            console.log('batch_config: ', batchConfigList[i]);
-            batchConfigListArray.push(
-                {
-                    id: i,
-                    name: batchConfigList[i]
-                }
-            )
-        }        
-        batchNameListStore.set(batchConfigListArray);
-        */
     }
 
 </script>
