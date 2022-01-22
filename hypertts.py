@@ -87,10 +87,8 @@ class HyperTTS():
         else:
             target_field_content = sound_tag
 
-        if add_mode:
-            logging.info(f'setting {target_field} to {target_field_content}')
-        else:
-            note[target_field] = target_field_content
+        note[target_field] = target_field_content
+        if not add_mode:
             self.anki_utils.update_note(note)
 
         return source_text, processed_text, sound_file, full_filename
