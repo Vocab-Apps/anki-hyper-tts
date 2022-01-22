@@ -192,7 +192,7 @@ class HyperTTS():
 
     def generate_audio_write_file(self, source_text, voice, options):
         # write to user files directory
-        hash_str = self.get_hash_for_audio_request(voice, source_text)
+        hash_str = self.get_hash_for_audio_request(source_text, voice, options)
         audio_filename = self.get_audio_filename(hash_str)
         full_filename = self.get_full_audio_file_name(hash_str)
         with open(full_filename, 'wb') as f:
@@ -219,10 +219,11 @@ class HyperTTS():
         filename = f'hypertts-{hash_str}.mp3'
         return filename
 
-    def get_hash_for_audio_request(self, source_text, voice):
+    def get_hash_for_audio_request(self, source_text, voice, options):
         combined_data = {
             'source_text': source_text,
-            'voice': voice
+            'voice_key': voice.voice_key,
+            'options': options
         }
         return hashlib.sha224(str(combined_data).encode('utf-8')).hexdigest()
 
