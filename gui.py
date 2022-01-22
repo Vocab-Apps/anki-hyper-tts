@@ -74,6 +74,20 @@ def init(hypertts):
         batch_name_list = hypertts.get_batch_config_list()
         configure_editor(editor, batch_name_list)
 
+    def onBridge(handled, str, editor):
+        # logging.debug(f'bridge str: {str}')
+
+        # return handled # don't do anything for now
+        if not isinstance(editor, aqt.editor.Editor):
+            return handled
+
+        if str.startswith("hypertts:"):
+            logging.info(f'received message: {str}')
+            # editor_manager.process_command(editor, str)
+            return True, None
+
+        return handled
+
     # browser menus
     aqt.gui_hooks.browser_menus_did_init.append(browerMenusInit)
     # shortcuts
@@ -82,3 +96,4 @@ def init(hypertts):
     # editor setup
     aqt.gui_hooks.editor_did_load_note.append(loadNote)
     aqt.gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
+    aqt.gui_hooks.webview_did_receive_js_message.append(onBridge)

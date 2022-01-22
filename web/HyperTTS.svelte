@@ -20,17 +20,21 @@
 	});    
 
     function addAudio() {
-            console.log("addAudio");
-    }
-
-    function triggerAllFieldUpdate() {
+        console.log("addAudio");
+        let fieldData = {}
         forEditorField([], (field, _data) => {
             const field_id = field.editingArea.ord;
             const field_value = field.editingArea.fieldHTML;
-            // console.log('field_id: ', field_id, ' field_value: ', field_value);
-            const cmdString = 'languagetools:forcefieldupdate:' + field_id + ':' + field_value;
-            bridgeCommand(cmdString);
-        });
+            fieldData[field_id] = field_value;
+        });            
+
+        console.log('fieldData: ', fieldData);
+        let addAudioData = {
+            batch_name: selectedBatchName,
+            field_data: fieldData
+        }
+        const cmdString = 'hypertts:addaudio:' + JSON.stringify(addAudioData);
+        bridgeCommand(cmdString);
     }
 
 </script>
@@ -60,7 +64,7 @@ div {
         <b>HyperTTS</b>
     </div>
     <div>
-        <select>
+        <select bind:value={selectedBatchName}>
             {#each batchNameList as batch}
                 <option value={batch}>
                     {batch}
