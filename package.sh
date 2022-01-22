@@ -19,7 +19,7 @@ rm meta.json
 rm -rf __pycache__
 rm user_files/*.mp3
 rm -rvf htmlcov/
-ADDON_FILENAME=${HOME}/anki-addons-releases/anki-language-tools-${VERSION_NUMBER}.ankiaddon
+ADDON_FILENAME=${HOME}/anki-addons-releases/anki-hyper-tts-${VERSION_NUMBER}.ankiaddon
 zip --exclude "*node_modules*" -r ${ADDON_FILENAME} *
 
 
