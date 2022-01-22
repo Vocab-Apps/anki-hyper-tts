@@ -160,6 +160,8 @@ class AnkiUtils():
         error_message = f'Encountered an unknown error while {action}: {str(exception)}'
         if constants.ENABLE_SENTRY_CRASH_REPORTING:
             sentry_sdk.capture_exception(exception)
+        else:
+            logging.critical(exception, exc_info=True)
         self.critical_message(error_message, None)
 
     def report_unknown_exception_background(self, exception):

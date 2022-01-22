@@ -85,7 +85,7 @@ def init(hypertts):
             logging.info(f'received message: {str}')
             # editor_manager.process_command(editor, str)
             logging.info(f'note: {editor.note}')
-            hypertts.editor_add_audio(str, editor.note)
+            hypertts.editor_add_audio(str, editor.note, editor.addMode)
             return True, None
 
         return handled

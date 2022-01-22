@@ -59,7 +59,7 @@ class HyperTTS():
                 with batch_status.get_note_action_context(note_id, False) as note_action_context:
                     note = self.anki_utils.get_note_by_id(note_id)
                     # process note
-                    source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note)
+                    source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, False)
                     # update note action context
                     note_action_context.set_source_text(source_text)
                     note_action_context.set_processed_text(processed_text)
@@ -70,7 +70,7 @@ class HyperTTS():
                     break
             self.anki_utils.undo_end(undo_id)
 
-    def process_note_audio(self, batch, note):
+    def process_note_audio(self, batch, note, add_mode):
         target_field = batch.target.target_field
         source_text = self.get_source_text(note, batch.source)
         processed_text = self.process_text(source_text)
@@ -78,14 +78,20 @@ class HyperTTS():
         full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection)
         sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)
 
+        target_field_content = None
         if batch.target.remove_sound_tag == True:
             # remove existing sound tag
             current_target_field_content = note[target_field]
             field_content = self.strip_sound_tag(current_target_field_content)
-            note[target_field] = f'{field_content} {sound_tag}'
+            target_field_content = f'{field_content} {sound_tag}'
         else:
-            note[target_field] = sound_tag
-        self.anki_utils.update_note(note)
+            target_field_content = sound_tag
+
+        if add_mode:
+            logging.info(f'setting {target_field} to {target_field_content}')
+        else:
+            note[target_field] = target_field_content
+            self.anki_utils.update_note(note)
 
         return source_text, processed_text, sound_file, full_filename
 
@@ -121,7 +127,7 @@ class HyperTTS():
             voice = voice_list.pop(0)
             return voice
 
-    def editor_add_audio(self, pycmd_str, note):
+    def editor_add_audio(self, pycmd_str, note, add_mode):
         logging.info(f'editor_add_audio: {pycmd_str}')
         with self.error_manager.get_single_action_context('Adding Audio'):
             # get
@@ -129,7 +135,7 @@ class HyperTTS():
             add_audio_data = json.loads(json_str)
             batch_name = add_audio_data['batch_name']
             batch = self.load_batch_config(batch_name)
-            source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note)
+            source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode)
             self.anki_utils.play_sound(full_filename)
             logging.info(f'finished getting audio: {sound_file}')
             
