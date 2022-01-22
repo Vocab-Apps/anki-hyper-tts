@@ -129,9 +129,7 @@ class HyperTTS():
         logging.info(f'editor_add_audio: {pycmd_str}')
         with self.error_manager.get_single_action_context('Adding Audio'):
             # get
-            json_str = pycmd_str.replace('hypertts:addaudio:', '')
-            add_audio_data = json.loads(json_str)
-            batch_name = add_audio_data['batch_name']
+            batch_name = pycmd_str.replace('hypertts:addaudio:', '')
             batch = self.load_batch_config(batch_name)
             source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode)
             self.anki_utils.play_sound(full_filename)

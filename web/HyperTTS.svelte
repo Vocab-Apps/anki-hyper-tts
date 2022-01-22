@@ -21,19 +21,7 @@
 
     function addAudio() {
         console.log("addAudio");
-        let fieldData = {}
-        forEditorField([], (field, _data) => {
-            const field_id = field.editingArea.ord;
-            const field_value = field.editingArea.fieldHTML;
-            fieldData[field_id] = field_value;
-        });            
-
-        console.log('fieldData: ', fieldData);
-        let addAudioData = {
-            batch_name: selectedBatchName,
-            field_data: fieldData
-        }
-        const cmdString = 'hypertts:addaudio:' + JSON.stringify(addAudioData);
+        const cmdString = 'hypertts:addaudio:' + selectedBatchName;
         bridgeCommand(cmdString);
     }
 
