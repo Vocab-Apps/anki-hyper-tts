@@ -29,10 +29,15 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
         self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
         self.batch_component.draw(self.main_layout)
 
-def launch_batch_dialog(hypertts, note_id_list):
+    def load_batch(self, batch_name):
+        self.batch_component.load_batch(batch_name)
+
+def launch_batch_dialog(hypertts, note_id_list, batch_name):
     logging.info('launch_batch_dialog')
     dialog = BatchDialog(hypertts, note_id_list)
     dialog.setupUi()
+    if batch_name != None:
+        dialog.load_batch(batch_name)
     dialog.exec_()
 
 
@@ -48,9 +53,15 @@ def init(hypertts):
         menu = aqt.qt.QMenu(constants.ADDON_NAME, browser.form.menubar)
         browser.form.menubar.addMenu(menu)
 
-        action = aqt.qt.QAction(f'HyperTTS Batch...', browser)
-        action.triggered.connect(lambda: launch_batch_dialog(hypertts, browser.selectedNotes()))
+        action = aqt.qt.QAction(f'Add Audio...', browser)
+        action.triggered.connect(lambda: launch_batch_dialog(hypertts, browser.selectedNotes(), None))
         menu.addAction(action)
+
+        # add a menu entry for each preset
+        for batch_name in hypertts.get_batch_config_list():
+            action = aqt.qt.QAction(f'Add Audio: {batch_name}...', browser)
+            action.triggered.connect(lambda: launch_batch_dialog(hypertts, browser.selectedNotes(), batch_name))
+            menu.addAction(action)
 
     def shortcut_test(cuts, editor):
         logging.info('editor shortcuts setup')
@@ -71,7 +82,7 @@ def init(hypertts):
         web_content.css.extend(css_path)
 
     def loadNote(editor: aqt.editor.Editor):
-        batch_name_list = hypertts.get_batch_config_list()
+        batch_name_list = hypertts.get_batch_config_list_editor()
         configure_editor(editor, batch_name_list)
 
     def onBridge(handled, str, editor):

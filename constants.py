@@ -42,6 +42,8 @@ RED_STYLESHEET_NIGHTMODE = 'background-color: #B71C1C;'
 
 LABEL_FILTER_ALL = 'All'
 
+BATCH_CONFIG_NEW = 'New Preset'
+
 CLIENT_NAME = 'hypertts'
 
 class ReplaceType(enum.Enum):

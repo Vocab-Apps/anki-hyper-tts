@@ -25,6 +25,11 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
         self.batch_model = config_models.BatchConfig()
 
+    def load_batch(self, batch_name):
+        batch = self.hypertts.load_batch_config(batch_name)
+        self.load_model(batch)
+        self.profile_name_combobox.setCurrentText(batch_name)
+
     def load_model(self, model):
         self.batch_model = model
         # disseminate to all components

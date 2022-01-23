@@ -291,6 +291,9 @@ class HyperTTS():
             return []
         return list(self.config[constants.CONFIG_BATCH_CONFIG].keys())
 
+    def get_batch_config_list_editor(self):
+        return [constants.BATCH_CONFIG_NEW] + self.get_batch_config_list()
+
     def get_next_batch_name(self):
         existing_batch_names = self.get_batch_config_list()
         i = 1
