@@ -25,11 +25,6 @@ class BatchNoteStatus(enum.Enum):
     Error = enum.auto()
     OK = enum.auto()
 
-class BatchDialogMode(enum.Enum):
-    NewPresetBrowser = enum.auto()
-    ExistingPresetBrowser = enum.auto()
-    NewPresetEditor = enum.auto()
-
 
 CONFIG_BATCH_CONFIG = 'batch_config'
 

@@ -12,26 +12,25 @@ constants = __import__('constants', globals(), locals(), [], sys._addon_import_l
 
 
 class ComponentBatch(component_common.ConfigComponentBase):
-    def __init__(self, hypertts, batch_dialog_mode, note_id_list=None, note=None):
+    def __init__(self, hypertts):
         self.hypertts = hypertts
-        self.batch_dialog_mode = batch_dialog_mode
+        self.batch_model = config_models.BatchConfig()
+
+    def configure_browser(self, note_id_list):
         self.note_id_list = note_id_list
-        self.note = note
-
-        if self.batch_dialog_mode == constants.BatchDialogMode.NewPresetEditor:
-            field_list = list(self.note.keys())
-        else:
-            field_list = self.hypertts.get_all_fields_from_notes(note_id_list)
-        logging.info(f'field_list: {field_list}')
-
+        field_list = self.hypertts.get_all_fields_from_notes(note_id_list)
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
-        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
+        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)        
+        self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, self.sample_selected)
 
-        if self.batch_dialog_mode != constants.BatchDialogMode.NewPresetEditor:
-            self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, self.sample_selected)
-
-        self.batch_model = config_models.BatchConfig()
+    def configure_editor(self, note):
+        self.note = note
+        field_list = list(self.note.keys())
+        self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
+        self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
+        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)        
+        self.preview = None
 
     def load_batch(self, batch_name):
         batch = self.hypertts.load_batch_config(batch_name)

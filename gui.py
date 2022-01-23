@@ -19,24 +19,38 @@ component_batch = __import__('component_batch', globals(), locals(), [], sys._ad
 
 
 class BatchDialog(PyQt5.QtWidgets.QDialog):
-    def __init__(self, hypertts, batch_dialog_mode, note_id_list):
+    def __init__(self, hypertts):
         super(PyQt5.QtWidgets.QDialog, self).__init__()
-        self.batch_component = component_batch.ComponentBatch(hypertts, batch_dialog_mode, note_id_list=note_id_list)
+        self.batch_component = component_batch.ComponentBatch(hypertts)
 
     def setupUi(self):
         self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
         self.batch_component.draw(self.main_layout)
 
+    def configure_browser(self, note_id_list):
+        self.batch_component.configure_browser(note_id_list)
+
+    def configure_editor(self, note):
+        self.batch_component.configure_editor(note)
+
     def load_batch(self, batch_name):
         self.batch_component.load_batch(batch_name)
 
-def launch_batch_dialog(hypertts, note_id_list, batch_dialog_mode, batch_name=None):
-    logging.info('launch_batch_dialog')
-    dialog = BatchDialog(hypertts, batch_dialog_mode, note_id_list)
+def launch_batch_dialog_browser(hypertts, note_id_list, batch_name):
+    logging.info('launch_batch_dialog_browser')
+    dialog = BatchDialog(hypertts)
+    dialog.configure_browser(note_id_list)
     dialog.setupUi()
     if batch_name != None:
         dialog.load_batch(batch_name)
     dialog.exec_()
+
+def launch_batch_dialog_editor(hypertts, note):
+    logging.info('launch_batch_dialog_editor')
+    dialog = BatchDialog(hypertts)
+    dialog.configure_editor(note)
+    dialog.setupUi()
+    dialog.exec_()    
 
 
 def configure_editor(editor: aqt.editor.Editor, batch_name_list):
@@ -53,14 +67,14 @@ def init(hypertts):
 
         action = aqt.qt.QAction(f'Add Audio...', browser)
         action.triggered.connect(lambda: 
-            launch_batch_dialog(hypertts, browser.selectedNotes(), constants.BatchDialogMode.NewPresetBrowser))
+            launch_batch_dialog_browser(hypertts, browser.selectedNotes(), None))
         menu.addAction(action)
 
         # add a menu entry for each preset
         for batch_name in hypertts.get_batch_config_list():
             action = aqt.qt.QAction(f'Add Audio: {batch_name}...', browser)
             action.triggered.connect(lambda: 
-                launch_batch_dialog(hypertts, browser.selectedNotes(), constants.BatchDialogMode.ExistingPresetBrowser, batch_name=batch_name))
+                launch_batch_dialog_browser(hypertts, browser.selectedNotes(), batch_name))
             menu.addAction(action)
 
     def shortcut_test(cuts, editor):
@@ -91,6 +105,10 @@ def init(hypertts):
         # return handled # don't do anything for now
         if not isinstance(editor, aqt.editor.Editor):
             return handled
+
+        if str == 'hypertts:addaudio:' + constants.BATCH_CONFIG_NEW:
+            launch_batch_dialog_editor(hypertts, editor.note)
+            return True, None
 
         if str.startswith("hypertts:addaudio:"):
             logging.info(f'received message: {str}')
