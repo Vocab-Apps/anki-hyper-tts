@@ -8,20 +8,28 @@ component_target = __import__('component_target', globals(), locals(), [], sys._
 component_voiceselection = __import__('component_voiceselection', globals(), locals(), [], sys._addon_import_level_base)
 component_batch_preview = __import__('component_batch_preview', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class ComponentBatch(component_common.ConfigComponentBase):
-    def __init__(self, hypertts, note_id_list):
+    def __init__(self, hypertts, batch_dialog_mode, note_id_list=None, note=None):
         self.hypertts = hypertts
+        self.batch_dialog_mode = batch_dialog_mode
         self.note_id_list = note_id_list
+        self.note = note
 
-        field_list = self.hypertts.get_all_fields_from_notes(note_id_list)
+        if self.batch_dialog_mode == constants.BatchDialogMode.NewPresetEditor:
+            field_list = list(self.note.keys())
+        else:
+            field_list = self.hypertts.get_all_fields_from_notes(note_id_list)
         logging.info(f'field_list: {field_list}')
 
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
-        self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, self.sample_selected)
+
+        if self.batch_dialog_mode != constants.BatchDialogMode.NewPresetEditor:
+            self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, self.sample_selected)
 
         self.batch_model = config_models.BatchConfig()
 
@@ -44,17 +52,20 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def source_model_updated(self, model):
         logging.info(f'source_model_updated: {model}')
         self.batch_model.set_source(model)
-        self.preview.load_model(self.batch_model)
+        if self.preview != None:
+            self.preview.load_model(self.batch_model)
 
     def target_model_updated(self, model):
         logging.info('target_model_updated')
         self.batch_model.set_target(model)
-        self.preview.load_model(self.batch_model)
+        if self.preview != None:
+            self.preview.load_model(self.batch_model)
 
     def voice_selection_model_updated(self, model):
         logging.info('voice_selection_model_updated')
         self.batch_model.set_voice_selection(model)
-        self.preview.load_model(self.batch_model)
+        if self.preview != None:
+            self.preview.load_model(self.batch_model)
 
     def sample_selected(self, text):
         self.voice_selection.sample_text_selected(text)
@@ -94,9 +105,11 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
         self.splitter = PyQt5.QtWidgets.QSplitter(PyQt5.QtCore.Qt.Horizontal)
         self.splitter.addWidget(self.tabs)
-        self.preview_widget = PyQt5.QtWidgets.QWidget()
-        self.preview_widget.setLayout(self.preview.draw())
-        self.splitter.addWidget(self.preview_widget)
+
+        if self.preview != None:
+            self.preview_widget = PyQt5.QtWidgets.QWidget()
+            self.preview_widget.setLayout(self.preview.draw())
+            self.splitter.addWidget(self.preview_widget)
 
         # return self.tabs
         self.vlayout.addWidget(self.splitter)

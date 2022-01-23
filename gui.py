@@ -19,11 +19,9 @@ component_batch = __import__('component_batch', globals(), locals(), [], sys._ad
 
 
 class BatchDialog(PyQt5.QtWidgets.QDialog):
-    def __init__(self, hypertts, note_id_list):
+    def __init__(self, hypertts, batch_dialog_mode, note_id_list):
         super(PyQt5.QtWidgets.QDialog, self).__init__()
-        self.hypertts = hypertts
-        self.note_id_list = note_id_list
-        self.batch_component = component_batch.ComponentBatch(self.hypertts, self.note_id_list)
+        self.batch_component = component_batch.ComponentBatch(hypertts, batch_dialog_mode, note_id_list=note_id_list)
 
     def setupUi(self):
         self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
@@ -32,9 +30,9 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
     def load_batch(self, batch_name):
         self.batch_component.load_batch(batch_name)
 
-def launch_batch_dialog(hypertts, note_id_list, batch_name):
+def launch_batch_dialog(hypertts, note_id_list, batch_dialog_mode, batch_name=None):
     logging.info('launch_batch_dialog')
-    dialog = BatchDialog(hypertts, note_id_list)
+    dialog = BatchDialog(hypertts, batch_dialog_mode, note_id_list)
     dialog.setupUi()
     if batch_name != None:
         dialog.load_batch(batch_name)
@@ -54,13 +52,15 @@ def init(hypertts):
         browser.form.menubar.addMenu(menu)
 
         action = aqt.qt.QAction(f'Add Audio...', browser)
-        action.triggered.connect(lambda: launch_batch_dialog(hypertts, browser.selectedNotes(), None))
+        action.triggered.connect(lambda: 
+            launch_batch_dialog(hypertts, browser.selectedNotes(), constants.BatchDialogMode.NewPresetBrowser))
         menu.addAction(action)
 
         # add a menu entry for each preset
         for batch_name in hypertts.get_batch_config_list():
             action = aqt.qt.QAction(f'Add Audio: {batch_name}...', browser)
-            action.triggered.connect(lambda: launch_batch_dialog(hypertts, browser.selectedNotes(), batch_name))
+            action.triggered.connect(lambda: 
+                launch_batch_dialog(hypertts, browser.selectedNotes(), constants.BatchDialogMode.ExistingPresetBrowser, batch_name=batch_name))
             menu.addAction(action)
 
     def shortcut_test(cuts, editor):
