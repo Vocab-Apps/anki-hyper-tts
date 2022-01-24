@@ -154,11 +154,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
     def sound_preview_button_pressed(self):
         if self.editor_mode:
-            self.preview_sound_button.setEnabled(False)
+            self.disable_bottom_buttons()
             self.preview_sound_button.setText('Playing Preview...')
-            self.hypertts.preview_note_audio(self.batch_model, self.note)
-            self.preview_sound_button.setEnabled(True)
-            self.preview_sound_button.setText('Preview Sound')
+            self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
         else:
             pass
 
@@ -184,6 +182,16 @@ class ComponentBatch(component_common.ConfigComponentBase):
             self.dialog.close()
         self.enable_bottom_buttons()
         self.apply_button.setText('Apply To Note')
+
+    def sound_preview_task(self):
+        self.hypertts.preview_note_audio(self.batch_model, self.note)
+        return True
+
+    def sound_preview_task_done(self, result):
+        with self.hypertts.error_manager.get_single_action_context('Playing Sound Preview'):
+            result = result.result()
+        self.enable_bottom_buttons()
+        self.preview_sound_button.setText('Preview Sound')
 
     def disable_bottom_buttons(self):
         self.preview_sound_button.setEnabled(False)
