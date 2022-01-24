@@ -112,7 +112,7 @@ class BatchPreview(component_common.ComponentBase):
         self.table_view.setSelectionMode(PyQt5.QtWidgets.QTableView.SingleSelection)
         self.table_view.setSelectionBehavior(PyQt5.QtWidgets.QTableView.SelectRows)
         self.table_view.selectionModel().selectionChanged.connect(self.selection_changed)
-        self.batch_preview_layout.addWidget(self.table_view)
+        self.batch_preview_layout.addWidget(self.table_view, stretch=1)
         
         self.error_label = PyQt5.QtWidgets.QLabel()
         self.batch_preview_layout.addWidget(self.error_label)
@@ -195,7 +195,7 @@ class BatchPreview(component_common.ComponentBase):
         self.hypertts.anki_utils.run_on_main(self.show_running_stack)
         self.hypertts.anki_utils.run_on_main(self.batch_start_fn)
 
-    def batch_end(self):
+    def batch_end(self, completed):
         self.hypertts.anki_utils.run_on_main(self.show_not_running_stack)
         self.hypertts.anki_utils.run_on_main(self.batch_end_fn)
 

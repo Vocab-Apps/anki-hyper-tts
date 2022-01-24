@@ -25,7 +25,7 @@ class MockBatchStatusListener():
     def batch_start(self):
         self.batch_started = True
 
-    def batch_end(self):
+    def batch_end(self, completed):
         self.batch_ended = True
 
     def batch_change(self, note_id, row):

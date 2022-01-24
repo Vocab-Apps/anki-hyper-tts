@@ -783,6 +783,8 @@ def test_batch_dialog(qtbot):
     assert audio_data['source_text'] == '你好'
 
 
+    # dialog.exec_()
+
 
 def test_batch_dialog_editor(qtbot):
     config_gen = testing_utils.TestConfigGenerator()

@@ -56,7 +56,8 @@ class BatchRunningActionContext():
 
     def __exit__(self, exception_type, exception_value, traceback):
         self.batch_status.task_running = False
-        self.batch_status.notify_end()
+        completed = self.batch_status.must_continue
+        self.batch_status.notify_end(completed)
         return False        
 
 class BatchStatus():
@@ -138,5 +139,5 @@ class BatchStatus():
         row = self.note_id_map[note_id]
         self.change_listener.batch_change(note_id, row)
 
-    def notify_end(self):
-        self.change_listener.batch_end()
+    def notify_end(self, completed):
+        self.change_listener.batch_end(completed)
