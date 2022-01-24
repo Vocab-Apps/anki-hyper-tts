@@ -113,7 +113,12 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def draw(self, layout):
         self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
+        # profile management
+        # ==================
+
         hlayout = PyQt5.QtWidgets.QHBoxLayout()
+        hlayout.addWidget(PyQt5.QtWidgets.QLabel('Preset:'))
+
         self.profile_name_combobox = PyQt5.QtWidgets.QComboBox()
         self.profile_name_combobox.setEditable(True)
         # populate with existing profile names
@@ -127,10 +132,15 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.profile_save_button = PyQt5.QtWidgets.QPushButton('Save')
         self.disable_save_profile_button('Save')
         hlayout.addWidget(self.profile_save_button)
+
+        hlayout.addStretch()
         self.vlayout.addLayout(hlayout)
 
         self.profile_load_button.pressed.connect(self.load_profile_button_pressed)
         self.profile_save_button.pressed.connect(self.save_profile_button_pressed)
+
+        # preset settings tabs
+        # ====================
 
         self.tabs = PyQt5.QtWidgets.QTabWidget()
         self.tab_source = PyQt5.QtWidgets.QWidget()
@@ -182,6 +192,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview_sound_button.pressed.connect(self.sound_preview_button_pressed)
         self.apply_button.pressed.connect(self.apply_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
+
+        self.cancel_button.setFocus()
 
         self.profile_name_combobox.currentIndexChanged.connect(self.profile_selected)
         self.profile_name_combobox.currentTextChanged.connect(self.profile_selected)
