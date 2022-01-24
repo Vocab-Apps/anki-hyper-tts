@@ -115,9 +115,6 @@ class BatchPreview(component_common.ComponentBase):
         self.error_label = PyQt5.QtWidgets.QLabel()
         self.batch_preview_layout.addWidget(self.error_label)
 
-        self.preview_audio_button = PyQt5.QtWidgets.QPushButton('Preview Audio')
-        self.batch_preview_layout.addWidget(self.preview_audio_button)
-
         # create stack of widgets which will be toggled when we're running the batch
         self.batchNotRunningStack = PyQt5.QtWidgets.QWidget()
         self.batchRunningStack = PyQt5.QtWidgets.QWidget()
@@ -142,7 +139,6 @@ class BatchPreview(component_common.ComponentBase):
         self.batch_preview_layout.addWidget(self.stack)
 
         # wire events
-        self.preview_audio_button.pressed.connect(self.preview_audio_button_pressed)
         self.load_audio_button.pressed.connect(self.load_audio_button_pressed)
         self.stop_button.pressed.connect(self.stop_button_pressed)
 
@@ -174,25 +170,12 @@ class BatchPreview(component_common.ComponentBase):
             else:
                 self.error_label.setText('')
 
-    def preview_audio_button_pressed(self):
-        self.hypertts.anki_utils.run_in_background(self.play_preview_task, self.play_preview_task_done)
-
     def get_selected_note_status(self):
         row_indices = self.table_view.selectionModel().selectedIndexes()
         if len(row_indices) >= 1:
             self.selected_row = row_indices[0].row()
             return self.batch_status[self.selected_row]
         return None
-
-    def play_preview_task(self):
-        row_indices = self.table_view.selectionModel().selectedIndexes()
-        if len(row_indices) >= 1:
-            selected_row = row_indices[0].row()
-            processed_text = self.batch_status[selected_row].processed_text
-            self.hypertts.play_sound_batch_preview(processed_text, self.batch_model.voice_selection)
-
-    def play_preview_task_done(self, result):
-        pass
 
     def load_audio_button_pressed(self):
         self.hypertts.anki_utils.run_in_background(self.load_audio_task, self.load_audio_task_done)
