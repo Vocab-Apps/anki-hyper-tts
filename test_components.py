@@ -660,3 +660,59 @@ def test_batch_dialog(qtbot):
     assert batch.target.target_field_combobox.currentText() == 'Sound'
     
     # dialog.exec_()
+
+def test_batch_dialog_editor(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+    note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+
+    # test saving of config
+    # =====================
+
+    batch = component_batch.ComponentBatch(hypertts_instance)
+    batch.configure_editor(note)
+    batch.draw(dialog.getLayout())
+
+    dialog.exec_()
+
+    # select a source field and target field
+    batch.source.source_field_combobox.setCurrentText('English')
+    batch.target.target_field_combobox.setCurrentText('Sound')
+
+    # set profile name
+    batch.profile_name_combobox.setCurrentText('batch profile 1')
+
+    # save
+    qtbot.mouseClick(batch.profile_save_button, PyQt5.QtCore.Qt.LeftButton)
+
+    print(hypertts_instance.anki_utils.written_config)
+    assert 'batch profile 1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]
+
+    # try to deserialize that config, it should have the English field selected
+    deserialized_model = hypertts_instance.load_batch_config('batch profile 1')
+    assert deserialized_model.source.source_field == 'English'
+    assert deserialized_model.target.target_field == 'Sound'
+
+    # test loading of config
+    # ======================
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    batch = component_batch.ComponentBatch(hypertts_instance, note_id_list)
+    batch.draw(dialog.getLayout())    
+
+    batch.profile_name_combobox.setCurrentText('batch profile 1')
+    # open
+    qtbot.mouseClick(batch.profile_load_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # assertions on GUI
+    assert batch.source.source_field_combobox.currentText() == 'English'
+    assert batch.target.target_field_combobox.currentText() == 'Sound'
+    
+    # dialog.exec_()
+

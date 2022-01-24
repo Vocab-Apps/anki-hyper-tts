@@ -7,6 +7,7 @@ component_source = __import__('component_source', globals(), locals(), [], sys._
 component_target = __import__('component_target', globals(), locals(), [], sys._addon_import_level_base)
 component_voiceselection = __import__('component_voiceselection', globals(), locals(), [], sys._addon_import_level_base)
 component_batch_preview = __import__('component_batch_preview', globals(), locals(), [], sys._addon_import_level_base)
+component_label_preview = __import__('component_label_preview', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 
@@ -30,7 +31,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)        
-        self.preview = None
+        self.preview = component_label_preview.LabelPreview(self.hypertts)
 
     def load_batch(self, batch_name):
         batch = self.hypertts.load_batch_config(batch_name)
@@ -51,21 +52,17 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def source_model_updated(self, model):
         logging.info(f'source_model_updated: {model}')
         self.batch_model.set_source(model)
-        self.update_preview_component()
+        self.preview.load_model(self.batch_model)
 
     def target_model_updated(self, model):
         logging.info('target_model_updated')
         self.batch_model.set_target(model)
-        self.update_preview_component()
+        self.preview.load_model(self.batch_model)
 
     def voice_selection_model_updated(self, model):
         logging.info('voice_selection_model_updated')
         self.batch_model.set_voice_selection(model)
-        self.update_preview_component()
-
-    def update_preview_component(self):
-        if self.preview != None:
-            self.preview.load_model(self.batch_model)        
+        self.preview.load_model(self.batch_model)
 
     def sample_selected(self, text):
         self.voice_selection.sample_text_selected(text)
