@@ -119,6 +119,23 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
         # return self.tabs
 
+        # setup bottom buttons
+        hlayout = PyQt5.QtWidgets.QHBoxLayout()
+        hlayout.addStretch()
+        self.preview_sound_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
+        hlayout.addWidget(self.preview_sound_button)
+        apply_label_text = 'Apply To Notes'
+        if self.editor_mode:
+            apply_label_text = 'Apply To Note'
+        self.apply_button = PyQt5.QtWidgets.QPushButton(apply_label_text)
+        self.apply_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        hlayout.addWidget(self.apply_button)
+        self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
+        self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
+        hlayout.addWidget(self.cancel_button)
+        self.vlayout.addLayout(hlayout)
+
+        self.preview_sound_button.pressed.connect(self.sound_preview_button_pressed)
 
         layout.addLayout(self.vlayout)
 
@@ -130,4 +147,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         profile_name = self.profile_name_combobox.currentText()
         self.hypertts.save_batch_config(profile_name, self.get_model())
 
-    
+    def sound_preview_button_pressed(self):
+        if self.editor_mode:
+            self.hypertts.preview_note_audio(self.batch_model, self.note)
+        else:
+            pass

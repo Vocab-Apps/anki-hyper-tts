@@ -747,11 +747,24 @@ def test_batch_dialog_editor(qtbot):
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
 
-    # test saving of config
-    # =====================
-
     batch = component_batch.ComponentBatch(hypertts_instance)
     batch.configure_editor(note)
     batch.draw(dialog.getLayout())
+
+    # test sound preview
+    # ==================
+    qtbot.mouseClick(batch.preview_sound_button, PyQt5.QtCore.Qt.LeftButton)
+    assert hypertts_instance.anki_utils.played_sound == {
+        'source_text': '老人家',
+        'voice': {
+            'gender': 'Male', 
+            'language': 'fr_FR', 
+            'name': 'voice_a_1', 
+            'service': 'ServiceA',
+            'voice_key': {'name': 'voice_1'}
+        },
+        'options': {}
+    }    
+
 
     # dialog.exec_()

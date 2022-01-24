@@ -128,6 +128,7 @@ class MockAnkiUtils():
         self.critical_message_received = message
 
     def play_sound(self, filename):
+        logging.info('play_sound')
         # load the json inside the file
         with open(filename) as json_file:
             self.played_sound = json.load(json_file)

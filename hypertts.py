@@ -93,6 +93,10 @@ class HyperTTS():
 
         return source_text, processed_text, sound_file, full_filename
 
+    def get_note_audio(self, batch, note):
+        source_text = self.get_source_text(note, batch.source)
+        processed_text = self.process_text(source_text)
+        return self.get_audio_file(processed_text, batch.voice_selection)        
 
     def get_audio_file(self, processed_text, voice_selection):
         # this voice_list copy is only used for priority mode
@@ -180,6 +184,10 @@ class HyperTTS():
     def play_sound_batch_preview(self, processed_text, voice_selection):
         logging.info(f'playing audio for {processed_text}')
         full_filename, audio_filename = self.get_audio_file(processed_text, voice_selection)
+        self.anki_utils.play_sound(full_filename)
+
+    def preview_note_audio(self, batch, note):
+        full_filename, audio_filename = self.get_note_audio(batch, note)
         self.anki_utils.play_sound(full_filename)
 
     def play_sound(self, source_text, voice, options):
