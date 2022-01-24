@@ -148,11 +148,15 @@ class VoiceSelection(component_common.ConfigComponentBase):
         groupbox.setLayout(gridlayout)
         self.voices_layout.addWidget(groupbox)
         
-        self.voices_layout.addWidget(self.voices_combobox)
-        self.voices_layout.addWidget(self.play_sample_button)
+        groupbox = PyQt5.QtWidgets.QGroupBox('Voice')
+        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        vlayout.addWidget(self.voices_combobox)
+        vlayout.addWidget(self.play_sample_button)
 
         self.voice_options_layout = PyQt5.QtWidgets.QVBoxLayout()
-        self.voices_layout.addLayout(self.voice_options_layout)
+        vlayout.addLayout(self.voice_options_layout)
+        groupbox.setLayout(vlayout)
+        self.voices_layout.addWidget(groupbox)
 
 
         # voice selection mode
