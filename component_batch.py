@@ -27,8 +27,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, self.sample_selected)
         self.editor_mode = False
 
-    def configure_editor(self, note, add_mode):
+    def configure_editor(self, note, editor, add_mode):
         self.note = note
+        self.editor = editor
         self.add_mode = add_mode
         field_list = list(self.note.keys())
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
@@ -153,7 +154,11 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
     def sound_preview_button_pressed(self):
         if self.editor_mode:
+            self.preview_sound_button.setEnabled(False)
+            self.preview_sound_button.setText('Playing Preview...')
             self.hypertts.preview_note_audio(self.batch_model, self.note)
+            self.preview_sound_button.setEnabled(True)
+            self.preview_sound_button.setText('Preview Sound')
         else:
             pass
 
@@ -163,7 +168,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
             self.apply_button.setEnabled(False)
             self.cancel_button.setEnabled(False)
             self.apply_button.setText('Loading...')
-            self.hypertts.editor_note_add_audio(self.batch_model, self.note, self.add_mode)
+            self.hypertts.editor_note_add_audio(self.batch_model, self.editor, self.note, self.add_mode)
             self.dialog.close()
         else:
             pass

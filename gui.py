@@ -21,7 +21,7 @@ component_batch = __import__('component_batch', globals(), locals(), [], sys._ad
 class BatchDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self, hypertts):
         super(PyQt5.QtWidgets.QDialog, self).__init__()
-        self.batch_component = component_batch.ComponentBatch(hypertts)
+        self.batch_component = component_batch.ComponentBatch(hypertts, self)
 
     def setupUi(self):
         self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
@@ -30,14 +30,14 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
     def configure_browser(self, note_id_list):
         self.batch_component.configure_browser(note_id_list)
 
-    def configure_editor(self, note):
-        self.batch_component.configure_editor(note)
+    def configure_editor(self, note, editor, add_mode):
+        self.batch_component.configure_editor(note, editor, add_mode)
 
     def load_batch(self, batch_name):
         self.batch_component.load_batch(batch_name)
 
     def close(self):
-        pass
+        self.accept()
 
 def launch_batch_dialog_browser(hypertts, note_id_list, batch_name):
     logging.info('launch_batch_dialog_browser')
@@ -48,10 +48,10 @@ def launch_batch_dialog_browser(hypertts, note_id_list, batch_name):
         dialog.load_batch(batch_name)
     dialog.exec_()
 
-def launch_batch_dialog_editor(hypertts, note, add_mode):
+def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
     logging.info('launch_batch_dialog_editor')
     dialog = BatchDialog(hypertts)
-    dialog.configure_editor(note, add_mode)
+    dialog.configure_editor(note, editor, add_mode)
     dialog.setupUi()
     dialog.exec_()    
 
@@ -110,7 +110,7 @@ def init(hypertts):
             return handled
 
         if str == 'hypertts:addaudio:' + constants.BATCH_CONFIG_NEW:
-            launch_batch_dialog_editor(hypertts, editor.note, editor.addMode)
+            launch_batch_dialog_editor(hypertts, editor.note, editor, editor.addMode)
             return True, None
 
         if str.startswith("hypertts:addaudio:"):

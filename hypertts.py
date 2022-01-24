@@ -137,8 +137,9 @@ class HyperTTS():
             batch = self.load_batch_config(batch_name)
             self.editor_note_add_audio(batch, note, add_mode)
 
-    def editor_note_add_audio(self, batch, note, add_mode):
+    def editor_note_add_audio(self, batch, editor, note, add_mode):
         source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode)
+        editor.set_note(note)
         self.anki_utils.play_sound(full_filename)
 
     # text processing
@@ -188,8 +189,9 @@ class HyperTTS():
         self.anki_utils.play_sound(full_filename)
 
     def preview_note_audio(self, batch, note):
-        full_filename, audio_filename = self.get_note_audio(batch, note)
-        self.anki_utils.play_sound(full_filename)
+        with self.error_manager.get_single_action_context('Playing Audio Preview'):
+            full_filename, audio_filename = self.get_note_audio(batch, note)
+            self.anki_utils.play_sound(full_filename)
 
     def play_sound(self, source_text, voice, options):
         logging.info(f'playing audio for {source_text}')
