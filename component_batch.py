@@ -13,8 +13,9 @@ constants = __import__('constants', globals(), locals(), [], sys._addon_import_l
 
 
 class ComponentBatch(component_common.ConfigComponentBase):
-    def __init__(self, hypertts):
+    def __init__(self, hypertts, dialog):
         self.hypertts = hypertts
+        self.dialog = dialog
         self.batch_model = config_models.BatchConfig()
 
     def configure_browser(self, note_id_list):
@@ -26,8 +27,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, self.sample_selected)
         self.editor_mode = False
 
-    def configure_editor(self, note):
+    def configure_editor(self, note, add_mode):
         self.note = note
+        self.add_mode = add_mode
         field_list = list(self.note.keys())
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
@@ -136,6 +138,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.vlayout.addLayout(hlayout)
 
         self.preview_sound_button.pressed.connect(self.sound_preview_button_pressed)
+        self.apply_button.pressed.connect(self.apply_button_pressed)
+        self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
         layout.addLayout(self.vlayout)
 
@@ -152,3 +156,17 @@ class ComponentBatch(component_common.ConfigComponentBase):
             self.hypertts.preview_note_audio(self.batch_model, self.note)
         else:
             pass
+
+    def apply_button_pressed(self):
+        logging.info('apply_button_pressed')
+        if self.editor_mode:
+            self.apply_button.setEnabled(False)
+            self.cancel_button.setEnabled(False)
+            self.apply_button.setText('Loading...')
+            self.hypertts.editor_note_add_audio(self.batch_model, self.note, self.add_mode)
+            self.dialog.close()
+        else:
+            pass
+
+    def cancel_button_pressed(self):
+        pass

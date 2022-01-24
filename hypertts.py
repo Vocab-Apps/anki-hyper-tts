@@ -135,10 +135,11 @@ class HyperTTS():
             # get
             batch_name = pycmd_str.replace('hypertts:addaudio:', '')
             batch = self.load_batch_config(batch_name)
-            source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode)
-            self.anki_utils.play_sound(full_filename)
-            logging.info(f'finished getting audio: {sound_file}')
-            
+            self.editor_note_add_audio(batch, note, add_mode)
+
+    def editor_note_add_audio(self, batch, note, add_mode):
+        source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode)
+        self.anki_utils.play_sound(full_filename)
 
     # text processing
     # ===============

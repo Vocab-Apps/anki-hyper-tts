@@ -15,6 +15,7 @@ import component_batch
 class EmptyDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self):
         super(PyQt5.QtWidgets.QDialog, self).__init__()
+        self.closed = None
 
     def setupUi(self):
         self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
@@ -27,6 +28,9 @@ class EmptyDialog(PyQt5.QtWidgets.QDialog):
 
     def addChildLayout(self, layout):
         self.main_layout.addLayout(layout)
+    
+    def close(self):
+        self.closed = True
 
 class MockModelChangeCallback():
     def __init__(self):
@@ -747,8 +751,8 @@ def test_batch_dialog_editor(qtbot):
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
 
-    batch = component_batch.ComponentBatch(hypertts_instance)
-    batch.configure_editor(note)
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
+    batch.configure_editor(note, False)
     batch.draw(dialog.getLayout())
 
     # test sound preview
@@ -767,4 +771,21 @@ def test_batch_dialog_editor(qtbot):
     }    
 
 
+    # test apply to note
+    # ==================
     # dialog.exec_()
+    
+    # set target field
+    batch.target.target_field_combobox.setCurrentText('Sound')
+
+    # apply not note
+    qtbot.mouseClick(batch.apply_button, PyQt5.QtCore.Qt.LeftButton)
+
+    sound_tag = note.set_values['Sound']
+    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+    assert audio_data['source_text'] == '老人家'    
+
+    assert dialog.closed == True
+
