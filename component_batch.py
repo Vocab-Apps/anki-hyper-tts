@@ -83,11 +83,13 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.enable_save_profile_button()
 
     def enable_save_profile_button(self):
+        logging.info('enable_save_profile_button')
         self.profile_save_button.setEnabled(True)
         self.profile_save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         self.profile_save_button.setText('Save')
 
     def disable_save_profile_button(self, text):
+        logging.info('disable_save_profile_button')
         self.profile_save_button.setEnabled(False)
         self.profile_save_button.setStyleSheet(None)
         self.profile_save_button.setText(text)
