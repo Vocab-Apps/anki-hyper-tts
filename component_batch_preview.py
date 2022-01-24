@@ -163,7 +163,7 @@ class BatchPreview(component_common.ComponentBase):
         note_status = self.get_selected_note_status()
         if note_status != None:
             text = note_status.processed_text
-            self.sample_selection_fn(text)
+            self.sample_selection_fn(note_status.note_id, text)
 
     def update_error_label_for_selected(self):
         note_status = self.get_selected_note_status()

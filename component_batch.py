@@ -69,8 +69,11 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.batch_model.set_voice_selection(model)
         self.preview.load_model(self.batch_model)
 
-    def sample_selected(self, text):
+    def sample_selected(self, note_id, text):
         self.voice_selection.sample_text_selected(text)
+        self.note = self.hypertts.anki_utils.get_note_by_id(note_id)
+        self.preview_sound_button.setEnabled(True)
+        self.preview_sound_button.setText('Preview Sound')
 
     def draw(self, layout):
         self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
@@ -126,6 +129,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
         hlayout = PyQt5.QtWidgets.QHBoxLayout()
         hlayout.addStretch()
         self.preview_sound_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
+        if not self.editor_mode:
+            self.preview_sound_button.setText('Select Note to Preview Sound')
+            self.preview_sound_button.setEnabled(False)
         hlayout.addWidget(self.preview_sound_button)
         apply_label_text = 'Apply To Notes'
         if self.editor_mode:
@@ -153,12 +159,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.hypertts.save_batch_config(profile_name, self.get_model())
 
     def sound_preview_button_pressed(self):
-        if self.editor_mode:
-            self.disable_bottom_buttons()
-            self.preview_sound_button.setText('Playing Preview...')
-            self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
-        else:
-            pass
+        self.disable_bottom_buttons()
+        self.preview_sound_button.setText('Playing Preview...')
+        self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
     def apply_button_pressed(self):
         logging.info('apply_button_pressed')
