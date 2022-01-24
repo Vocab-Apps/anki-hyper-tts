@@ -316,5 +316,5 @@ def test_batch_config(qtbot):
 
     assert str(batch_config) == """<b>Source:</b> Chinese
 <b>Target:</b> Sound
-<b>Voice Selection:</b> voices
+<b>Voice Selection:</b> Single
 """

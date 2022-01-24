@@ -200,6 +200,9 @@ class VoiceSelectionSingle(VoiceSelectionBase):
 
     voice = property(get_voice, set_voice)
 
+    def __str__(self):
+        return 'Single'
+
 class VoiceSelectionMultipleBase(VoiceSelectionBase):
     def __init__(self):
         VoiceSelectionBase.__init__(self)
@@ -243,6 +246,9 @@ class VoiceSelectionMultipleBase(VoiceSelectionBase):
             'voice_list': [x.serialize() for x in self._voice_list]
         }
 
+    def __str__(self):
+        return f'{self.selection_mode.name} ({len(self.get_voice_list())} voices)'
+
 class VoiceSelectionRandom(VoiceSelectionMultipleBase):
     def __init__(self):
         VoiceSelectionMultipleBase.__init__(self)
@@ -250,6 +256,8 @@ class VoiceSelectionRandom(VoiceSelectionMultipleBase):
 
     def set_random_weight(self, voice_index, weight):
         self._voice_list[voice_index].random_weight = weight
+
+
 
 class VoiceSelectionPriority(VoiceSelectionMultipleBase):
     def __init__(self):
