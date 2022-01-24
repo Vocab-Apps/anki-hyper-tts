@@ -314,6 +314,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.clear_voices_button.setVisible(True)
             self.voice_selection_model = config_models.VoiceSelectionPriority()
         self.redraw_selected_voices()
+        self.notify_model_update()
 
     def reset_filters(self):
         self.audio_languages_combobox.setCurrentIndex(0)
