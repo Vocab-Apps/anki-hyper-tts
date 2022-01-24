@@ -335,23 +335,26 @@ class VoiceSelection(component_common.ConfigComponentBase):
         if isinstance(self.voice_selection_model, config_models.VoiceSelectionSingle):
             return
 
-        def get_remove_lambda(selection_model, voice_with_options_random, redraw_fn):
+        def get_remove_lambda(selection_model, voice_with_options_random, redraw_fn, notify_model_update_fn):
             def remove():
                 # remove this entry (locate by equality)
                 selection_model.voice_list.remove(voice_with_options_random)
                 redraw_fn()
+                notify_model_update_fn()
             return remove
 
-        def get_move_up_lambda(selection_model, voice_with_options_priority, redraw_fn):
+        def get_move_up_lambda(selection_model, voice_with_options_priority, redraw_fn, notify_model_update_fn):
             def up():
                 selection_model.move_up_voice(voice_with_options_priority)
                 redraw_fn()
+                notify_model_update_fn()
             return up
 
-        def get_move_down_lambda(selection_model, voice_with_options_priority, redraw_fn):
+        def get_move_down_lambda(selection_model, voice_with_options_priority, redraw_fn, notify_model_update_fn):
             def down():
                 selection_model.move_down_voice(voice_with_options_priority)
                 redraw_fn()
+                notify_model_update_fn()
             return down
         
         # draw all voices
@@ -369,16 +372,17 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 column_index += 1
             # add remove button
             remove_button = PyQt5.QtWidgets.QPushButton('Remove')
+            remove_button.setObjectName(f'remove_voice_row_{row}')
             self.voice_list_grid_layout.addWidget(remove_button, row, column_index, 1, 1)
             column_index += 1
-            remove_button.pressed.connect(get_remove_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices))
+            remove_button.pressed.connect(get_remove_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices, self.notify_model_update))
             # add up/down buttons
             if isinstance(self.voice_selection_model, config_models.VoiceSelectionPriority):
                 # add weight widget
                 up_button = PyQt5.QtWidgets.QPushButton('Up')
                 down_button = PyQt5.QtWidgets.QPushButton('Down')
-                up_button.pressed.connect(get_move_up_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices))
-                down_button.pressed.connect(get_move_down_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices))
+                up_button.pressed.connect(get_move_up_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices, self.notify_model_update))
+                down_button.pressed.connect(get_move_down_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices, self.notify_model_update))
 
                 self.voice_list_grid_layout.addWidget(up_button, row, column_index, 1, 1)
                 column_index += 1

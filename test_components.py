@@ -1,5 +1,6 @@
 import PyQt5
 import logging
+import copy
 import component_batch_preview
 import config_models
 import servicemanager
@@ -32,7 +33,8 @@ class MockModelChangeCallback():
         self.model = None
 
     def model_updated(self, model):
-        self.model = model
+        logging.info('MockModelChangeCallback.model_updated')
+        self.model = copy.deepcopy(model)
 
 class MockSampleSelectedCallback():
     def __init__(self):
@@ -214,6 +216,43 @@ def test_voice_selection_random_to_single(qtbot):
 
     # verify that the selected voices grid is empty
     assert voiceselection.voice_list_grid_layout.count() == 0
+
+
+def test_voice_selection_random_remove_voices(qtbot):
+    hypertts_instance = get_hypertts_instance()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    dialog.addChildLayout(voiceselection.draw())
+
+    # choose random mode
+    # qtbot.mouseClick(voiceselection.radio_button_random, PyQt5.QtCore.Qt.LeftButton)
+    voiceselection.radio_button_random.setChecked(True)
+
+    # pick second voice and add it
+    voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
+    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # pick third voice and add it
+    voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
+    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)    
+
+    # check model change callback
+    assert model_change_callback.model.selection_mode == constants.VoiceSelectionMode.random
+    assert len(model_change_callback.model.get_voice_list()) == 2
+
+    # now remove one of the voices
+    logging.info('removing voice_row_1')
+    remove_voice_button = dialog.findChild(PyQt5.QtWidgets.QPushButton, 'remove_voice_row_1')
+    qtbot.mouseClick(remove_voice_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # check model change callback
+    assert model_change_callback.model.selection_mode == constants.VoiceSelectionMode.random
+    assert len(model_change_callback.model.get_voice_list()) == 1
+
 
 
 def test_voice_selection_random_2(qtbot):
