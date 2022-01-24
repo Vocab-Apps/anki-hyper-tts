@@ -63,17 +63,41 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def source_model_updated(self, model):
         logging.info(f'source_model_updated: {model}')
         self.batch_model.set_source(model)
-        self.preview.load_model(self.batch_model)
+        self.model_part_updated_common()
 
     def target_model_updated(self, model):
         logging.info('target_model_updated')
         self.batch_model.set_target(model)
-        self.preview.load_model(self.batch_model)
+        self.model_part_updated_common()
 
     def voice_selection_model_updated(self, model):
         logging.info('voice_selection_model_updated')
         self.batch_model.set_voice_selection(model)
+        self.model_part_updated_common()
+
+    def model_part_updated_common(self):
         self.preview.load_model(self.batch_model)
+        self.enable_save_profile_button()
+
+    def enable_save_profile_button(self):
+        self.profile_save_button.setEnabled(True)
+        self.profile_save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        self.profile_save_button.setText('Save')
+
+    def disable_save_profile_button(self, text):
+        self.profile_save_button.setEnabled(False)
+        self.profile_save_button.setStyleSheet(None)
+        self.profile_save_button.setText(text)
+
+    def enable_load_profile_button(self):
+        self.profile_load_button.setEnabled(True)
+        self.profile_load_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        self.profile_load_button.setText('Load')
+
+    def disable_load_profile_button(self, text):
+        self.profile_load_button.setEnabled(False)
+        self.profile_load_button.setStyleSheet(None)
+        self.profile_load_button.setText(text)
 
     def sample_selected(self, note_id, text):
         self.voice_selection.sample_text_selected(text)
@@ -93,8 +117,10 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
         hlayout.addWidget(self.profile_name_combobox)
         self.profile_load_button = PyQt5.QtWidgets.QPushButton('Load')
+        self.disable_load_profile_button('Load')
         hlayout.addWidget(self.profile_load_button)
         self.profile_save_button = PyQt5.QtWidgets.QPushButton('Save')
+        self.disable_save_profile_button('Save')
         hlayout.addWidget(self.profile_save_button)
         self.vlayout.addLayout(hlayout)
 
@@ -152,15 +178,23 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.apply_button.pressed.connect(self.apply_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
+        self.profile_name_combobox.currentIndexChanged.connect(self.profile_selected)
+        self.profile_name_combobox.currentTextChanged.connect(self.profile_selected)
+
         layout.addLayout(self.vlayout)
+
+    def profile_selected(self, index):
+        self.enable_load_profile_button()
 
     def load_profile_button_pressed(self):
         profile_name = self.profile_name_combobox.currentText()
         self.load_model(self.hypertts.load_batch_config(profile_name))
+        self.disable_load_profile_button('Preset Loaded')
 
     def save_profile_button_pressed(self):
         profile_name = self.profile_name_combobox.currentText()
         self.hypertts.save_batch_config(profile_name, self.get_model())
+        self.disable_save_profile_button('Preset Saved')
 
     def sound_preview_button_pressed(self):
         self.disable_bottom_buttons()

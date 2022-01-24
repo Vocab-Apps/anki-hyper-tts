@@ -686,8 +686,13 @@ def test_batch_dialog(qtbot):
     # set profile name
     batch.profile_name_combobox.setCurrentText('batch profile 1')
 
+    # save button should be enabled
+    assert batch.profile_save_button.isEnabled() == True
     # save
     qtbot.mouseClick(batch.profile_save_button, PyQt5.QtCore.Qt.LeftButton)
+    # should be disabled after saving
+    assert batch.profile_save_button.isEnabled() == False
+    assert batch.profile_save_button.text() == 'Preset Saved'
 
     print(hypertts_instance.anki_utils.written_config)
     assert 'batch profile 1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]
@@ -706,9 +711,21 @@ def test_batch_dialog(qtbot):
     batch.configure_browser(note_id_list)
     batch.draw(dialog.getLayout())    
 
+    # dialog.exec_()
+
+    assert batch.profile_load_button.isEnabled() == False
+    # select preset
     batch.profile_name_combobox.setCurrentText('batch profile 1')
+    # should be enabled now
+    assert batch.profile_load_button.isEnabled() == True
+    assert batch.profile_load_button.text() == 'Load'
+
     # open
     qtbot.mouseClick(batch.profile_load_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # button should go back to disabled
+    assert batch.profile_load_button.isEnabled() == False
+    assert batch.profile_load_button.text() == 'Preset Loaded'
 
     # assertions on GUI
     assert batch.source.source_field_combobox.currentText() == 'English'
