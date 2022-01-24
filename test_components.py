@@ -692,6 +692,7 @@ def test_batch_dialog(qtbot):
     qtbot.mouseClick(batch.profile_save_button, PyQt5.QtCore.Qt.LeftButton)
     # should be disabled after saving
     assert batch.profile_save_button.isEnabled() == False
+    assert batch.profile_load_button.isEnabled() == False
     assert batch.profile_save_button.text() == 'Preset Saved'
 
     print(hypertts_instance.anki_utils.written_config)
@@ -725,6 +726,7 @@ def test_batch_dialog(qtbot):
 
     # button should go back to disabled
     assert batch.profile_load_button.isEnabled() == False
+    assert batch.profile_save_button.isEnabled() == False
     assert batch.profile_load_button.text() == 'Preset Loaded'
 
     # assertions on GUI

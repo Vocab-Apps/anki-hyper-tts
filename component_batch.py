@@ -190,11 +190,13 @@ class ComponentBatch(component_common.ConfigComponentBase):
         profile_name = self.profile_name_combobox.currentText()
         self.load_model(self.hypertts.load_batch_config(profile_name))
         self.disable_load_profile_button('Preset Loaded')
+        self.disable_save_profile_button('Save')
 
     def save_profile_button_pressed(self):
         profile_name = self.profile_name_combobox.currentText()
         self.hypertts.save_batch_config(profile_name, self.get_model())
         self.disable_save_profile_button('Preset Saved')
+        self.disable_load_profile_button('Load')
 
     def sound_preview_button_pressed(self):
         self.disable_bottom_buttons()
