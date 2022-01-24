@@ -165,13 +165,32 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def apply_button_pressed(self):
         logging.info('apply_button_pressed')
         if self.editor_mode:
-            self.apply_button.setEnabled(False)
-            self.cancel_button.setEnabled(False)
+            self.disable_bottom_buttons()
             self.apply_button.setText('Loading...')
-            self.hypertts.editor_note_add_audio(self.batch_model, self.editor, self.note, self.add_mode)
-            self.dialog.close()
+            self.hypertts.anki_utils.run_in_background(self.apply_note_editor_task, self.apply_note_editor_task_done)
         else:
             pass
 
     def cancel_button_pressed(self):
         pass
+
+    def apply_note_editor_task(self):
+        self.hypertts.editor_note_add_audio(self.batch_model, self.editor, self.note, self.add_mode)
+        return True
+
+    def apply_note_editor_task_done(self, result):
+        with self.hypertts.error_manager.get_single_action_context('Adding Audio to Note'):
+            result = result.result()
+            self.dialog.close()
+        self.enable_bottom_buttons()
+        self.apply_button.setText('Apply To Note')
+
+    def disable_bottom_buttons(self):
+        self.preview_sound_button.setEnabled(False)
+        self.apply_button.setEnabled(False)
+        self.cancel_button.setEnabled(False)
+
+    def enable_bottom_buttons(self):
+        self.preview_sound_button.setEnabled(True)
+        self.apply_button.setEnabled(True)
+        self.cancel_button.setEnabled(True)
