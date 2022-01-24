@@ -129,14 +129,6 @@ class HyperTTS():
             voice = voice_list.pop(0)
             return voice
 
-    def editor_add_audio(self, pycmd_str, note, add_mode):
-        logging.info(f'editor_add_audio: {pycmd_str}')
-        with self.error_manager.get_single_action_context('Adding Audio'):
-            # get
-            batch_name = pycmd_str.replace('hypertts:addaudio:', '')
-            batch = self.load_batch_config(batch_name)
-            self.editor_note_add_audio(batch, note, add_mode)
-
     def editor_note_add_audio(self, batch, editor, note, add_mode):
         source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode)
         editor.set_note(note)
