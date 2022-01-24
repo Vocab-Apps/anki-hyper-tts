@@ -51,20 +51,21 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def source_model_updated(self, model):
         logging.info(f'source_model_updated: {model}')
         self.batch_model.set_source(model)
-        if self.preview != None:
-            self.preview.load_model(self.batch_model)
+        self.update_preview_component()
 
     def target_model_updated(self, model):
         logging.info('target_model_updated')
         self.batch_model.set_target(model)
-        if self.preview != None:
-            self.preview.load_model(self.batch_model)
+        self.update_preview_component()
 
     def voice_selection_model_updated(self, model):
         logging.info('voice_selection_model_updated')
         self.batch_model.set_voice_selection(model)
+        self.update_preview_component()
+
+    def update_preview_component(self):
         if self.preview != None:
-            self.preview.load_model(self.batch_model)
+            self.preview.load_model(self.batch_model)        
 
     def sample_selected(self, text):
         self.voice_selection.sample_text_selected(text)

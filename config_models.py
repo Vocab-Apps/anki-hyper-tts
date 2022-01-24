@@ -45,6 +45,12 @@ class BatchConfig(ConfigModelBase):
     target = property(get_target, set_target)
     voice_selection = property(get_voice_selection, set_voice_selection)
 
+    def __str__(self):
+        return f"""<b>Source:</b> {self.source}
+<b>Target:</b> {self.target}
+<b>Voice Selection:</b> {self.voice_selection}
+"""
+
     def serialize(self):
         return {
             'source': self.source.serialize(),
@@ -71,6 +77,12 @@ class BatchSource(ConfigModelBase):
                 'template_format_version': self.template_format_version.name,
                 'source_template': self.source_template
             }
+    
+    def __str__(self):
+        if self.mode == constants.BatchMode.simple:
+            return f'{self.source_field}'
+        else:
+            return 'template'
 
 
 class BatchSourceSimple(BatchSource):
@@ -101,6 +113,8 @@ class BatchTarget(ConfigModelBase):
             'remove_sound_tag': self.remove_sound_tag
         }
 
+    def __str__(self):
+        return f'{self.target_field}'
 
 # voice selection models
 # ======================
@@ -163,6 +177,9 @@ class VoiceSelectionBase(ConfigModelBase):
 
     # properties
     selection_mode = property(get_selection_mode, None)
+
+    def __str__(self):
+        return 'voices'
 
 class VoiceSelectionSingle(VoiceSelectionBase):
     def __init__(self):

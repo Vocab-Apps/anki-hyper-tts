@@ -313,3 +313,8 @@ def test_batch_config(qtbot):
     batch_config_deserialized = hypertts_instance.deserialize_batch_config(batch_config.serialize())
 
     assert batch_config_deserialized.serialize() == batch_config.serialize()
+
+    assert str(batch_config) == """<b>Source:</b> Chinese
+<b>Target:</b> Sound
+<b>Voice Selection:</b> voices
+"""
