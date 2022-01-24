@@ -422,9 +422,15 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.voices_combobox.clear()
         self.voices_combobox.addItems([str(voice) for voice in voice_list])
 
+    def clear_voice_list_grid_layout(self):
+        for i in reversed(range(self.voice_list_grid_layout.count())): 
+            self.voice_list_grid_layout.itemAt(i).widget().setParent(None)        
+
     def redraw_selected_voices(self):
+        # clear all voices from the grid
+        self.clear_voice_list_grid_layout()
+
         if isinstance(self.voice_selection_model, config_models.VoiceSelectionSingle):
-            # don't draw if used chose single voice
             return
 
         def get_remove_lambda(selection_model, voice_with_options_random, redraw_fn):
@@ -445,11 +451,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 selection_model.move_down_voice(voice_with_options_priority)
                 redraw_fn()
             return down
-
         
-        # clear all voices first
-        for i in reversed(range(self.voice_list_grid_layout.count())): 
-            self.voice_list_grid_layout.itemAt(i).widget().setParent(None)
         # draw all voices
         row = 0
         for voice_entry in self.voice_selection_model.voice_list:

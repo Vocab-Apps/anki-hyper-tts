@@ -212,6 +212,9 @@ def test_voice_selection_random_to_single(qtbot):
     # check model change callback
     assert model_change_callback.model.selection_mode == constants.VoiceSelectionMode.single
 
+    # verify that the selected voices grid is empty
+    assert voiceselection.voice_list_grid_layout.count() == 0
+
 
 def test_voice_selection_random_2(qtbot):
     hypertts_instance = get_hypertts_instance()
