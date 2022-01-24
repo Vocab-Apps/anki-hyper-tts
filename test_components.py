@@ -735,6 +735,25 @@ def test_batch_dialog(qtbot):
     
     # dialog.exec_()
 
+    # test launching with a particular preset
+    # =======================================
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
+    batch.configure_browser(note_id_list)
+    batch.draw(dialog.getLayout())
+    batch.load_batch('batch profile 1')
+
+    # assertions on GUI
+    assert batch.source.source_field_combobox.currentText() == 'English'
+    assert batch.target.target_field_combobox.currentText() == 'Sound'
+
+    # dialog.exec_()
+
+    assert batch.profile_load_button.isEnabled() == False
+    assert batch.profile_save_button.isEnabled() == False    
+
     # play sound preview
     # ==================
 

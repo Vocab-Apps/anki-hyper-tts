@@ -48,6 +48,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
         batch = self.hypertts.load_batch_config(batch_name)
         self.load_model(batch)
         self.profile_name_combobox.setCurrentText(batch_name)
+        # disable load/save buttons
+        self.disable_load_profile_button('Loaded')
+        self.disable_save_profile_button('Save')
 
     def load_model(self, model):
         self.batch_model = model
