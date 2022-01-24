@@ -255,7 +255,7 @@ class HyperTTS():
             for note_id in note_id_list:
                 with batch_status.get_note_action_context(note_id, True) as note_action_context:
                     note = self.anki_utils.get_note_by_id(note_id)
-                    source_text, processed_text = self.get_source_processed_text(note)
+                    source_text, processed_text = self.get_source_processed_text(note, batch_source)
                     note_action_context.set_source_text(source_text)
                     note_action_context.set_processed_text(processed_text)
                     note_action_context.set_status(constants.BatchNoteStatus.OK)
