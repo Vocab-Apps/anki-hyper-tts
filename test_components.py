@@ -56,6 +56,13 @@ class MockBatchPreviewCallback():
     def batch_end(self):
         self.batch_end_called = True
 
+class MockEditor():
+    def __init__(self):
+        self.set_note_called = None
+
+    def set_note(self, note):
+        self.set_note_called = True
+
 def get_hypertts_instance():
     # return hypertts_instance    
     config_gen = testing_utils.TestConfigGenerator()
@@ -653,31 +660,7 @@ def test_batch_preview(qtbot):
     dialog.addChildLayout(batch_preview.draw())
 
     # dialog.exec_()
-    return 
-
-    # load audio
-    # ==========
-
-    qtbot.mouseClick(batch_preview.load_audio_button, PyQt5.QtCore.Qt.LeftButton)
-
-    # make sure notes were updated
-    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    assert 'Sound' in note_1.set_values 
-
-    sound_tag = note_1.set_values['Sound']
-    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
-    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
-
-    assert audio_data['source_text'] == '老人家'
-
-    note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
-    assert 'Sound' in note_2.set_values 
-
-    sound_tag = note_2.set_values['Sound']
-    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
-    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
-
-    assert audio_data['source_text'] == '你好'        
+    # return 
 
 
 def test_batch_dialog(qtbot):
@@ -733,9 +716,6 @@ def test_batch_dialog(qtbot):
     
     # dialog.exec_()
 
-    # test sound preview
-    # ==================
-
     # play sound preview
     # ==================
 
@@ -744,7 +724,7 @@ def test_batch_dialog(qtbot):
     batch.preview.table_view.selectionModel().select(index_second_row, PyQt5.QtCore.QItemSelectionModel.Select)
     # press preview button
     qtbot.mouseClick(batch.preview_sound_button, PyQt5.QtCore.Qt.LeftButton)
-    dialog.exec_()
+    # dialog.exec_()
 
     assert hypertts_instance.anki_utils.played_sound == {
         'source_text': 'hello',
@@ -758,6 +738,32 @@ def test_batch_dialog(qtbot):
         'options': {}
     }    
 
+    # load audio
+    # ==========
+
+    batch.source.source_field_combobox.setCurrentText('Chinese')
+    qtbot.mouseClick(batch.apply_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # make sure notes were updated
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    assert 'Sound' in note_1.set_values 
+
+    sound_tag = note_1.set_values['Sound']
+    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+    assert audio_data['source_text'] == '老人家'
+
+    note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
+    assert 'Sound' in note_2.set_values 
+
+    sound_tag = note_2.set_values['Sound']
+    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+    assert audio_data['source_text'] == '你好'
+
+
 
 def test_batch_dialog_editor(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
@@ -769,8 +775,10 @@ def test_batch_dialog_editor(qtbot):
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
 
+    mock_editor = MockEditor()
+
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_editor(note, False)
+    batch.configure_editor(note, mock_editor, False)
     batch.draw(dialog.getLayout())
 
     # test sound preview
@@ -803,7 +811,9 @@ def test_batch_dialog_editor(qtbot):
     audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
     audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
-    assert audio_data['source_text'] == '老人家'    
+    assert audio_data['source_text'] == '老人家'
+
+    assert mock_editor.set_note_called == True
 
     assert dialog.closed == True
 
