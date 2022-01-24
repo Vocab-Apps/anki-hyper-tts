@@ -170,7 +170,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
             self.apply_button.setText('Loading...')
             self.hypertts.anki_utils.run_in_background(self.apply_note_editor_task, self.apply_note_editor_task_done)
         else:
-            pass
+            self.disable_bottom_buttons()
+            self.apply_button.setText('Loading...')
+            self.preview.apply_audio_to_notes()
 
     def cancel_button_pressed(self):
         self.dialog.close()

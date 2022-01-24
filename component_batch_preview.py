@@ -122,8 +122,6 @@ class BatchPreview(component_common.ComponentBase):
 
         # populate the "notRunning" stack
         notRunningLayout = PyQt5.QtWidgets.QVBoxLayout()
-        self.load_audio_button = PyQt5.QtWidgets.QPushButton('Load Audio')
-        notRunningLayout.addWidget(self.load_audio_button)
         self.batchNotRunningStack.setLayout(notRunningLayout)
 
         # poulate the "running" stack
@@ -139,7 +137,6 @@ class BatchPreview(component_common.ComponentBase):
         self.batch_preview_layout.addWidget(self.stack)
 
         # wire events
-        self.load_audio_button.pressed.connect(self.load_audio_button_pressed)
         self.stop_button.pressed.connect(self.stop_button_pressed)
 
         return self.batch_preview_layout
@@ -177,7 +174,7 @@ class BatchPreview(component_common.ComponentBase):
             return self.batch_status[self.selected_row]
         return None
 
-    def load_audio_button_pressed(self):
+    def apply_audio_to_notes(self):
         self.hypertts.anki_utils.run_in_background(self.load_audio_task, self.load_audio_task_done)
 
     def stop_button_pressed(self):
