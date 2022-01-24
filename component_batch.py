@@ -170,7 +170,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
             pass
 
     def cancel_button_pressed(self):
-        pass
+        self.dialog.close()
 
     def apply_note_editor_task(self):
         self.hypertts.editor_note_add_audio(self.batch_model, self.editor, self.note, self.add_mode)
