@@ -24,6 +24,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)        
         self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, self.sample_selected)
+        self.editor_mode = False
 
     def configure_editor(self, note):
         self.note = note
@@ -31,7 +32,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)        
-        self.preview = component_label_preview.LabelPreview(self.hypertts)
+        self.preview = component_label_preview.LabelPreview(self.hypertts, note)
+        self.editor_mode = True
 
     def load_batch(self, batch_name):
         batch = self.hypertts.load_batch_config(batch_name)
@@ -100,16 +102,23 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.tabs.addTab(self.tab_target, 'Target')
         self.tabs.addTab(self.tab_voice_selection, 'Voice Selection')
 
-        self.splitter = PyQt5.QtWidgets.QSplitter(PyQt5.QtCore.Qt.Horizontal)
-        self.splitter.addWidget(self.tabs)
 
-        if self.preview != None:
+        if self.editor_mode == False:
+            self.splitter = PyQt5.QtWidgets.QSplitter(PyQt5.QtCore.Qt.Horizontal)
+            self.splitter.addWidget(self.tabs)
+
             self.preview_widget = PyQt5.QtWidgets.QWidget()
             self.preview_widget.setLayout(self.preview.draw())
             self.splitter.addWidget(self.preview_widget)
+            self.vlayout.addWidget(self.splitter)
+        else:
+            self.vlayout.addWidget(self.tabs)
+            self.preview_widget = PyQt5.QtWidgets.QWidget()
+            self.preview_widget.setLayout(self.preview.draw())            
+            self.vlayout.addWidget(self.preview_widget)
 
         # return self.tabs
-        self.vlayout.addWidget(self.splitter)
+
 
         layout.addLayout(self.vlayout)
 
