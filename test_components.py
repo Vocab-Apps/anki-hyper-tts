@@ -809,6 +809,24 @@ def test_batch_dialog(qtbot):
 
     # dialog.exec_()
 
+def test_batch_dialog_manual(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+
+    # test saving of config
+    # =====================
+
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
+    batch.configure_browser(note_id_list)
+    batch.draw(dialog.getLayout())
+
+    # dialog.exec_()
+
 
 def test_batch_dialog_editor(qtbot):
     config_gen = testing_utils.TestConfigGenerator()

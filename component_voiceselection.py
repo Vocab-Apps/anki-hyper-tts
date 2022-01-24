@@ -23,6 +23,14 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.genders_combobox = PyQt5.QtWidgets.QComboBox()
         self.voices_combobox = PyQt5.QtWidgets.QComboBox()
 
+        for combobox in [
+            self.audio_languages_combobox,
+            self.languages_combobox,
+            self.services_combobox,
+            self.genders_combobox,
+            self.voices_combobox]:
+            combobox.setStyleSheet("combobox-popup: 0;")
+
         self.play_sample_button = PyQt5.QtWidgets.QPushButton('Play Sample')
 
         self.reset_filters_button = PyQt5.QtWidgets.QPushButton('Reset Filters')        
@@ -123,11 +131,23 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.populate_combobox(self.services_combobox, self.services)
         self.populate_combobox(self.genders_combobox, [gender.name for gender in self.genders])
 
-        self.voices_layout.addWidget(self.audio_languages_combobox)
-        self.voices_layout.addWidget(self.languages_combobox)
-        self.voices_layout.addWidget(self.services_combobox)
-        self.voices_layout.addWidget(self.genders_combobox)
-        self.voices_layout.addWidget(self.reset_filters_button)
+
+        # grid layout for filters
+        groupbox = PyQt5.QtWidgets.QGroupBox('Voice Filters')
+        gridlayout = PyQt5.QtWidgets.QGridLayout()
+
+        gridlayout.addWidget(PyQt5.QtWidgets.QLabel('Locale'), 0, 0, 1, 1)
+        gridlayout.addWidget(self.audio_languages_combobox, 0, 1, 1, 1)
+        gridlayout.addWidget(PyQt5.QtWidgets.QLabel('Language'), 1, 0, 1, 1)
+        gridlayout.addWidget(self.languages_combobox, 1, 1, 1, 1)
+        gridlayout.addWidget(PyQt5.QtWidgets.QLabel('Service'), 2, 0, 1, 1)        
+        gridlayout.addWidget(self.services_combobox, 2, 1, 1, 1)
+        gridlayout.addWidget(PyQt5.QtWidgets.QLabel('Gender'), 3, 0, 1, 1)        
+        gridlayout.addWidget(self.genders_combobox, 3, 1, 1, 1)
+        gridlayout.addWidget(self.reset_filters_button, 4, 0, 1, 2)
+        groupbox.setLayout(gridlayout)
+        self.voices_layout.addWidget(groupbox)
+        
         self.voices_layout.addWidget(self.voices_combobox)
         self.voices_layout.addWidget(self.play_sample_button)
 
