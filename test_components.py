@@ -40,12 +40,21 @@ class MockModelChangeCallback():
         logging.info('MockModelChangeCallback.model_updated')
         self.model = copy.deepcopy(model)
 
-class MockSampleSelectedCallback():
+class MockBatchPreviewCallback():
     def __init__(self):
         self.sample_text = None
+        self.batch_start_called = None
+        self.batch_end_called = None
 
-    def sample_selected(self, text):
+    def sample_selected(self, note_id, text):
+        self.note_id = note_id
         self.sample_text = text
+
+    def batch_start(self):
+        self.batch_start_called = True
+
+    def batch_end(self):
+        self.batch_end_called = True
 
 def get_hypertts_instance():
     # return hypertts_instance    
@@ -635,33 +644,16 @@ def test_batch_preview(qtbot):
     batch_config.set_target(target)
     batch_config.set_voice_selection(voice_selection)    
 
-    sample_text_callback = MockSampleSelectedCallback()
-    batch_preview = component_batch_preview.BatchPreview(hypertts_instance, note_id_list, sample_text_callback.sample_selected)
+    batch_preview_callback = MockBatchPreviewCallback()
+    batch_preview = component_batch_preview.BatchPreview(hypertts_instance, note_id_list, 
+        batch_preview_callback.sample_selected,
+        batch_preview_callback.batch_start,
+        batch_preview_callback.batch_end)
     batch_preview.load_model(batch_config)
     dialog.addChildLayout(batch_preview.draw())
 
     # dialog.exec_()
-
-    # play sound preview
-    # ==================
-
-    # select second row
-    index_second_row = batch_preview.batch_preview_table_model.createIndex(1, 0)
-    batch_preview.table_view.selectionModel().select(index_second_row, PyQt5.QtCore.QItemSelectionModel.Select)
-    # press preview button
-    qtbot.mouseClick(batch_preview.preview_audio_button, PyQt5.QtCore.Qt.LeftButton)
-
-    assert hypertts_instance.anki_utils.played_sound == {
-        'source_text': '你好',
-        'voice': {
-            'gender': 'Male', 
-            'language': 'fr_FR', 
-            'name': 'voice_a_1', 
-            'service': 'ServiceA',
-            'voice_key': {'name': 'voice_1'}
-        },
-        'options': {}
-    }    
+    return 
 
     # load audio
     # ==========
@@ -700,7 +692,7 @@ def test_batch_dialog(qtbot):
     # test saving of config
     # =====================
 
-    batch = component_batch.ComponentBatch(hypertts_instance)
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_browser(note_id_list)
     batch.draw(dialog.getLayout())
 
@@ -727,7 +719,7 @@ def test_batch_dialog(qtbot):
 
     dialog = EmptyDialog()
     dialog.setupUi()
-    batch = component_batch.ComponentBatch(hypertts_instance)
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_browser(note_id_list)
     batch.draw(dialog.getLayout())    
 
@@ -740,6 +732,32 @@ def test_batch_dialog(qtbot):
     assert batch.target.target_field_combobox.currentText() == 'Sound'
     
     # dialog.exec_()
+
+    # test sound preview
+    # ==================
+
+    # play sound preview
+    # ==================
+
+    # select second row
+    index_second_row = batch.preview.batch_preview_table_model.createIndex(1, 0)
+    batch.preview.table_view.selectionModel().select(index_second_row, PyQt5.QtCore.QItemSelectionModel.Select)
+    # press preview button
+    qtbot.mouseClick(batch.preview_sound_button, PyQt5.QtCore.Qt.LeftButton)
+    dialog.exec_()
+
+    assert hypertts_instance.anki_utils.played_sound == {
+        'source_text': 'hello',
+        'voice': {
+            'gender': 'Male', 
+            'language': 'fr_FR', 
+            'name': 'voice_a_1', 
+            'service': 'ServiceA',
+            'voice_key': {'name': 'voice_1'}
+        },
+        'options': {}
+    }    
+
 
 def test_batch_dialog_editor(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
