@@ -69,10 +69,12 @@ class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         return PyQt5.QtCore.QVariant()
 
 class BatchPreview(component_common.ComponentBase):
-    def __init__(self, hypertts, note_id_list, sample_selection_fn):
+    def __init__(self, hypertts, note_id_list, sample_selection_fn, batch_start_fn, batch_end_fn):
         self.hypertts = hypertts
         self.note_id_list = note_id_list
         self.sample_selection_fn = sample_selection_fn
+        self.batch_start_fn = batch_start_fn
+        self.batch_end_fn = batch_end_fn
 
         self.batch_status = batch_status.BatchStatus(hypertts.anki_utils, note_id_list, self)
         self.batch_preview_table_model = BatchPreviewTableModel(self.batch_status)
@@ -191,9 +193,11 @@ class BatchPreview(component_common.ComponentBase):
 
     def batch_start(self):
         self.hypertts.anki_utils.run_on_main(self.show_running_stack)
+        self.hypertts.anki_utils.run_on_main(self.batch_start_fn)
 
     def batch_end(self):
         self.hypertts.anki_utils.run_on_main(self.show_not_running_stack)
+        self.hypertts.anki_utils.run_on_main(self.batch_end_fn)
 
     def update_progress_bar(self, row):
         self.progress_bar.setValue(row)

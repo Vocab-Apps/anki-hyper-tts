@@ -18,13 +18,19 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.dialog = dialog
         self.batch_model = config_models.BatchConfig()
 
+        # create certain widgets upfront
+        self.preview_sound_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
+        self.apply_button = PyQt5.QtWidgets.QPushButton('Apply to Notes')
+        self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
+
     def configure_browser(self, note_id_list):
         self.note_id_list = note_id_list
         field_list = self.hypertts.get_all_fields_from_notes(note_id_list)
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)        
-        self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, self.sample_selected)
+        self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, 
+            self.sample_selected, self.apply_notes_batch_start, self.apply_notes_batch_end)
         self.editor_mode = False
 
     def configure_editor(self, note, editor, add_mode):
@@ -128,7 +134,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
         # setup bottom buttons
         hlayout = PyQt5.QtWidgets.QHBoxLayout()
         hlayout.addStretch()
-        self.preview_sound_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
         if not self.editor_mode:
             self.preview_sound_button.setText('Select Note to Preview Sound')
             self.preview_sound_button.setEnabled(False)
@@ -136,10 +141,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
         apply_label_text = 'Apply To Notes'
         if self.editor_mode:
             apply_label_text = 'Apply To Note'
-        self.apply_button = PyQt5.QtWidgets.QPushButton(apply_label_text)
+        self.apply_button.setText(apply_label_text)
         self.apply_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         hlayout.addWidget(self.apply_button)
-        self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
         hlayout.addWidget(self.cancel_button)
         self.vlayout.addLayout(hlayout)
@@ -207,3 +211,10 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview_sound_button.setEnabled(True)
         self.apply_button.setEnabled(True)
         self.cancel_button.setEnabled(True)
+
+    def apply_notes_batch_start(self):
+        pass
+
+    def apply_notes_batch_end(self):
+        self.enable_bottom_buttons()
+        self.apply_button.setText('Apply To Notes')
