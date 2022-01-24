@@ -143,6 +143,7 @@ class BatchPreview(component_common.ComponentBase):
 
     def show_not_running_stack(self):
         self.stack.setCurrentIndex(0)
+        self.progress_bar.setValue(0)
 
     def show_running_stack(self):
         self.stack.setCurrentIndex(1)
