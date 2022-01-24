@@ -120,6 +120,7 @@ class BatchPreview(component_common.ComponentBase):
         # create stack of widgets which will be toggled when we're running the batch
         self.batchNotRunningStack = PyQt5.QtWidgets.QWidget()
         self.batchRunningStack = PyQt5.QtWidgets.QWidget()
+        self.batchCompletedStack = PyQt5.QtWidgets.QWidget()
 
 
         # populate the "notRunning" stack
@@ -133,8 +134,14 @@ class BatchPreview(component_common.ComponentBase):
         runningLayout.addWidget(self.progress_bar)
         self.batchRunningStack.setLayout(runningLayout)
 
+        # populate the completed stack
+        completedLayout = PyQt5.QtWidgets.QVBoxLayout()
+        completedLayout.addWidget(PyQt5.QtWidgets.QLabel('<b>Operation Completed</b>'))
+        self.batchCompletedStack.setLayout(completedLayout)
+
         self.stack.addWidget(self.batchNotRunningStack)
         self.stack.addWidget(self.batchRunningStack)
+        self.stack.addWidget(self.batchCompletedStack)
         self.show_not_running_stack()
         self.batch_preview_layout.addWidget(self.stack)
 
@@ -149,6 +156,9 @@ class BatchPreview(component_common.ComponentBase):
 
     def show_running_stack(self):
         self.stack.setCurrentIndex(1)
+
+    def show_completed_stack(self):
+        self.stack.setCurrentIndex(2)
 
     def selection_changed(self):
         logging.info('selection_changed')
@@ -196,7 +206,10 @@ class BatchPreview(component_common.ComponentBase):
         self.hypertts.anki_utils.run_on_main(self.batch_start_fn)
 
     def batch_end(self, completed):
-        self.hypertts.anki_utils.run_on_main(self.show_not_running_stack)
+        if completed:
+            self.hypertts.anki_utils.run_on_main(self.show_completed_stack)
+        else:
+            self.hypertts.anki_utils.run_on_main(self.show_not_running_stack)
         self.hypertts.anki_utils.run_on_main(self.batch_end_fn)
 
     def update_progress_bar(self, row):
