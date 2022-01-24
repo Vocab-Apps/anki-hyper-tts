@@ -251,6 +251,21 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def apply_notes_batch_start(self):
         pass
 
-    def apply_notes_batch_end(self):
+    def batch_interrupted_button_setup(self):
         self.enable_bottom_buttons()
         self.apply_button.setText('Apply To Notes')
+
+    def batch_completed_button_setup(self):
+        self.cancel_button.setText('Close')
+        self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        self.cancel_button.setEnabled(True)
+        self.apply_button.setStyleSheet(None)
+        self.apply_button.setText('Done')
+
+    def apply_notes_batch_end(self, completed):
+        if completed:
+            self.hypertts.anki_utils.run_on_main(self.batch_completed_button_setup)
+        else:
+            self.hypertts.anki_utils.run_on_main(self.batch_interrupted_button_setup)
+
+        

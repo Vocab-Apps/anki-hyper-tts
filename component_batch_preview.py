@@ -86,6 +86,8 @@ class BatchPreview(component_common.ComponentBase):
 
         self.selected_row = None
 
+        self.apply_to_notes_batch_started = False
+
     def load_model(self, model):
         self.batch_model = model
         self.hypertts.anki_utils.run_in_background(self.update_batch_status_task, self.update_batch_status_task_done)
@@ -188,6 +190,7 @@ class BatchPreview(component_common.ComponentBase):
         return None
 
     def apply_audio_to_notes(self):
+        self.apply_to_notes_batch_started = True
         self.hypertts.anki_utils.run_in_background(self.load_audio_task, self.load_audio_task_done)
 
     def stop_button_pressed(self):
@@ -206,11 +209,12 @@ class BatchPreview(component_common.ComponentBase):
         self.hypertts.anki_utils.run_on_main(self.batch_start_fn)
 
     def batch_end(self, completed):
-        if completed:
+        if completed and self.apply_to_notes_batch_started == True:
             self.hypertts.anki_utils.run_on_main(self.show_completed_stack)
         else:
             self.hypertts.anki_utils.run_on_main(self.show_not_running_stack)
-        self.hypertts.anki_utils.run_on_main(self.batch_end_fn)
+        if self.apply_to_notes_batch_started:
+            self.batch_end_fn(completed)
 
     def update_progress_bar(self, row):
         self.progress_bar.setValue(row)

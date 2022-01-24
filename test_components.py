@@ -53,7 +53,7 @@ class MockBatchPreviewCallback():
     def batch_start(self):
         self.batch_start_called = True
 
-    def batch_end(self):
+    def batch_end(self, completed):
         self.batch_end_called = True
 
 class MockEditor():
@@ -781,6 +781,11 @@ def test_batch_dialog(qtbot):
     audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == '你好'
+
+    # button state
+    assert batch.apply_button.isEnabled() == False
+    assert batch.cancel_button.isEnabled() == True
+    assert batch.cancel_button.text() == 'Close'
 
 
     # dialog.exec_()
