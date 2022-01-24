@@ -161,6 +161,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         # voice selection mode
         # ====================
+        groupbox = PyQt5.QtWidgets.QGroupBox('Selection Mode')
+        vlayout = PyQt5.QtWidgets.QVBoxLayout()
         mode_group = PyQt5.QtWidgets.QButtonGroup()
         self.radio_button_single = PyQt5.QtWidgets.QRadioButton('Single')
         self.radio_button_random = PyQt5.QtWidgets.QRadioButton('Random')
@@ -169,29 +171,28 @@ class VoiceSelection(component_common.ConfigComponentBase):
         mode_group.addButton(self.radio_button_random)
         mode_group.addButton(self.radio_button_priority)
         #self.voices_layout.addWidget(mode_group)
-        self.voices_layout.addWidget(self.radio_button_single)
-        self.voices_layout.addWidget(self.radio_button_random)
-        self.voices_layout.addWidget(self.radio_button_priority)
+        vlayout.addWidget(self.radio_button_single)
+        vlayout.addWidget(self.radio_button_random)
+        vlayout.addWidget(self.radio_button_priority)
 
 
         # buttons
         # =======
 
         self.add_voice_button = PyQt5.QtWidgets.QPushButton('Add Voice')
-        self.clear_voices_button = PyQt5.QtWidgets.QPushButton('Remove all Voices')
 
-        self.voices_layout.addWidget(self.add_voice_button)
-        self.voices_layout.addWidget(self.clear_voices_button)
+        vlayout.addWidget(self.add_voice_button)
 
         # hide buttons by default
         self.add_voice_button.setVisible(False)
-        self.clear_voices_button.setVisible(False)
 
         # additional layouts screens for the various modes
         # ================================================
 
         self.voice_list_grid_layout = PyQt5.QtWidgets.QGridLayout()
-        self.voices_layout.addLayout(self.voice_list_grid_layout)
+        vlayout.addLayout(self.voice_list_grid_layout)
+        groupbox.setLayout(vlayout)
+        self.voices_layout.addWidget(groupbox)        
 
         self.voices_layout.addStretch()
 
@@ -220,7 +221,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.radio_button_priority.toggled.connect(self.voice_selection_mode_change)
 
         self.add_voice_button.pressed.connect(self.add_voice)
-        self.clear_voices_button.pressed.connect(self.clear_voices)
 
         self.filter_and_draw_voices(0)
 
@@ -229,15 +229,12 @@ class VoiceSelection(component_common.ConfigComponentBase):
     def voice_selection_mode_change(self):
         if self.radio_button_single.isChecked():
             self.add_voice_button.setVisible(False)
-            self.clear_voices_button.setVisible(False)
             self.voice_selection_model = config_models.VoiceSelectionSingle()
         elif self.radio_button_random.isChecked():
             self.add_voice_button.setVisible(True)
-            self.clear_voices_button.setVisible(True)
             self.voice_selection_model = config_models.VoiceSelectionRandom()
         elif self.radio_button_priority.isChecked():
             self.add_voice_button.setVisible(True)
-            self.clear_voices_button.setVisible(True)
             self.voice_selection_model = config_models.VoiceSelectionPriority()
         self.redraw_selected_voices()
         self.notify_model_update()
@@ -270,14 +267,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
         
         self.notify_model_update()
 
-
-    def clear_voices(self):
-        if self.radio_button_random.isChecked():
-            self.component_random_voice_list.clear_voices()
-        elif self.radio_button_priority.isChecked():
-            self.component_priority_voice_list.clear_voices()
-
-        self.notify_model_update()
 
     def voice_selected(self, current_index):
         voice = self.filtered_voice_list[current_index]
