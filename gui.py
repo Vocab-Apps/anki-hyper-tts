@@ -109,16 +109,15 @@ def init(hypertts):
         if not isinstance(editor, aqt.editor.Editor):
             return handled
 
-        if str == 'hypertts:addaudio:' + constants.BATCH_CONFIG_NEW:
-            launch_batch_dialog_editor(hypertts, editor.note, editor, editor.addMode)
-            return True, None
-
-        if str.startswith("hypertts:addaudio:"):
-            logging.info(f'received message: {str}')
-            # editor_manager.process_command(editor, str)
-            logging.info(f'note: {editor.note}')
-            hypertts.editor_add_audio(str, editor.note, editor.addMode)
-            editor.set_note(editor.note)
+        if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX):
+            if str == constants.PYCMD_ADD_AUDIO_PREFIX + constants.BATCH_CONFIG_NEW:
+                launch_batch_dialog_editor(hypertts, editor.note, editor, editor.addMode)
+            else:
+                with hypertts.error_manager.get_single_action_context('Adding Audio to Note'):
+                    # logging.info(f'received message: {str}')
+                    batch_name = str.replace(constants.PYCMD_ADD_AUDIO_PREFIX, '')
+                    batch = hypertts.load_batch_config(batch_name)
+                    hypertts.editor_note_add_audio(batch, editor, editor.note, editor.addMode)
             return True, None
 
         return handled

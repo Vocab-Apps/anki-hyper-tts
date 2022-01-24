@@ -32,6 +32,8 @@ CONFIG_TEXT_PROCESSING = 'text_processing'
 ADDON_NAME = 'HyperTTS'
 MENU_PREFIX = ADDON_NAME + ':'
 
+PYCMD_ADD_AUDIO_PREFIX = 'hypertts:addaudio:'
+
 UNDO_ENTRY_NAME = ADDON_NAME + ': Add Audio to Notes'
 
 GREEN_STYLESHEET = 'background-color: #69F0AE;'
