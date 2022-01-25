@@ -1,5 +1,6 @@
 import PyQt5
 import logging
+import os
 import copy
 import component_batch_preview
 import config_models
@@ -829,7 +830,8 @@ def test_batch_dialog_manual(qtbot):
     batch.configure_browser(note_id_list)
     batch.draw(dialog.getLayout())
 
-    # dialog.exec_()
+    if os.environ.get('HYPERTTS_BATCH_DIALOG_DEBUG', 'no') == 'yes':
+        dialog.exec_()
 
 
 def test_batch_dialog_editor(qtbot):

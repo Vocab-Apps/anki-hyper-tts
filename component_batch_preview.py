@@ -138,7 +138,9 @@ class BatchPreview(component_common.ComponentBase):
 
         # populate the completed stack
         completedLayout = PyQt5.QtWidgets.QVBoxLayout()
-        completedLayout.addWidget(PyQt5.QtWidgets.QLabel('<b>Operation Completed</b>'))
+        label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_BATCH_COMPLETED)
+        label.setWordWrap(True)
+        completedLayout.addWidget(label)
         self.batchCompletedStack.setLayout(completedLayout)
 
         self.stack.addWidget(self.batchNotRunningStack)
