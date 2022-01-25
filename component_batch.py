@@ -13,6 +13,9 @@ constants = __import__('constants', globals(), locals(), [], sys._addon_import_l
 
 
 class ComponentBatch(component_common.ConfigComponentBase):
+    MIN_WIDTH_COMPONENT = 500
+    MIN_HEIGHT = 400
+
     def __init__(self, hypertts, dialog):
         self.hypertts = hypertts
         self.dialog = dialog
@@ -199,6 +202,20 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.profile_name_combobox.currentTextChanged.connect(self.profile_selected)
 
         layout.addLayout(self.vlayout)
+
+    def no_settings_editor(self):
+        # when launched from the editor
+        self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT, self.MIN_HEIGHT)
+
+    def collapse_settings(self):
+        # when we have already loaded a batch
+        self.splitter.setSizes([0, self.MIN_WIDTH_COMPONENT])
+        self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT, self.MIN_HEIGHT)
+
+    def display_settings(self):
+        # when configuring a new batch
+        self.splitter.setSizes([self.MIN_WIDTH_COMPONENT, self.MIN_WIDTH_COMPONENT])
+        self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT * 2, self.MIN_HEIGHT)
 
     def profile_selected(self, index):
         self.enable_load_profile_button()

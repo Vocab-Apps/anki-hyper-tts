@@ -27,14 +27,20 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
         self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
         self.batch_component.draw(self.main_layout)
 
-    def configure_browser(self, note_id_list):
+    def configure_browser(self, note_id_list, batch_name=None):
         self.batch_component.configure_browser(note_id_list)
+        self.setupUi()
+        if batch_name != None:
+            self.batch_component.load_batch(batch_name)
+            # collapse splitter
+            self.batch_component.collapse_settings()
+        else:
+            self.batch_component.display_settings()
 
     def configure_editor(self, note, editor, add_mode):
         self.batch_component.configure_editor(note, editor, add_mode)
-
-    def load_batch(self, batch_name):
-        self.batch_component.load_batch(batch_name)
+        self.setupUi()
+        self.batch_component.no_settings_editor()
 
     def close(self):
         self.accept()
@@ -42,10 +48,7 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
 def launch_batch_dialog_browser(hypertts, note_id_list, batch_name):
     logging.info('launch_batch_dialog_browser')
     dialog = BatchDialog(hypertts)
-    dialog.configure_browser(note_id_list)
-    dialog.setupUi()
-    if batch_name != None:
-        dialog.load_batch(batch_name)
+    dialog.configure_browser(note_id_list, batch_name=batch_name)
     dialog.exec_()
 
 def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
