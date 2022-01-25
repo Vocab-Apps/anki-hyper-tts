@@ -60,6 +60,12 @@ field_2 = template_fields['Field 2']
 result = f'{field_1} {field_2}'
 """
 
+GUI_TEXT_TARGET_FIELD = """Sound tags will be inserted in this field"""
+
+GUI_TEXT_TARGET_TEXT_AND_SOUND = """Should the target field only contain the sound tag, or should
+it contain both text and sound tag."""
+GUI_TEXT_TARGET_REMOVE_SOUND_TAG = """If the target field already contains a sound tag, should it get  removed?"""
+
 CLIENT_NAME = 'hypertts'
 
 class ReplaceType(enum.Enum):
