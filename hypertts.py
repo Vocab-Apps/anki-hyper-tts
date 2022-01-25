@@ -130,8 +130,10 @@ class HyperTTS():
             return voice
 
     def editor_note_add_audio(self, batch, editor, note, add_mode):
+        undo_id = self.anki_utils.undo_start()
         source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode)
         editor.set_note(note)
+        self.anki_utils.undo_end(undo_id)
         self.anki_utils.play_sound(full_filename)
 
     # text processing

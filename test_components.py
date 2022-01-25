@@ -882,5 +882,8 @@ def test_batch_dialog_editor(qtbot):
 
     assert mock_editor.set_note_called == True
 
+    assert hypertts_instance.anki_utils.undo_started == True
+    assert hypertts_instance.anki_utils.undo_finished == True
+
     assert dialog.closed == True
 
