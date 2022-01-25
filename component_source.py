@@ -72,8 +72,9 @@ class BatchSource(component_common.ConfigComponentBase):
         template_stack = PyQt5.QtWidgets.QWidget()
         advanced_template_stack = PyQt5.QtWidgets.QWidget()
 
+        # simple mode / source field
+        # ==========================
         stack_vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        # source field (for simple mode)
         self.source_field_label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_FIELD_NAME)
         self.source_field_combobox = PyQt5.QtWidgets.QComboBox()
         self.source_field_combobox.addItems(self.field_list)
@@ -82,20 +83,28 @@ class BatchSource(component_common.ConfigComponentBase):
         stack_vlayout.addStretch()
         simple_stack.setLayout(stack_vlayout)
 
+        # simple template 
+        # ===============
         stack_vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        # simple template
-        self.source_simple_template_label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_SIMPLE_TEMPLATE)
+        label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_SIMPLE_TEMPLATE)
         self.simple_template_input = PyQt5.QtWidgets.QLineEdit()
+        stack_vlayout.addWidget(label)
         stack_vlayout.addWidget(self.simple_template_input)
         stack_vlayout.addStretch()
         template_stack.setLayout(stack_vlayout)
 
         # advanced template
+        # =================
         stack_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_ADVANCED_TEMPLATE)
         self.advanced_template_input = PyQt5.QtWidgets.QPlainTextEdit()
+        stack_vlayout.addWidget(label)
         stack_vlayout.addWidget(self.advanced_template_input)
         stack_vlayout.addStretch()
         advanced_template_stack.setLayout(stack_vlayout)
+
+        # finalize stack setup
+        # ====================
 
         self.source_config_stack.addWidget(simple_stack)
         self.source_config_stack.addWidget(template_stack)
