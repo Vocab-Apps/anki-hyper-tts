@@ -78,14 +78,17 @@ class HyperTTS():
         full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection)
         sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)
 
-        target_field_content = None
+        target_field_content = note[target_field]
+        
+        # do we need to remove existing sound tags ?
         if batch.target.remove_sound_tag == True:
-            # remove existing sound tag
-            current_target_field_content = note[target_field]
-            field_content = self.strip_sound_tag(current_target_field_content)
-            target_field_content = f'{field_content} {sound_tag}'
+                target_field_content = self.strip_sound_tag(target_field_content)
+        
+        # does the user want text and sound together?
+        if batch.target.text_and_sound_tag == True:
+            target_field_content = f'{target_field_content} {sound_tag}'
         else:
-            target_field_content = sound_tag
+            target_field_content = f'{sound_tag}'
 
         note[target_field] = target_field_content
         if not add_mode:
