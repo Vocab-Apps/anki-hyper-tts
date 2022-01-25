@@ -22,6 +22,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.batch_model = config_models.BatchConfig()
 
         # create certain widgets upfront
+        self.show_settings_button = PyQt5.QtWidgets.QPushButton('Hide Settings')
         self.preview_sound_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
         self.apply_button = PyQt5.QtWidgets.QPushButton('Apply to Notes')
         self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
@@ -35,6 +36,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, 
             self.sample_selected, self.apply_notes_batch_start, self.apply_notes_batch_end)
         self.editor_mode = False
+        self.show_settings = True
 
     def configure_editor(self, note, editor, add_mode):
         self.note = note
@@ -176,22 +178,32 @@ class ComponentBatch(component_common.ConfigComponentBase):
         # return self.tabs
 
         # setup bottom buttons
+        # ====================
+
         hlayout = PyQt5.QtWidgets.QHBoxLayout()
         hlayout.addStretch()
+
+        # show settings button
+        if not self.editor_mode:
+            hlayout.addWidget(self.show_settings_button)
+        # preview button
         if not self.editor_mode:
             self.preview_sound_button.setText('Select Note to Preview Sound')
             self.preview_sound_button.setEnabled(False)
         hlayout.addWidget(self.preview_sound_button)
+        # apply button
         apply_label_text = 'Apply To Notes'
         if self.editor_mode:
             apply_label_text = 'Apply To Note'
         self.apply_button.setText(apply_label_text)
         self.apply_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         hlayout.addWidget(self.apply_button)
+        # cancel button
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
         hlayout.addWidget(self.cancel_button)
         self.vlayout.addLayout(hlayout)
 
+        self.show_settings_button.pressed.connect(self.show_settings_button_pressed)
         self.preview_sound_button.pressed.connect(self.sound_preview_button_pressed)
         self.apply_button.pressed.connect(self.apply_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
@@ -211,11 +223,15 @@ class ComponentBatch(component_common.ConfigComponentBase):
         # when we have already loaded a batch
         self.splitter.setSizes([0, self.MIN_WIDTH_COMPONENT])
         self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT, self.MIN_HEIGHT)
+        self.show_settings = False
+        self.show_settings_button.setText('Show Settings')
 
     def display_settings(self):
         # when configuring a new batch
         self.splitter.setSizes([self.MIN_WIDTH_COMPONENT, self.MIN_WIDTH_COMPONENT])
         self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT * 2, self.MIN_HEIGHT)
+        self.show_settings = True
+        self.show_settings_button.setText('Hide Settings')
 
     def profile_selected(self, index):
         self.enable_load_profile_button()
@@ -231,6 +247,12 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.hypertts.save_batch_config(profile_name, self.get_model())
         self.disable_save_profile_button('Preset Saved')
         self.disable_load_profile_button('Load')
+
+    def show_settings_button_pressed(self):
+        if self.show_settings:
+            self.collapse_settings()
+        else:
+            self.display_settings()
 
     def sound_preview_button_pressed(self):
         self.disable_bottom_buttons()
