@@ -24,3 +24,6 @@ def get_large_button_font():
         font2 = PyQt5.QtGui.QFont()
         font2.setPointSize(14)
         return font2        
+
+def process_label_text(text):
+        return text.replace('\n', '<br/>')

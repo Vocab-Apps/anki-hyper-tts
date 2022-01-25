@@ -4,8 +4,13 @@ import PyQt5
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
+gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
 
 class BatchSource(component_common.ConfigComponentBase):
+    SOURCE_CONFIG_STACK_SIMPLE = 0
+    SOURCE_CONFIG_STACK_TEMPLATE = 1
+    SOURCE_CONFIG_STACK_ADVANCED_TEMPLATE = 2
+
     def __init__(self, hypertts, field_list, model_change_callback):
         self.hypertts = hypertts
         self.field_list = field_list
@@ -31,25 +36,9 @@ class BatchSource(component_common.ConfigComponentBase):
     def draw(self):
         self.batch_source_layout = PyQt5.QtWidgets.QVBoxLayout()
 
-        # batch mode
-        self.batch_mode_combobox = PyQt5.QtWidgets.QComboBox()
-        self.batch_mode_combobox.addItems([x.name for x in constants.BatchMode])
-        self.batch_source_layout.addWidget(self.batch_mode_combobox)
-
-        # source field (for simple mode)
-        self.source_field_combobox = PyQt5.QtWidgets.QComboBox()
-        self.source_field_combobox.addItems(self.field_list)
-        self.batch_source_layout.addWidget(self.source_field_combobox)
-
-        # simple template
-        self.simple_template_input = PyQt5.QtWidgets.QLineEdit()
-        self.batch_source_layout.addWidget(self.simple_template_input)
-
-        # advanced template
-        self.advanced_template_input = PyQt5.QtWidgets.QPlainTextEdit()
-        self.batch_source_layout.addWidget(self.advanced_template_input)
-
-        self.batch_source_layout.addStretch()
+        self.draw_source_mode(self.batch_source_layout)
+        self.draw_source_config(self.batch_source_layout)
+        # self.batch_source_layout.addStretch()
 
         # wire events
         self.batch_mode_combobox.currentIndexChanged.connect(self.batch_mode_change)
@@ -57,31 +46,79 @@ class BatchSource(component_common.ConfigComponentBase):
         self.simple_template_input.textChanged.connect(self.simple_template_change)
         self.advanced_template_input.textChanged.connect(self.advanced_template_change)
 
-        # default visibility
-        self.simple_template_input.setVisible(False)
-        self.advanced_template_input.setVisible(False)        
-
         # select default
         self.source_field_change(0)
 
         return self.batch_source_layout
 
+    def draw_source_mode(self, overall_layout):
+        # batch mode
+        groupbox = PyQt5.QtWidgets.QGroupBox('Source Mode')
+        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        label = PyQt5.QtWidgets.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_SOURCE_MODE))
+        label.setWordWrap(True)
+        vlayout.addWidget(label)
+        self.batch_mode_combobox = PyQt5.QtWidgets.QComboBox()
+        self.batch_mode_combobox.addItems([x.name for x in constants.BatchMode])
+        vlayout.addWidget(self.batch_mode_combobox)
+        groupbox.setLayout(vlayout)
+        overall_layout.addWidget(groupbox)
+
+    def draw_source_config(self, overall_layout):
+        groupbox = PyQt5.QtWidgets.QGroupBox('Source Configuration')
+        self.source_config_stack = PyQt5.QtWidgets.QStackedWidget()
+
+        simple_stack = PyQt5.QtWidgets.QWidget()
+        template_stack = PyQt5.QtWidgets.QWidget()
+        advanced_template_stack = PyQt5.QtWidgets.QWidget()
+
+        stack_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        # source field (for simple mode)
+        self.source_field_label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_FIELD_NAME)
+        self.source_field_combobox = PyQt5.QtWidgets.QComboBox()
+        self.source_field_combobox.addItems(self.field_list)
+        stack_vlayout.addWidget(self.source_field_label)
+        stack_vlayout.addWidget(self.source_field_combobox)
+        stack_vlayout.addStretch()
+        simple_stack.setLayout(stack_vlayout)
+
+        stack_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        # simple template
+        self.source_simple_template_label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_SIMPLE_TEMPLATE)
+        self.simple_template_input = PyQt5.QtWidgets.QLineEdit()
+        stack_vlayout.addWidget(self.simple_template_input)
+        stack_vlayout.addStretch()
+        template_stack.setLayout(stack_vlayout)
+
+        # advanced template
+        stack_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        self.advanced_template_input = PyQt5.QtWidgets.QPlainTextEdit()
+        stack_vlayout.addWidget(self.advanced_template_input)
+        stack_vlayout.addStretch()
+        advanced_template_stack.setLayout(stack_vlayout)
+
+        self.source_config_stack.addWidget(simple_stack)
+        self.source_config_stack.addWidget(template_stack)
+        self.source_config_stack.addWidget(advanced_template_stack)
+
+        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        vlayout.addWidget(self.source_config_stack)
+        groupbox.setLayout(vlayout)
+
+        overall_layout.addWidget(groupbox)
+
     def batch_mode_change(self, current_index):
         selected_batch_mode = constants.BatchMode[self.batch_mode_combobox.currentText()]
 
-        self.source_field_combobox.setVisible(False)
-        self.simple_template_input.setVisible(False)
-        self.advanced_template_input.setVisible(False)
-
         if selected_batch_mode == constants.BatchMode.simple:
-            self.source_field_combobox.setVisible(True)
+            self.source_config_stack.setCurrentIndex(self.SOURCE_CONFIG_STACK_SIMPLE)
             self.source_field_change(0)
         elif selected_batch_mode == constants.BatchMode.template:
-            self.simple_template_input.setVisible(True)
+            self.source_config_stack.setCurrentIndex(self.SOURCE_CONFIG_STACK_TEMPLATE)
             self.simple_template_change(None)
         elif selected_batch_mode == constants.BatchMode.advanced_template:
+            self.source_config_stack.setCurrentIndex(self.SOURCE_CONFIG_STACK_ADVANCED_TEMPLATE)
             self.advanced_template_change()
-            self.advanced_template_input.setVisible(True)
 
     def source_field_change(self, current_index):
         current_index = self.source_field_combobox.currentIndex()

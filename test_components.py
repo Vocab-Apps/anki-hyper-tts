@@ -825,7 +825,7 @@ def test_batch_dialog_manual(qtbot):
     batch.configure_browser(note_id_list)
     batch.draw(dialog.getLayout())
 
-    # dialog.exec_()
+    dialog.exec_()
 
 
 def test_batch_dialog_editor(qtbot):

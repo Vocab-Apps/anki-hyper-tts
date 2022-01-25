@@ -46,6 +46,15 @@ LABEL_FILTER_ALL = 'All'
 
 BATCH_CONFIG_NEW = 'New Preset'
 
+GUI_TEXT_SOURCE_MODE = """Choose a source mode:
+<b>Simple:</b> your text comes from a single field. In most cases, choose this option
+<b>Template:</b> text from different fields can be combined using the syntax {Field1} {Field2}
+<b>Advanced Template:</b> fields can be combined in complex ways using Python syntax (advanced users only)"""
+
+GUI_TEXT_SOURCE_FIELD_NAME = """Source Field:"""
+GUI_TEXT_SOURCE_SIMPLE_TEMPLATE = """Enter template using syntax {Field1} {Field2}:"""
+GUI_TEXT_SOURCE_ADVANCED_TEMPLATE = """Source Field:"""
+
 CLIENT_NAME = 'hypertts'
 
 class ReplaceType(enum.Enum):
