@@ -1,11 +1,13 @@
 import sys
 import PyQt5
 import logging
-import copy 
+import copy
+
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
+gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class VoiceSelection(component_common.ConfigComponentBase):
@@ -30,6 +32,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.genders_combobox,
             self.voices_combobox]:
             combobox.setStyleSheet("combobox-popup: 0;")
+        self.voices_combobox.setFont(gui_utils.get_large_combobox_font())
 
         self.play_sample_button = PyQt5.QtWidgets.QPushButton('Play Sample')
 
