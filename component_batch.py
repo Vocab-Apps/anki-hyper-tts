@@ -46,6 +46,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)        
+        self.voice_selection.preview_enabled = False
         self.preview = component_label_preview.LabelPreview(self.hypertts, note)
         self.editor_mode = True
 

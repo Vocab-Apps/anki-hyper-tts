@@ -38,6 +38,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         self.reset_filters_button = PyQt5.QtWidgets.QPushButton('Reset Filters')        
 
+        self.preview_enabled = True
+
     def get_voices(self):
         self.voice_list = self.hypertts.service_manager.full_voice_list()
 
@@ -94,6 +96,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.radio_button_priority.setChecked(True)
             self.voice_selection_model = model
             self.redraw_selected_voices()
+
 
     def sample_text_selected(self, text):
         self.sample_text = text
@@ -154,7 +157,9 @@ class VoiceSelection(component_common.ConfigComponentBase):
         groupbox = PyQt5.QtWidgets.QGroupBox('Voice')
         vlayout = PyQt5.QtWidgets.QVBoxLayout()
         vlayout.addWidget(self.voices_combobox)
-        vlayout.addWidget(self.play_sample_button)
+
+        if self.preview_enabled:
+            vlayout.addWidget(self.play_sample_button)
 
         self.voice_options_layout = PyQt5.QtWidgets.QVBoxLayout()
         vlayout.addLayout(self.voice_options_layout)
