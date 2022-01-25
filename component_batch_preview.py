@@ -219,7 +219,7 @@ class BatchPreview(component_common.ComponentBase):
             self.batch_end_fn(completed)
 
     def update_progress_bar(self, row):
-        self.progress_bar.setValue(row)
+        self.progress_bar.setValue(row + 1)
 
     def batch_change(self, note_id, row):
         # logging.info(f'change_listener row {row}')
