@@ -318,3 +318,26 @@ def test_batch_config(qtbot):
 <b>Target:</b> Sound
 <b>Voice Selection:</b> Single
 """
+
+def test_text_processing(qtbot):
+    
+    text_processing = config_models.TextProcessing()
+    text_processing.add_text_replacement_rule(config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple, 'a', 'b'))
+    text_processing.add_text_replacement_rule(config_models.TextReplacementRule(constants.TextReplacementRuleType.Regex, 'c', 'd'))
+
+    expected_output = {
+        'text_replacement_rules': [
+            {
+                'rule_type': 'Simple',
+                'source': 'a',
+                'target': 'b'
+            },
+            {
+                'rule_type': 'Regex',
+                'source': 'c',
+                'target': 'd'
+            },            
+        ]
+    }
+
+    assert text_processing.serialize() == expected_output

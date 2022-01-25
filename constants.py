@@ -25,6 +25,9 @@ class BatchNoteStatus(enum.Enum):
     Error = enum.auto()
     OK = enum.auto()
 
+class TextReplacementRuleType(enum.Enum):
+    Simple = enum.auto()
+    Regex = enum.auto()
 
 CONFIG_BATCH_CONFIG = 'batch_config'
 

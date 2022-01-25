@@ -264,3 +264,30 @@ class VoiceSelectionPriority(VoiceSelectionMultipleBase):
         VoiceSelectionMultipleBase.__init__(self)
         self._selection_mode = constants.VoiceSelectionMode.priority
 
+# text processing
+# ===============
+
+class TextReplacementRule(ConfigModelBase):
+    def __init__(self, rule_type, source, target):
+        self.rule_type = rule_type
+        self.source = source
+        self.target = target
+
+    def serialize(self):
+        return {
+            'rule_type': self.rule_type.name,
+            'source': self.source,
+            'target': self.target
+        }
+
+class TextProcessing(ConfigModelBase):
+    def __init__(self):
+        self.text_replacement_rules = []
+
+    def add_text_replacement_rule(self, rule):
+        self.text_replacement_rules.append(rule)
+
+    def serialize(self):
+        return {
+            'text_replacement_rules': [x.serialize() for x in self.text_replacement_rules]
+        }
