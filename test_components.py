@@ -528,6 +528,9 @@ def test_batch_source_1(qtbot):
     expected_source_model.mode = constants.BatchMode.simple
     expected_source_model.source_field = 'Chinese'
 
+    # the simple stack item should be selected
+    assert batch_source.source_config_stack.currentIndex() == batch_source.SOURCE_CONFIG_STACK_SIMPLE
+
     assert batch_source.batch_source_model.serialize() == expected_source_model.serialize()
 
     # select another field, 'English'
@@ -538,6 +541,7 @@ def test_batch_source_1(qtbot):
 
     # select template mode
     batch_source.batch_mode_combobox.setCurrentText('template')
+    assert batch_source.source_config_stack.currentIndex() == batch_source.SOURCE_CONFIG_STACK_TEMPLATE
 
     # enter template format
     qtbot.keyClicks(batch_source.simple_template_input, '{Chinese}')
@@ -825,7 +829,7 @@ def test_batch_dialog_manual(qtbot):
     batch.configure_browser(note_id_list)
     batch.draw(dialog.getLayout())
 
-    dialog.exec_()
+    # dialog.exec_()
 
 
 def test_batch_dialog_editor(qtbot):
