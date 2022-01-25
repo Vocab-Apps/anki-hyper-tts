@@ -55,8 +55,7 @@ def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
     logging.info('launch_batch_dialog_editor')
     dialog = BatchDialog(hypertts)
     dialog.configure_editor(note, editor, add_mode)
-    dialog.setupUi()
-    dialog.exec_()    
+    dialog.exec_()
 
 
 def configure_editor(editor: aqt.editor.Editor, batch_name_list):
