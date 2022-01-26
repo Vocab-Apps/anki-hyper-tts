@@ -25,6 +25,7 @@ class BatchConfig(ConfigModelBase):
         self._source = None
         self._target = None
         self._voice_selection = None
+        self._text_processing = None
 
     def get_source(self):
         return self._source
@@ -41,9 +42,15 @@ class BatchConfig(ConfigModelBase):
     def set_voice_selection(self, voice_selection):
         self._voice_selection = voice_selection
 
+    def get_text_processing(self):
+        return self._text_processing
+    def set_text_processing(self, text_processing):
+        self._text_processing = text_processing
+
     source = property(get_source, set_source)
     target = property(get_target, set_target)
     voice_selection = property(get_voice_selection, set_voice_selection)
+    text_processing = property(get_text_processing, set_text_processing)
 
     def __str__(self):
         return f"""<b>Source:</b> {self.source}

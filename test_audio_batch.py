@@ -48,10 +48,12 @@ def test_simple_1(qtbot):
     batch = config_models.BatchConfig()
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
+    text_processing = config_models.TextProcessing()
 
     batch.set_source(source)
     batch.set_target(target)
     batch.set_voice_selection(single)
+    batch.set_text_processing(text_processing)
 
     # create list of notes
     # ====================

@@ -62,7 +62,7 @@ class HyperTTS():
     def process_note_audio(self, batch, note, add_mode):
         target_field = batch.target.target_field
         source_text = self.get_source_text(note, batch.source)
-        processed_text = self.process_text(source_text)
+        processed_text = self.process_text(source_text, batch.text_processing)
 
         full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection)
         sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)
@@ -159,10 +159,10 @@ class HyperTTS():
             field_values[field_name] = note[field_name]
         return field_values
 
-    def process_text(self, source_text):
-        processed_text = self.text_utils.process(source_text)
+    def process_text(self, source_text, batch_text_processing):
+        processed_text = text_utils.process_text(source_text, batch_text_processing)
         # logging.info(f'before text processing: [{source_text}], after text processing: [{processed_text}]')
-        if self.text_utils.is_empty(processed_text):
+        if len(processed_text) == 0:
             raise errors.SourceTextEmpty()
         return processed_text
 

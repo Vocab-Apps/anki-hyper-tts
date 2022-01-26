@@ -49,4 +49,3 @@ def process_text_replacement_rule(input_text, rule):
         return result
     except Exception as e:
         raise errors.TextReplacementError(input_text, rule.source, rule.target, str(e))
-
