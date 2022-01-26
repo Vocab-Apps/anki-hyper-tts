@@ -310,7 +310,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 widget.setRange(value['min'], value['max'])
                 widget.setValue(value['default'])
                 widget.valueChanged.connect(get_set_option_lambda(voice, key))
-                label = PyQt5.QtWidgets.QLabel(key)
+                label_text = f"""{key} ({value['min']} to {value['max']})"""
+                label = PyQt5.QtWidgets.QLabel(label_text)
                 self.voice_options_layout.addWidget(label, row, 0, 1, 1)
                 self.voice_options_layout.addWidget(widget, row, 1, 1, 1)
                 self.voice_options_widgets[widget_name] = widget
