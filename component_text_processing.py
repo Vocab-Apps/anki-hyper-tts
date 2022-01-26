@@ -177,14 +177,16 @@ class TextProcessing(component_common.ConfigComponentBase):
 
     def draw(self):
 
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        global_vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
-        vlayout.addWidget(gui_utils.get_header_label('Text Processing Settings'))
 
         # setup test input box
         # ====================
 
-        vlayout.addWidget(gui_utils.get_medium_label('Preview Settings'))
+        groupbox = PyQt5.QtWidgets.QGroupBox('Preview Text Processing Settings')
+        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+
+        vlayout.addWidget(PyQt5.QtWidgets.QLabel('You may verify your settings by entering sample text below:'))
 
         # first line
         hlayout = PyQt5.QtWidgets.QHBoxLayout()
@@ -209,10 +211,14 @@ class TextProcessing(component_common.ConfigComponentBase):
         hlayout.addStretch()
         vlayout.addLayout(hlayout)
 
-        vlayout.addWidget(gui_utils.get_medium_label('Text Replacement'))
+        groupbox.setLayout(vlayout)
+        global_vlayout.addWidget(groupbox)
 
         # setup preview table
         # ===================
+
+        groupbox = PyQt5.QtWidgets.QGroupBox('Text Replacement rules')
+        vlayout = PyQt5.QtWidgets.QVBoxLayout()        
 
         self.table_view = PyQt5.QtWidgets.QTableView()
         self.table_view.setModel(self.textReplacementTableModel)
@@ -233,6 +239,9 @@ class TextProcessing(component_common.ConfigComponentBase):
         hlayout.addWidget(self.remove_replace_button)
         vlayout.addLayout(hlayout)
 
+        groupbox.setLayout(vlayout)
+        global_vlayout.addWidget(groupbox)        
+
         # wire events
         # ===========
         self.add_replace_simple_button.pressed.connect(lambda: self.textReplacementTableModel.add_replacement(constants.ReplaceType.simple))
@@ -241,7 +250,7 @@ class TextProcessing(component_common.ConfigComponentBase):
         self.typing_timer = self.hypertts.anki_utils.wire_typing_timer(self.sample_text_input, self.sample_text_changed)
         self.sample_transformation_type_combo_box.currentIndexChanged.connect(self.sample_transformation_type_changed)
 
-        return vlayout
+        return global_vlayout
 
     def sample_transformation_type_changed(self):
         self.update_transformed_text()
