@@ -18,19 +18,29 @@ class Configuration(component_common.ConfigComponentBase):
     def load_model(self, model):
         self.model = model
 
+    def get_service_enable_change_fn(self, service):
+        def enable_change(value):
+            enabled = value == 2
+            logging.info(f'{service.name} enabled: {enabled}')
+            self.model.set_service_enabled(service.name, enabled)
+        return enable_change
+
     def get_service_config_str_change_fn(self, service, key):
         def str_change(text):
             logging.info(f'{service.name} {key}: {text}')
+            self.model.set_service_configuration_key(service.name, key, text)
         return str_change
 
     def get_service_config_int_change_fn(self, service, key):
         def int_change(value):
             logging.info(f'{service.name} {key}: {value}')
+            self.model.set_service_configuration_key(service.name, key, value)
         return int_change
 
     def get_service_config_list_change_fn(self, service, key):
         def list_change(text):
             logging.info(f'{service.name} {key}: {text}')
+            self.model.set_service_configuration_key(service.name, key, text)
         return list_change
 
 
@@ -60,6 +70,7 @@ class Configuration(component_common.ConfigComponentBase):
             service_vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
             service_enabled_checkbox = PyQt5.QtWidgets.QCheckBox('Enable')
+            service_enabled_checkbox.stateChanged.connect(self.get_service_enable_change_fn(service))
             service_vlayout.addWidget(service_enabled_checkbox)
 
             configuration_options = service.configuration_options()

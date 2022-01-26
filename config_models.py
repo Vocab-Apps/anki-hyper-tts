@@ -340,8 +340,17 @@ class Configuration(ConfigModelBase):
     def __init__(self):
         self.service_config = {}
 
+    def check_service_config_key(self, service_name):
+        if service_name not in self.service_config:
+            self.service_config[service_name] = {}
+
     def set_service_enabled(self, service_name, enabled):
+        self.check_service_config_key(service_name)
         self.service_config[service_name]['enabled'] = enabled
+
+    def set_service_configuration_key(self, service_name, key, value):
+        self.check_service_config_key(service_name)
+        self.service_config[service_name][key] = value
 
     def serialize(self):
         return {}
