@@ -40,6 +40,10 @@ def process_text(source_text, text_processing_model):
 
 def process_text_replacement_rule(input_text, rule):
     try:
+        if rule.source == None:
+            raise Exception('missing pattern in text replacement rule')
+        if rule.target == None:
+            raise Exception('missing replacement in text replacement rule')
         if rule.rule_type == constants.TextReplacementRuleType.Regex:
             result = re.sub(rule.source, rule.target, input_text)
         elif rule.rule_type == constants.TextReplacementRuleType.Simple:

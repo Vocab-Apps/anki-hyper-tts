@@ -36,3 +36,13 @@ def test_replacement_regexp_error(qtbot):
 
     testcase_instance = unittest.TestCase()
     testcase_instance.assertRaises(errors.TextReplacementError, text_utils.process_text, 'yoyo', text_processing)
+
+
+    text_processing = config_models.TextProcessing()
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Regex)
+    rule.source = None
+    rule.target = None
+    text_processing.add_text_replacement_rule(rule)
+
+    testcase_instance = unittest.TestCase()
+    testcase_instance.assertRaises(errors.TextReplacementError, text_utils.process_text, 'yoyo', text_processing)    

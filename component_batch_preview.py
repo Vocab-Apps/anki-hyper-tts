@@ -100,7 +100,8 @@ class BatchPreview(component_common.ComponentBase):
             time.sleep(0.1)
 
         logging.info('update_batch_status_task')
-        self.hypertts.populate_batch_status_processed_text(self.note_id_list, self.batch_model.source, self.batch_model.text_processing, self.batch_status)
+        if self.batch_model.text_processing != None:
+            self.hypertts.populate_batch_status_processed_text(self.note_id_list, self.batch_model.source, self.batch_model.text_processing, self.batch_status)
 
     def update_batch_status_task_done(self, result):
         logging.info('update_batch_status_task_done')

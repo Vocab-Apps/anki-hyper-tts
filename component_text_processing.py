@@ -222,6 +222,8 @@ class TextProcessing(component_common.ConfigComponentBase):
         self.remove_replace_button.pressed.connect(self.delete_text_replacement)
         self.typing_timer = self.hypertts.anki_utils.wire_typing_timer(self.sample_text_input, self.update_transformed_text)
 
+        self.model_change()
+
         return global_vlayout
 
     def model_change(self):
