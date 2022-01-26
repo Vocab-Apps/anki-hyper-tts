@@ -1028,4 +1028,10 @@ def test_configuration(qtbot):
     configuration = component_configuration.Configuration(hypertts_instance)
     dialog.addChildLayout(configuration.draw())
 
-    dialog.exec_()
+    # try making changes to the service config and saving
+    # ===================================================
+
+    qtbot.keyClicks(configuration.hypertts_pro_api_key, 'abcd1234')
+    assert configuration.model.hypertts_pro_api_key == 'abcd1234'
+
+    # dialog.exec_()

@@ -18,6 +18,12 @@ class Configuration(component_common.ConfigComponentBase):
     def load_model(self, model):
         self.model = model
 
+    def get_hypertts_pro_api_key_change_fn(self):
+        def change(api_key):
+            logging.info('hypertts pro api key change')
+            self.model.set_hypertts_pro_api_key(api_key)
+        return change
+
     def get_service_enable_change_fn(self, service):
         def enable_change(value):
             enabled = value == 2
@@ -55,6 +61,7 @@ class Configuration(component_common.ConfigComponentBase):
 
         vlayout.addWidget(PyQt5.QtWidgets.QLabel('API Key'))
         self.hypertts_pro_api_key = PyQt5.QtWidgets.QLineEdit()
+        self.hypertts_pro_api_key.textChanged.connect(self.get_hypertts_pro_api_key_change_fn())
         vlayout.addWidget(self.hypertts_pro_api_key)
 
         groupbox.setLayout(vlayout)

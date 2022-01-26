@@ -339,6 +339,15 @@ class TextProcessing(ConfigModelBase):
 class Configuration(ConfigModelBase):
     def __init__(self):
         self.service_config = {}
+        self._hypertts_pro_api_key = None
+
+    def get_hypertts_pro_api_key(self):
+        return self._hypertts_pro_api_key
+
+    def set_hypertts_pro_api_key(self, api_key):
+        self._hypertts_pro_api_key = api_key
+
+    hypertts_pro_api_key = property(get_hypertts_pro_api_key, set_hypertts_pro_api_key)
 
     def check_service_config_key(self, service_name):
         if service_name not in self.service_config:
@@ -353,4 +362,7 @@ class Configuration(ConfigModelBase):
         self.service_config[service_name][key] = value
 
     def serialize(self):
-        return {}
+        return {
+            'hypertts_pro_api_key': self.hypertts_pro_api_key,
+            'service_config': self.service_config
+        }
