@@ -76,7 +76,9 @@ class Configuration(component_common.ConfigComponentBase):
             service_groupbox = PyQt5.QtWidgets.QGroupBox(service.name)
             service_vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
+            widget_name = f'{service.name}_enabled'
             service_enabled_checkbox = PyQt5.QtWidgets.QCheckBox('Enable')
+            service_enabled_checkbox.setObjectName(widget_name)
             service_enabled_checkbox.stateChanged.connect(self.get_service_enable_change_fn(service))
             service_vlayout.addWidget(service_enabled_checkbox)
 
@@ -84,17 +86,21 @@ class Configuration(component_common.ConfigComponentBase):
             options_gridlayout = PyQt5.QtWidgets.QGridLayout()
             row = 0
             for key, type in configuration_options.items():
+                widget_name = f'{service.name}_{key}'
                 options_gridlayout.addWidget(PyQt5.QtWidgets.QLabel(key + ':'), row, 0, 1, 1)
                 if type == str:
                     lineedit = PyQt5.QtWidgets.QLineEdit()
+                    lineedit.setObjectName(widget_name)
                     lineedit.textChanged.connect(self.get_service_config_str_change_fn(service, key))
                     options_gridlayout.addWidget(lineedit, row, 1, 1, 1)
                 elif type == int:
                     spinbox = PyQt5.QtWidgets.QSpinBox()
+                    spinbox.setObjectName(widget_name)
                     spinbox.valueChanged.connect(self.get_service_config_int_change_fn(service, key))
                     options_gridlayout.addWidget(spinbox, row, 1, 1, 1)
                 elif isinstance(type, list):
                     combobox = PyQt5.QtWidgets.QComboBox()
+                    combobox.setObjectName(widget_name)
                     combobox.addItems(type)
                     combobox.currentTextChanged.connect(self.get_service_config_list_change_fn(service, key))
                     options_gridlayout.addWidget(combobox, row, 1, 1, 1)

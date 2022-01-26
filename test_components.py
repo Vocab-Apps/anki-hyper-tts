@@ -1034,4 +1034,17 @@ def test_configuration(qtbot):
     qtbot.keyClicks(configuration.hypertts_pro_api_key, 'abcd1234')
     assert configuration.model.hypertts_pro_api_key == 'abcd1234'
 
+    service_a_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_enabled")
+    service_a_enabled_checkbox.setChecked(True)
+    assert configuration.model.get_service_enabled('ServiceA') == True
+    service_a_enabled_checkbox.setChecked(False)
+    assert configuration.model.get_service_enabled('ServiceA') == False
+
+    service_a_region = dialog.findChild(PyQt5.QtWidgets.QComboBox, "ServiceA_region")
+    service_a_region.setCurrentText('europe')
+    assert configuration.model.get_service_configuration_key('ServiceA', 'region') == 'europe'
+    service_a_region.setCurrentText('us')
+    assert configuration.model.get_service_configuration_key('ServiceA', 'region') == 'us'
+    
+
     # dialog.exec_()

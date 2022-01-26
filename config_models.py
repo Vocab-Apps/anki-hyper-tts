@@ -353,6 +353,10 @@ class Configuration(ConfigModelBase):
         if service_name not in self.service_config:
             self.service_config[service_name] = {}
 
+    def get_service_enabled(self, service_name):
+        service_config = self.service_config.get(service_name, {})
+        return service_config.get('enabled', False)
+
     def set_service_enabled(self, service_name, enabled):
         self.check_service_config_key(service_name)
         self.service_config[service_name]['enabled'] = enabled
@@ -360,6 +364,10 @@ class Configuration(ConfigModelBase):
     def set_service_configuration_key(self, service_name, key, value):
         self.check_service_config_key(service_name)
         self.service_config[service_name][key] = value
+
+    def get_service_configuration_key(self, service_name, key):
+        service_config = self.service_config.get(service_name, {})
+        return service_config.get(key, None) 
 
     def serialize(self):
         return {
