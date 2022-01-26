@@ -110,6 +110,53 @@ def test_simple_1(qtbot):
     assert batch_status_obj[0].sound_file != None
     assert batch_status_obj[1].sound_file != None
 
+def test_simple_text_processing(qtbot):
+    # create batch configuration
+    # ==========================
+
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        
+    # build voice selection model
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
+
+    batch = config_models.BatchConfig()
+    source = config_models.BatchSourceSimple('English')
+    target = config_models.BatchTarget('Sound', False, True)
+    text_processing = config_models.TextProcessing()
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
+    rule.source = 'hello'
+    rule.target = 'goodbye'
+    text_processing.add_text_replacement_rule(rule)
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(single)
+    batch.set_text_processing(text_processing)
+
+    # create list of notes
+    # ====================
+    note_id_list = [config_gen.note_id_2]
+
+    # run batch add audio (simple mode)
+    # =================================
+    listener = MockBatchStatusListener()
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+
+    note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
+    assert 'Sound' in note_2.set_values 
+
+    sound_tag = note_2.set_values['Sound']
+    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+    assert audio_data['source_text'] == 'goodbye'
+
+
 def test_simple_error_handling(qtbot):
     # include one empty field 
 
@@ -151,6 +198,8 @@ def test_simple_error_handling(qtbot):
     assert batch_status_obj[0].sound_file != None
     assert batch_status_obj[1].sound_file != None
     assert str(batch_status_obj[2].error) == 'Source text is empty'
+
+
 
 def test_simple_append(qtbot):
     # create batch configuration
