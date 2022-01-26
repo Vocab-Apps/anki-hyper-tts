@@ -35,6 +35,11 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
             'Replacement'
         ]
 
+    def load_model(self, model):
+        self.model = model
+        logging.info(model)
+        self.layoutChanged.emit()
+
     def flags(self, index):
         # all columns are editable
         col = index.column()
@@ -144,6 +149,8 @@ class TextProcessing(component_common.ConfigComponentBase):
 
     def load_model(self, model):
         logging.info(f'load_model')
+        self.model = model
+        self.textReplacementTableModel.load_model(self.model)
 
     def draw(self):
 

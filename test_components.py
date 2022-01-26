@@ -967,4 +967,35 @@ def test_text_processing(qtbot):
     assert model_change_callback.model.text_replacement_rules[2].source == '[0-9]+'
     assert model_change_callback.model.text_replacement_rules[2].target == 'number'
 
+    # verify load_model
+    # =================
+
+    text_processing = config_models.TextProcessing()
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
+    rule.source = 'a'
+    rule.target = 'b'
+    text_processing.add_text_replacement_rule(rule)
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Regex)
+    rule.source = 'c'
+    rule.target = 'd'    
+    text_processing.add_text_replacement_rule(rule)
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = MockModelChangeCallback()
+    text_processing_component = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
+    dialog.addChildLayout(text_processing_component.draw())
+    text_processing_component.load_model(text_processing)
+
+    row = 0
+    # index_pattern = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
+    index_pattern = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_TYPE)
+    rule_type = text_processing_component.textReplacementTableModel.data(index_pattern, PyQt5.QtCore.Qt.DisplayRole)
+    assert rule_type.value() == 'Simple'
+    return
+    index_replacement = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
+    text_processing.textReplacementTableModel.setData(index_replacement, 'number', PyQt5.QtCore.Qt.EditRole)
+
+
     # dialog.exec_()
