@@ -60,7 +60,7 @@ class Configuration(component_common.ConfigComponentBase):
         return list_change
 
 
-    def draw(self):
+    def draw(self, layout):
         global_vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
         # hypertts pro
@@ -147,7 +147,7 @@ class Configuration(component_common.ConfigComponentBase):
         self.save_button.pressed.connect(self.save_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
-        return global_vlayout
+        layout.addLayout(global_vlayout)
 
     def save_button_pressed(self):
         self.hypertts.save_configuration(self.model)

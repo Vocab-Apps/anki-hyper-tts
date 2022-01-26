@@ -59,6 +59,12 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
     def close(self):
         self.accept()
 
+def launch_configuration_dialog(hypertts):
+    logging.info('launch_configuration_dialog')
+    dialog = ConfigurationDialog(hypertts)
+    dialog.setupUi()
+    dialog.exec_()
+
 def launch_batch_dialog_browser(hypertts, note_id_list, batch_name):
     logging.info('launch_batch_dialog_browser')
     dialog = BatchDialog(hypertts)
@@ -141,6 +147,11 @@ def init(hypertts):
             return True, None
 
         return handled
+
+    # anki tools menu
+    action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Configuration', aqt.mw)
+    action.triggered.connect(lambda: launch_configuration_dialog(hypertts))
+    aqt.mw.form.menuTools.addAction(action)    
 
     # browser menus
     aqt.gui_hooks.browser_menus_did_init.append(browerMenusInit)
