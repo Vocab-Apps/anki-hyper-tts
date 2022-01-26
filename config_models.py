@@ -268,14 +268,33 @@ class VoiceSelectionPriority(VoiceSelectionMultipleBase):
 # ===============
 
 class TextReplacementRule(ConfigModelBase):
-    def __init__(self, rule_type, source, target):
-        self.rule_type = rule_type
-        self.source = source
-        self.target = target
+    def __init__(self, rule_type):
+        self._rule_type = rule_type
+        self._source = None
+        self._target = None
+
+    def get_rule_type(self):
+        return self._rule_type
+
+    def get_source(self):
+        return self._source
+
+    def set_source(self, source):
+        self._source = source
+
+    def get_target(self):
+        return self._target
+
+    def set_target(self, target):
+        self._target = target
+
+    rule_type = property(get_rule_type, None)
+    source = property(get_source, set_source)
+    target = property(get_target, set_target)
 
     def serialize(self):
         return {
-            'rule_type': self.rule_type.name,
+            'rule_type': self._rule_type.name,
             'source': self.source,
             'target': self.target
         }
@@ -286,6 +305,12 @@ class TextProcessing(ConfigModelBase):
 
     def add_text_replacement_rule(self, rule):
         self._text_replacement_rules.append(rule)
+
+    def remove_text_replacement_rule(self, row):
+        del self.text_replacement_rules[row]
+
+    def get_text_replacement_rule_row(self, row):
+        return self.text_replacement_rules[row]
 
     def get_text_replacement_rules(self):
         return self._text_replacement_rules

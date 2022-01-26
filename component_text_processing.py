@@ -51,12 +51,12 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
         return len(self.header_text)
 
     def add_replacement(self, replace_type):
-        self.replacements.append(text_utils.TextReplacement({'replace_type': replace_type.name}))
+        self.model.add_text_replacement_rule(config_models.TextReplacementRule(replace_type))
         self.layoutChanged.emit()
 
     def delete_rows(self, row_index):
         row = row_index.row()
-        del self.replacements[row]
+        self.model.remove_text_replacement_rule(row)
         self.recompute_sample_callback()
         self.layoutChanged.emit()
 
@@ -68,31 +68,19 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
         row = index.row()
 
         # check whether we've got data for this row
-        if row >= len(self.replacements):
+        if row >= len(self.model.text_replacement_rules):
             return PyQt5.QtCore.QVariant()
 
-        replacement = self.replacements[row]
+        text_replacement_rule = self.model.get_text_replacement_rule_row(row)
 
         if role == PyQt5.QtCore.Qt.DisplayRole or role == PyQt5.QtCore.Qt.EditRole:
 
             if column == COL_INDEX_TYPE:
-                return PyQt5.QtCore.QVariant(replacement.replace_type.name.title())
+                return PyQt5.QtCore.QVariant(text_replacement_rule.rule_type.name.title())
             if column == COL_INDEX_PATTERN:
-                return self.data_display(replacement.pattern, role)
+                return self.data_display(text_replacement_rule.source, role)
             if column == COL_INDEX_REPLACEMENT:
-                return self.data_display(replacement.replace, role)
-
-        if role == PyQt5.QtCore.Qt.CheckStateRole:
-            if column == COL_INDEX_TYPE or column == COL_INDEX_PATTERN or column == COL_INDEX_REPLACEMENT:
-                # don't support these columns in this role
-                return PyQt5.QtCore.QVariant()
-
-            # should be a transformation type
-            transformation_type = self.col_index_to_transformation_type_map[column]
-            is_enabled = replacement.transformation_type_map[transformation_type]
-            if is_enabled:
-                return PyQt5.QtCore.Qt.Checked
-            return PyQt5.QtCore.Qt.Unchecked
+                return self.data_display(text_replacement_rule.target, role)
 
         return PyQt5.QtCore.QVariant()
 
@@ -105,8 +93,6 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
         elif role == PyQt5.QtCore.Qt.EditRole:
             return PyQt5.QtCore.QVariant(value)
 
-
-
     def setData(self, index, value, role):
         if not index.isValid():
             return False
@@ -114,7 +100,7 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
         column = index.column()
         row = index.row()
 
-        replacement = self.replacements[row]
+        text_replacement_rule = self.model.get_text_replacement_rule_row(row)
 
         if role == PyQt5.QtCore.Qt.EditRole:
             
@@ -123,12 +109,9 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
                 # editing no supported
                 return False
             elif column == COL_INDEX_PATTERN:
-                replacement.pattern = value
+                text_replacement_rule.source = value
             elif column == COL_INDEX_REPLACEMENT:
-                replacement.replace = value
-            else:
-                transformation_type = self.col_index_to_transformation_type_map[column]
-                replacement.transformation_type_map[transformation_type] = value
+                text_replacement_rule.target = value
 
             # emit change signal
             start_index = self.createIndex(row, column)
@@ -136,16 +119,7 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
             self.dataChanged.emit(start_index, end_index)
             self.recompute_sample_callback()
             return True
-        elif role == PyQt5.QtCore.Qt.CheckStateRole:
-            transformation_type = self.col_index_to_transformation_type_map[column]
-            is_checked = value == PyQt5.QtCore.Qt.Checked
-            replacement.transformation_type_map[transformation_type] = is_checked
-            logging.info(f'setting {transformation_type} to {is_checked}')
-            start_index = self.createIndex(row, column)
-            end_index = self.createIndex(row, column)
-            self.dataChanged.emit(start_index, end_index)       
-            self.recompute_sample_callback()     
-            return True
+
         else:
             return False
 
