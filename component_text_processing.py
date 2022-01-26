@@ -1,6 +1,9 @@
 import sys
 import PyQt5
 import logging
+import html
+
+import text_utils
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
@@ -204,15 +207,12 @@ class TextProcessing(component_common.ConfigComponentBase):
 
         # wire events
         # ===========
-        self.add_replace_simple_button.pressed.connect(lambda: self.textReplacementTableModel.add_replacement(constants.ReplaceType.simple))
-        self.add_replace_regex_button.pressed.connect(lambda: self.textReplacementTableModel.add_replacement(constants.ReplaceType.regex))
+        self.add_replace_simple_button.pressed.connect(lambda: self.textReplacementTableModel.add_replacement(constants.TextReplacementRuleType.Simple))
+        self.add_replace_regex_button.pressed.connect(lambda: self.textReplacementTableModel.add_replacement(constants.TextReplacementRuleType.Regex))
         self.remove_replace_button.pressed.connect(self.delete_text_replacement)
         self.typing_timer = self.hypertts.anki_utils.wire_typing_timer(self.sample_text_input, self.sample_text_changed)
 
         return global_vlayout
-
-    def sample_transformation_type_changed(self):
-        self.update_transformed_text()
 
     def sample_text_changed(self):
         self.update_transformed_text()
@@ -225,17 +225,15 @@ class TextProcessing(component_common.ConfigComponentBase):
     def update_transformed_text(self):
         # get the sample text
         sample_text = self.sample_text_input.text()
-        transformation_type = constants.TransformationType[self.sample_transformation_type_combo_box.currentText()]
         if len(sample_text) == 0:
             label_text = BLANK_TEXT
         else:
             # get the text replacements
-            utils = text_utils.TextUtils(self.get_text_processing_settings())
-            sample_text_processed = utils.process(sample_text, transformation_type)
-            label_text = f'<b>{html.escape(sample_text_processed)}</b>'
+            processed_text = text_utils.process_text(sample_text, self.model)
+            label_text = f'<b>{html.escape(processed_text)}</b>'
 
         # self.sample_text_transformed_label.setText(label_text)
-        self.languagetools.anki_utils.run_on_main(lambda: self.sample_text_transformed_label.setText(label_text))
+        self.hypertts.anki_utils.run_on_main(lambda: self.sample_text_transformed_label.setText(label_text))
 
 
     def delete_text_replacement(self):

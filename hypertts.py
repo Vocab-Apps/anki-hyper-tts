@@ -17,20 +17,10 @@ import aqt.addcards
 import anki.notes
 import anki.cards
 
-
-if hasattr(sys, '_pytest_mode'):
-    import constants
-    import version
-    import errors
-    import text_utils
-    import config_models
-else:
-    from . import constants
-    from . import version
-    from . import errors
-    from . import text_utils
-    from . import config_models
-
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
+text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
+config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class HyperTTS():
@@ -47,7 +37,6 @@ class HyperTTS():
         self.service_manager = service_manager
         self.error_manager = errors.ErrorManager(self.anki_utils)
         self.config = self.anki_utils.get_config()
-        self.text_utils = text_utils.TextUtils(self.get_text_processing_settings())
         self.error_manager = errors.ErrorManager(self.anki_utils)
 
 

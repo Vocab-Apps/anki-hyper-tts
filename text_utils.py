@@ -44,6 +44,8 @@ def process_text_replacement_rule(input_text, rule):
             result = re.sub(rule.source, rule.target, input_text)
         elif rule.rule_type == constants.TextReplacementRuleType.Simple:
             result = input_text.replace(rule.source,  rule.target)
+        else:
+            raise Exception(f'unsupported replacement rule type: {rule.rule_type}')
         return result
     except Exception as e:
         raise errors.TextReplacementError(input_text, rule.source, rule.target, str(e))
