@@ -93,6 +93,8 @@ def test_replacement_simple(qtbot):
     assert text_replacement2.process('yoyo)') == 'rep'
 
 def test_process_text(qtbot):
+
+    # simple replacement
     text_processing = config_models.TextProcessing()
     rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
     rule.source = 'word_a'
@@ -100,3 +102,11 @@ def test_process_text(qtbot):
     text_processing.add_text_replacement_rule(rule)
 
     assert text_utils.process_text('sentence word_a word_c', text_processing) == 'sentence word_b word_c'
+
+    # regex replacement
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Regex)
+    rule.source = '\(etw \+D\)'
+    rule.target = 'etwas +Dativ'
+    text_processing.add_text_replacement_rule(rule)
+
+    assert text_utils.process_text('unter (etw +D)', text_processing) == 'unter etwas +Dativ'
