@@ -12,6 +12,7 @@ import component_voiceselection
 import component_source
 import component_target
 import component_batch
+import component_text_processing
 
 class EmptyDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self):
@@ -889,3 +890,17 @@ def test_batch_dialog_editor(qtbot):
 
     assert dialog.closed == True
 
+def test_text_processing(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
+
+    model_change_callback = MockModelChangeCallback()
+    text_processing = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
+    dialog.addChildLayout(text_processing.draw())
+
+    dialog.exec_()

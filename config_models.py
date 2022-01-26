@@ -282,10 +282,18 @@ class TextReplacementRule(ConfigModelBase):
 
 class TextProcessing(ConfigModelBase):
     def __init__(self):
-        self.text_replacement_rules = []
+        self._text_replacement_rules = []
 
     def add_text_replacement_rule(self, rule):
-        self.text_replacement_rules.append(rule)
+        self._text_replacement_rules.append(rule)
+
+    def get_text_replacement_rules(self):
+        return self._text_replacement_rules
+
+    def set_text_replacement_rules(self, rules):
+        self._text_replacement_rules = rules
+
+    text_replacement_rules = property(get_text_replacement_rules, set_text_replacement_rules)
 
     def serialize(self):
         return {
