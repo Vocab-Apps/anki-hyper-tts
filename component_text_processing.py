@@ -203,9 +203,9 @@ class TextProcessing(component_common.ConfigComponentBase):
         
         # setup buttons below table
         hlayout = PyQt5.QtWidgets.QHBoxLayout()
-        self.add_replace_simple_button = PyQt5.QtWidgets.QPushButton('Add Simple Text Replacement Rule')
+        self.add_replace_simple_button = PyQt5.QtWidgets.QPushButton('Add Simple Rule')
         hlayout.addWidget(self.add_replace_simple_button)
-        self.add_replace_regex_button = PyQt5.QtWidgets.QPushButton('Add Regex Text Replacement Rule')
+        self.add_replace_regex_button = PyQt5.QtWidgets.QPushButton('Add Regex Rule')
         hlayout.addWidget(self.add_replace_regex_button)
         self.remove_replace_button = PyQt5.QtWidgets.QPushButton('Remove Selected Rule')
         hlayout.addWidget(self.remove_replace_button)
