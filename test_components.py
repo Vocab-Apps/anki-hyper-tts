@@ -1073,4 +1073,34 @@ def test_configuration(qtbot):
     # make sure dialog was closed
     assert dialog.closed == True
 
+    # loading of existing model
+    # =========================
+
+    configuration_model = config_models.Configuration()
+    configuration_model.set_hypertts_pro_api_key('myapikey')
+    configuration_model.set_service_enabled('ServiceB', True)
+    configuration_model.set_service_configuration_key('ServiceA', 'api_key', '123456')
+    configuration_model.set_service_configuration_key('ServiceA', 'region', 'europe')
+    configuration_model.set_service_configuration_key('ServiceA', 'delay', 7)
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.load_model(configuration_model)
+    dialog.addChildLayout(configuration.draw())
+
+    assert configuration.hypertts_pro_api_key.text() == 'myapikey'
+
+    service_a_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_enabled")
+    assert service_a_enabled_checkbox.isChecked() == False
+    service_b_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceB_enabled")
+    assert service_b_enabled_checkbox.isChecked() == True
+
+    service_a_region = dialog.findChild(PyQt5.QtWidgets.QComboBox, "ServiceA_region")
+    assert service_a_region.currentText() == 'europe'
+    service_a_api_key = dialog.findChild(PyQt5.QtWidgets.QLineEdit, "ServiceA_api_key")
+    assert service_a_api_key.text() == '123456'
+    service_a_delay = dialog.findChild(PyQt5.QtWidgets.QSpinBox, "ServiceA_delay")
+    assert service_a_delay.value() == 7
+
     # dialog.exec_()

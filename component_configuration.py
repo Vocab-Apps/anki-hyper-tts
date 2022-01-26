@@ -62,6 +62,7 @@ class Configuration(component_common.ConfigComponentBase):
 
         vlayout.addWidget(PyQt5.QtWidgets.QLabel('API Key'))
         self.hypertts_pro_api_key = PyQt5.QtWidgets.QLineEdit()
+        self.hypertts_pro_api_key.setText(self.model.hypertts_pro_api_key)
         self.hypertts_pro_api_key.textChanged.connect(self.get_hypertts_pro_api_key_change_fn())
         vlayout.addWidget(self.hypertts_pro_api_key)
 
@@ -80,6 +81,7 @@ class Configuration(component_common.ConfigComponentBase):
             widget_name = f'{service.name}_enabled'
             service_enabled_checkbox = PyQt5.QtWidgets.QCheckBox('Enable')
             service_enabled_checkbox.setObjectName(widget_name)
+            service_enabled_checkbox.setChecked(self.model.get_service_enabled(service.name))
             service_enabled_checkbox.stateChanged.connect(self.get_service_enable_change_fn(service))
             service_vlayout.addWidget(service_enabled_checkbox)
 
@@ -91,11 +93,15 @@ class Configuration(component_common.ConfigComponentBase):
                 options_gridlayout.addWidget(PyQt5.QtWidgets.QLabel(key + ':'), row, 0, 1, 1)
                 if type == str:
                     lineedit = PyQt5.QtWidgets.QLineEdit()
+                    lineedit.setText(self.model.get_service_configuration_key(service.name, key))
                     lineedit.setObjectName(widget_name)
                     lineedit.textChanged.connect(self.get_service_config_str_change_fn(service, key))
                     options_gridlayout.addWidget(lineedit, row, 1, 1, 1)
                 elif type == int:
                     spinbox = PyQt5.QtWidgets.QSpinBox()
+                    saved_value = self.model.get_service_configuration_key(service.name, key)
+                    if saved_value != None:
+                        spinbox.setValue(saved_value)
                     spinbox.setObjectName(widget_name)
                     spinbox.valueChanged.connect(self.get_service_config_int_change_fn(service, key))
                     options_gridlayout.addWidget(spinbox, row, 1, 1, 1)
@@ -103,6 +109,7 @@ class Configuration(component_common.ConfigComponentBase):
                     combobox = PyQt5.QtWidgets.QComboBox()
                     combobox.setObjectName(widget_name)
                     combobox.addItems(type)
+                    combobox.setCurrentText(self.model.get_service_configuration_key(service.name, key))
                     combobox.currentTextChanged.connect(self.get_service_config_list_change_fn(service, key))
                     options_gridlayout.addWidget(combobox, row, 1, 1, 1)
                 row += 1
