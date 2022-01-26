@@ -23,11 +23,11 @@ COL_INDEX_REPLACEMENT = 2
 BLANK_TEXT = '<i>Enter sample text to verify text processing settings.</i>'
 
 class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
-    def __init__(self, model, recompute_sample_callback):
+    def __init__(self, model, model_change_callback):
         PyQt5.QtCore.QAbstractTableModel.__init__(self, None)
 
         self.model = model
-        self.recompute_sample_callback = recompute_sample_callback
+        self.model_change_callback = model_change_callback
 
         self.header_text = [
             'Type',
@@ -56,12 +56,13 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
     def add_replacement(self, replace_type):
         self.model.add_text_replacement_rule(config_models.TextReplacementRule(replace_type))
         self.layoutChanged.emit()
+        self.model_change_callback()
 
     def delete_rows(self, row_index):
         row = row_index.row()
         self.model.remove_text_replacement_rule(row)
-        self.recompute_sample_callback()
         self.layoutChanged.emit()
+        self.model_change_callback()        
 
     def data(self, index, role):
         if not index.isValid():
@@ -120,7 +121,7 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
             start_index = self.createIndex(row, column)
             end_index = self.createIndex(row, column)
             self.dataChanged.emit(start_index, end_index)
-            self.recompute_sample_callback()
+            self.model_change_callback()
             return True
 
         else:
@@ -136,7 +137,7 @@ class TextProcessing(component_common.ConfigComponentBase):
         self.hypertts = hypertts
         self.model_change_callback = model_change_callback
         self.model = config_models.TextProcessing()
-        self.textReplacementTableModel = TextReplacementsTableModel(self.model, self.update_transformed_text)
+        self.textReplacementTableModel = TextReplacementsTableModel(self.model, self.model_change)
 
     def get_model(self):
         return self.model
@@ -210,12 +211,13 @@ class TextProcessing(component_common.ConfigComponentBase):
         self.add_replace_simple_button.pressed.connect(lambda: self.textReplacementTableModel.add_replacement(constants.TextReplacementRuleType.Simple))
         self.add_replace_regex_button.pressed.connect(lambda: self.textReplacementTableModel.add_replacement(constants.TextReplacementRuleType.Regex))
         self.remove_replace_button.pressed.connect(self.delete_text_replacement)
-        self.typing_timer = self.hypertts.anki_utils.wire_typing_timer(self.sample_text_input, self.sample_text_changed)
+        self.typing_timer = self.hypertts.anki_utils.wire_typing_timer(self.sample_text_input, self.update_transformed_text)
 
         return global_vlayout
 
-    def sample_text_changed(self):
+    def model_change(self):
         self.update_transformed_text()
+        self.model_change_callback(self.model)
 
     def get_text_processing_settings(self):
         replacement_list = self.textReplacementTableModel.replacements
@@ -243,7 +245,3 @@ class TextProcessing(component_common.ConfigComponentBase):
         rows_indices = self.table_view.selectionModel().selectedIndexes()
         if len(rows_indices) == 1:
             self.textReplacementTableModel.delete_rows(rows_indices[0])
-
-    def accept(self):
-        self.languagetools.store_text_processing_settings(self.get_text_processing_settings())
-        self.close()        

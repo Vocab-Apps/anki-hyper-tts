@@ -938,4 +938,7 @@ def test_text_processing(qtbot):
     qtbot.keyClicks(text_processing.sample_text_input, 'word1 / word2')
     assert text_processing.sample_text_transformed_label.text() == '<b>word1 word2</b>'
 
+    # check model callbacks
+    assert len(model_change_callback.model.text_replacement_rules) == 2
+
     # dialog.exec_()
