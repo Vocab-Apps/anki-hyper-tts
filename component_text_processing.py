@@ -228,9 +228,12 @@ class TextProcessing(component_common.ConfigComponentBase):
         if len(sample_text) == 0:
             label_text = BLANK_TEXT
         else:
-            # get the text replacements
-            processed_text = text_utils.process_text(sample_text, self.model)
-            label_text = f'<b>{html.escape(processed_text)}</b>'
+            try:
+                # get the text replacements
+                processed_text = text_utils.process_text(sample_text, self.model)
+                label_text = f'<b>{html.escape(processed_text)}</b>'
+            except Exception as e:
+                label_text = f'<b>error: {str(e)}</b>'
 
         # self.sample_text_transformed_label.setText(label_text)
         self.hypertts.anki_utils.run_on_main(lambda: self.sample_text_transformed_label.setText(label_text))
