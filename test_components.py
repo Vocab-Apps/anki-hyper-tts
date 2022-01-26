@@ -947,4 +947,25 @@ def test_text_processing(qtbot):
     assert model_change_callback.model.text_replacement_rules[1].source == ' / '
     assert model_change_callback.model.text_replacement_rules[1].target == ' '
 
+    # add a regex rule
+    # add another transformation rule
+    qtbot.mouseClick(text_processing.add_replace_regex_button, PyQt5.QtCore.Qt.LeftButton)
+    # enter pattern and replacement
+    row = 2
+    index_pattern = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
+    text_processing.textReplacementTableModel.setData(index_pattern, '[0-9]+', PyQt5.QtCore.Qt.EditRole)
+    index_replacement = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
+    text_processing.textReplacementTableModel.setData(index_replacement, 'number', PyQt5.QtCore.Qt.EditRole)
+
+    text_processing.sample_text_input.clear()
+    qtbot.keyClicks(text_processing.sample_text_input, '1234')
+    assert text_processing.sample_text_transformed_label.text() == '<b>number</b>'
+
+    # check model callbacks
+    assert len(model_change_callback.model.text_replacement_rules) == 3
+    assert model_change_callback.model.text_replacement_rules[2].rule_type == constants.TextReplacementRuleType.Regex
+    assert model_change_callback.model.text_replacement_rules[2].source == '[0-9]+'
+    assert model_change_callback.model.text_replacement_rules[2].target == 'number'
+
+
     # dialog.exec_()
