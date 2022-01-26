@@ -853,6 +853,7 @@ def test_batch_dialog_editor(qtbot):
 
     # test sound preview
     # ==================
+    # dialog.exec_()
     qtbot.mouseClick(batch.preview_sound_button, PyQt5.QtCore.Qt.LeftButton)
     assert hypertts_instance.anki_utils.played_sound == {
         'source_text': '老人家',

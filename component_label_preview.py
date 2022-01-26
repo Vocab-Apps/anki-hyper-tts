@@ -18,8 +18,9 @@ class LabelPreview(component_common.ComponentBase):
     def load_model(self, model):
         self.batch_model = model
         self.batch_label.setText(str(self.batch_model))
-        source_text, processed_text = self.hypertts.get_source_processed_text(self.note, self.batch_model.source)
-        self.source_preview_label.setText(f'<b>Generating Audio for:</b> {processed_text}')
+        if self.batch_model.text_processing != None:
+            source_text, processed_text = self.hypertts.get_source_processed_text(self.note, self.batch_model.source, self.batch_model.text_processing)
+            self.source_preview_label.setText(f'<b>Generating Audio for:</b> {processed_text}')
 
     def draw(self):
         # populate processed text

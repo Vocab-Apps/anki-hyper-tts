@@ -87,7 +87,7 @@ class HyperTTS():
 
     def get_note_audio(self, batch, note):
         source_text = self.get_source_text(note, batch.source)
-        processed_text = self.process_text(source_text)
+        processed_text = text_utils.process_text(source_text, batch.text_processing)
         return self.get_audio_file(processed_text, batch.voice_selection)        
 
     def get_audio_file(self, processed_text, voice_selection):

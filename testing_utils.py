@@ -168,6 +168,7 @@ class MockAnkiUtils():
     def report_unknown_exception_interactive(self, exception, action):
         self.last_exception = exception
         self.last_action = action
+        logging.critical(exception, exc_info=True)
 
     def report_unknown_exception_background(self, exception):
         self.last_exception = exception
