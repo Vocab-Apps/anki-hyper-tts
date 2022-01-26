@@ -1054,6 +1054,8 @@ def test_configuration(qtbot):
     service_a_delay.setValue(42)
     assert configuration.model.get_service_configuration_key('ServiceA', 'delay') == 42
 
+    assert configuration.save_button.isEnabled() == True
+
     # press save button
     qtbot.mouseClick(configuration.save_button, PyQt5.QtCore.Qt.LeftButton)
     assert 'configuration' in hypertts_instance.anki_utils.written_config
@@ -1102,5 +1104,7 @@ def test_configuration(qtbot):
     assert service_a_api_key.text() == '123456'
     service_a_delay = dialog.findChild(PyQt5.QtWidgets.QSpinBox, "ServiceA_delay")
     assert service_a_delay.value() == 7
+
+    assert configuration.save_button.isEnabled() == False
 
     # dialog.exec_()

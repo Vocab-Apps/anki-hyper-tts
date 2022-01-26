@@ -19,10 +19,15 @@ class Configuration(component_common.ConfigComponentBase):
     def load_model(self, model):
         self.model = model
 
+    def model_change(self):
+        self.save_button.setEnabled(True)
+        self.save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+
     def get_hypertts_pro_api_key_change_fn(self):
         def change(api_key):
             logging.info('hypertts pro api key change')
             self.model.set_hypertts_pro_api_key(api_key)
+            self.model_change()
         return change
 
     def get_service_enable_change_fn(self, service):
@@ -30,24 +35,28 @@ class Configuration(component_common.ConfigComponentBase):
             enabled = value == 2
             logging.info(f'{service.name} enabled: {enabled}')
             self.model.set_service_enabled(service.name, enabled)
+            self.model_change()
         return enable_change
 
     def get_service_config_str_change_fn(self, service, key):
         def str_change(text):
             logging.info(f'{service.name} {key}: {text}')
             self.model.set_service_configuration_key(service.name, key, text)
+            self.model_change()
         return str_change
 
     def get_service_config_int_change_fn(self, service, key):
         def int_change(value):
             logging.info(f'{service.name} {key}: {value}')
             self.model.set_service_configuration_key(service.name, key, value)
+            self.model_change()
         return int_change
 
     def get_service_config_list_change_fn(self, service, key):
         def list_change(text):
             logging.info(f'{service.name} {key}: {text}')
             self.model.set_service_configuration_key(service.name, key, text)
+            self.model_change()
         return list_change
 
 
@@ -125,7 +134,9 @@ class Configuration(component_common.ConfigComponentBase):
 
         hlayout = PyQt5.QtWidgets.QHBoxLayout()
         self.save_button = PyQt5.QtWidgets.QPushButton('Save')
+        self.save_button.setEnabled(False)
         self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
+        self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
         hlayout.addStretch()
         hlayout.addWidget(self.save_button)
         hlayout.addWidget(self.cancel_button)
