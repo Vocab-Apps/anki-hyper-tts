@@ -228,12 +228,12 @@ class HyperTTS():
                 field_name_set[field] = True
         return sorted(field_name_set.keys())
 
-    def populate_batch_status_processed_text(self, note_id_list, batch_source, batch_status):
+    def populate_batch_status_processed_text(self, note_id_list, batch_source, text_processing, batch_status):
         with batch_status.get_batch_running_action_context():
             for note_id in note_id_list:
                 with batch_status.get_note_action_context(note_id, True) as note_action_context:
                     note = self.anki_utils.get_note_by_id(note_id)
-                    source_text, processed_text = self.get_source_processed_text(note, batch_source)
+                    source_text, processed_text = self.get_source_processed_text(note, batch_source, text_processing)
                     note_action_context.set_source_text(source_text)
                     note_action_context.set_processed_text(processed_text)
                     note_action_context.set_status(constants.BatchNoteStatus.OK)
@@ -241,9 +241,9 @@ class HyperTTS():
                     logging.info('batch_status execution interrupted')
                     break
 
-    def get_source_processed_text(self, note, batch_source):
+    def get_source_processed_text(self, note, batch_source, text_processing):
         source_text = self.get_source_text(note, batch_source)
-        processed_text = self.process_text(source_text)
+        processed_text = text_utils.process_text(source_text, text_processing)
         return source_text, processed_text
 
     # functions related to addon config

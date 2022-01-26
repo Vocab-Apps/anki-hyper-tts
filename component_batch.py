@@ -6,6 +6,7 @@ component_common = __import__('component_common', globals(), locals(), [], sys._
 component_source = __import__('component_source', globals(), locals(), [], sys._addon_import_level_base)
 component_target = __import__('component_target', globals(), locals(), [], sys._addon_import_level_base)
 component_voiceselection = __import__('component_voiceselection', globals(), locals(), [], sys._addon_import_level_base)
+component_text_processing = __import__('component_text_processing', globals(), locals(), [], sys._addon_import_level_base)
 component_batch_preview = __import__('component_batch_preview', globals(), locals(), [], sys._addon_import_level_base)
 component_label_preview = __import__('component_label_preview', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
@@ -32,7 +33,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         field_list = self.hypertts.get_all_fields_from_notes(note_id_list)
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
-        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)        
+        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
+        self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
         self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, 
             self.sample_selected, self.apply_notes_batch_start, self.apply_notes_batch_end)
         self.editor_mode = False
@@ -45,7 +47,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         field_list = list(self.note.keys())
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
-        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)        
+        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
+        self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
         self.voice_selection.preview_enabled = False
         self.preview = component_label_preview.LabelPreview(self.hypertts, note)
         self.editor_mode = True
@@ -64,6 +67,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.source.load_model(model.source)
         self.target.load_model(model.target)
         self.voice_selection.load_model(model.voice_selection)
+        self.text_processing.load_model(model.text_processing)
         self.preview.load_model(self.batch_model)
 
     def get_model(self):
@@ -82,6 +86,11 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def voice_selection_model_updated(self, model):
         logging.info('voice_selection_model_updated')
         self.batch_model.set_voice_selection(model)
+        self.model_part_updated_common()
+
+    def text_processing_model_updated(self, model):
+        logging.info('text_processing_model_updated')
+        self.batch_model.text_processing = model
         self.model_part_updated_common()
 
     def model_part_updated_common(self):
@@ -152,15 +161,17 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.tab_source = PyQt5.QtWidgets.QWidget()
         self.tab_target = PyQt5.QtWidgets.QWidget()
         self.tab_voice_selection = PyQt5.QtWidgets.QWidget()
+        self.tab_text_processing = PyQt5.QtWidgets.QWidget()
 
         self.tab_source.setLayout(self.source.draw())
         self.tab_target.setLayout(self.target.draw())
         self.tab_voice_selection.setLayout(self.voice_selection.draw())
+        self.tab_text_processing.setLayout(self.text_processing.draw())
 
         self.tabs.addTab(self.tab_source, 'Source')
         self.tabs.addTab(self.tab_target, 'Target')
         self.tabs.addTab(self.tab_voice_selection, 'Voice Selection')
-
+        self.tabs.addTab(self.tab_text_processing, 'Text Processing')
 
         if self.editor_mode == False:
             self.splitter = PyQt5.QtWidgets.QSplitter(PyQt5.QtCore.Qt.Horizontal)
