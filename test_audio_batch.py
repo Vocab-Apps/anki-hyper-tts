@@ -179,6 +179,7 @@ def test_simple_error_handling(qtbot):
     batch.set_source(source)
     batch.set_target(target)
     batch.set_voice_selection(single)
+    batch.set_text_processing(config_models.TextProcessing())
 
     # create list of notes
     # ====================
@@ -221,6 +222,7 @@ def test_simple_append(qtbot):
     batch.set_source(source)
     batch.set_target(target)
     batch.set_voice_selection(single)
+    batch.set_text_processing(config_models.TextProcessing())
 
 
     # create list of notes
@@ -275,6 +277,7 @@ def test_simple_sound_only_append(qtbot):
     batch.set_source(source)
     batch.set_target(target)
     batch.set_voice_selection(single)
+    batch.set_text_processing(config_models.TextProcessing())
 
 
     # create list of notes
@@ -319,6 +322,7 @@ def test_random_voices(qtbot):
     batch.set_source(source)
     batch.set_target(target)
     batch.set_voice_selection(random)
+    batch.set_text_processing(config_models.TextProcessing())
 
     # create list of notes
     # ====================
@@ -359,6 +363,7 @@ def test_simple_template(qtbot):
     batch.set_source(source)
     batch.set_target(target)
     batch.set_voice_selection(single)
+    batch.set_text_processing(config_models.TextProcessing())
 
     # create list of notes
     # ====================
@@ -408,6 +413,7 @@ result = f"{article} {word}"
     batch.set_source(source)
     batch.set_target(target)
     batch.set_voice_selection(single)    
+    batch.set_text_processing(config_models.TextProcessing())
 
     # create list of notes
     # ====================
@@ -459,6 +465,7 @@ result = f"{article} {word}"
     batch.set_source(source)
     batch.set_target(target)
     batch.set_voice_selection(single)    
+    batch.set_text_processing(config_models.TextProcessing())
 
     # create list of notes
     # ====================
@@ -501,6 +508,7 @@ def test_priority_voices_success(qtbot):
     batch.set_source(source)
     batch.set_target(target)
     batch.set_voice_selection(priority)
+    batch.set_text_processing(config_models.TextProcessing())
 
     # create list of notes
     # ====================
@@ -542,6 +550,7 @@ def test_priority_voices_not_found(qtbot):
     batch.set_source(source)
     batch.set_target(target)
     batch.set_voice_selection(priority)
+    batch.set_text_processing(config_models.TextProcessing())
 
     # create list of notes
     # ====================
