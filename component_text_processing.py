@@ -3,12 +3,11 @@ import PyQt5
 import logging
 import html
 
-import text_utils
-
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
+text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class TextProcessing(component_common.ConfigComponentBase):
