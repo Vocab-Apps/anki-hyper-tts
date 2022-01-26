@@ -940,5 +940,11 @@ def test_text_processing(qtbot):
 
     # check model callbacks
     assert len(model_change_callback.model.text_replacement_rules) == 2
+    assert model_change_callback.model.text_replacement_rules[0].rule_type == constants.TextReplacementRuleType.Simple
+    assert model_change_callback.model.text_replacement_rules[0].source == '1234'
+    assert model_change_callback.model.text_replacement_rules[0].target == '5678'
+    assert model_change_callback.model.text_replacement_rules[1].rule_type == constants.TextReplacementRuleType.Simple
+    assert model_change_callback.model.text_replacement_rules[1].source == ' / '
+    assert model_change_callback.model.text_replacement_rules[1].target == ' '
 
     # dialog.exec_()
