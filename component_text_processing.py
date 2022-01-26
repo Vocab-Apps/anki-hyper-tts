@@ -31,12 +31,6 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
             'Pattern',
             'Replacement'
         ]
-        self.col_index_to_transformation_type_map = {}
-        col_index = COL_INDEX_REPLACEMENT + 1
-        for transformation_type in constants.TextReplacementRuleType:
-            self.header_text.append(transformation_type.name)
-            self.col_index_to_transformation_type_map[col_index] = transformation_type
-            col_index += 1
 
     def flags(self, index):
         # all columns are editable
@@ -46,8 +40,6 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
             return PyQt5.QtCore.Qt.ItemIsSelectable | PyQt5.QtCore.Qt.ItemIsEnabled
         if col == COL_INDEX_PATTERN or col == COL_INDEX_REPLACEMENT:
             return PyQt5.QtCore.Qt.ItemIsEditable | PyQt5.QtCore.Qt.ItemIsSelectable | PyQt5.QtCore.Qt.ItemIsEnabled
-        # should be a transformation type
-        return PyQt5.QtCore.Qt.ItemIsUserCheckable | PyQt5.QtCore.Qt.ItemIsSelectable | PyQt5.QtCore.Qt.ItemIsEnabled
 
     def rowCount(self, parent):
         return len(self.model.text_replacement_rules)
@@ -190,12 +182,6 @@ class TextProcessing(component_common.ConfigComponentBase):
 
         # first line
         hlayout = PyQt5.QtWidgets.QHBoxLayout()
-        hlayout.addWidget(PyQt5.QtWidgets.QLabel('Transformation Type:'))
-        self.sample_transformation_type_combo_box = PyQt5.QtWidgets.QComboBox()
-        transformation_type_names = [x.name for x in constants.TextReplacementRuleType]
-        self.sample_transformation_type_combo_box.addItems(transformation_type_names)
-        hlayout.addWidget(self.sample_transformation_type_combo_box)
-
         label = PyQt5.QtWidgets.QLabel('Enter sample text:')
         hlayout.addWidget(label)
         self.sample_text_input = PyQt5.QtWidgets.QLineEdit()
@@ -248,7 +234,6 @@ class TextProcessing(component_common.ConfigComponentBase):
         self.add_replace_regex_button.pressed.connect(lambda: self.textReplacementTableModel.add_replacement(constants.ReplaceType.regex))
         self.remove_replace_button.pressed.connect(self.delete_text_replacement)
         self.typing_timer = self.hypertts.anki_utils.wire_typing_timer(self.sample_text_input, self.sample_text_changed)
-        self.sample_transformation_type_combo_box.currentIndexChanged.connect(self.sample_transformation_type_changed)
 
         return global_vlayout
 
