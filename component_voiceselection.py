@@ -161,7 +161,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         if self.preview_enabled:
             vlayout.addWidget(self.play_sample_button)
 
-        self.voice_options_layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.voice_options_layout = PyQt5.QtWidgets.QGridLayout()
         vlayout.addLayout(self.voice_options_layout)
         groupbox.setLayout(vlayout)
         self.voices_layout.addWidget(groupbox)
@@ -298,6 +298,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
             return set_value
 
         # populate voice options layout
+        row = 0
         for key, value in voice.options.items():
             widget_name = f'voice_option_{key}'
             option_type = constants.VoiceOptionTypes[value['type']]
@@ -309,10 +310,13 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 widget.setRange(value['min'], value['max'])
                 widget.setValue(value['default'])
                 widget.valueChanged.connect(get_set_option_lambda(voice, key))
-                self.voice_options_layout.addWidget(widget)
+                label = PyQt5.QtWidgets.QLabel(key)
+                self.voice_options_layout.addWidget(label, row, 0, 1, 1)
+                self.voice_options_layout.addWidget(widget, row, 1, 1, 1)
                 self.voice_options_widgets[widget_name] = widget
             else:
                 raise Exception(f"voice option type not supported: {value['type']}")
+            row += 1
 
         # if we are in the single voice mode, set the mode on the voice selection model
         if self.voice_selection_model.selection_mode == constants.VoiceSelectionMode.single:
