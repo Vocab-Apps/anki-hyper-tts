@@ -1026,7 +1026,7 @@ def test_configuration(qtbot):
 
     # model_change_callback = MockModelChangeCallback()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
-    dialog.addChildLayout(configuration.draw())
+    configuration.draw(dialog.getLayout())
 
     # try making changes to the service config and saving
     # ===================================================
@@ -1089,7 +1089,7 @@ def test_configuration(qtbot):
     dialog.setupUi()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.load_model(configuration_model)
-    dialog.addChildLayout(configuration.draw())
+    configuration.draw(dialog.getLayout())
 
     assert configuration.hypertts_pro_api_key.text() == 'myapikey'
 
