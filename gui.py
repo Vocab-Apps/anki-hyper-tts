@@ -23,6 +23,7 @@ class ConfigurationDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self, hypertts):
         super(PyQt5.QtWidgets.QDialog, self).__init__()
         self.configuration = component_configuration.Configuration(hypertts, self)
+        self.configuration.load_model(hypertts.get_configuration())
 
     def setupUi(self):
         self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)

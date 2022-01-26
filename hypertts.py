@@ -281,6 +281,9 @@ class HyperTTS():
         self.config[constants.CONFIG_CONFIGURATION] = configuration_model.serialize()
         self.anki_utils.write_config(self.config)
 
+    def get_configuration(self):
+        return self.deserialize_configuration(self.config[constants.CONFIG_CONFIGURATION])
+
     # deserialization routines for loading from config
     # ================================================
 
