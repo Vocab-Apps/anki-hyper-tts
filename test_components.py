@@ -967,5 +967,4 @@ def test_text_processing(qtbot):
     assert model_change_callback.model.text_replacement_rules[2].source == '[0-9]+'
     assert model_change_callback.model.text_replacement_rules[2].target == 'number'
 
-
     # dialog.exec_()

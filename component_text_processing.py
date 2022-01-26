@@ -184,6 +184,8 @@ class TextProcessing(component_common.ConfigComponentBase):
         groupbox = PyQt5.QtWidgets.QGroupBox('Text Replacement rules')
         vlayout = PyQt5.QtWidgets.QVBoxLayout()        
 
+        vlayout.addWidget(PyQt5.QtWidgets.QLabel('Add replacement rules and double click to edit pattern / replacements'))
+
         self.table_view = PyQt5.QtWidgets.QTableView()
         self.table_view.setModel(self.textReplacementTableModel)
         self.table_view.setSelectionMode(PyQt5.QtWidgets.QTableView.SingleSelection)
