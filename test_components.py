@@ -1046,5 +1046,13 @@ def test_configuration(qtbot):
     service_a_region.setCurrentText('us')
     assert configuration.model.get_service_configuration_key('ServiceA', 'region') == 'us'
     
+    service_a_api_key = dialog.findChild(PyQt5.QtWidgets.QLineEdit, "ServiceA_api_key")
+    qtbot.keyClicks(service_a_api_key, '6789')
+    assert configuration.model.get_service_configuration_key('ServiceA', 'api_key') == '6789'
+
+    service_a_delay = dialog.findChild(PyQt5.QtWidgets.QSpinBox, "ServiceA_delay")
+    service_a_delay.setValue(42)
+    assert configuration.model.get_service_configuration_key('ServiceA', 'delay') == 42
+
 
     # dialog.exec_()
