@@ -196,9 +196,6 @@ class TextProcessing(component_common.ConfigComponentBase):
         self.table_view.setModel(self.textReplacementTableModel)
         self.table_view.setSelectionMode(PyQt5.QtWidgets.QTableView.SingleSelection)
         # self.table_view.setSelectionBehavior(PyQt5.QtWidgets.QTableView.SelectRows)
-        header = self.table_view.horizontalHeader()       
-        header.setSectionResizeMode(0, PyQt5.QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(1, PyQt5.QtWidgets.QHeaderView.Stretch)
         vlayout.addWidget(self.table_view)
         
         # setup buttons below table
