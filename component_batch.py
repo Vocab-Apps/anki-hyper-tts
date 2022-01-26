@@ -14,7 +14,7 @@ constants = __import__('constants', globals(), locals(), [], sys._addon_import_l
 
 
 class ComponentBatch(component_common.ConfigComponentBase):
-    MIN_WIDTH_COMPONENT = 500
+    MIN_WIDTH_COMPONENT = 600
     MIN_HEIGHT = 400
 
     def __init__(self, hypertts, dialog):
