@@ -331,7 +331,8 @@ class HyperTTS():
 
     def deserialize_text_processing(self, text_processing_config):
         text_processing = config_models.TextProcessing()
-        for rule in text_processing_config['text_replacement_rules']:
+        rules = text_processing_config.get('text_replacement_rules', [])
+        for rule in rules:
             rule_obj = config_models.TextReplacementRule(constants.TextReplacementRuleType[rule['rule_type']])
             rule_obj.source = rule['source']
             rule_obj.target = rule['target']
