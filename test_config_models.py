@@ -322,8 +322,14 @@ def test_batch_config(qtbot):
 def test_text_processing(qtbot):
     
     text_processing = config_models.TextProcessing()
-    text_processing.add_text_replacement_rule(config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple, 'a', 'b'))
-    text_processing.add_text_replacement_rule(config_models.TextReplacementRule(constants.TextReplacementRuleType.Regex, 'c', 'd'))
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
+    rule.source = 'a'
+    rule.target = 'b'
+    text_processing.add_text_replacement_rule(rule)
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Regex)
+    rule.source = 'c'
+    rule.target = 'd'    
+    text_processing.add_text_replacement_rule(rule)
 
     expected_output = {
         'text_replacement_rules': [
@@ -339,5 +345,18 @@ def test_text_processing(qtbot):
             },            
         ]
     }
+    assert text_processing.serialize() == expected_output
 
+    # remove first rule
+    text_processing.remove_text_replacement_rule(0)
+
+    expected_output = {
+        'text_replacement_rules': [
+            {
+                'rule_type': 'Regex',
+                'source': 'c',
+                'target': 'd'
+            },            
+        ]
+    }
     assert text_processing.serialize() == expected_output
