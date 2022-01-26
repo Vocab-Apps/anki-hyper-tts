@@ -62,7 +62,8 @@ class BatchConfig(ConfigModelBase):
         return {
             'source': self.source.serialize(),
             'target': self.target.serialize(),
-            'voice_selection': self.voice_selection.serialize()
+            'voice_selection': self.voice_selection.serialize(),
+            'text_processing': self.text_processing.serialize()
         }
 
 class BatchSource(ConfigModelBase):

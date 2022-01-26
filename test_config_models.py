@@ -276,10 +276,16 @@ def test_batch_config(qtbot):
     batch_config = config_models.BatchConfig()
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, False)
+    text_processing = config_models.TextProcessing()
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
+    rule.source = 'a'
+    rule.target = 'b'
+    text_processing.add_text_replacement_rule(rule)
 
     batch_config.set_source(source)
     batch_config.set_target(target)
     batch_config.set_voice_selection(voice_selection)
+    batch_config.text_processing = text_processing
 
     expected_output = {
         'source': {
@@ -306,6 +312,14 @@ def test_batch_config(qtbot):
                         'speed': 43
                     },
                 },        
+        },
+        'text_processing': {
+            'text_replacement_rules': [
+                {
+                    'rule_type': 'Simple',
+                    'source': 'a',
+                    'target': 'b'
+                }]
         }
     }
     assert batch_config.serialize() == expected_output

@@ -299,9 +299,13 @@ class HyperTTS():
         target = config_models.BatchTarget('Sound', False, False)
         voice_selection = self.deserialize_voice_selection(batch_config['voice_selection'])
 
+        text_processing_config = batch_config.get('text_processing', {})
+        text_processing = self.deserialize_text_processing(text_processing_config)
+
         batch.set_source(source)
         batch.set_target(target)
         batch.set_voice_selection(voice_selection)
+        batch.text_processing = text_processing
         
         return batch
 
@@ -324,3 +328,12 @@ class HyperTTS():
                 voice = self.service_manager.deserialize_voice(voice_data['voice'])
                 priority.add_voice(config_models.VoiceWithOptionsPriority(voice, voice_data['options']))
             return priority
+
+    def deserialize_text_processing(self, text_processing_config):
+        text_processing = config_models.TextProcessing()
+        for rule in text_processing_config['text_replacement_rules']:
+            rule_obj = config_models.TextReplacementRule(constants.TextReplacementRuleType[rule['rule_type']])
+            rule_obj.source = rule['source']
+            rule_obj.target = rule['target']
+            text_processing.add_text_replacement_rule(rule_obj)
+        return text_processing
