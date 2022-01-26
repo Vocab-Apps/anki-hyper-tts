@@ -16,7 +16,20 @@ import anki.hooks
 # addon imports
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
+component_configuration = __import__('component_configuration', globals(), locals(), [], sys._addon_import_level_base)
 
+
+class ConfigurationDialog(PyQt5.QtWidgets.QDialog):
+    def __init__(self, hypertts):
+        super(PyQt5.QtWidgets.QDialog, self).__init__()
+        self.configuration = component_configuration.Configuration(hypertts, self)
+
+    def setupUi(self):
+        self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
+        self.configuration.draw(self.main_layout)
+
+    def close(self):
+        self.accept()
 
 class BatchDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self, hypertts):

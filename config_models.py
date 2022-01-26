@@ -369,6 +369,9 @@ class Configuration(ConfigModelBase):
         service_config = self.service_config.get(service_name, {})
         return service_config.get(key, None) 
 
+    def set_service_config(self, service_config):
+        self.service_config = service_config
+
     def serialize(self):
         return {
             'hypertts_pro_api_key': self.hypertts_pro_api_key,

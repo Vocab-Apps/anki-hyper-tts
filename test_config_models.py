@@ -374,3 +374,32 @@ def test_text_processing(qtbot):
         ]
     }
     assert text_processing.serialize() == expected_output
+
+def test_configuration(qtbot):
+    hypertts_instance = get_hypertts_instance()
+
+    configuration = config_models.Configuration()
+    configuration.hypertts_pro_api_key = '123456'
+    configuration.set_service_enabled('ServiceA', True)
+    configuration.set_service_enabled('ServiceB', False)
+    configuration.set_service_configuration_key('ServiceA', 'region', 'europe')
+
+    expected_output = {
+        'hypertts_pro_api_key': '123456',
+        'service_config': {
+            'ServiceA': {
+                'enabled': True,
+                'region': 'europe'
+            },
+            'ServiceB': {
+                'enabled': False
+            }
+        }
+    }
+
+    assert configuration.serialize() == expected_output
+
+    deserialized_configuration = hypertts_instance.deserialize_configuration(configuration.serialize())
+    assert deserialized_configuration.get_service_configuration_key('ServiceA', 'region') == 'europe'
+
+    assert configuration.serialize() == deserialized_configuration.serialize()

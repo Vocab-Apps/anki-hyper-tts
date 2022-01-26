@@ -334,3 +334,9 @@ class HyperTTS():
             rule_obj.target = rule['target']
             text_processing.add_text_replacement_rule(rule_obj)
         return text_processing
+
+    def deserialize_configuration(self, configuration_config):
+        configuration = config_models.Configuration()
+        configuration.hypertts_pro_api_key = configuration_config.get('hypertts_pro_api_key', None)
+        configuration.set_service_config(configuration_config.get('service_config', {}))
+        return configuration
