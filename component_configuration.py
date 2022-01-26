@@ -18,6 +18,22 @@ class Configuration(component_common.ConfigComponentBase):
     def load_model(self, model):
         self.model = model
 
+    def get_service_config_str_change_fn(self, service, key):
+        def str_change(text):
+            logging.info(f'{service.name} {key}: {text}')
+        return str_change
+
+    def get_service_config_int_change_fn(self, service, key):
+        def int_change(value):
+            logging.info(f'{service.name} {key}: {value}')
+        return int_change
+
+    def get_service_config_list_change_fn(self, service, key):
+        def list_change(text):
+            logging.info(f'{service.name} {key}: {text}')
+        return list_change
+
+
     def draw(self):
         global_vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
@@ -52,12 +68,17 @@ class Configuration(component_common.ConfigComponentBase):
             for key, type in configuration_options.items():
                 options_gridlayout.addWidget(PyQt5.QtWidgets.QLabel(key + ':'), row, 0, 1, 1)
                 if type == str:
-                    options_gridlayout.addWidget(PyQt5.QtWidgets.QLineEdit(), row, 1, 1, 1)
+                    lineedit = PyQt5.QtWidgets.QLineEdit()
+                    lineedit.textChanged.connect(self.get_service_config_str_change_fn(service, key))
+                    options_gridlayout.addWidget(lineedit, row, 1, 1, 1)
                 elif type == int:
-                    options_gridlayout.addWidget(PyQt5.QtWidgets.QDoubleSpinBox(), row, 1, 1, 1)
+                    spinbox = PyQt5.QtWidgets.QSpinBox()
+                    spinbox.valueChanged.connect(self.get_service_config_int_change_fn(service, key))
+                    options_gridlayout.addWidget(spinbox, row, 1, 1, 1)
                 elif isinstance(type, list):
                     combobox = PyQt5.QtWidgets.QComboBox()
                     combobox.addItems(type)
+                    combobox.currentTextChanged.connect(self.get_service_config_list_change_fn(service, key))
                     options_gridlayout.addWidget(combobox, row, 1, 1, 1)
                 row += 1
 

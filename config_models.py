@@ -338,7 +338,10 @@ class TextProcessing(ConfigModelBase):
 
 class Configuration(ConfigModelBase):
     def __init__(self):
-        pass
+        self.service_config = {}
+
+    def set_service_enabled(self, service_name, enabled):
+        self.service_config[service_name]['enabled'] = enabled
 
     def serialize(self):
         return {}
