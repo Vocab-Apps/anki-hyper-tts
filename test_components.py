@@ -988,6 +988,7 @@ def test_text_processing(qtbot):
     dialog.addChildLayout(text_processing_component.draw())
     text_processing_component.load_model(text_processing)
 
+    # check first row
     row = 0
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_TYPE)
     rule_type = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
@@ -999,9 +1000,17 @@ def test_text_processing(qtbot):
     target = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
     assert target.value() == '"b"'
 
-    return
-    index_replacement = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
-    text_processing.textReplacementTableModel.setData(index_replacement, 'number', PyQt5.QtCore.Qt.EditRole)
+    # check second row
+    row = 1
+    index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_TYPE)
+    rule_type = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
+    assert rule_type.value() == 'Regex'
+    index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
+    source = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
+    assert source.value() == '"c"'
+    index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
+    target = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
+    assert target.value() == '"d"'    
 
 
     # dialog.exec_()
