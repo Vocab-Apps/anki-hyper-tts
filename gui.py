@@ -67,19 +67,23 @@ def init(hypertts):
     aqt.mw.addonManager.setWebExports(__name__, r".*(css|js)")
 
     def browerMenusInit(browser: aqt.browser.Browser):
+
+        def get_launch_dialog_browser_fn(hypertts, browser, batch_name):
+            def launch():
+                launch_batch_dialog_browser(hypertts, browser.selectedNotes(), batch_name)
+            return launch
+
         menu = aqt.qt.QMenu(constants.ADDON_NAME, browser.form.menubar)
         browser.form.menubar.addMenu(menu)
 
         action = aqt.qt.QAction(f'Add Audio...', browser)
-        action.triggered.connect(lambda: 
-            launch_batch_dialog_browser(hypertts, browser.selectedNotes(), None))
+        action.triggered.connect(get_launch_dialog_browser_fn(hypertts, browser, None))
         menu.addAction(action)
 
         # add a menu entry for each preset
         for batch_name in hypertts.get_batch_config_list():
             action = aqt.qt.QAction(f'Add Audio: {batch_name}...', browser)
-            action.triggered.connect(lambda: 
-                launch_batch_dialog_browser(hypertts, browser.selectedNotes(), batch_name))
+            action.triggered.connect(get_launch_dialog_browser_fn(hypertts, browser, batch_name))
             menu.addAction(action)
 
     def shortcut_test(cuts, editor):
