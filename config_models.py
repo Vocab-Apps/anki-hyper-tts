@@ -332,3 +332,13 @@ class TextProcessing(ConfigModelBase):
         return {
             'text_replacement_rules': [x.serialize() for x in self.text_replacement_rules]
         }
+
+# service configuration
+# =====================
+
+class Configuration(ConfigModelBase):
+    def __init__(self):
+        pass
+
+    def serialize(self):
+        return {}

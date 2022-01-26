@@ -3,6 +3,7 @@ import logging
 import os
 import copy
 import component_batch_preview
+import component_configuration
 import config_models
 import servicemanager
 import testing_utils
@@ -1015,3 +1016,16 @@ def test_text_processing(qtbot):
 
 
     # dialog.exec_()
+
+def test_configuration(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # model_change_callback = MockModelChangeCallback()
+    configuration = component_configuration.Configuration(hypertts_instance)
+    dialog.addChildLayout(configuration.draw())
+
+    dialog.exec_()
