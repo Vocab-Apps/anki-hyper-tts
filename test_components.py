@@ -1054,6 +1054,23 @@ def test_configuration(qtbot):
     service_a_delay.setValue(42)
     assert configuration.model.get_service_configuration_key('ServiceA', 'delay') == 42
 
-    
+    # press save button
+    qtbot.mouseClick(configuration.save_button, PyQt5.QtCore.Qt.LeftButton)
+    assert 'configuration' in hypertts_instance.anki_utils.written_config
+    expected_output = {
+        'hypertts_pro_api_key': 'abcd1234',
+        'service_config': {
+            'ServiceA': {
+                'enabled': False,
+                'region': 'us',
+                'api_key': '6789',
+                'delay': 42
+            }
+        }
+    }
+    assert hypertts_instance.anki_utils.written_config['configuration'] == expected_output
+
+    # make sure dialog was closed
+    assert dialog.closed == True
 
     # dialog.exec_()

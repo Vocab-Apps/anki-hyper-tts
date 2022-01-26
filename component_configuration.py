@@ -132,6 +132,7 @@ class Configuration(component_common.ConfigComponentBase):
         return global_vlayout
 
     def save_button_pressed(self):
+        self.hypertts.save_configuration(self.model)
         self.dialog.close()
 
     def cancel_button_pressed(self):

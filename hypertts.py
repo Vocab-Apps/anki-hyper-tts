@@ -277,6 +277,10 @@ class HyperTTS():
             batch_name = f'Preset {i}'
         return batch_name
 
+    def save_configuration(self, configuration_model):
+        self.config[constants.CONFIG_CONFIGURATION] = configuration_model.serialize()
+        self.anki_utils.write_config(self.config)
+
     # deserialization routines for loading from config
     # ================================================
 

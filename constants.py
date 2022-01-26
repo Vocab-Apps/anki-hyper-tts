@@ -30,6 +30,7 @@ class TextReplacementRuleType(enum.Enum):
     Regex = enum.auto()
 
 CONFIG_BATCH_CONFIG = 'batch_config'
+CONFIG_CONFIGURATION = 'configuration'
 
 ADDON_NAME = 'HyperTTS'
 MENU_PREFIX = ADDON_NAME + ':'
