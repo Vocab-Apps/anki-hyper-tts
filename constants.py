@@ -31,7 +31,6 @@ class TextReplacementRuleType(enum.Enum):
 
 CONFIG_BATCH_CONFIG = 'batch_config'
 
-CONFIG_TEXT_PROCESSING = 'text_processing'
 ADDON_NAME = 'HyperTTS'
 MENU_PREFIX = ADDON_NAME + ':'
 

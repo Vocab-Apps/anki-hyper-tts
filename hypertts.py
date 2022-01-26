@@ -249,14 +249,6 @@ class HyperTTS():
     # functions related to addon config
     # =================================
 
-    def get_text_processing_settings(self):
-        return self.config.get(constants.CONFIG_TEXT_PROCESSING, {})
-
-    def store_text_processing_settings(self, settings):
-        self.config[constants.CONFIG_TEXT_PROCESSING] = settings
-        self.anki_utils.write_config(self.config)
-        self.text_utils = text_utils.TextUtils(settings)
-
     def save_batch_config(self, batch_name, batch):
         if constants.CONFIG_BATCH_CONFIG not in self.config:
             self.config[constants.CONFIG_BATCH_CONFIG] = {}
