@@ -989,10 +989,16 @@ def test_text_processing(qtbot):
     text_processing_component.load_model(text_processing)
 
     row = 0
-    # index_pattern = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
-    index_pattern = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_TYPE)
-    rule_type = text_processing_component.textReplacementTableModel.data(index_pattern, PyQt5.QtCore.Qt.DisplayRole)
+    index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_TYPE)
+    rule_type = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
     assert rule_type.value() == 'Simple'
+    index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
+    source = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
+    assert source.value() == '"a"'
+    index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
+    target = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
+    assert target.value() == '"b"'
+
     return
     index_replacement = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
     text_processing.textReplacementTableModel.setData(index_replacement, 'number', PyQt5.QtCore.Qt.EditRole)
