@@ -2,6 +2,7 @@ import text_utils
 import errors
 import constants
 import unittest
+import config_models
 
 def test_is_empty(qtbot):
     utils = text_utils.TextUtils({})
@@ -90,3 +91,12 @@ def test_replacement_simple(qtbot):
 
     text_replacement2 = text_utils.TextReplacement(expected_dict)
     assert text_replacement2.process('yoyo)') == 'rep'
+
+def test_process_text(qtbot):
+    text_processing = config_models.TextProcessing()
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
+    rule.source = 'word_a'
+    rule.target = 'word_b'
+    text_processing.add_text_replacement_rule(rule)
+
+    assert text_utils.process_text('sentence word_a word_c', text_processing) == 'sentence word_b word_c'

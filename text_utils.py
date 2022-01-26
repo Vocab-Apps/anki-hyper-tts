@@ -32,6 +32,19 @@ def extract_advanced_template(input):
     return extract_template_regexp(input, REGEXP_REALTIME_ADVANCED_TEMPLATE)
 
 
+def process_text(source_text, text_processing_model):
+    processed_text = anki.utils.htmlToTextLine(source_text)
+    for text_replacement_rule in text_processing_model.text_replacement_rules:
+        processed_text = process_text_replacement_rule(processed_text, text_replacement_rule)
+    return processed_text
+
+def process_text_replacement_rule(input_text, rule):
+    if rule.rule_type == constants.TextReplacementRuleType.Regex:
+        result = re.sub(rule.source, rule.target, input_text)
+    elif rule.rule_type == constants.TextReplacementRuleType.Simple:
+        result = input_text.replace(rule.source,  rule.target)
+    return result
+
 def create_text_replacement():
     return TextReplacement({
         'pattern': None,
