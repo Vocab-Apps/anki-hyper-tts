@@ -8,8 +8,9 @@ config_models = __import__('config_models', globals(), locals(), [], sys._addon_
 
 class Configuration(component_common.ConfigComponentBase):
 
-    def __init__(self, hypertts):
+    def __init__(self, hypertts, dialog):
         self.hypertts = hypertts
+        self.dialog = dialog
         self.model = config_models.Configuration()
 
     def get_model(self):
@@ -112,4 +113,26 @@ class Configuration(component_common.ConfigComponentBase):
         groupbox.setLayout(vlayout)
         global_vlayout.addWidget(groupbox)
 
+        # bottom buttons
+        # ==============
+
+        hlayout = PyQt5.QtWidgets.QHBoxLayout()
+        self.save_button = PyQt5.QtWidgets.QPushButton('Save')
+        self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
+        hlayout.addStretch()
+        hlayout.addWidget(self.save_button)
+        hlayout.addWidget(self.cancel_button)
+        global_vlayout.addLayout(hlayout)
+
+        # wire events
+        # ===========
+        self.save_button.pressed.connect(self.save_button_pressed)
+        self.cancel_button.pressed.connect(self.cancel_button_pressed)
+
         return global_vlayout
+
+    def save_button_pressed(self):
+        self.dialog.close()
+
+    def cancel_button_pressed(self):
+        self.dialog.close()

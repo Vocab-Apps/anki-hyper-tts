@@ -1025,7 +1025,7 @@ def test_configuration(qtbot):
     dialog.setupUi()
 
     # model_change_callback = MockModelChangeCallback()
-    configuration = component_configuration.Configuration(hypertts_instance)
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
     dialog.addChildLayout(configuration.draw())
 
     # try making changes to the service config and saving
@@ -1054,5 +1054,6 @@ def test_configuration(qtbot):
     service_a_delay.setValue(42)
     assert configuration.model.get_service_configuration_key('ServiceA', 'delay') == 42
 
+    
 
     # dialog.exec_()
