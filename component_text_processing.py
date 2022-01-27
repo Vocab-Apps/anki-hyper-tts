@@ -150,6 +150,7 @@ class TextProcessing(component_common.ConfigComponentBase):
         logging.info(f'load_model')
         self.model = model
         self.textReplacementTableModel.load_model(self.model)
+        self.set_text_processing_rules_widget_state()
 
     def draw(self):
 
@@ -184,10 +185,25 @@ class TextProcessing(component_common.ConfigComponentBase):
         groupbox.setLayout(vlayout)
         global_vlayout.addWidget(groupbox)
 
+        # text processing rules
+        # =====================
+        groupbox = PyQt5.QtWidgets.QGroupBox('Text Processing Rules')
+        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+
+        self.html_to_text_line_checkbox = PyQt5.QtWidgets.QCheckBox('Process HTML tags, convert into single line')
+        vlayout.addWidget(self.html_to_text_line_checkbox)
+        self.ssml_convert_characters_checkbox = PyQt5.QtWidgets.QCheckBox('Convert SSML characters (like <, &&, etc)')
+        vlayout.addWidget(self.ssml_convert_characters_checkbox)
+        self.run_replace_rules_after_checkbox = PyQt5.QtWidgets.QCheckBox('Run text replacement rules last (uncheck to run first)')
+        vlayout.addWidget(self.run_replace_rules_after_checkbox)        
+
+        groupbox.setLayout(vlayout)
+        global_vlayout.addWidget(groupbox)
+
         # setup preview table
         # ===================
 
-        groupbox = PyQt5.QtWidgets.QGroupBox('Text Replacement rules')
+        groupbox = PyQt5.QtWidgets.QGroupBox('Text Replacement Rules')
         vlayout = PyQt5.QtWidgets.QVBoxLayout()        
 
         vlayout.addWidget(PyQt5.QtWidgets.QLabel('Add replacement rules and double click to edit pattern / replacements'))
@@ -213,14 +229,41 @@ class TextProcessing(component_common.ConfigComponentBase):
 
         # wire events
         # ===========
+        self.html_to_text_line_checkbox.stateChanged.connect(self.html_to_text_line_checkbox_change)
+        self.ssml_convert_characters_checkbox.stateChanged.connect(self.ssml_convert_characters_checkbox_change)
+        self.run_replace_rules_after_checkbox.stateChanged.connect(self.run_replace_rules_after_checkbox_change)
+
         self.add_replace_simple_button.pressed.connect(lambda: self.textReplacementTableModel.add_replacement(constants.TextReplacementRuleType.Simple))
         self.add_replace_regex_button.pressed.connect(lambda: self.textReplacementTableModel.add_replacement(constants.TextReplacementRuleType.Regex))
         self.remove_replace_button.pressed.connect(self.delete_text_replacement)
         self.typing_timer = self.hypertts.anki_utils.wire_typing_timer(self.sample_text_input, self.update_transformed_text)
 
+        self.set_text_processing_rules_widget_state()
+
         self.model_change()
 
         return global_vlayout
+
+    def set_text_processing_rules_widget_state(self):
+        self.html_to_text_line_checkbox.setChecked(self.model.html_to_text_line)
+        self.ssml_convert_characters_checkbox.setChecked(self.model.ssml_convert_characters)
+        self.run_replace_rules_after_checkbox.setChecked(self.model.run_replace_rules_after)
+
+    def html_to_text_line_checkbox_change(self, value):
+        enabled = value == 2
+        self.model.html_to_text_line = enabled
+        logging.info(f'self.model.html_to_text_line: {self.model.html_to_text_line}')
+        self.model_change()
+
+    def ssml_convert_characters_checkbox_change(self, value):
+        enabled = value == 2
+        self.model.ssml_convert_characters = enabled
+        self.model_change()
+
+    def run_replace_rules_after_checkbox_change(self, value):
+        enabled = value == 2
+        self.model.run_replace_rules_after = enabled
+        self.model_change()        
 
     def model_change(self):
         self.update_transformed_text()

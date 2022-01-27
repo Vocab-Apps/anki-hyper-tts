@@ -940,6 +940,8 @@ def test_text_processing(qtbot):
     text_processing = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildLayout(text_processing.draw())
 
+    # dialog.exec_()
+
     # asserts on the GUI
     assert text_processing.textReplacementTableModel.headerData(0, PyQt5.QtCore.Qt.Horizontal, PyQt5.QtCore.Qt.DisplayRole) == 'Type'
     assert text_processing.textReplacementTableModel.headerData(1, PyQt5.QtCore.Qt.Horizontal, PyQt5.QtCore.Qt.DisplayRole) == 'Pattern'
@@ -1006,6 +1008,19 @@ def test_text_processing(qtbot):
     assert model_change_callback.model.text_replacement_rules[2].source == '[0-9]+'
     assert model_change_callback.model.text_replacement_rules[2].target == 'number'
 
+    # do some other model callback checks
+    text_processing.html_to_text_line_checkbox.setChecked(False)
+    assert model_change_callback.model.html_to_text_line == False
+    text_processing.html_to_text_line_checkbox.setChecked(True)
+    assert model_change_callback.model.html_to_text_line == True
+    text_processing.ssml_convert_characters_checkbox.setChecked(False)
+    assert model_change_callback.model.ssml_convert_characters == False
+    text_processing.run_replace_rules_after_checkbox.setChecked(False)
+    assert model_change_callback.model.run_replace_rules_after == False    
+
+    # dialog.exec_()
+
+
     # verify load_model
     # =================
 
@@ -1018,6 +1033,10 @@ def test_text_processing(qtbot):
     rule.source = 'c'
     rule.target = 'd'    
     text_processing.add_text_replacement_rule(rule)
+
+    text_processing.html_to_text_line = False
+    text_processing.ssml_convert_characters = True
+    text_processing.run_replace_rules_after = False
 
     dialog = EmptyDialog()
     dialog.setupUi()
@@ -1051,6 +1070,9 @@ def test_text_processing(qtbot):
     target = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
     assert target.value() == '"d"'    
 
+    assert text_processing_component.html_to_text_line_checkbox.isChecked() == False
+    assert text_processing_component.ssml_convert_characters_checkbox.isChecked() == True
+    assert text_processing_component.run_replace_rules_after_checkbox.isChecked() == False
 
     # dialog.exec_()
 
