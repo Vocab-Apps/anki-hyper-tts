@@ -53,6 +53,7 @@ def test_process_text_rules(qtbot):
     assert text_utils.process_text('word1<br/>word2', text_processing) == 'word1word2'
     # disable html processing
     text_processing.html_to_text_line = False
+    text_processing.ssml_convert_characters = False
     assert text_utils.process_text('word1<br/>word2', text_processing) == 'word1<br/>word2'
 
     # add a replacement rule which targets the HTML tag
@@ -66,3 +67,10 @@ def test_process_text_rules(qtbot):
     text_processing.run_replace_rules_after = False
     # now, our replacement rules will run first
     assert text_utils.process_text('word1<br/>word2', text_processing) == 'word1 linebreak word2'
+
+    # SSML replacements
+    text_processing = config_models.TextProcessing()
+    text_processing.ssml_convert_characters = True
+    assert text_utils.process_text('patients age < 30', text_processing) == 'patients age &lt; 30'
+    text_processing.ssml_convert_characters = False
+    assert text_utils.process_text('patients age < 30', text_processing) == 'patients age < 30'

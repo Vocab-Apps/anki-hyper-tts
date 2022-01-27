@@ -15,6 +15,11 @@ else:
 REGEXP_REALTIME_SIMPLE_TEMPLATE = '.*<hypertts-template\s+setting="(.*)"\s+version="(.*)">(.*)</hypertts-template>.*'
 REGEXP_REALTIME_ADVANCED_TEMPLATE = '.*<hypertts-template-advanced\s+setting="(.*)"\s+version="(.*)">\n(.*)</hypertts-template-advanced>.*'
 
+SSML_CONVERSION_MAP ={
+    '<': '&lt;',
+    '>': '&gt;',
+}
+
 def extract_template_regexp(input, regexp):
     match_result = re.match(regexp, input, re.DOTALL)
     if match_result == None:
@@ -39,6 +44,9 @@ def process_text_replacement(text, text_processing_model):
 def process_text_rules(text, text_processing_model):
     if text_processing_model.html_to_text_line:
         text = anki.utils.htmlToTextLine(text)
+    if text_processing_model.ssml_convert_characters:
+        for pattern, replace in SSML_CONVERSION_MAP.items():
+            text = text.replace(pattern, replace)
     return text
 
 def process_text(source_text, text_processing_model):
