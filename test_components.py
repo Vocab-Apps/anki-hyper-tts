@@ -1028,7 +1028,7 @@ def test_configuration(qtbot):
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
 
-    dialog.exec_()
+    # dialog.exec_()
 
     # try making changes to the service config and saving
     # ===================================================
@@ -1036,10 +1036,9 @@ def test_configuration(qtbot):
     qtbot.keyClicks(configuration.hypertts_pro_api_key, 'abcd1234')
     assert configuration.model.hypertts_pro_api_key == 'abcd1234'
 
-    # setting the API key should make ServiceB's enable checkbox disabled and checked
-    service_b_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceB_enabled")
-    assert service_b_enabled_checkbox.isChecked() == True
-    assert service_b_enabled_checkbox.isEnabled() == False
+    # setting the API key should make ServiceB's clt stack show up
+    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_CLT
+    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_SERVICE
 
     service_a_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_enabled")
     service_a_enabled_checkbox.setChecked(True)
@@ -1075,9 +1074,6 @@ def test_configuration(qtbot):
                 'api_key': '6789',
                 'delay': 42
             },
-            'ServiceB': {
-                'enabled': True,
-            }            
         }
     }
     assert hypertts_instance.anki_utils.written_config['configuration'] == expected_output
@@ -1103,6 +1099,9 @@ def test_configuration(qtbot):
 
     assert configuration.hypertts_pro_api_key.text() == 'myapikey'
 
+    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_CLT
+    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_SERVICE
+
     service_a_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_enabled")
     assert service_a_enabled_checkbox.isChecked() == False
     service_b_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceB_enabled")
@@ -1118,8 +1117,13 @@ def test_configuration(qtbot):
     # setting the API key should make ServiceB's enable checkbox disabled and checked
     service_b_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceB_enabled")
     assert service_b_enabled_checkbox.isChecked() == True
-    assert service_b_enabled_checkbox.isEnabled() == False
 
     assert configuration.save_button.isEnabled() == False
 
-    dialog.exec_()
+    # remove API key, the service stack for ServiceB should appear
+    configuration.hypertts_pro_api_key.setText('')
+    # dialog.exec_()
+    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_SERVICE
+    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_SERVICE
+
+    # dialog.exec_()
