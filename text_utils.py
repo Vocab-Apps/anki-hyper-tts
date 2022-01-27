@@ -31,11 +31,19 @@ def extract_simple_template(input):
 def extract_advanced_template(input):
     return extract_template_regexp(input, REGEXP_REALTIME_ADVANCED_TEMPLATE)
 
+def process_text_replacement(text, text_processing_model):
+    for text_replacement_rule in text_processing_model.text_replacement_rules:
+        text = process_text_replacement_rule(text, text_replacement_rule)    
+    return text
+
+def process_text_rules(text, text_processing_model):
+    if text_processing_model.html_to_text_line:
+        text = anki.utils.htmlToTextLine(text)
+    return text
 
 def process_text(source_text, text_processing_model):
-    processed_text = anki.utils.htmlToTextLine(source_text)
-    for text_replacement_rule in text_processing_model.text_replacement_rules:
-        processed_text = process_text_replacement_rule(processed_text, text_replacement_rule)
+    text = process_text_rules(source_text, text_processing_model)
+    processed_text = process_text_replacement(text, text_processing_model)
     return processed_text
 
 def process_text_replacement_rule(input_text, rule):

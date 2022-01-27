@@ -73,6 +73,10 @@ GUI_TEXT_BATCH_COMPLETED = """<b>Finished adding Audio to notes</b>. You can und
 Undo HyperTTS: Add Audio to Notes. You may close this dialog.
 """
 
+TEXT_PROCESSING_DEFAULT_HTMLTOTEXTLINE = True
+TEXT_PROCESSING_DEFAULT_SSML_CHARACTERS = True
+TEXT_PROCESSING_DEFAULT_REPLACE_AFTER = True
+
 CLIENT_NAME = 'hypertts'
 
 class ReplaceType(enum.Enum):
