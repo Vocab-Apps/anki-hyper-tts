@@ -173,9 +173,8 @@ class HyperTTS():
     # ================
 
     def preview_note_audio(self, batch, note):
-        with self.error_manager.get_single_action_context('Playing Audio Preview'):
-            full_filename, audio_filename = self.get_note_audio(batch, note)
-            self.anki_utils.play_sound(full_filename)
+        full_filename, audio_filename = self.get_note_audio(batch, note)
+        self.anki_utils.play_sound(full_filename)
 
     def play_sound(self, source_text, voice, options):
         logging.info(f'playing audio for {source_text}')
