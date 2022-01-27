@@ -31,6 +31,13 @@ class TTSTests(unittest.TestCase):
         # use individual service keys
         self.manager = servicemanager.ServiceManager(services_dir(), 'services')
         self.manager.init_services()
+
+        # disable test services if any are found
+        test_service_names = ['ServiceA', 'ServiceB']
+        for test_service_name in test_service_names:
+            if test_service_name in self.manager.get_all_services():
+                self.manager.get_service(test_service_name).set_enabled(False)
+
         # google
         self.manager.get_service('Google').set_enabled(True)
         self.manager.get_service('Google').configure({'api_key': os.environ['GOOGLE_SERVICES_KEY']})
