@@ -122,7 +122,6 @@ class ServiceManager():
             return response.content
         else:
             error_message = f"Status code: {response.status_code} ({response.content})"
-            logging.error(error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
     def full_voice_list(self) -> typing.List[voice.VoiceBase]:

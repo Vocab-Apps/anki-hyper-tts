@@ -153,7 +153,6 @@ class AnkiUtils():
 
     def report_known_exception_interactive(self, exception, action):
         error_message = f'Encountered an error while {action}: {str(exception)}'
-        logging.warning(error_message)
         self.critical_message(error_message, None)
 
     def report_unknown_exception_interactive(self, exception, action):
