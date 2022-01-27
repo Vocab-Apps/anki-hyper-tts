@@ -31,7 +31,7 @@ else:
         import sentry_sdk
         from . import version
 
-        api_key = aqt.mw.addonManager.getConfig(__name__).get('api_key', None)
+        api_key = aqt.mw.addonManager.getConfig(__name__).get('configuration', {}).get('hypertts_pro_api_key', None)
 
         # setup crash reporting
         # =====================
