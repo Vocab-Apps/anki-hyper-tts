@@ -3,6 +3,7 @@ import json
 import tempfile
 import re
 import os
+import sys
 
 import constants
 import hypertts
@@ -21,6 +22,14 @@ class MockFuture():
 
     def result(self):
         return self.result_data
+
+class MockFutureException():
+    def __init__(self, exception_value):
+        self.exception_value = exception_value
+
+    def result(self):
+        # raise stored exception
+        raise self.exception_value
 
 
 class MockAnkiUtils():
@@ -103,8 +112,12 @@ class MockAnkiUtils():
 
     def run_in_background(self, task_fn, task_done_fn):
         # just run the two tasks immediately
-        result = task_fn()
-        task_done_fn(MockFuture(result))
+        try:
+            result = task_fn()
+            task_done_fn(MockFuture(result))
+        except Exception as e:
+            task_done_fn(MockFutureException(e))
+        
 
     def run_on_main(self, task_fn):
         # just run the task immediately

@@ -844,6 +844,9 @@ def test_batch_dialog_sound_preview_error(qtbot):
     # select second row
     index_second_row = batch.preview.batch_preview_table_model.createIndex(1, 0)
     batch.preview.table_view.selectionModel().select(index_second_row, PyQt5.QtCore.QItemSelectionModel.Select)
+
+    # dialog.exec_()
+
     # press preview button
     qtbot.mouseClick(batch.preview_sound_button, PyQt5.QtCore.Qt.LeftButton)
 
