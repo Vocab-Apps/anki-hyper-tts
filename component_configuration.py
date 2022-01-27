@@ -8,10 +8,14 @@ config_models = __import__('config_models', globals(), locals(), [], sys._addon_
 
 class Configuration(component_common.ConfigComponentBase):
 
+    STACK_LEVEL_SERVICE = 0
+    STACK_LEVEL_CLT = 1
+
     def __init__(self, hypertts, dialog):
         self.hypertts = hypertts
         self.dialog = dialog
         self.model = config_models.Configuration()
+        self.service_stack_map = {}
 
     def get_model(self):
         return self.model
@@ -66,19 +70,92 @@ class Configuration(component_common.ConfigComponentBase):
     def set_cloud_language_tools_enabled(self):
         # will enable/disable checkboxes
         for service in self.hypertts.service_manager.get_all_services():
-            widget_name = self.get_service_enabled_widget_name(service)
-            checkbox = self.dialog.findChild(PyQt5.QtWidgets.QCheckBox, widget_name)
-            self.manage_service_enabled_checkbox(service, checkbox)
+            self.manage_service_stack(service, self.service_stack_map[service.name])
 
-    def manage_service_enabled_checkbox(self, service, checkbox):
+    def manage_service_stack(self, service, stack):
         if self.cloud_language_tools_enabled() and service.cloudlanguagetools_enabled():
-            checkbox.setChecked(True)
-            checkbox.setEnabled(False)
+            logging.info(f'{service.name}: show CLT stack')
+            stack.setCurrentIndex(self.STACK_LEVEL_CLT)
         else:
-            checkbox.setEnabled(True)
+            logging.info(f'{service.name}: show service stack')
+            stack.setCurrentIndex(self.STACK_LEVEL_SERVICE)
 
     def get_service_enabled_widget_name(self, service):
         return f'{service.name}_enabled'
+
+    def draw_service_options(self, service, layout):
+        service_enabled_checkbox = PyQt5.QtWidgets.QCheckBox('Enable')
+        service_enabled_checkbox.setObjectName(self.get_service_enabled_widget_name(service))
+        service_enabled_checkbox.setChecked(self.model.get_service_enabled(service.name))
+        service_enabled_checkbox.stateChanged.connect(self.get_service_enable_change_fn(service))
+        layout.addWidget(service_enabled_checkbox)
+
+        configuration_options = service.configuration_options()
+        options_gridlayout = PyQt5.QtWidgets.QGridLayout()
+        row = 0
+        for key, type in configuration_options.items():
+            widget_name = f'{service.name}_{key}'
+            options_gridlayout.addWidget(PyQt5.QtWidgets.QLabel(key + ':'), row, 0, 1, 1)
+            if type == str:
+                lineedit = PyQt5.QtWidgets.QLineEdit()
+                lineedit.setText(self.model.get_service_configuration_key(service.name, key))
+                lineedit.setObjectName(widget_name)
+                lineedit.textChanged.connect(self.get_service_config_str_change_fn(service, key))
+                options_gridlayout.addWidget(lineedit, row, 1, 1, 1)
+            elif type == int:
+                spinbox = PyQt5.QtWidgets.QSpinBox()
+                saved_value = self.model.get_service_configuration_key(service.name, key)
+                if saved_value != None:
+                    spinbox.setValue(saved_value)
+                spinbox.setObjectName(widget_name)
+                spinbox.valueChanged.connect(self.get_service_config_int_change_fn(service, key))
+                options_gridlayout.addWidget(spinbox, row, 1, 1, 1)
+            elif isinstance(type, list):
+                combobox = PyQt5.QtWidgets.QComboBox()
+                combobox.setObjectName(widget_name)
+                combobox.addItems(type)
+                combobox.setCurrentText(self.model.get_service_configuration_key(service.name, key))
+                combobox.currentTextChanged.connect(self.get_service_config_list_change_fn(service, key))
+                options_gridlayout.addWidget(combobox, row, 1, 1, 1)
+            row += 1
+        
+        layout.addLayout(options_gridlayout)
+
+    def draw_service(self, service, layout):
+        logging.info(f'draw_service {service.name}')
+        service_groupbox = PyQt5.QtWidgets.QGroupBox(service.name)
+
+        # add service config options, when cloudlanguagetools not enabled
+        # ===============================================================
+
+        service_stack = PyQt5.QtWidgets.QWidget()
+        service_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        self.draw_service_options(service, service_vlayout)
+        service_stack.setLayout(service_vlayout)
+
+        # when cloudlanguagetools is enabled
+        # ==================================
+        clt_stack = PyQt5.QtWidgets.QWidget()
+        clt_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        clt_vlayout.addWidget(PyQt5.QtWidgets.QLabel('HyperTTS Pro'))
+        clt_stack.setLayout(clt_vlayout)
+
+        # create the stack widget
+        # =======================
+        stack_widget = PyQt5.QtWidgets.QStackedWidget()
+        stack_widget.addWidget(service_stack)
+        stack_widget.addWidget(clt_stack)
+
+        self.manage_service_stack(service, stack_widget)
+
+        self.service_stack_map[service.name] = stack_widget
+
+        combined_service_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        combined_service_vlayout.addWidget(stack_widget)
+
+        service_groupbox.setLayout(combined_service_vlayout)
+
+        layout.addWidget(service_groupbox)
 
     def draw(self, layout):
         self.global_vlayout = PyQt5.QtWidgets.QVBoxLayout()
@@ -104,48 +181,8 @@ class Configuration(component_common.ConfigComponentBase):
         groupbox = PyQt5.QtWidgets.QGroupBox('Services')
         vlayout = PyQt5.QtWidgets.QVBoxLayout()
         for service in self.hypertts.service_manager.get_all_services():
-            service_groupbox = PyQt5.QtWidgets.QGroupBox(service.name)
-            service_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+            self.draw_service(service, vlayout)
 
-            service_enabled_checkbox = PyQt5.QtWidgets.QCheckBox('Enable')
-            service_enabled_checkbox.setObjectName(self.get_service_enabled_widget_name(service))
-            service_enabled_checkbox.setChecked(self.model.get_service_enabled(service.name))
-            self.manage_service_enabled_checkbox(service, service_enabled_checkbox)
-            service_enabled_checkbox.stateChanged.connect(self.get_service_enable_change_fn(service))
-            service_vlayout.addWidget(service_enabled_checkbox)
-
-            configuration_options = service.configuration_options()
-            options_gridlayout = PyQt5.QtWidgets.QGridLayout()
-            row = 0
-            for key, type in configuration_options.items():
-                widget_name = f'{service.name}_{key}'
-                options_gridlayout.addWidget(PyQt5.QtWidgets.QLabel(key + ':'), row, 0, 1, 1)
-                if type == str:
-                    lineedit = PyQt5.QtWidgets.QLineEdit()
-                    lineedit.setText(self.model.get_service_configuration_key(service.name, key))
-                    lineedit.setObjectName(widget_name)
-                    lineedit.textChanged.connect(self.get_service_config_str_change_fn(service, key))
-                    options_gridlayout.addWidget(lineedit, row, 1, 1, 1)
-                elif type == int:
-                    spinbox = PyQt5.QtWidgets.QSpinBox()
-                    saved_value = self.model.get_service_configuration_key(service.name, key)
-                    if saved_value != None:
-                        spinbox.setValue(saved_value)
-                    spinbox.setObjectName(widget_name)
-                    spinbox.valueChanged.connect(self.get_service_config_int_change_fn(service, key))
-                    options_gridlayout.addWidget(spinbox, row, 1, 1, 1)
-                elif isinstance(type, list):
-                    combobox = PyQt5.QtWidgets.QComboBox()
-                    combobox.setObjectName(widget_name)
-                    combobox.addItems(type)
-                    combobox.setCurrentText(self.model.get_service_configuration_key(service.name, key))
-                    combobox.currentTextChanged.connect(self.get_service_config_list_change_fn(service, key))
-                    options_gridlayout.addWidget(combobox, row, 1, 1, 1)
-                row += 1
-
-            service_vlayout.addLayout(options_gridlayout)
-            service_groupbox.setLayout(service_vlayout)
-            vlayout.addWidget(service_groupbox)
         groupbox.setLayout(vlayout)
         self.global_vlayout.addWidget(groupbox)
 

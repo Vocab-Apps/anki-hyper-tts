@@ -1028,7 +1028,7 @@ def test_configuration(qtbot):
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
 
-    # dialog.exec_()
+    dialog.exec_()
 
     # try making changes to the service config and saving
     # ===================================================
@@ -1122,4 +1122,4 @@ def test_configuration(qtbot):
 
     assert configuration.save_button.isEnabled() == False
 
-    # dialog.exec_()
+    dialog.exec_()

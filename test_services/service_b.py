@@ -52,3 +52,8 @@ class ServiceB(service.ServiceBase):
         if voice.voice_key['voice_id'] == 'notfound':
             raise errors.AudioNotFoundError(source_text, voice)
         raise Exception('not implemented')
+
+    def configuration_options(self):
+        return {
+            'user_key': str
+        }        
