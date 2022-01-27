@@ -93,34 +93,7 @@ else:
         return os.path.join(current_script_dir, 'services')
     service_manager = servicemanager.ServiceManager(services_dir(), 'services')
     service_manager.init_services()    
-    service_manager.configure_cloudlanguagetools(os.environ['ANKI_LANGUAGE_TOOLS_API_KEY'])
     hyper_tts = hypertts.HyperTTS(ankiutils, service_manager)
+    # configure services based on config
+    service_manager.configure(hyper_tts.get_configuration())
     gui.init(hyper_tts)
-    # deckutils = deck_utils.DeckUtils(ankiutils)
-    # cloud_language_tools = cloudlanguagetools.CloudLanguageTools()
-    # languagetools = languagetools.LanguageTools(ankiutils, deckutils, cloud_language_tools)
-
-    # editor.init(languagetools)
-
-    def on_card_render(output, context):
-        logging.info('on_card_render')
-        # logging.info(context.fields())
-        # logging.info(context.card())
-        #logging.info(dir(context))
-        #logging.info(context.qfmt())
-        #logging.info(context.extra_state)
-        logging.info(output)
-        # extract advanced template content
-        #match_result = re.match('<hypertts-template-advanced>(.*)</hypertts-template-advanced>', output)
-        #print(match_result)
-        # output.answer_text += f"""[anki:tts][zh_HK]hello world[/anki:tts]"""
-
-        # add tts tag on answer
-        output.answer_av_tags.append(anki.sound.TTSTag('hello', 'zh_HK', [], 1.0, []))
-
-        # [anki:tts][zh_HK]{{Chinese}} {{English}}[/anki:tts]
-        # answer_av_tags
-        # TTSTag(field_text='你係唔係時時飲咖啡 do you often drink coffee ?', lang='zh_HK', voices=[], speed=1.0, other_args=[])
-
-
-    # anki.hooks.card_did_render.append(on_card_render)

@@ -65,7 +65,7 @@ class Configuration(component_common.ConfigComponentBase):
         return list_change
 
     def cloud_language_tools_enabled(self):
-        return self.model.hypertts_pro_api_key != None and len(self.model.hypertts_pro_api_key) > 0
+        return self.model.hypertts_pro_api_key_set()
 
     def set_cloud_language_tools_enabled(self):
         # will enable/disable checkboxes

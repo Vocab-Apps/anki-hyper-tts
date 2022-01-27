@@ -347,6 +347,9 @@ class Configuration(ConfigModelBase):
     def set_hypertts_pro_api_key(self, api_key):
         self._hypertts_pro_api_key = api_key
 
+    def hypertts_pro_api_key_set(self):
+        return self.hypertts_pro_api_key != None and len(self.hypertts_pro_api_key)
+
     hypertts_pro_api_key = property(get_hypertts_pro_api_key, set_hypertts_pro_api_key)
 
     def check_service_config_key(self, service_name):
@@ -371,6 +374,9 @@ class Configuration(ConfigModelBase):
 
     def set_service_config(self, service_config):
         self.service_config = service_config
+
+    def get_service_config(self):
+        return self.service_config
 
     def serialize(self):
         return {
