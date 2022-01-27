@@ -47,7 +47,7 @@ else:
                 stack_summary = traceback.extract_tb(tb)
                 for stack_frame in stack_summary:
                     filename = stack_frame.filename
-                    if 'anki-hyper-tts' in filename or '771677663' in filename:
+                    if 'anki-hyper-tts' in filename or '111623432' in filename:
                         relevant_exception = True
                 
                 # if not, discard
