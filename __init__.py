@@ -51,7 +51,7 @@ else:
                 stack_summary = traceback.extract_tb(tb)
                 for stack_frame in stack_summary:
                     filename = stack_frame.filename
-                    if 'anki-language-tools' in filename or '771677663' in filename:
+                    if 'anki-hyper-tts' in filename or '771677663' in filename:
                         relevant_exception = True
                 
                 # if not, discard
@@ -61,24 +61,16 @@ else:
             return event
 
         # need to create an anki-hyper-tts project in sentry.io first
-        # sentry_sdk.init(
-        #     "https://dbee54f0eff84f0db037e995ae46df11@o968582.ingest.sentry.io/5920286",
-        #     traces_sample_rate=1.0,
-        #     release=f'anki-language-tools@{version.ANKI_LANGUAGE_TOOLS_VERSION}-{anki.version}',
-        #     environment=os.environ.get('SENTRY_ENV', 'production'),
-        #     before_send=sentry_filter
-        # )
+        sentry_sdk.init(
+            "https://a4170596966d47bb9f8fda74a9370bc7@o968582.ingest.sentry.io/6170140",
+            traces_sample_rate=1.0,
+            release=f'anki-hyper-tts@{version.ANKI_HYPER_TTS_VERSION}-{anki.version}',
+            environment=os.environ.get('SENTRY_ENV', 'production'),
+            before_send=sentry_filter
+        )
 
     # initialize hypertts
     # ===================
-
-    # from . import languagetools
-    # from . import gui
-    # from . import editor
-    # from . import anki_utils
-    # from . import deck_utils
-    # from . import cloudlanguagetools
-    # from . import errors
 
     logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
                         datefmt='%Y%m%d-%H:%M:%S',
