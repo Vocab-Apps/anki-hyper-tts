@@ -1115,6 +1115,11 @@ def test_configuration(qtbot):
     service_a_delay = dialog.findChild(PyQt5.QtWidgets.QSpinBox, "ServiceA_delay")
     assert service_a_delay.value() == 7
 
+    # setting the API key should make ServiceB's enable checkbox disabled and checked
+    service_b_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceB_enabled")
+    assert service_b_enabled_checkbox.isChecked() == True
+    assert service_b_enabled_checkbox.isEnabled() == False
+
     assert configuration.save_button.isEnabled() == False
 
     # dialog.exec_()

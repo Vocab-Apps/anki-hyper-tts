@@ -28,8 +28,7 @@ class Configuration(component_common.ConfigComponentBase):
             logging.info('hypertts pro api key change')
             self.model.set_hypertts_pro_api_key(api_key)
             self.model_change()
-            enabled = len(api_key) > 0
-            self.set_cloud_language_tools_enabled(enabled)
+            self.set_cloud_language_tools_enabled()
         return change
 
     def get_service_enable_change_fn(self, service):
@@ -61,16 +60,22 @@ class Configuration(component_common.ConfigComponentBase):
             self.model_change()
         return list_change
 
-    def set_cloud_language_tools_enabled(self, enabled):
+    def cloud_language_tools_enabled(self):
+        return self.model.hypertts_pro_api_key != None and len(self.model.hypertts_pro_api_key) > 0
+
+    def set_cloud_language_tools_enabled(self):
         # will enable/disable checkboxes
         for service in self.hypertts.service_manager.get_all_services():
             widget_name = self.get_service_enabled_widget_name(service)
             checkbox = self.dialog.findChild(PyQt5.QtWidgets.QCheckBox, widget_name)
-            if enabled and service.cloudlanguagetools_enabled():
-                checkbox.setChecked(True)
-                checkbox.setEnabled(False)
-            else:
-                checkbox.setEnabled(True)
+            self.manage_service_enabled_checkbox(service, checkbox)
+
+    def manage_service_enabled_checkbox(self, service, checkbox):
+        if self.cloud_language_tools_enabled() and service.cloudlanguagetools_enabled():
+            checkbox.setChecked(True)
+            checkbox.setEnabled(False)
+        else:
+            checkbox.setEnabled(True)
 
     def get_service_enabled_widget_name(self, service):
         return f'{service.name}_enabled'
@@ -105,6 +110,7 @@ class Configuration(component_common.ConfigComponentBase):
             service_enabled_checkbox = PyQt5.QtWidgets.QCheckBox('Enable')
             service_enabled_checkbox.setObjectName(self.get_service_enabled_widget_name(service))
             service_enabled_checkbox.setChecked(self.model.get_service_enabled(service.name))
+            self.manage_service_enabled_checkbox(service, service_enabled_checkbox)
             service_enabled_checkbox.stateChanged.connect(self.get_service_enable_change_fn(service))
             service_vlayout.addWidget(service_enabled_checkbox)
 
