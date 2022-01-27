@@ -19,14 +19,10 @@ else:
     import anki.hooks
     import aqt
     import anki.sound
-    from . import constants
-    from . import anki_utils
-    from . import servicemanager
-    from . import hypertts
-    from . import gui
     
     # setup sentry crash reporting
     # ============================
+    from . import constants
 
     if constants.ENABLE_SENTRY_CRASH_REPORTING:
         addon_dir = os.path.dirname(os.path.realpath(__file__))
@@ -68,6 +64,14 @@ else:
             environment=os.environ.get('SENTRY_ENV', 'production'),
             before_send=sentry_filter
         )
+
+    # addon imports
+    # =============
+
+    from . import anki_utils
+    from . import servicemanager
+    from . import hypertts
+    from . import gui
 
     # initialize hypertts
     # ===================

@@ -60,22 +60,25 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
         self.accept()
 
 def launch_configuration_dialog(hypertts):
-    logging.info('launch_configuration_dialog')
-    dialog = ConfigurationDialog(hypertts)
-    dialog.setupUi()
-    dialog.exec_()
+    with hypertts.error_manager.get_single_action_context('Launching Configuration Dialog'):
+        logging.info('launch_configuration_dialog')
+        dialog = ConfigurationDialog(hypertts)
+        dialog.setupUi()
+        dialog.exec_()
 
 def launch_batch_dialog_browser(hypertts, note_id_list, batch_name):
-    logging.info('launch_batch_dialog_browser')
-    dialog = BatchDialog(hypertts)
-    dialog.configure_browser(note_id_list, batch_name=batch_name)
-    dialog.exec_()
+    with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Browser'):
+        logging.info('launch_batch_dialog_browser')
+        dialog = BatchDialog(hypertts)
+        dialog.configure_browser(note_id_list, batch_name=batch_name)
+        dialog.exec_()
 
 def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
-    logging.info('launch_batch_dialog_editor')
-    dialog = BatchDialog(hypertts)
-    dialog.configure_editor(note, editor, add_mode)
-    dialog.exec_()
+    with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Editor'):
+        logging.info('launch_batch_dialog_editor')
+        dialog = BatchDialog(hypertts)
+        dialog.configure_editor(note, editor, add_mode)
+        dialog.exec_()
 
 
 def configure_editor(editor: aqt.editor.Editor, batch_name_list):

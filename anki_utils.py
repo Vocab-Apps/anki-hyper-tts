@@ -8,6 +8,9 @@ import logging
 import PyQt5
 from . import constants    
 
+if constants.ENABLE_SENTRY_CRASH_REPORTING:
+    import sentry_sdk
+
 class AnkiUtils():
     def __init__(self):
         pass
