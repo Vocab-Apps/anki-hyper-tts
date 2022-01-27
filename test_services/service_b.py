@@ -38,6 +38,9 @@ class ServiceB(service.ServiceBase):
     def __init__(self):
         pass
 
+    def cloudlanguagetools_enabled(self):
+        return True
+
     def voice_list(self):
         return [
             VoiceB('alex', self),

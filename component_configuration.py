@@ -28,6 +28,8 @@ class Configuration(component_common.ConfigComponentBase):
             logging.info('hypertts pro api key change')
             self.model.set_hypertts_pro_api_key(api_key)
             self.model_change()
+            enabled = len(api_key) > 0
+            self.set_cloud_language_tools_enabled(enabled)
         return change
 
     def get_service_enable_change_fn(self, service):
@@ -59,9 +61,22 @@ class Configuration(component_common.ConfigComponentBase):
             self.model_change()
         return list_change
 
+    def set_cloud_language_tools_enabled(self, enabled):
+        # will enable/disable checkboxes
+        for service in self.hypertts.service_manager.get_all_services():
+            widget_name = self.get_service_enabled_widget_name(service)
+            checkbox = self.dialog.findChild(PyQt5.QtWidgets.QCheckBox, widget_name)
+            if enabled and service.cloudlanguagetools_enabled():
+                checkbox.setChecked(True)
+                checkbox.setEnabled(False)
+            else:
+                checkbox.setEnabled(True)
+
+    def get_service_enabled_widget_name(self, service):
+        return f'{service.name}_enabled'
 
     def draw(self, layout):
-        global_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        self.global_vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
         # hypertts pro
         # ============
@@ -76,7 +91,7 @@ class Configuration(component_common.ConfigComponentBase):
         vlayout.addWidget(self.hypertts_pro_api_key)
 
         groupbox.setLayout(vlayout)
-        global_vlayout.addWidget(groupbox)
+        self.global_vlayout.addWidget(groupbox)
 
         # services
         # ========
@@ -87,9 +102,8 @@ class Configuration(component_common.ConfigComponentBase):
             service_groupbox = PyQt5.QtWidgets.QGroupBox(service.name)
             service_vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
-            widget_name = f'{service.name}_enabled'
             service_enabled_checkbox = PyQt5.QtWidgets.QCheckBox('Enable')
-            service_enabled_checkbox.setObjectName(widget_name)
+            service_enabled_checkbox.setObjectName(self.get_service_enabled_widget_name(service))
             service_enabled_checkbox.setChecked(self.model.get_service_enabled(service.name))
             service_enabled_checkbox.stateChanged.connect(self.get_service_enable_change_fn(service))
             service_vlayout.addWidget(service_enabled_checkbox)
@@ -127,7 +141,7 @@ class Configuration(component_common.ConfigComponentBase):
             service_groupbox.setLayout(service_vlayout)
             vlayout.addWidget(service_groupbox)
         groupbox.setLayout(vlayout)
-        global_vlayout.addWidget(groupbox)
+        self.global_vlayout.addWidget(groupbox)
 
         # bottom buttons
         # ==============
@@ -140,14 +154,14 @@ class Configuration(component_common.ConfigComponentBase):
         hlayout.addStretch()
         hlayout.addWidget(self.save_button)
         hlayout.addWidget(self.cancel_button)
-        global_vlayout.addLayout(hlayout)
+        self.global_vlayout.addLayout(hlayout)
 
         # wire events
         # ===========
         self.save_button.pressed.connect(self.save_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
-        layout.addLayout(global_vlayout)
+        layout.addLayout(self.global_vlayout)
 
     def save_button_pressed(self):
         self.hypertts.save_configuration(self.model)
