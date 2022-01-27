@@ -20,7 +20,7 @@ rm -rf __pycache__
 rm user_files/*.mp3
 rm -rvf htmlcov/
 ADDON_FILENAME=${HOME}/anki-addons-releases/anki-hyper-tts-${VERSION_NUMBER}.ankiaddon
-zip --exclude "*node_modules*" "__pycache__" "test_*.py" "test_services" -r ${ADDON_FILENAME} *
+zip --exclude "*node_modules*" "__pycache__" "test_*.py" "*test_services*" "*.ini" -r ${ADDON_FILENAME} *
 
 
 # if you need to undo a release:
