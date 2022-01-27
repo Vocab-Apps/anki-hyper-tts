@@ -8,6 +8,7 @@ constants = __import__('constants', globals(), locals(), [], sys._addon_import_l
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
+errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class VoiceSelection(component_common.ConfigComponentBase):
@@ -110,6 +111,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
     def set_default_selection_model(self):
         self.voice_selection_model = config_models.VoiceSelectionSingle() # default
         # pick first voice
+        if len(self.voice_list) == 0:
+            raise errors.NoVoicesAvailable()
         self.voice_selection_model.set_voice(config_models.VoiceWithOptions(self.voice_list[0], {}))
 
     def populate_combobox(self, combobox, items):

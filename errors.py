@@ -57,7 +57,10 @@ class RequestError(HyperTTSError):
         self.voice = voice
         self.error_message = error_message
 
-
+class NoVoicesAvailable(HyperTTSError):
+    def __init__(self):
+        message = f'No voices available. You may need to configure some services in the HyperTTS Configuration.'
+        super().__init__(message)
 
 # these ActionContext objects implement the "with " interface and help catch exceptions
 
