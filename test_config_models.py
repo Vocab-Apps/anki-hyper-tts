@@ -314,6 +314,9 @@ def test_batch_config(qtbot):
                 },        
         },
         'text_processing': {
+            'html_to_text_line': True,
+            'run_replace_rules_after': True,
+            'ssml_convert_characters': True,            
             'text_replacement_rules': [
                 {
                     'rule_type': 'Simple',
@@ -346,6 +349,9 @@ def test_text_processing(qtbot):
     text_processing.add_text_replacement_rule(rule)
 
     expected_output = {
+        'html_to_text_line': True,
+        'run_replace_rules_after': True,
+        'ssml_convert_characters': True,
         'text_replacement_rules': [
             {
                 'rule_type': 'Simple',
@@ -365,6 +371,9 @@ def test_text_processing(qtbot):
     text_processing.remove_text_replacement_rule(0)
 
     expected_output = {
+        'html_to_text_line': True,
+        'run_replace_rules_after': True,
+        'ssml_convert_characters': True,        
         'text_replacement_rules': [
             {
                 'rule_type': 'Regex',
