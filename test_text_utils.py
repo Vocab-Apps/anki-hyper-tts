@@ -72,5 +72,6 @@ def test_process_text_rules(qtbot):
     text_processing = config_models.TextProcessing()
     text_processing.ssml_convert_characters = True
     assert text_utils.process_text('patients age < 30', text_processing) == 'patients age &lt; 30'
+    assert text_utils.process_text('M&A', text_processing) == 'M&amp;A'
     text_processing.ssml_convert_characters = False
     assert text_utils.process_text('patients age < 30', text_processing) == 'patients age < 30'
