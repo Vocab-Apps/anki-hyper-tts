@@ -38,6 +38,9 @@ class ServiceB(service.ServiceBase):
     def __init__(self):
         pass
 
+    def test_service(self):
+        return True
+
     def cloudlanguagetools_enabled(self):
         return True
 

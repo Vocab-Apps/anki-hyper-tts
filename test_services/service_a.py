@@ -20,6 +20,9 @@ class ServiceA(service.ServiceBase):
     def configure(self, config):
         self.config = config
 
+    def test_service(self):
+        return True
+
     def voice_list(self):
         return [
             voice.Voice('voice_a_1', constants.Gender.Male, constants.AudioLanguage.fr_FR, self, {'name': 'voice_1'}, VOICE_OPTIONS),

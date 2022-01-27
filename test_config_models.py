@@ -6,7 +6,7 @@ import config_models
 import hypertts
 
 def get_service_manager():
-    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services', True)
     manager.init_services()
     manager.get_service('ServiceA').set_enabled(True)
     manager.get_service('ServiceB').set_enabled(True)

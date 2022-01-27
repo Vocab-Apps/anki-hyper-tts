@@ -29,14 +29,8 @@ class TTSTests(unittest.TestCase):
 
     def configure_service_manager(self):
         # use individual service keys
-        self.manager = servicemanager.ServiceManager(services_dir(), 'services')
+        self.manager = servicemanager.ServiceManager(services_dir(), 'services', False)
         self.manager.init_services()
-
-        # disable test services if any are found
-        test_service_names = ['ServiceA', 'ServiceB']
-        for test_service_name in test_service_names:
-            if test_service_name in self.manager.get_all_services():
-                self.manager.get_service(test_service_name).set_enabled(False)
 
         # google
         self.manager.get_service('Google').set_enabled(True)
@@ -215,7 +209,7 @@ class TTSTests(unittest.TestCase):
 class TTSTestsCloudLanguageTools(TTSTests):
     def configure_service_manager(self):
         # configure using cloud language tools
-        self.manager = servicemanager.ServiceManager(services_dir(), 'services')
+        self.manager = servicemanager.ServiceManager(services_dir(), 'services', False)
         self.manager.init_services()
         self.manager.configure_cloudlanguagetools(os.environ['ANKI_LANGUAGE_TOOLS_API_KEY'])
 

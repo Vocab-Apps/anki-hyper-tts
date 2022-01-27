@@ -1,3 +1,4 @@
+from re import sub
 import sys
 import os
 import importlib
@@ -22,11 +23,12 @@ class ServiceManager():
     this class will discover the services that are available and query their voices. it can also route a request
     to the correct service.
     """
-    def __init__(self, services_directory, package_name):
+    def __init__(self, services_directory, package_name, allow_test_services):
         self.services_directory = services_directory
         self.package_name = package_name
         self.services = {}
         self.cloudlanguagetools_enabled = False
+        self.allow_test_services = allow_test_services
 
     def configure(self, configuration_model):
         for service_name, config in configuration_model.get_service_config().items():
@@ -63,6 +65,9 @@ class ServiceManager():
     def instantiate_services(self):
         for subclass in service.ServiceBase.__subclasses__():
             subclass_instance = subclass()
+            if subclass_instance.test_service() and self.allow_test_services == False:
+                logging.info(f'skipping test service {subclass_instance.name}')
+                continue
             logging.info(f'instantiating service {subclass_instance.name}')
             self.services[subclass_instance.name] = subclass_instance
 

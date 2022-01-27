@@ -39,6 +39,9 @@ class ServiceBase(abc.ABC):
     def cloudlanguagetools_enabled(self):
         return False # default
 
+    def test_service(self):
+        return False
+
     @abc.abstractmethod
     def voice_list(self) -> typing.List[voice.VoiceBase]:
         pass

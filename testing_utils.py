@@ -666,7 +666,7 @@ class TestConfigGenerator():
         addon_config = self.get_addon_config(scenario)
 
         anki_utils = MockAnkiUtils(addon_config)
-        manager = servicemanager.ServiceManager(get_test_services_dir(), 'test_services')
+        manager = servicemanager.ServiceManager(get_test_services_dir(), 'test_services', True)
         manager.init_services()
         manager.get_service('ServiceA').set_enabled(True)
         manager.get_service('ServiceB').set_enabled(True)

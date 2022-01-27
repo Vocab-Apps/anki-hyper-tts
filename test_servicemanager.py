@@ -13,7 +13,7 @@ import testing_utils
 class ServiceManagerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services')
+        cls.manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services', True)
 
     @classmethod
     def tearDownClass(cls):
