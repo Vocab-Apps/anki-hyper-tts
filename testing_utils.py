@@ -164,6 +164,7 @@ class MockAnkiUtils():
     def report_known_exception_interactive(self, exception, action):
         self.last_exception = exception
         self.last_action = action
+        logging.error(f'during {action}: {str(exception)}')
 
     def report_unknown_exception_interactive(self, exception, action):
         self.last_exception = exception

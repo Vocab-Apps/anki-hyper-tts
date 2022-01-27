@@ -93,7 +93,8 @@ class HyperTTS():
     def get_audio_file(self, processed_text, voice_selection):
         # this voice_list copy is only used for priority mode
         voice_list = None
-        if voice_selection.selection_mode == constants.VoiceSelectionMode.priority:
+        priority_mode = voice_selection.selection_mode == constants.VoiceSelectionMode.priority
+        if priority_mode:
             voice_list = copy.copy(voice_selection.voice_list)
         sound_found = False
         # loop while we haven't found the sound. this will be used for priority mode
@@ -105,8 +106,10 @@ class HyperTTS():
                 return full_filename, audio_filename
             except errors.AudioNotFoundError as exc:
                 # try the next voice, as long as one is available
-                pass
-            loop_condition = sound_found == False and len(voice_list) > 0
+                if not priority_mode:
+                    # re-raise the exception
+                    raise exc
+            loop_condition = priority_mode and sound_found == False and len(voice_list) > 0
         raise errors.AudioNotFoundAnyVoiceError(processed_text)
 
     def choose_voice(self, voice_selection, voice_list) -> config_models.VoiceWithOptions:

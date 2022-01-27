@@ -816,6 +816,49 @@ def test_batch_dialog(qtbot):
 
     # dialog.exec_()
 
+def test_batch_dialog_sound_preview_error(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+
+    # test saving of config
+    # =====================
+
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
+    batch.configure_browser(note_id_list)
+    batch.draw(dialog.getLayout())
+
+    # select English source
+    batch.source.source_field_combobox.setCurrentText('English')
+    
+    dialog.exec_()
+
+    # play sound preview with error voice
+    # ===================================
+
+    # select second row
+    index_second_row = batch.preview.batch_preview_table_model.createIndex(1, 0)
+    batch.preview.table_view.selectionModel().select(index_second_row, PyQt5.QtCore.QItemSelectionModel.Select)
+    # press preview button
+    qtbot.mouseClick(batch.preview_sound_button, PyQt5.QtCore.Qt.LeftButton)
+    # dialog.exec_()
+
+    assert hypertts_instance.anki_utils.played_sound == {
+        'source_text': 'hello',
+        'voice': {
+            'gender': 'Male', 
+            'language': 'fr_FR', 
+            'name': 'voice_a_1', 
+            'service': 'ServiceA',
+            'voice_key': {'name': 'voice_1'}
+        },
+        'options': {}
+    }        
+
 def test_batch_dialog_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
