@@ -8,6 +8,9 @@ service = __import__('service', globals(), locals(), [], sys._addon_import_level
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
 
 class Azure(service.ServiceBase):
+    CONFIG_REGION = 'region'
+    CONFIG_API_KEY = 'api_key'
+
     def __init__(self):
         self.access_token = None
 
@@ -16,6 +19,35 @@ class Azure(service.ServiceBase):
 
     def configure(self, config):
         self.config = config
+
+    def configuration_options(self):
+        return {
+            self.CONFIG_REGION: [
+                'centralus',
+                'eastus',
+                'eastus2',
+                'northcentralus',
+                'southcentralus',
+                'westcentralus',
+                'westus',
+                'westus2',
+                'canadacentral',
+                'brazilsouth',
+                'eastasia',
+                'southeastasia',
+                'australiaeast',
+                'centralindia',
+                'japaneast',
+                'japanwest',
+                'koreacentral',
+                'northeurope',
+                'westeurope',
+                'francecentral',
+                'switzerlandnorth',
+                'uksouth',                
+            ],
+            self.CONFIG_API_KEY: str
+        }
 
     def get_token(self, subscription_key, region):
         if len(subscription_key) == 0:
@@ -45,8 +77,8 @@ class Azure(service.ServiceBase):
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
 
-        region = self.config['region']
-        subscription_key = self.config['api_key']
+        region = self.config[self.CONFIG_REGION]
+        subscription_key = self.config[self.CONFIG_API_KEY]
         
         if self.token_refresh_required():
             self.get_token(subscription_key, region)
