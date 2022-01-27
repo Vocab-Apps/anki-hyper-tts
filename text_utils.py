@@ -42,8 +42,14 @@ def process_text_rules(text, text_processing_model):
     return text
 
 def process_text(source_text, text_processing_model):
-    text = process_text_rules(source_text, text_processing_model)
-    processed_text = process_text_replacement(text, text_processing_model)
+    if text_processing_model.run_replace_rules_after:
+        # text replacement rules run after other text rules
+        text = process_text_rules(source_text, text_processing_model)
+        processed_text = process_text_replacement(text, text_processing_model)
+    else:
+        # text replacement rules run before other text rules, useful to process HTML
+        text = process_text_replacement(source_text, text_processing_model)
+        processed_text = process_text_rules(text, text_processing_model)
     return processed_text
 
 def process_text_replacement_rule(input_text, rule):

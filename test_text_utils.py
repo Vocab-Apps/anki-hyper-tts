@@ -46,3 +46,23 @@ def test_replacement_regexp_error(qtbot):
 
     testcase_instance = unittest.TestCase()
     testcase_instance.assertRaises(errors.TextReplacementError, text_utils.process_text, 'yoyo', text_processing)    
+
+def test_process_text_rules(qtbot):
+    # by default, html processing enabled
+    text_processing = config_models.TextProcessing()
+    assert text_utils.process_text('word1<br/>word2', text_processing) == 'word1word2'
+    # disable html processing
+    text_processing.html_to_text_line = False
+    assert text_utils.process_text('word1<br/>word2', text_processing) == 'word1<br/>word2'
+
+    # add a replacement rule which targets the HTML tag
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
+    rule.source = '<br/>'
+    rule.target = ' linebreak '
+    text_processing.add_text_replacement_rule(rule)
+    text_processing.html_to_text_line = True
+    # the expected replacement is not done, because text replacement rules have run after HTML replacement
+    assert text_utils.process_text('word1<br/>word2', text_processing) == 'word1word2'
+    text_processing.run_replace_rules_after = False
+    # now, our replacement rules will run first
+    assert text_utils.process_text('word1<br/>word2', text_processing) == 'word1 linebreak word2'
