@@ -20,6 +20,7 @@ SSML_CONVERSION_MAP ={
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
+    '，': ',', # chinese comma 
 }
 
 def extract_template_regexp(input, regexp):
