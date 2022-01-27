@@ -303,6 +303,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def sound_preview_task_done(self, result):
         with self.hypertts.error_manager.get_single_action_context('Playing Sound Preview'):
             result = result.result()
+        self.hypertts.anki_utils.run_on_main(self.finish_sound_preview)
+
+    def finish_sound_preview(self):
         self.enable_bottom_buttons()
         self.preview_sound_button.setText('Preview Sound')
 
