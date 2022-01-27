@@ -76,10 +76,11 @@ else:
     # initialize hypertts
     # ===================
 
-    logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-                        datefmt='%Y%m%d-%H:%M:%S',
-                        stream=sys.stdout,
-                        level=logging.DEBUG)    
+    if os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'enable':
+        logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+                            datefmt='%Y%m%d-%H:%M:%S',
+                            stream=sys.stdout,
+                            level=logging.DEBUG)    
 
     ankiutils = anki_utils.AnkiUtils()
 
