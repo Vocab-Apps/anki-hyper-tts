@@ -75,3 +75,15 @@ def test_process_text_rules(qtbot):
     assert text_utils.process_text('M&A', text_processing) == 'M&amp;A'
     text_processing.ssml_convert_characters = False
     assert text_utils.process_text('patients age < 30', text_processing) == 'patients age < 30'
+
+
+def test_regex_backref(qtbot):
+    text_processing = config_models.TextProcessing()
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Regex)
+    rule.source = '(.*)\s+\((.*)\)'
+    rule.target = '\\2 \\1'
+    text_processing.add_text_replacement_rule(rule)
+
+    source_text = 'word1 (word2)'
+    expected_result = 'word2 word1'
+    assert text_utils.process_text(source_text, text_processing) == expected_result
