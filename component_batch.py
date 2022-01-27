@@ -293,6 +293,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
         with self.hypertts.error_manager.get_single_action_context('Adding Audio to Note'):
             result = result.result()
             self.dialog.close()
+        self.hypertts.anki_utils.run_on_main(self.finish_apply_note_editor)
+    
+    def finish_apply_note_editor(self):
         self.enable_bottom_buttons()
         self.apply_button.setText('Apply To Note')
 
