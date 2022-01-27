@@ -6,17 +6,10 @@ import logging
 import typing
 import requests
 
-
-if hasattr(sys, '_pytest_mode'):
-    import voice
-    import service
-    import errors
-else:
-    # import running from within Anki
-    from . import voice
-    from . import service
-    from . import errors
-
+voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
+service = __import__('service', globals(), locals(), [], sys._addon_import_level_base)
+errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
+version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
 
 class ServiceManager():
     """
@@ -116,7 +109,10 @@ class ServiceManager():
             'options': options
         }
         logging.info(f'request url: {full_url}, data: {data}')
-        response = requests.post(full_url, json=data, headers={'api_key': self.cloudlanguagetools_api_key, 'client': 'languagetools', 'client_version': 'v0.01'})
+        response = requests.post(full_url, json=data, headers={
+            'api_key': self.cloudlanguagetools_api_key, 
+            'client': 'hypertts', 
+            'client_version': version.ANKI_HYPER_TTS_VERSION})
 
         if response.status_code == 200:
             return response.content
