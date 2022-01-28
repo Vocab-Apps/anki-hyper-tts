@@ -43,8 +43,8 @@ class BatchSource(component_common.ConfigComponentBase):
         # wire events
         self.batch_mode_combobox.currentIndexChanged.connect(self.batch_mode_change)
         self.source_field_combobox.currentIndexChanged.connect(self.source_field_change)
-        self.simple_template_input.textChanged.connect(self.simple_template_change)
-        self.advanced_template_input.textChanged.connect(self.advanced_template_change)
+        self.hypertts.anki_utils.wire_typing_timer(self.simple_template_input, self.simple_template_change)
+        self.hypertts.anki_utils.wire_typing_timer(self.advanced_template_input, self.advanced_template_change)
 
         # select default
         self.source_field_change(0)
