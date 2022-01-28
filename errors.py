@@ -62,6 +62,12 @@ class NoVoicesAvailable(HyperTTSError):
         message = f'No voices available. You may need to configure some services in the HyperTTS Configuration.'
         super().__init__(message)
 
+# template expansion errors
+class NoResultVar(HyperTTSError):
+    def __init__(self):
+        message = f'No "result" variable found. You must assign the final template output to a result variable.'
+        super().__init__(message)
+
 # these ActionContext objects implement the "with " interface and help catch exceptions
 
 class SingleActionContext():

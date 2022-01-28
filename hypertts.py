@@ -153,6 +153,8 @@ class HyperTTS():
             'template_fields': self.get_field_values(note)
         }
         expanded_template = exec(source_template, {}, local_variables)
+        if 'result' not in local_variables:
+            raise errors.NoResultVar()
         result = local_variables['result']
         return result
 

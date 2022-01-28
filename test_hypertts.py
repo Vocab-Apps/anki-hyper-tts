@@ -23,4 +23,13 @@ result = f"{french} {english}"
         config_gen = testing_utils.TestConfigGenerator()
         hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-        assert hypertts_instance.expand_advanced_template(note, source_template) == 'Bonjour Hello'
+        self.assertEqual(hypertts_instance.expand_advanced_template(note, source_template), 'Bonjour Hello')
+
+        # test missing result variable
+        # ============================
+
+        source_template = """
+french = template_fields['French']
+english = template_fields['English']
+"""
+        self.assertRaises(errors.NoResultVar, hypertts_instance.expand_advanced_template, note, source_template)
