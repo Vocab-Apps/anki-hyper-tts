@@ -131,9 +131,12 @@ class Configuration(component_common.ConfigComponentBase):
         service_stack = PyQt5.QtWidgets.QWidget()
         service_vlayout = PyQt5.QtWidgets.QVBoxLayout()
         if service.cloudlanguagetools_enabled():
+            hlayout = PyQt5.QtWidgets.QHBoxLayout()
             logo_label = PyQt5.QtWidgets.QLabel()
             logo_label.setPixmap(PyQt5.QtGui.QPixmap(f'/home/luc/python/anki-hyper-tts/graphics/hypertts_service_compatible_banner.png'))
-            service_vlayout.addWidget(logo_label)
+            hlayout.addStretch()
+            hlayout.addWidget(logo_label)
+            service_vlayout.addLayout(hlayout)
         self.draw_service_options(service, service_vlayout)
         service_stack.setLayout(service_vlayout)
 
@@ -197,6 +200,8 @@ class Configuration(component_common.ConfigComponentBase):
 
         groupbox.setLayout(vlayout)
         self.global_vlayout.addWidget(groupbox)
+
+        self.global_vlayout.addStretch()
 
         # bottom buttons
         # ==============
