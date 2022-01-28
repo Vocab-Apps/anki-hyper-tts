@@ -1,5 +1,7 @@
-import constants
+import pprint
 import logging
+
+import constants
 import servicemanager
 import testing_utils
 import config_models
@@ -412,3 +414,76 @@ def test_configuration(qtbot):
     assert deserialized_configuration.get_service_configuration_key('ServiceA', 'region') == 'europe'
 
     assert configuration.serialize() == deserialized_configuration.serialize()
+
+
+def test_batch_config_advanced_template(qtbot):
+    hypertts_instance = get_hypertts_instance()
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_selection = config_models.VoiceSelectionSingle()
+    voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
+
+    source_template = """result = 'yoyo'"""
+
+    batch_config = config_models.BatchConfig()
+    source = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, 
+        source_template, constants.TemplateFormatVersion.v1)
+    target = config_models.BatchTarget('Sound', False, False)
+    text_processing = config_models.TextProcessing()
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
+    rule.source = 'a'
+    rule.target = 'b'
+    text_processing.add_text_replacement_rule(rule)
+
+    batch_config.set_source(source)
+    batch_config.set_target(target)
+    batch_config.set_voice_selection(voice_selection)
+    batch_config.text_processing = text_processing
+
+    expected_output = {
+        'source': {
+            'mode': 'advanced_template',
+            'template_format_version': 'v1',
+            'source_template': """result = 'yoyo'""",
+        },
+        'target': {
+            'target_field': 'Sound',
+            'text_and_sound_tag': False,
+            'remove_sound_tag': False
+        },
+        'voice_selection': {
+            'voice_selection_mode': 'single',
+            'voice': 
+                {
+                    'voice': {
+                        'gender': 'Male', 
+                        'language': 'fr_FR', 
+                        'name': 'voice_a_1', 
+                        'service': 'ServiceA',
+                        'voice_key': {'name': 'voice_1'}
+                    },
+                    'options': {
+                        'speed': 43
+                    },
+                },        
+        },
+        'text_processing': {
+            'html_to_text_line': True,
+            'run_replace_rules_after': True,
+            'ssml_convert_characters': True,            
+            'text_replacement_rules': [
+                {
+                    'rule_type': 'Simple',
+                    'source': 'a',
+                    'target': 'b'
+                }]
+        }
+    }
+    pprint.pprint(batch_config.serialize())
+
+    assert batch_config.serialize() == expected_output
+
+    batch_config_deserialized = hypertts_instance.deserialize_batch_config(batch_config.serialize())
+
+    assert batch_config_deserialized.serialize() == batch_config.serialize()
