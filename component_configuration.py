@@ -130,6 +130,10 @@ class Configuration(component_common.ConfigComponentBase):
 
         service_stack = PyQt5.QtWidgets.QWidget()
         service_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        if service.cloudlanguagetools_enabled():
+            logo_label = PyQt5.QtWidgets.QLabel()
+            logo_label.setPixmap(PyQt5.QtGui.QPixmap(f'/home/luc/python/anki-hyper-tts/graphics/hypertts_service_compatible_banner.png'))
+            service_vlayout.addWidget(logo_label)
         self.draw_service_options(service, service_vlayout)
         service_stack.setLayout(service_vlayout)
 
@@ -137,7 +141,9 @@ class Configuration(component_common.ConfigComponentBase):
         # ==================================
         clt_stack = PyQt5.QtWidgets.QWidget()
         clt_vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        clt_vlayout.addWidget(PyQt5.QtWidgets.QLabel('HyperTTS Pro'))
+        logo_label = PyQt5.QtWidgets.QLabel()
+        logo_label.setPixmap(PyQt5.QtGui.QPixmap(f'/home/luc/python/anki-hyper-tts/graphics/hypertts_service_enabled_banner.png'))
+        clt_vlayout.addWidget(logo_label)        
         clt_stack.setLayout(clt_vlayout)
 
         # create the stack widget
@@ -159,6 +165,12 @@ class Configuration(component_common.ConfigComponentBase):
 
     def draw(self, layout):
         self.global_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+
+        logo_label = PyQt5.QtWidgets.QLabel()
+        #use full ABSOLUTE path to the image, not relative
+        # logo_label.setPixmap(PyQt5.QtGui.QPixmap(f'/home/luc/python/anki-hyper-tts/graphics/hypertts_pro_banner.png'))
+        logo_label.setPixmap(PyQt5.QtGui.QPixmap(f'/home/luc/python/anki-hyper-tts/graphics/hypertts_lite_banner.png'))
+        self.global_vlayout.addWidget(logo_label)
 
         # hypertts pro
         # ============
