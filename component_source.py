@@ -87,6 +87,7 @@ class BatchSource(component_common.ConfigComponentBase):
         # ===============
         stack_vlayout = PyQt5.QtWidgets.QVBoxLayout()
         label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_SIMPLE_TEMPLATE)
+        label.setTextInteractionFlags(PyQt5.QtCore.Qt.TextSelectableByMouse)
         self.simple_template_input = PyQt5.QtWidgets.QLineEdit()
         stack_vlayout.addWidget(label)
         stack_vlayout.addWidget(self.simple_template_input)
@@ -97,6 +98,7 @@ class BatchSource(component_common.ConfigComponentBase):
         # =================
         stack_vlayout = PyQt5.QtWidgets.QVBoxLayout()
         label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_ADVANCED_TEMPLATE)
+        label.setTextInteractionFlags(PyQt5.QtCore.Qt.TextSelectableByMouse)
         self.advanced_template_input = PyQt5.QtWidgets.QPlainTextEdit()
         stack_vlayout.addWidget(label)
         stack_vlayout.addWidget(self.advanced_template_input)
