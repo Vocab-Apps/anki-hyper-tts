@@ -118,6 +118,7 @@ class BatchPreview(component_common.ComponentBase):
         self.batch_preview_layout.addWidget(self.table_view, stretch=1)
         
         self.error_label = PyQt5.QtWidgets.QLabel()
+        self.error_label.setWordWrap(True)
         self.batch_preview_layout.addWidget(self.error_label)
 
         # create stack of widgets which will be toggled when we're running the batch
