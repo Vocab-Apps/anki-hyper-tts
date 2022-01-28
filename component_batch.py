@@ -249,16 +249,18 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.enable_load_profile_button()
 
     def load_profile_button_pressed(self):
-        profile_name = self.profile_name_combobox.currentText()
-        self.load_model(self.hypertts.load_batch_config(profile_name))
-        self.disable_load_profile_button('Preset Loaded')
-        self.disable_save_profile_button('Save')
+        with self.hypertts.error_manager.get_single_action_context('Loading Preset'):
+            profile_name = self.profile_name_combobox.currentText()
+            self.load_model(self.hypertts.load_batch_config(profile_name))
+            self.disable_load_profile_button('Preset Loaded')
+            self.disable_save_profile_button('Save')
 
     def save_profile_button_pressed(self):
-        profile_name = self.profile_name_combobox.currentText()
-        self.hypertts.save_batch_config(profile_name, self.get_model())
-        self.disable_save_profile_button('Preset Saved')
-        self.disable_load_profile_button('Load')
+        with self.hypertts.error_manager.get_single_action_context('Saving Preset'):
+            profile_name = self.profile_name_combobox.currentText()
+            self.hypertts.save_batch_config(profile_name, self.get_model())
+            self.disable_save_profile_button('Preset Saved')
+            self.disable_load_profile_button('Load')
 
     def show_settings_button_pressed(self):
         if self.show_settings:
