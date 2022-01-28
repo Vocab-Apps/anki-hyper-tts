@@ -429,7 +429,7 @@ def test_batch_config_advanced_template(qtbot):
     batch_config = config_models.BatchConfig()
     source = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, 
         source_template, constants.TemplateFormatVersion.v1)
-    target = config_models.BatchTarget('Sound', False, False)
+    target = config_models.BatchTarget('Audio', False, False)
     text_processing = config_models.TextProcessing()
     rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
     rule.source = 'a'
@@ -448,7 +448,7 @@ def test_batch_config_advanced_template(qtbot):
             'source_template': """result = 'yoyo'""",
         },
         'target': {
-            'target_field': 'Sound',
+            'target_field': 'Audio',
             'text_and_sound_tag': False,
             'remove_sound_tag': False
         },
