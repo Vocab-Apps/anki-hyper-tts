@@ -14,6 +14,17 @@ class FieldNotFoundError(HyperTTSError):
         message = f'Field <b>{field_name}</b> not found'
         super().__init__(message)    
 
+class SourceFieldNotFoundError(HyperTTSError):
+    def __init__(self, field_name):
+        message = f'Source Field <b>{field_name}</b> not found'
+        super().__init__(message)    
+
+
+class TargetFieldNotFoundError(HyperTTSError):
+    def __init__(self, field_name):
+        message = f'Target Field <b>{field_name}</b> not found'
+        super().__init__(message)    
+
 class FieldEmptyError(HyperTTSError):
     def __init__(self, field_name):
         message = f'Field <b>{field_name}</b> is empty'

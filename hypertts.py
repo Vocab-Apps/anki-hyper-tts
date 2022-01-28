@@ -61,6 +61,10 @@ class HyperTTS():
 
     def process_note_audio(self, batch, note, add_mode):
         target_field = batch.target.target_field
+
+        if target_field not in note:
+            raise errors.TargetFieldNotFoundError(target_field)
+
         source_text = self.get_source_text(note, batch.source)
         processed_text = self.process_text(source_text, batch.text_processing)
 
@@ -141,6 +145,8 @@ class HyperTTS():
 
     def get_source_text(self, note, batch_source):
         if batch_source.mode == constants.BatchMode.simple:
+            if batch_source.source_field not in note:
+                raise errors.SourceFieldNotFoundError(batch_source.source_field)
             source_text = note[batch_source.source_field]
         elif batch_source.mode == constants.BatchMode.template:
             source_text = self.expand_simple_template(note, batch_source.source_template)

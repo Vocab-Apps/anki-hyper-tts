@@ -200,6 +200,88 @@ def test_simple_error_handling(qtbot):
     assert batch_status_obj[1].sound_file != None
     assert str(batch_status_obj[2].error) == 'Source text is empty'
 
+def test_simple_error_handling_nonexistent_target_field(qtbot):
+    # target field non existent
+
+    # create batch configuration
+    # ==========================
+
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        
+    # build voice selection model
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
+
+    batch = config_models.BatchConfig()
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget('Audio', False, True)
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(single)
+    batch.set_text_processing(config_models.TextProcessing())
+
+    # create list of notes
+    # ====================
+    note_id_list = [config_gen.note_id_1]
+
+    # run batch add audio (simple mode)
+    # =================================
+    listener = MockBatchStatusListener()
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)    
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+
+    # check progress bar
+    assert listener.current_row == 0
+
+    # verify batch error manager stats
+    # verify per-note status
+    assert str(batch_status_obj[0].error) == 'Target Field <b>Audio</b> not found'
+
+def test_simple_error_handling_nonexistent_source_field(qtbot):
+    # target field non existent
+
+    # create batch configuration
+    # ==========================
+
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        
+    # build voice selection model
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
+
+    batch = config_models.BatchConfig()
+    source = config_models.BatchSourceSimple('French')
+    target = config_models.BatchTarget('Sound', False, True)
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(single)
+    batch.set_text_processing(config_models.TextProcessing())
+
+    # create list of notes
+    # ====================
+    note_id_list = [config_gen.note_id_1]
+
+    # run batch add audio (simple mode)
+    # =================================
+    listener = MockBatchStatusListener()
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)    
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+
+    # check progress bar
+    assert listener.current_row == 0
+
+    # verify batch error manager stats
+    # verify per-note status
+    assert str(batch_status_obj[0].error) == 'Source Field <b>French</b> not found'    
+
 def test_simple_error_handling_not_found(qtbot):
     # the voice responds with not found
 
