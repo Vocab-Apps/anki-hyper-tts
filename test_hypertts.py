@@ -3,6 +3,7 @@ import unittest
 
 import errors
 import testing_utils
+import config_models
 
 class HyperTTSTests(unittest.TestCase):
 
@@ -33,3 +34,22 @@ french = template_fields['French']
 english = template_fields['English']
 """
         self.assertRaises(errors.NoResultVar, hypertts_instance.expand_advanced_template, note, source_template)
+
+    def test_get_audio_file_errors(self):
+        # error situations
+
+        # random mode with no voices
+        # ==========================
+        config_gen = testing_utils.TestConfigGenerator()
+        hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+        random = config_models.VoiceSelectionRandom()        
+        self.assertRaises(errors.NoVoicesAdded, hypertts_instance.get_audio_file, 'yoyo', random)
+
+        # priority mode with no voices
+        # ============================
+        config_gen = testing_utils.TestConfigGenerator()
+        hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+        priority = config_models.VoiceSelectionPriority()
+        self.assertRaises(errors.NoVoicesAdded, hypertts_instance.get_audio_file, 'yoyo', priority)

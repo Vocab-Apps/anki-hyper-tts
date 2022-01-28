@@ -62,6 +62,11 @@ class NoVoicesAvailable(HyperTTSError):
         message = f'No voices available. You may need to configure some services in the HyperTTS Configuration.'
         super().__init__(message)
 
+class NoVoicesAdded(HyperTTSError):
+    def __init__(self):
+        message = f'No voices have been added. You must add at least one voice when in Random or Priority mode.'
+        super().__init__(message)
+
 # template expansion errors
 class NoResultVar(HyperTTSError):
     def __init__(self):

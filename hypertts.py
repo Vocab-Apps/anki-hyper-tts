@@ -91,6 +91,11 @@ class HyperTTS():
         return self.get_audio_file(processed_text, batch.voice_selection)        
 
     def get_audio_file(self, processed_text, voice_selection):
+        # sanity checks
+        if voice_selection.selection_mode in [constants.VoiceSelectionMode.priority, constants.VoiceSelectionMode.random]:
+            if len(voice_selection.voice_list) == 0:
+                raise errors.NoVoicesAdded()
+
         # this voice_list copy is only used for priority mode
         voice_list = None
         priority_mode = voice_selection.selection_mode == constants.VoiceSelectionMode.priority
