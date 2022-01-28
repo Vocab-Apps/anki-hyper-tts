@@ -584,6 +584,15 @@ def test_batch_source_1(qtbot):
     assert batch_source.batch_mode_combobox.currentText() == 'template'
     assert batch_source.simple_template_input.text() == '{English}'
 
+    # load advanced template
+    model.mode = constants.BatchMode.advanced_template
+    model.source_template = f"""result = 'yoyo'"""
+    model.template_format_version = constants.TemplateFormatVersion.v1
+
+    batch_source.load_model(model)
+
+    assert batch_source.advanced_template_input.toPlainText() == f"""result = 'yoyo'"""
+
     # dialog.exec_()
 
 def test_target(qtbot):

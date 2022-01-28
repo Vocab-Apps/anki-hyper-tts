@@ -30,7 +30,7 @@ class BatchSource(component_common.ConfigComponentBase):
         elif batch_mode == constants.BatchMode.template:
             self.simple_template_input.setText(model.source_template)
         elif batch_mode == constants.BatchMode.advanced_template:
-            self.advanced_template_input.setText(model.source_template)
+            self.advanced_template_input.setPlainText(model.source_template)
 
 
     def draw(self):
