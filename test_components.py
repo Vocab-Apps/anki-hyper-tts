@@ -1134,6 +1134,13 @@ def test_configuration(qtbot):
     service_a_delay.setValue(42)
     assert configuration.model.get_service_configuration_key('ServiceA', 'delay') == 42
 
+    service_a_demokey = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_demo_key")
+    service_a_demokey.setChecked(True)
+    assert configuration.model.get_service_configuration_key('ServiceA', 'demo_key') == True
+    service_a_demokey.setChecked(False)
+    assert configuration.model.get_service_configuration_key('ServiceA', 'demo_key') == False
+    service_a_demokey.setChecked(True)
+
     assert configuration.save_button.isEnabled() == True
 
     # press save button
@@ -1148,7 +1155,8 @@ def test_configuration(qtbot):
             'ServiceA': {
                 'region': 'us',
                 'api_key': '6789',
-                'delay': 42
+                'delay': 42,
+                'demo_key': True
             },
         }
     }
@@ -1194,6 +1202,7 @@ def test_configuration(qtbot):
     configuration_model.set_service_configuration_key('ServiceA', 'api_key', '123456')
     configuration_model.set_service_configuration_key('ServiceA', 'region', 'europe')
     configuration_model.set_service_configuration_key('ServiceA', 'delay', 7)
+    configuration_model.set_service_configuration_key('ServiceA', 'demo_key', True)
 
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     # start by disabling both services
@@ -1224,6 +1233,8 @@ def test_configuration(qtbot):
     assert service_a_api_key.text() == '123456'
     service_a_delay = dialog.findChild(PyQt5.QtWidgets.QSpinBox, "ServiceA_delay")
     assert service_a_delay.value() == 7
+    service_a_demokey = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_demo_key")
+    assert service_a_demokey.isChecked() == True
 
     # setting the API key should make ServiceB's enable checkbox disabled and checked
     service_b_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceB_enabled")

@@ -9,6 +9,7 @@ errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_s
 
 class Google(service.ServiceBase):
     CONFIG_API_KEY = 'api_key'
+    CONFIG_EXPLORER_API_KEY = 'explorer_api_key'
 
     def __init__(self):
         pass
@@ -21,7 +22,8 @@ class Google(service.ServiceBase):
 
     def configuration_options(self):
         return {
-            self.CONFIG_API_KEY: str
+            self.CONFIG_API_KEY: str,
+            self.CONFIG_EXPLORER_API_KEY: bool
         }
 
     def voice_list(self):
@@ -46,7 +48,11 @@ class Google(service.ServiceBase):
 
         logging.debug(f'requesting audio with payload {payload}')
 
-        response = requests.post("https://texttospeech.googleapis.com/v1/text:synthesize?key={}".format(self.config[self.CONFIG_API_KEY]), json=payload)
+        headers = {}
+        is_explorer_api_key = self.config.get(self.CONFIG_EXPLORER_API_KEY, False)
+        if is_explorer_api_key:
+            headers['x-origin'] = 'https://explorer.apis.google.com'
+        response = requests.post("https://texttospeech.googleapis.com/v1/text:synthesize?key={}".format(self.config[self.CONFIG_API_KEY]), json=payload, headers=headers)
         
         if response.status_code != 200:
             data = response.json()

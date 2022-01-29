@@ -48,5 +48,6 @@ class ServiceA(service.ServiceBase):
         return {
             'api_key': str,
             'region': ['us', 'europe'],
-            'delay': int
+            'delay': int,
+            'demo_key': bool
         }

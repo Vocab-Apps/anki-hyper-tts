@@ -64,6 +64,14 @@ class Configuration(component_common.ConfigComponentBase):
             self.model_change()
         return list_change
 
+    def get_service_config_bool_change_fn(self, service, key):
+        def bool_change(checkbox_value):
+            value = checkbox_value == 2
+            logging.info(f'{service.name} {key}: {value}')
+            self.model.set_service_configuration_key(service.name, key, value)
+            self.model_change()
+        return bool_change
+
     def cloud_language_tools_enabled(self):
         return self.api_key_valid
 
@@ -114,6 +122,14 @@ class Configuration(component_common.ConfigComponentBase):
                 spinbox.setObjectName(widget_name)
                 spinbox.valueChanged.connect(self.get_service_config_int_change_fn(service, key))
                 options_gridlayout.addWidget(spinbox, row, 1, 1, 1)
+            elif type == bool:
+                checkbox = PyQt5.QtWidgets.QCheckBox()
+                saved_value = self.model.get_service_configuration_key(service.name, key)
+                if saved_value != None:
+                    checkbox.setChecked(saved_value)
+                checkbox.setObjectName(widget_name)
+                checkbox.stateChanged.connect(self.get_service_config_bool_change_fn(service, key))
+                options_gridlayout.addWidget(checkbox, row, 1, 1, 1)
             elif isinstance(type, list):
                 combobox = PyQt5.QtWidgets.QComboBox()
                 combobox.setObjectName(widget_name)
