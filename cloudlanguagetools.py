@@ -17,7 +17,7 @@ class CloudLanguageTools():
     def get_tts_audio(self, source_text, voice, options):
         # query cloud language tools API
         url_path = '/audio_v2'
-        full_url = self.cloudlanguagetools_base_url + url_path
+        full_url = self.base_url + url_path
         data = {
             'text': source_text,
             'service': voice.service.name,
