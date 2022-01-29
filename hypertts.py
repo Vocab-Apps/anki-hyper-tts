@@ -297,7 +297,7 @@ class HyperTTS():
         self.anki_utils.write_config(self.config)
 
     def get_configuration(self):
-        return self.deserialize_configuration(self.config[constants.CONFIG_CONFIGURATION])
+        return self.deserialize_configuration(self.config.get(constants.CONFIG_CONFIGURATION, {}))
 
     def hypertts_pro_enabled(self):
         return self.get_configuration().hypertts_pro_api_key_set()
