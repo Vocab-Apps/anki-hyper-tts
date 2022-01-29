@@ -160,7 +160,7 @@ class ServiceManagerTests(unittest.TestCase):
         self.manager.init_services()    
 
         service_a_options = self.manager.service_configuration_options('ServiceA')
-        assert service_a_options == {'api_key': str, 'region': ['us', 'europe'], 'delay': int}
+        assert service_a_options == {'api_key': str, 'region': ['us', 'europe'], 'delay': int, 'demo_key': bool}
 
         for key, value in service_a_options.items():
             if value == str:
