@@ -62,9 +62,6 @@ class ServiceBase(abc.ABC):
                             v['options']) for v in service_voices_json]
         return service_voices
 
-    def set_enabled(self, enabled):
-        self.enabled = enabled
-
     # the following functions can be overriden if a service requires configuration
     def configuration_options(self):
         return {}

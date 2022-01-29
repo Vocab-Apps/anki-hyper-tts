@@ -13,7 +13,7 @@ import testing_utils
 class ServiceManagerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services', True)
+        cls.manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services', True, testing_utils.MockCloudLanguageTools())
 
     @classmethod
     def tearDownClass(cls):
@@ -30,8 +30,8 @@ class ServiceManagerTests(unittest.TestCase):
 
     def test_full_voice_list(self):
         self.manager.init_services()
-        self.manager.get_service('ServiceA').set_enabled(True)
-        self.manager.get_service('ServiceB').set_enabled(True)
+        self.manager.get_service('ServiceA').enabled = True
+        self.manager.get_service('ServiceB').enabled = True
         voice_list = self.manager.full_voice_list()
 
         # find ServiceA's voice_1
@@ -50,8 +50,8 @@ class ServiceManagerTests(unittest.TestCase):
 
     def test_voice_serialization(self):
         self.manager.init_services()
-        self.manager.get_service('ServiceA').set_enabled(True)
-        self.manager.get_service('ServiceB').set_enabled(True)
+        self.manager.get_service('ServiceA').enabled = True
+        self.manager.get_service('ServiceB').enabled = True
         voice_list = self.manager.full_voice_list()
 
         subset = [voice for voice in voice_list if voice.name == 'voice_a_1']
@@ -97,8 +97,8 @@ class ServiceManagerTests(unittest.TestCase):
 
     def test_get_tts_audio(self):
         self.manager.init_services()
-        self.manager.get_service('ServiceA').set_enabled(True)
-        self.manager.get_service('ServiceB').set_enabled(True)
+        self.manager.get_service('ServiceA').enabled = True
+        self.manager.get_service('ServiceB').enabled = True
         voice_list = self.manager.full_voice_list()
 
         # find ServiceA's voice_1
