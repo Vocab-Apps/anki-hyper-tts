@@ -28,7 +28,7 @@ class CloudLanguageTools():
         }
         logging.info(f'request url: {full_url}, data: {data}')
         response = requests.post(full_url, json=data, headers={
-            'api_key': self.cloudlanguagetools_api_key, 
+            'api_key': self.api_key, 
             'client': 'hypertts', 
             'client_version': version.ANKI_HYPER_TTS_VERSION})
 
