@@ -233,8 +233,9 @@ class Configuration(component_common.ConfigComponentBase):
 
         layout.addLayout(self.global_vlayout)
 
-    def pro_api_key_entered(self, api_key):
+    def pro_api_key_entered(self):
         # get data for the API key in the background
+        api_key = self.hypertts_pro_api_key.text()
         if len(api_key) > 0:
             self.api_key = api_key
             self.account_info_label.setText('Verifying...')
