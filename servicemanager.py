@@ -26,6 +26,9 @@ class ServiceManager():
         self.cloudlanguagetools = cloudlanguagetools
 
     def configure(self, configuration_model):
+        for service_name, enabled in configuration_model.get_service_enabled_map().items():
+            service = self.get_service(service_name)
+            service.enabled = enabled
         for service_name, config in configuration_model.get_service_config().items():
             service = self.get_service(service_name)
             service.configure(config)

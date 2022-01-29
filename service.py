@@ -26,6 +26,8 @@ class ServiceBase(abc.ABC):
     # enable/disable the service
     def _get_enabled(self):
         if not hasattr(self, '_enabled'):
+            return self.enabled_by_default()
+        if self._enabled == None:
             return False
         return self._enabled
     
@@ -35,9 +37,12 @@ class ServiceBase(abc.ABC):
     enabled = property(fget=_get_enabled, fset=_set_enabled)
 
     # whether the service is supported by cloud-language-tools
-
     def cloudlanguagetools_enabled(self):
         return False # default
+
+    # whether the service is enabled by default
+    def enabled_by_default(self):
+        return False
 
     def test_service(self):
         return False

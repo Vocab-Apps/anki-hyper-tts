@@ -27,6 +27,24 @@ class ServiceManagerTests(unittest.TestCase):
     def test_import(self):
         self.manager.init_services()
 
+    def test_services_enabled(self):
+        # test service enabled / disabled logic
+
+        self.manager.init_services()
+        assert self.manager.get_service('ServiceA').enabled == False
+        assert self.manager.get_service('ServiceB').enabled == False
+
+        configuration = config_models.Configuration()
+        configuration.set_service_enabled('ServiceA', True)
+        configuration.set_service_configuration_key('ServiceA', 'api_key', 'yoyo')
+        configuration.set_service_configuration_key('ServiceA', 'region', 'europe')
+        self.manager.configure(configuration)
+
+        assert self.manager.get_service('ServiceA').enabled == True
+        assert self.manager.get_service('ServiceB').enabled == False
+        assert self.manager.get_service('ServiceA').config['api_key'] == 'yoyo'
+        assert self.manager.get_service('ServiceA').config['region'] == 'europe'
+
 
     def test_full_voice_list(self):
         self.manager.init_services()

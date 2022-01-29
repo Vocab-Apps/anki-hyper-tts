@@ -375,6 +375,9 @@ class Configuration(ConfigModelBase):
     def set_service_enabled(self, service_name, enabled):
         self._service_enabled[service_name] = enabled
 
+    def get_service_enabled_map(self):
+        return self._service_enabled
+
     def set_service_enabled_map(self, service_enabled):
         self._service_enabled = service_enabled
 
