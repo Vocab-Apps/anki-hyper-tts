@@ -200,7 +200,7 @@ class TTSTests(unittest.TestCase):
         self.verify_all_services_language(constants.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
 
     def test_all_services_mandarin(self):
-        self.verify_all_services_language(constants.AudioLanguage.zh_CN, '老人家')
+        self.verify_all_services_language(constants.AudioLanguage.zh_CN, '赚钱')
 
     def test_all_services_japanese(self):
         self.verify_all_services_language(constants.AudioLanguage.ja_JP, 'おはようございます')
@@ -214,3 +214,4 @@ class TTSTestsCloudLanguageTools(TTSTests):
         self.manager.configure_cloudlanguagetools(os.environ['ANKI_LANGUAGE_TOOLS_API_KEY'])
 
     # pytest test_tts_services.py  -k 'TTSTestsCloudLanguageTools and test_google'
+    # pytest test_tts_services.py  -k 'TTSTestsCloudLanguageTools and test_all_services_mandarin'
