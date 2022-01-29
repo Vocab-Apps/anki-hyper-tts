@@ -32,8 +32,14 @@ def get_large_button_font():
 
 def get_large_combobox_font():
         font2 = PyQt5.QtGui.QFont()
-        font2.setPointSize(11)
+        font2.setPointSize(10)
         return font2
+
+def get_version_font():
+        font2 = PyQt5.QtGui.QFont()
+        font2.setPointSize(10)
+        font2.setItalic(True)
+        return font2        
 
 def process_label_text(text):
         return text.replace('\n', '<br/>')
@@ -48,7 +54,8 @@ def get_hypertts_label_header(hypertts_pro_enabled):
         graphics_path = get_graphics_path('hypertts_lite_banner.png')
         logging.info(f'graphics_path: {graphics_path}')
         logo_label.setPixmap(PyQt5.QtGui.QPixmap(graphics_path))
-        version_label = PyQt5.QtWidgets.QLabel(version.ANKI_HYPER_TTS_VERSION)
+        version_label = PyQt5.QtWidgets.QLabel('v' + version.ANKI_HYPER_TTS_VERSION)
+        version_label.setFont(get_version_font())
 
         hlayout.addStretch()
         hlayout.addWidget(logo_label)
