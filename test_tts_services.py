@@ -33,10 +33,10 @@ class TTSTests(unittest.TestCase):
         self.manager.init_services()
 
         # google
-        self.manager.get_service('Google').set_enabled(True)
+        self.manager.get_service('Google').enabled = True
         self.manager.get_service('Google').configure({'api_key': os.environ['GOOGLE_SERVICES_KEY']})
         # azure
-        self.manager.get_service('Azure').set_enabled(True)
+        self.manager.get_service('Azure').enabled = True
         self.manager.get_service('Azure').configure({
             'api_key': os.environ['AZURE_SERVICES_KEY'],
             'region': os.environ['AZURE_SERVICES_REGION']
