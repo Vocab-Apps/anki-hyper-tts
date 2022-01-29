@@ -21,6 +21,7 @@ class Configuration(component_common.ConfigComponentBase):
         self.service_stack_map = {}
         self.account_info = None
         self.api_key_valid = False
+        self.enable_model_change = False
 
     def get_model(self):
         return self.model
@@ -29,8 +30,9 @@ class Configuration(component_common.ConfigComponentBase):
         self.model = model
 
     def model_change(self):
-        self.save_button.setEnabled(True)
-        self.save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        if self.enable_model_change:
+            self.save_button.setEnabled(True)
+            self.save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
 
     def get_service_enable_change_fn(self, service):
         def enable_change(value):
@@ -247,7 +249,12 @@ class Configuration(component_common.ConfigComponentBase):
 
         self.hypertts.anki_utils.wire_typing_timer(self.hypertts_pro_api_key, self.pro_api_key_entered)
 
+        # run event once
+        self.pro_api_key_entered()
+        self.enable_model_change = True
+
         layout.addLayout(self.global_vlayout)
+
 
     def pro_api_key_entered(self):
         # get data for the API key in the background

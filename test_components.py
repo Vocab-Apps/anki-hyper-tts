@@ -1180,13 +1180,11 @@ def test_configuration(qtbot):
 
     # dialog.exec_()
 
-    return
-
-    # loading of existing model
-    # =========================
+    # loading of existing model, no pro api key
+    # =========================================
 
     configuration_model = config_models.Configuration()
-    configuration_model.set_hypertts_pro_api_key('valid_key')
+    configuration_model.set_hypertts_pro_api_key(None)
     configuration_model.set_service_enabled('ServiceB', True)
     configuration_model.set_service_configuration_key('ServiceA', 'api_key', '123456')
     configuration_model.set_service_configuration_key('ServiceA', 'region', 'europe')
@@ -1198,11 +1196,11 @@ def test_configuration(qtbot):
     configuration.load_model(configuration_model)
     configuration.draw(dialog.getLayout())
 
-    assert configuration.hypertts_pro_api_key.text() == 'valid_key'
+    assert configuration.hypertts_pro_api_key.text() == ''
 
-    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_PRO
+    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_LITE
     assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
-    assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_PRO
+    assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
     service_a_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_enabled")
     assert service_a_enabled_checkbox.isChecked() == False
@@ -1222,10 +1220,26 @@ def test_configuration(qtbot):
 
     assert configuration.save_button.isEnabled() == False
 
-    # remove API key, the service stack for ServiceB should appear
-    configuration.hypertts_pro_api_key.setText('')
     # dialog.exec_()
-    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_SERVICE
-    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_SERVICE
 
-    # dialog.exec_()
+    # loading of existing model, with valid pro API key
+    # =================================================
+
+    configuration_model = config_models.Configuration()
+    configuration_model.set_hypertts_pro_api_key('valid_key')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.load_model(configuration_model)
+    configuration.draw(dialog.getLayout())
+
+    assert configuration.hypertts_pro_api_key.text() == 'valid_key'
+
+    assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_PRO
+    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_PRO
+    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+
+    assert configuration.save_button.isEnabled() == False # since we didn't change anything
+
+    # dialog.exec_()    
