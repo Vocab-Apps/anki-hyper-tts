@@ -344,8 +344,12 @@ class TextProcessing(ConfigModelBase):
 
 class Configuration(ConfigModelBase):
     def __init__(self):
-        self.service_config = {}
+        self._service_enabled = {}
+        self._service_config = {}
         self._hypertts_pro_api_key = None
+
+    # pro api key
+    # ===========
 
     def get_hypertts_pro_api_key(self):
         return self._hypertts_pro_api_key
@@ -359,33 +363,41 @@ class Configuration(ConfigModelBase):
     hypertts_pro_api_key = property(get_hypertts_pro_api_key, set_hypertts_pro_api_key)
 
     def check_service_config_key(self, service_name):
-        if service_name not in self.service_config:
-            self.service_config[service_name] = {}
+        if service_name not in self._service_config:
+            self._service_config[service_name] = {}
+
+    # service enabled / disabled
+    # ==========================
 
     def get_service_enabled(self, service_name):
-        service_config = self.service_config.get(service_name, {})
-        return service_config.get('enabled', False)
+        return self._service_enabled.get(service_name, None)
 
     def set_service_enabled(self, service_name, enabled):
-        self.check_service_config_key(service_name)
-        self.service_config[service_name]['enabled'] = enabled
+        self._service_enabled[service_name] = enabled
+
+    def set_service_enabled_map(self, service_enabled):
+        self._service_enabled = service_enabled
+
+    # service configuration 
+    # =====================
 
     def set_service_configuration_key(self, service_name, key, value):
         self.check_service_config_key(service_name)
-        self.service_config[service_name][key] = value
+        self._service_config[service_name][key] = value
 
     def get_service_configuration_key(self, service_name, key):
-        service_config = self.service_config.get(service_name, {})
+        service_config = self._service_config.get(service_name, {})
         return service_config.get(key, None) 
 
     def set_service_config(self, service_config):
-        self.service_config = service_config
+        self._service_config = service_config
 
     def get_service_config(self):
-        return self.service_config
+        return self._service_config
 
     def serialize(self):
         return {
             'hypertts_pro_api_key': self.hypertts_pro_api_key,
-            'service_config': self.service_config
+            'service_enabled': self._service_enabled,
+            'service_config': self._service_config
         }

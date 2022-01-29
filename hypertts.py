@@ -362,5 +362,6 @@ class HyperTTS():
     def deserialize_configuration(self, configuration_config):
         configuration = config_models.Configuration()
         configuration.hypertts_pro_api_key = configuration_config.get('hypertts_pro_api_key', None)
+        configuration.set_service_enabled_map(configuration_config.get('service_enabled', {}))
         configuration.set_service_config(configuration_config.get('service_config', {}))
         return configuration

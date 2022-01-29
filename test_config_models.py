@@ -397,14 +397,14 @@ def test_configuration(qtbot):
 
     expected_output = {
         'hypertts_pro_api_key': '123456',
+        'service_enabled': {
+            'ServiceA': True,
+            'ServiceB': False
+        },
         'service_config': {
             'ServiceA': {
-                'enabled': True,
                 'region': 'europe'
             },
-            'ServiceB': {
-                'enabled': False
-            }
         }
     }
 
@@ -412,8 +412,26 @@ def test_configuration(qtbot):
 
     deserialized_configuration = hypertts_instance.deserialize_configuration(configuration.serialize())
     assert deserialized_configuration.get_service_configuration_key('ServiceA', 'region') == 'europe'
+    assert deserialized_configuration.get_service_enabled('ServiceA') == True
+    assert deserialized_configuration.get_service_enabled('ServiceB') == False
 
     assert configuration.serialize() == deserialized_configuration.serialize()
+
+
+    # some services' enabled flag not defined
+    configuration = config_models.Configuration()
+    configuration.hypertts_pro_api_key = '123456'
+    configuration.set_service_enabled('ServiceA', True)
+
+    assert configuration.get_service_enabled('ServiceA') == True
+    assert configuration.get_service_enabled('ServiceB') == None
+
+    deserialized_configuration = hypertts_instance.deserialize_configuration(configuration.serialize())
+
+    assert deserialized_configuration.get_service_enabled('ServiceA') == True
+    assert deserialized_configuration.get_service_enabled('ServiceB') == None
+
+    assert deserialized_configuration.get_service_configuration_key('ServiceA', 'region') == None
 
 
 def test_batch_config_advanced_template(qtbot):
