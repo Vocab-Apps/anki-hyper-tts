@@ -129,10 +129,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def draw(self, layout):
         self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
-        # logo header
-        # ===========
-        self.vlayout.addLayout(gui_utils.get_hypertts_label_header(False))
-
         # profile management
         # ==================
 
@@ -154,6 +150,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         hlayout.addWidget(self.profile_save_button)
 
         hlayout.addStretch()
+        # logo header
+        hlayout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
         self.vlayout.addLayout(hlayout)
 
         self.profile_load_button.pressed.connect(self.load_profile_button_pressed)
