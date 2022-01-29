@@ -11,6 +11,7 @@ component_batch_preview = __import__('component_batch_preview', globals(), local
 component_label_preview = __import__('component_label_preview', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class ComponentBatch(component_common.ConfigComponentBase):
@@ -127,6 +128,10 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
     def draw(self, layout):
         self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
+
+        # logo header
+        # ===========
+        self.vlayout.addLayout(gui_utils.get_hypertts_label_header(False))
 
         # profile management
         # ==================
