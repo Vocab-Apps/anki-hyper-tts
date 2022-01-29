@@ -1,3 +1,4 @@
+from calendar import c
 import sys
 import os
 import logging
@@ -23,6 +24,8 @@ def services_dir():
     return os.path.join(current_script_dir, 'services')
 
 class TTSTests(unittest.TestCase):
+    RANDOM_VOICE_COUNT = 1
+    
     @classmethod
     def setUpClass(cls):
         cls.configure_service_manager(cls)
@@ -189,7 +192,7 @@ class TTSTests(unittest.TestCase):
         for service_name in service_name_list:
             if self.manager.get_service(service_name).enabled:
                 logging.info(f'testing language {language.name}, service {service_name}')
-                random_voices = self.pick_random_voices_sample(voice_list, service_name, language, 3)
+                random_voices = self.pick_random_voices_sample(voice_list, service_name, language, self.RANDOM_VOICE_COUNT)
                 for voice in random_voices:
                     self.verify_audio_output(voice, source_text)    
 
