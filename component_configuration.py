@@ -1,5 +1,6 @@
 import sys
 import PyQt5
+import webbrowser
 import logging
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
@@ -18,6 +19,8 @@ class Configuration(component_common.ConfigComponentBase):
         self.dialog = dialog
         self.model = config_models.Configuration()
         self.service_stack_map = {}
+        self.account_info = None
+        self.api_key_valid = False
 
     def get_model(self):
         return self.model
@@ -28,14 +31,6 @@ class Configuration(component_common.ConfigComponentBase):
     def model_change(self):
         self.save_button.setEnabled(True)
         self.save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
-
-    def get_hypertts_pro_api_key_change_fn(self):
-        def change(api_key):
-            logging.info('hypertts pro api key change')
-            self.model.set_hypertts_pro_api_key(api_key)
-            self.model_change()
-            self.set_cloud_language_tools_enabled()
-        return change
 
     def get_service_enable_change_fn(self, service):
         def enable_change(value):
@@ -67,7 +62,7 @@ class Configuration(component_common.ConfigComponentBase):
         return list_change
 
     def cloud_language_tools_enabled(self):
-        return self.model.hypertts_pro_api_key_set()
+        return self.api_key_valid
 
     def set_cloud_language_tools_enabled(self):
         # will enable/disable checkboxes
@@ -183,8 +178,22 @@ class Configuration(component_common.ConfigComponentBase):
         vlayout.addWidget(PyQt5.QtWidgets.QLabel('API Key'))
         self.hypertts_pro_api_key = PyQt5.QtWidgets.QLineEdit()
         self.hypertts_pro_api_key.setText(self.model.hypertts_pro_api_key)
-        self.hypertts_pro_api_key.textChanged.connect(self.get_hypertts_pro_api_key_change_fn())
+        # self.hypertts_pro_api_key.textChanged.connect(self.get_hypertts_pro_api_key_change_fn())
         vlayout.addWidget(self.hypertts_pro_api_key)
+
+        self.account_info_label = PyQt5.QtWidgets.QLabel()
+        vlayout.addWidget(self.account_info_label)
+
+        self.account_update_button = PyQt5.QtWidgets.QPushButton()
+        self.account_update_button.setText('Upgrade / Downgrade / Payment options')
+        self.account_update_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        self.account_cancel_button = PyQt5.QtWidgets.QPushButton()
+        self.account_cancel_button.setText('Cancel Plan')
+        self.account_cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
+        vlayout.addWidget(self.account_update_button)
+        vlayout.addWidget(self.account_cancel_button)
+        self.account_update_button.setVisible(False)
+        self.account_cancel_button.setVisible(False)
 
         groupbox.setLayout(vlayout)
         self.global_vlayout.addWidget(groupbox)
@@ -220,7 +229,55 @@ class Configuration(component_common.ConfigComponentBase):
         self.save_button.pressed.connect(self.save_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
+        self.hypertts.anki_utils.wire_typing_timer(self.hypertts_pro_api_key, self.pro_api_key_entered)
+
         layout.addLayout(self.global_vlayout)
+
+    def pro_api_key_entered(self, api_key):
+        # get data for the API key in the background
+        if len(api_key) > 0:
+            self.api_key = api_key
+            self.account_info_label.setText('Verifying...')
+            self.hypertts.anki_utils.run_in_background(self.get_account_data_task, self.get_account_data_task_done)
+        else:
+            self.model.set_hypertts_pro_api_key(None)
+            self.api_key_valid = False
+            self.account_info_label.setText('')
+            self.model_change()
+            self.set_cloud_language_tools_enabled()
+
+    def get_account_data_task(self):
+        return self.hypertts.service_manager.cloudlanguagetools.account_info(self.api_key)
+
+    def get_account_data_task_done(self, result):
+        self.account_info = result.result()
+        self.hypertts.anki_utils.run_on_main(self.update_pro_status)
+
+    def update_pro_status(self):
+        logging.info('update_pro_status')
+        if 'error' in self.account_info:
+            self.api_key_valid = False
+            self.model.set_hypertts_pro_api_key(None) 
+        else:
+            self.api_key_valid = True
+            self.model.set_hypertts_pro_api_key(self.api_key)
+        self.model_change()
+        self.set_cloud_language_tools_enabled()
+        # update account info label
+        lines = []
+        for key, value in self.account_info.items():
+            if key == 'update_url':
+                self.account_update_button.setVisible(True)
+                self.account_update_url = value
+                self.account_update_button.pressed.connect(lambda: webbrowser.open(self.account_update_url))
+            elif key == 'cancel_url':
+                self.account_cancel_button.setVisible(True)
+                self.account_cancel_url = value
+                self.account_cancel_button.pressed.connect(lambda: webbrowser.open(self.account_cancel_url))
+            else:
+                lines.append(f'<b>{key}</b>: {value}')
+        self.account_info_label.setText('<br/>'.join(lines))
+
 
     def save_button_pressed(self):
         self.hypertts.save_configuration(self.model)

@@ -10,18 +10,20 @@ voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_bas
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
+cloudlanguagetools_module = __import__('cloudlanguagetools', globals(), locals(), [], sys._addon_import_level_base)
 
 class ServiceManager():
     """
     this class will discover the services that are available and query their voices. it can also route a request
     to the correct service.
     """
-    def __init__(self, services_directory, package_name, allow_test_services):
+    def __init__(self, services_directory, package_name, allow_test_services, cloudlanguagetools=cloudlanguagetools_module.CloudLanguageTools()):
         self.services_directory = services_directory
         self.package_name = package_name
         self.services = {}
         self.cloudlanguagetools_enabled = False
         self.allow_test_services = allow_test_services
+        self.cloudlanguagetools = cloudlanguagetools
 
     def configure(self, configuration_model):
         for service_name, config in configuration_model.get_service_config().items():
@@ -75,8 +77,7 @@ class ServiceManager():
 
     def configure_cloudlanguagetools(self, api_key):
         logging.info('configure_cloudlanguagetools')
-        self.cloudlanguagetools_base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_BASE_URL', 'https://cloud-language-tools-tts-prod.anki.study')
-        self.cloudlanguagetools_api_key = api_key
+        self.cloudlanguagetools.configure(api_key)
         self.cloudlanguagetools_enabled = True
         # enable all services which are supported by cloud language tools
         for service in self.get_all_services():
@@ -92,33 +93,9 @@ class ServiceManager():
 
     def get_tts_audio(self, source_text, voice, options):
         if self.cloudlanguagetools_enabled:
-            return self.get_tts_audio_cloudlanguagetools(source_text, voice, options)
+            return self.cloudlanguagetools.get_tts_audio(source_text, voice, options)
         else:
             return voice.service.get_tts_audio(source_text, voice, options)
-
-    def get_tts_audio_cloudlanguagetools(self, source_text, voice, options):
-        # query cloud language tools API
-        url_path = '/audio_v2'
-        full_url = self.cloudlanguagetools_base_url + url_path
-        data = {
-            'text': source_text,
-            'service': voice.service.name,
-            'request_mode': 'batch',
-            'language_code': voice.language.lang.name,
-            'voice_key': voice.voice_key,
-            'options': options
-        }
-        logging.info(f'request url: {full_url}, data: {data}')
-        response = requests.post(full_url, json=data, headers={
-            'api_key': self.cloudlanguagetools_api_key, 
-            'client': 'hypertts', 
-            'client_version': version.ANKI_HYPER_TTS_VERSION})
-
-        if response.status_code == 200:
-            return response.content
-        else:
-            error_message = f"Status code: {response.status_code} ({response.content})"
-            raise errors.RequestError(source_text, voice, error_message)
 
     def full_voice_list(self) -> typing.List[voice.VoiceBase]:
         full_list = []

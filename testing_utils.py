@@ -222,187 +222,6 @@ class MockCloudLanguageTools():
 
         self.account_info_called = False
 
-        # used to simulate translation errors
-        self.translation_error_map = {}
-
-        # unhandled exceptions
-        self.translation_unhandled_exception_map = {}
-
-        self.language_data = {
-            'language_list': {
-                'en': 'English',
-                'zh_cn': 'Chinese',
-                'mg': 'Malagasy'
-            },
-            'translation_options': [
-                {
-                    'service': "Azure",
-                    'language_code': "en",
-                    'language_name': "English",
-                    'language_id': "en"
-                },
-                {
-                    'service': "Azure",
-                    'language_code': "zh_cn",
-                    'language_name': "Chinese",
-                    'language_id': "zh-hans"
-                },            
-            ],
-            'transliteration_options': [
-                {
-                    'language_code': 'zh_cn',
-                    'transliteration_name': 'pinyin1',
-                    'transliteration_key': {'name': 'pinyin1'}
-                },
-                {
-                    'language_code': 'zh_cn',
-                    'transliteration_name': 'pinyin2',
-                    'transliteration_key': {'name': 'pinyin2'}
-                },                
-            ],
-            'voice_list': [
-                {
-                    "audio_language_code": "en_US",
-                    "audio_language_name": "English (US)",
-                    "gender": "Male",
-                    "language_code": "en",
-                    "options": {
-                        "pitch": {
-                            "default": 0,
-                            "max": 100,
-                            "min": -100,
-                            "type": "number"
-                        },
-                        "rate": {
-                            "default": 1.0,
-                            "max": 3.0,
-                            "min": 0.5,
-                            "type": "number"
-                        }
-                    },
-                    "service": "Azure",
-                    "voice_description": "English (US), Male, Guy (Neural), Azure",
-                    "voice_key": {
-                        "name": "Microsoft Server Speech Text to Speech Voice (en-US, GuyNeural)"
-                    }
-                },            
-                {
-                    "audio_language_code": "en_US",
-                    "audio_language_name": "English (US)",
-                    "gender": "Female",
-                    "language_code": "en",
-                    "options": {
-                        "pitch": {
-                            "default": 0,
-                            "max": 100,
-                            "min": -100,
-                            "type": "number"
-                        },
-                        "rate": {
-                            "default": 1.0,
-                            "max": 3.0,
-                            "min": 0.5,
-                            "type": "number"
-                        }
-                    },
-                    "service": "Azure",
-                    "voice_description": "English (US), Female, Aria (Neural), Azure",
-                    "voice_key": {
-                        "name": "Microsoft Server Speech Text to Speech Voice (en-US, AriaNeural)"
-                    }
-                },
-                {
-                    "audio_language_code": "zh_CN",
-                    "audio_language_name": "Chinese (Mandarin, Simplified)",
-                    "gender": "Female",
-                    "language_code": "zh_cn",
-                    "options": {
-                        "pitch": {
-                            "default": 0,
-                            "max": 100,
-                            "min": -100,
-                            "type": "number"
-                        },
-                        "rate": {
-                            "default": 1.0,
-                            "max": 3.0,
-                            "min": 0.5,
-                            "type": "number"
-                        }
-                    },
-                    "service": "Azure",
-                    "voice_description": "Chinese (Mandarin, Simplified), Female, Xiaoxiao 晓晓 (Neural), Azure",
-                    "voice_key": {
-                        "name": "Microsoft Server Speech Text to Speech Voice (zh-CN, XiaoxiaoNeural)"
-                    }
-                },
-                {
-                    "audio_language_code": "zh_CN",
-                    "audio_language_name": "Chinese (Mandarin, Simplified)",
-                    "gender": "Male",
-                    "language_code": "zh_cn",
-                    "options": {
-                        "pitch": {
-                            "default": 0,
-                            "max": 100,
-                            "min": -100,
-                            "type": "number"
-                        },
-                        "rate": {
-                            "default": 1.0,
-                            "max": 3.0,
-                            "min": 0.5,
-                            "type": "number"
-                        }
-                    },
-                    "service": "Azure",
-                    "voice_description": "Chinese (Mandarin, Simplified), Male, Yunyang 云扬 (Neural), Azure",
-                    "voice_key": {
-                        "name": "Microsoft Server Speech Text to Speech Voice (zh-CN, YunyangNeural)"
-                    }
-                }
-            ],
-            'tokenization_options': [
-                {
-                    "language_code": "zh_cn",
-                    "language_name": "Chinese (Simplified)",
-                    "service": "Spacy",
-                    "tokenization_key": {
-                        "model_name": "chinese_char"
-                    },
-                    "tokenization_name": "Chinese (Simplified) (Characters) Spacy"
-                },
-                {
-                    "language_code": "zh_cn",
-                    "language_name": "Chinese (Simplified)",
-                    "service": "Spacy",
-                    "tokenization_key": {
-                        "model_name": "chinese_jieba"
-                    },
-                    "tokenization_name": "Chinese (Simplified) (Jieba (words)) Spacy"
-                }                
-            ]
-        }
-
-        self.language_list = self.language_data['language_list']
-        self.translation_language_list = self.language_data['translation_options']
-        self.transliteration_language_list = self.language_data['transliteration_options']
-        self.voice_list = self.language_data['voice_list']
-
-    def get_language_data(self):
-        return self.language_data
-
-    def get_language_list(self):
-        return self.language_list
-
-    def get_translation_language_list(self):
-        return self.translation_language_list
-
-    def get_transliteration_language_list(self):
-        return self.transliteration_language_list
-
-    def get_tts_voice_list(self, api_key):
-        return self.voice_list
 
     def api_key_validate_query(self, api_key):
 
@@ -418,14 +237,27 @@ class MockCloudLanguageTools():
         self.account_info_called = True
         self.account_info_api_key = api_key
 
+
+        if api_key == 'valid_key':
+            return {
+                'type': '250 chars',
+                'email': 'no@spam.com',
+                'update_url': 'https://languagetools.anki.study/awesometts-plus',
+                'cancel_url': 'https://languagetools.anki.study/awesometts-plus'
+            }
+
+        if api_key == 'trial_key':
+            return {
+                'type': 'trial',
+                'email': 'no@spam.com'
+            }            
+
         return {
-            'type': '250 chars',
-            'email': 'no@spam.com'
+            'error': 'Key invalid'
         }
 
 
-    def language_detection(self, api_key, field_sample):
-        return self.language_detection_result[field_sample[0]]
+
 
     def get_tts_audio(self, api_key, source_text, service, language_code, voice_key, options):
         self.requested_audio = {
@@ -438,25 +270,6 @@ class MockCloudLanguageTools():
         encoded_dict = json.dumps(self.requested_audio, indent=2).encode('utf-8')
         return encoded_dict
 
-    def get_translation_all(self, api_key, source_text, from_language, to_language):
-        if source_text in self.translation_unhandled_exception_map:
-            raise Exception(self.translation_unhandled_exception_map[source_text])
-        return self.translate_all_result[source_text]
-
-    def get_translation(self, api_key, source_text, translation_option):
-        if source_text in self.translation_error_map:
-            return MockTranslationResponse(400, {'error': self.translation_error_map[source_text]})
-        translated_text = self.translation_map[source_text]
-        return MockTranslationResponse(200, {'translated_text': translated_text})
-
-    def get_transliteration(self, api_key, source_text, transliteration_option):
-        # if needed, error simulation can be added here
-        transliterated_text = self.transliteration_map[source_text]
-        return MockTranslationResponse(200, {'transliterated_text': transliterated_text})
-
-    def get_breakdown(self, api_key, source_text, tokenization_option, translation_option, transliteration_option):
-        breakdown_response = self.breakdown_map[source_text]
-        return MockBreakdownResponse(200, {'breakdown': breakdown_response})
 
 class MockCard():
     def __init__(self, deck_id):
@@ -679,7 +492,7 @@ class TestConfigGenerator():
         addon_config = self.get_addon_config(scenario)
 
         anki_utils = MockAnkiUtils(addon_config)
-        manager = servicemanager.ServiceManager(get_test_services_dir(), 'test_services', True)
+        manager = servicemanager.ServiceManager(get_test_services_dir(), 'test_services', True, MockCloudLanguageTools())
         manager.init_services()
         manager.get_service('ServiceA').set_enabled(True)
         manager.get_service('ServiceB').set_enabled(True)
