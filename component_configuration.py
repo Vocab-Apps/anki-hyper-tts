@@ -241,11 +241,8 @@ class Configuration(component_common.ConfigComponentBase):
             self.account_info_label.setText('Verifying...')
             self.hypertts.anki_utils.run_in_background(self.get_account_data_task, self.get_account_data_task_done)
         else:
-            self.model.set_hypertts_pro_api_key(None)
-            self.api_key_valid = False
-            self.account_info_label.setText('')
-            self.model_change()
-            self.set_cloud_language_tools_enabled()
+            self.udpdate_gui_state_api_key_not_valid()
+
 
     def get_account_data_task(self):
         return self.hypertts.service_manager.cloudlanguagetools.account_info(self.api_key)
@@ -254,16 +251,27 @@ class Configuration(component_common.ConfigComponentBase):
         self.account_info = result.result()
         self.hypertts.anki_utils.run_on_main(self.update_pro_status)
 
+    def udpdate_gui_state_api_key_not_valid(self):
+        self.api_key_valid = False
+        self.model.set_hypertts_pro_api_key(None)
+        self.account_info_label.setText('')
+        self.account_update_button.setVisible(False)
+        self.account_cancel_button.setVisible(False)
+        self.model_change()
+        self.set_cloud_language_tools_enabled()
+
+    def udpdate_gui_state_api_key_valid(self, api_key):
+        self.api_key_valid = True
+        self.model.set_hypertts_pro_api_key(self.api_key)
+        self.model_change()
+        self.set_cloud_language_tools_enabled()        
+
     def update_pro_status(self):
         logging.info('update_pro_status')
         if 'error' in self.account_info:
-            self.api_key_valid = False
-            self.model.set_hypertts_pro_api_key(None) 
+            self.udpdate_gui_state_api_key_not_valid()
         else:
-            self.api_key_valid = True
-            self.model.set_hypertts_pro_api_key(self.api_key)
-        self.model_change()
-        self.set_cloud_language_tools_enabled()
+            self.udpdate_gui_state_api_key_valid(self.api_key)
         # update account info label
         lines = []
         for key, value in self.account_info.items():
