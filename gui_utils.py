@@ -4,6 +4,7 @@ import logging
 import PyQt5
 
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 
 def get_header_label(text):
         header = PyQt5.QtWidgets.QLabel()
@@ -51,7 +52,7 @@ def get_graphics_path(filename):
 def get_hypertts_label_header(hypertts_pro_enabled):
         hlayout = PyQt5.QtWidgets.QHBoxLayout()
         logo_label = PyQt5.QtWidgets.QLabel()
-        graphics_path = get_graphics_path('hypertts_lite_banner.png')
+        graphics_path = get_graphics_path(constants.GRAPHICS_LITE_BANNER)
         logging.info(f'graphics_path: {graphics_path}')
         logo_label.setPixmap(PyQt5.QtGui.QPixmap(graphics_path))
         version_label = PyQt5.QtWidgets.QLabel('v' + version.ANKI_HYPER_TTS_VERSION)

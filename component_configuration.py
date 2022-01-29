@@ -6,6 +6,7 @@ import gui_utils
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class Configuration(component_common.ConfigComponentBase):
@@ -135,7 +136,7 @@ class Configuration(component_common.ConfigComponentBase):
         if service.cloudlanguagetools_enabled():
             hlayout = PyQt5.QtWidgets.QHBoxLayout()
             logo_label = PyQt5.QtWidgets.QLabel()
-            logo_label.setPixmap(PyQt5.QtGui.QPixmap(f'/home/luc/python/anki-hyper-tts/graphics/hypertts_service_compatible_banner.png'))
+            logo_label.setPixmap(PyQt5.QtGui.QPixmap(gui_utils.get_graphics_path(constants.GRAPHICS_SERVICE_COMPATIBLE)))
             hlayout.addStretch()
             hlayout.addWidget(logo_label)
             service_vlayout.addLayout(hlayout)
@@ -147,7 +148,7 @@ class Configuration(component_common.ConfigComponentBase):
         clt_stack = PyQt5.QtWidgets.QWidget()
         clt_vlayout = PyQt5.QtWidgets.QVBoxLayout()
         logo_label = PyQt5.QtWidgets.QLabel()
-        logo_label.setPixmap(PyQt5.QtGui.QPixmap(f'/home/luc/python/anki-hyper-tts/graphics/hypertts_service_enabled_banner.png'))
+        logo_label.setPixmap(PyQt5.QtGui.QPixmap(gui_utils.get_graphics_path(constants.GRAPHICS_SERVICE_ENABLED)))
         clt_vlayout.addWidget(logo_label)        
         clt_stack.setLayout(clt_vlayout)
 

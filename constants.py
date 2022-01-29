@@ -73,6 +73,11 @@ GUI_TEXT_BATCH_COMPLETED = """<b>Finished adding Audio to notes</b>. You can und
 Undo HyperTTS: Add Audio to Notes. You may close this dialog.
 """
 
+GRAPHICS_PRO_BANNER = 'hypertts_pro_banner.png'
+GRAPHICS_LITE_BANNER = 'hypertts_lite_banner.png'
+GRAPHICS_SERVICE_COMPATIBLE = 'hypertts_service_compatible_banner.png'
+GRAPHICS_SERVICE_ENABLED = 'hypertts_service_enabled_banner.png'
+
 TEXT_PROCESSING_DEFAULT_HTMLTOTEXTLINE = True
 TEXT_PROCESSING_DEFAULT_SSML_CHARACTERS = True
 TEXT_PROCESSING_DEFAULT_REPLACE_AFTER = True
