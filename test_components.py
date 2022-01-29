@@ -351,8 +351,8 @@ def test_voice_selection_priority_1(qtbot):
 def test_voice_selection_filters(qtbot):
     manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services', True)
     manager.init_services()
-    manager.get_service('ServiceA').set_enabled(True)
-    manager.get_service('ServiceB').set_enabled(True)
+    manager.get_service('ServiceA').enabled = True
+    manager.get_service('ServiceB').enabled = True
     anki_utils = testing_utils.MockAnkiUtils({})
 
     hypertts_instance = hypertts.HyperTTS(anki_utils, manager)
@@ -1087,7 +1087,10 @@ def test_text_processing(qtbot):
 
 def test_configuration(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    # start by disabling both services
+    hypertts_instance.service_manager.get_service('ServiceA').enabled = False
+    hypertts_instance.service_manager.get_service('ServiceB').enabled = False
 
     dialog = EmptyDialog()
     dialog.setupUi()
@@ -1138,9 +1141,11 @@ def test_configuration(qtbot):
     assert 'configuration' in hypertts_instance.anki_utils.written_config
     expected_output = {
         'hypertts_pro_api_key': None,
+        'service_enabled': {
+            'ServiceA': False,
+        },
         'service_config': {
             'ServiceA': {
-                'enabled': False,
                 'region': 'us',
                 'api_key': '6789',
                 'delay': 42
@@ -1189,6 +1194,12 @@ def test_configuration(qtbot):
     configuration_model.set_service_configuration_key('ServiceA', 'api_key', '123456')
     configuration_model.set_service_configuration_key('ServiceA', 'region', 'europe')
     configuration_model.set_service_configuration_key('ServiceA', 'delay', 7)
+
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    # start by disabling both services
+    hypertts_instance.service_manager.get_service('ServiceA').enabled = False
+    hypertts_instance.service_manager.get_service('ServiceB').enabled = False
+    hypertts_instance.service_manager.configure(configuration_model)
 
     dialog = EmptyDialog()
     dialog.setupUi()

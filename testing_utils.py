@@ -497,8 +497,8 @@ class TestConfigGenerator():
         anki_utils = MockAnkiUtils(addon_config)
         manager = servicemanager.ServiceManager(get_test_services_dir(), 'test_services', True, MockCloudLanguageTools())
         manager.init_services()
-        manager.get_service('ServiceA').set_enabled(True)
-        manager.get_service('ServiceB').set_enabled(True)
+        manager.get_service('ServiceA').enabled = True
+        manager.get_service('ServiceB').enabled = True
 
         mock_hypertts = hypertts.HyperTTS(anki_utils, manager)
 

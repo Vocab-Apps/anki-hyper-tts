@@ -89,7 +89,7 @@ class Configuration(component_common.ConfigComponentBase):
     def draw_service_options(self, service, layout):
         service_enabled_checkbox = PyQt5.QtWidgets.QCheckBox('Enable')
         service_enabled_checkbox.setObjectName(self.get_service_enabled_widget_name(service))
-        service_enabled_checkbox.setChecked(self.model.get_service_enabled(service.name))
+        service_enabled_checkbox.setChecked(service.enabled)
         service_enabled_checkbox.stateChanged.connect(self.get_service_enable_change_fn(service))
         layout.addWidget(service_enabled_checkbox)
 
