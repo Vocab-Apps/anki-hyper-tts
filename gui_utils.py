@@ -18,6 +18,8 @@ class NonAliasedImage(PyQt5.QtWidgets.QWidget):
     def paintEvent(self,event):
         # logging.info('paintEvent')
         painter = PyQt5.QtGui.QPainter(self)
+        painter.setRenderHint(PyQt5.QtGui.QPainter.SmoothPixmapTransform)
+        painter.setRenderHint(PyQt5.QtGui.QPainter.Antialiasing)
         painter.drawPixmap(self.rect(), self._pixmap)
 
 
