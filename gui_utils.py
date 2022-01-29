@@ -22,6 +22,8 @@ class NonAliasedImage(PyQt5.QtWidgets.QWidget):
         painter.setRenderHint(PyQt5.QtGui.QPainter.Antialiasing)
         painter.drawPixmap(self.rect(), self._pixmap)
 
+def get_graphic(graphic_name):
+    return NonAliasedImage(PyQt5.QtGui.QPixmap(get_graphics_path(graphic_name)))
 
 def get_header_label(text):
     header = PyQt5.QtWidgets.QLabel()
@@ -69,10 +71,10 @@ def get_graphics_path(filename):
 def get_hypertts_label_header(hypertts_pro_enabled):
     hlayout = PyQt5.QtWidgets.QHBoxLayout()
     if hypertts_pro_enabled:
-        graphics_path = get_graphics_path(constants.GRAPHICS_PRO_BANNER)
+        graphic_name = constants.GRAPHICS_PRO_BANNER
     else:
-        graphics_path = get_graphics_path(constants.GRAPHICS_LITE_BANNER)       
-    logo = NonAliasedImage(PyQt5.QtGui.QPixmap(graphics_path))
+        graphic_name = constants.GRAPHICS_LITE_BANNER
+    logo = get_graphic(graphic_name)
     version_label = PyQt5.QtWidgets.QLabel('v' + version.ANKI_HYPER_TTS_VERSION)
     version_label.setFont(get_version_font())
 
