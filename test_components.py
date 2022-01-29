@@ -1254,3 +1254,20 @@ def test_configuration(qtbot):
     assert configuration.save_button.isEnabled() == False # since we didn't change anything
 
     # dialog.exec_()    
+
+def test_configuration_manual(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    # start by disabling both services
+    hypertts_instance.service_manager.get_service('ServiceA').enabled = False
+    hypertts_instance.service_manager.get_service('ServiceB').enabled = False
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # model_change_callback = MockModelChangeCallback()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())    
+
+    if os.environ.get('HYPERTTS_CONFIGURATION_DIALOG_DEBUG', 'no') == 'yes':
+        dialog.exec_()    
