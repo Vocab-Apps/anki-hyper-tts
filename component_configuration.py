@@ -11,8 +11,8 @@ gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_l
 
 class Configuration(component_common.ConfigComponentBase):
 
-    STACK_LEVEL_SERVICE = 0
-    STACK_LEVEL_CLT = 1
+    STACK_LEVEL_LITE = 0
+    STACK_LEVEL_PRO = 1
 
     def __init__(self, hypertts, dialog):
         self.hypertts = hypertts
@@ -65,6 +65,10 @@ class Configuration(component_common.ConfigComponentBase):
         return self.api_key_valid
 
     def set_cloud_language_tools_enabled(self):
+        if self.cloud_language_tools_enabled():
+            self.header_logo_stack_widget.setCurrentIndex(self.STACK_LEVEL_PRO)
+        else:
+            self.header_logo_stack_widget.setCurrentIndex(self.STACK_LEVEL_LITE)
         # will enable/disable checkboxes
         for service in self.hypertts.service_manager.get_all_services():
             self.manage_service_stack(service, self.service_stack_map[service.name])
@@ -72,10 +76,10 @@ class Configuration(component_common.ConfigComponentBase):
     def manage_service_stack(self, service, stack):
         if self.cloud_language_tools_enabled() and service.cloudlanguagetools_enabled():
             logging.info(f'{service.name}: show CLT stack')
-            stack.setCurrentIndex(self.STACK_LEVEL_CLT)
+            stack.setCurrentIndex(self.STACK_LEVEL_PRO)
         else:
             logging.info(f'{service.name}: show service stack')
-            stack.setCurrentIndex(self.STACK_LEVEL_SERVICE)
+            stack.setCurrentIndex(self.STACK_LEVEL_LITE)
 
     def get_service_enabled_widget_name(self, service):
         return f'{service.name}_enabled'
@@ -166,8 +170,20 @@ class Configuration(component_common.ConfigComponentBase):
     def draw(self, layout):
         self.global_vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
+        # logo header
+        # ===========
+        lite_stack = PyQt5.QtWidgets.QWidget()
+        pro_stack = PyQt5.QtWidgets.QWidget()
 
-        self.global_vlayout.addLayout(gui_utils.get_hypertts_label_header(False))
+        lite_stack.setLayout(gui_utils.get_hypertts_label_header(False))
+        pro_stack.setLayout(gui_utils.get_hypertts_label_header(True))
+
+        self.header_logo_stack_widget = PyQt5.QtWidgets.QStackedWidget()
+        self.header_logo_stack_widget.addWidget(lite_stack)
+        self.header_logo_stack_widget.addWidget(pro_stack)
+
+        self.header_logo_stack_widget.setCurrentIndex(self.STACK_LEVEL_LITE) # lite
+        self.global_vlayout.addWidget(self.header_logo_stack_widget)
 
         # hypertts pro
         # ============
