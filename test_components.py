@@ -1096,17 +1096,20 @@ def test_configuration(qtbot):
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
 
-    dialog.exec_()
+    # dialog.exec_()
 
     # try making changes to the service config and saving
     # ===================================================
 
-    qtbot.keyClicks(configuration.hypertts_pro_api_key, 'abcd1234')
-    assert configuration.model.hypertts_pro_api_key == 'abcd1234'
+    qtbot.keyClicks(configuration.hypertts_pro_api_key, 'error_key')
+    assert configuration.model.hypertts_pro_api_key == None
 
-    # setting the API key should make ServiceB's clt stack show up
-    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_CLT
-    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_SERVICE
+    assert configuration.account_info_label.text() == '<b>error</b>: Key invalid'
+
+    # we entered an error key, so pro mode is not enabled
+    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
     service_a_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_enabled")
     service_a_enabled_checkbox.setChecked(True)
@@ -1134,7 +1137,7 @@ def test_configuration(qtbot):
     qtbot.mouseClick(configuration.save_button, PyQt5.QtCore.Qt.LeftButton)
     assert 'configuration' in hypertts_instance.anki_utils.written_config
     expected_output = {
-        'hypertts_pro_api_key': 'abcd1234',
+        'hypertts_pro_api_key': None,
         'service_config': {
             'ServiceA': {
                 'enabled': False,
@@ -1149,11 +1152,41 @@ def test_configuration(qtbot):
     # make sure dialog was closed
     assert dialog.closed == True
 
+    # enter valid API key
+    # ===================
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())
+
+    qtbot.keyClicks(configuration.hypertts_pro_api_key, 'valid_key')
+    assert '250 chars' in configuration.account_info_label.text()
+
+    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_PRO
+    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_PRO
+
+    assert configuration.model.hypertts_pro_api_key == 'valid_key'
+
+    # switch to an invalid key
+    configuration.hypertts_pro_api_key.setText('invalid_key')
+    assert configuration.model.hypertts_pro_api_key == None
+    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
+
+    assert configuration.account_info_label.text() == '<b>error</b>: Key invalid'
+
+    # dialog.exec_()
+
+    return
+
     # loading of existing model
     # =========================
 
     configuration_model = config_models.Configuration()
-    configuration_model.set_hypertts_pro_api_key('myapikey')
+    configuration_model.set_hypertts_pro_api_key('valid_key')
     configuration_model.set_service_enabled('ServiceB', True)
     configuration_model.set_service_configuration_key('ServiceA', 'api_key', '123456')
     configuration_model.set_service_configuration_key('ServiceA', 'region', 'europe')
@@ -1165,10 +1198,11 @@ def test_configuration(qtbot):
     configuration.load_model(configuration_model)
     configuration.draw(dialog.getLayout())
 
-    assert configuration.hypertts_pro_api_key.text() == 'myapikey'
+    assert configuration.hypertts_pro_api_key.text() == 'valid_key'
 
-    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_CLT
-    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_SERVICE
+    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_PRO
+    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_PRO
 
     service_a_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_enabled")
     assert service_a_enabled_checkbox.isChecked() == False
