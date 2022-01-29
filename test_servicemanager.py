@@ -45,6 +45,31 @@ class ServiceManagerTests(unittest.TestCase):
         assert self.manager.get_service('ServiceA').config['api_key'] == 'yoyo'
         assert self.manager.get_service('ServiceA').config['region'] == 'europe'
 
+        configuration = config_models.Configuration()
+        configuration.set_service_enabled('ServiceA', False)
+        self.manager.configure(configuration)
+        assert self.manager.get_service('ServiceA').enabled == False
+
+        # disable all services, they will get re-enabled when we enable cloudlanguagetools for some of them
+        configuration = config_models.Configuration()
+        configuration.hypertts_pro_api_key = '123456'
+        configuration.set_service_enabled('ServiceA', False)
+        configuration.set_service_enabled('ServiceB', False)
+        self.manager.configure(configuration)
+
+        assert self.manager.get_service('ServiceA').enabled == False
+        assert self.manager.get_service('ServiceB').enabled == True # enabled by default for clt
+        assert self.manager.cloudlanguagetools.api_key == '123456'
+        assert self.manager.cloudlanguagetools_enabled == True
+
+        # remove pro api key
+        configuration = config_models.Configuration()
+        configuration.hypertts_pro_api_key = ''
+        self.manager.configure(configuration)
+        assert self.manager.cloudlanguagetools_enabled == False
+
+
+
 
     def test_full_voice_list(self):
         self.manager.init_services()

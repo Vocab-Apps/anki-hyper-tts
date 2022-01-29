@@ -35,6 +35,8 @@ class ServiceManager():
         # if we enable cloudlanguagetools, it may force some services to enabled
         if configuration_model.hypertts_pro_api_key_set():
             self.configure_cloudlanguagetools(configuration_model.hypertts_pro_api_key)
+        else:
+            self.cloudlanguagetools_enabled = False
 
     # service discovery
     # =================
@@ -86,7 +88,7 @@ class ServiceManager():
         for service in self.get_all_services():
             if service.cloudlanguagetools_enabled():
                 logging.info(f'enabling {service.name} with cloud language tools')
-                service.set_enabled(True)
+                service.enabled = True
 
     def service_configuration_options(self, service_name):
         return self.services[service_name].configuration_options()
