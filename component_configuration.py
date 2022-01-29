@@ -2,6 +2,8 @@ import sys
 import PyQt5
 import logging
 
+import gui_utils
+
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 
@@ -169,11 +171,8 @@ class Configuration(component_common.ConfigComponentBase):
     def draw(self, layout):
         self.global_vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
-        logo_label = PyQt5.QtWidgets.QLabel()
-        #use full ABSOLUTE path to the image, not relative
-        # logo_label.setPixmap(PyQt5.QtGui.QPixmap(f'/home/luc/python/anki-hyper-tts/graphics/hypertts_pro_banner.png'))
-        logo_label.setPixmap(PyQt5.QtGui.QPixmap(f'/home/luc/python/anki-hyper-tts/graphics/hypertts_lite_banner.png'))
-        self.global_vlayout.addWidget(logo_label)
+
+        self.global_vlayout.addLayout(gui_utils.get_hypertts_label_header(False))
 
         # hypertts pro
         # ============

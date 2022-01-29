@@ -1,4 +1,9 @@
+import sys
+import os
+import logging
 import PyQt5
+
+version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
 
 def get_header_label(text):
         header = PyQt5.QtWidgets.QLabel()
@@ -32,3 +37,20 @@ def get_large_combobox_font():
 
 def process_label_text(text):
         return text.replace('\n', '<br/>')
+
+
+def get_graphics_path(filename):
+        return os.path.join(os.path.dirname(__file__), 'graphics', filename)
+
+def get_hypertts_label_header(hypertts_pro_enabled):
+        hlayout = PyQt5.QtWidgets.QHBoxLayout()
+        logo_label = PyQt5.QtWidgets.QLabel()
+        graphics_path = get_graphics_path('hypertts_lite_banner.png')
+        logging.info(f'graphics_path: {graphics_path}')
+        logo_label.setPixmap(PyQt5.QtGui.QPixmap(graphics_path))
+        version_label = PyQt5.QtWidgets.QLabel(version.ANKI_HYPER_TTS_VERSION)
+
+        hlayout.addStretch()
+        hlayout.addWidget(logo_label)
+        hlayout.addWidget(version_label)
+        return hlayout
