@@ -73,6 +73,9 @@ GUI_TEXT_BATCH_COMPLETED = """<b>Finished adding Audio to notes</b>. You can und
 Undo HyperTTS: Add Audio to Notes. You may close this dialog.
 """
 
+GUI_TEXT_HYPERTTS_PRO = """HyperTTS Pro gives you access to all premium services.""" +\
+""" (You can use the same API key as AwesomeTTS Plus / Language Tools)"""
+
 GRAPHICS_PRO_BANNER = 'hypertts_pro_banner.png'
 GRAPHICS_LITE_BANNER = 'hypertts_lite_banner.png'
 GRAPHICS_SERVICE_COMPATIBLE = 'hypertts_service_compatible_banner.png'

@@ -1,3 +1,4 @@
+from pydoc import describe
 import sys
 import PyQt5
 import webbrowser
@@ -193,6 +194,9 @@ class Configuration(component_common.ConfigComponentBase):
         groupbox = PyQt5.QtWidgets.QGroupBox('HyperTTS Pro')
         vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
+        description_label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_HYPERTTS_PRO)
+        description_label.setWordWrap(True)
+        vlayout.addWidget(description_label)
         vlayout.addWidget(PyQt5.QtWidgets.QLabel('API Key'))
         self.hypertts_pro_api_key = PyQt5.QtWidgets.QLineEdit()
         self.hypertts_pro_api_key.setText(self.model.hypertts_pro_api_key)
