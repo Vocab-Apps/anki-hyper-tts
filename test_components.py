@@ -861,6 +861,19 @@ def test_batch_dialog(qtbot):
     assert batch.cancel_button.isEnabled() == True
     assert batch.cancel_button.text() == 'Close'
 
+    # delete profile
+    # ==============
+
+    assert batch.profile_name_combobox.count() == 2
+    assert batch.profile_name_combobox.currentText() == 'batch profile 1'
+    qtbot.mouseClick(batch.profile_delete_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # make sure the profile was deleted
+    assert 'batch profile 1' not in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]    
+
+    # make sure the combobox was updated
+    assert batch.profile_name_combobox.count() == 1
+    assert batch.profile_name_combobox.currentText() == 'Preset 1'
 
     # dialog.exec_()
 

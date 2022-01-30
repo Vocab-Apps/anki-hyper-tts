@@ -126,6 +126,11 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview_sound_button.setEnabled(True)
         self.preview_sound_button.setText('Preview Sound')
 
+    def refresh_profile_combobox(self):
+        profile_name_list = [self.hypertts.get_next_batch_name()] + self.hypertts.get_batch_config_list()
+        self.profile_name_combobox.clear()
+        self.profile_name_combobox.addItems(profile_name_list)
+
     def draw(self, layout):
         self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
@@ -138,8 +143,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.profile_name_combobox = PyQt5.QtWidgets.QComboBox()
         self.profile_name_combobox.setEditable(True)
         # populate with existing profile names
-        profile_name_list = [self.hypertts.get_next_batch_name()] + self.hypertts.get_batch_config_list()
-        self.profile_name_combobox.addItems(profile_name_list)
+        self.refresh_profile_combobox()
 
         hlayout.addWidget(self.profile_name_combobox)
         self.profile_load_button = PyQt5.QtWidgets.QPushButton('Load')
@@ -275,6 +279,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         if proceed == True:
             with self.hypertts.error_manager.get_single_action_context('Deleting Preset'):
                 self.hypertts.delete_batch_config(profile_name)
+                self.refresh_profile_combobox()
 
     def show_settings_button_pressed(self):
         if self.show_settings:
