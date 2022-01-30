@@ -323,7 +323,8 @@ class HyperTTS():
         else:
             source = config_models.BatchSourceTemplate(batch_mode, batch_config['source']['source_template'],
                 constants.TemplateFormatVersion[batch_config['source']['template_format_version']])
-        target = config_models.BatchTarget(batch_config['target']['target_field'], False, False)
+        batch_target_config = batch_config['target']
+        target = config_models.BatchTarget(batch_target_config['target_field'], batch_target_config['text_and_sound_tag'], batch_target_config['remove_sound_tag'])
         voice_selection = self.deserialize_voice_selection(batch_config['voice_selection'])
 
         text_processing_config = batch_config.get('text_processing', {})

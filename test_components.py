@@ -626,19 +626,58 @@ def test_target(qtbot):
     # load model tests
     # ================
 
-    model = config_models.BatchTarget('Chinese', False, True)
+    target_field = 'Chinese'
+    text_and_sound_tag = False
+    remove_sound_tag = True
+    model = config_models.BatchTarget(target_field, text_and_sound_tag, remove_sound_tag)
     batch_target.load_model(model)
 
     assert batch_target.target_field_combobox.currentText() == 'Chinese'
     assert batch_target.radio_button_sound_only.isChecked() == True
+    assert batch_target.radio_button_text_sound.isChecked() == False
+
+    assert batch_target.radio_button_keep_sound.isChecked() == False
     assert batch_target.radio_button_remove_sound.isChecked() == True
 
-    model = config_models.BatchTarget('Pinyin', True, True)
+    target_field = 'Pinyin'
+    text_and_sound_tag = True
+    remove_sound_tag = True
+    model = config_models.BatchTarget(target_field, text_and_sound_tag, remove_sound_tag)
     batch_target.load_model(model)
 
     assert batch_target.target_field_combobox.currentText() == 'Pinyin'
+
     assert batch_target.radio_button_sound_only.isChecked() == False
+    assert batch_target.radio_button_text_sound.isChecked() == True
+
+    assert batch_target.radio_button_keep_sound.isChecked() == False
     assert batch_target.radio_button_remove_sound.isChecked() == True
+
+    target_field = 'Sound'
+    text_and_sound_tag = True
+    remove_sound_tag = False
+    model = config_models.BatchTarget(target_field, text_and_sound_tag, remove_sound_tag)
+    batch_target.load_model(model)
+
+    assert batch_target.target_field_combobox.currentText() == 'Sound'
+    assert batch_target.radio_button_sound_only.isChecked() == False
+    assert batch_target.radio_button_text_sound.isChecked() == True
+
+    assert batch_target.radio_button_keep_sound.isChecked() == True
+    assert batch_target.radio_button_remove_sound.isChecked() == False
+
+    target_field = 'Chinese'
+    text_and_sound_tag = False
+    remove_sound_tag = False
+    model = config_models.BatchTarget(target_field, text_and_sound_tag, remove_sound_tag)
+    batch_target.load_model(model)
+
+    assert batch_target.target_field_combobox.currentText() == 'Chinese'
+    assert batch_target.radio_button_sound_only.isChecked() == True
+    assert batch_target.radio_button_text_sound.isChecked() == False
+
+    assert batch_target.radio_button_keep_sound.isChecked() == True
+    assert batch_target.radio_button_remove_sound.isChecked() == False
 
 def test_batch_preview(qtbot):
 

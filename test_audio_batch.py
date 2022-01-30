@@ -381,6 +381,61 @@ def test_simple_append(qtbot):
     assert audio_data['voice']['name'] == 'voice_a_1'
     assert note_1.flush_called == True
 
+def test_simple_same_field_source_target(qtbot):
+    # create batch configuration
+    # ==========================
+
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        
+    # build voice selection model
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
+
+    batch = config_models.BatchConfig()
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget('Chinese', True, True)
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(single)
+    batch.set_text_processing(config_models.TextProcessing())
+
+
+    # create list of notes
+    # ====================
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
+
+    # run batch add audio (simple mode)
+    # =================================
+    listener = MockBatchStatusListener()
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+
+    # check progress bar
+    assert listener.current_row == 1
+
+    # verify effect on notes
+    # ======================
+    # target field has the sound tag
+    # note.flush() has been called
+
+    # check note 1
+
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    assert 'Chinese' in note_1.set_values 
+
+    text_and_sound_tag = note_1.set_values['Chinese']
+    assert '老人家 ' in text_and_sound_tag
+    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(text_and_sound_tag)
+    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+    assert audio_data['source_text'] == '老人家'
+    assert audio_data['voice']['name'] == 'voice_a_1'
+    assert note_1.flush_called == True
+
 def test_simple_sound_only_append(qtbot):
     # create batch configuration
     # ==========================

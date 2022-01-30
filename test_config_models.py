@@ -338,6 +338,40 @@ def test_batch_config(qtbot):
 <b>Voice Selection:</b> Single
 """
 
+def test_batch_config_target(qtbot):
+    # serialize tests for Target
+    hypertts_instance = get_hypertts_instance()
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_selection = config_models.VoiceSelectionSingle()
+    voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
+    batch_config = config_models.BatchConfig()
+    source = config_models.BatchSourceSimple('Chinese')
+    text_processing = config_models.TextProcessing()
+    batch_config.set_source(source)
+    batch_config.set_voice_selection(voice_selection)
+    batch_config.text_processing = text_processing
+
+
+    for text_and_sound_tag in [True, False]:
+        for remove_sound_tag in [True, False]:
+
+            target = config_models.BatchTarget('Sound', text_and_sound_tag, remove_sound_tag)
+            batch_config.set_target(target)
+
+            expected_output = {
+                'target_field': 'Sound',
+                'text_and_sound_tag': text_and_sound_tag,
+                'remove_sound_tag': remove_sound_tag
+            }
+            assert batch_config.serialize()['target'] == expected_output
+
+            # try deserializing
+            deserialized_batch_config = hypertts_instance.deserialize_batch_config(batch_config.serialize())
+            assert deserialized_batch_config.serialize()['target'] == expected_output
+
+
 def test_text_processing(qtbot):
     
     text_processing = config_models.TextProcessing()

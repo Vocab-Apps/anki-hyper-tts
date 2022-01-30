@@ -28,7 +28,7 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.radio_button_text_sound.setChecked(self.batch_target_model.text_and_sound_tag)
         self.radio_button_sound_only.setChecked(not self.batch_target_model.text_and_sound_tag)
         self.radio_button_remove_sound.setChecked(self.batch_target_model.remove_sound_tag)
-        self.radio_button_remove_sound.setChecked(not self.batch_target_model.remove_sound_tag)
+        self.radio_button_keep_sound.setChecked(not self.batch_target_model.remove_sound_tag)
 
 
     def draw(self):
