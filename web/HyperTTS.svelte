@@ -2,10 +2,14 @@
     import { writable } from 'svelte/store';
     
     export const batchNameListStore = writable([]);
+    export const defaultBatchName = writable("");
 
-    export function configureEditorHyperTTS(batchConfigList) {
+    export function configureEditorHyperTTS(batchConfigList, defaultBatch) {
         console.log('setLanguageToolsEditorSettings: ', batchConfigList);
         batchNameListStore.set(batchConfigList)
+        if( defaultBatch != null) {
+            defaultBatchName.set(defaultBatch);
+        }
     }
 
 </script>
@@ -13,6 +17,11 @@
 <script>
 
     let selectedBatchName;
+    defaultBatchName.subscribe(value => {
+        if (value) {
+            selectedBatchName = value;
+        }
+    })
 
 	let batchNameList;
 	batchNameListStore.subscribe(value => {

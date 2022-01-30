@@ -38,6 +38,7 @@ class HyperTTS():
         self.error_manager = errors.ErrorManager(self.anki_utils)
         self.config = self.anki_utils.get_config()
         self.error_manager = errors.ErrorManager(self.anki_utils)
+        self.latest_saved_batch_name = None
 
 
     def process_batch_audio(self, note_id_list, batch, batch_status):
@@ -269,6 +270,7 @@ class HyperTTS():
             self.config[constants.CONFIG_BATCH_CONFIG] = {}
         self.config[constants.CONFIG_BATCH_CONFIG][batch_name] = batch.serialize()
         self.anki_utils.write_config(self.config)
+        self.latest_saved_batch_name = batch_name
         logging.info(f'saved batch config [{batch_name}]')
 
     def load_batch_config(self, batch_name):
@@ -303,6 +305,12 @@ class HyperTTS():
 
     def hypertts_pro_enabled(self):
         return self.get_configuration().hypertts_pro_api_key_set()
+
+    def clear_latest_saved_batch_name(self):
+        self.latest_saved_batch_name = None
+
+    def get_latest_saved_batch_name(self):
+        return self.latest_saved_batch_name
 
     # deserialization routines for loading from config
     # ================================================

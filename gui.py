@@ -80,9 +80,15 @@ def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
         dialog.configure_editor(note, editor, add_mode)
         dialog.exec_()
 
+def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
+    batch_name_list = hypertts.get_batch_config_list_editor()
+    configure_editor(editor, batch_name_list, hypertts.get_latest_saved_batch_name())
 
-def configure_editor(editor: aqt.editor.Editor, batch_name_list):
-    js_command = f"configureEditorHyperTTS({json.dumps(batch_name_list)})"
+def configure_editor(editor: aqt.editor.Editor, batch_name_list, latest_saved_batch_name):
+    default_batch_name = 'null'
+    if latest_saved_batch_name != None:
+        default_batch_name = f'"{latest_saved_batch_name}"'
+    js_command = f"configureEditorHyperTTS({json.dumps(batch_name_list)}, {default_batch_name})"
     print(js_command)
     editor.web.eval(js_command)    
 
@@ -109,11 +115,6 @@ def init(hypertts):
             action.triggered.connect(get_launch_dialog_browser_fn(hypertts, browser, batch_name))
             menu.addAction(action)
 
-    def shortcut_test(cuts, editor):
-        logging.info('editor shortcuts setup')
-        cuts.append(("Ctrl+l", lambda: aqt.utils.tooltip("test")))
-
-
     def on_webview_will_set_content(web_content: aqt.webview.WebContent, context):
         if not isinstance(context, aqt.editor.Editor):
             return
@@ -128,8 +129,7 @@ def init(hypertts):
         web_content.css.extend(css_path)
 
     def loadNote(editor: aqt.editor.Editor):
-        batch_name_list = hypertts.get_batch_config_list_editor()
-        configure_editor(editor, batch_name_list)
+        update_editor_batch_list(hypertts, editor)
 
     def onBridge(handled, str, editor):
         # logging.debug(f'bridge str: {str}')
@@ -139,8 +139,11 @@ def init(hypertts):
             return handled
 
         if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX):
+            logging.info(f'{str}')
             if str == constants.PYCMD_ADD_AUDIO_PREFIX + constants.BATCH_CONFIG_NEW:
+                hypertts.clear_latest_saved_batch_name()
                 launch_batch_dialog_editor(hypertts, editor.note, editor, editor.addMode)
+                update_editor_batch_list(hypertts, editor)
             else:
                 with hypertts.error_manager.get_single_action_context('Adding Audio to Note'):
                     # logging.info(f'received message: {str}')
@@ -158,8 +161,6 @@ def init(hypertts):
 
     # browser menus
     aqt.gui_hooks.browser_menus_did_init.append(browerMenusInit)
-    # shortcuts
-    aqt.gui_hooks.editor_did_init_shortcuts.append(shortcut_test)
 
     # editor setup
     aqt.gui_hooks.editor_did_load_note.append(loadNote)
