@@ -273,6 +273,8 @@ class HyperTTS():
 
     def load_batch_config(self, batch_name):
         logging.info(f'loading batch config [{batch_name}]')
+        if batch_name not in self.config[constants.CONFIG_BATCH_CONFIG]:
+            raise errors.PresetNotFound(batch_name)
         return self.deserialize_batch_config(self.config[constants.CONFIG_BATCH_CONFIG][batch_name])
 
     def get_batch_config_list(self):

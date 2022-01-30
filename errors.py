@@ -59,6 +59,11 @@ class VoiceNotFound(HyperTTSError):
         super().__init__(message)
         self.voice_data = voice_data
 
+class PresetNotFound(HyperTTSError):
+    def __init__(self, preset_name):
+        message = f'Preset not found: {preset_name}]'
+        super().__init__(message)
+
 
 class RequestError(HyperTTSError):
     def __init__(self, source_text, voice, error_message):
