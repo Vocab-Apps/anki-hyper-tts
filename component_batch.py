@@ -149,6 +149,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.disable_save_profile_button('Save')
         hlayout.addWidget(self.profile_save_button)
 
+        self.profile_delete_button = PyQt5.QtWidgets.QPushButton('Delete')
+        hlayout.addWidget(self.profile_delete_button)
+
         hlayout.addStretch()
         # logo header
         hlayout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
@@ -156,6 +159,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
         self.profile_load_button.pressed.connect(self.load_profile_button_pressed)
         self.profile_save_button.pressed.connect(self.save_profile_button_pressed)
+        self.profile_delete_button.pressed.connect(self.delete_profile_button_pressed)
 
         # preset settings tabs
         # ====================
@@ -264,6 +268,13 @@ class ComponentBatch(component_common.ConfigComponentBase):
             self.hypertts.save_batch_config(profile_name, self.get_model())
             self.disable_save_profile_button('Preset Saved')
             self.disable_load_profile_button('Load')
+
+    def delete_profile_button_pressed(self):
+        profile_name = self.profile_name_combobox.currentText()
+        proceed = self.hypertts.anki_utils.ask_user(f'Delete Preset {profile_name} ?', self.dialog)
+        if proceed == True:
+            with self.hypertts.error_manager.get_single_action_context('Deleting Preset'):
+                self.hypertts.delete_batch_config(profile_name)
 
     def show_settings_button_pressed(self):
         if self.show_settings:

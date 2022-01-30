@@ -279,6 +279,13 @@ class HyperTTS():
             raise errors.PresetNotFound(batch_name)
         return self.deserialize_batch_config(self.config[constants.CONFIG_BATCH_CONFIG][batch_name])
 
+    def delete_batch_config(self, batch_name):
+        logging.info(f'deleting batch config [{batch_name}]')
+        if batch_name not in self.config[constants.CONFIG_BATCH_CONFIG]:
+            raise errors.PresetNotFound(batch_name)
+        del self.config[constants.CONFIG_BATCH_CONFIG][batch_name]
+        self.anki_utils.write_config(self.config)
+
     def get_batch_config_list(self):
         if constants.CONFIG_BATCH_CONFIG not in self.config:
             return []
