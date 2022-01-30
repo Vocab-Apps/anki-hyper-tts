@@ -258,12 +258,13 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
 
     def play_sample(self):
-        logging.info('play_sample')
-        # get voice
-        selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
-        # get options
-        options = self.current_voice_options
-        self.hypertts.play_sound(self.sample_text, selected_voice, options)
+        with self.hypertts.error_manager.get_single_action_context('Playing Voice Sample'):
+            logging.info('play_sample')
+            # get voice
+            selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
+            # get options
+            options = self.current_voice_options
+            self.hypertts.play_sound(self.sample_text, selected_voice, options)
 
     def add_voice(self):
         selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
