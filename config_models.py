@@ -202,9 +202,6 @@ class VoiceSelectionBase(ConfigModelBase):
     # properties
     selection_mode = property(get_selection_mode, None)
 
-    def validate(self):
-        pass
-
     def __str__(self):
         return 'voices'
 
@@ -219,6 +216,10 @@ class VoiceSelectionSingle(VoiceSelectionBase):
             'voice_selection_mode': self._selection_mode.name,
             'voice': self._voice_with_options.serialize()
         }
+
+    def validate(self):
+        if self.voice == None:
+            raise errors.NoVoiceSet()
 
     def get_voice(self):
         return self._voice_with_options
@@ -272,6 +273,10 @@ class VoiceSelectionMultipleBase(VoiceSelectionBase):
             'voice_selection_mode': self._selection_mode.name,
             'voice_list': [x.serialize() for x in self._voice_list]
         }
+
+    def validate(self):
+        if len(self._voice_list) == 0:
+            raise errors.NoVoiceSet()
 
     def __str__(self):
         return f'{self.selection_mode.name} ({len(self.get_voice_list())} voices)'

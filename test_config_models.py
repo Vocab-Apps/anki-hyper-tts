@@ -552,6 +552,9 @@ class ConfigModelsTests(unittest.TestCase):
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
 
+        # missing source field
+        # ====================
+
         batch_config = config_models.BatchConfig()
         source = config_models.BatchSourceSimple('')
         target = config_models.BatchTarget('Sound', False, False)
@@ -564,6 +567,9 @@ class ConfigModelsTests(unittest.TestCase):
 
         self.assertRaises(errors.SourceFieldNotSet, batch_config.validate)
 
+        # missing target field
+        # ====================
+
         source = config_models.BatchSourceSimple('Chinese')
         target = config_models.BatchTarget(None, False, False)
 
@@ -571,3 +577,34 @@ class ConfigModelsTests(unittest.TestCase):
         batch_config.set_target(target)        
 
         self.assertRaises(errors.TargetFieldNotSet, batch_config.validate)
+
+        # single voice, voice not set
+        # ===========================
+
+        source = config_models.BatchSourceSimple('Chinese')
+        target = config_models.BatchTarget('Sound', False, False)
+        voice_selection = config_models.VoiceSelectionSingle()
+
+        batch_config.set_source(source)
+        batch_config.set_target(target)
+        batch_config.set_voice_selection(voice_selection)
+
+        self.assertRaises(errors.NoVoiceSet, batch_config.validate)
+
+        
+        # priority mode, no voice set
+        # ===========================
+
+        voice_selection = config_models.VoiceSelectionPriority()
+        batch_config.set_voice_selection(voice_selection)
+
+        self.assertRaises(errors.NoVoiceSet, batch_config.validate)
+
+
+        # random mode, no voice set
+        # ===========================
+
+        voice_selection = config_models.VoiceSelectionRandom()
+        batch_config.set_voice_selection(voice_selection)
+
+        self.assertRaises(errors.NoVoiceSet, batch_config.validate)
