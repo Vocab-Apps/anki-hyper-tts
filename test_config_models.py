@@ -563,3 +563,11 @@ class ConfigModelsTests(unittest.TestCase):
         batch_config.text_processing = text_processing
 
         self.assertRaises(errors.SourceFieldNotSet, batch_config.validate)
+
+        source = config_models.BatchSourceSimple('Chinese')
+        target = config_models.BatchTarget(None, False, False)
+
+        batch_config.set_source(source)
+        batch_config.set_target(target)        
+
+        self.assertRaises(errors.TargetFieldNotSet, batch_config.validate)
