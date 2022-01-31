@@ -198,7 +198,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
             self.preview_widget.setLayout(self.preview.draw())            
             self.vlayout.addWidget(self.preview_widget)
 
-        # return self.tabs
+
+        self.vlayout.addStretch()
 
         # setup bottom buttons
         # ====================
