@@ -2,13 +2,9 @@ import sys
 import abc
 import copy
 
-if hasattr(sys, '_pytest_mode'):
-    import constants
-    import voice
-else:
-    # anki
-    from . import constants
-    from . import voice
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
+errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 
 """
 the various objects here dictate how HyperTTS is configured and these objects will serialize to/from the anki config
@@ -19,6 +15,9 @@ class ConfigModelBase(abc.ABC):
     def serialize(self):
         pass
 
+    # @abc.abstractmethod
+    # def validate(self):
+    #     pass    
 
 class BatchConfig(ConfigModelBase):
     def __init__(self):
@@ -98,6 +97,10 @@ class BatchSourceSimple(BatchSource):
         BatchSource.__init__(self)
         self.mode = constants.BatchMode.simple
         self.source_field = source_field
+
+    def validate(self):
+        if self.source_field == None or len(self.source_field) == 0:
+            raise errors.SourceFieldNotSet()
 
 
 class BatchSourceTemplate(BatchSource):

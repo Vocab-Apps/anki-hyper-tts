@@ -89,6 +89,18 @@ class NoResultVar(HyperTTSError):
         message = f'No "result" variable found. You must assign the final template output to a result variable.'
         super().__init__(message)
 
+# model validation errors
+# =======================
+
+class ModelValidationError(HyperTTSError):
+    def __init__(self, message):
+        super().__init__(message)    
+
+class SourceFieldNotSet(ModelValidationError):
+    def __init__(self):
+        super().__init__('Source Field is not set')
+
+
 # these ActionContext objects implement the "with " interface and help catch exceptions
 
 class SingleActionContext():
