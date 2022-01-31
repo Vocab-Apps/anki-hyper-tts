@@ -15,9 +15,9 @@ class ConfigModelBase(abc.ABC):
     def serialize(self):
         pass
 
-    # @abc.abstractmethod
-    # def validate(self):
-    #     pass    
+    @abc.abstractmethod
+    def validate(self):
+        pass    
 
 class BatchConfig(ConfigModelBase):
     def __init__(self):
@@ -65,6 +65,12 @@ class BatchConfig(ConfigModelBase):
             'text_processing': self.text_processing.serialize()
         }
 
+    def validate(self):
+        self.source.validate(),
+        self.target.validate(),
+        self.voice_selection.validate(),
+        self.text_processing.validate()
+
 class BatchSource(ConfigModelBase):
     def __init__(self):
         self.mode = None
@@ -110,6 +116,9 @@ class BatchSourceTemplate(BatchSource):
         self.source_template = source_template
         self.template_format_version = template_format_version
 
+    def validate(self):
+        if self.source_template == None or len(self.source_template) == 0:
+            raise errors.SourceTemplateNotSet()
 
 class BatchTarget(ConfigModelBase):
     def __init__(self, target_field, text_and_sound_tag, remove_sound_tag):
@@ -123,6 +132,10 @@ class BatchTarget(ConfigModelBase):
             'text_and_sound_tag': self.text_and_sound_tag,
             'remove_sound_tag': self.remove_sound_tag
         }
+
+    def validate(self):
+        if self.target_field == None or len(self.target_field) == 0:
+            raise errors.TargetFieldNotSet()
 
     def __str__(self):
         return f'{self.target_field}'
@@ -188,6 +201,9 @@ class VoiceSelectionBase(ConfigModelBase):
 
     # properties
     selection_mode = property(get_selection_mode, None)
+
+    def validate(self):
+        pass
 
     def __str__(self):
         return 'voices'
@@ -310,6 +326,9 @@ class TextReplacementRule(ConfigModelBase):
             'target': self.target
         }
 
+    def validate(self):
+        pass
+
 class TextProcessing(ConfigModelBase):
     def __init__(self):
         self._text_replacement_rules = []
@@ -341,6 +360,9 @@ class TextProcessing(ConfigModelBase):
             'run_replace_rules_after': self.run_replace_rules_after,
             'text_replacement_rules': [x.serialize() for x in self.text_replacement_rules]
         }
+
+    def validate(self):
+        pass
 
 # service configuration
 # =====================
@@ -407,3 +429,6 @@ class Configuration(ConfigModelBase):
             'service_enabled': self._service_enabled,
             'service_config': self._service_config
         }
+
+    def validate(self):
+        pass

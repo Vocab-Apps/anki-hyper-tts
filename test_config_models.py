@@ -7,6 +7,7 @@ import servicemanager
 import testing_utils
 import config_models
 import hypertts
+import errors
 
 def get_service_manager():
     manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services', True)
@@ -561,4 +562,4 @@ class ConfigModelsTests(unittest.TestCase):
         batch_config.set_voice_selection(voice_selection)
         batch_config.text_processing = text_processing
 
-        # assert False
+        self.assertRaises(errors.SourceFieldNotSet, batch_config.validate)

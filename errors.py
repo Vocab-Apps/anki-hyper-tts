@@ -100,6 +100,13 @@ class SourceFieldNotSet(ModelValidationError):
     def __init__(self):
         super().__init__('Source Field is not set')
 
+class SourceTemplateNotSet(ModelValidationError):
+    def __init__(self):
+        super().__init__('Source Template is not set')
+
+class TargetFieldNotSet(ModelValidationError):
+    def __init__(self):
+        super().__init__('Target Field is not set')        
 
 # these ActionContext objects implement the "with " interface and help catch exceptions
 
