@@ -71,54 +71,44 @@ class BatchConfig(ConfigModelBase):
         self.voice_selection.validate(),
         self.text_processing.validate()
 
-class BatchSource(ConfigModelBase):
-    def __init__(self):
-        self.mode = None
-        self.source_field = None
-        self.source_template = None
-        self.template_format_version = constants.TemplateFormatVersion.v1
 
-    def serialize(self):
-        if self.mode == constants.BatchMode.simple:
-            return {
-                'mode': self.mode.name,
-                'source_field': self.source_field
-            }
-        else:
-            return {
-                'mode': self.mode.name,
-                'template_format_version': self.template_format_version.name,
-                'source_template': self.source_template
-            }
-    
-    def __str__(self):
-        if self.mode == constants.BatchMode.simple:
-            return f'{self.source_field}'
-        else:
-            return 'template'
-
-
-class BatchSourceSimple(BatchSource):
+class BatchSourceSimple(ConfigModelBase):
     def __init__(self, source_field):
-        BatchSource.__init__(self)
         self.mode = constants.BatchMode.simple
         self.source_field = source_field
+
+    def serialize(self):
+        return {
+            'mode': self.mode.name,
+            'source_field': self.source_field
+        }
 
     def validate(self):
         if self.source_field == None or len(self.source_field) == 0:
             raise errors.SourceFieldNotSet()
 
+    def __str__(self):
+        return f'{self.source_field}'
 
-class BatchSourceTemplate(BatchSource):
+class BatchSourceTemplate(ConfigModelBase):
     def __init__(self, mode, source_template: str, template_format_version: constants.TemplateFormatVersion):
-        BatchSource.__init__(self)
         self.mode = mode
         self.source_template = source_template
         self.template_format_version = template_format_version
 
+    def serialize(self):
+        return {
+            'mode': self.mode.name,
+            'template_format_version': self.template_format_version.name,
+            'source_template': self.source_template
+        }
+
     def validate(self):
         if self.source_template == None or len(self.source_template) == 0:
             raise errors.SourceTemplateNotSet()
+
+    def __str__(self):
+        return f'template'
 
 class BatchTarget(ConfigModelBase):
     def __init__(self, target_field, text_and_sound_tag, remove_sound_tag):
