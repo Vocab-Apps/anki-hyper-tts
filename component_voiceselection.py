@@ -281,9 +281,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
 
     def voice_selected(self, current_index):
-        voice = self.filtered_voice_list[current_index]
-        logging.info(f'voice_selected: {voice} options: {voice.options}')
-
         # clear the options layout
         self.voice_options_widgets = {}
         for i in reversed(range(self.voice_options_layout.count())): 
@@ -291,6 +288,16 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         # clear the current voice options
         self.current_voice_options = {}
+
+        if len(self.filtered_voice_list) == 0:
+            # if we are in the single voice mode, clear current voice
+            if self.voice_selection_model.selection_mode == constants.VoiceSelectionMode.single:
+                self.voice_selection_model.set_voice(None)
+                self.notify_model_update()
+            return
+
+        voice = self.filtered_voice_list[current_index]
+        logging.info(f'voice_selected: {voice} options: {voice.options}')
 
         def get_set_option_lambda(voice, key):
             def set_value(value):
