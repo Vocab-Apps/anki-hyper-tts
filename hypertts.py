@@ -187,6 +187,7 @@ class HyperTTS():
     # ================
 
     def preview_note_audio(self, batch, note):
+        batch.validate()
         full_filename, audio_filename = self.get_note_audio(batch, note)
         self.anki_utils.play_sound(full_filename)
 
@@ -305,6 +306,7 @@ class HyperTTS():
         return batch_name
 
     def save_configuration(self, configuration_model):
+        configuration_model.validate()
         self.config[constants.CONFIG_CONFIGURATION] = configuration_model.serialize()
         self.anki_utils.write_config(self.config)
 
