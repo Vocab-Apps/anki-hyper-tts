@@ -527,9 +527,7 @@ def test_batch_source_1(qtbot):
     dialog.addChildLayout(batch_source.draw())
 
     # the field selected should be "Chinese"
-    expected_source_model = config_models.BatchSource()
-    expected_source_model.mode = constants.BatchMode.simple
-    expected_source_model.source_field = 'Chinese'
+    expected_source_model = config_models.BatchSourceSimple('Chinese')
 
     # the simple stack item should be selected
     assert batch_source.source_config_stack.currentIndex() == batch_source.SOURCE_CONFIG_STACK_SIMPLE
@@ -549,19 +547,15 @@ def test_batch_source_1(qtbot):
     # enter template format
     qtbot.keyClicks(batch_source.simple_template_input, '{Chinese}')
 
-    expected_source_model = config_models.BatchSource()
-    expected_source_model.mode = constants.BatchMode.template
-    expected_source_model.source_template = '{Chinese}'
-    expected_source_model.template_format_version = constants.TemplateFormatVersion.v1
+    expected_source_model = config_models.BatchSourceTemplate(constants.BatchMode.template, 
+        '{Chinese}', constants.TemplateFormatVersion.v1)
 
     assert batch_source.batch_source_model.serialize() == expected_source_model.serialize()
 
     # load model tests
     # ================
-    # the field selected should be "Chinese"
-    model = config_models.BatchSource()
-    model.mode = constants.BatchMode.simple
-    model.source_field = 'English'
+    # the field selected should be "English"
+    model = config_models.BatchSourceSimple('English')
 
     batch_source.load_model(model)
 

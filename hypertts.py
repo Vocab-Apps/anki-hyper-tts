@@ -266,6 +266,7 @@ class HyperTTS():
     # =================================
 
     def save_batch_config(self, batch_name, batch):
+        batch.validate()
         if constants.CONFIG_BATCH_CONFIG not in self.config:
             self.config[constants.CONFIG_BATCH_CONFIG] = {}
         self.config[constants.CONFIG_BATCH_CONFIG][batch_name] = batch.serialize()
