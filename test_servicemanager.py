@@ -82,13 +82,13 @@ class ServiceManagerTests(unittest.TestCase):
         assert len(subset) == 1
         servicea_voice_1 = subset[0]
         assert servicea_voice_1.name == 'voice_a_1'
-        assert servicea_voice_1.language == constants.AudioLanguage.fr_FR
+        assert servicea_voice_1.language == languages.AudioLanguage.fr_FR
 
         subset = [voice for voice in voice_list if voice.service.name == 'ServiceB' and voice.name == 'jane']
         assert len(subset) == 1
         servicea_voice_1 = subset[0]
         assert servicea_voice_1.name == 'jane'
-        assert servicea_voice_1.language == constants.AudioLanguage.ja_JP
+        assert servicea_voice_1.language == languages.AudioLanguage.ja_JP
 
 
     def test_voice_serialization(self):

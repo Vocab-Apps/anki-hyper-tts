@@ -1,4 +1,5 @@
 import constants
+import languages
 import service
 import voice
 import errors
@@ -16,7 +17,7 @@ class VoiceB(voice.VoiceBase):
         return constants.Gender.Male
 
     def _get_language(self):
-        return constants.AudioLanguage.ja_JP
+        return languages.AudioLanguage.ja_JP
 
     def _get_service(self):
         return self._service
