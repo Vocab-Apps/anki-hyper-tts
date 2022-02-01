@@ -11,7 +11,7 @@ else:
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
-service = __import__('services', globals(), locals(), [], sys._addon_import_level_base)
+services = __import__('services', globals(), locals(), [], sys._addon_import_level_base)
 languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 

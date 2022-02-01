@@ -29,7 +29,7 @@ class Google(service.ServiceBase):
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
         # configuration options
         api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
-        is_explorer_api_key = self.get_configuration_value_optional(self.CONFIG_EXPLORER_API_KEY)
+        is_explorer_api_key = self.get_configuration_value_optional(self.CONFIG_EXPLORER_API_KEY, False)
 
         payload = {
             "audioConfig": {
