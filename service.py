@@ -4,16 +4,15 @@ from posixpath import dirname
 import typing
 
 if hasattr(sys, '_pytest_mode'):
-    import voice
-    import services
     import services.voicelist
-    import constants
 else:
     # import running from within Anki
-    from . import voice
-    from . import services
     from .services import voicelist
-    from . import constants
+
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
+service = __import__('services', globals(), locals(), [], sys._addon_import_level_base)
+languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
 
 class ServiceBase(abc.ABC):
     
@@ -61,7 +60,7 @@ class ServiceBase(abc.ABC):
         service_voices_json = [voice for voice in services.voicelist.VOICE_LIST if voice['service'] == self.name]
         service_voices = [voice.Voice(v['name'], 
                             constants.Gender[v['gender']], 
-                            constants.AudioLanguage[v['language']], 
+                            languages.AudioLanguage[v['language']], 
                             self, 
                             v['key'],
                             v['options']) for v in service_voices_json]

@@ -16,6 +16,7 @@ import constants
 import voice
 import servicemanager
 import errors
+import languages
 
 
 def services_dir():
@@ -71,10 +72,10 @@ class TTSTests(unittest.TestCase):
         sound.export(wav_filepath, format="wav")
 
         recognition_language_map = {
-            constants.AudioLanguage.en_US: 'en-US',
-            constants.AudioLanguage.fr_FR: 'fr-FR',
-            constants.AudioLanguage.zh_CN: 'zh-CN',
-            constants.AudioLanguage.ja_JP: 'ja-JP',
+            languages.AudioLanguage.en_US: 'en-US',
+            languages.AudioLanguage.fr_FR: 'fr-FR',
+            languages.AudioLanguage.zh_CN: 'zh-CN',
+            languages.AudioLanguage.ja_JP: 'ja-JP',
         }
 
         recognition_language = recognition_language_map[voice.language]
@@ -116,16 +117,16 @@ class TTSTests(unittest.TestCase):
         assert len(google_voices) > 300
 
         # pick a random en_US voice
-        selected_voice = self.pick_random_voice(voice_list, 'Google', constants.AudioLanguage.en_US)
+        selected_voice = self.pick_random_voice(voice_list, 'Google', languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
 
         # french
-        selected_voice = self.pick_random_voice(voice_list, 'Google', constants.AudioLanguage.fr_FR)
+        selected_voice = self.pick_random_voice(voice_list, 'Google', languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
 
         # error checking
         # try a voice which doesn't exist
-        selected_voice = self.pick_random_voice(voice_list, 'Google', constants.AudioLanguage.en_US)
+        selected_voice = self.pick_random_voice(voice_list, 'Google', languages.AudioLanguage.en_US)
         selected_voice = copy.copy(selected_voice)
         voice_key = copy.copy(selected_voice.voice_key)
         voice_key['name'] = 'non existent'
@@ -155,16 +156,16 @@ class TTSTests(unittest.TestCase):
         assert len(service_voices) > 300
 
         # pick a random en_US voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, constants.AudioLanguage.en_US)
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
 
         # french
-        selected_voice = self.pick_random_voice(voice_list, service_name, constants.AudioLanguage.fr_FR)
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
 
         # error checking
         # try a voice which doesn't exist
-        selected_voice = self.pick_random_voice(voice_list, service_name, constants.AudioLanguage.en_US)
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         selected_voice = copy.copy(selected_voice)
         voice_key = copy.copy(selected_voice.voice_key)
         voice_key['name'] = 'non existent'
@@ -197,16 +198,16 @@ class TTSTests(unittest.TestCase):
                     self.verify_audio_output(voice, source_text)    
 
     def test_all_services_english(self):
-        self.verify_all_services_language(constants.AudioLanguage.en_US, 'The weather is good today.')
+        self.verify_all_services_language(languages.AudioLanguage.en_US, 'The weather is good today.')
 
     def test_all_services_french(self):
-        self.verify_all_services_language(constants.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
+        self.verify_all_services_language(languages.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
 
     def test_all_services_mandarin(self):
-        self.verify_all_services_language(constants.AudioLanguage.zh_CN, '赚钱')
+        self.verify_all_services_language(languages.AudioLanguage.zh_CN, '赚钱')
 
     def test_all_services_japanese(self):
-        self.verify_all_services_language(constants.AudioLanguage.ja_JP, 'おはようございます')
+        self.verify_all_services_language(languages.AudioLanguage.ja_JP, 'おはようございます')
 
 
 class TTSTestsCloudLanguageTools(TTSTests):

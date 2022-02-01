@@ -1,11 +1,8 @@
 import sys
 import abc
 
-if hasattr(sys, '_pytest_mode'):
-    import constants
-else:
-    # import running from within Anki
-    from . import constants
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
 
 class VoiceBase(abc.ABC):
     """
@@ -21,7 +18,7 @@ class VoiceBase(abc.ABC):
         pass
 
     @abc.abstractproperty
-    def language() -> constants.AudioLanguage:
+    def language() -> languages.AudioLanguage:
         pass
 
     @abc.abstractproperty
