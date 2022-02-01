@@ -12,13 +12,11 @@ class Azure(service.ServiceBase):
     CONFIG_API_KEY = 'api_key'
 
     def __init__(self):
+        service.ServiceBase.__init__(self)
         self.access_token = None
 
     def cloudlanguagetools_enabled(self):
         return True
-
-    def configure(self, config):
-        self.config = config
 
     def configuration_options(self):
         return {
@@ -77,8 +75,8 @@ class Azure(service.ServiceBase):
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
 
-        region = self.config[self.CONFIG_REGION]
-        subscription_key = self.config[self.CONFIG_API_KEY]
+        region = self.get_configuration_value_mandatory(self.CONFIG_REGION)
+        subscription_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
         
         if self.token_refresh_required():
             self.get_token(subscription_key, region)

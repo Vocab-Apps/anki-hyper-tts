@@ -13,8 +13,11 @@ constants = __import__('constants', globals(), locals(), [], sys._addon_import_l
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
 service = __import__('services', globals(), locals(), [], sys._addon_import_level_base)
 languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
+errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 
 class ServiceBase(abc.ABC):
+    def __init__(self):
+        self._config = {}
     
     """service name"""
     def _get_name(self):
@@ -70,9 +73,15 @@ class ServiceBase(abc.ABC):
     def configuration_options(self):
         return {}
 
-    def configure(self):
-        pass
+    def configure(self, config):
+        self._config = config
 
+    def get_configuration_value_mandatory(self, key):
+        value = self._config.get(key, None)
+        if value == None or (self.configuration_options()[key] == str and len(value) == 0):
+            raise errors.MissingServiceConfiguration(self.name, key)
+        return value
 
-
+    def get_configuration_value_optional(self, key, default_value):
+        return self._config.get(key, default_value)
 

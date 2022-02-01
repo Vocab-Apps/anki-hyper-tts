@@ -112,6 +112,13 @@ class NoVoiceSet(ModelValidationError):
     def __init__(self):
         super().__init__('No Voice has been set')
 
+# service configuration related errors
+# ====================================
+
+class MissingServiceConfiguration(HyperTTSError):
+    def __init__(self, service_name, key):
+        super().__init__(f'You must configure {key} for service {service_name}')
+
 # these ActionContext objects implement the "with " interface and help catch exceptions
 
 class SingleActionContext():

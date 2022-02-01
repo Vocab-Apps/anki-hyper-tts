@@ -12,13 +12,10 @@ class Google(service.ServiceBase):
     CONFIG_EXPLORER_API_KEY = 'explorer_api_key'
 
     def __init__(self):
-        pass
+        service.ServiceBase.__init__(self)
 
     def cloudlanguagetools_enabled(self):
         return True
-
-    def configure(self, config):
-        self.config = config
 
     def configuration_options(self):
         return {
@@ -30,6 +27,9 @@ class Google(service.ServiceBase):
         return self.basic_voice_list()
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+        # configuration options
+        api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
+        is_explorer_api_key = self.get_configuration_value_optional(self.CONFIG_EXPLORER_API_KEY)
 
         payload = {
             "audioConfig": {
@@ -49,10 +49,9 @@ class Google(service.ServiceBase):
         logging.debug(f'requesting audio with payload {payload}')
 
         headers = {}
-        is_explorer_api_key = self.config.get(self.CONFIG_EXPLORER_API_KEY, False)
         if is_explorer_api_key:
             headers['x-origin'] = 'https://explorer.apis.google.com'
-        response = requests.post("https://texttospeech.googleapis.com/v1/text:synthesize?key={}".format(self.config[self.CONFIG_API_KEY]), json=payload, headers=headers)
+        response = requests.post(f"https://texttospeech.googleapis.com/v1/text:synthesize?key={api_key}", json=payload, headers=headers)
         
         if response.status_code != 200:
             data = response.json()
