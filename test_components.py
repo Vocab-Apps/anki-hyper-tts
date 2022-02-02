@@ -1329,3 +1329,60 @@ def test_configuration_manual(qtbot):
 
     if os.environ.get('HYPERTTS_CONFIGURATION_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec_()    
+
+def test_batch_dialog_load_random(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+
+    # test saving of config
+    # =====================
+
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
+    batch.configure_browser(note_id_list)
+    batch.draw(dialog.getLayout())
+
+    # select a source field and target field
+    batch.source.source_field_combobox.setCurrentText('English')
+    batch.target.target_field_combobox.setCurrentText('Sound')
+    
+    # select random voice selection mode with two voices
+    batch.voice_selection.radio_button_random.setChecked(True)
+    # pick second voice and add it
+    batch.voice_selection.voices_combobox.setCurrentIndex(1) # pick second voice
+    qtbot.mouseClick(batch.voice_selection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+    # pick third voice and add it
+    batch.voice_selection.voices_combobox.setCurrentIndex(2) # pick second voice
+    qtbot.mouseClick(batch.voice_selection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # set profile name
+    batch.profile_name_combobox.setCurrentText('batch random 1')
+    qtbot.mouseClick(batch.profile_save_button, PyQt5.QtCore.Qt.LeftButton)
+
+    assert 'batch random 1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]
+
+    # test loading of config
+    # ======================
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
+    batch.configure_browser(note_id_list)
+    batch.draw(dialog.getLayout())    
+
+    # dialog.exec_()
+
+    assert batch.profile_load_button.isEnabled() == False
+    # select preset
+    batch.profile_name_combobox.setCurrentText('batch random 1')
+
+    # open
+    qtbot.mouseClick(batch.profile_load_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # check that the voice selection mode is random
+    assert batch.get_model().voice_selection.selection_mode == constants.VoiceSelectionMode.random
+    assert len(batch.get_model().voice_selection.get_voice_list()) == 2
