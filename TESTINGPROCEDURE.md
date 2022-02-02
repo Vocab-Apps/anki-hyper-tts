@@ -1,6 +1,7 @@
 reset config
 
 add single preset,
+apply to notes directly, then close
 run from browser/menu
 run from editor
 
