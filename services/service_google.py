@@ -2,6 +2,7 @@ import sys
 import requests
 import base64
 import logging
+import time
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
@@ -10,6 +11,7 @@ errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_s
 class Google(service.ServiceBase):
     CONFIG_API_KEY = 'api_key'
     CONFIG_EXPLORER_API_KEY = 'explorer_api_key'
+    CONFIG_THROTTLE_SECONDS = 'throttle_seconds'
 
     def __init__(self):
         service.ServiceBase.__init__(self)
@@ -20,7 +22,8 @@ class Google(service.ServiceBase):
     def configuration_options(self):
         return {
             self.CONFIG_API_KEY: str,
-            self.CONFIG_EXPLORER_API_KEY: bool
+            self.CONFIG_EXPLORER_API_KEY: bool,
+            self.CONFIG_THROTTLE_SECONDS: float
         }
 
     def voice_list(self):
@@ -30,6 +33,10 @@ class Google(service.ServiceBase):
         # configuration options
         api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
         is_explorer_api_key = self.get_configuration_value_optional(self.CONFIG_EXPLORER_API_KEY, False)
+        throttle_seconds = self.get_configuration_value_optional(self.CONFIG_THROTTLE_SECONDS, 0)
+
+        if throttle_seconds > 0:
+            time.sleep(throttle_seconds)
 
         payload = {
             "audioConfig": {

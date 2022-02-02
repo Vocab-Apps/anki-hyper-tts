@@ -57,6 +57,13 @@ class Configuration(component_common.ConfigComponentBase):
             self.model_change()
         return int_change
 
+    def get_service_config_float_change_fn(self, service, key):
+        def float_change(value):
+            logging.info(f'{service.name} {key}: {value}')
+            self.model.set_service_configuration_key(service.name, key, value)
+            self.model_change()
+        return float_change
+
     def get_service_config_list_change_fn(self, service, key):
         def list_change(text):
             logging.info(f'{service.name} {key}: {text}')
@@ -122,6 +129,14 @@ class Configuration(component_common.ConfigComponentBase):
                 spinbox.setObjectName(widget_name)
                 spinbox.valueChanged.connect(self.get_service_config_int_change_fn(service, key))
                 options_gridlayout.addWidget(spinbox, row, 1, 1, 1)
+            elif type == float:
+                spinbox = PyQt5.QtWidgets.QDoubleSpinBox()
+                saved_value = self.model.get_service_configuration_key(service.name, key)
+                if saved_value != None:
+                    spinbox.setValue(saved_value)
+                spinbox.setObjectName(widget_name)
+                spinbox.valueChanged.connect(self.get_service_config_float_change_fn(service, key))
+                options_gridlayout.addWidget(spinbox, row, 1, 1, 1)                
             elif type == bool:
                 checkbox = PyQt5.QtWidgets.QCheckBox()
                 saved_value = self.model.get_service_configuration_key(service.name, key)

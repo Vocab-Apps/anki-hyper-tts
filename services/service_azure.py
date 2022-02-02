@@ -2,6 +2,7 @@ import sys
 import requests
 import datetime
 import logging
+import time
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
@@ -10,6 +11,7 @@ errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_s
 class Azure(service.ServiceBase):
     CONFIG_REGION = 'region'
     CONFIG_API_KEY = 'api_key'
+    CONFIG_THROTTLE_SECONDS = 'throttle_seconds'
 
     def __init__(self):
         service.ServiceBase.__init__(self)
@@ -44,7 +46,8 @@ class Azure(service.ServiceBase):
                 'switzerlandnorth',
                 'uksouth',                
             ],
-            self.CONFIG_API_KEY: str
+            self.CONFIG_API_KEY: str,
+            self.CONFIG_THROTTLE_SECONDS: float
         }
 
     def get_token(self, subscription_key, region):
@@ -77,6 +80,10 @@ class Azure(service.ServiceBase):
 
         region = self.get_configuration_value_mandatory(self.CONFIG_REGION)
         subscription_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
+        throttle_seconds = self.get_configuration_value_optional(self.CONFIG_THROTTLE_SECONDS, 0)
+
+        if throttle_seconds > 0:
+            time.sleep(throttle_seconds)
         
         if self.token_refresh_required():
             self.get_token(subscription_key, region)
