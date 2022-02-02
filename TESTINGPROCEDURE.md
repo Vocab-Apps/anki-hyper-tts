@@ -1,19 +1,12 @@
 reset config
 
-run language mapping
-try batch translations
-try batch transliterations
+add single preset,
+run from browser/menu
+run from editor
 
-try adding inline translations
-
-try adding batch audio
-
-try typing and make sure that fields get updated
-    in note editor on existing note
-    in add note
-
-error situations
-    add transliteration from a language which is not supported
+add  random preset,
+run from browser/menu
+run from editor
 
 automated tests:
 coverage run -m pytest
