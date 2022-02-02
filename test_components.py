@@ -1386,3 +1386,15 @@ def test_batch_dialog_load_random(qtbot):
     # check that the voice selection mode is random
     assert batch.get_model().voice_selection.selection_mode == constants.VoiceSelectionMode.random
     assert len(batch.get_model().voice_selection.get_voice_list()) == 2
+
+    # apply to notes
+    qtbot.mouseClick(batch.apply_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # ensure audio was applied to 2 notes
+    # make sure notes were updated
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    assert 'Sound' in note_1.set_values 
+    note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
+    assert 'Sound' in note_2.set_values     
+
+    # dialog.exec_()
