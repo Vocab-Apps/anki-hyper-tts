@@ -15,6 +15,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
     def __init__(self, hypertts, model_change_callback):
         self.hypertts = hypertts
         self.model_change_callback = model_change_callback
+        self.enable_model_change_callback = True
 
         # initialize widgets
 
@@ -73,7 +74,9 @@ class VoiceSelection(component_common.ConfigComponentBase):
         return self.voice_selection_model
 
     def load_model(self, model):
-        logging.info(f'load_model')
+        # don't report changes back to parent dialog as we adjust widgets
+        self.enable_model_change_callback = False
+        logging.info(f'load_model, model: {model}')
         # self.voice_selection_model = model
 
         if model.selection_mode == constants.VoiceSelectionMode.single:
@@ -98,6 +101,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.voice_selection_model = model
             self.redraw_selected_voices()
 
+        self.enable_model_change_callback = True
 
     def sample_text_selected(self, text):
         self.sample_text = text
@@ -106,7 +110,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
 
     def notify_model_update(self):
-        self.model_change_callback(self.voice_selection_model)
+        if self.enable_model_change_callback:
+            self.model_change_callback(self.voice_selection_model)
 
     def set_default_selection_model(self):
         self.voice_selection_model = config_models.VoiceSelectionSingle() # default
