@@ -13,7 +13,7 @@ version = __import__('version', globals(), locals(), [], sys._addon_import_level
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 cloudlanguagetools_module = __import__('cloudlanguagetools', globals(), locals(), [], sys._addon_import_level_base)
 
-if constants.ENABLE_SENTRY_CRASH_REPORTING:
+if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
 
 class ServiceManager():
@@ -101,11 +101,34 @@ class ServiceManager():
     # ================================
 
     def get_tts_audio(self, source_text, voice, options):
-        with sentry_sdk.start_transaction(op="get_tts_audio", name='test_transaction') as transaction:
-            if self.cloudlanguagetools_enabled:
-                return self.cloudlanguagetools.get_tts_audio(source_text, voice, options)
-            else:
-                return voice.service.get_tts_audio(source_text, voice, options)
+        if hasattr(sys, '_sentry_crash_reporting'):
+            return self.get_tts_audio_instrumented(source_text, voice, options)
+        else:
+            return self.get_tts_audio_implementation(source_text, voice, options)
+
+    def get_tts_audio_instrumented(self, source_text, voice, options):
+        transaction_name = f'{voice.service.name}'
+        if self.cloudlanguagetools_enabled:
+            transaction_name = f'cloudlanguagetools_{voice.service.name}'
+        raise_exception = None
+        with sentry_sdk.start_transaction(op="audio", name=transaction_name) as transaction:
+            try:
+                result_audio = self.get_tts_audio_implementation(source_text, voice, options)
+                transaction.status = 'ok'
+                return result_audio
+            except Exception as e:
+                transaction.status = 'invalid_argument'
+                transaction.description = source_text
+                transaction.set_tag('clt.voice', str(voice))
+                raise_exception = e
+        if raise_exception != None:
+            raise raise_exception
+
+    def get_tts_audio_implementation(self, source_text, voice, options):
+        if self.cloudlanguagetools_enabled:
+            return self.cloudlanguagetools.get_tts_audio(source_text, voice, options)
+        else:
+            return voice.service.get_tts_audio(source_text, voice, options)
 
     def full_voice_list(self) -> typing.List[voice.VoiceBase]:
         full_list = []

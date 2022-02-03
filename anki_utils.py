@@ -8,7 +8,7 @@ import logging
 import PyQt5
 from . import constants    
 
-if constants.ENABLE_SENTRY_CRASH_REPORTING:
+if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
 
 class AnkiUtils():
@@ -157,14 +157,14 @@ class AnkiUtils():
 
     def report_unknown_exception_interactive(self, exception, action):
         error_message = f'Encountered an unknown error while {action}: {str(exception)}'
-        if constants.ENABLE_SENTRY_CRASH_REPORTING:
+        if hasattr(sys, '_sentry_crash_reporting'):
             sentry_sdk.capture_exception(exception)
         else:
             logging.critical(exception, exc_info=True)
         self.critical_message(error_message, None)
 
     def report_unknown_exception_background(self, exception):
-        if constants.ENABLE_SENTRY_CRASH_REPORTING:
+        if hasattr(sys, '_sentry_crash_reporting'):
             sentry_sdk.capture_exception(exception)
         else:
             logging.critical(exception, exc_info=True)
