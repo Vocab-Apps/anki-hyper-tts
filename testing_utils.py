@@ -240,6 +240,9 @@ class MockCloudLanguageTools():
         self.account_info_called = True
         self.account_info_api_key = api_key
 
+        if api_key == 'exception_key':
+            raise Exception('exception_key')
+
 
         if api_key == 'valid_key':
             return {

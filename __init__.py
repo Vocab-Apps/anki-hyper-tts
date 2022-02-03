@@ -2,6 +2,7 @@ import sys
 import os
 import traceback
 import logging
+import uuid
 import re
 
 if hasattr(sys, '_pytest_mode'):
@@ -25,13 +26,26 @@ else:
     from . import constants
 
     if constants.ENABLE_SENTRY_CRASH_REPORTING:
+        sys._sentry_crash_reporting = True
         addon_dir = os.path.dirname(os.path.realpath(__file__))
         external_dir = os.path.join(addon_dir, 'external')
         sys.path.append(external_dir)
         import sentry_sdk
         from . import version
 
-        api_key = aqt.mw.addonManager.getConfig(__name__).get('configuration', {}).get('hypertts_pro_api_key', None)
+        addon_config = aqt.mw.addonManager.getConfig(__name__)
+        api_key = addon_config.get('configuration', {}).get('hypertts_pro_api_key', None)
+        if api_key != None:
+            user_id = f'api_key:{api_key}'
+        else:
+            unique_id = addon_config.get('unique_id', None)
+            if unique_id == None:
+                unique_id = f'uuid:{uuid.uuid4().hex[:12]}'
+                addon_config['unique_id'] = unique_id
+                aqt.mw.addonManager.writeConfig(__name__, addon_config)
+            user_id = unique_id
+
+
 
         # setup crash reporting
         # =====================
@@ -64,6 +78,7 @@ else:
             environment=os.environ.get('SENTRY_ENV', 'production'),
             before_send=sentry_filter
         )
+        sentry_sdk.set_user({"id": user_id})
 
     # addon imports
     # =============

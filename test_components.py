@@ -985,6 +985,36 @@ def test_batch_dialog_editor(qtbot):
 
     assert dialog.closed == True
 
+def test_batch_dialog_editor_template_error(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+    note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+
+    mock_editor = MockEditor()
+
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
+    batch.configure_editor(note, mock_editor, False)
+    batch.draw(dialog.getLayout())
+
+    # select template mode and enter incorrect advanced template
+    batch.source.batch_mode_combobox.setCurrentText('advanced_template')
+    # enter template format
+    # qtbot.keyClicks(batch.source.advanced_template_input, """field_1 = 'yoyo'""")
+    batch.source.advanced_template_input.setPlainText("""field_1 = 'yoyo'""")
+
+    # ensure the preview label is showing an error
+    label_error_text = batch.preview.source_preview_label.text()
+    expected_label_text = """<b>Encountered Error:</b> No "result" variable found. You must assign the final template output to a result variable."""
+    assert label_error_text == expected_label_text
+
+    # dialog.exec_()
+
+
 def test_text_processing(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
@@ -1312,6 +1342,35 @@ def test_configuration(qtbot):
     assert configuration.save_button.isEnabled() == False # since we didn't change anything
 
     # dialog.exec_()    
+
+def test_configuration_pro_key_exception(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    # start by disabling both services
+    hypertts_instance.service_manager.get_service('ServiceA').enabled = False
+    hypertts_instance.service_manager.get_service('ServiceB').enabled = False
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # model_change_callback = MockModelChangeCallback()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())
+
+    # dialog.exec_()
+
+    # try making changes to the service config and saving
+    # ===================================================
+
+    qtbot.keyClicks(configuration.hypertts_pro_api_key, 'exception_key')
+    assert configuration.model.hypertts_pro_api_key == None
+
+    # assert configuration.account_info_label.text() == '<b>error</b>: Key invalid'
+
+    # we entered an error key, so pro mode is not enabled
+    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
 def test_configuration_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()

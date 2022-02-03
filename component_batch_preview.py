@@ -2,6 +2,7 @@ import sys
 import logging
 import PyQt5
 import time
+import html
 
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
@@ -182,7 +183,7 @@ class BatchPreview(component_common.ComponentBase):
         if note_status != None:        
             if note_status.status == constants.BatchNoteStatus.Error:
                 # show error label
-                self.error_label.setText('<b>Error:</b> ' + str(note_status.error))
+                self.error_label.setText('<b>Error:</b> ' + html.escape(str(note_status.error)))
             else:
                 self.error_label.setText('')
 
