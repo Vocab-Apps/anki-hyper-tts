@@ -36,6 +36,7 @@ ADDON_NAME = 'HyperTTS'
 MENU_PREFIX = ADDON_NAME + ':'
 
 PYCMD_ADD_AUDIO_PREFIX = 'hypertts:addaudio:'
+PYCMD_REALTIME_AUDIO_PREFIX = 'hypertts:realtimeaudio'
 
 UNDO_ENTRY_NAME = ADDON_NAME + ': Add Audio to Notes'
 

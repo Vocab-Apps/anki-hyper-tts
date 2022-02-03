@@ -80,6 +80,11 @@ def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
         dialog.configure_editor(note, editor, add_mode)
         dialog.exec_()
 
+def launch_realtime_dialog_browser(hypertts, note_id_list):
+    with hypertts.error_manager.get_single_action_context('Launching HyperTTS Realtime Audio Dialog from Browser'):
+        logging.info('launch_realtime_dialog_browser')
+        logging.info(note_id_list)
+
 def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
     batch_name_list = hypertts.get_batch_config_list_editor()
     configure_editor(editor, batch_name_list, hypertts.get_latest_saved_batch_name())
@@ -102,6 +107,13 @@ def init(hypertts):
                 launch_batch_dialog_browser(hypertts, browser.selectedNotes(), batch_name)
             return launch
 
+        def get_launch_realtime_dialog_browser_fn(hypertts, browser):
+            def launch():
+                launch_realtime_dialog_browser(hypertts, browser.selectedNotes())
+            return launch
+
+
+
         menu = aqt.qt.QMenu(constants.ADDON_NAME, browser.form.menubar)
         browser.form.menubar.addMenu(menu)
 
@@ -114,6 +126,10 @@ def init(hypertts):
             action = aqt.qt.QAction(f'Add Audio: {batch_name}...', browser)
             action.triggered.connect(get_launch_dialog_browser_fn(hypertts, browser, batch_name))
             menu.addAction(action)
+
+        action = aqt.qt.QAction(f'Add Realtime Audio...', browser)
+        action.triggered.connect(get_launch_realtime_dialog_browser_fn(hypertts, browser))
+        menu.addAction(action)            
 
     def on_webview_will_set_content(web_content: aqt.webview.WebContent, context):
         if not isinstance(context, aqt.editor.Editor):
@@ -137,6 +153,11 @@ def init(hypertts):
         # return handled # don't do anything for now
         if not isinstance(editor, aqt.editor.Editor):
             return handled
+
+        if str == constants.PYCMD_REALTIME_AUDIO_PREFIX:
+            logging.info(f'{editor.note.note_type()}')
+            editor.onCardLayout()
+            return True, None
 
         if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX):
             logging.info(f'{str}')
