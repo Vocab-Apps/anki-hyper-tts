@@ -15,6 +15,7 @@ class LabelPreview(component_common.ComponentBase):
         self.note = note
         self.batch_label = PyQt5.QtWidgets.QLabel()
         self.source_preview_label = PyQt5.QtWidgets.QLabel()
+        self.source_preview_label.setWordWrap(True)
 
     def load_model(self, model):
         try:
