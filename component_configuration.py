@@ -304,8 +304,9 @@ class Configuration(component_common.ConfigComponentBase):
         return self.hypertts.service_manager.cloudlanguagetools.account_info(self.api_key)
 
     def get_account_data_task_done(self, result):
-        self.account_info = result.result()
-        self.hypertts.anki_utils.run_on_main(self.update_pro_status)
+        with self.hypertts.error_manager.get_single_action_context('Getting Account Data'):
+            self.account_info = result.result()
+            self.hypertts.anki_utils.run_on_main(self.update_pro_status)
 
     def udpdate_gui_state_api_key_not_valid(self):
         self.api_key_valid = False

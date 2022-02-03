@@ -1343,6 +1343,35 @@ def test_configuration(qtbot):
 
     # dialog.exec_()    
 
+def test_configuration_pro_key_exception(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    # start by disabling both services
+    hypertts_instance.service_manager.get_service('ServiceA').enabled = False
+    hypertts_instance.service_manager.get_service('ServiceB').enabled = False
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # model_change_callback = MockModelChangeCallback()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())
+
+    # dialog.exec_()
+
+    # try making changes to the service config and saving
+    # ===================================================
+
+    qtbot.keyClicks(configuration.hypertts_pro_api_key, 'exception_key')
+    assert configuration.model.hypertts_pro_api_key == None
+
+    # assert configuration.account_info_label.text() == '<b>error</b>: Key invalid'
+
+    # we entered an error key, so pro mode is not enabled
+    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
+
 def test_configuration_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
