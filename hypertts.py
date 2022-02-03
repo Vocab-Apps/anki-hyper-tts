@@ -164,7 +164,10 @@ class HyperTTS():
         local_variables = {
             'template_fields': self.get_field_values(note)
         }
-        expanded_template = exec(source_template, {}, local_variables)
+        try:
+            expanded_template = exec(source_template, {}, local_variables)
+        except Exception as e:
+            raise errors.TemplateExpansionError(e)
         if 'result' not in local_variables:
             raise errors.NoResultVar()
         result = local_variables['result']

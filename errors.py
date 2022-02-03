@@ -89,6 +89,11 @@ class NoResultVar(HyperTTSError):
         message = f'No "result" variable found. You must assign the final template output to a result variable.'
         super().__init__(message)
 
+class TemplateExpansionError(HyperTTSError):
+    def __init__(self, exception):
+        message = f'Could not process template: {str(exception)}'
+        super().__init__(message)
+
 # model validation errors
 # =======================
 

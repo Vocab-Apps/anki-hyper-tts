@@ -35,6 +35,14 @@ english = template_fields['English']
 """
         self.assertRaises(errors.NoResultVar, hypertts_instance.expand_advanced_template, note, source_template)
 
+        # test syntax error
+        # =================
+
+        source_template = """
+yoyo
+"""
+        self.assertRaises(errors.TemplateExpansionError, hypertts_instance.expand_advanced_template, note, source_template)
+
     def test_get_audio_file_errors(self):
         # error situations
 
