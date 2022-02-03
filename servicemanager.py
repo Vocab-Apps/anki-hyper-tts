@@ -10,7 +10,11 @@ voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_bas
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 cloudlanguagetools_module = __import__('cloudlanguagetools', globals(), locals(), [], sys._addon_import_level_base)
+
+if constants.ENABLE_SENTRY_CRASH_REPORTING:
+    import sentry_sdk
 
 class ServiceManager():
     """
@@ -97,10 +101,11 @@ class ServiceManager():
     # ================================
 
     def get_tts_audio(self, source_text, voice, options):
-        if self.cloudlanguagetools_enabled:
-            return self.cloudlanguagetools.get_tts_audio(source_text, voice, options)
-        else:
-            return voice.service.get_tts_audio(source_text, voice, options)
+        with sentry_sdk.start_transaction(op="get_tts_audio", name='test_transaction') as transaction:
+            if self.cloudlanguagetools_enabled:
+                return self.cloudlanguagetools.get_tts_audio(source_text, voice, options)
+            else:
+                return voice.service.get_tts_audio(source_text, voice, options)
 
     def full_voice_list(self) -> typing.List[voice.VoiceBase]:
         full_list = []
