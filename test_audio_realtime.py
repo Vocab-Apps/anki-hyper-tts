@@ -46,3 +46,18 @@ result = f"{field1} {field2}"
     actual_setting, version, actual_content = text_utils.extract_simple_template(template_output)
     assert actual_content == expected_content    
     assert version == constants.TemplateFormatVersion.v1
+
+
+    # no template available
+
+    template_output = """
+{{Text}}
+{Text} {Extra}
+"""
+    expected_content = """{Text} {Extra}"""
+    actual_setting, version, actual_content = text_utils.extract_simple_template(template_output)
+    assert actual_setting == None
+    assert version == None
+    assert actual_content == None
+    # assert actual_content == expected_content    
+    # assert version == constants.TemplateFormatVersion.v1    

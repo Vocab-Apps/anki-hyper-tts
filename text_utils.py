@@ -26,7 +26,7 @@ SSML_CONVERSION_MAP ={
 def extract_template_regexp(input, regexp):
     match_result = re.match(regexp, input, re.DOTALL)
     if match_result == None:
-        return None
+        return None, None, None
     setting = match_result.group(1).strip()
     version_str = match_result.group(2).strip()
     version = constants.TemplateFormatVersion[version_str]
