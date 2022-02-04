@@ -7,9 +7,13 @@ import constants
 
 
 def test_template_regexps(qtbot):
+    """
+    note: the tts tag may need to have style="display: none;visibility: hidden;"
+    """
+
     template_output = """
 {{Text}}
-<hypertts-template-advanced setting="voice_a" version="v1">
+<hypertts-template-advanced setting="voice_a" version="v1" style="display: none;visibility: hidden;">
 field1 = template_fields['Text']
 field2 = template_fields['Extra']
 result = f"{field1} {field2}"
@@ -24,7 +28,7 @@ result = f"{field1} {field2}"
 
     template_output = """
 {{Text}}
-<hypertts-template setting="voice_c" version="v1">{Text} {Extra}</hypertts-template>
+<hypertts-template setting="voice_c" version="v1" style="display: none;visibility: hidden;">{Text} {Extra}</hypertts-template>
 """
     expected_content = """{Text} {Extra}"""
     actual_setting, version, actual_content = text_utils.extract_simple_template(template_output)

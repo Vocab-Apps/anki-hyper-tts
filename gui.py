@@ -4,6 +4,7 @@ import json
 # pyqt
 import PyQt5
 import logging
+import pprint
 
 # anki imports
 import aqt.qt
@@ -80,10 +81,23 @@ def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
         dialog.configure_editor(note, editor, add_mode)
         dialog.exec_()
 
-def launch_realtime_dialog_browser(hypertts, note_id_list):
-    with hypertts.error_manager.get_single_action_context('Launching HyperTTS Realtime Audio Dialog from Browser'):
-        logging.info('launch_realtime_dialog_browser')
-        logging.info(note_id_list)
+def launch_realtime_dialog_browser(hypertts, editor):
+    note = editor.note
+    model = note.note_type()
+    templates = model["tmpls"]
+    ord = 0
+    template = templates[ord]
+
+    # customize template
+    template['qfmt'] += '<span>yoyo 42</span>'
+
+    pprint.pprint(template)
+
+    card = editor.note.ephemeral_card(ord,
+        custom_note_type=model,
+        custom_template=template)
+    question = card.question()
+    pprint.pprint(question)
 
 def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
     batch_name_list = hypertts.get_batch_config_list_editor()
@@ -156,7 +170,8 @@ def init(hypertts):
 
         if str == constants.PYCMD_REALTIME_AUDIO_PREFIX:
             logging.info(f'{editor.note.note_type()}')
-            editor.onCardLayout()
+            launch_realtime_dialog_browser(hypertts, editor)
+            # editor.onCardLayout()
             return True, None
 
         if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX):

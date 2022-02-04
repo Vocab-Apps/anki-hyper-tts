@@ -12,8 +12,8 @@ else:
     from . import errors
 
 
-REGEXP_REALTIME_SIMPLE_TEMPLATE = '.*<hypertts-template\s+setting="(.*)"\s+version="(.*)">(.*)</hypertts-template>.*'
-REGEXP_REALTIME_ADVANCED_TEMPLATE = '.*<hypertts-template-advanced\s+setting="(.*)"\s+version="(.*)">\n(.*)</hypertts-template-advanced>.*'
+REGEXP_REALTIME_SIMPLE_TEMPLATE = '.*<hypertts-template\s+setting="(.*)"\s+version="([a-z1-9]*)"[^>]*>(.*)</hypertts-template>.*'
+REGEXP_REALTIME_ADVANCED_TEMPLATE = '.*<hypertts-template-advanced\s+setting="(.*)"\s+version="([a-z1-9]*)"[^>]*>\n(.*)</hypertts-template-advanced>.*'
 
 # convert characters which are problematic on SSML TTS APIs
 SSML_CONVERSION_MAP ={
