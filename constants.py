@@ -75,7 +75,14 @@ result = f'{field_1} {field_2}'
 
 GUI_TEXT_SOURCE_MODE_REALTIME = """Choose a source mode:
 <b>AnkiTTSTag:</b> Configure Realtime Audio using Anki {{tts}} tag. You can choose a single field""" \
-""" containing the source text. Compatible with iOS AnkiMobile."""
+""" containing the source text. Will use HyperTTS when reviewing on desktop and fallback to other voices on iOS AnkiMobile."""
+
+GUI_TEXT_SOURCE_FIELD_TYPE_REALTIME = """Field Type:
+<b>Regular:</b> the field should be pronounced in its entirety.
+<b>Cloze:</b> only use this for cloze fields. The audio on the front will contain everything except for the hidden word"""\
+""" (which you have to guess), and the audio on the back will contain everything.
+<b>ClozeOnly:</b> only use this for cloze fields. Only the hidden word will be pronounced, and nothing else."""\
+"""It only makes to use this on the back side."""
 
 
 GUI_TEXT_TARGET_FIELD = """Sound tags will be inserted in this field"""
