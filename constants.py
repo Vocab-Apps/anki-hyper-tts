@@ -29,6 +29,14 @@ class TextReplacementRuleType(enum.Enum):
     Simple = enum.auto()
     Regex = enum.auto()
 
+class RealtimeSourceType(enum.Enum):
+    AnkiTTSTag = enum.auto()
+
+class AnkiTTSFieldType(enum.Enum):
+    Regular = enum.auto()
+    Cloze = enum.auto()
+    ClozeOnly = enum.auto()
+
 CONFIG_BATCH_CONFIG = 'batch_config'
 CONFIG_CONFIGURATION = 'configuration'
 
@@ -63,6 +71,12 @@ field_1 = template_fields['Field 1']
 field_2 = template_fields['Field 2']
 result = f'{field_1} {field_2}'
 """
+
+
+GUI_TEXT_SOURCE_MODE_REALTIME = """Choose a source mode:
+<b>AnkiTTSTag:</b> Configure Realtime Audio using Anki {{tts}} tag. You can choose a single field""" \
+""" containing the source text. Compatible with iOS AnkiMobile."""
+
 
 GUI_TEXT_TARGET_FIELD = """Sound tags will be inserted in this field"""
 

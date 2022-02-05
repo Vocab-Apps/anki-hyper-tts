@@ -427,3 +427,33 @@ class Configuration(ConfigModelBase):
 
     def validate(self):
         pass
+
+# realtime config models
+# ======================
+
+class RealtimeConfig(ConfigModelBase):
+    def __init__(self):
+        self.source = None
+        self.voice_selection = None
+        self.text_processing = None
+
+    def serialize(self):
+        return {
+            'source': self.source.serialize(),
+            'voice_selection': self.voice_selection.serialize(),
+            'text_processing': self.text_processing.serialize()
+        }
+
+class RealtimeSourceAnkiTTS(ConfigModelBase):
+    def __init__(self):
+        self.mode = constants.RealtimeSourceType.AnkiTTSTag
+        self.field_name = None
+        self.field_type = None
+
+    def serialize(self):
+        return {
+            'mode': self.mode.name,
+            'field_name':  self.field_name,
+            'field_type': self.field_type.name
+        }
+

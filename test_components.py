@@ -15,6 +15,7 @@ import component_source
 import component_target
 import component_batch
 import component_text_processing
+import component_realtime_source
 
 class EmptyDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self):
@@ -1457,3 +1458,19 @@ def test_batch_dialog_load_random(qtbot):
     assert 'Sound' in note_2.set_values     
 
     # dialog.exec_()
+
+def test_realtime_source(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1]
+
+    model_change_callback = MockModelChangeCallback()
+    field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
+    batch_source = component_realtime_source.RealtimeSource(hypertts_instance, field_list, model_change_callback.model_updated)
+    dialog.addChildLayout(batch_source.draw())
+
+    dialog.exec_()
