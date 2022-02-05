@@ -18,6 +18,8 @@ import anki.hooks
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
 component_configuration = __import__('component_configuration', globals(), locals(), [], sys._addon_import_level_base)
+text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
+ttsplayer = __import__('ttsplayer', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class ConfigurationDialog(PyQt5.QtWidgets.QDialog):
@@ -89,7 +91,7 @@ def launch_realtime_dialog_browser(hypertts, editor):
     template = templates[ord]
 
     # customize template
-    template['qfmt'] += '<span>yoyo 42</span>'
+    # template['qfmt'] += '<span>yoyo 42</span>'
 
     pprint.pprint(template)
 
@@ -98,6 +100,8 @@ def launch_realtime_dialog_browser(hypertts, editor):
         custom_template=template)
     question = card.question()
     pprint.pprint(question)
+
+
 
 def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
     batch_name_list = hypertts.get_batch_config_list_editor()
@@ -202,3 +206,6 @@ def init(hypertts):
     aqt.gui_hooks.editor_did_load_note.append(loadNote)
     aqt.gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
     aqt.gui_hooks.webview_did_receive_js_message.append(onBridge)
+
+    # register TTS player
+    aqt.sound.av_player.players.append(ttsplayer.AnkiHyperTTSPlayer(aqt.mw.taskman, hypertts))
