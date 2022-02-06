@@ -457,3 +457,8 @@ class RealtimeSourceAnkiTTS(ConfigModelBase):
             'field_type': self.field_type.name
         }
 
+    def validate(self):
+        if self.field_name == None:
+            raise errors.SourceFieldNotSet()
+        if self.field_type == None:
+            raise errors.SourceFieldTypeNotSet()

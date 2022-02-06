@@ -1470,7 +1470,14 @@ def test_realtime_source(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
-    batch_source = component_realtime_source.RealtimeSource(hypertts_instance, field_list, model_change_callback.model_updated)
-    dialog.addChildLayout(batch_source.draw())
+    source = component_realtime_source.RealtimeSource(hypertts_instance, field_list, model_change_callback.model_updated)
+    dialog.addChildLayout(source.draw())
 
-    dialog.exec_()
+    # dialog.exec_()
+
+    expected_source_model = config_models.RealtimeSourceAnkiTTS()
+    expected_source_model.field_name = 'Chinese'
+    expected_source_model.field_type = constants.AnkiTTSFieldType.Regular
+
+    assert source.get_model().serialize() == expected_source_model.serialize()
+

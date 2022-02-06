@@ -105,6 +105,10 @@ class SourceFieldNotSet(ModelValidationError):
     def __init__(self):
         super().__init__('Source Field is not set')
 
+class SourceFieldTypeNotSet(ModelValidationError):
+    def __init__(self):
+        super().__init__('Source Field Type is not set')        
+
 class SourceTemplateNotSet(ModelValidationError):
     def __init__(self):
         super().__init__('Source Template is not set')

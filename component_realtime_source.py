@@ -21,31 +21,34 @@ class RealtimeSource(component_common.ConfigComponentBase):
 
     def load_model(self, model):
         self.realtime_source_model = model
-        batch_mode = model.mode
-        self.batch_mode_combobox.setCurrentText(batch_mode.name)
-        if batch_mode == constants.RealtimeSourceType.simple:
+        source_type = model.mode
+        self.source_type_combobox.setCurrentText(source_type.name)
+        if source_type == constants.RealtimeSourceType.AnkiTTSTag:
             self.source_field_combobox.setCurrentText(model.source_field)
-        elif batch_mode == constants.RealtimeSourceType.template:
-            self.simple_template_input.setText(model.source_template)
-        elif batch_mode == constants.RealtimeSourceType.advanced_template:
-            self.advanced_template_input.setPlainText(model.source_template)
+            self.source_type_combobox.setCurrentText(model.field_type.name)
+        else:
+            raise Exception(f'unsupported source_type: {source_type}')
 
 
     def draw(self):
-        self.batch_source_layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.realtime_source_layout = PyQt5.QtWidgets.QVBoxLayout()
 
-        self.draw_source_mode(self.batch_source_layout)
-        self.draw_source_config(self.batch_source_layout)
-        # self.batch_source_layout.addStretch()
+        self.draw_source_mode(self.realtime_source_layout)
+        self.draw_source_config(self.realtime_source_layout)
+        self.realtime_source_layout.addStretch()
 
         # wire events
-        self.batch_mode_combobox.currentIndexChanged.connect(self.batch_mode_change)
+        self.source_type_combobox.currentIndexChanged.connect(self.source_type_change)
         self.source_field_combobox.currentIndexChanged.connect(self.source_field_change)
+        self.source_field_type_combobox.currentIndexChanged.connect(self.field_type_change)
 
         # select default
+        self.source_type_change(0)
         self.source_field_change(0)
+        self.field_type_change(0)
 
-        return self.batch_source_layout
+
+        return self.realtime_source_layout
 
     def draw_source_mode(self, overall_layout):
         # batch mode
@@ -54,9 +57,9 @@ class RealtimeSource(component_common.ConfigComponentBase):
         label = PyQt5.QtWidgets.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_SOURCE_MODE_REALTIME))
         label.setWordWrap(True)
         vlayout.addWidget(label)
-        self.batch_mode_combobox = PyQt5.QtWidgets.QComboBox()
-        self.batch_mode_combobox.addItems([x.name for x in constants.RealtimeSourceType])
-        vlayout.addWidget(self.batch_mode_combobox)
+        self.source_type_combobox = PyQt5.QtWidgets.QComboBox()
+        self.source_type_combobox.addItems([x.name for x in constants.RealtimeSourceType])
+        vlayout.addWidget(self.source_type_combobox)
         groupbox.setLayout(vlayout)
         overall_layout.addWidget(groupbox)
 
@@ -99,18 +102,26 @@ class RealtimeSource(component_common.ConfigComponentBase):
 
         overall_layout.addWidget(groupbox)
 
-    def batch_mode_change(self, current_index):
-        selected_batch_mode = constants.BatchMode[self.batch_mode_combobox.currentText()]
+    def source_type_change(self, current_index):
+        selected_source_type = constants.RealtimeSourceType[self.source_type_combobox.currentText()]
 
-        if selected_batch_mode == constants.RealtimeSourceType.AnkiTTSTag:
+        if selected_source_type == constants.RealtimeSourceType.AnkiTTSTag:
             self.source_config_stack.setCurrentIndex(self.SOURCE_CONFIG_STACK_ANKITTS)
+            self.realtime_source_model = config_models.RealtimeSourceAnkiTTS()
             self.source_field_change(0)
+        else:
+            raise Exception(f'unsupported source_type: {selected_source_type}')
 
     def source_field_change(self, current_index):
         current_index = self.source_field_combobox.currentIndex()
         field_name = self.field_list[current_index]
-        self.realtime_source_model = config_models.BatchSourceSimple(field_name)
+        self.realtime_source_model.field_name = field_name
         self.notify_model_update()
+
+    def field_type_change(self, current_index):
+        field_type = constants.AnkiTTSFieldType[self.source_field_type_combobox.currentText()]
+        self.realtime_source_model.field_type = field_type
+        self.notify_model_update()        
 
     def notify_model_update(self):
         self.model_change_callback(self.realtime_source_model)
