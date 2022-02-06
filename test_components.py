@@ -1481,3 +1481,13 @@ def test_realtime_source(qtbot):
 
     assert source.get_model().serialize() == expected_source_model.serialize()
 
+    # select different field
+    source.source_field_combobox.setCurrentText('English')
+    expected_source_model.field_name = 'English'
+    assert model_change_callback.model.serialize() == expected_source_model.serialize()
+
+    # select different field type
+    source.source_field_type_combobox.setCurrentText(constants.AnkiTTSFieldType.Cloze.name)
+    expected_source_model.field_type = constants.AnkiTTSFieldType.Cloze
+    assert model_change_callback.model.serialize() == expected_source_model.serialize()
+
