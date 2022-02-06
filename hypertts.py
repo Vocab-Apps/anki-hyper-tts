@@ -244,9 +244,12 @@ class HyperTTS():
         field_name_set = {}
         for note_id in note_id_list:
             note = self.anki_utils.get_note_by_id(note_id)
-            for field in list(note.keys()):
+            for field in self.get_fields_from_note(note):
                 field_name_set[field] = True
         return sorted(field_name_set.keys())
+
+    def get_fields_from_note(self, note):
+        return list(note.keys())
 
     def populate_batch_status_processed_text(self, note_id_list, batch_source, text_processing, batch_status):
         with batch_status.get_batch_running_action_context():
