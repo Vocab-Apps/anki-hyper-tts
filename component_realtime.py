@@ -7,7 +7,6 @@ component_common = __import__('component_common', globals(), locals(), [], sys._
 component_realtime_source = __import__('component_realtime_source', globals(), locals(), [], sys._addon_import_level_base)
 component_voiceselection = __import__('component_voiceselection', globals(), locals(), [], sys._addon_import_level_base)
 component_text_processing = __import__('component_text_processing', globals(), locals(), [], sys._addon_import_level_base)
-# component_realtime_preview = __import__('component_realtime_preview', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
@@ -38,7 +37,6 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.source = component_realtime_source.RealtimeSource(self.hypertts, field_list, self.source_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
         self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
-        # self.preview = component_realtime_preview.RealtimePreview(self.hypertts, self.note, self.side, self.card_ord)
 
     def load_batch(self, batch_name):
         batch = self.hypertts.load_batch_config(batch_name)
@@ -50,7 +48,6 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.source.load_model(model.source)
         self.voice_selection.load_model(model.voice_selection)
         self.text_processing.load_model(model.text_processing)
-        # self.preview.load_model(self.get_model())
 
     def get_model(self):
         return self.model
@@ -92,7 +89,6 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         except errors.ModelValidationError as e:
             error_message = f'model validation error: {e}'
             self.text_preview_label.setText(error_message)
-            # logging.error(f'model validation error: {e}')
 
     def preview_process_tts_tags(self, av_tags):
         # retain elements which are TTS tags
