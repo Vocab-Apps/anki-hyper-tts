@@ -86,6 +86,8 @@ def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
 def launch_realtime_dialog_browser(hypertts, editor):
     note = editor.note
     model = note.note_type()
+    logging.info('model:')
+    pprint.pprint(model)
     templates = model["tmpls"]
     ord = 0
     template = templates[ord]

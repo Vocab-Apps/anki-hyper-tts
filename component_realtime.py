@@ -16,10 +16,11 @@ class ComponentRealtime(component_common.ConfigComponentBase):
     MIN_WIDTH_COMPONENT = 600
     MIN_HEIGHT = 400
 
-    def __init__(self, hypertts, dialog, side):
+    def __init__(self, hypertts, dialog, side, card_ord):
         self.hypertts = hypertts
         self.dialog = dialog
         self.side = side
+        self.card_ord = card_ord
         self.model = config_models.RealtimeConfig()
 
         # create certain widgets upfront
@@ -33,7 +34,7 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.source = component_realtime_source.RealtimeSource(self.hypertts, field_list, self.source_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
         self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
-        self.preview = component_realtime_preview.RealtimePreview(self.hypertts, self.note)
+        self.preview = component_realtime_preview.RealtimePreview(self.hypertts, self.note, self.side, self.card_ord)
 
     def load_batch(self, batch_name):
         batch = self.hypertts.load_batch_config(batch_name)

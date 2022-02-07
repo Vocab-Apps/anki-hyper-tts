@@ -1507,7 +1507,7 @@ def test_realtime_component(qtbot):
 
     note_id = config_gen.note_id_1
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    batch = component_realtime.ComponentRealtime(hypertts_instance, dialog, constants.AnkiCardSide.Front)
+    batch = component_realtime.ComponentRealtime(hypertts_instance, dialog, constants.AnkiCardSide.Front, 0)
     batch.configure_note(note_1)
     batch.draw(dialog.getLayout())    
 

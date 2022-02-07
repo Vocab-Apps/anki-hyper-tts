@@ -110,6 +110,9 @@ class MockAnkiUtils():
         # even though we don't call note.flush anymore, some of the tests expect this
         note.flush()
 
+    def create_card_from_note(self, note, card_ord, model, template):
+        return MockCard(0, note, card_ord, model, template)
+
     def run_in_background(self, task_fn, task_done_fn):
         # just run the two tasks immediately
         try:
@@ -278,15 +281,26 @@ class MockCloudLanguageTools():
 
 
 class MockCard():
-    def __init__(self, deck_id):
+    def __init__(self, deck_id, note, card_ord, model, template):
         self.did = deck_id
+        self.note = note
+        self.ord = card_ord
+        self.model = model
+        self.template = template
+
+    def question_av_tags(self):
+        return None
+
+    def answer_av_tags(self):
+        return None
 
 class MockNote():
-    def __init__(self, note_id, model_id, field_dict, field_array):
+    def __init__(self, note_id, model_id, field_dict, field_array, model):
         self.id = note_id
         self.mid = model_id
         self.field_dict = field_dict
         self.fields = field_array
+        self.model = model
         self.set_values = {}
         self.flush_called = False
     
@@ -301,6 +315,9 @@ class MockNote():
 
     def keys(self):
         return self.field_dict.keys()
+
+    def note_type(self):
+        return self.model
 
     def flush(self):
         self.flush_called = True
@@ -338,38 +355,56 @@ class TestConfigGenerator():
         self.all_fields = [self.field_chinese, self.field_english, self.field_sound, self.field_pinyin]
         self.all_fields_german = [self.field_german_article, self.field_german_word, self.field_english, self.field_sound]
 
+        self.model_chinese = {
+            'tmpls': [
+                {
+                    'qfmt': '{{English}}',
+                    'afmt': '{{Chinese}} {{Pinyin}}'
+                }
+            ]
+        }
+
+        self.model_german = {
+            'tmpls': [
+                {
+                    'qfmt': '{{English}}',
+                    'afmt': '{{Article}} {{Word}}'
+                }
+            ]
+        }        
+
         self.notes_by_id = {
             self.note_id_1: MockNote(self.note_id_1, self.model_id,{
                 self.field_chinese: '老人家',
                 self.field_english: 'old people',
                 self.field_sound: '',
                 self.field_pinyin: ''
-            }, self.all_fields),
+            }, self.all_fields, self.model_chinese),
             self.note_id_2: MockNote(self.note_id_2, self.model_id, {
                 self.field_chinese: '你好',
                 self.field_english: 'hello',
                 self.field_sound: '',
                 self.field_pinyin: ''
-            }, self.all_fields),
+            }, self.all_fields, self.model_chinese),
             self.note_id_3: MockNote(self.note_id_3, self.model_id, {
                 self.field_chinese: '',
                 self.field_english: 'empty',
                 self.field_sound: '',
                 self.field_pinyin: ''
-            }, self.all_fields),
+            }, self.all_fields, self.model_chinese),
             self.note_id_4: MockNote(self.note_id_4, self.model_id, {
                 self.field_chinese: '赚钱',
                 self.field_english: 'To earn money',
                 self.field_sound: '[sound:blabla.mp3]',
                 self.field_pinyin: ''
-            }, self.all_fields),
+            }, self.all_fields, self.model_chinese),
             # german notes
             self.note_id_german_1: MockNote(self.note_id_german_1, self.model_id_german, {
                 self.field_german_article: 'Das',
                 self.field_german_word: 'Hund',
                 self.field_english: "The Dog",
                 self.field_sound: ''
-            }, self.all_fields_german)
+            }, self.all_fields_german, self.model_german)
         }        
 
         self.chinese_voice_key = 'chinese voice'
