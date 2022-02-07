@@ -16,13 +16,13 @@ class ComponentRealtime(component_common.ConfigComponentBase):
     MIN_WIDTH_COMPONENT = 600
     MIN_HEIGHT = 400
 
-    def __init__(self, hypertts, dialog):
+    def __init__(self, hypertts, dialog, side):
         self.hypertts = hypertts
         self.dialog = dialog
+        self.side = side
         self.batch_model = config_models.BatchConfig()
 
         # create certain widgets upfront
-        self.show_settings_button = PyQt5.QtWidgets.QPushButton('Hide Settings')
         self.preview_sound_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
         self.apply_button = PyQt5.QtWidgets.QPushButton('Apply to Notes')
         self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
@@ -38,10 +38,6 @@ class ComponentRealtime(component_common.ConfigComponentBase):
     def load_batch(self, batch_name):
         batch = self.hypertts.load_batch_config(batch_name)
         self.load_model(batch)
-        self.profile_name_combobox.setCurrentText(batch_name)
-        # disable load/save buttons
-        self.disable_load_profile_button('Loaded')
-        self.disable_save_profile_button('Save')
 
     def load_model(self, model):
         self.batch_model = model
@@ -71,29 +67,7 @@ class ComponentRealtime(component_common.ConfigComponentBase):
 
     def model_part_updated_common(self):
         self.preview.load_model(self.batch_model)
-        self.enable_save_profile_button()
 
-    def enable_save_profile_button(self):
-        logging.info('enable_save_profile_button')
-        self.profile_save_button.setEnabled(True)
-        self.profile_save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
-        self.profile_save_button.setText('Save')
-
-    def disable_save_profile_button(self, text):
-        logging.info('disable_save_profile_button')
-        self.profile_save_button.setEnabled(False)
-        self.profile_save_button.setStyleSheet(None)
-        self.profile_save_button.setText(text)
-
-    def enable_load_profile_button(self):
-        self.profile_load_button.setEnabled(True)
-        self.profile_load_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
-        self.profile_load_button.setText('Load')
-
-    def disable_load_profile_button(self, text):
-        self.profile_load_button.setEnabled(False)
-        self.profile_load_button.setStyleSheet(None)
-        self.profile_load_button.setText(text)
 
     def sample_selected(self, note_id, text):
         self.voice_selection.sample_text_selected(text)
@@ -101,44 +75,18 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.preview_sound_button.setEnabled(True)
         self.preview_sound_button.setText('Preview Sound')
 
-    def refresh_profile_combobox(self):
-        profile_name_list = [self.hypertts.get_next_batch_name()] + self.hypertts.get_batch_config_list()
-        self.profile_name_combobox.clear()
-        self.profile_name_combobox.addItems(profile_name_list)
 
     def draw(self, layout):
         self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
-        # profile management
-        # ==================
+        # header
+        # ======
 
         hlayout = PyQt5.QtWidgets.QHBoxLayout()
-        hlayout.addWidget(PyQt5.QtWidgets.QLabel('Preset:'))
 
-        self.profile_name_combobox = PyQt5.QtWidgets.QComboBox()
-        self.profile_name_combobox.setEditable(True)
-        # populate with existing profile names
-        self.refresh_profile_combobox()
-
-        hlayout.addWidget(self.profile_name_combobox)
-        self.profile_load_button = PyQt5.QtWidgets.QPushButton('Load')
-        self.disable_load_profile_button('Load')
-        hlayout.addWidget(self.profile_load_button)
-        self.profile_save_button = PyQt5.QtWidgets.QPushButton('Save')
-        self.disable_save_profile_button('Save')
-        hlayout.addWidget(self.profile_save_button)
-
-        self.profile_delete_button = PyQt5.QtWidgets.QPushButton('Delete')
-        hlayout.addWidget(self.profile_delete_button)
-
-        hlayout.addStretch()
         # logo header
         hlayout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
         self.vlayout.addLayout(hlayout)
-
-        self.profile_load_button.pressed.connect(self.load_profile_button_pressed)
-        self.profile_save_button.pressed.connect(self.save_profile_button_pressed)
-        self.profile_delete_button.pressed.connect(self.delete_profile_button_pressed)
 
         # preset settings tabs
         # ====================
@@ -183,48 +131,13 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         hlayout.addWidget(self.cancel_button)
         self.vlayout.addLayout(hlayout)
 
-        self.show_settings_button.pressed.connect(self.show_settings_button_pressed)
         self.preview_sound_button.pressed.connect(self.sound_preview_button_pressed)
         self.apply_button.pressed.connect(self.apply_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
         self.cancel_button.setFocus()
 
-        self.profile_name_combobox.currentIndexChanged.connect(self.profile_selected)
-        self.profile_name_combobox.currentTextChanged.connect(self.profile_selected)
-
         layout.addLayout(self.vlayout)
-
-    def profile_selected(self, index):
-        self.enable_load_profile_button()
-
-    def load_profile_button_pressed(self):
-        with self.hypertts.error_manager.get_single_action_context('Loading Preset'):
-            profile_name = self.profile_name_combobox.currentText()
-            self.load_model(self.hypertts.load_batch_config(profile_name))
-            self.disable_load_profile_button('Preset Loaded')
-            self.disable_save_profile_button('Save')
-
-    def save_profile_button_pressed(self):
-        with self.hypertts.error_manager.get_single_action_context('Saving Preset'):
-            profile_name = self.profile_name_combobox.currentText()
-            self.hypertts.save_batch_config(profile_name, self.get_model())
-            self.disable_save_profile_button('Preset Saved')
-            self.disable_load_profile_button('Load')
-
-    def delete_profile_button_pressed(self):
-        profile_name = self.profile_name_combobox.currentText()
-        proceed = self.hypertts.anki_utils.ask_user(f'Delete Preset {profile_name} ?', self.dialog)
-        if proceed == True:
-            with self.hypertts.error_manager.get_single_action_context('Deleting Preset'):
-                self.hypertts.delete_batch_config(profile_name)
-                self.refresh_profile_combobox()
-
-    def show_settings_button_pressed(self):
-        if self.show_settings:
-            self.collapse_settings()
-        else:
-            self.display_settings()
 
     def sound_preview_button_pressed(self):
         self.disable_bottom_buttons()

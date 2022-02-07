@@ -37,6 +37,10 @@ class AnkiTTSFieldType(enum.Enum):
     Cloze = enum.auto()
     ClozeOnly = enum.auto()
 
+class AnkiCardSide(enum.Enum):
+    Front = enum.auto()
+    Back = enum.auto()
+
 CONFIG_BATCH_CONFIG = 'batch_config'
 CONFIG_CONFIGURATION = 'configuration'
 

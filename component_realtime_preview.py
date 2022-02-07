@@ -14,7 +14,7 @@ class RealtimePreview(component_common.ComponentBase):
         self.hypertts = hypertts
         self.note = note
         self.batch_label = PyQt5.QtWidgets.QLabel()
-        self.source_preview_label = PyQt5.QtWidgets.QLabel()
+        self.source_preview_label = PyQt5.QtWidgets.QLabel('preview')
         self.source_preview_label.setWordWrap(True)
 
     def load_model(self, model):
