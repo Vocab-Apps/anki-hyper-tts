@@ -249,7 +249,7 @@ class HyperTTS():
     # processing of Anki TTS tags
     # ===========================
 
-    def build_realtime_tts_tag(self, realtime_model):
+    def build_realtime_tts_tag(self, realtime_model, setting_key):
         if realtime_model.source.mode == constants.RealtimeSourceType.AnkiTTSTag:
             # get the audio language of the first voice
             voice_selection = realtime_model.voice_selection
@@ -262,7 +262,7 @@ class HyperTTS():
                 field_format = f'cloze:{realtime_model.source.field_name}'
             elif realtime_model.source.field_type == constants.AnkiTTSFieldType.ClozeOnly:
                 field_format = f'cloze-only:{realtime_model.source.field_name}'
-            return '{{tts ' + f"""{audio_language.name} voices=HyperTTS:{field_format}""" + '}}'
+            return '{{tts ' + f"""{audio_language.name} hypertts_preset={setting_key} voices=HyperTTS:{field_format}""" + '}}'
         else:
             raise Exception(f'unsupported RealtimeSourceType: {realtime_model.source.mode}')
 
@@ -271,7 +271,7 @@ class HyperTTS():
         note_model = note.note_type()
         card_template = note_model["tmpls"][card_ord]
         card_template = copy.deepcopy(card_template)
-        tts_tag = self.build_realtime_tts_tag(realtime_model)
+        tts_tag = self.build_realtime_tts_tag(realtime_model, 'preview')
         logging.info(f'tts tag: {tts_tag}')
         # self.side
         template_key = 'qfmt'
