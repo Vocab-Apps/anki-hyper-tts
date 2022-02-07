@@ -26,8 +26,10 @@ class ComponentRealtime(component_common.ConfigComponentBase):
 
     def configure_note(self, note):
         self.note = note
-        self.front = component_realtime_side.ComponentRealtimeSide(self.hypertts, constants.AnkiCardSide.Front, self.card_ord)
-        self.back = component_realtime_side.ComponentRealtimeSide(self.hypertts, constants.AnkiCardSide.Back, self.card_ord)
+        self.front = component_realtime_side.ComponentRealtimeSide(self.hypertts, 
+            constants.AnkiCardSide.Front, self.card_ord, self.front_model_updated)
+        self.back = component_realtime_side.ComponentRealtimeSide(self.hypertts, 
+            constants.AnkiCardSide.Back, self.card_ord, self.back_model_updated)
         self.front.configure_note(note)
         self.back.configure_note(note)
 
@@ -40,6 +42,13 @@ class ComponentRealtime(component_common.ConfigComponentBase):
     def get_model(self):
         return self.model
 
+    def front_model_updated(self, model):
+        logging.info('front_model_updated')
+        self.model.front = model
+
+    def back_model_updated(self, model):
+        logging.info('back_model_update')
+        self.model.back = model
 
     def draw(self, layout):
         self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
