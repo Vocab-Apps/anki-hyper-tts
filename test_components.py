@@ -1525,6 +1525,12 @@ def test_realtime_side_component(qtbot):
     assert realtime_side.tabs.isEnabled() == True
     assert realtime_side.preview_groupbox.isEnabled() == True
 
+    # select a field
+    realtime_side.source.source_field_combobox.setCurrentText('English')
+    assert model_change_callback.model.source.field_name == 'English'
+    # preview should be updated
+    assert realtime_side.text_preview_label.text() == 'old people'
+    
     # dialog.exec_()
 
 def test_realtime_component(qtbot):

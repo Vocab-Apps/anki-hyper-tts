@@ -77,7 +77,6 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
     def notify_model_update(self):
         self.model_change_callback(self.model)
 
-
     def update_preview(self):
         # does the realtime model pass validation ?
         try:
