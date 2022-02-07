@@ -9,6 +9,7 @@ import random
 import copy
 import json
 from typing import List, Dict
+import pprint
 
 # anki imports
 import aqt
@@ -266,19 +267,37 @@ class HyperTTS():
         else:
             raise Exception(f'unsupported RealtimeSourceType: {realtime_model.source.mode}')
 
-    def render_card_template_extract_tts_tag(self, realtime_model, note, card_ord, side):
-        realtime_model.validate()
-        note_model = note.note_type()
+    def remove_tts_tag(self, card_template):
+        return re.sub('{{tts.*}}', '', card_template)
+
+    def set_tts_tag_note_model(self, realtime_model, setting_key, note_model, side, card_ord):
+        # build tts tag
+        tts_tag = self.build_realtime_tts_tag(realtime_model, setting_key)
+        logging.info(f'tts tag: {tts_tag}')
+
+        # alter card template
         card_template = note_model["tmpls"][card_ord]
         card_template = copy.deepcopy(card_template)
-        tts_tag = self.build_realtime_tts_tag(realtime_model, 'preview')
-        logging.info(f'tts tag: {tts_tag}')
-        # self.side
-        template_key = 'qfmt'
+        side_template_key = 'qfmt'
         if side == constants.AnkiCardSide.Back:
-            template_key = 'afmt'
-        card_template[template_key] += tts_tag
-        card = self.anki_utils.create_card_from_note(note, card_ord, note_model, card_template)
+            side_template_key = 'afmt'
+        side_template = card_template[side_template_key]
+        side_template = self.remove_tts_tag(side_template)
+        side_template += '\n' + tts_tag
+        card_template[side_template_key] = side_template
+
+        pprint.pprint(card_template)
+
+        note_model["tmpls"][card_ord] = card_template
+
+        return note_model
+
+    def render_card_template_extract_tts_tag(self, realtime_model, note, side, card_ord):
+        realtime_model.validate()
+        note_model = note.note_type()
+        note_model = self.set_tts_tag_note_model(realtime_model, 'preview', note_model, side, card_ord)
+
+        card = self.anki_utils.create_card_from_note(note, card_ord, note_model, note_model["tmpls"][card_ord])
         if side == constants.AnkiCardSide.Front:
             return self.anki_utils.extract_tts_tags(card.question_av_tags())
         elif side == constants.AnkiCardSide.Back:

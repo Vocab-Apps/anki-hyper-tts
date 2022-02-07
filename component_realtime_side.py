@@ -81,7 +81,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         try:
             # does the realtime model pass validation ?
             tts_tags = self.hypertts.render_card_template_extract_tts_tag(self.get_model(),
-            self.note, self.card_ord, self.side)
+                self.note, self.side, self.card_ord)
             self.preview_process_tts_tags(tts_tags)
         except errors.ModelValidationError as e:
             error_message = f'model validation error: {e}'
@@ -178,7 +178,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
     def sound_preview_task(self):
         logging.info('sound_preview_task')
         tts_tags = self.hypertts.render_card_template_extract_tts_tag(self.get_model(),
-            self.note, self.card_ord, self.side)
+            self.note, self.side, self.card_ord)
         text = tts_tags[0].field_text
         self.hypertts.play_realtime_audio(self.get_model(), text)
         return True

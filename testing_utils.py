@@ -292,9 +292,10 @@ class MockCard():
         self.template = template
 
     def extract_tts_tags(self, template_format):
+        template_format = template_format.replace('\n', ' ')
         m = re.match('.*{{tts.*voices=HyperTTS:(.*)}}.*', template_format)
         if m == None:
-            logging.error(f'could not find match: {template_format}')
+            logging.error(f'could not a TTS tag in template: [{template_format}]')
             return []
         field_name = m.groups()[0]
         return [MockTTSTag(self.note[field_name])]
