@@ -57,14 +57,15 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         # ==========
 
         self.tabs = PyQt5.QtWidgets.QTabWidget()
+        self.tabs.setTabPosition(PyQt5.QtWidgets.QTabWidget.West)
         self.tab_front = PyQt5.QtWidgets.QWidget()
         self.tab_back = PyQt5.QtWidgets.QWidget()
 
         self.tab_front.setLayout(self.front.draw())
         self.tab_back.setLayout(self.back.draw())
 
-        self.tabs.addTab(self.tab_front, 'Front')
-        self.tabs.addTab(self.tab_back, 'Back')
+        self.tabs.addTab(self.tab_front, 'Front Side')
+        self.tabs.addTab(self.tab_back, 'Back Side')
 
         # self.tabs.setEnabled(False)
 

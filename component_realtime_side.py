@@ -179,21 +179,6 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.preview_sound_button.setText('Playing Preview...')
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
-    def apply_button_pressed(self):
-        with self.hypertts.error_manager.get_single_action_context('Applying Audio to Notes'):
-            self.get_model().validate()
-            logging.info('apply_button_pressed')
-            if self.editor_mode:
-                self.disable_bottom_buttons()
-                self.apply_button.setText('Loading...')
-                self.hypertts.anki_utils.run_in_background(self.apply_note_editor_task, self.apply_note_editor_task_done)
-            else:
-                self.disable_bottom_buttons()
-                self.apply_button.setText('Loading...')
-                self.preview.apply_audio_to_notes()
-
-    def cancel_button_pressed(self):
-        self.dialog.close()
 
     def apply_note_editor_task(self):
         self.hypertts.editor_note_add_audio(self.batch_model, self.editor, self.note, self.add_mode)
