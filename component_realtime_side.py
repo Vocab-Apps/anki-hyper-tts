@@ -175,6 +175,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
     def sound_preview_button_pressed(self):
         logging.info('sound_preview_button_pressed')
         self.preview_sound_button.setText('Playing Preview...')
+        self.preview_sound_button.setEnabled(False)
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
     def sound_preview_task(self):
@@ -192,6 +193,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.hypertts.anki_utils.run_on_main(self.finish_sound_preview)
 
     def finish_sound_preview(self):
+        self.preview_sound_button.setEnabled(True)
         self.preview_sound_button.setText('Preview Sound')
 
 
