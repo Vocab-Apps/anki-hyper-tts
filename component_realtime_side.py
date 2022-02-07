@@ -17,10 +17,11 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
     MIN_WIDTH_COMPONENT = 600
     MIN_HEIGHT = 400
 
-    def __init__(self, hypertts, side, card_ord):
+    def __init__(self, hypertts, side, card_ord, model_change_callback):
         self.hypertts = hypertts
         self.side = side
         self.card_ord = card_ord
+        self.model_change_callback = model_change_callback
         self.model = config_models.RealtimeConfigSide()
         self.side_enabled = False
 
@@ -71,6 +72,10 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
 
     def model_part_updated_common(self):
         self.update_preview()
+        self.notify_model_update()
+
+    def notify_model_update(self):
+        self.model_change_callback(self.model)
 
 
     def update_preview(self):
@@ -112,8 +117,11 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
 
     def side_enabled_change(self, checkbox_value):
         self.side_enabled = checkbox_value == 2
+        logging.info(f'side_enabled: {self.side_enabled}')
         self.tabs.setEnabled(self.side_enabled)
         self.preview_groupbox.setEnabled(self.side_enabled)
+        self.model.side_enabled = self.side_enabled
+        self.notify_model_update()
 
     def sample_selected(self, note_id, text):
         self.voice_selection.sample_text_selected(text)

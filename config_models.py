@@ -448,16 +448,23 @@ class RealtimeConfig(ConfigModelBase):
 
 class RealtimeConfigSide(ConfigModelBase):
     def __init__(self):
+        self.side_enabled = False
         self.source = None
         self.voice_selection = None
         self.text_processing = None
 
     def serialize(self):
-        return {
-            'source': self.source.serialize(),
-            'voice_selection': self.voice_selection.serialize(),
-            'text_processing': self.text_processing.serialize()
-        }
+        if self.side_enabled:
+            return {
+                'side_enabled': self.side_enabled,
+                'source': self.source.serialize(),
+                'voice_selection': self.voice_selection.serialize(),
+                'text_processing': self.text_processing.serialize()
+            }
+        else:
+            return {
+                'side_enabled': self.side_enabled,
+            }            
 
     def validate(self):
         self.source.validate()

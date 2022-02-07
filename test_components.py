@@ -1501,18 +1501,31 @@ def test_realtime_side_component(qtbot):
     dialog = EmptyDialog()
     dialog.setupUi()
 
-    note_id_list = [config_gen.note_id_1]    
 
-    # test saving of config
-    # =====================
+    # initialize dialog
+    # =================
 
     note_id = config_gen.note_id_1
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    realtime_side = component_realtime_side.ComponentRealtimeSide(hypertts_instance, constants.AnkiCardSide.Front, 0)
+    model_change_callback = MockModelChangeCallback()
+    realtime_side = component_realtime_side.ComponentRealtimeSide(hypertts_instance,
+        constants.AnkiCardSide.Front, 0, model_change_callback.model_updated)
     realtime_side.configure_note(note_1)
     dialog.addChildLayout(realtime_side.draw())
 
-    dialog.exec_()
+    # some initial checks
+    assert realtime_side.get_model().side_enabled == False
+    assert realtime_side.side_enabled_checkbox.isChecked() == False    
+    assert realtime_side.tabs.isEnabled() == False
+    assert realtime_side.preview_groupbox.isEnabled() == False
+
+    # enable this side
+    realtime_side.side_enabled_checkbox.setChecked(True)
+    assert model_change_callback.model.side_enabled == True
+    assert realtime_side.tabs.isEnabled() == True
+    assert realtime_side.preview_groupbox.isEnabled() == True
+
+    # dialog.exec_()
 
 def test_realtime_component(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
