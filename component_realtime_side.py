@@ -17,12 +17,11 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
     MIN_WIDTH_COMPONENT = 600
     MIN_HEIGHT = 400
 
-    def __init__(self, hypertts, dialog, side, card_ord):
+    def __init__(self, hypertts, side, card_ord):
         self.hypertts = hypertts
-        self.dialog = dialog
         self.side = side
         self.card_ord = card_ord
-        self.model = config_models.RealtimeConfig()
+        self.model = config_models.RealtimeConfigSide()
         self.side_enabled = False
 
         # create certain widgets upfront
@@ -97,9 +96,13 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         # retain elements which are TTS tags
         tts_tags = self.hypertts.anki_utils.extract_tts_tags(av_tags)
         if len(tts_tags) == 0:
-            raise Exception('no TTS tags found')
+            logging.error('no TTS tags found')
+            return []
+            # raise Exception('no TTS tags found')
         if len(tts_tags) > 1:
-            raise Exception(f'more than one TTS tag found: {str(tts_tags)}')
+            logging.error('more than one TTS tag found')
+            return []
+            # raise Exception(f'more than one TTS tag found: {str(tts_tags)}')
         tts_tag = tts_tags[0]
         self.text_preview_label.setText(tts_tag.field_text)
 
@@ -115,7 +118,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.preview_sound_button.setText('Preview Sound')
 
 
-    def draw(self, layout):
+    def draw(self):
         self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
         # header
@@ -203,7 +206,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.preview_groupbox.setEnabled(self.side_enabled)        
 
 
-        layout.addLayout(self.vlayout)
+        return self.vlayout
 
     def sound_preview_button_pressed(self):
         self.disable_bottom_buttons()

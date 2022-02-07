@@ -433,6 +433,21 @@ class Configuration(ConfigModelBase):
 
 class RealtimeConfig(ConfigModelBase):
     def __init__(self):
+        self.front = None
+        self.back = None
+
+    def serialize(self):
+        return {
+            'front': self.front.serialize(),
+            'back': self.back.serialize(),
+        }
+
+    def validate(self):
+        self.front.validate()
+        self.back.validate()
+
+class RealtimeConfigSide(ConfigModelBase):
+    def __init__(self):
         self.source = None
         self.voice_selection = None
         self.text_processing = None
