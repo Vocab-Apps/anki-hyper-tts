@@ -142,9 +142,12 @@ class ComponentRealtime(component_common.ConfigComponentBase):
 
         preview_groupbox = PyQt5.QtWidgets.QGroupBox('Preview')
         preview_vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        source_preview_label = PyQt5.QtWidgets.QLabel('Text Preview:')
+        source_preview_label = PyQt5.QtWidgets.QLabel('Text to be pronounced:')
         preview_vlayout.addWidget(source_preview_label)
         preview_vlayout.addWidget(self.text_preview_label)
+
+        self.preview_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
+        preview_vlayout.addWidget(self.preview_button)
 
         preview_groupbox.setLayout(preview_vlayout)
         self.vlayout.addWidget(preview_groupbox)
