@@ -154,8 +154,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         preview_vlayout.addWidget(source_preview_label)
         preview_vlayout.addWidget(self.text_preview_label)
 
-        self.preview_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
-        preview_vlayout.addWidget(self.preview_button)
+        preview_vlayout.addWidget(self.preview_sound_button)
 
         self.preview_groupbox.setLayout(preview_vlayout)
 
@@ -174,10 +173,12 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         return self.vlayout
 
     def sound_preview_button_pressed(self):
+        logging.info('sound_preview_button_pressed')
         self.preview_sound_button.setText('Playing Preview...')
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
     def sound_preview_task(self):
+        logging.info('sound_preview_task')
         tts_tags = self.hypertts.render_card_template_extract_tts_tag(self.get_model(),
             self.note, self.card_ord, self.side)
         text = tts_tags[0].field_text
@@ -185,6 +186,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         return True
 
     def sound_preview_task_done(self, result):
+        logging.info('sound_preview_task_done')
         with self.hypertts.error_manager.get_single_action_context('Playing Realtime Sound Preview'):
             result = result.result()
         self.hypertts.anki_utils.run_on_main(self.finish_sound_preview)
