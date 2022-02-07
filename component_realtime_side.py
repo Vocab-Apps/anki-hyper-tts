@@ -82,7 +82,11 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
             template = copy.deepcopy(template)
             tts_tag = self.hypertts.build_realtime_tts_tag(self.model)
             logging.info(f'tts tag: {tts_tag}')
-            template['qfmt'] += tts_tag
+            # self.side
+            template_key = 'qfmt'
+            if self.side == constants.AnkiCardSide.Back:
+                template_key = 'afmt'
+            template[template_key] += tts_tag
             card = self.hypertts.anki_utils.create_card_from_note(self.note, self.card_ord, model, template)
             if self.side == constants.AnkiCardSide.Front:
                 self.preview_process_tts_tags(card.question_av_tags())
