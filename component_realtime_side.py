@@ -153,12 +153,9 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         source_preview_label = PyQt5.QtWidgets.QLabel('Text to be pronounced:')
         preview_vlayout.addWidget(source_preview_label)
         preview_vlayout.addWidget(self.text_preview_label)
-
         preview_vlayout.addWidget(self.preview_sound_button)
 
         self.preview_groupbox.setLayout(preview_vlayout)
-
-
         self.vlayout.addWidget(self.preview_groupbox)
         
 
