@@ -13,7 +13,7 @@ errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_b
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
 
 
-class ComponentRealtime(component_common.ConfigComponentBase):
+class ComponentRealtimeSide(component_common.ConfigComponentBase):
     MIN_WIDTH_COMPONENT = 600
     MIN_HEIGHT = 400
 

@@ -16,7 +16,7 @@ import component_target
 import component_batch
 import component_text_processing
 import component_realtime_source
-import component_realtime
+import component_realtime_side
 
 class EmptyDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self):
@@ -1493,7 +1493,7 @@ def test_realtime_source(qtbot):
     assert model_change_callback.model.serialize() == expected_source_model.serialize()
 
 
-def test_realtime_component(qtbot):
+def test_realtime_side_component(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
@@ -1507,7 +1507,7 @@ def test_realtime_component(qtbot):
 
     note_id = config_gen.note_id_1
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    batch = component_realtime.ComponentRealtime(hypertts_instance, dialog, constants.AnkiCardSide.Front, 0)
+    batch = component_realtime_side.ComponentRealtimeSide(hypertts_instance, dialog, constants.AnkiCardSide.Front, 0)
     batch.configure_note(note_1)
     batch.draw(dialog.getLayout())    
 
