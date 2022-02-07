@@ -1530,6 +1530,22 @@ def test_realtime_side_component(qtbot):
     assert model_change_callback.model.source.field_name == 'English'
     # preview should be updated
     assert realtime_side.text_preview_label.text() == 'old people'
+
+    # press sound preview
+    qtbot.mouseClick(realtime_side.preview_sound_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # ensure sound was played
+    assert hypertts_instance.anki_utils.played_sound == {
+        'source_text': 'old people',
+        'voice': {
+            'gender': 'Male', 
+            'language': 'fr_FR', 
+            'name': 'voice_a_1', 
+            'service': 'ServiceA',
+            'voice_key': {'name': 'voice_1'}
+        },
+        'options': {}
+    }        
     
     # dialog.exec_()
 

@@ -95,6 +95,11 @@ class HyperTTS():
         processed_text = text_utils.process_text(source_text, batch.text_processing)
         return self.get_audio_file(processed_text, batch.voice_selection)        
 
+    def get_realtime_audio(self, realtime_model, text):
+        source_text = text
+        processed_text = text_utils.process_text(source_text, realtime_model.text_processing)
+        return self.get_audio_file(processed_text, realtime_model.voice_selection)
+
     def get_audio_file(self, processed_text, voice_selection):
         # sanity checks
         if voice_selection.selection_mode in [constants.VoiceSelectionMode.priority, constants.VoiceSelectionMode.random]:
@@ -194,6 +199,10 @@ class HyperTTS():
         full_filename, audio_filename = self.get_note_audio(batch, note)
         self.anki_utils.play_sound(full_filename)
 
+    def play_realtime_audio(self, realtime_model, text):
+        full_filename, audio_filename = self.get_realtime_audio(realtime_model, text)
+        self.anki_utils.play_sound(full_filename)
+
     def play_sound(self, source_text, voice, options):
         logging.info(f'playing audio for {source_text}')
         full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options)
@@ -256,6 +265,25 @@ class HyperTTS():
             return '{{tts ' + f"""{audio_language.name} voices=HyperTTS:{field_format}""" + '}}'
         else:
             raise Exception(f'unsupported RealtimeSourceType: {realtime_model.source.mode}')
+
+    def render_card_template_extract_tts_tag(self, realtime_model, note, card_ord, side):
+        realtime_model.validate()
+        note_model = note.note_type()
+        card_template = note_model["tmpls"][card_ord]
+        card_template = copy.deepcopy(card_template)
+        tts_tag = self.build_realtime_tts_tag(realtime_model)
+        logging.info(f'tts tag: {tts_tag}')
+        # self.side
+        template_key = 'qfmt'
+        if side == constants.AnkiCardSide.Back:
+            template_key = 'afmt'
+        card_template[template_key] += tts_tag
+        card = self.anki_utils.create_card_from_note(note, card_ord, note_model, card_template)
+        if side == constants.AnkiCardSide.Front:
+            return self.anki_utils.extract_tts_tags(card.question_av_tags())
+        elif side == constants.AnkiCardSide.Back:
+            return self.anki_utils.extract_tts_tags(card.answer_av_tags())
+
 
     # functions related to getting data from notes
     # ============================================

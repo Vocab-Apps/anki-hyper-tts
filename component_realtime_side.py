@@ -78,31 +78,18 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.model_change_callback(self.model)
 
     def update_preview(self):
-        # does the realtime model pass validation ?
         try:
-            self.model.validate()
-            model = self.note.note_type()
-            template = model["tmpls"][self.card_ord]
-            template = copy.deepcopy(template)
-            tts_tag = self.hypertts.build_realtime_tts_tag(self.model)
-            logging.info(f'tts tag: {tts_tag}')
-            # self.side
-            template_key = 'qfmt'
-            if self.side == constants.AnkiCardSide.Back:
-                template_key = 'afmt'
-            template[template_key] += tts_tag
-            card = self.hypertts.anki_utils.create_card_from_note(self.note, self.card_ord, model, template)
-            if self.side == constants.AnkiCardSide.Front:
-                self.preview_process_tts_tags(card.question_av_tags())
-            elif self.side == constants.AnkiCardSide.Back:
-                self.preview_process_tts_tags(card.answer_av_tags())
+            # does the realtime model pass validation ?
+            tts_tags = self.hypertts.render_card_template_extract_tts_tag(self.get_model(),
+            self.note, self.card_ord, self.side)
+            self.preview_process_tts_tags(tts_tags)
         except errors.ModelValidationError as e:
             error_message = f'model validation error: {e}'
             self.text_preview_label.setText(error_message)
 
-    def preview_process_tts_tags(self, av_tags):
+    def preview_process_tts_tags(self, tts_tags):
         # retain elements which are TTS tags
-        tts_tags = self.hypertts.anki_utils.extract_tts_tags(av_tags)
+        tts_tags = self.hypertts.anki_utils.extract_tts_tags(tts_tags)
         if len(tts_tags) == 0:
             logging.error('no TTS tags found')
             return []
@@ -178,6 +165,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
 
         # wire events
         self.side_enabled_checkbox.stateChanged.connect(self.side_enabled_change)
+        self.preview_sound_button.pressed.connect(self.sound_preview_button_pressed)
 
         # defaults
         self.tabs.setEnabled(self.side_enabled)
@@ -186,66 +174,23 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         return self.vlayout
 
     def sound_preview_button_pressed(self):
-        self.disable_bottom_buttons()
         self.preview_sound_button.setText('Playing Preview...')
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
-
-    def apply_note_editor_task(self):
-        self.hypertts.editor_note_add_audio(self.batch_model, self.editor, self.note, self.add_mode)
-        return True
-
-    def apply_note_editor_task_done(self, result):
-        with self.hypertts.error_manager.get_single_action_context('Adding Audio to Note'):
-            result = result.result()
-            self.dialog.close()
-        self.hypertts.anki_utils.run_on_main(self.finish_apply_note_editor)
-    
-    def finish_apply_note_editor(self):
-        self.enable_bottom_buttons()
-        self.apply_button.setText('Apply To Note')
-
     def sound_preview_task(self):
-        self.hypertts.preview_note_audio(self.batch_model, self.note)
+        tts_tags = self.hypertts.render_card_template_extract_tts_tag(self.get_model(),
+            self.note, self.card_ord, self.side)
+        text = tts_tags[0].field_text
+        self.hypertts.play_realtime_audio(self.get_model(), text)
         return True
 
     def sound_preview_task_done(self, result):
-        with self.hypertts.error_manager.get_single_action_context('Playing Sound Preview'):
+        with self.hypertts.error_manager.get_single_action_context('Playing Realtime Sound Preview'):
             result = result.result()
         self.hypertts.anki_utils.run_on_main(self.finish_sound_preview)
 
     def finish_sound_preview(self):
-        self.enable_bottom_buttons()
         self.preview_sound_button.setText('Preview Sound')
 
-    def disable_bottom_buttons(self):
-        self.preview_sound_button.setEnabled(False)
-        self.apply_button.setEnabled(False)
-        self.cancel_button.setEnabled(False)
-
-    def enable_bottom_buttons(self):
-        self.preview_sound_button.setEnabled(True)
-        self.apply_button.setEnabled(True)
-        self.cancel_button.setEnabled(True)
-
-    def apply_notes_batch_start(self):
-        pass
-
-    def batch_interrupted_button_setup(self):
-        self.enable_bottom_buttons()
-        self.apply_button.setText('Apply To Notes')
-
-    def batch_completed_button_setup(self):
-        self.cancel_button.setText('Close')
-        self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
-        self.cancel_button.setEnabled(True)
-        self.apply_button.setStyleSheet(None)
-        self.apply_button.setText('Done')
-
-    def apply_notes_batch_end(self, completed):
-        if completed:
-            self.hypertts.anki_utils.run_on_main(self.batch_completed_button_setup)
-        else:
-            self.hypertts.anki_utils.run_on_main(self.batch_interrupted_button_setup)
 
         
