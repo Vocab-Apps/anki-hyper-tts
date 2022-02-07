@@ -91,6 +91,10 @@ class AnkiUtils():
             custom_template=template
         )
 
+    def extract_tts_tags(self, av_tags):
+        tts_tags = [x for x in av_tags if isinstance(x, anki.sound.TTSTag)]
+        return tts_tags
+
     def run_in_background(self, task_fn, task_done_fn):
         aqt.mw.taskman.run_in_background(task_fn, task_done_fn)
 

@@ -240,19 +240,22 @@ class HyperTTS():
     # processing of Anki TTS tags
     # ===========================
 
-    def build_anki_tts_tag(self, realtime_model):
-        # get the audio language of the first voice
-        voice_selection = realtime_model.voice_selection
-        if voice_selection.selection_mode == constants.VoiceSelectionMode.single:
-            audio_language = voice_selection.voice.voice.language
+    def build_realtime_tts_tag(self, realtime_model):
+        if realtime_model.source.mode == constants.RealtimeSourceType.AnkiTTSTag:
+            # get the audio language of the first voice
+            voice_selection = realtime_model.voice_selection
+            if voice_selection.selection_mode == constants.VoiceSelectionMode.single:
+                audio_language = voice_selection.voice.voice.language
+            else:
+                audio_language = voice_selection.get_voice_list()[0].voice.language
+            field_format = realtime_model.source.field_name
+            if realtime_model.source.field_type == constants.AnkiTTSFieldType.Cloze:
+                field_format = f'cloze:{realtime_model.source.field_name}'
+            elif realtime_model.source.field_type == constants.AnkiTTSFieldType.ClozeOnly:
+                field_format = f'cloze-only:{realtime_model.source.field_name}'
+            return '{{tts ' + f"""{audio_language.name} voices=HyperTTS:{field_format}""" + '}}'
         else:
-            audio_language = voice_selection.get_voice_list()[0].voice.language
-        field_format = realtime_model.source.field_name
-        if realtime_model.source.field_type == constants.AnkiTTSFieldType.Cloze:
-            field_format = f'cloze:{realtime_model.source.field_name}'
-        elif realtime_model.source.field_type == constants.AnkiTTSFieldType.ClozeOnly:
-            field_format = f'cloze-only:{realtime_model.source.field_name}'
-        return '{{tts ' + f"""{audio_language.name} voices=HyperTTS:{field_format}""" + '}}'
+            raise Exception(f'unsupported RealtimeSourceType: {realtime_model.source.mode}')
 
     # functions related to getting data from notes
     # ============================================

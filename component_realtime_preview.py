@@ -43,21 +43,29 @@ class RealtimePreview(component_common.ComponentBase):
             model = self.note.note_type()
             template = model["tmpls"][self.card_ord]
             template = copy.deepcopy(template)
-            tts_tag = self.hypertts.build_anki_tts_tag(self.model)
+            tts_tag = self.hypertts.build_realtime_tts_tag(self.model)
             logging.info(f'tts tag: {tts_tag}')
             template['qfmt'] += tts_tag
             pprint.pprint(template)
             card = self.hypertts.anki_utils.create_card_from_note(self.note, self.card_ord, model, template)
             if self.side == constants.AnkiCardSide.Front:
-                tags = card.question_av_tags()
+                self.preview_process_tts_tags(card.question_av_tags())
             elif self.side == constants.AnkiCardSide.Back:
-                tags = card.answer_av_tags()
-            logging.info(f'av_tags: {tags}')
+                self.preview_process_tts_tags(card.answer_av_tags())
         except errors.ModelValidationError as e:
             error_message = f'model validation error: {e}'
             self.source_preview_label.setText(error_message)
             # logging.error(f'model validation error: {e}')
 
+    def preview_process_tts_tags(self, av_tags):
+        # retain elements which are TTS tags
+        tts_tags = self.hypertts.anki_utils.extract_tts_tags(av_tags)
+        if len(tts_tags) == 0:
+            raise Exception('no TTS tags found')
+        if len(tts_tags) > 1:
+            raise Exception(f'more than one TTS tag found: {str(tts_tags)}')
+        tts_tag = tts_tags[0]
+        self.source_preview_label.setText(tts_tag.field_text)
 
     def draw(self):
         # populate processed text
