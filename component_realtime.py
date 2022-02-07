@@ -20,7 +20,7 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.hypertts = hypertts
         self.dialog = dialog
         self.side = side
-        self.batch_model = config_models.BatchConfig()
+        self.model = config_models.RealtimeConfig()
 
         # create certain widgets upfront
         self.preview_sound_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
@@ -40,33 +40,33 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.load_model(batch)
 
     def load_model(self, model):
-        self.batch_model = model
+        self.model = model
         # disseminate to all components
         self.source.load_model(model.source)
         self.voice_selection.load_model(model.voice_selection)
         self.text_processing.load_model(model.text_processing)
-        self.preview.load_model(self.batch_model)
+        self.preview.load_model(self.get_model())
 
     def get_model(self):
-        return self.batch_model
+        return self.model
 
     def source_model_updated(self, model):
         logging.info(f'source_model_updated: {model}')
-        self.batch_model.set_source(model)
+        self.model.source = model
         self.model_part_updated_common()
 
     def voice_selection_model_updated(self, model):
         logging.info('voice_selection_model_updated')
-        self.batch_model.set_voice_selection(model)
+        self.model.voice_selection = model
         self.model_part_updated_common()
 
     def text_processing_model_updated(self, model):
         logging.info('text_processing_model_updated')
-        self.batch_model.text_processing = model
+        self.model.text_processing = model
         self.model_part_updated_common()
 
     def model_part_updated_common(self):
-        self.preview.load_model(self.batch_model)
+        self.preview.load_model(self.get_model())
 
 
     def sample_selected(self, note_id, text):

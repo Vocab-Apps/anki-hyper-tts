@@ -444,6 +444,16 @@ class RealtimeConfig(ConfigModelBase):
             'text_processing': self.text_processing.serialize()
         }
 
+    def validate(self):
+        self.source.validate(),
+        self.voice_selection.validate(),
+        self.text_processing.validate()
+
+    def __str__(self):
+        return f"""<b>Source:</b> {self.source}
+<b>Voice Selection:</b> {self.voice_selection}
+"""        
+
 class RealtimeSourceAnkiTTS(ConfigModelBase):
     def __init__(self):
         self.mode = constants.RealtimeSourceType.AnkiTTSTag
@@ -462,3 +472,8 @@ class RealtimeSourceAnkiTTS(ConfigModelBase):
             raise errors.SourceFieldNotSet()
         if self.field_type == None:
             raise errors.SourceFieldTypeNotSet()
+
+    def __str__(self):
+        if self.field_name == None or self.field_type == None:
+            return f"""Undefined"""
+        return f"""field: {self.field_name} ({self.field_type.name})"""

@@ -18,6 +18,8 @@ class RealtimePreview(component_common.ComponentBase):
         self.source_preview_label.setWordWrap(True)
 
     def load_model(self, model):
+        self.model = model
+        logging.info(f'load_model: {self.model}')
         return # todo implement
         try:
             self.batch_model = model
