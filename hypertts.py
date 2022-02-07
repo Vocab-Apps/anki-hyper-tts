@@ -277,7 +277,6 @@ class HyperTTS():
 
         # alter card template
         card_template = note_model["tmpls"][card_ord]
-        card_template = copy.deepcopy(card_template)
         side_template_key = 'qfmt'
         if side == constants.AnkiCardSide.Back:
             side_template_key = 'afmt'
@@ -286,8 +285,6 @@ class HyperTTS():
         side_template += '\n' + tts_tag
         card_template[side_template_key] = side_template
 
-        pprint.pprint(card_template)
-
         note_model["tmpls"][card_ord] = card_template
 
         return note_model
@@ -295,7 +292,9 @@ class HyperTTS():
     def render_card_template_extract_tts_tag(self, realtime_model, note, side, card_ord):
         realtime_model.validate()
         note_model = note.note_type()
+        note_model = copy.deepcopy(note_model)
         note_model = self.set_tts_tag_note_model(realtime_model, 'preview', note_model, side, card_ord)
+        # pprint.pprint(note_model)        
 
         card = self.anki_utils.create_card_from_note(note, card_ord, note_model, note_model["tmpls"][card_ord])
         if side == constants.AnkiCardSide.Front:
