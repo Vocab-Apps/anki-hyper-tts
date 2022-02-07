@@ -2,6 +2,8 @@ import sys
 import logging
 import PyQt5
 import time
+import pprint
+import copy
 
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
@@ -35,14 +37,27 @@ class RealtimePreview(component_common.ComponentBase):
             self.source_preview_label.setText(message)
 
     def update_preview(self):
-        model = self.note.note_type()
-        template = model["tmpls"]
-        card = self.hypertts.anki_utils.create_card_from_note(self.note, self.card_ord, model, template)
-        if self.side == constants.AnkiCardSide.Front:
-            tags = card.question_av_tags()
-        elif self.side == constants.AnkiCardSide.Back:
-            tags = card.answer_av_tags()
-        logging.info(f'av_tags: {tags}')
+        # does the realtime model pass validation ?
+        try:
+            self.model.validate()
+            model = self.note.note_type()
+            template = model["tmpls"][self.card_ord]
+            template = copy.deepcopy(template)
+            tts_tag = self.hypertts.build_anki_tts_tag(self.model)
+            logging.info(f'tts tag: {tts_tag}')
+            template['qfmt'] += tts_tag
+            pprint.pprint(template)
+            card = self.hypertts.anki_utils.create_card_from_note(self.note, self.card_ord, model, template)
+            if self.side == constants.AnkiCardSide.Front:
+                tags = card.question_av_tags()
+            elif self.side == constants.AnkiCardSide.Back:
+                tags = card.answer_av_tags()
+            logging.info(f'av_tags: {tags}')
+        except errors.ModelValidationError as e:
+            error_message = f'model validation error: {e}'
+            self.source_preview_label.setText(error_message)
+            # logging.error(f'model validation error: {e}')
+
 
     def draw(self):
         # populate processed text

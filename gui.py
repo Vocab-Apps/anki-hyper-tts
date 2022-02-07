@@ -17,6 +17,7 @@ import anki.hooks
 # addon imports
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
+component_realtime = __import__('component_realtime', globals(), locals(), [], sys._addon_import_level_base)
 component_configuration = __import__('component_configuration', globals(), locals(), [], sys._addon_import_level_base)
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 ttsplayer = __import__('ttsplayer', globals(), locals(), [], sys._addon_import_level_base)
@@ -62,6 +63,22 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
     def close(self):
         self.accept()
 
+class RealtimeDialog(PyQt5.QtWidgets.QDialog):
+    def __init__(self, hypertts):
+        super(PyQt5.QtWidgets.QDialog, self).__init__()
+        self.realtime_component = component_realtime.ComponentRealtime(hypertts, self, constants.AnkiCardSide.Front, 0)
+
+    def setupUi(self):
+        self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
+        self.realtime_component.draw(self.main_layout)
+
+    def configure_note(self, note):
+        self.realtime_component.configure_note(note)
+        self.setupUi()
+
+    def close(self):
+        self.accept()        
+
 def launch_configuration_dialog(hypertts):
     with hypertts.error_manager.get_single_action_context('Launching Configuration Dialog'):
         logging.info('launch_configuration_dialog')
@@ -85,6 +102,12 @@ def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
 
 def launch_realtime_dialog_browser(hypertts, editor):
     note = editor.note
+
+    dialog = RealtimeDialog(hypertts)
+    dialog.configure_note(note)
+    dialog.exec_()
+    return
+
     model = note.note_type()
     logging.info('model:')
     pprint.pprint(model)

@@ -445,8 +445,12 @@ class RealtimeConfig(ConfigModelBase):
         }
 
     def validate(self):
-        self.source.validate(),
-        self.voice_selection.validate(),
+        self.source.validate()
+        if self.voice_selection == None:
+            raise errors.VoiceSelectionNotSet()
+        self.voice_selection.validate()
+        if self.text_processing == None:
+            raise errors.TextProcessingNotSet()
         self.text_processing.validate()
 
     def __str__(self):

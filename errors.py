@@ -117,6 +117,14 @@ class TargetFieldNotSet(ModelValidationError):
     def __init__(self):
         super().__init__('Target Field is not set')
 
+class VoiceSelectionNotSet(ModelValidationError):
+    def __init__(self):
+        super().__init__('Voice Selection not done')
+
+class TextProcessingNotSet(ModelValidationError):
+    def __init__(self):
+        super().__init__('Text Processing not set')        
+
 class NoVoiceSet(ModelValidationError):
     def __init__(self):
         super().__init__('No Voice has been set')
