@@ -1,14 +1,16 @@
 import sys
 import PyQt5
 import logging
+import copy
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 component_realtime_source = __import__('component_realtime_source', globals(), locals(), [], sys._addon_import_level_base)
 component_voiceselection = __import__('component_voiceselection', globals(), locals(), [], sys._addon_import_level_base)
 component_text_processing = __import__('component_text_processing', globals(), locals(), [], sys._addon_import_level_base)
-component_realtime_preview = __import__('component_realtime_preview', globals(), locals(), [], sys._addon_import_level_base)
+# component_realtime_preview = __import__('component_realtime_preview', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
 
 
@@ -24,6 +26,8 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.model = config_models.RealtimeConfig()
 
         # create certain widgets upfront
+        self.text_preview_label = PyQt5.QtWidgets.QLabel()
+
         self.preview_sound_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
         self.apply_button = PyQt5.QtWidgets.QPushButton('Apply to Notes')
         self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
@@ -34,7 +38,7 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.source = component_realtime_source.RealtimeSource(self.hypertts, field_list, self.source_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
         self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
-        self.preview = component_realtime_preview.RealtimePreview(self.hypertts, self.note, self.side, self.card_ord)
+        # self.preview = component_realtime_preview.RealtimePreview(self.hypertts, self.note, self.side, self.card_ord)
 
     def load_batch(self, batch_name):
         batch = self.hypertts.load_batch_config(batch_name)
@@ -46,7 +50,7 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.source.load_model(model.source)
         self.voice_selection.load_model(model.voice_selection)
         self.text_processing.load_model(model.text_processing)
-        self.preview.load_model(self.get_model())
+        # self.preview.load_model(self.get_model())
 
     def get_model(self):
         return self.model
@@ -67,8 +71,38 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.model_part_updated_common()
 
     def model_part_updated_common(self):
-        self.preview.load_model(self.get_model())
+        self.update_preview()
 
+
+    def update_preview(self):
+        # does the realtime model pass validation ?
+        try:
+            self.model.validate()
+            model = self.note.note_type()
+            template = model["tmpls"][self.card_ord]
+            template = copy.deepcopy(template)
+            tts_tag = self.hypertts.build_realtime_tts_tag(self.model)
+            logging.info(f'tts tag: {tts_tag}')
+            template['qfmt'] += tts_tag
+            card = self.hypertts.anki_utils.create_card_from_note(self.note, self.card_ord, model, template)
+            if self.side == constants.AnkiCardSide.Front:
+                self.preview_process_tts_tags(card.question_av_tags())
+            elif self.side == constants.AnkiCardSide.Back:
+                self.preview_process_tts_tags(card.answer_av_tags())
+        except errors.ModelValidationError as e:
+            error_message = f'model validation error: {e}'
+            self.text_preview_label.setText(error_message)
+            # logging.error(f'model validation error: {e}')
+
+    def preview_process_tts_tags(self, av_tags):
+        # retain elements which are TTS tags
+        tts_tags = self.hypertts.anki_utils.extract_tts_tags(av_tags)
+        if len(tts_tags) == 0:
+            raise Exception('no TTS tags found')
+        if len(tts_tags) > 1:
+            raise Exception(f'more than one TTS tag found: {str(tts_tags)}')
+        tts_tag = tts_tags[0]
+        self.text_preview_label.setText(tts_tag.field_text)
 
     def sample_selected(self, note_id, text):
         self.voice_selection.sample_text_selected(text)
@@ -105,14 +139,21 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.tabs.addTab(self.tab_voice_selection, 'Voice Selection')
         self.tabs.addTab(self.tab_text_processing, 'Text Processing')
 
-        self.splitter = PyQt5.QtWidgets.QSplitter(PyQt5.QtCore.Qt.Horizontal)
-        self.splitter.addWidget(self.tabs)
+        self.vlayout.addWidget(self.tabs)
 
-        self.preview_widget = PyQt5.QtWidgets.QWidget()
-        self.preview_widget.setLayout(self.preview.draw())
-        self.splitter.addWidget(self.preview_widget)
-        self.vlayout.addWidget(self.splitter)
+        # add preview box
+        # ===============
 
+        preview_groupbox = PyQt5.QtWidgets.QGroupBox('Preview')
+        preview_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        source_preview_label = PyQt5.QtWidgets.QLabel('Text Preview:')
+        preview_vlayout.addWidget(source_preview_label)
+        preview_vlayout.addWidget(self.text_preview_label)
+
+        preview_groupbox.setLayout(preview_vlayout)
+        self.vlayout.addWidget(preview_groupbox)
+        
+        # spacer eleent
 
         self.vlayout.addStretch()
 
