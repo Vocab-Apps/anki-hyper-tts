@@ -23,8 +23,11 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.side = side
         self.card_ord = card_ord
         self.model = config_models.RealtimeConfig()
+        self.side_enabled = False
 
         # create certain widgets upfront
+        self.side_enabled_checkbox = PyQt5.QtWidgets.QCheckBox(f'Enable Realtime TTS for {self.side.name} side')
+
         self.text_preview_label = PyQt5.QtWidgets.QLabel()
 
         self.preview_sound_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
@@ -100,6 +103,11 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         tts_tag = tts_tags[0]
         self.text_preview_label.setText(tts_tag.field_text)
 
+    def side_enabled_change(self, checkbox_value):
+        self.side_enabled = checkbox_value == 2
+        self.tabs.setEnabled(self.side_enabled)
+        self.preview_groupbox.setEnabled(self.side_enabled)
+
     def sample_selected(self, note_id, text):
         self.voice_selection.sample_text_selected(text)
         self.note = self.hypertts.anki_utils.get_note_by_id(note_id)
@@ -119,6 +127,12 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         hlayout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
         self.vlayout.addLayout(hlayout)
 
+        # side enabled checkbox
+        # =====================
+        
+        self.side_enabled_checkbox.setFont(gui_utils.get_large_checkbox_font())
+        self.vlayout.addWidget(self.side_enabled_checkbox)
+
         # preset settings tabs
         # ====================
 
@@ -135,12 +149,14 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.tabs.addTab(self.tab_voice_selection, 'Voice Selection')
         self.tabs.addTab(self.tab_text_processing, 'Text Processing')
 
+        # self.tabs.setEnabled(False)
+
         self.vlayout.addWidget(self.tabs)
 
         # add preview box
         # ===============
 
-        preview_groupbox = PyQt5.QtWidgets.QGroupBox('Preview')
+        self.preview_groupbox = PyQt5.QtWidgets.QGroupBox('Preview')
         preview_vlayout = PyQt5.QtWidgets.QVBoxLayout()
         source_preview_label = PyQt5.QtWidgets.QLabel('Text to be pronounced:')
         preview_vlayout.addWidget(source_preview_label)
@@ -149,8 +165,11 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.preview_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
         preview_vlayout.addWidget(self.preview_button)
 
-        preview_groupbox.setLayout(preview_vlayout)
-        self.vlayout.addWidget(preview_groupbox)
+        self.preview_groupbox.setLayout(preview_vlayout)
+
+        # preview_groupbox.setEnabled(False)
+
+        self.vlayout.addWidget(self.preview_groupbox)
         
         # spacer eleent
 
@@ -172,11 +191,17 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         hlayout.addWidget(self.cancel_button)
         self.vlayout.addLayout(hlayout)
 
+        # wire events
         self.preview_sound_button.pressed.connect(self.sound_preview_button_pressed)
         self.apply_button.pressed.connect(self.apply_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
+        self.side_enabled_checkbox.stateChanged.connect(self.side_enabled_change)
 
+        # defaults
         self.cancel_button.setFocus()
+        self.tabs.setEnabled(self.side_enabled)
+        self.preview_groupbox.setEnabled(self.side_enabled)        
+
 
         layout.addLayout(self.vlayout)
 
