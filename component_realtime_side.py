@@ -121,15 +121,6 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
     def draw(self):
         self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
-        # header
-        # ======
-
-        hlayout = PyQt5.QtWidgets.QHBoxLayout()
-
-        # logo header
-        hlayout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
-        self.vlayout.addLayout(hlayout)
-
         # side enabled checkbox
         # =====================
         
@@ -170,41 +161,16 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
 
         self.preview_groupbox.setLayout(preview_vlayout)
 
-        # preview_groupbox.setEnabled(False)
 
         self.vlayout.addWidget(self.preview_groupbox)
         
-        # spacer eleent
-
-        self.vlayout.addStretch()
-
-        # setup bottom buttons
-        # ====================
-
-        hlayout = PyQt5.QtWidgets.QHBoxLayout()
-        hlayout.addStretch()
-
-        # apply button
-        apply_label_text = 'Apply To Note'
-        self.apply_button.setText(apply_label_text)
-        self.apply_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
-        hlayout.addWidget(self.apply_button)
-        # cancel button
-        self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
-        hlayout.addWidget(self.cancel_button)
-        self.vlayout.addLayout(hlayout)
 
         # wire events
-        self.preview_sound_button.pressed.connect(self.sound_preview_button_pressed)
-        self.apply_button.pressed.connect(self.apply_button_pressed)
-        self.cancel_button.pressed.connect(self.cancel_button_pressed)
         self.side_enabled_checkbox.stateChanged.connect(self.side_enabled_change)
 
         # defaults
-        self.cancel_button.setFocus()
         self.tabs.setEnabled(self.side_enabled)
         self.preview_groupbox.setEnabled(self.side_enabled)        
-
 
         return self.vlayout
 
