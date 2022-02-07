@@ -106,26 +106,6 @@ def launch_realtime_dialog_browser(hypertts, editor):
     dialog = RealtimeDialog(hypertts)
     dialog.configure_note(note)
     dialog.exec_()
-    return
-
-    model = note.note_type()
-    logging.info('model:')
-    pprint.pprint(model)
-    templates = model["tmpls"]
-    ord = 0
-    template = templates[ord]
-
-    # customize template
-    # template['qfmt'] += '<span>yoyo 42</span>'
-
-    pprint.pprint(template)
-
-    card = editor.note.ephemeral_card(ord,
-        custom_note_type=model,
-        custom_template=template)
-    question = card.question()
-    pprint.pprint(question)
-
 
 
 def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):

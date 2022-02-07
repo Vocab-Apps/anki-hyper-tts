@@ -42,6 +42,7 @@ class AnkiCardSide(enum.Enum):
     Back = enum.auto()
 
 CONFIG_BATCH_CONFIG = 'batch_config'
+CONFIG_REALTIME_CONFIG = 'realtime_config'
 CONFIG_CONFIGURATION = 'configuration'
 
 ADDON_NAME = 'HyperTTS'

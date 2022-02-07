@@ -338,6 +338,8 @@ class HyperTTS():
     # functions related to addon config
     # =================================
 
+    # batch config
+
     def save_batch_config(self, batch_name, batch):
         batch.validate()
         if constants.CONFIG_BATCH_CONFIG not in self.config:
@@ -376,6 +378,24 @@ class HyperTTS():
             i += 1
             batch_name = f'Preset {i}'
         return batch_name
+
+    # realtime config
+
+    def save_realtime_config(self, realtime_model, key=None):
+        realtime_model.validate()
+        if constants.CONFIG_REALTIME_CONFIG not in self.config:
+            self.config[constants.CONFIG_REALTIME_CONFIG] = {}
+        # find a free name
+        key_index = 0
+        candidate_key = f'realtime_{key_index}'
+        while candidate_key in self.config[constants.CONFIG_REALTIME_CONFIG]:
+            key_index += 1
+            candidate_key = f'realtime_{key_index}'
+        final_key = candidate_key
+        self.config[constants.CONFIG_REALTIME_CONFIG][final_key] = realtime_model.serialize()
+        return final_key
+
+    # services config
 
     def save_configuration(self, configuration_model):
         configuration_model.validate()

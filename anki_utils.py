@@ -95,6 +95,10 @@ class AnkiUtils():
         tts_tags = [x for x in av_tags if isinstance(x, anki.sound.TTSTag)]
         return tts_tags
 
+    def save_note_type_update(self, note_model):
+        logging.info(f"""updating note type: {note_model['name']}""")
+        aqt.mw.col.models.update_dict(note_model)
+
     def run_in_background(self, task_fn, task_done_fn):
         aqt.mw.taskman.run_in_background(task_fn, task_done_fn)
 
