@@ -113,6 +113,9 @@ class MockAnkiUtils():
     def create_card_from_note(self, note, card_ord, model, template):
         return MockCard(0, note, card_ord, model, template)
 
+    def extract_tts_tags(self, av_tags):
+        return av_tags
+
     def run_in_background(self, task_fn, task_done_fn):
         # just run the two tasks immediately
         try:
@@ -288,11 +291,24 @@ class MockCard():
         self.model = model
         self.template = template
 
+    def extract_tts_tags(self, template_format):
+        m = re.match('.*{{tts.*voices=HyperTTS:(.*)}}.*', template_format)
+        if m == None:
+            logging.error(f'could not find match: {template_format}')
+        field_name = m.groups()[0]
+        return [MockTTSTag(self.note[field_name])]
+
     def question_av_tags(self):
-        return None
+        template_format = self.template['qfmt']
+        return self.extract_tts_tags(template_format)
 
     def answer_av_tags(self):
-        return None
+        template_format = self.template['afmt']
+        return self.extract_tts_tags(template_format)
+
+class MockTTSTag():
+    def __init__(self, field_text):
+        self.field_text = field_text
 
 class MockNote():
     def __init__(self, note_id, model_id, field_dict, field_array, model):
