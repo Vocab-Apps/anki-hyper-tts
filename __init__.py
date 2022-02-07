@@ -96,6 +96,8 @@ else:
                             datefmt='%Y%m%d-%H:%M:%S',
                             stream=sys.stdout,
                             level=logging.DEBUG)    
+    else:
+        logging.disable(logging.CRITICAL)
 
     ankiutils = anki_utils.AnkiUtils()
 
