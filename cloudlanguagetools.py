@@ -7,6 +7,9 @@ import json
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
 
+if hasattr(sys, '_sentry_crash_reporting'):
+    import sentry_sdk
+
 class CloudLanguageTools():
     def __init__(self):
         self.base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_BASE_URL', 'https://cloud-language-tools-tts-prod.anki.study')
@@ -15,6 +18,11 @@ class CloudLanguageTools():
         self.api_key = api_key
 
     def get_tts_audio(self, source_text, voice, options):
+        if hasattr(sys, '_sentry_crash_reporting'):
+            sentry_sdk.set_context("user", {
+                "api_key": self.api_key,
+            })
+
         # query cloud language tools API
         url_path = '/audio_v2'
         full_url = self.base_url + url_path
