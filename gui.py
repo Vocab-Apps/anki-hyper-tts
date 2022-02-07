@@ -66,7 +66,7 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
 class RealtimeDialog(PyQt5.QtWidgets.QDialog):
     def __init__(self, hypertts):
         super(PyQt5.QtWidgets.QDialog, self).__init__()
-        self.realtime_component = component_realtime.ComponentRealtime(hypertts, self, constants.AnkiCardSide.Front, 0)
+        self.realtime_component = component_realtime.ComponentRealtime(hypertts, self, 0)
 
     def setupUi(self):
         self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
