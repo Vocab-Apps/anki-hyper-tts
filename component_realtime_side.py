@@ -80,9 +80,10 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
     def update_preview(self):
         try:
             # does the realtime model pass validation ?
-            tts_tags = self.hypertts.render_card_template_extract_tts_tag(self.get_model(),
-                self.note, self.side, self.card_ord)
-            self.preview_process_tts_tags(tts_tags)
+            if self.get_model().side_enabled:
+                tts_tags = self.hypertts.render_card_template_extract_tts_tag(self.get_model(),
+                    self.note, self.side, self.card_ord)
+                self.preview_process_tts_tags(tts_tags)
         except errors.ModelValidationError as e:
             error_message = f'model validation error: {e}'
             self.text_preview_label.setText(error_message)

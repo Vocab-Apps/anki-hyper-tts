@@ -46,6 +46,8 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
         assert isinstance(tag, anki.sound.TTSTag)
         logging.info(f'playing TTS sound for {tag}')
 
+        self.hypertts.play_tts_tag(tag)
+
 
     # this is called on the main thread, after _play finishes
     def _on_done(self, ret: Future, cb: aqt.sound.OnDoneCallback) -> None:

@@ -96,7 +96,7 @@ class HyperTTS():
         processed_text = text_utils.process_text(source_text, batch.text_processing)
         return self.get_audio_file(processed_text, batch.voice_selection)        
 
-    def get_realtime_audio(self, realtime_model, text):
+    def get_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
         source_text = text
         processed_text = text_utils.process_text(source_text, realtime_model.text_processing)
         return self.get_audio_file(processed_text, realtime_model.voice_selection)
@@ -200,7 +200,7 @@ class HyperTTS():
         full_filename, audio_filename = self.get_note_audio(batch, note)
         self.anki_utils.play_sound(full_filename)
 
-    def play_realtime_audio(self, realtime_model, text):
+    def play_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
         full_filename, audio_filename = self.get_realtime_audio(realtime_model, text)
         self.anki_utils.play_sound(full_filename)
 
@@ -250,6 +250,11 @@ class HyperTTS():
     # processing of Anki TTS tags
     # ===========================
 
+    def play_tts_tag(self, tts_tag):
+        hypertts_preset = self.extract_hypertts_preset(tts_tag.other_args)
+        realtime_side_model = self.get_realtime_side_config(hypertts_preset)
+        self.play_realtime_audio(realtime_side_model, tts_tag.field_text)
+
     def build_realtime_tts_tag(self, realtime_side_model: config_models.RealtimeConfigSide, setting_key):
         if realtime_side_model.source.mode == constants.RealtimeSourceType.AnkiTTSTag:
             # get the audio language of the first voice
@@ -278,9 +283,12 @@ class HyperTTS():
         if constants.AnkiCardSide.Front.name in hypertts_preset:
             # front
             preset_name = hypertts_preset.replace(constants.AnkiCardSide.Front.name + '_', '')
+            return self.load_realtime_config(preset_name).front
         else:
             # back
             preset_name = hypertts_preset.replace(constants.AnkiCardSide.Back.name + '_', '')
+            return self.load_realtime_config(preset_name).back
+
 
     def remove_tts_tag(self, card_template):
         return re.sub('{{tts.*}}', '', card_template)
