@@ -109,76 +109,14 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         layout.addLayout(self.vlayout)
 
     def apply_button_pressed(self):
-        with self.hypertts.error_manager.get_single_action_context('Applying Audio to Notes'):
+        with self.hypertts.error_manager.get_single_action_context('Applying Realtime Audio to Card'):
             self.get_model().validate()
-            logging.info('apply_button_pressed')
-            if self.editor_mode:
-                self.disable_bottom_buttons()
-                self.apply_button.setText('Loading...')
-                self.hypertts.anki_utils.run_in_background(self.apply_note_editor_task, self.apply_note_editor_task_done)
-            else:
-                self.disable_bottom_buttons()
-                self.apply_button.setText('Loading...')
-                self.preview.apply_audio_to_notes()
+            self.hypertts.persist_realtime_config_update_note_type(self.get_model(), 
+                self.note, self.card_ord, None)
+            self.dialog.close()
 
     def cancel_button_pressed(self):
         self.dialog.close()
 
-    def apply_note_editor_task(self):
-        self.hypertts.editor_note_add_audio(self.batch_model, self.editor, self.note, self.add_mode)
-        return True
-
-    def apply_note_editor_task_done(self, result):
-        with self.hypertts.error_manager.get_single_action_context('Adding Audio to Note'):
-            result = result.result()
-            self.dialog.close()
-        self.hypertts.anki_utils.run_on_main(self.finish_apply_note_editor)
-    
-    def finish_apply_note_editor(self):
-        self.enable_bottom_buttons()
-        self.apply_button.setText('Apply To Note')
-
-    def sound_preview_task(self):
-        self.hypertts.preview_note_audio(self.batch_model, self.note)
-        return True
-
-    def sound_preview_task_done(self, result):
-        with self.hypertts.error_manager.get_single_action_context('Playing Sound Preview'):
-            result = result.result()
-        self.hypertts.anki_utils.run_on_main(self.finish_sound_preview)
-
-    def finish_sound_preview(self):
-        self.enable_bottom_buttons()
-        self.preview_sound_button.setText('Preview Sound')
-
-    def disable_bottom_buttons(self):
-        self.preview_sound_button.setEnabled(False)
-        self.apply_button.setEnabled(False)
-        self.cancel_button.setEnabled(False)
-
-    def enable_bottom_buttons(self):
-        self.preview_sound_button.setEnabled(True)
-        self.apply_button.setEnabled(True)
-        self.cancel_button.setEnabled(True)
-
-    def apply_notes_batch_start(self):
-        pass
-
-    def batch_interrupted_button_setup(self):
-        self.enable_bottom_buttons()
-        self.apply_button.setText('Apply To Notes')
-
-    def batch_completed_button_setup(self):
-        self.cancel_button.setText('Close')
-        self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
-        self.cancel_button.setEnabled(True)
-        self.apply_button.setStyleSheet(None)
-        self.apply_button.setText('Done')
-
-    def apply_notes_batch_end(self, completed):
-        if completed:
-            self.hypertts.anki_utils.run_on_main(self.batch_completed_button_setup)
-        else:
-            self.hypertts.anki_utils.run_on_main(self.batch_interrupted_button_setup)
 
         

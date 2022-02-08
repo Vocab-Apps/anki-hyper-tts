@@ -250,29 +250,29 @@ class HyperTTS():
     # processing of Anki TTS tags
     # ===========================
 
-    def build_realtime_tts_tag(self, realtime_model, setting_key):
-        if realtime_model.source.mode == constants.RealtimeSourceType.AnkiTTSTag:
+    def build_realtime_tts_tag(self, realtime_side_model: config_models.RealtimeConfigSide, setting_key):
+        if realtime_side_model.source.mode == constants.RealtimeSourceType.AnkiTTSTag:
             # get the audio language of the first voice
-            voice_selection = realtime_model.voice_selection
+            voice_selection = realtime_side_model.voice_selection
             if voice_selection.selection_mode == constants.VoiceSelectionMode.single:
                 audio_language = voice_selection.voice.voice.language
             else:
                 audio_language = voice_selection.get_voice_list()[0].voice.language
-            field_format = realtime_model.source.field_name
-            if realtime_model.source.field_type == constants.AnkiTTSFieldType.Cloze:
-                field_format = f'cloze:{realtime_model.source.field_name}'
-            elif realtime_model.source.field_type == constants.AnkiTTSFieldType.ClozeOnly:
-                field_format = f'cloze-only:{realtime_model.source.field_name}'
+            field_format = realtime_side_model.source.field_name
+            if realtime_side_model.source.field_type == constants.AnkiTTSFieldType.Cloze:
+                field_format = f'cloze:{realtime_side_model.source.field_name}'
+            elif realtime_side_model.source.field_type == constants.AnkiTTSFieldType.ClozeOnly:
+                field_format = f'cloze-only:{realtime_side_model.source.field_name}'
             return '{{tts ' + f"""{audio_language.name} hypertts_preset={setting_key} voices=HyperTTS:{field_format}""" + '}}'
         else:
-            raise Exception(f'unsupported RealtimeSourceType: {realtime_model.source.mode}')
+            raise Exception(f'unsupported RealtimeSourceType: {realtime_side_model.source.mode}')
 
     def remove_tts_tag(self, card_template):
         return re.sub('{{tts.*}}', '', card_template)
 
-    def set_tts_tag_note_model(self, realtime_model, setting_key, note_model, side, card_ord):
+    def set_tts_tag_note_model(self, realtime_side_model: config_models.RealtimeConfigSide, setting_key, note_model, side, card_ord, clear_only):
         # build tts tag
-        tts_tag = self.build_realtime_tts_tag(realtime_model, setting_key)
+        tts_tag = self.build_realtime_tts_tag(realtime_side_model, setting_key)
         logging.info(f'tts tag: {tts_tag}')
 
         # alter card template
@@ -282,18 +282,19 @@ class HyperTTS():
             side_template_key = 'afmt'
         side_template = card_template[side_template_key]
         side_template = self.remove_tts_tag(side_template)
-        side_template += '\n' + tts_tag
+        if not clear_only:
+            side_template += '\n' + tts_tag
         card_template[side_template_key] = side_template
 
         note_model["tmpls"][card_ord] = card_template
 
         return note_model
 
-    def render_card_template_extract_tts_tag(self, realtime_model, note, side, card_ord):
+    def render_card_template_extract_tts_tag(self, realtime_model: config_models.RealtimeConfig, note, side, card_ord):
         realtime_model.validate()
         note_model = note.note_type()
         note_model = copy.deepcopy(note_model)
-        note_model = self.set_tts_tag_note_model(realtime_model, 'preview', note_model, side, card_ord)
+        note_model = self.set_tts_tag_note_model(realtime_model, 'preview', note_model, side, card_ord, False)
         # pprint.pprint(note_model)        
 
         card = self.anki_utils.create_card_from_note(note, card_ord, note_model, note_model["tmpls"][card_ord])
@@ -302,6 +303,32 @@ class HyperTTS():
         elif side == constants.AnkiCardSide.Back:
             return self.anki_utils.extract_tts_tags(card.answer_av_tags())
 
+    def build_side_settings_key(self, card_side: constants.AnkiCardSide, settings_key):
+        return f'{card_side.name}_{settings_key}'
+
+
+    def persist_realtime_config_update_note_type(self, realtime_model: config_models.RealtimeConfig, note, card_ord, current_settings_key):
+        settings_key = self.save_realtime_config(realtime_model, current_settings_key)
+        note_model = note.note_type()
+        
+        # proces front side
+        side = constants.AnkiCardSide.Front
+        if realtime_model.front.side_enabled:
+            side_settings_key = self.build_side_settings_key(side, settings_key)
+            note_model = self.set_tts_tag_note_model(realtime_model.front, side_settings_key, note_model, side, card_ord, False)
+        else:
+            note_model = self.set_tts_tag_note_model(realtime_model.front, None, note_model, side, card_ord, True)
+
+        # process back side
+        side = constants.AnkiCardSide.Back
+        if realtime_model.back.side_enabled:
+            side_settings_key = self.build_side_settings_key(side, settings_key)
+            note_model = self.set_tts_tag_note_model(realtime_model.back, side_settings_key, note_model, side, card_ord, False)
+        else:
+            note_model = self.set_tts_tag_note_model(realtime_model.back, None, note_model, side, card_ord, True)
+
+        # save note model
+        self.anki_utils.save_note_type_update(note_model)
 
     # functions related to getting data from notes
     # ============================================
@@ -381,17 +408,22 @@ class HyperTTS():
 
     # realtime config
 
-    def save_realtime_config(self, realtime_model, key=None):
+    def save_realtime_config(self, realtime_model, settings_key):
         realtime_model.validate()
         if constants.CONFIG_REALTIME_CONFIG not in self.config:
             self.config[constants.CONFIG_REALTIME_CONFIG] = {}
-        # find a free name
-        key_index = 0
-        candidate_key = f'realtime_{key_index}'
-        while candidate_key in self.config[constants.CONFIG_REALTIME_CONFIG]:
-            key_index += 1
+        
+        if settings_key == None:
+            # find a free name
+            key_index = 0
             candidate_key = f'realtime_{key_index}'
-        final_key = candidate_key
+            while candidate_key in self.config[constants.CONFIG_REALTIME_CONFIG]:
+                key_index += 1
+                candidate_key = f'realtime_{key_index}'
+            final_key = candidate_key
+        else:
+            # use the key provided
+            final_key = settings_key
         self.config[constants.CONFIG_REALTIME_CONFIG][final_key] = realtime_model.serialize()
         return final_key
 
