@@ -64,9 +64,9 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
         self.accept()
 
 class RealtimeDialog(PyQt5.QtWidgets.QDialog):
-    def __init__(self, hypertts):
+    def __init__(self, hypertts, card_ord):
         super(PyQt5.QtWidgets.QDialog, self).__init__()
-        self.realtime_component = component_realtime.ComponentRealtime(hypertts, self, 0)
+        self.realtime_component = component_realtime.ComponentRealtime(hypertts, self, card_ord)
 
     def setupUi(self):
         self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
@@ -101,10 +101,23 @@ def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
         dialog.configure_editor(note, editor, add_mode)
         dialog.exec_()
 
-def launch_realtime_dialog_browser(hypertts, editor):
-    note = editor.note
+def launch_realtime_dialog_browser(hypertts, note_id_list):
+    if len(note_id_list) != 1:
+        aqt.utils.showCritical(constants.GUI_TEXT_REALTIME_SINGLE_NOTE)
+        return
 
-    dialog = RealtimeDialog(hypertts)
+    note = hypertts.anki_utils.get_note_by_id(note_id_list[0])
+    note_model = note.note_type()
+    templates = note_model['tmpls']
+    card_ord = 0 # default
+    if len(templates) > 1:
+        # ask user to choose a template
+        card_template_names = [x['name'] for x in templates]
+        chosen_row = aqt.utils.chooseList(constants.TITLE_PREFIX + constants.GUI_TEXT_REALTIME_CHOOSE_TEMPLATE, card_template_names)
+        logging.info(f'user chose row {chosen_row}')
+        card_ord = chosen_row
+
+    dialog = RealtimeDialog(hypertts, card_ord)
     dialog.configure_note(note)
     dialog.exec_()
 
@@ -141,17 +154,19 @@ def init(hypertts):
         menu = aqt.qt.QMenu(constants.ADDON_NAME, browser.form.menubar)
         browser.form.menubar.addMenu(menu)
 
-        action = aqt.qt.QAction(f'Add Audio...', browser)
+        action = aqt.qt.QAction(f'Add Audio (Collection)...', browser)
         action.triggered.connect(get_launch_dialog_browser_fn(hypertts, browser, None))
         menu.addAction(action)
 
         # add a menu entry for each preset
         for batch_name in hypertts.get_batch_config_list():
-            action = aqt.qt.QAction(f'Add Audio: {batch_name}...', browser)
+            action = aqt.qt.QAction(f'Add Audio (Collection): {batch_name}...', browser)
             action.triggered.connect(get_launch_dialog_browser_fn(hypertts, browser, batch_name))
             menu.addAction(action)
 
-        action = aqt.qt.QAction(f'Add Realtime Audio...', browser)
+        menu.addSeparator()
+
+        action = aqt.qt.QAction(f'Add Audio (Realtime)...', browser)
         action.triggered.connect(get_launch_realtime_dialog_browser_fn(hypertts, browser))
         menu.addAction(action)            
 

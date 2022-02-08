@@ -47,6 +47,7 @@ CONFIG_CONFIGURATION = 'configuration'
 
 ADDON_NAME = 'HyperTTS'
 MENU_PREFIX = ADDON_NAME + ':'
+TITLE_PREFIX = ADDON_NAME + ': '
 
 TTS_TAG_HYPERTTS_PRESET = 'hypertts_preset'
 
@@ -104,6 +105,9 @@ Undo HyperTTS: Add Audio to Notes. You may close this dialog.
 
 GUI_TEXT_HYPERTTS_PRO = """HyperTTS Pro gives you access to all premium services.""" +\
 """ (You can use the same API key as AwesomeTTS Plus / Language Tools)"""
+
+GUI_TEXT_REALTIME_SINGLE_NOTE = """Please select a single note to add Realtime Audio"""
+GUI_TEXT_REALTIME_CHOOSE_TEMPLATE = """Choose card template"""
 
 GRAPHICS_PRO_BANNER = 'hypertts_pro_banner.png'
 GRAPHICS_LITE_BANNER = 'hypertts_lite_banner.png'
