@@ -30,6 +30,7 @@ class ConfigurationDialog(PyQt5.QtWidgets.QDialog):
         self.configuration.load_model(hypertts.get_configuration())
 
     def setupUi(self):
+        self.setWindowTitle(constants.GUI_CONFIGURATION_DIALOG_TITLE)
         self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
         self.configuration.draw(self.main_layout)
 
@@ -42,6 +43,7 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
         self.batch_component = component_batch.ComponentBatch(hypertts, self)
 
     def setupUi(self):
+        self.setWindowTitle(constants.GUI_COLLECTION_DIALOG_TITLE)
         self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
         self.batch_component.draw(self.main_layout)
 
@@ -69,6 +71,7 @@ class RealtimeDialog(PyQt5.QtWidgets.QDialog):
         self.realtime_component = component_realtime.ComponentRealtime(hypertts, self, card_ord)
 
     def setupUi(self):
+        self.setWindowTitle(constants.GUI_REALTIME_DIALOG_TITLE)
         self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
         self.realtime_component.draw(self.main_layout)
 
@@ -102,24 +105,25 @@ def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
         dialog.exec_()
 
 def launch_realtime_dialog_browser(hypertts, note_id_list):
-    if len(note_id_list) != 1:
-        aqt.utils.showCritical(constants.GUI_TEXT_REALTIME_SINGLE_NOTE)
-        return
+    with hypertts.error_manager.get_single_action_context('Launching HyperTTS Realtime Dialog from Browser'):
+        if len(note_id_list) != 1:
+            aqt.utils.showCritical(constants.GUI_TEXT_REALTIME_SINGLE_NOTE)
+            return
 
-    note = hypertts.anki_utils.get_note_by_id(note_id_list[0])
-    note_model = note.note_type()
-    templates = note_model['tmpls']
-    card_ord = 0 # default
-    if len(templates) > 1:
-        # ask user to choose a template
-        card_template_names = [x['name'] for x in templates]
-        chosen_row = aqt.utils.chooseList(constants.TITLE_PREFIX + constants.GUI_TEXT_REALTIME_CHOOSE_TEMPLATE, card_template_names)
-        logging.info(f'user chose row {chosen_row}')
-        card_ord = chosen_row
+        note = hypertts.anki_utils.get_note_by_id(note_id_list[0])
+        note_model = note.note_type()
+        templates = note_model['tmpls']
+        card_ord = 0 # default
+        if len(templates) > 1:
+            # ask user to choose a template
+            card_template_names = [x['name'] for x in templates]
+            chosen_row = aqt.utils.chooseList(constants.TITLE_PREFIX + constants.GUI_TEXT_REALTIME_CHOOSE_TEMPLATE, card_template_names)
+            logging.info(f'user chose row {chosen_row}')
+            card_ord = chosen_row
 
-    dialog = RealtimeDialog(hypertts, card_ord)
-    dialog.configure_note(note)
-    dialog.exec_()
+        dialog = RealtimeDialog(hypertts, card_ord)
+        dialog.configure_note(note)
+        dialog.exec_()
 
 
 def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
