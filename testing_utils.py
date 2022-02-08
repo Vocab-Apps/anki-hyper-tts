@@ -36,6 +36,7 @@ class MockAnkiUtils():
     def __init__(self, config):
         self.config = config
         self.written_config = None
+        self.updated_note_model = None        
         self.editor_set_field_value_calls = []
         self.added_media_file = None
         self.show_loading_indicator_called = None
@@ -115,6 +116,10 @@ class MockAnkiUtils():
 
     def extract_tts_tags(self, av_tags):
         return av_tags
+
+    def save_note_type_update(self, note_model):
+        logging.info('save_note_type_update')
+        self.updated_note_model = note_model
 
     def run_in_background(self, task_fn, task_done_fn):
         # just run the two tasks immediately

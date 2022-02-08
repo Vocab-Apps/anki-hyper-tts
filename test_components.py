@@ -2,6 +2,7 @@ import PyQt5
 import logging
 import os
 import copy
+import pprint
 import component_batch_preview
 import component_configuration
 import config_models
@@ -1573,10 +1574,8 @@ def test_realtime_component(qtbot):
     dialog = EmptyDialog()
     dialog.setupUi()
 
-    note_id_list = [config_gen.note_id_1]    
-
-    # test saving of config
-    # =====================
+    # instantiate dialog
+    # ==================
 
     note_id = config_gen.note_id_1
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
@@ -1584,4 +1583,44 @@ def test_realtime_component(qtbot):
     realtime.configure_note(note_1)
     realtime.draw(dialog.getLayout())
 
-    dialog.exec_()    
+    # enable front side, select a field
+    realtime.front.side_enabled_checkbox.setChecked(True)
+    realtime.front.source.source_field_combobox.setCurrentText('English')
+
+    assert realtime.get_model().front.side_enabled == True
+    assert realtime.get_model().front.source.field_name == 'English'
+    assert realtime.get_model().front.source.field_type == constants.AnkiTTSFieldType.Regular
+
+    # enable back side
+    realtime.back.side_enabled_checkbox.setChecked(True)
+    realtime.back.source.source_field_combobox.setCurrentText('Chinese')
+    assert realtime.get_model().back.side_enabled == True
+    assert realtime.get_model().back.source.field_name == 'Chinese'
+
+    # click apply
+    qtbot.mouseClick(realtime.apply_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # assertions on config saved
+    assert constants.CONFIG_REALTIME_CONFIG in hypertts_instance.anki_utils.written_config
+    assert 'realtime_0' in hypertts_instance.anki_utils.written_config[constants.CONFIG_REALTIME_CONFIG]
+
+    realtime_config_saved = hypertts_instance.anki_utils.written_config[constants.CONFIG_REALTIME_CONFIG]['realtime_0']
+    assert realtime_config_saved['front']['source']['field_name'] == 'English'
+    assert realtime_config_saved['back']['source']['field_name'] == 'Chinese'
+
+    # pprint.pprint(hypertts_instance.anki_utils.written_config)
+
+    # assertions on note type updated
+    assert hypertts_instance.anki_utils.updated_note_model != None
+    question_format = hypertts_instance.anki_utils.updated_note_model['tmpls'][0]['qfmt'].replace('\n', ' ')
+    answer_format = hypertts_instance.anki_utils.updated_note_model['tmpls'][0]['afmt'].replace('\n', ' ')
+
+    expected_front_tts_tag = '{{tts fr_FR hypertts_preset=Front_realtime_0 voices=HyperTTS:English}}'
+    expected_back_tts_tag = '{{tts fr_FR hypertts_preset=Back_realtime_0 voices=HyperTTS:Chinese}}'
+
+    assert expected_front_tts_tag in question_format
+    assert expected_back_tts_tag in answer_format
+
+    pprint.pprint(hypertts_instance.anki_utils.updated_note_model)
+
+    # dialog.exec_()    
