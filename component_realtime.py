@@ -24,18 +24,23 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.apply_button = PyQt5.QtWidgets.QPushButton('Apply to Notes')
         self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
 
+        self.existing_preset_name = None
+
     def configure_note(self, note):
         self.note = note
         self.front = component_realtime_side.ComponentRealtimeSide(self.hypertts, 
-            constants.AnkiCardSide.Front, self.card_ord, self.front_model_updated)
+            constants.AnkiCardSide.Front, self.card_ord, self.front_model_updated, self.existing_preset_found)
         self.back = component_realtime_side.ComponentRealtimeSide(self.hypertts, 
-            constants.AnkiCardSide.Back, self.card_ord, self.back_model_updated)
+            constants.AnkiCardSide.Back, self.card_ord, self.back_model_updated, self.existing_preset_found)
         self.front.configure_note(note)
         self.back.configure_note(note)
 
     def load_existing_preset(self):
         self.front.load_existing_preset()
         self.back.load_existing_preset()
+
+    def existing_preset_found(self, preset_name):
+        self.existing_preset_name = preset_name
 
     def load_model(self, model):
         self.model = model
@@ -116,7 +121,7 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         with self.hypertts.error_manager.get_single_action_context('Applying Realtime Audio to Card'):
             self.get_model().validate()
             self.hypertts.persist_realtime_config_update_note_type(self.get_model(), 
-                self.note, self.card_ord, None)
+                self.note, self.card_ord, self.existing_preset_name)
             self.dialog.close()
 
     def cancel_button_pressed(self):

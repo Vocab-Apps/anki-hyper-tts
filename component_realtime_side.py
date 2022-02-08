@@ -17,13 +17,14 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
     MIN_WIDTH_COMPONENT = 600
     MIN_HEIGHT = 400
 
-    def __init__(self, hypertts, side, card_ord, model_change_callback):
+    def __init__(self, hypertts, side, card_ord, model_change_callback, existing_preset_fn):
         self.hypertts = hypertts
         self.side = side
         self.card_ord = card_ord
         self.model_change_callback = model_change_callback
         self.model = config_models.RealtimeConfigSide()
         self.side_enabled = False
+        self.existing_preset_fn = existing_preset_fn
 
         # create certain widgets upfront
         self.side_enabled_checkbox = PyQt5.QtWidgets.QCheckBox(f'Enable Realtime TTS for {self.side.name} side')
@@ -42,9 +43,10 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
 
     def load_existing_preset(self):
-        self.existing_preset_name = self.hypertts.card_template_has_tts_tag(self.note, self.side, self.card_ord)
-        if self.existing_preset_name != None:
-            realtime_model = self.hypertts.load_realtime_config(self.existing_preset_name)
+        existing_preset_name = self.hypertts.card_template_has_tts_tag(self.note, self.side, self.card_ord)
+        if existing_preset_name != None:
+            self.existing_preset_fn(existing_preset_name)
+            realtime_model = self.hypertts.load_realtime_config(existing_preset_name)
             if self.side == constants.AnkiCardSide.Front:
                 self.load_model(realtime_model.front)
             else:
