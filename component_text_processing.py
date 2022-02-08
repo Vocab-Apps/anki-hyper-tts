@@ -108,6 +108,10 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
         column = index.column()
         row = index.row()
 
+        if row >= len(self.model.get_text_replacement_rules()):
+            logging.error(f'setData column {column} row {row}, num rules: {len(self.model.get_text_replacement_rules())}')
+            return False
+
         text_replacement_rule = self.model.get_text_replacement_rule_row(row)
 
         if role == PyQt5.QtCore.Qt.EditRole:

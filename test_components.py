@@ -1166,6 +1166,20 @@ def test_text_processing(qtbot):
 
     # dialog.exec_()
 
+def test_text_processing_manual(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = MockModelChangeCallback()
+    text_processing = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
+    dialog.addChildLayout(text_processing.draw())
+
+    if os.environ.get('HYPERTTS_TEXT_PROCESSING_DIALOG_DEBUG', 'no') == 'yes':
+        dialog.exec_()        
+
 def test_configuration(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
