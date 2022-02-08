@@ -427,3 +427,80 @@ class Configuration(ConfigModelBase):
 
     def validate(self):
         pass
+
+# realtime config models
+# ======================
+
+class RealtimeConfig(ConfigModelBase):
+    def __init__(self):
+        self.front = None
+        self.back = None
+
+    def serialize(self):
+        return {
+            'front': self.front.serialize(),
+            'back': self.back.serialize(),
+        }
+
+    def validate(self):
+        self.front.validate()
+        self.back.validate()
+
+class RealtimeConfigSide(ConfigModelBase):
+    def __init__(self):
+        self.side_enabled = False
+        self.source = None
+        self.voice_selection = None
+        self.text_processing = None
+
+    def serialize(self):
+        if self.side_enabled:
+            return {
+                'side_enabled': self.side_enabled,
+                'source': self.source.serialize(),
+                'voice_selection': self.voice_selection.serialize(),
+                'text_processing': self.text_processing.serialize()
+            }
+        else:
+            return {
+                'side_enabled': self.side_enabled,
+            }            
+
+    def validate(self):
+        if self.side_enabled:
+            self.source.validate()
+            if self.voice_selection == None:
+                raise errors.VoiceSelectionNotSet()
+            self.voice_selection.validate()
+            if self.text_processing == None:
+                raise errors.TextProcessingNotSet()
+            self.text_processing.validate()
+
+    def __str__(self):
+        return f"""<b>Source:</b> {self.source}
+<b>Voice Selection:</b> {self.voice_selection}
+"""        
+
+class RealtimeSourceAnkiTTS(ConfigModelBase):
+    def __init__(self):
+        self.mode = constants.RealtimeSourceType.AnkiTTSTag
+        self.field_name = None
+        self.field_type = None
+
+    def serialize(self):
+        return {
+            'mode': self.mode.name,
+            'field_name':  self.field_name,
+            'field_type': self.field_type.name
+        }
+
+    def validate(self):
+        if self.field_name == None:
+            raise errors.SourceFieldNotSet()
+        if self.field_type == None:
+            raise errors.SourceFieldTypeNotSet()
+
+    def __str__(self):
+        if self.field_name == None or self.field_type == None:
+            return f"""Undefined"""
+        return f"""field: {self.field_name} ({self.field_type.name})"""

@@ -608,3 +608,73 @@ class ConfigModelsTests(unittest.TestCase):
         batch_config.set_voice_selection(voice_selection)
 
         self.assertRaises(errors.NoVoiceSet, batch_config.validate)
+
+
+    def test_realtime_config(self):
+        self.maxDiff = None
+        hypertts_instance = get_hypertts_instance()
+        voice_list = hypertts_instance.service_manager.full_voice_list()
+
+        voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+        voice_selection = config_models.VoiceSelectionSingle()
+        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
+
+        realtime_config = config_models.RealtimeConfig()
+        front = config_models.RealtimeConfigSide()
+        front.side_enabled = True
+
+        source = config_models.RealtimeSourceAnkiTTS()
+        source.field_name = 'Chinese'
+        source.field_type = constants.AnkiTTSFieldType.Regular
+        text_processing = config_models.TextProcessing()
+        front.source = source
+        front.text_processing = text_processing
+        front.voice_selection = voice_selection
+
+        back = config_models.RealtimeConfigSide()
+
+        realtime_config.front = front
+        realtime_config.back = back
+
+        realtime_config.validate()
+
+        expected_output = {
+            'front': {
+                'side_enabled': True,
+                'source': {
+                    'mode': 'AnkiTTSTag',
+                    'field_name': 'Chinese',
+                    'field_type': 'Regular'
+                },
+                'voice_selection': {
+                    'voice_selection_mode': 'single',
+                    'voice': 
+                        {
+                            'voice': {
+                                'gender': 'Male', 
+                                'language': 'fr_FR', 
+                                'name': 'voice_a_1', 
+                                'service': 'ServiceA',
+                                'voice_key': {'name': 'voice_1'}
+                            },
+                            'options': {
+                                'speed': 43
+                            },
+                        },        
+                },
+                'text_processing': {
+                    'html_to_text_line': True,
+                    'run_replace_rules_after': True,
+                    'ssml_convert_characters': True,            
+                    'text_replacement_rules': []
+                }
+            },
+            'back': {
+                'side_enabled': False
+            }
+        }
+
+        self.assertEqual(realtime_config.serialize(), expected_output)
+
+        deserialized_realtime_config = hypertts_instance.deserialize_realtime_config(realtime_config.serialize())
+        self.assertEqual(deserialized_realtime_config.serialize(), realtime_config.serialize())

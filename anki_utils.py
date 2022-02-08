@@ -84,6 +84,21 @@ class AnkiUtils():
     def update_note(self, note):
         aqt.mw.col.update_note(note)
 
+    def create_card_from_note(self, note, card_ord, model, template):
+        return note.ephemeral_card(
+            card_ord,
+            custom_note_type=model,
+            custom_template=template
+        )
+
+    def extract_tts_tags(self, av_tags):
+        tts_tags = [x for x in av_tags if isinstance(x, anki.sound.TTSTag)]
+        return tts_tags
+
+    def save_note_type_update(self, note_model):
+        logging.info(f"""updating note type: {note_model['name']}""")
+        aqt.mw.col.models.update_dict(note_model)
+
     def run_in_background(self, task_fn, task_done_fn):
         aqt.mw.taskman.run_in_background(task_fn, task_done_fn)
 

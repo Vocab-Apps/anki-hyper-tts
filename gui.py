@@ -4,6 +4,7 @@ import json
 # pyqt
 import PyQt5
 import logging
+import pprint
 
 # anki imports
 import aqt.qt
@@ -16,7 +17,10 @@ import anki.hooks
 # addon imports
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
+component_realtime = __import__('component_realtime', globals(), locals(), [], sys._addon_import_level_base)
 component_configuration = __import__('component_configuration', globals(), locals(), [], sys._addon_import_level_base)
+text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
+ttsplayer = __import__('ttsplayer', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class ConfigurationDialog(PyQt5.QtWidgets.QDialog):
@@ -59,6 +63,23 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
     def close(self):
         self.accept()
 
+class RealtimeDialog(PyQt5.QtWidgets.QDialog):
+    def __init__(self, hypertts, card_ord):
+        super(PyQt5.QtWidgets.QDialog, self).__init__()
+        self.realtime_component = component_realtime.ComponentRealtime(hypertts, self, card_ord)
+
+    def setupUi(self):
+        self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
+        self.realtime_component.draw(self.main_layout)
+
+    def configure_note(self, note):
+        self.realtime_component.configure_note(note)
+        self.setupUi()
+        self.realtime_component.load_existing_preset()
+
+    def close(self):
+        self.accept()        
+
 def launch_configuration_dialog(hypertts):
     with hypertts.error_manager.get_single_action_context('Launching Configuration Dialog'):
         logging.info('launch_configuration_dialog')
@@ -79,6 +100,27 @@ def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
         dialog = BatchDialog(hypertts)
         dialog.configure_editor(note, editor, add_mode)
         dialog.exec_()
+
+def launch_realtime_dialog_browser(hypertts, note_id_list):
+    if len(note_id_list) != 1:
+        aqt.utils.showCritical(constants.GUI_TEXT_REALTIME_SINGLE_NOTE)
+        return
+
+    note = hypertts.anki_utils.get_note_by_id(note_id_list[0])
+    note_model = note.note_type()
+    templates = note_model['tmpls']
+    card_ord = 0 # default
+    if len(templates) > 1:
+        # ask user to choose a template
+        card_template_names = [x['name'] for x in templates]
+        chosen_row = aqt.utils.chooseList(constants.TITLE_PREFIX + constants.GUI_TEXT_REALTIME_CHOOSE_TEMPLATE, card_template_names)
+        logging.info(f'user chose row {chosen_row}')
+        card_ord = chosen_row
+
+    dialog = RealtimeDialog(hypertts, card_ord)
+    dialog.configure_note(note)
+    dialog.exec_()
+
 
 def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
     batch_name_list = hypertts.get_batch_config_list_editor()
@@ -102,18 +144,31 @@ def init(hypertts):
                 launch_batch_dialog_browser(hypertts, browser.selectedNotes(), batch_name)
             return launch
 
+        def get_launch_realtime_dialog_browser_fn(hypertts, browser):
+            def launch():
+                launch_realtime_dialog_browser(hypertts, browser.selectedNotes())
+            return launch
+
+
+
         menu = aqt.qt.QMenu(constants.ADDON_NAME, browser.form.menubar)
         browser.form.menubar.addMenu(menu)
 
-        action = aqt.qt.QAction(f'Add Audio...', browser)
+        action = aqt.qt.QAction(f'Add Audio (Collection)...', browser)
         action.triggered.connect(get_launch_dialog_browser_fn(hypertts, browser, None))
         menu.addAction(action)
 
         # add a menu entry for each preset
         for batch_name in hypertts.get_batch_config_list():
-            action = aqt.qt.QAction(f'Add Audio: {batch_name}...', browser)
+            action = aqt.qt.QAction(f'Add Audio (Collection): {batch_name}...', browser)
             action.triggered.connect(get_launch_dialog_browser_fn(hypertts, browser, batch_name))
             menu.addAction(action)
+
+        menu.addSeparator()
+
+        action = aqt.qt.QAction(f'Add Audio (Realtime)...', browser)
+        action.triggered.connect(get_launch_realtime_dialog_browser_fn(hypertts, browser))
+        menu.addAction(action)            
 
     def on_webview_will_set_content(web_content: aqt.webview.WebContent, context):
         if not isinstance(context, aqt.editor.Editor):
@@ -166,3 +221,6 @@ def init(hypertts):
     aqt.gui_hooks.editor_did_load_note.append(loadNote)
     aqt.gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
     aqt.gui_hooks.webview_did_receive_js_message.append(onBridge)
+
+    # register TTS player
+    aqt.sound.av_player.players.append(ttsplayer.AnkiHyperTTSPlayer(aqt.mw.taskman, hypertts))

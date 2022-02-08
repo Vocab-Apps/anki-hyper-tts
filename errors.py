@@ -105,6 +105,10 @@ class SourceFieldNotSet(ModelValidationError):
     def __init__(self):
         super().__init__('Source Field is not set')
 
+class SourceFieldTypeNotSet(ModelValidationError):
+    def __init__(self):
+        super().__init__('Source Field Type is not set')        
+
 class SourceTemplateNotSet(ModelValidationError):
     def __init__(self):
         super().__init__('Source Template is not set')
@@ -112,6 +116,14 @@ class SourceTemplateNotSet(ModelValidationError):
 class TargetFieldNotSet(ModelValidationError):
     def __init__(self):
         super().__init__('Target Field is not set')
+
+class VoiceSelectionNotSet(ModelValidationError):
+    def __init__(self):
+        super().__init__('Voice Selection not done')
+
+class TextProcessingNotSet(ModelValidationError):
+    def __init__(self):
+        super().__init__('Text Processing not set')        
 
 class NoVoiceSet(ModelValidationError):
     def __init__(self):

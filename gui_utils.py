@@ -50,6 +50,11 @@ def get_large_button_font():
     font2.setPointSize(14)
     return font2        
 
+def get_large_checkbox_font():
+    font2 = PyQt5.QtGui.QFont()
+    font2.setPointSize(12)
+    return font2
+
 def get_large_combobox_font():
     font2 = PyQt5.QtGui.QFont()
     font2.setPointSize(10)

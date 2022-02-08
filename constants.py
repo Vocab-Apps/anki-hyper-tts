@@ -29,11 +29,27 @@ class TextReplacementRuleType(enum.Enum):
     Simple = enum.auto()
     Regex = enum.auto()
 
+class RealtimeSourceType(enum.Enum):
+    AnkiTTSTag = enum.auto()
+
+class AnkiTTSFieldType(enum.Enum):
+    Regular = enum.auto()
+    Cloze = enum.auto()
+    ClozeOnly = enum.auto()
+
+class AnkiCardSide(enum.Enum):
+    Front = enum.auto()
+    Back = enum.auto()
+
 CONFIG_BATCH_CONFIG = 'batch_config'
+CONFIG_REALTIME_CONFIG = 'realtime_config'
 CONFIG_CONFIGURATION = 'configuration'
 
 ADDON_NAME = 'HyperTTS'
 MENU_PREFIX = ADDON_NAME + ':'
+TITLE_PREFIX = ADDON_NAME + ': '
+
+TTS_TAG_HYPERTTS_PRESET = 'hypertts_preset'
 
 PYCMD_ADD_AUDIO_PREFIX = 'hypertts:addaudio:'
 
@@ -63,6 +79,19 @@ field_2 = template_fields['Field 2']
 result = f'{field_1} {field_2}'
 """
 
+
+GUI_TEXT_SOURCE_MODE_REALTIME = """Choose a source mode:
+<b>AnkiTTSTag:</b> Configure Realtime Audio using Anki {{tts}} tag. You can choose a single field""" \
+""" containing the source text. Will use HyperTTS when reviewing on desktop and fallback to other voices on iOS AnkiMobile."""
+
+GUI_TEXT_SOURCE_FIELD_TYPE_REALTIME = """Field Type:
+<b>Regular:</b> the field should be pronounced in its entirety.
+<b>Cloze:</b> only use this for cloze fields. The audio on the front will contain everything except for the hidden word"""\
+""" (which you have to guess), and the audio on the back will contain everything.
+<b>ClozeOnly:</b> only use this for cloze fields. Only the hidden word will be pronounced, and nothing else."""\
+"""It only makes to use this on the back side."""
+
+
 GUI_TEXT_TARGET_FIELD = """Sound tags will be inserted in this field"""
 
 GUI_TEXT_TARGET_TEXT_AND_SOUND = """Should the target field only contain the sound tag, or should
@@ -75,6 +104,9 @@ Undo HyperTTS: Add Audio to Notes. You may close this dialog.
 
 GUI_TEXT_HYPERTTS_PRO = """HyperTTS Pro gives you access to all premium services.""" +\
 """ (You can use the same API key as AwesomeTTS Plus / Language Tools)"""
+
+GUI_TEXT_REALTIME_SINGLE_NOTE = """Please select a single note to add Realtime Audio"""
+GUI_TEXT_REALTIME_CHOOSE_TEMPLATE = """Choose card template"""
 
 GRAPHICS_PRO_BANNER = 'hypertts_pro_banner.png'
 GRAPHICS_LITE_BANNER = 'hypertts_lite_banner.png'

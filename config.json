@@ -1,4 +1,5 @@
 {
     "configuration": {},
-    "batch_config": {}
+    "batch_config": {},
+    "realtime_config": {}
 }
