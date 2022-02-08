@@ -263,9 +263,24 @@ class HyperTTS():
                 field_format = f'cloze:{realtime_side_model.source.field_name}'
             elif realtime_side_model.source.field_type == constants.AnkiTTSFieldType.ClozeOnly:
                 field_format = f'cloze-only:{realtime_side_model.source.field_name}'
-            return '{{tts ' + f"""{audio_language.name} hypertts_preset={setting_key} voices=HyperTTS:{field_format}""" + '}}'
+            return '{{tts ' + f"""{audio_language.name} {constants.TTS_TAG_HYPERTTS_PRESET}={setting_key} voices=HyperTTS:{field_format}""" + '}}'
         else:
             raise Exception(f'unsupported RealtimeSourceType: {realtime_side_model.source.mode}')
+
+    def extract_hypertts_preset(self, extra_args_array):
+        subset = [x for x in extra_args_array if constants.TTS_TAG_HYPERTTS_PRESET in x]
+        array_entry = subset[0]
+        components = array_entry.split('=')
+        return components[1]
+
+    def get_realtime_side_config(self, hypertts_preset):
+        # based 
+        if constants.AnkiCardSide.Front.name in hypertts_preset:
+            # front
+            preset_name = hypertts_preset.replace(constants.AnkiCardSide.Front.name + '_', '')
+        else:
+            # back
+            preset_name = hypertts_preset.replace(constants.AnkiCardSide.Back.name + '_', '')
 
     def remove_tts_tag(self, card_template):
         return re.sub('{{tts.*}}', '', card_template)
@@ -427,6 +442,12 @@ class HyperTTS():
         self.config[constants.CONFIG_REALTIME_CONFIG][final_key] = realtime_model.serialize()
         return final_key
 
+    def load_realtime_config(self, settings_key):
+        logging.info(f'loading realtime config [{settings_key}]')
+        if settings_key not in self.config[constants.CONFIG_REALTIME_CONFIG]:
+            raise errors.PresetNotFound(settings_key)
+        return self.deserialize_batch_config(self.config[constants.CONFIG_REALTIME_CONFIG][settings_key])
+
     # services config
 
     def save_configuration(self, configuration_model):
@@ -470,6 +491,28 @@ class HyperTTS():
         batch.text_processing = text_processing
         
         return batch
+
+    def deserialize_realtime_config(self, realtime_config):
+        batch = config_models.BatchConfig()
+        batch_mode = constants.BatchMode[batch_config['source']['mode']]
+        if batch_mode == constants.BatchMode.simple:
+            source = config_models.BatchSourceSimple(batch_config['source']['source_field'])
+        else:
+            source = config_models.BatchSourceTemplate(batch_mode, batch_config['source']['source_template'],
+                constants.TemplateFormatVersion[batch_config['source']['template_format_version']])
+        batch_target_config = batch_config['target']
+        target = config_models.BatchTarget(batch_target_config['target_field'], batch_target_config['text_and_sound_tag'], batch_target_config['remove_sound_tag'])
+        voice_selection = self.deserialize_voice_selection(batch_config['voice_selection'])
+
+        text_processing_config = batch_config.get('text_processing', {})
+        text_processing = self.deserialize_text_processing(text_processing_config)
+
+        batch.set_source(source)
+        batch.set_target(target)
+        batch.set_voice_selection(voice_selection)
+        batch.text_processing = text_processing
+        
+        return batch        
 
     def deserialize_voice_selection(self, voice_selection_config):
         voice_selection_mode = constants.VoiceSelectionMode[voice_selection_config['voice_selection_mode']]

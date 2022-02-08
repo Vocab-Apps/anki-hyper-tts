@@ -467,13 +467,14 @@ class RealtimeConfigSide(ConfigModelBase):
             }            
 
     def validate(self):
-        self.source.validate()
-        if self.voice_selection == None:
-            raise errors.VoiceSelectionNotSet()
-        self.voice_selection.validate()
-        if self.text_processing == None:
-            raise errors.TextProcessingNotSet()
-        self.text_processing.validate()
+        if self.side_enabled:
+            self.source.validate()
+            if self.voice_selection == None:
+                raise errors.VoiceSelectionNotSet()
+            self.voice_selection.validate()
+            if self.text_processing == None:
+                raise errors.TextProcessingNotSet()
+            self.text_processing.validate()
 
     def __str__(self):
         return f"""<b>Source:</b> {self.source}
