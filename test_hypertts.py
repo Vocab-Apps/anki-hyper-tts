@@ -4,6 +4,7 @@ import unittest
 import errors
 import testing_utils
 import config_models
+import constants
 
 class HyperTTSTests(unittest.TestCase):
 
@@ -61,3 +62,17 @@ yoyo
 
         priority = config_models.VoiceSelectionPriority()
         self.assertRaises(errors.NoVoicesAdded, hypertts_instance.get_audio_file, 'yoyo', priority)
+
+    def test_process_hypertts_tag(self):
+        config_gen = testing_utils.TestConfigGenerator()
+        hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+        extra_args_array = [f'{constants.TTS_TAG_HYPERTTS_PRESET}=yoyo42']
+
+        self.assertEqual(hypertts_instance.extract_hypertts_preset(extra_args_array), 'yoyo42')
+
+        extra_args_array = []
+        self.assertRaises(errors.TTSTagProcessingError, hypertts_instance.extract_hypertts_preset, extra_args_array)
+
+        extra_args_array = ['bla', 'yo']
+        self.assertRaises(errors.TTSTagProcessingError, hypertts_instance.extract_hypertts_preset, extra_args_array)

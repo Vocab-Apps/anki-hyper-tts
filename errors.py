@@ -94,6 +94,12 @@ class TemplateExpansionError(HyperTTSError):
         message = f'Could not process template: {str(exception)}'
         super().__init__(message)
 
+# TTS related errors
+class TTSTagProcessingError(HyperTTSError):
+    def __init__(self):
+        message = f'Could not process TTS Tag, please re-add TTS tag by adding Realtime Audio to Note'
+        super().__init__(message)
+
 # model validation errors
 # =======================
 
