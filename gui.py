@@ -193,12 +193,6 @@ def init(hypertts):
         if not isinstance(editor, aqt.editor.Editor):
             return handled
 
-        if str == constants.PYCMD_REALTIME_AUDIO_PREFIX:
-            logging.info(f'{editor.note.note_type()}')
-            launch_realtime_dialog_browser(hypertts, editor)
-            # editor.onCardLayout()
-            return True, None
-
         if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX):
             logging.info(f'{str}')
             if str == constants.PYCMD_ADD_AUDIO_PREFIX + constants.BATCH_CONFIG_NEW:

@@ -34,12 +34,6 @@
         bridgeCommand(cmdString);
     }
 
-    function configureRealtimeAudio() {
-        console.log("configureRealtimeAudio");
-        const cmdString = 'hypertts:realtimeaudio';
-        bridgeCommand(cmdString);
-    }    
-
 </script>
 
 <style>
@@ -77,5 +71,4 @@ div {
     </div>
 
     <button on:click={addAudio} class="lt-field-button">Add Audio</button>
-    <button on:click={configureRealtimeAudio} class="lt-field-button">Configure Realtime Audio</button>
 </div>

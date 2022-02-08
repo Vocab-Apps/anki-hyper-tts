@@ -52,7 +52,6 @@ TITLE_PREFIX = ADDON_NAME + ': '
 TTS_TAG_HYPERTTS_PRESET = 'hypertts_preset'
 
 PYCMD_ADD_AUDIO_PREFIX = 'hypertts:addaudio:'
-PYCMD_REALTIME_AUDIO_PREFIX = 'hypertts:realtimeaudio'
 
 UNDO_ENTRY_NAME = ADDON_NAME + ': Add Audio to Notes'
 
