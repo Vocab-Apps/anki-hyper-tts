@@ -51,8 +51,9 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
 
     # this is called on the main thread, after _play finishes
     def _on_done(self, ret: Future, cb: aqt.sound.OnDoneCallback) -> None:
-        audio_filename = ret.result()
-        logging.info(f'got audio_filename: {audio_filename}')
-        aqt.sound.av_player.insert_file(audio_filename)
+        with self.hypertts.error_manager.get_single_action_context('Playing Realtime Audio'):
+            audio_filename = ret.result()
+            logging.info(f'got audio_filename: {audio_filename}')
+            aqt.sound.av_player.insert_file(audio_filename)
         cb()
 
