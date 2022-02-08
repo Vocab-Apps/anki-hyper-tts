@@ -306,6 +306,8 @@ class HyperTTS():
             preset_name = preset_name.replace(side.name + '_', '')
             logging.info(f'found preset name in TTS tag inside card template: {preset_name}')
             return preset_name
+        else:
+            logging.info(f'didnt find a TTS tag in card template: {side_template}')
         return None
 
 

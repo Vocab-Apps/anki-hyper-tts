@@ -1583,6 +1583,9 @@ def test_realtime_component(qtbot):
     realtime.configure_note(note_1)
     realtime.draw(dialog.getLayout())
 
+    # enable TTS on each side
+    # =======================
+
     # enable front side, select a field
     realtime.front.side_enabled_checkbox.setChecked(True)
     realtime.front.source.source_field_combobox.setCurrentText('English')
@@ -1622,5 +1625,33 @@ def test_realtime_component(qtbot):
     assert expected_back_tts_tag in answer_format
 
     pprint.pprint(hypertts_instance.anki_utils.updated_note_model)
+
+    # try to load an existing configuration
+    # =====================================
+
+    logging.info('loading an existing realtime configuration')
+
+    # patch the config
+    hypertts_instance.anki_utils.config[constants.CONFIG_REALTIME_CONFIG] = hypertts_instance.anki_utils.written_config[constants.CONFIG_REALTIME_CONFIG]
+
+    # patch the templates
+    # note_1.note_type()['tmpls'][0]['qfmt'] += '\n' + expected_front_tts_tag
+    # note_1.note_type()['tmpls'][0]['afmt'] += '\n' + expected_back_tts_tag
+
+    pprint.pprint(note_1.note_type())
+
+    # launch dialog
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    realtime = component_realtime.ComponentRealtime(hypertts_instance, dialog, 0)
+    realtime.configure_note(note_1)
+    realtime.draw(dialog.getLayout())    
+    realtime.load_existing_preset()
+
+    assert realtime.front.side_enabled_checkbox.isChecked() == True
+    assert realtime.front.source.source_field_combobox.currentText() == 'English'
+
+    assert realtime.back.side_enabled_checkbox.isChecked() == True
+    assert realtime.back.source.source_field_combobox.currentText() == 'Chinese'
 
     # dialog.exec_()    
