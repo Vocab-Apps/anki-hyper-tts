@@ -199,7 +199,7 @@ class HyperTTS():
         batch.validate()
         full_filename, audio_filename = self.get_note_audio(batch, note)
         self.anki_utils.play_sound(full_filename)
-
+    
     def play_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
         full_filename, audio_filename = self.get_realtime_audio(realtime_model, text)
         self.anki_utils.play_sound(full_filename)
@@ -250,10 +250,11 @@ class HyperTTS():
     # processing of Anki TTS tags
     # ===========================
 
-    def play_tts_tag(self, tts_tag):
+    def get_audio_filename_tts_tag(self, tts_tag):
         hypertts_preset = self.extract_hypertts_preset(tts_tag.other_args)
         realtime_side_model = self.get_realtime_side_config(hypertts_preset)
-        self.play_realtime_audio(realtime_side_model, tts_tag.field_text)
+        full_filename, audio_filename = self.get_realtime_audio(realtime_side_model, tts_tag.field_text)
+        return full_filename
 
     def build_realtime_tts_tag(self, realtime_side_model: config_models.RealtimeConfigSide, setting_key):
         if realtime_side_model.source.mode == constants.RealtimeSourceType.AnkiTTSTag:
@@ -448,13 +449,14 @@ class HyperTTS():
             # use the key provided
             final_key = settings_key
         self.config[constants.CONFIG_REALTIME_CONFIG][final_key] = realtime_model.serialize()
+        self.anki_utils.write_config(self.config)
         return final_key
 
     def load_realtime_config(self, settings_key):
         logging.info(f'loading realtime config [{settings_key}]')
         if settings_key not in self.config[constants.CONFIG_REALTIME_CONFIG]:
             raise errors.PresetNotFound(settings_key)
-        return self.deserialize_batch_config(self.config[constants.CONFIG_REALTIME_CONFIG][settings_key])
+        return self.deserialize_realtime_config(self.config[constants.CONFIG_REALTIME_CONFIG][settings_key])
 
     # services config
 

@@ -38,7 +38,7 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
         return voices  # type: ignore
 
     # this is called on a background thread, and will not block the UI
-    def _play(self, tag: anki.sound.AVTag) -> None:
+    def _play(self, tag: anki.sound.AVTag):
         self.audio_file_path = None
         self.playback_error = False
         self.playback_error_message = None
@@ -46,10 +46,13 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
         assert isinstance(tag, anki.sound.TTSTag)
         logging.info(f'playing TTS sound for {tag}')
 
-        self.hypertts.play_tts_tag(tag)
-
+        audio_filename = self.hypertts.get_audio_filename_tts_tag(tag)
+        return audio_filename
 
     # this is called on the main thread, after _play finishes
     def _on_done(self, ret: Future, cb: aqt.sound.OnDoneCallback) -> None:
+        audio_filename = ret.result()
+        logging.info(f'got audio_filename: {audio_filename}')
+        aqt.sound.av_player.insert_file(audio_filename)
         cb()
 
