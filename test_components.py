@@ -1658,3 +1658,19 @@ def test_realtime_component(qtbot):
     assert realtime.back.source.source_field_combobox.currentText() == 'Chinese'
     assert realtime.back.text_preview_label.text() == '老人家'
 
+    # disable the front TTS tag
+    realtime.front.side_enabled_checkbox.setChecked(False)
+
+    # save
+    qtbot.mouseClick(realtime.apply_button, PyQt5.QtCore.Qt.LeftButton)
+
+    # assertions on config saved
+    assert constants.CONFIG_REALTIME_CONFIG in hypertts_instance.anki_utils.written_config
+    assert 'realtime_0' in hypertts_instance.anki_utils.written_config[constants.CONFIG_REALTIME_CONFIG]
+
+    realtime_config_saved = hypertts_instance.anki_utils.written_config[constants.CONFIG_REALTIME_CONFIG]['realtime_0']
+    assert realtime_config_saved['front']['side_enabled'] == False
+
+    # assertions on note type updated
+    assert hypertts_instance.anki_utils.updated_note_model != None
+    assert '{{tts' not in hypertts_instance.anki_utils.updated_note_model['tmpls'][0]['qfmt']
