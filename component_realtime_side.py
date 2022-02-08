@@ -32,8 +32,6 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.text_preview_label = PyQt5.QtWidgets.QLabel()
 
         self.preview_sound_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
-        self.apply_button = PyQt5.QtWidgets.QPushButton('Apply to Notes')
-        self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
 
     def configure_note(self, note):
         self.note = note

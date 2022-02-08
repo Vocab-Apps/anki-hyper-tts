@@ -1586,6 +1586,8 @@ def test_realtime_component(qtbot):
     # enable TTS on each side
     # =======================
 
+    assert realtime.apply_button.isEnabled() == False
+
     # enable front side, select a field
     realtime.front.side_enabled_checkbox.setChecked(True)
     realtime.front.source.source_field_combobox.setCurrentText('English')
@@ -1601,6 +1603,7 @@ def test_realtime_component(qtbot):
     assert realtime.get_model().back.source.field_name == 'Chinese'
 
     # click apply
+    assert realtime.apply_button.isEnabled() == True
     qtbot.mouseClick(realtime.apply_button, PyQt5.QtCore.Qt.LeftButton)
 
     # assertions on config saved
@@ -1648,7 +1651,8 @@ def test_realtime_component(qtbot):
     realtime.draw(dialog.getLayout())    
     realtime.load_existing_preset()
 
-    # dialog.exec_()
+    # we haven't changed anything at this point
+    assert realtime.apply_button.isEnabled() == False
 
     assert realtime.front.side_enabled_checkbox.isChecked() == True
     assert realtime.front.source.source_field_combobox.currentText() == 'English'
@@ -1674,3 +1678,22 @@ def test_realtime_component(qtbot):
     # assertions on note type updated
     assert hypertts_instance.anki_utils.updated_note_model != None
     assert '{{tts' not in hypertts_instance.anki_utils.updated_note_model['tmpls'][0]['qfmt']
+
+def test_realtime_component_manual(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    note_id = config_gen.note_id_1
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    realtime = component_realtime.ComponentRealtime(hypertts_instance, dialog, 0)
+    realtime.configure_note(note_1)
+    realtime.draw(dialog.getLayout())    
+
+    if os.environ.get('HYPERTTS_REALTIME_DIALOG_DEBUG', 'no') == 'yes':
+        dialog.exec_()    

@@ -21,12 +21,15 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.card_ord = card_ord
         self.model = config_models.RealtimeConfig()
 
-        self.apply_button = PyQt5.QtWidgets.QPushButton('Apply to Notes')
+        self.apply_button = PyQt5.QtWidgets.QPushButton('Apply To Note')
         self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
 
         self.existing_preset_name = None
 
+        self.manage_apply_button = True
+
     def configure_note(self, note):
+        self.manage_apply_button = False
         self.note = note
         self.front = component_realtime_side.ComponentRealtimeSide(self.hypertts, 
             constants.AnkiCardSide.Front, self.card_ord, self.front_model_updated, self.existing_preset_found)
@@ -34,19 +37,24 @@ class ComponentRealtime(component_common.ConfigComponentBase):
             constants.AnkiCardSide.Back, self.card_ord, self.back_model_updated, self.existing_preset_found)
         self.front.configure_note(note)
         self.back.configure_note(note)
+        self.manage_apply_button = True
 
     def load_existing_preset(self):
+        self.manage_apply_button = False
         self.front.load_existing_preset()
         self.back.load_existing_preset()
+        self.manage_apply_button = True
 
     def existing_preset_found(self, preset_name):
         self.existing_preset_name = preset_name
 
     def load_model(self, model):
+        self.manage_apply_button = False
         self.model = model
         # disseminate to all components
         self.front.load_model(model.front)
         self.back.load_model(model.back)
+        self.manage_apply_button = True
 
     def get_model(self):
         return self.model
@@ -54,10 +62,14 @@ class ComponentRealtime(component_common.ConfigComponentBase):
     def front_model_updated(self, model):
         logging.info('front_model_updated')
         self.model.front = model
+        if self.manage_apply_button:
+            self.enable_apply_button()
 
     def back_model_updated(self, model):
         logging.info('back_model_update')
         self.model.back = model
+        if self.manage_apply_button:
+            self.enable_apply_button()
 
     def draw(self, layout):
         self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
@@ -99,9 +111,6 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         hlayout.addStretch()
 
         # apply button
-        apply_label_text = 'Apply To Note'
-        self.apply_button.setText(apply_label_text)
-        self.apply_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         hlayout.addWidget(self.apply_button)
         # cancel button
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
@@ -114,8 +123,18 @@ class ComponentRealtime(component_common.ConfigComponentBase):
 
         # defaults
         self.cancel_button.setFocus()
+        self.disable_apply_button()
 
         layout.addLayout(self.vlayout)
+
+    def disable_apply_button(self):
+        self.apply_button.setEnabled(False)
+        self.apply_button.setStyleSheet(None)
+
+    def enable_apply_button(self):
+        logging.info('enable_apply_button')
+        self.apply_button.setEnabled(True)
+        self.apply_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
 
     def apply_button_pressed(self):
         with self.hypertts.error_manager.get_single_action_context('Applying Realtime Audio to Card'):
