@@ -14,7 +14,7 @@ class HyperTTSTests(unittest.TestCase):
             'English': 'Hello'
         }
         field_array = ['French', 'English']
-        note = testing_utils.MockNote(42, 43, field_dict, field_array)
+        note = testing_utils.MockNote(42, 43, field_dict, field_array, None)
 
         source_template = """
 french = template_fields['French']
