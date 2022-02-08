@@ -33,6 +33,10 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.front.configure_note(note)
         self.back.configure_note(note)
 
+    def load_existing_preset(self):
+        self.front.load_existing_preset()
+        self.back.load_existing_preset()
+
     def load_model(self, model):
         self.model = model
         # disseminate to all components

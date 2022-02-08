@@ -1493,6 +1493,17 @@ def test_realtime_source(qtbot):
     expected_source_model.field_type = constants.AnkiTTSFieldType.Cloze
     assert model_change_callback.model.serialize() == expected_source_model.serialize()
 
+    # load config
+    # ===========
+    source_model = config_models.RealtimeSourceAnkiTTS()
+    source_model.field_name = 'Pinyin'
+    source_model.field_type = constants.AnkiTTSFieldType.Cloze 
+
+    source.load_model(source_model)
+    assert source.source_type_combobox.currentText() == 'AnkiTTSTag'
+    assert source.source_field_combobox.currentText() == 'Pinyin'
+    assert source.source_field_type_combobox.currentText() == 'Cloze'
+
 
 def test_realtime_side_component(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
@@ -1549,6 +1560,7 @@ def test_realtime_side_component(qtbot):
         'options': {}
     }        
     
+
     # dialog.exec_()
 
 def test_realtime_component(qtbot):

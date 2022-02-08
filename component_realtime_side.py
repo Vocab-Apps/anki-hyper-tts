@@ -41,12 +41,23 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
         self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
 
+    def load_existing_preset(self):
+        self.existing_preset_name = self.hypertts.card_template_has_tts_tag(self.note, self.side, self.card_ord)
+        if self.existing_preset_name != None:
+            realtime_model = self.hypertts.load_realtime_config(self.existing_preset_name)
+            if self.side == constants.AnkiCardSide.Front:
+                self.load_model(realtime_model.front)
+            else:
+                self.load_model(realtime_model.back)
+
     def load_batch(self, batch_name):
         batch = self.hypertts.load_batch_config(batch_name)
         self.load_model(batch)
 
     def load_model(self, model):
         self.model = model
+        # is this side enabled
+        self.side_enabled_checkbox.setChecked(model.side_enabled)
         # disseminate to all components
         self.source.load_model(model.source)
         self.voice_selection.load_model(model.voice_selection)

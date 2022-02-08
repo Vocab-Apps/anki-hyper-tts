@@ -75,6 +75,7 @@ class RealtimeDialog(PyQt5.QtWidgets.QDialog):
     def configure_note(self, note):
         self.realtime_component.configure_note(note)
         self.setupUi()
+        self.realtime_component.load_existing_preset()
 
     def close(self):
         self.accept()        

@@ -291,6 +291,24 @@ class HyperTTS():
             return self.load_realtime_config(preset_name).back
 
 
+    def card_template_has_tts_tag(self, note, side, card_ord):
+        # return preset name if found
+        note_model = note.note_type()
+        card_template = note_model["tmpls"][card_ord]
+        side_template_key = 'qfmt'
+        if side == constants.AnkiCardSide.Back:
+            side_template_key = 'afmt'
+        side_template = card_template[side_template_key]
+        side_template = side_template.replace('\n', ' ')
+        m = re.match('.*{{tts.*' + constants.TTS_TAG_HYPERTTS_PRESET + '=([^\s]+).*}}.*', side_template)
+        if m != None:
+            preset_name = m.groups()[0]
+            preset_name = preset_name.replace(side.name + '_', '')
+            logging.info(f'found preset name in TTS tag inside card template: {preset_name}')
+            return preset_name
+        return None
+
+
     def remove_tts_tag(self, card_template):
         return re.sub('{{tts.*}}', '', card_template)
 

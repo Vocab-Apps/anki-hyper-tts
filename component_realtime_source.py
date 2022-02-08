@@ -16,6 +16,11 @@ class RealtimeSource(component_common.ConfigComponentBase):
 
         self.realtime_source_model = None
 
+        # create certain widgets upfront
+        self.source_type_combobox = PyQt5.QtWidgets.QComboBox()
+        self.source_field_combobox = PyQt5.QtWidgets.QComboBox()
+        self.source_field_type_combobox = PyQt5.QtWidgets.QComboBox()        
+
     def get_model(self):
         return self.realtime_source_model
 
@@ -24,7 +29,7 @@ class RealtimeSource(component_common.ConfigComponentBase):
         source_type = model.mode
         self.source_type_combobox.setCurrentText(source_type.name)
         if source_type == constants.RealtimeSourceType.AnkiTTSTag:
-            self.source_field_combobox.setCurrentText(model.source_field)
+            self.source_field_combobox.setCurrentText(model.field_name)
             self.source_type_combobox.setCurrentText(model.field_type.name)
         else:
             raise Exception(f'unsupported source_type: {source_type}')
@@ -57,7 +62,6 @@ class RealtimeSource(component_common.ConfigComponentBase):
         label = PyQt5.QtWidgets.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_SOURCE_MODE_REALTIME))
         label.setWordWrap(True)
         vlayout.addWidget(label)
-        self.source_type_combobox = PyQt5.QtWidgets.QComboBox()
         self.source_type_combobox.addItems([x.name for x in constants.RealtimeSourceType])
         vlayout.addWidget(self.source_type_combobox)
         groupbox.setLayout(vlayout)
@@ -75,7 +79,6 @@ class RealtimeSource(component_common.ConfigComponentBase):
 
         # field name
         self.source_field_label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_FIELD_NAME)
-        self.source_field_combobox = PyQt5.QtWidgets.QComboBox()
         self.source_field_combobox.addItems(self.field_list)
         stack_vlayout.addWidget(self.source_field_label)
         stack_vlayout.addWidget(self.source_field_combobox)
@@ -83,7 +86,6 @@ class RealtimeSource(component_common.ConfigComponentBase):
         # field type
         self.source_field_type_label = PyQt5.QtWidgets.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_SOURCE_FIELD_TYPE_REALTIME))
         self.source_field_type_label.setWordWrap(True)
-        self.source_field_type_combobox = PyQt5.QtWidgets.QComboBox()
         self.source_field_type_combobox.addItems([x.name for x in constants.AnkiTTSFieldType])
         stack_vlayout.addWidget(self.source_field_type_label)
         stack_vlayout.addWidget(self.source_field_type_combobox)
