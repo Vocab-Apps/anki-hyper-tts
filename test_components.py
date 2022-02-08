@@ -1516,11 +1516,14 @@ def test_realtime_side_component(qtbot):
     # initialize dialog
     # =================
 
+    def existing_preset_fn(preset_name):
+        pass
+
     note_id = config_gen.note_id_1
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     model_change_callback = MockModelChangeCallback()
     realtime_side = component_realtime_side.ComponentRealtimeSide(hypertts_instance,
-        constants.AnkiCardSide.Front, 0, model_change_callback.model_updated)
+        constants.AnkiCardSide.Front, 0, model_change_callback.model_updated, existing_preset_fn)
     realtime_side.configure_note(note_1)
     dialog.addChildLayout(realtime_side.draw())
 
