@@ -118,8 +118,11 @@ class ServiceManager():
                 return result_audio
             except Exception as e:
                 transaction.status = 'invalid_argument'
-                transaction.description = source_text
-                transaction.set_tag('clt.voice', str(voice))
+                sentry_sdk.set_context("audio_request", {
+                    'text': source_text,
+                    'voice': str(voice),
+                    'error': str(e)
+                })
                 raise_exception = e
         if raise_exception != None:
             raise raise_exception

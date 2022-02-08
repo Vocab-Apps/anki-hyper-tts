@@ -20,6 +20,7 @@ class CloudLanguageTools():
 
     def get_tts_audio(self, source_text, voice, options):
         if hasattr(sys, '_sentry_crash_reporting'):
+            sentry_sdk.set_user({"id": f'api_key:{self.api_key}'})
             sentry_sdk.set_context("user", {
                 "api_key": self.api_key,
             })
