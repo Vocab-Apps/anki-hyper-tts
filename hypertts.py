@@ -493,26 +493,33 @@ class HyperTTS():
         return batch
 
     def deserialize_realtime_config(self, realtime_config):
-        batch = config_models.BatchConfig()
-        batch_mode = constants.BatchMode[batch_config['source']['mode']]
-        if batch_mode == constants.BatchMode.simple:
-            source = config_models.BatchSourceSimple(batch_config['source']['source_field'])
-        else:
-            source = config_models.BatchSourceTemplate(batch_mode, batch_config['source']['source_template'],
-                constants.TemplateFormatVersion[batch_config['source']['template_format_version']])
-        batch_target_config = batch_config['target']
-        target = config_models.BatchTarget(batch_target_config['target_field'], batch_target_config['text_and_sound_tag'], batch_target_config['remove_sound_tag'])
-        voice_selection = self.deserialize_voice_selection(batch_config['voice_selection'])
+        realtime = config_models.RealtimeConfig()
+        realtime.front = self.deserialize_realtime_side_config(realtime_config['front'])
+        realtime.back = self.deserialize_realtime_side_config(realtime_config['back'])
+        return realtime
 
-        text_processing_config = batch_config.get('text_processing', {})
+    def deserialize_realtime_side_config(self, realtime_side_config):
+        realtime_side = config_models.RealtimeConfigSide()
+        realtime_side.side_enabled = realtime_side_config['side_enabled']
+        if not realtime_side.side_enabled:
+            return realtime_side
+
+        realtime_source_type = constants.RealtimeSourceType[realtime_side_config['source']['mode']]
+        if realtime_source_type == constants.RealtimeSourceType.AnkiTTSTag:
+            source = config_models.RealtimeSourceAnkiTTS()
+            source.field_name = realtime_side_config['source']['field_name']
+            source.field_type = constants.AnkiTTSFieldType[realtime_side_config['source']['field_type']]
+        else:
+            raise Exception(f'unsupported RealtimeSourceType: {realtime_source_type}')
+        voice_selection = self.deserialize_voice_selection(realtime_side_config['voice_selection'])
+        text_processing_config = realtime_side_config.get('text_processing', {})
         text_processing = self.deserialize_text_processing(text_processing_config)
 
-        batch.set_source(source)
-        batch.set_target(target)
-        batch.set_voice_selection(voice_selection)
-        batch.text_processing = text_processing
+        realtime_side.source = source
+        realtime_side.voice_selection = voice_selection
+        realtime_side.text_processing = text_processing
         
-        return batch        
+        return realtime_side       
 
     def deserialize_voice_selection(self, voice_selection_config):
         voice_selection_mode = constants.VoiceSelectionMode[voice_selection_config['voice_selection_mode']]

@@ -675,3 +675,6 @@ class ConfigModelsTests(unittest.TestCase):
         }
 
         self.assertEqual(realtime_config.serialize(), expected_output)
+
+        deserialized_realtime_config = hypertts_instance.deserialize_realtime_config(realtime_config.serialize())
+        self.assertEqual(deserialized_realtime_config.serialize(), realtime_config.serialize())
