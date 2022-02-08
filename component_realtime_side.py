@@ -64,6 +64,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.source.load_model(model.source)
         self.voice_selection.load_model(model.voice_selection)
         self.text_processing.load_model(model.text_processing)
+        self.update_preview()
 
     def get_model(self):
         return self.model

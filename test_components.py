@@ -1648,10 +1648,13 @@ def test_realtime_component(qtbot):
     realtime.draw(dialog.getLayout())    
     realtime.load_existing_preset()
 
+    # dialog.exec_()
+
     assert realtime.front.side_enabled_checkbox.isChecked() == True
     assert realtime.front.source.source_field_combobox.currentText() == 'English'
+    assert realtime.front.text_preview_label.text() == 'old people'
 
     assert realtime.back.side_enabled_checkbox.isChecked() == True
     assert realtime.back.source.source_field_combobox.currentText() == 'Chinese'
+    assert realtime.back.text_preview_label.text() == '老人家'
 
-    # dialog.exec_()    
