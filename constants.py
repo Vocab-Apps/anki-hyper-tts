@@ -4,6 +4,9 @@ ENV_VAR_ANKI_LANGUAGE_TOOLS_BASE_URL = 'ANKI_LANGUAGE_TOOLS_BASE_URL'
 
 ENABLE_SENTRY_CRASH_REPORTING = True
 
+# requests related constants
+RequestTimeout = 10 # 10 seconds max
+
 # batch modes
 class BatchMode(enum.Enum):
     simple = enum.auto()

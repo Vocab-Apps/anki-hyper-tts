@@ -7,6 +7,7 @@ import time
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
 
 class Google(service.ServiceBase):
     CONFIG_API_KEY = 'api_key'
@@ -58,7 +59,8 @@ class Google(service.ServiceBase):
         headers = {}
         if is_explorer_api_key:
             headers['x-origin'] = 'https://explorer.apis.google.com'
-        response = requests.post(f"https://texttospeech.googleapis.com/v1/text:synthesize?key={api_key}", json=payload, headers=headers)
+        response = requests.post(f"https://texttospeech.googleapis.com/v1/text:synthesize?key={api_key}", json=payload, headers=headers,
+            timeout=constants.RequestTimeout)
         
         if response.status_code != 200:
             data = response.json()

@@ -6,6 +6,7 @@ import json
 
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
@@ -38,7 +39,8 @@ class CloudLanguageTools():
         response = requests.post(full_url, json=data, headers={
             'api_key': self.api_key, 
             'client': 'hypertts', 
-            'client_version': version.ANKI_HYPER_TTS_VERSION})
+            'client_version': version.ANKI_HYPER_TTS_VERSION},
+            timeout=constants.RequestTimeout)
 
         if response.status_code == 200:
             return response.content

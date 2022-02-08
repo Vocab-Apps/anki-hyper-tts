@@ -7,6 +7,7 @@ import time
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
 
 class Azure(service.ServiceBase):
     CONFIG_REGION = 'region'
@@ -109,7 +110,7 @@ class Azure(service.ServiceBase):
         
         body = ssml_str.encode(encoding='utf-8')
 
-        response = requests.post(constructed_url, headers=headers, data=body)
+        response = requests.post(constructed_url, headers=headers, data=body, timeout=constants.RequestTimeout)
         if response.status_code != 200:
             error_message = f'status code {response.status_code}: {response.reason}'
             logging.error(error_message)
