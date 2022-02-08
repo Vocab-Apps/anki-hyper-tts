@@ -611,6 +611,7 @@ class ConfigModelsTests(unittest.TestCase):
 
 
     def test_realtime_config(self):
+        self.maxDiff = None
         hypertts_instance = get_hypertts_instance()
         voice_list = hypertts_instance.service_manager.full_voice_list()
 
@@ -637,3 +638,40 @@ class ConfigModelsTests(unittest.TestCase):
 
         realtime_config.validate()
 
+        expected_output = {
+            'front': {
+                'side_enabled': True,
+                'source': {
+                    'mode': 'AnkiTTSTag',
+                    'field_name': 'Chinese',
+                    'field_type': 'Regular'
+                },
+                'voice_selection': {
+                    'voice_selection_mode': 'single',
+                    'voice': 
+                        {
+                            'voice': {
+                                'gender': 'Male', 
+                                'language': 'fr_FR', 
+                                'name': 'voice_a_1', 
+                                'service': 'ServiceA',
+                                'voice_key': {'name': 'voice_1'}
+                            },
+                            'options': {
+                                'speed': 43
+                            },
+                        },        
+                },
+                'text_processing': {
+                    'html_to_text_line': True,
+                    'run_replace_rules_after': True,
+                    'ssml_convert_characters': True,            
+                    'text_replacement_rules': []
+                }
+            },
+            'back': {
+                'side_enabled': False
+            }
+        }
+
+        self.assertEqual(realtime_config.serialize(), expected_output)
