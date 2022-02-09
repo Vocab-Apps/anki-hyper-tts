@@ -24,6 +24,14 @@ class ServiceA(service.ServiceBase):
     def test_service(self):
         return True
 
+    @property
+    def service_type(self) -> constants.ServiceType:
+        return constants.ServiceType.tts        
+
+    @property
+    def service_fee(self) -> constants.ServiceFee:
+        return constants.ServiceFee.Free
+
     def voice_list(self):
         return [
             voice.Voice('voice_a_1', constants.Gender.Male, languages.AudioLanguage.fr_FR, self, {'name': 'voice_1'}, VOICE_OPTIONS),

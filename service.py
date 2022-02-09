@@ -46,6 +46,16 @@ class ServiceBase(abc.ABC):
     def enabled_by_default(self):
         return False
 
+    @property
+    @abc.abstractmethod
+    def service_type(self) -> constants.ServiceType:
+        pass
+
+    @property
+    @abc.abstractmethod
+    def service_fee(self) -> constants.ServiceFee:
+        pass    
+
     def test_service(self):
         return False
 

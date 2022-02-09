@@ -7,6 +7,16 @@ ENABLE_SENTRY_CRASH_REPORTING = True
 # requests related constants
 RequestTimeout = 15 # 15 seconds max
 
+class ServiceType(enum.Enum):
+    dictionary = ("Dictionary, contains recordings of words.")
+    tts = ("Text To Speech, can generate audio for full sentences.")
+    def __init__(self, description):
+        self.description = description
+
+class ServiceFee(enum.Enum):
+    Free = enum.auto()
+    Premium = enum.auto()
+
 class AudioRequestReason(enum.Enum):
     preview = enum.auto()
     batch = enum.auto()

@@ -45,6 +45,14 @@ class ServiceB(service.ServiceBase):
     def cloudlanguagetools_enabled(self):
         return True
 
+    @property
+    def service_type(self) -> constants.ServiceType:
+        return constants.ServiceType.tts
+
+    @property
+    def service_fee(self) -> constants.ServiceFee:
+        return constants.ServiceFee.Premium
+
     def voice_list(self):
         return [
             VoiceB('alex', self),

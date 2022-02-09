@@ -165,6 +165,8 @@ class Configuration(component_common.ConfigComponentBase):
 
         service_stack = PyQt5.QtWidgets.QWidget()
         service_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        service_description = f'{service.service_fee.name}, {service.service_type.description}'
+        service_vlayout.addWidget(PyQt5.QtWidgets.QLabel(service_description))
         if service.cloudlanguagetools_enabled():
             hlayout = PyQt5.QtWidgets.QHBoxLayout()
             logo = gui_utils.get_graphic(constants.GRAPHICS_SERVICE_COMPATIBLE)
