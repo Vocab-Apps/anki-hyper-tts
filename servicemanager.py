@@ -100,6 +100,12 @@ class ServiceManager():
     # getting TTS audio and voice list
     # ================================
 
+    def use_cloud_language_tools(self, voice):
+        if self.cloudlanguagetools_enabled:
+            if voice.service.cloudlanguagetools_enabled():
+                return True
+        return False
+
     def get_tts_audio(self, source_text, voice, options, audio_request_context):
         if hasattr(sys, '_sentry_crash_reporting'):
             return self.get_tts_audio_instrumented(source_text, voice, options, audio_request_context)
@@ -108,7 +114,7 @@ class ServiceManager():
 
     def get_tts_audio_instrumented(self, source_text, voice, options, audio_request_context):
         transaction_name = f'{voice.service.name}'
-        if self.cloudlanguagetools_enabled:
+        if self.use_cloud_language_tools(voice):
             transaction_name = f'cloudlanguagetools_{voice.service.name}'
         sentry_sdk.set_tag('clt.audio_request_reason', audio_request_context.get_audio_request_reason_tag())
         raise_exception = None
@@ -129,7 +135,7 @@ class ServiceManager():
             raise raise_exception
 
     def get_tts_audio_implementation(self, source_text, voice, options, audio_request_context):
-        if self.cloudlanguagetools_enabled:
+        if self.use_cloud_language_tools(voice):
             return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)
         else:
             return voice.service.get_tts_audio(source_text, voice, options)
