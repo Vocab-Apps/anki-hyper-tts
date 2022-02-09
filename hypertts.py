@@ -23,6 +23,16 @@ errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_b
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 
+class AudioRequestContext():
+    def __init__(self, audio_request_reason: constants.AudioRequestReason):
+        self.audio_request_reason = audio_request_reason
+
+    def get_request_mode(self) -> constants.RequestMode:
+        request_mode_map = {
+            constants.AudiorequestReason.preview: constants.RequestMode.batch
+        }
+        return request_mode_map.get(self.audio_request_reason, constants.RequestMode.batch)
+
 
 class HyperTTS():
     """
@@ -62,7 +72,7 @@ class HyperTTS():
                     break
             self.anki_utils.undo_end(undo_id)
 
-    def process_note_audio(self, batch, note, add_mode, request_mode: constants.RequestMode):
+    def process_note_audio(self, batch, note, add_mode, audio_request_context):
         target_field = batch.target.target_field
 
         if target_field not in note:
@@ -71,7 +81,7 @@ class HyperTTS():
         source_text = self.get_source_text(note, batch.source)
         processed_text = self.process_text(source_text, batch.text_processing)
 
-        full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection, request_mode)
+        full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)
         sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)
 
         target_field_content = note[target_field]
@@ -92,17 +102,17 @@ class HyperTTS():
 
         return source_text, processed_text, sound_file, full_filename
 
-    def get_note_audio(self, batch, note, request_mode: constants.RequestMode):
+    def get_note_audio(self, batch, note, audio_request_context):
         source_text = self.get_source_text(note, batch.source)
         processed_text = text_utils.process_text(source_text, batch.text_processing)
-        return self.get_audio_file(processed_text, batch.voice_selection, request_mode)
+        return self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)
 
     def get_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
         source_text = text
         processed_text = text_utils.process_text(source_text, realtime_model.text_processing)
         return self.get_audio_file(processed_text, realtime_model.voice_selection, constants.RequestMode.dynamic)
 
-    def get_audio_file(self, processed_text, voice_selection, request_mode: constants.RequestMode):
+    def get_audio_file(self, processed_text, voice_selection, audio_request_context):
         # sanity checks
         if voice_selection.selection_mode in [constants.VoiceSelectionMode.priority, constants.VoiceSelectionMode.random]:
             if len(voice_selection.voice_list) == 0:
@@ -120,7 +130,7 @@ class HyperTTS():
             try:
                 voice_with_options = self.choose_voice(voice_selection, voice_list)
                 full_filename, audio_filename = self.generate_audio_write_file(processed_text, 
-                    voice_with_options.voice, voice_with_options.options, request_mode)
+                    voice_with_options.voice, voice_with_options.options, audio_request_context)
                 return full_filename, audio_filename
             except errors.AudioNotFoundError as exc:
                 # try the next voice, as long as one is available
@@ -215,13 +225,13 @@ class HyperTTS():
     # processing of sound tags / collection stuff
     # ===========================================
 
-    def generate_audio_write_file(self, source_text, voice, options, request_mode: constants.RequestMode):
+    def generate_audio_write_file(self, source_text, voice, options, audio_request_context):
         # write to user files directory
         hash_str = self.get_hash_for_audio_request(source_text, voice, options)
         audio_filename = self.get_audio_filename(hash_str)
         full_filename = self.get_full_audio_file_name(hash_str)
         with open(full_filename, 'wb') as f:
-            f.write(self.service_manager.get_tts_audio(source_text, voice, options, request_mode))
+            f.write(self.service_manager.get_tts_audio(source_text, voice, options, audio_request_context))
         return full_filename, audio_filename
 
     def get_collection_sound_tag(self, full_filename, audio_filename):

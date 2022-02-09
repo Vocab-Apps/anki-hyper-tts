@@ -7,6 +7,9 @@ ENABLE_SENTRY_CRASH_REPORTING = True
 # requests related constants
 RequestTimeout = 15 # 15 seconds max
 
+class AudioRequestReason(enum.Enum):
+    preview = enum.auto()
+
 # what triggered this request (batch / on the fly / editor)
 class RequestMode(enum.Enum):
     batch = enum.auto()

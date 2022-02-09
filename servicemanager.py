@@ -100,13 +100,13 @@ class ServiceManager():
     # getting TTS audio and voice list
     # ================================
 
-    def get_tts_audio(self, source_text, voice, options, request_mode: constants.RequestMode):
+    def get_tts_audio(self, source_text, voice, options, audio_request_context):
         if hasattr(sys, '_sentry_crash_reporting'):
-            return self.get_tts_audio_instrumented(source_text, voice, options, request_mode)
+            return self.get_tts_audio_instrumented(source_text, voice, options, audio_request_context)
         else:
-            return self.get_tts_audio_implementation(source_text, voice, options, request_mode)
+            return self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)
 
-    def get_tts_audio_instrumented(self, source_text, voice, options, request_mode: constants.RequestMode):
+    def get_tts_audio_instrumented(self, source_text, voice, options, audio_request_context):
         transaction_name = f'{voice.service.name}'
         if self.cloudlanguagetools_enabled:
             transaction_name = f'cloudlanguagetools_{voice.service.name}'
@@ -127,9 +127,9 @@ class ServiceManager():
         if raise_exception != None:
             raise raise_exception
 
-    def get_tts_audio_implementation(self, source_text, voice, options, request_mode: constants.RequestMode):
+    def get_tts_audio_implementation(self, source_text, voice, options, audio_request_context):
         if self.cloudlanguagetools_enabled:
-            return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, request_mode)
+            return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)
         else:
             return voice.service.get_tts_audio(source_text, voice, options)
 
