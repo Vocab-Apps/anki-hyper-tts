@@ -110,6 +110,7 @@ class ServiceManager():
         transaction_name = f'{voice.service.name}'
         if self.cloudlanguagetools_enabled:
             transaction_name = f'cloudlanguagetools_{voice.service.name}'
+        sentry_sdk.set_tag('clt.audio_request_reason', audio_request_context.get_audio_request_reason_tag())
         raise_exception = None
         with sentry_sdk.start_transaction(op="audio", name=transaction_name) as transaction:
             try:

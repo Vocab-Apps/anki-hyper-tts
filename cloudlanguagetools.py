@@ -31,7 +31,7 @@ class CloudLanguageTools():
         data = {
             'text': source_text,
             'service': voice.service.name,
-            'request_mode': 'batch',
+            'request_mode': audio_request_context.get_request_mode().name,
             'language_code': voice.language.lang.name,
             'voice_key': voice.voice_key,
             'options': options

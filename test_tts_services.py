@@ -13,6 +13,7 @@ import azure.cognitiveservices.speech
 import azure.cognitiveservices.speech.audio
 
 import constants
+import context
 import voice
 import servicemanager
 import errors
@@ -57,7 +58,8 @@ class TTSTests(unittest.TestCase):
         return result_text
 
     def verify_audio_output(self, voice, source_text):
-        audio_data = self.manager.get_tts_audio(source_text, voice, {}, None)
+        audio_data = self.manager.get_tts_audio(source_text, voice, {}, 
+            context.AudioRequestContext(constants.AudioRequestReason.batch))
         assert len(audio_data) > 0
 
         output_temp_file = tempfile.NamedTemporaryFile()
@@ -139,7 +141,8 @@ class TTSTests(unittest.TestCase):
 
         exception_caught = False
         try:
-            audio_data = self.manager.get_tts_audio('This is the second sentence', altered_voice, {}, None)
+            audio_data = self.manager.get_tts_audio('This is the second sentence', altered_voice, {}, 
+                context.AudioRequestContext(constants.AudioRequestReason.batch))
         except errors.RequestError as e:
             assert 'Could not request audio for' in str(e)
             assert e.source_text == 'This is the second sentence'
@@ -178,7 +181,8 @@ class TTSTests(unittest.TestCase):
 
         exception_caught = False
         try:
-            audio_data = self.manager.get_tts_audio('This is the second sentence', altered_voice, {}, None)
+            audio_data = self.manager.get_tts_audio('This is the second sentence', altered_voice, {}, 
+                context.AudioRequestContext(constants.AudioRequestReason.batch))
         except errors.RequestError as e:
             assert 'Could not request audio for' in str(e)
             assert e.source_text == 'This is the second sentence'

@@ -22,17 +22,7 @@ constants = __import__('constants', globals(), locals(), [], sys._addon_import_l
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
-
-class AudioRequestContext():
-    def __init__(self, audio_request_reason: constants.AudioRequestReason):
-        self.audio_request_reason = audio_request_reason
-
-    def get_request_mode(self) -> constants.RequestMode:
-        request_mode_map = {
-            constants.AudiorequestReason.preview: constants.RequestMode.batch,
-            constants.AudiorequestReason.batch: constants.RequestMode.batch
-        }
-        return request_mode_map.get(self.audio_request_reason, constants.RequestMode.batch)
+context = __import__('context', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class HyperTTS():
@@ -62,7 +52,7 @@ class HyperTTS():
                     note = self.anki_utils.get_note_by_id(note_id)
                     # process note
                     source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, False,
-                        AudioRequestContext(constants.AudioRequestReason.batch))
+                        context.AudioRequestContext(constants.AudioRequestReason.batch))
                     # update note action context
                     note_action_context.set_source_text(source_text)
                     note_action_context.set_processed_text(processed_text)
@@ -111,7 +101,7 @@ class HyperTTS():
     def get_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
         source_text = text
         processed_text = text_utils.process_text(source_text, realtime_model.text_processing)
-        return self.get_audio_file(processed_text, realtime_model.voice_selection, AudioRequestContext(constants.AudioRequestReason.realtime))
+        return self.get_audio_file(processed_text, realtime_model.voice_selection, context.AudioRequestContext(constants.AudioRequestReason.realtime))
 
     def get_audio_file(self, processed_text, voice_selection, audio_request_context):
         # sanity checks
@@ -155,9 +145,9 @@ class HyperTTS():
 
     def editor_note_add_audio(self, batch, editor, note, add_mode):
         undo_id = self.anki_utils.undo_start()
-        audio_request_context = AudioRequestContext(constants.AudioRequestReason.editor_browser)
+        audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_browser)
         if add_mode:
-            audio_request_context = AudioRequestContext(constants.AudioRequestReason.editor_add)
+            audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_add)
         source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode,
             audio_request_context)
         editor.set_note(note)
@@ -214,7 +204,7 @@ class HyperTTS():
 
     def preview_note_audio(self, batch, note):
         batch.validate()
-        full_filename, audio_filename = self.get_note_audio(batch, note, AudioRequestContext(constants.AudioRequestReason.preview))
+        full_filename, audio_filename = self.get_note_audio(batch, note, context.AudioRequestContext(constants.AudioRequestReason.preview))
         self.anki_utils.play_sound(full_filename)
     
     def play_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
@@ -223,7 +213,7 @@ class HyperTTS():
 
     def play_sound(self, source_text, voice, options):
         logging.info(f'playing audio for {source_text}')
-        full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options, AudioRequestContext(constants.AudioRequestReason.preview))
+        full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options, context.AudioRequestContext(constants.AudioRequestReason.preview))
         self.anki_utils.play_sound(full_filename)
 
     # processing of sound tags / collection stuff
