@@ -15,6 +15,11 @@ else:
     sys._addon_import_level_base = 1
     sys._addon_import_level_services = 2
 
+    # add external modules to sys.path
+    addon_dir = os.path.dirname(os.path.realpath(__file__))
+    external_dir = os.path.join(addon_dir, 'external')
+    sys.path.append(external_dir)
+
     # running from within Anki
     import anki
     import anki.hooks
@@ -27,9 +32,6 @@ else:
 
     if constants.ENABLE_SENTRY_CRASH_REPORTING:
         sys._sentry_crash_reporting = True
-        addon_dir = os.path.dirname(os.path.realpath(__file__))
-        external_dir = os.path.join(addon_dir, 'external')
-        sys.path.append(external_dir)
         import sentry_sdk
         from . import version
 

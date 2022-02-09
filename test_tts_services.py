@@ -19,6 +19,11 @@ import servicemanager
 import errors
 import languages
 
+# add external dir to sys.path
+addon_dir = os.path.dirname(os.path.realpath(__file__))
+external_dir = os.path.join(addon_dir, 'external')
+sys.path.append(external_dir)
+
 
 def services_dir():
     current_script_path = os.path.realpath(__file__)
@@ -37,6 +42,8 @@ class TTSTests(unittest.TestCase):
         self.manager = servicemanager.ServiceManager(services_dir(), 'services', False)
         self.manager.init_services()
 
+        # premium services
+        # ================
         # google
         self.manager.get_service('Google').enabled = True
         self.manager.get_service('Google').configure({'api_key': os.environ['GOOGLE_SERVICES_KEY']})
@@ -46,6 +53,11 @@ class TTSTests(unittest.TestCase):
             'api_key': os.environ['AZURE_SERVICES_KEY'],
             'region': os.environ['AZURE_SERVICES_REGION']
         })        
+        
+        # free services 
+        # =============
+        # google translate
+        self.manager.get_service('GoogleTranslate').enabled = True
 
     def sanitize_recognized_text(self, recognized_text):
         recognized_text = re.sub('<[^<]+?>', '', recognized_text)
@@ -187,6 +199,52 @@ class TTSTests(unittest.TestCase):
             assert 'Could not request audio for' in str(e)
             assert e.source_text == 'This is the second sentence'
             assert e.voice.service.name == service_name
+            exception_caught = True
+        assert exception_caught
+
+    def test_googletranslate(self):
+        service_name = 'GoogleTranslate'
+        if self.manager.get_service(service_name).enabled == False:
+            logging.warning(f'service {service_name} not enabled, skipping')
+            return
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        
+        logging.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 2
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+        # french
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
+        self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
+
+        return
+
+        # error checking
+        # try a voice which doesn't exist
+        selected_voice = self.pick_random_voice(voice_list, 'Google', languages.AudioLanguage.en_US)
+        selected_voice = copy.copy(selected_voice)
+        voice_key = copy.copy(selected_voice.voice_key)
+        voice_key['name'] = 'non existent'
+        altered_voice = voice.Voice('non existent', 
+                                    selected_voice.gender, 
+                                    selected_voice.language, 
+                                    selected_voice.service, 
+                                    voice_key,
+                                    selected_voice.options)
+
+        exception_caught = False
+        try:
+            audio_data = self.manager.get_tts_audio('This is the second sentence', altered_voice, {}, 
+                context.AudioRequestContext(constants.AudioRequestReason.batch))
+        except errors.RequestError as e:
+            assert 'Could not request audio for' in str(e)
+            assert e.source_text == 'This is the second sentence'
+            assert e.voice.service.name == 'Google'
             exception_caught = True
         assert exception_caught
 
