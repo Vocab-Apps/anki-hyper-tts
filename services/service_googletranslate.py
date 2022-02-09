@@ -14,10 +14,68 @@ constants = __import__('constants', globals(), locals(), [], sys._addon_import_l
 languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_services)
 
 
-AudioLanguage = languages.AudioLanguage
+lang = languages.AudioLanguage
 LANGUAGE_KEY_MAP = {
-    'fr': AudioLanguage.fr_FR,
-    'en': AudioLanguage.en_US,
+    'fr': lang.fr_FR,
+    'en': lang.en_US,
+    'af': lang.af_ZA,
+    'ar': lang.ar_XA,
+    'bg': lang.bg_BG,
+    'bn': lang.bn_BD,
+    # 'bs': 
+    'ca': lang.ca_ES,
+    'cs': lang.cs_CZ,
+    'cy': lang.cy_GB,
+    'da': lang.da_DK,
+    'de': lang.de_DE,
+    'el': lang.el_GR,
+    'eo': lang.eo_XX,
+    'es': lang.es_ES,
+    'et': lang.et_EE,
+    'fi': lang.fi_FI,
+    'gu': lang.gu_IN,
+    'hi': lang.hi_IN,
+    'hr': lang.hr_HR,
+    'hu': lang.hu_HU,
+    # 'hy': 
+    'id': lang.id_ID,
+    'is': lang.is_IS,
+    'it': lang.it_IT,
+    'ja': lang.ja_JP,
+    'jw': lang.jv_ID,
+    'km': lang.km_KH,
+    'kn': lang.kn_IN,
+    'ko': lang.ko_KR,
+    # 'la': 
+    'lv': lang.lv_LV,
+    'mk': lang.mk_MK,
+    'ml': lang.ml_IN,
+    'mr': lang.mr_IN,
+    'my': lang.my_MM,
+    # 'ne':
+    'nl': lang.nl_NL,
+    # 'no': 
+    'pl': lang.pl_PL,
+    'pt': lang.pt_PT,
+    'ro': lang.ro_RO,
+    'ru': lang.ru_RU,
+    'si': lang.si_LK,
+    'sk': lang.sk_SK,
+    # 'sq':
+    'sr': lang.sr_RS,
+    'su': lang.su_ID,
+    'sv': lang.sv_SE,
+    'sw': lang.sw_KE,
+    'ta': lang.ta_IN,
+    'te': lang.te_IN,
+    'th': lang.th_TH,
+    # 'tl': lang.
+    'tr': lang.tr_TR,
+    'uk': lang.uk_UA,
+    'ur': lang.ur_PK,
+    'vi': lang.vi_VN,
+    'zh-CN': lang.zh_CN,
+    'zh-TW': lang.zh_TW,
 }
 
 
@@ -39,7 +97,7 @@ class GoogleTranslate(service.ServiceBase):
         for language_key, language_name in languages.items():
             if language_key in LANGUAGE_KEY_MAP:
                 language = LANGUAGE_KEY_MAP[language_key]
-                voices.append(voice.Voice(language_key, constants.Gender.Male, language, self, language_key, {}))
+                voices.append(voice.Voice(language_key, constants.Gender.Female, language, self, language_key, {}))
             else:
                 logging.warning(f'skipping voice {language_key}, no mapping found')
         return voices

@@ -222,32 +222,6 @@ class TTSTests(unittest.TestCase):
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
 
-        return
-
-        # error checking
-        # try a voice which doesn't exist
-        selected_voice = self.pick_random_voice(voice_list, 'Google', languages.AudioLanguage.en_US)
-        selected_voice = copy.copy(selected_voice)
-        voice_key = copy.copy(selected_voice.voice_key)
-        voice_key['name'] = 'non existent'
-        altered_voice = voice.Voice('non existent', 
-                                    selected_voice.gender, 
-                                    selected_voice.language, 
-                                    selected_voice.service, 
-                                    voice_key,
-                                    selected_voice.options)
-
-        exception_caught = False
-        try:
-            audio_data = self.manager.get_tts_audio('This is the second sentence', altered_voice, {}, 
-                context.AudioRequestContext(constants.AudioRequestReason.batch))
-        except errors.RequestError as e:
-            assert 'Could not request audio for' in str(e)
-            assert e.source_text == 'This is the second sentence'
-            assert e.voice.service.name == 'Google'
-            exception_caught = True
-        assert exception_caught
-
     def verify_all_services_language(self, language, source_text):
         voice_list = self.manager.full_voice_list()
         service_name_list = [service.name for service in self.manager.get_all_services()]
