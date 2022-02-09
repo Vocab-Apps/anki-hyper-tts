@@ -5,6 +5,7 @@ import logging
 import time
 import gtts
 import tempfile
+import io
 import pprint
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
@@ -109,16 +110,9 @@ class GoogleTranslate(service.ServiceBase):
         if throttle_seconds > 0:
             time.sleep(throttle_seconds)
 
-        # create temporary file
-        audio_tempfile = tempfile.NamedTemporaryFile(suffix='.mp3', prefix='hypertts_google_translate_')
         tts = gtts.gTTS(text=source_text, lang=voice.voice_key)
-        tts.save(audio_tempfile.name)
+        buffer = io.BytesIO()
+        tts.write_to_fp(buffer)
 
-        logging.info(f'wrote audio to {audio_tempfile.name}')
-
-        # read tempfile content
-        f = open(audio_tempfile.name, mode='rb')
-        audio_content = f.read()
-
-        return audio_content
+        return buffer.getbuffer()
 
