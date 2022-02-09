@@ -114,7 +114,7 @@ class ServiceManager():
         raise_exception = None
         with sentry_sdk.start_transaction(op="audio", name=transaction_name) as transaction:
             try:
-                result_audio = self.get_tts_audio_implementation(source_text, voice, options)
+                result_audio = self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)
                 transaction.status = 'ok'
                 return result_audio
             except Exception as e:
