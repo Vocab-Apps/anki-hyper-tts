@@ -9,6 +9,10 @@ RequestTimeout = 15 # 15 seconds max
 
 class AudioRequestReason(enum.Enum):
     preview = enum.auto()
+    batch = enum.auto()
+    realtime = enum.auto()
+    editor_browser = enum.auto()
+    editor_add = enum.auto()
 
 # what triggered this request (batch / on the fly / editor)
 class RequestMode(enum.Enum):
