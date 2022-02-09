@@ -150,7 +150,7 @@ class ServiceManagerTests(unittest.TestCase):
         assert len(subset) == 1
         servicea_voice_1 = subset[0]
 
-        audio_result = self.manager.get_tts_audio('test sentence 123', servicea_voice_1, {}, constants.RequestMode.batch)
+        audio_result = self.manager.get_tts_audio('test sentence 123', servicea_voice_1, {}, None)
 
         audio_result_dict = json.loads(audio_result)
 
