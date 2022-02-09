@@ -50,7 +50,8 @@ class HyperTTS():
                 with batch_status.get_note_action_context(note_id, False) as note_action_context:
                     note = self.anki_utils.get_note_by_id(note_id)
                     # process note
-                    source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, False)
+                    source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, False,
+                        constants.RequestMode.batch)
                     # update note action context
                     note_action_context.set_source_text(source_text)
                     note_action_context.set_processed_text(processed_text)
@@ -61,7 +62,7 @@ class HyperTTS():
                     break
             self.anki_utils.undo_end(undo_id)
 
-    def process_note_audio(self, batch, note, add_mode):
+    def process_note_audio(self, batch, note, add_mode, request_mode: constants.RequestMode):
         target_field = batch.target.target_field
 
         if target_field not in note:
@@ -70,7 +71,7 @@ class HyperTTS():
         source_text = self.get_source_text(note, batch.source)
         processed_text = self.process_text(source_text, batch.text_processing)
 
-        full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection)
+        full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection, request_mode)
         sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)
 
         target_field_content = note[target_field]
@@ -91,17 +92,17 @@ class HyperTTS():
 
         return source_text, processed_text, sound_file, full_filename
 
-    def get_note_audio(self, batch, note):
+    def get_note_audio(self, batch, note, request_mode: constants.RequestMode):
         source_text = self.get_source_text(note, batch.source)
         processed_text = text_utils.process_text(source_text, batch.text_processing)
-        return self.get_audio_file(processed_text, batch.voice_selection)        
+        return self.get_audio_file(processed_text, batch.voice_selection, request_mode)
 
     def get_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
         source_text = text
         processed_text = text_utils.process_text(source_text, realtime_model.text_processing)
-        return self.get_audio_file(processed_text, realtime_model.voice_selection)
+        return self.get_audio_file(processed_text, realtime_model.voice_selection, constants.RequestMode.dynamic)
 
-    def get_audio_file(self, processed_text, voice_selection):
+    def get_audio_file(self, processed_text, voice_selection, request_mode: constants.RequestMode):
         # sanity checks
         if voice_selection.selection_mode in [constants.VoiceSelectionMode.priority, constants.VoiceSelectionMode.random]:
             if len(voice_selection.voice_list) == 0:
@@ -118,7 +119,8 @@ class HyperTTS():
         while loop_condition:
             try:
                 voice_with_options = self.choose_voice(voice_selection, voice_list)
-                full_filename, audio_filename = self.generate_audio_write_file(processed_text, voice_with_options.voice, voice_with_options.options)
+                full_filename, audio_filename = self.generate_audio_write_file(processed_text, 
+                    voice_with_options.voice, voice_with_options.options, request_mode)
                 return full_filename, audio_filename
             except errors.AudioNotFoundError as exc:
                 # try the next voice, as long as one is available
@@ -142,7 +144,8 @@ class HyperTTS():
 
     def editor_note_add_audio(self, batch, editor, note, add_mode):
         undo_id = self.anki_utils.undo_start()
-        source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode)
+        source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode,
+            constants.RequestMode.edit)
         editor.set_note(note)
         self.anki_utils.undo_end(undo_id)
         self.anki_utils.play_sound(full_filename)
@@ -197,7 +200,7 @@ class HyperTTS():
 
     def preview_note_audio(self, batch, note):
         batch.validate()
-        full_filename, audio_filename = self.get_note_audio(batch, note)
+        full_filename, audio_filename = self.get_note_audio(batch, note, constants.RequestMode.batch)
         self.anki_utils.play_sound(full_filename)
     
     def play_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
@@ -206,19 +209,19 @@ class HyperTTS():
 
     def play_sound(self, source_text, voice, options):
         logging.info(f'playing audio for {source_text}')
-        full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options)
+        full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options, constants.RequestMode.batch)
         self.anki_utils.play_sound(full_filename)
 
     # processing of sound tags / collection stuff
     # ===========================================
 
-    def generate_audio_write_file(self, source_text, voice, options):
+    def generate_audio_write_file(self, source_text, voice, options, request_mode: constants.RequestMode):
         # write to user files directory
         hash_str = self.get_hash_for_audio_request(source_text, voice, options)
         audio_filename = self.get_audio_filename(hash_str)
         full_filename = self.get_full_audio_file_name(hash_str)
         with open(full_filename, 'wb') as f:
-            f.write(self.service_manager.get_tts_audio(source_text, voice, options))
+            f.write(self.service_manager.get_tts_audio(source_text, voice, options, request_mode))
         return full_filename, audio_filename
 
     def get_collection_sound_tag(self, full_filename, audio_filename):

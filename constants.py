@@ -7,6 +7,12 @@ ENABLE_SENTRY_CRASH_REPORTING = True
 # requests related constants
 RequestTimeout = 15 # 15 seconds max
 
+# what triggered this request (batch / on the fly / editor)
+class RequestMode(enum.Enum):
+    batch = enum.auto()
+    dynamic = enum.auto()
+    edit = enum.auto()
+
 # batch modes
 class BatchMode(enum.Enum):
     simple = enum.auto()

@@ -53,7 +53,7 @@ yoyo
         hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
         random = config_models.VoiceSelectionRandom()        
-        self.assertRaises(errors.NoVoicesAdded, hypertts_instance.get_audio_file, 'yoyo', random)
+        self.assertRaises(errors.NoVoicesAdded, hypertts_instance.get_audio_file, 'yoyo', random, constants.RequestMode.batch)
 
         # priority mode with no voices
         # ============================
@@ -61,7 +61,7 @@ yoyo
         hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
         priority = config_models.VoiceSelectionPriority()
-        self.assertRaises(errors.NoVoicesAdded, hypertts_instance.get_audio_file, 'yoyo', priority)
+        self.assertRaises(errors.NoVoicesAdded, hypertts_instance.get_audio_file, 'yoyo', priority, constants.RequestMode.batch)
 
     def test_process_hypertts_tag(self):
         config_gen = testing_utils.TestConfigGenerator()
