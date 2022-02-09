@@ -91,6 +91,14 @@ class GoogleTranslate(service.ServiceBase):
             self.CONFIG_THROTTLE_SECONDS: float
         }
 
+    @property
+    def service_type(self) -> constants.ServiceType:
+        return constants.ServiceType.tts
+
+    @property
+    def service_fee(self) -> constants.ServiceFee:
+        return constants.ServiceFee.Free
+
     def voice_list(self):
         languages = gtts.lang.tts_langs()
         # pprint.pprint(languages)
