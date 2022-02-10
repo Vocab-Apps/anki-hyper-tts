@@ -93,6 +93,8 @@ class TTSTests(unittest.TestCase):
             languages.AudioLanguage.zh_CN: 'zh-CN',
             languages.AudioLanguage.ja_JP: 'ja-JP',
             languages.AudioLanguage.de_DE: 'de-DE',
+            languages.AudioLanguage.es_ES: 'es-ES',
+            languages.AudioLanguage.it_IT: 'it-IT',
         }
 
         recognition_language = recognition_language_map[voice.language]
@@ -246,6 +248,12 @@ class TTSTests(unittest.TestCase):
         self.verify_audio_output(selected_voice, 'bienvenue')
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.de_DE)
         self.verify_audio_output(selected_voice, 'Hallo')
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.es_ES)
+        self.verify_audio_output(selected_voice, 'furgoneta')
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.it_IT)
+        self.verify_audio_output(selected_voice, 'attenzione')
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.zh_CN)
+        self.verify_audio_output(selected_voice, '赚钱')
 
 
         # error handling

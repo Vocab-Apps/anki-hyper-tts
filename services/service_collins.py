@@ -35,6 +35,9 @@ class Collins(service.ServiceBase):
             self.build_voice(languages.AudioLanguage.en_GB, 'english'),
             self.build_voice(languages.AudioLanguage.fr_FR, 'french-english'),
             self.build_voice(languages.AudioLanguage.de_DE, 'german-english'),
+            self.build_voice(languages.AudioLanguage.es_ES, 'spanish-english'),
+            self.build_voice(languages.AudioLanguage.it_IT, 'italian-english'),
+            self.build_voice(languages.AudioLanguage.zh_CN, 'chinese-english'),
         ]
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
