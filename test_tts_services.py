@@ -252,8 +252,6 @@ class TTSTests(unittest.TestCase):
         self.verify_audio_output(selected_voice, 'furgoneta')
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.it_IT)
         self.verify_audio_output(selected_voice, 'attenzione')
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.zh_CN)
-        self.verify_audio_output(selected_voice, '赚钱')
 
 
         # error handling
