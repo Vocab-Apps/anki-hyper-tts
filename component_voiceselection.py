@@ -205,10 +205,20 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # additional layouts screens for the various modes
         # ================================================
 
-        self.voice_list_grid_layout = PyQt5.QtWidgets.QGridLayout()
-        vlayout.addLayout(self.voice_list_grid_layout)
+        self.voice_list_grid_scrollarea = PyQt5.QtWidgets.QScrollArea()
+        self.voice_list_grid_scrollarea.setHorizontalScrollBarPolicy(PyQt5.QtCore.Qt.ScrollBarAlwaysOn)
+        voice_list_grid_widget = PyQt5.QtWidgets.QWidget()
+        self.voice_list_grid_layout = PyQt5.QtWidgets.QGridLayout(voice_list_grid_widget)
+        self.voice_list_grid_scrollarea.setWidgetResizable(True)
+        self.voice_list_grid_scrollarea.setWidget(voice_list_grid_widget)
+
+        vlayout.addWidget(self.voice_list_grid_scrollarea)
+
         groupbox.setLayout(vlayout)
-        self.voices_layout.addWidget(groupbox)        
+        self.voices_layout.addWidget(groupbox)
+
+        # finished selection mode groupbox
+        # ================================
 
         self.voices_layout.addStretch()
 
