@@ -234,7 +234,7 @@ class TTSTests(unittest.TestCase):
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
         
         logging.info(f'found {len(service_voices)} voices for {service_name} services')
-        assert len(service_voices) >= 1
+        assert len(service_voices) >= 2
 
         # pick a random en_GB voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
@@ -247,6 +247,10 @@ class TTSTests(unittest.TestCase):
                           selected_voice,
                           {},
                           context.AudioRequestContext(constants.AudioRequestReason.batch))
+
+        # pick a random fr_FR voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
+        self.verify_audio_output(selected_voice, 'bienvenue')
 
 
     def verify_all_services_language(self, language, source_text):

@@ -29,7 +29,8 @@ class Collins(service.ServiceBase):
 
     def voice_list(self):
         return [
-            voice.Voice(languages.Language.en.lang_name, constants.Gender.Male, languages.AudioLanguage.en_GB, self, 'english', {})
+            voice.Voice(languages.Language.en.lang_name, constants.Gender.Male, languages.AudioLanguage.en_GB, self, 'english', {}),
+            voice.Voice(languages.Language.fr.lang_name, constants.Gender.Male, languages.AudioLanguage.fr_FR, self, 'french-english', {}),
         ]
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
