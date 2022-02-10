@@ -254,15 +254,25 @@ class Configuration(component_common.ConfigComponentBase):
         # services
         # ========
 
+        # groupbox
+        # 	scroll_area_vlayout
+        # 		services_scroll_area
+        # 			services_widget
+        # 				services_vlayout    
+
         groupbox = PyQt5.QtWidgets.QGroupBox('Services')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        scroll_area_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        services_scroll_area = PyQt5.QtWidgets.QScrollArea()
+        services_widget = PyQt5.QtWidgets.QWidget()
+        services_vlayout = PyQt5.QtWidgets.QVBoxLayout(services_widget)
         for service in self.hypertts.service_manager.get_all_services():
-            self.draw_service(service, vlayout)
+            self.draw_service(service, services_vlayout)
 
-        groupbox.setLayout(vlayout)
+        services_scroll_area.setWidget(services_widget)
+        scroll_area_vlayout.addWidget(services_scroll_area)
+        groupbox.setLayout(scroll_area_vlayout)
+
         self.global_vlayout.addWidget(groupbox)
-
-        self.global_vlayout.addStretch()
 
         # bottom buttons
         # ==============
