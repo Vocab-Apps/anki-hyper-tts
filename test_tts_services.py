@@ -236,9 +236,17 @@ class TTSTests(unittest.TestCase):
         logging.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 1
 
-        # pick a random en_US voice
+        # pick a random en_GB voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
         self.verify_audio_output(selected_voice, 'successful')
+
+        # ensure that a non-existent word raises AudioNotFoundError
+        self.assertRaises(errors.AudioNotFoundError, 
+                          self.manager.get_tts_audio,
+                          'xxoanetuhsoae', # non-existent word
+                          selected_voice,
+                          {},
+                          context.AudioRequestContext(constants.AudioRequestReason.batch))
 
 
     def verify_all_services_language(self, language, source_text):

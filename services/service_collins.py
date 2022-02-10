@@ -41,6 +41,10 @@ class Collins(service.ServiceBase):
             'q': source_text
         }
         response = requests.get(self.SEARCH_URL, params=search_params, headers=headers)
+        
+        # word not found ?
+        if '/spellcheck/' in response.url:
+            raise errors.AudioNotFoundError(source_text, voice)
         if response.status_code != 200:
             raise errors.RequestError(source_text, voice, f'search returned status code {response.status_code}')
         
