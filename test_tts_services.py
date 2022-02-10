@@ -251,6 +251,14 @@ class TTSTests(unittest.TestCase):
         # pick a random fr_FR voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'bienvenue')
+        # german word not found
+        german_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.de_DE)
+        self.assertRaises(errors.AudioNotFoundError, 
+                          self.manager.get_tts_audio,
+                          'Fahrkarte', # no pronounciation
+                          selected_voice,
+                          {},
+                          context.AudioRequestContext(constants.AudioRequestReason.batch))        
 
 
     def verify_all_services_language(self, language, source_text):

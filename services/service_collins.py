@@ -27,10 +27,14 @@ class Collins(service.ServiceBase):
     def service_fee(self) -> constants.ServiceFee:
         return constants.ServiceFee.Free
 
+    def build_voice(self, audio_language, voice_key):
+        return voice.Voice(audio_language.lang.lang_name, constants.Gender.Male, audio_language, self, voice_key, {})
+
     def voice_list(self):
         return [
-            voice.Voice(languages.Language.en.lang_name, constants.Gender.Male, languages.AudioLanguage.en_GB, self, 'english', {}),
-            voice.Voice(languages.Language.fr.lang_name, constants.Gender.Male, languages.AudioLanguage.fr_FR, self, 'french-english', {}),
+            self.build_voice(languages.AudioLanguage.en_GB, 'english'),
+            self.build_voice(languages.AudioLanguage.fr_FR, 'french-english'),
+            self.build_voice(languages.AudioLanguage.de_DE, 'german-english'),
         ]
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
@@ -51,6 +55,8 @@ class Collins(service.ServiceBase):
         
         soup = bs4.BeautifulSoup(response.content, 'html.parser')
         sound_tag = soup.find('a', {"class":'hwd_sound'})
+        if sound_tag == None:
+            raise errors.AudioNotFoundError(source_text, voice)
         sound_url = sound_tag['data-src-mp3']
         logging.info(f'found sound_url: {sound_url}')
 
