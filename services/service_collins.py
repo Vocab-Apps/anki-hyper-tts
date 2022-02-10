@@ -1,0 +1,57 @@
+import sys
+import re
+import requests
+import bs4
+import pprint
+import logging
+import time
+
+voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
+service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
+errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
+languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_services)
+
+class Collins(service.ServiceBase):
+    COLLINS_WEBSITE = 'https://www.collinsdictionary.com'
+    SEARCH_URL = COLLINS_WEBSITE + '/search/'
+
+    def __init__(self):
+        service.ServiceBase.__init__(self)
+
+    @property
+    def service_type(self) -> constants.ServiceType:
+        return constants.ServiceType.dictionary
+
+    @property
+    def service_fee(self) -> constants.ServiceFee:
+        return constants.ServiceFee.Free
+
+    def voice_list(self):
+        return [
+            voice.Voice(languages.Language.en.lang_name, constants.Gender.Male, languages.AudioLanguage.en_GB, self, 'english', {})
+        ]
+
+    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+        headers = {
+		    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0'
+        }
+        search_params = {
+            'dictCode': voice.voice_key,
+            'q': source_text
+        }
+        response = requests.get(self.SEARCH_URL, params=search_params, headers=headers)
+        if response.status_code != 200:
+            raise errors.RequestError(source_text, voice, f'search returned status code {response.status_code}')
+        
+        soup = bs4.BeautifulSoup(response.content, 'html.parser')
+        sound_tag = soup.find('a', {"class":'hwd_sound'})
+        sound_url = sound_tag['data-src-mp3']
+        logging.info(f'found sound_url: {sound_url}')
+
+        logging.info(f'downloading url {sound_url}')
+        response = requests.get(sound_url, headers=headers)
+        if response.status_code != 200:
+            raise errors.RequestError(source_text, voice, f'download audio returned status code {response.status_code} ({sound_url})')
+
+        return response.content

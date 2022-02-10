@@ -58,6 +58,7 @@ class TTSTests(unittest.TestCase):
         # =============
         # google translate
         self.manager.get_service('GoogleTranslate').enabled = True
+        self.manager.get_service('Collins').enabled = True
 
     def sanitize_recognized_text(self, recognized_text):
         recognized_text = re.sub('<[^<]+?>', '', recognized_text)
@@ -87,6 +88,7 @@ class TTSTests(unittest.TestCase):
 
         recognition_language_map = {
             languages.AudioLanguage.en_US: 'en-US',
+            languages.AudioLanguage.en_GB: 'en-GB',
             languages.AudioLanguage.fr_FR: 'fr-FR',
             languages.AudioLanguage.zh_CN: 'zh-CN',
             languages.AudioLanguage.ja_JP: 'ja-JP',
@@ -221,6 +223,23 @@ class TTSTests(unittest.TestCase):
         # french
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
+
+    def test_collins(self):
+        service_name = 'Collins'
+        if self.manager.get_service(service_name).enabled == False:
+            logging.warning(f'service {service_name} not enabled, skipping')
+            return
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        
+        logging.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 1
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
+        self.verify_audio_output(selected_voice, 'successful')
+
 
     def verify_all_services_language(self, language, source_text):
         voice_list = self.manager.full_voice_list()
