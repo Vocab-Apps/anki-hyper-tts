@@ -283,28 +283,30 @@ class TTSTests(unittest.TestCase):
                           context.AudioRequestContext(constants.AudioRequestReason.batch))                                  
 
 
-    def verify_all_services_language(self, language, source_text):
+    def verify_all_services_language(self, service_type: constants.ServiceType, language, source_text):
         voice_list = self.manager.full_voice_list()
         service_name_list = [service.name for service in self.manager.get_all_services()]
 
         for service_name in service_name_list:
-            if self.manager.get_service(service_name).enabled:
+            service = self.manager.get_service(service_name)
+            if service.enabled and service.service_type == service_type:
                 logging.info(f'testing language {language.name}, service {service_name}')
                 random_voices = self.pick_random_voices_sample(voice_list, service_name, language, self.RANDOM_VOICE_COUNT)
                 for voice in random_voices:
                     self.verify_audio_output(voice, source_text)    
 
     def test_all_services_english(self):
-        self.verify_all_services_language(languages.AudioLanguage.en_US, 'The weather is good today.')
+        self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.en_US, 'The weather is good today.')
+        self.verify_all_services_language(constants.ServiceType.dictionary, languages.AudioLanguage.en_GB, 'successful')
 
     def test_all_services_french(self):
-        self.verify_all_services_language(languages.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
+        self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
 
     def test_all_services_mandarin(self):
-        self.verify_all_services_language(languages.AudioLanguage.zh_CN, '赚钱')
+        self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.zh_CN, '赚钱')
 
     def test_all_services_japanese(self):
-        self.verify_all_services_language(languages.AudioLanguage.ja_JP, 'おはようございます')
+        self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.ja_JP, 'おはようございます')
 
 
 class TTSTestsCloudLanguageTools(TTSTests):
