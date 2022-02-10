@@ -191,15 +191,13 @@ class ComponentBatch(component_common.ConfigComponentBase):
             self.preview_widget = PyQt5.QtWidgets.QWidget()
             self.preview_widget.setLayout(self.preview.draw())
             self.splitter.addWidget(self.preview_widget)
-            self.vlayout.addWidget(self.splitter)
+            self.vlayout.addWidget(self.splitter, 1) # splitter is what should stretch
         else:
             self.vlayout.addWidget(self.tabs)
             self.preview_widget = PyQt5.QtWidgets.QWidget()
             self.preview_widget.setLayout(self.preview.draw())            
-            self.vlayout.addWidget(self.preview_widget)
+            self.vlayout.addWidget(self.preview_widget, 1) # the preview table should stretch
 
-
-        self.vlayout.addStretch()
 
         # setup bottom buttons
         # ====================

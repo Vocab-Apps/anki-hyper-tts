@@ -215,12 +215,12 @@ class VoiceSelection(component_common.ConfigComponentBase):
         vlayout.addWidget(self.voice_list_grid_scrollarea)
 
         groupbox.setLayout(vlayout)
-        self.voices_layout.addWidget(groupbox)
+
+        # the voice selection groupbox is the one which should stretch
+        self.voices_layout.addWidget(groupbox, 1)
 
         # finished selection mode groupbox
         # ================================
-
-        self.voices_layout.addStretch()
 
         # set some defaults
         # =================
