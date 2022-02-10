@@ -183,6 +183,9 @@ class Configuration(component_common.ConfigComponentBase):
         # ==================================
         clt_stack = PyQt5.QtWidgets.QWidget()
         clt_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        clt_vlayout.addWidget(gui_utils.get_service_header_label(service.name))
+        service_description = f'{service.service_fee.name}, {service.service_type.description}'
+        clt_vlayout.addWidget(PyQt5.QtWidgets.QLabel(service_description))
         logo = gui_utils.get_graphic(constants.GRAPHICS_SERVICE_ENABLED)
         clt_vlayout.addWidget(logo)
         clt_stack.setLayout(clt_vlayout)
@@ -257,12 +260,6 @@ class Configuration(component_common.ConfigComponentBase):
 
         # services
         # ========
-
-        # groupbox
-        # 	scroll_area_vlayout
-        # 		services_scroll_area
-        # 			services_widget
-        # 				services_vlayout    
 
         self.global_vlayout.addWidget(PyQt5.QtWidgets.QLabel('Services'))
         services_scroll_area = PyQt5.QtWidgets.QScrollArea()
