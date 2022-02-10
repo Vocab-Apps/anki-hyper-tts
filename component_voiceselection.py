@@ -175,8 +175,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.voices_layout.addWidget(groupbox)
 
 
-        # voice selection mode
-        # ====================
+        # voice selection mode groupbox
+        # =============================
         groupbox = PyQt5.QtWidgets.QGroupBox('Selection Mode')
         vlayout = PyQt5.QtWidgets.QVBoxLayout()
         mode_group = PyQt5.QtWidgets.QButtonGroup()
@@ -191,19 +191,23 @@ class VoiceSelection(component_common.ConfigComponentBase):
         vlayout.addWidget(self.radio_button_random)
         vlayout.addWidget(self.radio_button_priority)
 
+        groupbox.setLayout(vlayout)
+        self.voices_layout.addWidget(groupbox)   
+        # finished voice selection mode
+
+        # voice list groupbox
+        # ===================
+        self.voicelist_groupbox = PyQt5.QtWidgets.QGroupBox('Voice List')
+        vlayout = PyQt5.QtWidgets.QVBoxLayout()
 
         # buttons
-        # =======
+        # -------
 
         self.add_voice_button = PyQt5.QtWidgets.QPushButton('Add Voice')
-
         vlayout.addWidget(self.add_voice_button)
 
-        # hide buttons by default
-        self.add_voice_button.setVisible(False)
-
-        # additional layouts screens for the various modes
-        # ================================================
+        # voice list grid
+        # ---------------
 
         self.voice_list_grid_scrollarea = PyQt5.QtWidgets.QScrollArea()
         self.voice_list_grid_scrollarea.setHorizontalScrollBarPolicy(PyQt5.QtCore.Qt.ScrollBarAlwaysOn)
@@ -214,17 +218,13 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         vlayout.addWidget(self.voice_list_grid_scrollarea)
 
-        groupbox.setLayout(vlayout)
-
-        # the voice selection groupbox is the one which should stretch
-        self.voices_layout.addWidget(groupbox, 1)
-
-        # finished selection mode groupbox
-        # ================================
+        self.voicelist_groupbox.setLayout(vlayout)
+        self.voices_layout.addWidget(self.voicelist_groupbox)
 
         # set some defaults
         # =================
         self.radio_button_single.setChecked(True)
+        self.voicelist_groupbox.setVisible(False)
 
         # wire all events
         # ===============
@@ -254,13 +254,13 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
     def voice_selection_mode_change(self):
         if self.radio_button_single.isChecked():
-            self.add_voice_button.setVisible(False)
+            self.voicelist_groupbox.setVisible(False)
             self.voice_selection_model = config_models.VoiceSelectionSingle()
         elif self.radio_button_random.isChecked():
-            self.add_voice_button.setVisible(True)
+            self.voicelist_groupbox.setVisible(True)
             self.voice_selection_model = config_models.VoiceSelectionRandom()
         elif self.radio_button_priority.isChecked():
-            self.add_voice_button.setVisible(True)
+            self.voicelist_groupbox.setVisible(True)
             self.voice_selection_model = config_models.VoiceSelectionPriority()
         self.redraw_selected_voices()
         self.notify_model_update()
