@@ -92,6 +92,7 @@ class TTSTests(unittest.TestCase):
             languages.AudioLanguage.fr_FR: 'fr-FR',
             languages.AudioLanguage.zh_CN: 'zh-CN',
             languages.AudioLanguage.ja_JP: 'ja-JP',
+            languages.AudioLanguage.de_DE: 'de-DE',
         }
 
         recognition_language = recognition_language_map[voice.language]
@@ -240,9 +241,11 @@ class TTSTests(unittest.TestCase):
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
         self.verify_audio_output(selected_voice, 'successful')
 
-        # pick a random fr_FR voice
+        # test other languages
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'bienvenue')
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.de_DE)
+        self.verify_audio_output(selected_voice, 'Hallo')
 
 
         # error handling
@@ -265,6 +268,13 @@ class TTSTests(unittest.TestCase):
                           selected_voice,
                           {},
                           context.AudioRequestContext(constants.AudioRequestReason.batch))        
+
+        self.assertRaises(errors.AudioNotFoundError, 
+                          self.manager.get_tts_audio,
+                          'Entschuldigung', # no pronounciation
+                          selected_voice,
+                          {},
+                          context.AudioRequestContext(constants.AudioRequestReason.batch))                                  
 
 
     def verify_all_services_language(self, language, source_text):

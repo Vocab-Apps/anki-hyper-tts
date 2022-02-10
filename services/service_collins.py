@@ -54,7 +54,10 @@ class Collins(service.ServiceBase):
             raise errors.RequestError(source_text, voice, f'search returned status code {response.status_code}')
         
         soup = bs4.BeautifulSoup(response.content, 'html.parser')
-        sound_tag = soup.find('a', {"class":'hwd_sound'})
+        headword_div = soup.find('div', {'class': 'he'})
+        sound_tag = headword_div.find('a', {
+            "class":'hwd_sound', 
+        })
         if sound_tag == None:
             raise errors.AudioNotFoundError(source_text, voice)
         sound_url = sound_tag['data-src-mp3']
