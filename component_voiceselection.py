@@ -226,7 +226,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # finalize stack setup
         self.voice_list_display_stack.addWidget(no_voice_list_stack)
         self.voice_list_display_stack.addWidget(voice_list_stack)
-        self.voices_layout.addWidget(self.voice_list_display_stack)
+        self.voices_layout.addWidget(self.voice_list_display_stack, 1)
 
         # -------------------------
         # finished voice list setup
