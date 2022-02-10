@@ -240,7 +240,16 @@ class TTSTests(unittest.TestCase):
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
         self.verify_audio_output(selected_voice, 'successful')
 
+        # pick a random fr_FR voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
+        self.verify_audio_output(selected_voice, 'bienvenue')
+
+
+        # error handling
+        # ==============
+
         # ensure that a non-existent word raises AudioNotFoundError
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
         self.assertRaises(errors.AudioNotFoundError, 
                           self.manager.get_tts_audio,
                           'xxoanetuhsoae', # non-existent word
@@ -248,9 +257,6 @@ class TTSTests(unittest.TestCase):
                           {},
                           context.AudioRequestContext(constants.AudioRequestReason.batch))
 
-        # pick a random fr_FR voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
-        self.verify_audio_output(selected_voice, 'bienvenue')
         # german word not found
         german_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.de_DE)
         self.assertRaises(errors.AudioNotFoundError, 
