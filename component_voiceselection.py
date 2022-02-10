@@ -215,7 +215,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # ---------------
 
         self.voice_list_grid_scrollarea = PyQt5.QtWidgets.QScrollArea()
-        self.voice_list_grid_scrollarea.setHorizontalScrollBarPolicy(PyQt5.QtCore.Qt.ScrollBarAlwaysOn)
+        self.voice_list_grid_scrollarea.setHorizontalScrollBarPolicy(PyQt5.QtCore.Qt.ScrollBarAlwaysOff)
         voice_list_grid_widget = PyQt5.QtWidgets.QWidget()
         self.voice_list_grid_layout = PyQt5.QtWidgets.QGridLayout(voice_list_grid_widget)
         self.voice_list_grid_scrollarea.setWidgetResizable(True)
