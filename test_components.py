@@ -1391,6 +1391,7 @@ def test_configuration_pro_key_exception(qtbot):
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
 def test_configuration_manual(qtbot):
+    # HYPERTTS_CONFIGURATION_DIALOG_DEBUG=yes pytest test_components.py -k test_configuration_manual
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     # start by disabling both services

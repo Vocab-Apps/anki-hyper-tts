@@ -45,6 +45,16 @@ def get_medium_label(text):
     label.setFont(font)
     return label
 
+def get_service_header_label(text):
+    header = PyQt5.QtWidgets.QLabel()
+    header.setText(text)
+    font = PyQt5.QtGui.QFont()
+    font.setBold(True)
+    font.setWeight(70)
+    font.setPointSize(12)
+    header.setFont(font)
+    return header
+
 def get_large_button_font():
     font2 = PyQt5.QtGui.QFont()
     font2.setPointSize(14)

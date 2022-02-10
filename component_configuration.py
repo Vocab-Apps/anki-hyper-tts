@@ -158,13 +158,16 @@ class Configuration(component_common.ConfigComponentBase):
 
     def draw_service(self, service, layout):
         logging.info(f'draw_service {service.name}')
-        service_groupbox = PyQt5.QtWidgets.QGroupBox(service.name)
+        
+        # layout.addWidget(gui_utils.get_service_header_label(service.name))
+        service_groupbox = PyQt5.QtWidgets.QGroupBox()
 
         # add service config options, when cloudlanguagetools not enabled
         # ===============================================================
 
         service_stack = PyQt5.QtWidgets.QWidget()
         service_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        service_vlayout.addWidget(gui_utils.get_service_header_label(service.name))
         service_description = f'{service.service_fee.name}, {service.service_type.description}'
         service_vlayout.addWidget(PyQt5.QtWidgets.QLabel(service_description))
         if service.cloudlanguagetools_enabled():
@@ -261,8 +264,7 @@ class Configuration(component_common.ConfigComponentBase):
         # 			services_widget
         # 				services_vlayout    
 
-        groupbox = PyQt5.QtWidgets.QGroupBox('Services')
-        scroll_area_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        self.global_vlayout.addWidget(PyQt5.QtWidgets.QLabel('Services'))
         services_scroll_area = PyQt5.QtWidgets.QScrollArea()
         services_scroll_area.setHorizontalScrollBarPolicy(PyQt5.QtCore.Qt.ScrollBarAlwaysOff)
         services_widget = PyQt5.QtWidgets.QWidget()
@@ -271,10 +273,7 @@ class Configuration(component_common.ConfigComponentBase):
             self.draw_service(service, services_vlayout)
 
         services_scroll_area.setWidget(services_widget)
-        scroll_area_vlayout.addWidget(services_scroll_area)
-        groupbox.setLayout(scroll_area_vlayout)
-
-        self.global_vlayout.addWidget(groupbox, 1)
+        self.global_vlayout.addWidget(services_scroll_area, 1)
 
         # bottom buttons
         # ==============
