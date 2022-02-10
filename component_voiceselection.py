@@ -195,10 +195,15 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.voices_layout.addWidget(groupbox)   
         # finished voice selection mode
 
-        # voice list groupbox
-        # ===================
+        # voice list groupbox, should be in a widget stack
+        # ================================================
+
+        self.voice_list_display_stack = PyQt5.QtWidgets.QStackedWidget()
+        no_voice_list_stack = PyQt5.QtWidgets.QWidget()
+        voice_list_stack = PyQt5.QtWidgets.QWidget()
+
         self.voicelist_groupbox = PyQt5.QtWidgets.QGroupBox('Voice List')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        vlayout = PyQt5.QtWidgets.QVBoxLayout(voice_list_stack)
 
         # buttons
         # -------
@@ -218,13 +223,20 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         vlayout.addWidget(self.voice_list_grid_scrollarea)
 
-        self.voicelist_groupbox.setLayout(vlayout)
-        self.voices_layout.addWidget(self.voicelist_groupbox)
+        # self.voicelist_groupbox.setLayout(vlayout)
+        # self.voices_layout.addWidget(self.voicelist_groupbox)
+        # finalize stack setup
+        self.voice_list_display_stack.addWidget(no_voice_list_stack)
+        self.voice_list_display_stack.addWidget(voice_list_stack)
+        self.voices_layout.addWidget(self.voice_list_display_stack)
+
+
 
         # set some defaults
         # =================
         self.radio_button_single.setChecked(True)
-        self.voicelist_groupbox.setVisible(False)
+        # self.voicelist_groupbox.setVisible(False)
+        self.voice_list_display_stack.setCurrentIndex(0)
 
         # wire all events
         # ===============
@@ -254,13 +266,13 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
     def voice_selection_mode_change(self):
         if self.radio_button_single.isChecked():
-            self.voicelist_groupbox.setVisible(False)
+            self.voice_list_display_stack.setCurrentIndex(0)
             self.voice_selection_model = config_models.VoiceSelectionSingle()
         elif self.radio_button_random.isChecked():
-            self.voicelist_groupbox.setVisible(True)
+            self.voice_list_display_stack.setCurrentIndex(1)
             self.voice_selection_model = config_models.VoiceSelectionRandom()
         elif self.radio_button_priority.isChecked():
-            self.voicelist_groupbox.setVisible(True)
+            self.voice_list_display_stack.setCurrentIndex(1)
             self.voice_selection_model = config_models.VoiceSelectionPriority()
         self.redraw_selected_voices()
         self.notify_model_update()
