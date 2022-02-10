@@ -251,6 +251,7 @@ class Configuration(component_common.ConfigComponentBase):
         groupbox.setLayout(vlayout)
         self.global_vlayout.addWidget(groupbox)
 
+
         # services
         # ========
 
@@ -263,6 +264,7 @@ class Configuration(component_common.ConfigComponentBase):
         groupbox = PyQt5.QtWidgets.QGroupBox('Services')
         scroll_area_vlayout = PyQt5.QtWidgets.QVBoxLayout()
         services_scroll_area = PyQt5.QtWidgets.QScrollArea()
+        services_scroll_area.setHorizontalScrollBarPolicy(PyQt5.QtCore.Qt.ScrollBarAlwaysOff)
         services_widget = PyQt5.QtWidgets.QWidget()
         services_vlayout = PyQt5.QtWidgets.QVBoxLayout(services_widget)
         for service in self.hypertts.service_manager.get_all_services():
@@ -272,7 +274,7 @@ class Configuration(component_common.ConfigComponentBase):
         scroll_area_vlayout.addWidget(services_scroll_area)
         groupbox.setLayout(scroll_area_vlayout)
 
-        self.global_vlayout.addWidget(groupbox)
+        self.global_vlayout.addWidget(groupbox, 1)
 
         # bottom buttons
         # ==============
