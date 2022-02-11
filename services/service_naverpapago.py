@@ -47,6 +47,14 @@ class NaverPapago(service.ServiceBase):
         return [
             self.build_voice(languages.AudioLanguage.ko_KR, constants.Gender.Female, 'kyuri'),
             self.build_voice(languages.AudioLanguage.ja_JP, constants.Gender.Female, 'yuri'),
+            self.build_voice(languages.AudioLanguage.en_US, constants.Gender.Female, 'clara'),
+            self.build_voice(languages.AudioLanguage.zh_CN, constants.Gender.Female, 'meimei'),
+            self.build_voice(languages.AudioLanguage.zh_TW, constants.Gender.Female, 'chiahua'),
+            self.build_voice(languages.AudioLanguage.es_ES, constants.Gender.Female, 'carmen'),
+            self.build_voice(languages.AudioLanguage.fr_FR, constants.Gender.Female, 'roxane'),
+            self.build_voice(languages.AudioLanguage.de_DE, constants.Gender.Female, 'lena'),
+            self.build_voice(languages.AudioLanguage.ru_RU, constants.Gender.Female, 'vera'),
+            self.build_voice(languages.AudioLanguage.th_TH, constants.Gender.Female, 'somsi'),
         ]
 
     # This function implements function I(a,t) found at
