@@ -1,6 +1,6 @@
 from pydoc import describe
 import sys
-import PyQt5
+import aqt.qt
 import webbrowser
 import logging
 
@@ -103,26 +103,26 @@ class Configuration(component_common.ConfigComponentBase):
         return f'{service.name}_enabled'
 
     def draw_service_options(self, service, layout):
-        service_enabled_checkbox = PyQt5.QtWidgets.QCheckBox('Enable')
+        service_enabled_checkbox = aqt.qt.QCheckBox('Enable')
         service_enabled_checkbox.setObjectName(self.get_service_enabled_widget_name(service))
         service_enabled_checkbox.setChecked(service.enabled)
         service_enabled_checkbox.stateChanged.connect(self.get_service_enable_change_fn(service))
         layout.addWidget(service_enabled_checkbox)
 
         configuration_options = service.configuration_options()
-        options_gridlayout = PyQt5.QtWidgets.QGridLayout()
+        options_gridlayout = aqt.qt.QGridLayout()
         row = 0
         for key, type in configuration_options.items():
             widget_name = f'{service.name}_{key}'
-            options_gridlayout.addWidget(PyQt5.QtWidgets.QLabel(key + ':'), row, 0, 1, 1)
+            options_gridlayout.addWidget(aqt.qt.QLabel(key + ':'), row, 0, 1, 1)
             if type == str:
-                lineedit = PyQt5.QtWidgets.QLineEdit()
+                lineedit = aqt.qt.QLineEdit()
                 lineedit.setText(self.model.get_service_configuration_key(service.name, key))
                 lineedit.setObjectName(widget_name)
                 lineedit.textChanged.connect(self.get_service_config_str_change_fn(service, key))
                 options_gridlayout.addWidget(lineedit, row, 1, 1, 1)
             elif type == int:
-                spinbox = PyQt5.QtWidgets.QSpinBox()
+                spinbox = aqt.qt.QSpinBox()
                 saved_value = self.model.get_service_configuration_key(service.name, key)
                 if saved_value != None:
                     spinbox.setValue(saved_value)
@@ -130,7 +130,7 @@ class Configuration(component_common.ConfigComponentBase):
                 spinbox.valueChanged.connect(self.get_service_config_int_change_fn(service, key))
                 options_gridlayout.addWidget(spinbox, row, 1, 1, 1)
             elif type == float:
-                spinbox = PyQt5.QtWidgets.QDoubleSpinBox()
+                spinbox = aqt.qt.QDoubleSpinBox()
                 saved_value = self.model.get_service_configuration_key(service.name, key)
                 if saved_value != None:
                     spinbox.setValue(saved_value)
@@ -138,7 +138,7 @@ class Configuration(component_common.ConfigComponentBase):
                 spinbox.valueChanged.connect(self.get_service_config_float_change_fn(service, key))
                 options_gridlayout.addWidget(spinbox, row, 1, 1, 1)                
             elif type == bool:
-                checkbox = PyQt5.QtWidgets.QCheckBox()
+                checkbox = aqt.qt.QCheckBox()
                 saved_value = self.model.get_service_configuration_key(service.name, key)
                 if saved_value != None:
                     checkbox.setChecked(saved_value)
@@ -146,7 +146,7 @@ class Configuration(component_common.ConfigComponentBase):
                 checkbox.stateChanged.connect(self.get_service_config_bool_change_fn(service, key))
                 options_gridlayout.addWidget(checkbox, row, 1, 1, 1)
             elif isinstance(type, list):
-                combobox = PyQt5.QtWidgets.QComboBox()
+                combobox = aqt.qt.QComboBox()
                 combobox.setObjectName(widget_name)
                 combobox.addItems(type)
                 combobox.setCurrentText(self.model.get_service_configuration_key(service.name, key))
@@ -160,18 +160,18 @@ class Configuration(component_common.ConfigComponentBase):
         logging.info(f'draw_service {service.name}')
         
         # layout.addWidget(gui_utils.get_service_header_label(service.name))
-        service_groupbox = PyQt5.QtWidgets.QGroupBox()
+        service_groupbox = aqt.qt.QGroupBox()
 
         # add service config options, when cloudlanguagetools not enabled
         # ===============================================================
 
-        service_stack = PyQt5.QtWidgets.QWidget()
-        service_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        service_stack = aqt.qt.QWidget()
+        service_vlayout = aqt.qt.QVBoxLayout()
         service_vlayout.addWidget(gui_utils.get_service_header_label(service.name))
         service_description = f'{service.service_fee.name}, {service.service_type.description}'
-        service_vlayout.addWidget(PyQt5.QtWidgets.QLabel(service_description))
+        service_vlayout.addWidget(aqt.qt.QLabel(service_description))
         if service.cloudlanguagetools_enabled():
-            hlayout = PyQt5.QtWidgets.QHBoxLayout()
+            hlayout = aqt.qt.QHBoxLayout()
             logo = gui_utils.get_graphic(constants.GRAPHICS_SERVICE_COMPATIBLE)
             hlayout.addStretch()
             hlayout.addWidget(logo)
@@ -181,18 +181,18 @@ class Configuration(component_common.ConfigComponentBase):
 
         # when cloudlanguagetools is enabled
         # ==================================
-        clt_stack = PyQt5.QtWidgets.QWidget()
-        clt_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        clt_stack = aqt.qt.QWidget()
+        clt_vlayout = aqt.qt.QVBoxLayout()
         clt_vlayout.addWidget(gui_utils.get_service_header_label(service.name))
         service_description = f'{service.service_fee.name}, {service.service_type.description}'
-        clt_vlayout.addWidget(PyQt5.QtWidgets.QLabel(service_description))
+        clt_vlayout.addWidget(aqt.qt.QLabel(service_description))
         logo = gui_utils.get_graphic(constants.GRAPHICS_SERVICE_ENABLED)
         clt_vlayout.addWidget(logo)
         clt_stack.setLayout(clt_vlayout)
 
         # create the stack widget
         # =======================
-        stack_widget = PyQt5.QtWidgets.QStackedWidget()
+        stack_widget = aqt.qt.QStackedWidget()
         stack_widget.addWidget(service_stack)
         stack_widget.addWidget(clt_stack)
 
@@ -200,7 +200,7 @@ class Configuration(component_common.ConfigComponentBase):
 
         self.service_stack_map[service.name] = stack_widget
 
-        combined_service_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        combined_service_vlayout = aqt.qt.QVBoxLayout()
         combined_service_vlayout.addWidget(stack_widget)
 
         service_groupbox.setLayout(combined_service_vlayout)
@@ -208,17 +208,17 @@ class Configuration(component_common.ConfigComponentBase):
         layout.addWidget(service_groupbox)
 
     def draw(self, layout):
-        self.global_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        self.global_vlayout = aqt.qt.QVBoxLayout()
 
         # logo header
         # ===========
-        lite_stack = PyQt5.QtWidgets.QWidget()
-        pro_stack = PyQt5.QtWidgets.QWidget()
+        lite_stack = aqt.qt.QWidget()
+        pro_stack = aqt.qt.QWidget()
 
         lite_stack.setLayout(gui_utils.get_hypertts_label_header(False))
         pro_stack.setLayout(gui_utils.get_hypertts_label_header(True))
 
-        self.header_logo_stack_widget = PyQt5.QtWidgets.QStackedWidget()
+        self.header_logo_stack_widget = aqt.qt.QStackedWidget()
         self.header_logo_stack_widget.addWidget(lite_stack)
         self.header_logo_stack_widget.addWidget(pro_stack)
 
@@ -228,25 +228,25 @@ class Configuration(component_common.ConfigComponentBase):
         # hypertts pro
         # ============
 
-        groupbox = PyQt5.QtWidgets.QGroupBox('HyperTTS Pro')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        groupbox = aqt.qt.QGroupBox('HyperTTS Pro')
+        vlayout = aqt.qt.QVBoxLayout()
 
-        description_label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_HYPERTTS_PRO)
+        description_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO)
         description_label.setWordWrap(True)
         vlayout.addWidget(description_label)
-        vlayout.addWidget(PyQt5.QtWidgets.QLabel('API Key'))
-        self.hypertts_pro_api_key = PyQt5.QtWidgets.QLineEdit()
+        vlayout.addWidget(aqt.qt.QLabel('API Key'))
+        self.hypertts_pro_api_key = aqt.qt.QLineEdit()
         self.hypertts_pro_api_key.setText(self.model.hypertts_pro_api_key)
         # self.hypertts_pro_api_key.textChanged.connect(self.get_hypertts_pro_api_key_change_fn())
         vlayout.addWidget(self.hypertts_pro_api_key)
 
-        self.account_info_label = PyQt5.QtWidgets.QLabel()
+        self.account_info_label = aqt.qt.QLabel()
         vlayout.addWidget(self.account_info_label)
 
-        self.account_update_button = PyQt5.QtWidgets.QPushButton()
+        self.account_update_button = aqt.qt.QPushButton()
         self.account_update_button.setText('Upgrade / Downgrade / Payment options')
         self.account_update_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
-        self.account_cancel_button = PyQt5.QtWidgets.QPushButton()
+        self.account_cancel_button = aqt.qt.QPushButton()
         self.account_cancel_button.setText('Cancel Plan')
         self.account_cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
         vlayout.addWidget(self.account_update_button)
@@ -261,11 +261,11 @@ class Configuration(component_common.ConfigComponentBase):
         # services
         # ========
 
-        self.global_vlayout.addWidget(PyQt5.QtWidgets.QLabel('Services'))
-        services_scroll_area = PyQt5.QtWidgets.QScrollArea()
-        services_scroll_area.setHorizontalScrollBarPolicy(PyQt5.QtCore.Qt.ScrollBarAlwaysOff)
-        services_widget = PyQt5.QtWidgets.QWidget()
-        services_vlayout = PyQt5.QtWidgets.QVBoxLayout(services_widget)
+        self.global_vlayout.addWidget(aqt.qt.QLabel('Services'))
+        services_scroll_area = aqt.qt.QScrollArea()
+        services_scroll_area.setHorizontalScrollBarPolicy(aqt.qt.Qt.ScrollBarAlwaysOff)
+        services_widget = aqt.qt.QWidget()
+        services_vlayout = aqt.qt.QVBoxLayout(services_widget)
         for service in self.hypertts.service_manager.get_all_services():
             self.draw_service(service, services_vlayout)
 
@@ -275,10 +275,10 @@ class Configuration(component_common.ConfigComponentBase):
         # bottom buttons
         # ==============
 
-        hlayout = PyQt5.QtWidgets.QHBoxLayout()
-        self.save_button = PyQt5.QtWidgets.QPushButton('Save')
+        hlayout = aqt.qt.QHBoxLayout()
+        self.save_button = aqt.qt.QPushButton('Save')
         self.save_button.setEnabled(False)
-        self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
+        self.cancel_button = aqt.qt.QPushButton('Cancel')
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
         hlayout.addStretch()
         hlayout.addWidget(self.save_button)
