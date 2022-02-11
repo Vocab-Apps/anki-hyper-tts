@@ -48,14 +48,6 @@ class NaverPapago(service.ServiceBase):
             self.build_voice(languages.AudioLanguage.ko_KR, constants.Gender.Female, 'kyuri'),
             self.build_voice(languages.AudioLanguage.ja_JP, constants.Gender.Female, 'yuri'),
         ]
-        voices = []
-        for language_key, language_name in languages.items():
-            if language_key in LANGUAGE_KEY_MAP:
-                language = LANGUAGE_KEY_MAP[language_key]
-                voices.append(voice.Voice(language_key, constants.Gender.Female, language, self, language_key, {}))
-            else:
-                logging.warning(f'skipping voice {language_key}, no mapping found')
-        return voices
 
     # This function implements function I(a,t) found at
     # https://papago.naver.com/main.87cbe57a9fc46d3db5c1.chunk.js
