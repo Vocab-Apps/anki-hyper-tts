@@ -1,5 +1,5 @@
 import sys
-import PyQt5
+import aqt.qt
 import logging
 import copy
 
@@ -19,13 +19,13 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         # initialize widgets
 
-        self.voices_layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.voices_layout = aqt.qt.QVBoxLayout()
 
-        self.audio_languages_combobox = PyQt5.QtWidgets.QComboBox()
-        self.languages_combobox = PyQt5.QtWidgets.QComboBox()
-        self.services_combobox = PyQt5.QtWidgets.QComboBox()
-        self.genders_combobox = PyQt5.QtWidgets.QComboBox()
-        self.voices_combobox = PyQt5.QtWidgets.QComboBox()
+        self.audio_languages_combobox = aqt.qt.QComboBox()
+        self.languages_combobox = aqt.qt.QComboBox()
+        self.services_combobox = aqt.qt.QComboBox()
+        self.genders_combobox = aqt.qt.QComboBox()
+        self.voices_combobox = aqt.qt.QComboBox()
 
         for combobox in [
             self.audio_languages_combobox,
@@ -36,9 +36,9 @@ class VoiceSelection(component_common.ConfigComponentBase):
             combobox.setStyleSheet("combobox-popup: 0;")
         self.voices_combobox.setFont(gui_utils.get_large_combobox_font())
 
-        self.play_sample_button = PyQt5.QtWidgets.QPushButton('Play Sample')
+        self.play_sample_button = aqt.qt.QPushButton('Play Sample')
 
-        self.reset_filters_button = PyQt5.QtWidgets.QPushButton('Reset Filters')        
+        self.reset_filters_button = aqt.qt.QPushButton('Reset Filters')        
 
         self.preview_enabled = True
 
@@ -147,29 +147,29 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
 
         # grid layout for filters
-        groupbox = PyQt5.QtWidgets.QGroupBox('Voice Filters')
-        gridlayout = PyQt5.QtWidgets.QGridLayout()
+        groupbox = aqt.qt.QGroupBox('Voice Filters')
+        gridlayout = aqt.qt.QGridLayout()
 
-        gridlayout.addWidget(PyQt5.QtWidgets.QLabel('Locale'), 0, 0, 1, 1)
+        gridlayout.addWidget(aqt.qt.QLabel('Locale'), 0, 0, 1, 1)
         gridlayout.addWidget(self.audio_languages_combobox, 0, 1, 1, 1)
-        gridlayout.addWidget(PyQt5.QtWidgets.QLabel('Language'), 1, 0, 1, 1)
+        gridlayout.addWidget(aqt.qt.QLabel('Language'), 1, 0, 1, 1)
         gridlayout.addWidget(self.languages_combobox, 1, 1, 1, 1)
-        gridlayout.addWidget(PyQt5.QtWidgets.QLabel('Service'), 2, 0, 1, 1)        
+        gridlayout.addWidget(aqt.qt.QLabel('Service'), 2, 0, 1, 1)        
         gridlayout.addWidget(self.services_combobox, 2, 1, 1, 1)
-        gridlayout.addWidget(PyQt5.QtWidgets.QLabel('Gender'), 3, 0, 1, 1)        
+        gridlayout.addWidget(aqt.qt.QLabel('Gender'), 3, 0, 1, 1)        
         gridlayout.addWidget(self.genders_combobox, 3, 1, 1, 1)
         gridlayout.addWidget(self.reset_filters_button, 4, 0, 1, 2)
         groupbox.setLayout(gridlayout)
         self.voices_layout.addWidget(groupbox)
         
-        groupbox = PyQt5.QtWidgets.QGroupBox('Voice')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        groupbox = aqt.qt.QGroupBox('Voice')
+        vlayout = aqt.qt.QVBoxLayout()
         vlayout.addWidget(self.voices_combobox)
 
         if self.preview_enabled:
             vlayout.addWidget(self.play_sample_button)
 
-        self.voice_options_layout = PyQt5.QtWidgets.QGridLayout()
+        self.voice_options_layout = aqt.qt.QGridLayout()
         vlayout.addLayout(self.voice_options_layout)
         groupbox.setLayout(vlayout)
         self.voices_layout.addWidget(groupbox)
@@ -177,12 +177,12 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         # voice selection mode groupbox
         # =============================
-        groupbox = PyQt5.QtWidgets.QGroupBox('Selection Mode')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        mode_group = PyQt5.QtWidgets.QButtonGroup()
-        self.radio_button_single = PyQt5.QtWidgets.QRadioButton('Single: a single voice will be used for all notes.')
-        self.radio_button_random = PyQt5.QtWidgets.QRadioButton('Random: select randomly from a list of voices.')
-        self.radio_button_priority = PyQt5.QtWidgets.QRadioButton('Priority: try first voice, then move to second if not found.')
+        groupbox = aqt.qt.QGroupBox('Selection Mode')
+        vlayout = aqt.qt.QVBoxLayout()
+        mode_group = aqt.qt.QButtonGroup()
+        self.radio_button_single = aqt.qt.QRadioButton('Single: a single voice will be used for all notes.')
+        self.radio_button_random = aqt.qt.QRadioButton('Random: select randomly from a list of voices.')
+        self.radio_button_priority = aqt.qt.QRadioButton('Priority: try first voice, then move to second if not found.')
         mode_group.addButton(self.radio_button_single)
         mode_group.addButton(self.radio_button_random)
         mode_group.addButton(self.radio_button_priority)
@@ -198,26 +198,26 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # voice list groupbox, should be in a widget stack
         # ================================================
 
-        self.voice_list_display_stack = PyQt5.QtWidgets.QStackedWidget()
-        no_voice_list_stack = PyQt5.QtWidgets.QWidget()
-        voice_list_stack = PyQt5.QtWidgets.QWidget()
+        self.voice_list_display_stack = aqt.qt.QStackedWidget()
+        no_voice_list_stack = aqt.qt.QWidget()
+        voice_list_stack = aqt.qt.QWidget()
 
-        self.voicelist_groupbox = PyQt5.QtWidgets.QGroupBox('Voice List')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout(voice_list_stack)
+        self.voicelist_groupbox = aqt.qt.QGroupBox('Voice List')
+        vlayout = aqt.qt.QVBoxLayout(voice_list_stack)
 
         # buttons
         # -------
 
-        self.add_voice_button = PyQt5.QtWidgets.QPushButton('Add Voice')
+        self.add_voice_button = aqt.qt.QPushButton('Add Voice')
         vlayout.addWidget(self.add_voice_button)
 
         # voice list grid
         # ---------------
 
-        self.voice_list_grid_scrollarea = PyQt5.QtWidgets.QScrollArea()
-        self.voice_list_grid_scrollarea.setHorizontalScrollBarPolicy(PyQt5.QtCore.Qt.ScrollBarAlwaysOff)
-        voice_list_grid_widget = PyQt5.QtWidgets.QWidget()
-        self.voice_list_grid_layout = PyQt5.QtWidgets.QGridLayout(voice_list_grid_widget)
+        self.voice_list_grid_scrollarea = aqt.qt.QScrollArea()
+        self.voice_list_grid_scrollarea.setHorizontalScrollBarPolicy(aqt.qt.Qt.ScrollBarAlwaysOff)
+        voice_list_grid_widget = aqt.qt.QWidget()
+        self.voice_list_grid_layout = aqt.qt.QGridLayout(voice_list_grid_widget)
         self.voice_list_grid_scrollarea.setWidgetResizable(True)
         self.voice_list_grid_scrollarea.setWidget(voice_list_grid_widget)
 
@@ -343,14 +343,14 @@ class VoiceSelection(component_common.ConfigComponentBase):
             option_type = constants.VoiceOptionTypes[value['type']]
             if option_type == constants.VoiceOptionTypes.number:
                 # create a spinner
-                widget = PyQt5.QtWidgets.QDoubleSpinBox()
+                widget = aqt.qt.QDoubleSpinBox()
                 widget.setObjectName(widget_name)
                 # logging.info(f'objec name: {widget_name}')
                 widget.setRange(value['min'], value['max'])
                 widget.setValue(value['default'])
                 widget.valueChanged.connect(get_set_option_lambda(voice, key))
                 label_text = f"""{key} ({value['min']} to {value['max']})"""
-                label = PyQt5.QtWidgets.QLabel(label_text)
+                label = aqt.qt.QLabel(label_text)
                 self.voice_options_layout.addWidget(label, row, 0, 1, 1)
                 self.voice_options_layout.addWidget(widget, row, 1, 1, 1)
                 self.voice_options_widgets[widget_name] = widget
@@ -426,17 +426,17 @@ class VoiceSelection(component_common.ConfigComponentBase):
         row = 0
         for voice_entry in self.voice_selection_model.voice_list:
             column_index = 0
-            self.voice_list_grid_layout.addWidget(PyQt5.QtWidgets.QLabel(str(voice_entry)), row, column_index, 1, 1)
+            self.voice_list_grid_layout.addWidget(aqt.qt.QLabel(str(voice_entry)), row, column_index, 1, 1)
             column_index += 1
             if isinstance(self.voice_selection_model, config_models.VoiceSelectionRandom):
                 # add weight widget
-                weight_widget = PyQt5.QtWidgets.QSpinBox()
+                weight_widget = aqt.qt.QSpinBox()
                 weight_widget.setValue(voice_entry.random_weight)
                 weight_widget.valueChanged.connect(voice_entry.set_random_weight)
                 self.voice_list_grid_layout.addWidget(weight_widget, row, column_index, 1, 1)
                 column_index += 1
             # add remove button
-            remove_button = PyQt5.QtWidgets.QPushButton('Remove')
+            remove_button = aqt.qt.QPushButton('Remove')
             remove_button.setObjectName(f'remove_voice_row_{row}')
             self.voice_list_grid_layout.addWidget(remove_button, row, column_index, 1, 1)
             column_index += 1
@@ -444,8 +444,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
             # add up/down buttons
             if isinstance(self.voice_selection_model, config_models.VoiceSelectionPriority):
                 # add weight widget
-                up_button = PyQt5.QtWidgets.QPushButton('Up')
-                down_button = PyQt5.QtWidgets.QPushButton('Down')
+                up_button = aqt.qt.QPushButton('Up')
+                down_button = aqt.qt.QPushButton('Down')
                 up_button.pressed.connect(get_move_up_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices, self.notify_model_update))
                 down_button.pressed.connect(get_move_down_lambda(self.voice_selection_model, voice_entry, self.redraw_selected_voices, self.notify_model_update))
 
