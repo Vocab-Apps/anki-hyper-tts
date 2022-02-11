@@ -1034,9 +1034,9 @@ def test_text_processing(qtbot):
     # dialog.exec_()
 
     # asserts on the GUI
-    assert text_processing.textReplacementTableModel.headerData(0, aqt.qt.Qt.Horizontal, aqt.qt.Qt.DisplayRole) == 'Type'
-    assert text_processing.textReplacementTableModel.headerData(1, aqt.qt.Qt.Horizontal, aqt.qt.Qt.DisplayRole) == 'Pattern'
-    assert text_processing.textReplacementTableModel.headerData(2, aqt.qt.Qt.Horizontal, aqt.qt.Qt.DisplayRole) == 'Replacement'    
+    assert text_processing.textReplacementTableModel.headerData(0, aqt.qt.Qt.Orientation.Horizontal, aqt.qt.Qt.ItemDataRole.DisplayRole) == 'Type'
+    assert text_processing.textReplacementTableModel.headerData(1, aqt.qt.Qt.Orientation.Horizontal, aqt.qt.Qt.ItemDataRole.DisplayRole) == 'Pattern'
+    assert text_processing.textReplacementTableModel.headerData(2, aqt.qt.Qt.Orientation.Horizontal, aqt.qt.Qt.ItemDataRole.DisplayRole) == 'Replacement'    
     # should have 0 rows
     assert text_processing.textReplacementTableModel.rowCount(None) == 0    
 
@@ -1140,25 +1140,25 @@ def test_text_processing(qtbot):
     # check first row
     row = 0
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_TYPE)
-    rule_type = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.DisplayRole)
+    rule_type = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.ItemDataRole.DisplayRole)
     assert rule_type.value() == 'Simple'
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
-    source = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.DisplayRole)
+    source = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.ItemDataRole.DisplayRole)
     assert source.value() == '"a"'
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
-    target = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.DisplayRole)
+    target = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.ItemDataRole.DisplayRole)
     assert target.value() == '"b"'
 
     # check second row
     row = 1
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_TYPE)
-    rule_type = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.DisplayRole)
+    rule_type = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.ItemDataRole.DisplayRole)
     assert rule_type.value() == 'Regex'
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
-    source = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.DisplayRole)
+    source = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.ItemDataRole.DisplayRole)
     assert source.value() == '"c"'
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
-    target = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.DisplayRole)
+    target = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.ItemDataRole.DisplayRole)
     assert target.value() == '"d"'    
 
     assert text_processing_component.html_to_text_line_checkbox.isChecked() == False

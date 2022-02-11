@@ -185,7 +185,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.tabs.addTab(self.tab_text_processing, 'Text Processing')
 
         if self.editor_mode == False:
-            self.splitter = aqt.qt.QSplitter(aqt.qt.Qt.Horizontal)
+            self.splitter = aqt.qt.QSplitter(aqt.qt.Qt.Orientation.Horizontal)
             self.splitter.addWidget(self.tabs)
 
             self.preview_widget = aqt.qt.QWidget()

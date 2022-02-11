@@ -33,10 +33,10 @@ class BatchPreviewTableModel(aqt.qt.QAbstractTableModel):
     def notifyChange(self, row):
         start_index = self.createIndex(row, 0)
         end_index = self.createIndex(row, 2)
-        self.dataChanged.emit(start_index, end_index, [aqt.qt.Qt.DisplayRole])
+        self.dataChanged.emit(start_index, end_index, [aqt.qt.Qt.ItemDataRole.DisplayRole])
 
     def data(self, index, role):
-        if role != aqt.qt.Qt.DisplayRole:
+        if role != aqt.qt.Qt.ItemDataRole.DisplayRole:
             return None
         # logging.debug('SourceTextPreviewTableModel.data')
         if not index.isValid():
@@ -58,7 +58,7 @@ class BatchPreviewTableModel(aqt.qt.QAbstractTableModel):
 
     def headerData(self, col, orientation, role):
         # logging.debug('SourceTextPreviewTableModel.headerData')
-        if orientation == aqt.qt.Qt.Horizontal and role == aqt.qt.Qt.DisplayRole:
+        if orientation == aqt.qt.Qt.Orientation.Horizontal and role == aqt.qt.Qt.ItemDataRole.DisplayRole:
             if col == 0:
                 return aqt.qt.QVariant(self.note_id_header)
             elif col == 1:

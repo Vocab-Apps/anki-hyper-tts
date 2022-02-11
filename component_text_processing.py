@@ -81,7 +81,7 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
 
         text_replacement_rule = self.model.get_text_replacement_rule_row(row)
 
-        if role == aqt.qt.Qt.DisplayRole or role == aqt.qt.Qt.EditRole:
+        if role == aqt.qt.Qt.ItemDataRole.DisplayRole or role == aqt.qt.Qt.EditRole:
 
             if column == COL_INDEX_TYPE:
                 return aqt.qt.QVariant(text_replacement_rule.rule_type.name.title())
@@ -93,7 +93,7 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
         return aqt.qt.QVariant()
 
     def data_display(self, value, role):
-        if role == aqt.qt.Qt.DisplayRole:
+        if role == aqt.qt.Qt.ItemDataRole.DisplayRole:
             text = '""'
             if value != None:
                 text = '"' + value + '"'
@@ -136,7 +136,7 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
             return False
 
     def headerData(self, col, orientation, role):
-        if orientation == aqt.qt.Qt.Horizontal and role == aqt.qt.Qt.DisplayRole:
+        if orientation == aqt.qt.Qt.Orientation.Horizontal and role == aqt.qt.Qt.ItemDataRole.DisplayRole:
             return aqt.qt.QVariant(self.header_text[col])
         return aqt.qt.QVariant()
 
