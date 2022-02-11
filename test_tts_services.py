@@ -53,7 +53,12 @@ class TTSTests(unittest.TestCase):
             'api_key': os.environ['AZURE_SERVICES_KEY'],
             'region': os.environ['AZURE_SERVICES_REGION']
         })        
-        
+        # amazon
+        self.manager.get_service('Amazon').enabled = True
+        self.manager.get_service('Amazon').configure({
+            'aws_access_key_id': os.environ['AWS_ACCESS_KEY_ID'],
+            'aws_secret_access_key': os.environ['AWS_SECRET_ACCESS_KEY'],
+        })
         # free services 
         # =============
         # google translate
@@ -178,6 +183,48 @@ class TTSTests(unittest.TestCase):
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+        # french
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
+        self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
+
+        # error checking
+        # try a voice which doesn't exist
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        selected_voice = copy.copy(selected_voice)
+        voice_key = copy.copy(selected_voice.voice_key)
+        voice_key['name'] = 'non existent'
+        altered_voice = voice.Voice('non existent', 
+                                    selected_voice.gender, 
+                                    selected_voice.language, 
+                                    selected_voice.service, 
+                                    voice_key,
+                                    selected_voice.options)
+
+        exception_caught = False
+        try:
+            audio_data = self.manager.get_tts_audio('This is the second sentence', altered_voice, {}, 
+                context.AudioRequestContext(constants.AudioRequestReason.batch))
+        except errors.RequestError as e:
+            assert 'Could not request audio for' in str(e)
+            assert e.source_text == 'This is the second sentence'
+            assert e.voice.service.name == service_name
+            exception_caught = True
+        assert exception_caught
+
+    def test_amazon(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_amazon'
+        service_name = 'Amazon'
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        assert len(service_voices) > 50
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+        return
 
         # french
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)

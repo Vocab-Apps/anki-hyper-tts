@@ -1,0 +1,81 @@
+import sys
+import requests
+import datetime
+import logging
+import time
+import boto3
+import botocore
+import contextlib
+
+voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
+service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
+errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
+
+class Amazon(service.ServiceBase):
+    CONFIG_ACCESS_KEY_ID = 'aws_access_key_id'
+    CONFIG_SECRET_ACCESS_KEY = 'aws_secret_access_key'
+    CONFIG_THROTTLE_SECONDS = 'throttle_seconds'
+
+    def __init__(self):
+        service.ServiceBase.__init__(self)
+        self.access_token = None
+
+    def cloudlanguagetools_enabled(self):
+        return True
+
+    @property
+    def service_type(self) -> constants.ServiceType:
+        return constants.ServiceType.tts
+
+    @property
+    def service_fee(self) -> constants.ServiceFee:
+        return constants.ServiceFee.Premium
+
+    def configuration_options(self):
+        return {
+            self.CONFIG_ACCESS_KEY_ID: str,
+            self.CONFIG_SECRET_ACCESS_KEY: str,
+            self.CONFIG_THROTTLE_SECONDS: float
+        }
+
+    def configure(self, config):
+        self._config = config
+        self.polly_client = boto3.client("polly",
+            aws_access_key_id=self.get_configuration_value_mandatory(self.CONFIG_ACCESS_KEY_ID),
+            aws_secret_access_key=self.get_configuration_value_mandatory(self.CONFIG_SECRET_ACCESS_KEY),
+            config=botocore.config.Config(connect_timeout=constants.RequestTimeout, read_timeout=constants.RequestTimeout))        
+
+
+    def voice_list(self):
+        return self.basic_voice_list()
+
+    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+
+        pitch = options.get('pitch', voice.options['pitch']['default'])
+        pitch_str = f'{pitch:+.0f}%'
+        rate = options.get('rate', voice.options['rate']['default'])
+        rate_str = f'{rate:0.0f}%'
+
+        prosody_tags = f'pitch="{pitch_str}" rate="{rate_str}"'
+        if voice.voice_key['engine'] == 'neural':
+            # pitch not supported on neural voices
+            prosody_tags = f'rate="{rate_str}"'
+
+
+        ssml_str = f"""<speak>
+    <prosody {prosody_tags} >
+        {source_text}
+    </prosody>
+</speak>"""
+
+        try:
+            response = self.polly_client.synthesize_speech(Text=ssml_str, TextType="ssml", OutputFormat="mp3", VoiceId=voice.voice_key['voice_id'], Engine=voice.voice_key['engine'])
+        except (botocore.exceptions.BotoCoreError, botocore.exceptions.ClientError) as error:
+            raise errors.RequestError(source_text, voice, str(error))
+
+        if "AudioStream" in response:
+            with contextlib.closing(response["AudioStream"]) as stream:
+                return stream.read()
+
+        raise errors.RequestError(source_text, voice, 'no audio stream')
