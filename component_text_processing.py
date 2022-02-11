@@ -214,8 +214,8 @@ class TextProcessing(component_common.ConfigComponentBase):
 
         self.table_view = aqt.qt.QTableView()
         self.table_view.setModel(self.textReplacementTableModel)
-        self.table_view.setSelectionMode(aqt.qt.QTableView.SingleSelection)
-        # self.table_view.setSelectionBehavior(aqt.qt.QTableView.SelectRows)
+        self.table_view.setSelectionMode(aqt.qt.QTableView.SelectionMode.SingleSelection)
+        # self.table_view.setSelectionBehavior(aqt.qt.QTableView.SelectionBehavior.SelectRows)
         vlayout.addWidget(self.table_view)
         
         # setup buttons below table

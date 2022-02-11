@@ -113,8 +113,8 @@ class BatchPreview(component_common.ComponentBase):
         self.batch_preview_layout = aqt.qt.QVBoxLayout()
         self.table_view = aqt.qt.QTableView()
         self.table_view.setModel(self.batch_preview_table_model)
-        self.table_view.setSelectionMode(aqt.qt.QTableView.SingleSelection)
-        self.table_view.setSelectionBehavior(aqt.qt.QTableView.SelectRows)
+        self.table_view.setSelectionMode(aqt.qt.QTableView.SelectionMode.SingleSelection)
+        self.table_view.setSelectionBehavior(aqt.qt.QTableView.SelectionBehavior.SelectRows)
         self.table_view.selectionModel().selectionChanged.connect(self.selection_changed)
         self.batch_preview_layout.addWidget(self.table_view, stretch=1)
         
