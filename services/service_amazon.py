@@ -70,7 +70,7 @@ class Amazon(service.ServiceBase):
         self.polly_client = boto3.client("polly",
             aws_access_key_id=self.get_configuration_value_mandatory(self.CONFIG_ACCESS_KEY_ID),
             aws_secret_access_key=self.get_configuration_value_mandatory(self.CONFIG_SECRET_ACCESS_KEY),
-            region_name=self.get_configuration_value_mandatory(self.CONFIG_REGION),
+            region_name=self.get_configuration_value_optional(self.CONFIG_REGION, 'us-east-1'),
             config=botocore.config.Config(connect_timeout=constants.RequestTimeout, read_timeout=constants.RequestTimeout))        
 
 
