@@ -15,6 +15,7 @@ constants = __import__('constants', globals(), locals(), [], sys._addon_import_l
 class Amazon(service.ServiceBase):
     CONFIG_ACCESS_KEY_ID = 'aws_access_key_id'
     CONFIG_SECRET_ACCESS_KEY = 'aws_secret_access_key'
+    CONFIG_REGION = 'aws_region'
     CONFIG_THROTTLE_SECONDS = 'throttle_seconds'
 
     def __init__(self):
@@ -36,6 +37,31 @@ class Amazon(service.ServiceBase):
         return {
             self.CONFIG_ACCESS_KEY_ID: str,
             self.CONFIG_SECRET_ACCESS_KEY: str,
+            self.CONFIG_REGION: [
+                'us-east-1',
+                'us-west-1',
+                'us-west-2',
+                'af-south-1',
+                'ap-east-1',
+                'ap-southeast-3',
+                'ap-south-1',
+                'ap-northeast-3',
+                'ap-northeast-2',
+                'ap-southeast-1',
+                'ap-southeast-2',
+                'ap-northeast-1',
+                'ca-central-1',
+                'eu-central-1',
+                'eu-west-1',
+                'eu-west-2',
+                'eu-south-1',
+                'eu-west-3',
+                'eu-north-1',
+                'me-south-1',
+                'sa-east-1',
+                'us-gov-east-1',
+                'us-gov-west-1',                
+            ],
             self.CONFIG_THROTTLE_SECONDS: float
         }
 
@@ -44,6 +70,7 @@ class Amazon(service.ServiceBase):
         self.polly_client = boto3.client("polly",
             aws_access_key_id=self.get_configuration_value_mandatory(self.CONFIG_ACCESS_KEY_ID),
             aws_secret_access_key=self.get_configuration_value_mandatory(self.CONFIG_SECRET_ACCESS_KEY),
+            region_name=self.get_configuration_value_mandatory(self.CONFIG_REGION),
             config=botocore.config.Config(connect_timeout=constants.RequestTimeout, read_timeout=constants.RequestTimeout))        
 
 
@@ -51,6 +78,9 @@ class Amazon(service.ServiceBase):
         return self.basic_voice_list()
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+        throttle_seconds = self.get_configuration_value_optional(self.CONFIG_THROTTLE_SECONDS, 0)
+        if throttle_seconds > 0:
+            time.sleep(throttle_seconds)        
 
         pitch = options.get('pitch', voice.options['pitch']['default'])
         pitch_str = f'{pitch:+.0f}%'
