@@ -78,7 +78,9 @@ LANGUAGE_KEY_MAP = {
     'zh-CN': lang.zh_CN,
     'zh-TW': lang.zh_TW,
 }
-
+GENDER_MAP = {
+    'ko': constants.Gender.Male
+}
 
 class GoogleTranslate(service.ServiceBase):
     CONFIG_THROTTLE_SECONDS = 'throttle_seconds'
@@ -106,7 +108,8 @@ class GoogleTranslate(service.ServiceBase):
         for language_key, language_name in languages.items():
             if language_key in LANGUAGE_KEY_MAP:
                 language = LANGUAGE_KEY_MAP[language_key]
-                voices.append(voice.Voice(language_key, constants.Gender.Female, language, self, language_key, {}))
+                gender = GENDER_MAP.get(language_key, constants.Gender.Female)
+                voices.append(voice.Voice(language_key, gender, language, self, language_key, {}))
             else:
                 logging.warning(f'skipping voice {language_key}, no mapping found')
         return voices
