@@ -65,6 +65,7 @@ class TTSTests(unittest.TestCase):
         # google translate
         self.manager.get_service('GoogleTranslate').enabled = True
         self.manager.get_service('Collins').enabled = True
+        self.manager.get_service('NaverPapago').enabled = True
 
     def sanitize_recognized_text(self, recognized_text):
         recognized_text = re.sub('<[^<]+?>', '', recognized_text)
@@ -101,6 +102,7 @@ class TTSTests(unittest.TestCase):
             languages.AudioLanguage.de_DE: 'de-DE',
             languages.AudioLanguage.es_ES: 'es-ES',
             languages.AudioLanguage.it_IT: 'it-IT',
+            languages.AudioLanguage.ko_KR: 'ko-KR',
         }
 
         recognition_language = recognition_language_map[voice.language]
@@ -245,6 +247,25 @@ class TTSTests(unittest.TestCase):
         # french
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
+
+    def test_naverpapago(self):
+        service_name = 'NaverPapago'
+        if self.manager.get_service(service_name).enabled == False:
+            logging.warning(f'service {service_name} not enabled, skipping')
+            return
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        
+        logging.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 2
+
+        # pick a random ko_KR voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ko_KR)
+        self.verify_audio_output(selected_voice, '여보세요')
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ja_JP)
+        self.verify_audio_output(selected_voice, 'おはようございます')
+
 
     def test_collins(self):
         service_name = 'Collins'
