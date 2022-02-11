@@ -20,7 +20,7 @@ class BatchPreviewTableModel(aqt.qt.QAbstractTableModel):
         self.status_header = 'Status'
 
     def flags(self, index):
-        return aqt.qt.Qt.ItemIsSelectable | aqt.qt.Qt.ItemIsEnabled
+        return aqt.qt.Qt.ItemFlag.ItemIsSelectable | aqt.qt.Qt.ItemFlag.ItemIsEnabled
 
     def rowCount(self, parent):
         # logging.debug('SourceTextPreviewTableModel.rowCount')

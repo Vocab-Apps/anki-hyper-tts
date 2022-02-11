@@ -44,9 +44,9 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
         col = index.column()
         if col == COL_INDEX_TYPE:
             # not editable
-            return aqt.qt.Qt.ItemIsSelectable | aqt.qt.Qt.ItemIsEnabled
+            return aqt.qt.Qt.ItemFlag.ItemIsSelectable | aqt.qt.Qt.ItemFlag.ItemIsEnabled
         if col == COL_INDEX_PATTERN or col == COL_INDEX_REPLACEMENT:
-            return aqt.qt.Qt.ItemIsEditable | aqt.qt.Qt.ItemIsSelectable | aqt.qt.Qt.ItemIsEnabled
+            return aqt.qt.Qt.ItemIsEditable | aqt.qt.Qt.ItemFlag.ItemIsSelectable | aqt.qt.Qt.ItemFlag.ItemIsEnabled
 
     def rowCount(self, parent):
         return len(self.model.text_replacement_rules)
