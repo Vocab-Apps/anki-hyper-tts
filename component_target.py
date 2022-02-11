@@ -1,6 +1,6 @@
 from asyncio.proactor_events import constants
 import sys
-import PyQt5
+import aqt.qt
 import logging
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
@@ -32,14 +32,14 @@ class BatchTarget(component_common.ConfigComponentBase):
 
 
     def draw(self):
-        self.batch_target_layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.batch_target_layout = aqt.qt.QVBoxLayout()
         
         # target field
         # ============
-        groupbox = PyQt5.QtWidgets.QGroupBox('Target Field')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        vlayout.addWidget(PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_TARGET_FIELD))
-        self.target_field_combobox = PyQt5.QtWidgets.QComboBox()
+        groupbox = aqt.qt.QGroupBox('Target Field')
+        vlayout = aqt.qt.QVBoxLayout()
+        vlayout.addWidget(aqt.qt.QLabel(constants.GUI_TEXT_TARGET_FIELD))
+        self.target_field_combobox = aqt.qt.QComboBox()
         self.target_field_combobox.addItems(self.field_list)
         vlayout.addWidget(self.target_field_combobox)
         groupbox.setLayout(vlayout)
@@ -47,14 +47,14 @@ class BatchTarget(component_common.ConfigComponentBase):
 
         # text and sound tag
         # ==================
-        groupbox = PyQt5.QtWidgets.QGroupBox('Text and Sound Tag Handling')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_TARGET_TEXT_AND_SOUND)
+        groupbox = aqt.qt.QGroupBox('Text and Sound Tag Handling')
+        vlayout = aqt.qt.QVBoxLayout()
+        label = aqt.qt.QLabel(constants.GUI_TEXT_TARGET_TEXT_AND_SOUND)
         label.setWordWrap(True)
         vlayout.addWidget(label)
-        self.text_sound_group = PyQt5.QtWidgets.QButtonGroup()
-        self.radio_button_sound_only = PyQt5.QtWidgets.QRadioButton('Sound Tag only')
-        self.radio_button_text_sound = PyQt5.QtWidgets.QRadioButton('Text and Sound Tag')
+        self.text_sound_group = aqt.qt.QButtonGroup()
+        self.radio_button_sound_only = aqt.qt.QRadioButton('Sound Tag only')
+        self.radio_button_text_sound = aqt.qt.QRadioButton('Text and Sound Tag')
         self.text_sound_group.addButton(self.radio_button_sound_only)
         self.text_sound_group.addButton(self.radio_button_text_sound)
         self.radio_button_sound_only.setChecked(True)
@@ -65,14 +65,14 @@ class BatchTarget(component_common.ConfigComponentBase):
 
         # remove sound tag
         # ================
-        groupbox = PyQt5.QtWidgets.QGroupBox('Existing Sound Tag Handling')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()        
-        label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_TARGET_REMOVE_SOUND_TAG)
+        groupbox = aqt.qt.QGroupBox('Existing Sound Tag Handling')
+        vlayout = aqt.qt.QVBoxLayout()        
+        label = aqt.qt.QLabel(constants.GUI_TEXT_TARGET_REMOVE_SOUND_TAG)
         label.setWordWrap(True)
         vlayout.addWidget(label)        
-        self.remove_sound_group = PyQt5.QtWidgets.QButtonGroup()
-        self.radio_button_remove_sound = PyQt5.QtWidgets.QRadioButton('Remove other sound tags')
-        self.radio_button_keep_sound = PyQt5.QtWidgets.QRadioButton('Keep other sound tags (append)')
+        self.remove_sound_group = aqt.qt.QButtonGroup()
+        self.radio_button_remove_sound = aqt.qt.QRadioButton('Remove other sound tags')
+        self.radio_button_keep_sound = aqt.qt.QRadioButton('Keep other sound tags (append)')
         self.remove_sound_group.addButton(self.radio_button_remove_sound)
         self.remove_sound_group.addButton(self.radio_button_keep_sound)
         self.radio_button_remove_sound.setChecked(True)

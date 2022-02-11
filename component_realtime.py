@@ -1,5 +1,5 @@
 import sys
-import PyQt5
+import aqt.qt
 import logging
 import copy
 
@@ -21,8 +21,8 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.card_ord = card_ord
         self.model = config_models.RealtimeConfig()
 
-        self.apply_button = PyQt5.QtWidgets.QPushButton('Apply To Note')
-        self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
+        self.apply_button = aqt.qt.QPushButton('Apply To Note')
+        self.cancel_button = aqt.qt.QPushButton('Cancel')
 
         self.existing_preset_name = None
 
@@ -72,12 +72,12 @@ class ComponentRealtime(component_common.ConfigComponentBase):
             self.enable_apply_button()
 
     def draw(self, layout):
-        self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        self.vlayout = aqt.qt.QVBoxLayout()
 
         # header
         # ======
 
-        hlayout = PyQt5.QtWidgets.QHBoxLayout()
+        hlayout = aqt.qt.QHBoxLayout()
 
         # logo header
         hlayout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
@@ -86,10 +86,10 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         # sides tabs
         # ==========
 
-        self.tabs = PyQt5.QtWidgets.QTabWidget()
-        self.tabs.setTabPosition(PyQt5.QtWidgets.QTabWidget.West)
-        self.tab_front = PyQt5.QtWidgets.QWidget()
-        self.tab_back = PyQt5.QtWidgets.QWidget()
+        self.tabs = aqt.qt.QTabWidget()
+        self.tabs.setTabPosition(aqt.qt.QTabWidget.West)
+        self.tab_front = aqt.qt.QWidget()
+        self.tab_back = aqt.qt.QWidget()
 
         self.tab_front.setLayout(self.front.draw())
         self.tab_back.setLayout(self.back.draw())
@@ -107,7 +107,7 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         # setup bottom buttons
         # ====================
 
-        hlayout = PyQt5.QtWidgets.QHBoxLayout()
+        hlayout = aqt.qt.QHBoxLayout()
         hlayout.addStretch()
 
         # apply button

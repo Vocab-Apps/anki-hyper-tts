@@ -1,4 +1,4 @@
-import PyQt5
+import aqt.qt
 import logging
 import os
 import copy
@@ -20,13 +20,13 @@ import component_realtime_source
 import component_realtime_side
 import component_realtime
 
-class EmptyDialog(PyQt5.QtWidgets.QDialog):
+class EmptyDialog(aqt.qt.QDialog):
     def __init__(self):
-        super(PyQt5.QtWidgets.QDialog, self).__init__()
+        super(aqt.qt.QDialog, self).__init__()
         self.closed = None
 
     def setupUi(self):
-        self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
+        self.main_layout = aqt.qt.QVBoxLayout(self)
 
     def getLayout(self):
         return self.main_layout
@@ -138,7 +138,7 @@ def test_voice_selection_single_1(qtbot):
     assert voiceselection.serialize() == expected_output    
 
     # change options
-    speaking_rate_widget = dialog.findChild(PyQt5.QtWidgets.QDoubleSpinBox, "voice_option_speaking_rate")
+    speaking_rate_widget = dialog.findChild(aqt.qt.QDoubleSpinBox, "voice_option_speaking_rate")
     speaking_rate_widget.setValue(0.25)
 
     expected_output = {
@@ -169,16 +169,16 @@ def test_voice_selection_random_1(qtbot):
     dialog.addChildLayout(voiceselection.draw())
 
     # choose random mode
-    # qtbot.mouseClick(voiceselection.radio_button_random, PyQt5.QtCore.Qt.LeftButton)
+    # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
     voiceselection.radio_button_random.setChecked(True)
 
     # pick second voice and add it
     voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
 
     # pick third voice and add it
     voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)    
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)    
 
     expected_output = {
         'voice_selection_mode': 'random',
@@ -222,16 +222,16 @@ def test_voice_selection_random_to_single(qtbot):
     dialog.addChildLayout(voiceselection.draw())
 
     # choose random mode
-    # qtbot.mouseClick(voiceselection.radio_button_random, PyQt5.QtCore.Qt.LeftButton)
+    # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
     voiceselection.radio_button_random.setChecked(True)
 
     # pick second voice and add it
     voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
 
     # pick third voice and add it
     voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)    
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)    
 
     # check model change callback
     assert model_change_callback.model.selection_mode == constants.VoiceSelectionMode.random
@@ -257,16 +257,16 @@ def test_voice_selection_random_remove_voices(qtbot):
     dialog.addChildLayout(voiceselection.draw())
 
     # choose random mode
-    # qtbot.mouseClick(voiceselection.radio_button_random, PyQt5.QtCore.Qt.LeftButton)
+    # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
     voiceselection.radio_button_random.setChecked(True)
 
     # pick second voice and add it
     voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
 
     # pick third voice and add it
     voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)    
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)    
 
     # check model change callback
     assert model_change_callback.model.selection_mode == constants.VoiceSelectionMode.random
@@ -274,8 +274,8 @@ def test_voice_selection_random_remove_voices(qtbot):
 
     # now remove one of the voices
     logging.info('removing voice_row_1')
-    remove_voice_button = dialog.findChild(PyQt5.QtWidgets.QPushButton, 'remove_voice_row_1')
-    qtbot.mouseClick(remove_voice_button, PyQt5.QtCore.Qt.LeftButton)
+    remove_voice_button = dialog.findChild(aqt.qt.QPushButton, 'remove_voice_row_1')
+    qtbot.mouseClick(remove_voice_button, aqt.qt.Qt.LeftButton)
 
     # check model change callback
     assert model_change_callback.model.selection_mode == constants.VoiceSelectionMode.random
@@ -298,14 +298,14 @@ def test_voice_selection_random_2(qtbot):
 
     # add the first voice twice, but with different options
     voiceselection.voices_combobox.setCurrentIndex(0)
-    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
 
     # change options
-    speaking_rate_widget = dialog.findChild(PyQt5.QtWidgets.QDoubleSpinBox, "voice_option_speaking_rate")
+    speaking_rate_widget = dialog.findChild(aqt.qt.QDoubleSpinBox, "voice_option_speaking_rate")
     speaking_rate_widget.setValue(0.25)    
 
     # add again
-    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
 
     # build expected voice selection model
     expected_model = config_models.VoiceSelectionRandom()
@@ -328,18 +328,18 @@ def test_voice_selection_priority_1(qtbot):
     dialog.addChildLayout(voiceselection.draw())
 
     # choose random mode
-    # qtbot.mouseClick(voiceselection.radio_button_random, PyQt5.QtCore.Qt.LeftButton)
+    # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
     voiceselection.radio_button_priority.setChecked(True)
 
     # dialog.exec_()
 
     # pick second voice and add it
     voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
 
     # pick third voice and add it
     voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)    
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)    
 
     expected_model = config_models.VoiceSelectionPriority()
     voice_2 = [x for x in hypertts_instance.service_manager.full_voice_list() if x.service.name == 'ServiceA' and x.name == 'voice_a_2'][0]
@@ -385,7 +385,7 @@ def test_voice_selection_filters(qtbot):
         assert voice.language.lang == languages.Language.ja
 
     # reset filters
-    qtbot.mouseClick(voiceselection.reset_filters_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.LeftButton)
 
     # ensure all voices are available now
     assert len(voiceselection.filtered_voice_list) == len(voiceselection.voice_list)
@@ -400,7 +400,7 @@ def test_voice_selection_filters(qtbot):
         assert voice.gender == constants.Gender.Male
 
     # reset filters again
-    qtbot.mouseClick(voiceselection.reset_filters_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.LeftButton)
     # ensure all voices are available now
     assert len(voiceselection.filtered_voice_list) == len(voiceselection.voice_list)
     
@@ -416,7 +416,7 @@ def test_voice_selection_filters(qtbot):
         assert voice.language.lang == languages.Language.ja
 
     # reset filters again
-    qtbot.mouseClick(voiceselection.reset_filters_button, PyQt5.QtCore.Qt.LeftButton)    
+    qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.LeftButton)    
 
     # select random mode and add some voices
     # ======================================
@@ -437,7 +437,7 @@ def test_voice_selection_samples(qtbot):
     # simulate selection from the preview grid
     voiceselection.sample_text_selected('Bonjour')
 
-    qtbot.mouseClick(voiceselection.play_sample_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.play_sample_button, aqt.qt.Qt.LeftButton)
 
     assert hypertts_instance.anki_utils.played_sound == {
         'source_text': 'Bonjour',
@@ -743,7 +743,7 @@ def test_batch_dialog(qtbot):
     # save button should be enabled
     assert batch.profile_save_button.isEnabled() == True
     # save
-    qtbot.mouseClick(batch.profile_save_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.LeftButton)
     # should be disabled after saving
     assert batch.profile_save_button.isEnabled() == False
     assert batch.profile_load_button.isEnabled() == False
@@ -776,7 +776,7 @@ def test_batch_dialog(qtbot):
     assert batch.profile_load_button.text() == 'Load'
 
     # open
-    qtbot.mouseClick(batch.profile_load_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.LeftButton)
 
     # button should go back to disabled
     assert batch.profile_load_button.isEnabled() == False
@@ -813,9 +813,9 @@ def test_batch_dialog(qtbot):
 
     # select second row
     index_second_row = batch.preview.batch_preview_table_model.createIndex(1, 0)
-    batch.preview.table_view.selectionModel().select(index_second_row, PyQt5.QtCore.QItemSelectionModel.Select)
+    batch.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.Select)
     # press preview button
-    qtbot.mouseClick(batch.preview_sound_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.LeftButton)
     # dialog.exec_()
 
     assert hypertts_instance.anki_utils.played_sound == {
@@ -834,7 +834,7 @@ def test_batch_dialog(qtbot):
     # ==========
 
     batch.source.source_field_combobox.setCurrentText('Chinese')
-    qtbot.mouseClick(batch.apply_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.LeftButton)
 
     # make sure notes were updated
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
@@ -865,7 +865,7 @@ def test_batch_dialog(qtbot):
 
     assert batch.profile_name_combobox.count() == 2
     assert batch.profile_name_combobox.currentText() == 'batch profile 1'
-    qtbot.mouseClick(batch.profile_delete_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.profile_delete_button, aqt.qt.Qt.LeftButton)
 
     # make sure the profile was deleted
     assert 'batch profile 1' not in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]    
@@ -903,12 +903,12 @@ def test_batch_dialog_sound_preview_error(qtbot):
 
     # select second row
     index_second_row = batch.preview.batch_preview_table_model.createIndex(1, 0)
-    batch.preview.table_view.selectionModel().select(index_second_row, PyQt5.QtCore.QItemSelectionModel.Select)
+    batch.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.Select)
 
     # dialog.exec_()
 
     # press preview button
-    qtbot.mouseClick(batch.preview_sound_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.LeftButton)
 
     assert str(hypertts_instance.anki_utils.last_exception) == 'Audio not found for [hello] (voice: ServiceB, Japanese, Male, notfound)'
 
@@ -953,7 +953,7 @@ def test_batch_dialog_editor(qtbot):
     # test sound preview
     # ==================
     # dialog.exec_()
-    qtbot.mouseClick(batch.preview_sound_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.LeftButton)
     assert hypertts_instance.anki_utils.played_sound == {
         'source_text': '老人家',
         'voice': {
@@ -975,7 +975,7 @@ def test_batch_dialog_editor(qtbot):
     batch.target.target_field_combobox.setCurrentText('Sound')
 
     # apply not note
-    qtbot.mouseClick(batch.apply_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.LeftButton)
 
     sound_tag = note.set_values['Sound']
     audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
@@ -1034,9 +1034,9 @@ def test_text_processing(qtbot):
     # dialog.exec_()
 
     # asserts on the GUI
-    assert text_processing.textReplacementTableModel.headerData(0, PyQt5.QtCore.Qt.Horizontal, PyQt5.QtCore.Qt.DisplayRole) == 'Type'
-    assert text_processing.textReplacementTableModel.headerData(1, PyQt5.QtCore.Qt.Horizontal, PyQt5.QtCore.Qt.DisplayRole) == 'Pattern'
-    assert text_processing.textReplacementTableModel.headerData(2, PyQt5.QtCore.Qt.Horizontal, PyQt5.QtCore.Qt.DisplayRole) == 'Replacement'    
+    assert text_processing.textReplacementTableModel.headerData(0, aqt.qt.Qt.Horizontal, aqt.qt.Qt.DisplayRole) == 'Type'
+    assert text_processing.textReplacementTableModel.headerData(1, aqt.qt.Qt.Horizontal, aqt.qt.Qt.DisplayRole) == 'Pattern'
+    assert text_processing.textReplacementTableModel.headerData(2, aqt.qt.Qt.Horizontal, aqt.qt.Qt.DisplayRole) == 'Replacement'    
     # should have 0 rows
     assert text_processing.textReplacementTableModel.rowCount(None) == 0    
 
@@ -1045,25 +1045,25 @@ def test_text_processing(qtbot):
     assert text_processing.sample_text_transformed_label.text() == '<b>abdc1234</b>'
 
     # add a text transformation rule
-    qtbot.mouseClick(text_processing.add_replace_simple_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(text_processing.add_replace_simple_button, aqt.qt.Qt.LeftButton)
     # enter pattern and replacement
     row = 0
     index_pattern = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
-    text_processing.textReplacementTableModel.setData(index_pattern, '1234', PyQt5.QtCore.Qt.EditRole)
+    text_processing.textReplacementTableModel.setData(index_pattern, '1234', aqt.qt.Qt.EditRole)
     index_replacement = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
-    text_processing.textReplacementTableModel.setData(index_replacement, '5678', PyQt5.QtCore.Qt.EditRole)
+    text_processing.textReplacementTableModel.setData(index_replacement, '5678', aqt.qt.Qt.EditRole)
 
     # verify preview
     assert text_processing.sample_text_transformed_label.text() == '<b>abdc5678</b>'
 
     # add another transformation rule
-    qtbot.mouseClick(text_processing.add_replace_simple_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(text_processing.add_replace_simple_button, aqt.qt.Qt.LeftButton)
     # enter pattern and replacement
     row = 1
     index_pattern = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
-    text_processing.textReplacementTableModel.setData(index_pattern, ' / ', PyQt5.QtCore.Qt.EditRole)
+    text_processing.textReplacementTableModel.setData(index_pattern, ' / ', aqt.qt.Qt.EditRole)
     index_replacement = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
-    text_processing.textReplacementTableModel.setData(index_replacement, ' ', PyQt5.QtCore.Qt.EditRole)
+    text_processing.textReplacementTableModel.setData(index_replacement, ' ', aqt.qt.Qt.EditRole)
 
     # check processing preview
     text_processing.sample_text_input.clear()
@@ -1081,13 +1081,13 @@ def test_text_processing(qtbot):
 
     # add a regex rule
     # add another transformation rule
-    qtbot.mouseClick(text_processing.add_replace_regex_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(text_processing.add_replace_regex_button, aqt.qt.Qt.LeftButton)
     # enter pattern and replacement
     row = 2
     index_pattern = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
-    text_processing.textReplacementTableModel.setData(index_pattern, '[0-9]+', PyQt5.QtCore.Qt.EditRole)
+    text_processing.textReplacementTableModel.setData(index_pattern, '[0-9]+', aqt.qt.Qt.EditRole)
     index_replacement = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
-    text_processing.textReplacementTableModel.setData(index_replacement, 'number', PyQt5.QtCore.Qt.EditRole)
+    text_processing.textReplacementTableModel.setData(index_replacement, 'number', aqt.qt.Qt.EditRole)
 
     text_processing.sample_text_input.clear()
     qtbot.keyClicks(text_processing.sample_text_input, '1234')
@@ -1140,25 +1140,25 @@ def test_text_processing(qtbot):
     # check first row
     row = 0
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_TYPE)
-    rule_type = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
+    rule_type = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.DisplayRole)
     assert rule_type.value() == 'Simple'
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
-    source = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
+    source = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.DisplayRole)
     assert source.value() == '"a"'
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
-    target = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
+    target = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.DisplayRole)
     assert target.value() == '"b"'
 
     # check second row
     row = 1
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_TYPE)
-    rule_type = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
+    rule_type = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.DisplayRole)
     assert rule_type.value() == 'Regex'
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
-    source = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
+    source = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.DisplayRole)
     assert source.value() == '"c"'
     index = text_processing_component.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
-    target = text_processing_component.textReplacementTableModel.data(index, PyQt5.QtCore.Qt.DisplayRole)
+    target = text_processing_component.textReplacementTableModel.data(index, aqt.qt.Qt.DisplayRole)
     assert target.value() == '"d"'    
 
     assert text_processing_component.html_to_text_line_checkbox.isChecked() == False
@@ -1210,27 +1210,27 @@ def test_configuration(qtbot):
     assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
-    service_a_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_enabled")
+    service_a_enabled_checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceA_enabled")
     service_a_enabled_checkbox.setChecked(True)
     assert configuration.model.get_service_enabled('ServiceA') == True
     service_a_enabled_checkbox.setChecked(False)
     assert configuration.model.get_service_enabled('ServiceA') == False
 
-    service_a_region = dialog.findChild(PyQt5.QtWidgets.QComboBox, "ServiceA_region")
+    service_a_region = dialog.findChild(aqt.qt.QComboBox, "ServiceA_region")
     service_a_region.setCurrentText('europe')
     assert configuration.model.get_service_configuration_key('ServiceA', 'region') == 'europe'
     service_a_region.setCurrentText('us')
     assert configuration.model.get_service_configuration_key('ServiceA', 'region') == 'us'
     
-    service_a_api_key = dialog.findChild(PyQt5.QtWidgets.QLineEdit, "ServiceA_api_key")
+    service_a_api_key = dialog.findChild(aqt.qt.QLineEdit, "ServiceA_api_key")
     qtbot.keyClicks(service_a_api_key, '6789')
     assert configuration.model.get_service_configuration_key('ServiceA', 'api_key') == '6789'
 
-    service_a_delay = dialog.findChild(PyQt5.QtWidgets.QSpinBox, "ServiceA_delay")
+    service_a_delay = dialog.findChild(aqt.qt.QSpinBox, "ServiceA_delay")
     service_a_delay.setValue(42)
     assert configuration.model.get_service_configuration_key('ServiceA', 'delay') == 42
 
-    service_a_demokey = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_demo_key")
+    service_a_demokey = dialog.findChild(aqt.qt.QCheckBox, "ServiceA_demo_key")
     service_a_demokey.setChecked(True)
     assert configuration.model.get_service_configuration_key('ServiceA', 'demo_key') == True
     service_a_demokey.setChecked(False)
@@ -1240,7 +1240,7 @@ def test_configuration(qtbot):
     assert configuration.save_button.isEnabled() == True
 
     # press save button
-    qtbot.mouseClick(configuration.save_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.LeftButton)
     assert 'configuration' in hypertts_instance.anki_utils.written_config
     expected_output = {
         'hypertts_pro_api_key': None,
@@ -1318,22 +1318,22 @@ def test_configuration(qtbot):
     assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
-    service_a_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_enabled")
+    service_a_enabled_checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceA_enabled")
     assert service_a_enabled_checkbox.isChecked() == False
-    service_b_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceB_enabled")
+    service_b_enabled_checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceB_enabled")
     assert service_b_enabled_checkbox.isChecked() == True
 
-    service_a_region = dialog.findChild(PyQt5.QtWidgets.QComboBox, "ServiceA_region")
+    service_a_region = dialog.findChild(aqt.qt.QComboBox, "ServiceA_region")
     assert service_a_region.currentText() == 'europe'
-    service_a_api_key = dialog.findChild(PyQt5.QtWidgets.QLineEdit, "ServiceA_api_key")
+    service_a_api_key = dialog.findChild(aqt.qt.QLineEdit, "ServiceA_api_key")
     assert service_a_api_key.text() == '123456'
-    service_a_delay = dialog.findChild(PyQt5.QtWidgets.QSpinBox, "ServiceA_delay")
+    service_a_delay = dialog.findChild(aqt.qt.QSpinBox, "ServiceA_delay")
     assert service_a_delay.value() == 7
-    service_a_demokey = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceA_demo_key")
+    service_a_demokey = dialog.findChild(aqt.qt.QCheckBox, "ServiceA_demo_key")
     assert service_a_demokey.isChecked() == True
 
     # setting the API key should make ServiceB's enable checkbox disabled and checked
-    service_b_enabled_checkbox = dialog.findChild(PyQt5.QtWidgets.QCheckBox, "ServiceB_enabled")
+    service_b_enabled_checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceB_enabled")
     assert service_b_enabled_checkbox.isChecked() == True
 
     assert configuration.save_button.isEnabled() == False
@@ -1433,14 +1433,14 @@ def test_batch_dialog_load_random(qtbot):
     batch.voice_selection.radio_button_random.setChecked(True)
     # pick second voice and add it
     batch.voice_selection.voices_combobox.setCurrentIndex(1) # pick second voice
-    qtbot.mouseClick(batch.voice_selection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.voice_selection.add_voice_button, aqt.qt.Qt.LeftButton)
     # pick third voice and add it
     batch.voice_selection.voices_combobox.setCurrentIndex(2) # pick second voice
-    qtbot.mouseClick(batch.voice_selection.add_voice_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.voice_selection.add_voice_button, aqt.qt.Qt.LeftButton)
 
     # set profile name
     batch.profile_name_combobox.setCurrentText('batch random 1')
-    qtbot.mouseClick(batch.profile_save_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.LeftButton)
 
     assert 'batch random 1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]
 
@@ -1460,14 +1460,14 @@ def test_batch_dialog_load_random(qtbot):
     batch.profile_name_combobox.setCurrentText('batch random 1')
 
     # open
-    qtbot.mouseClick(batch.profile_load_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.LeftButton)
 
     # check that the voice selection mode is random
     assert batch.get_model().voice_selection.selection_mode == constants.VoiceSelectionMode.random
     assert len(batch.get_model().voice_selection.get_voice_list()) == 2
 
     # apply to notes
-    qtbot.mouseClick(batch.apply_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.LeftButton)
 
     # ensure audio was applied to 2 notes
     # make sure notes were updated
@@ -1565,7 +1565,7 @@ def test_realtime_side_component(qtbot):
     assert realtime_side.text_preview_label.text() == 'old people'
 
     # press sound preview
-    qtbot.mouseClick(realtime_side.preview_sound_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(realtime_side.preview_sound_button, aqt.qt.Qt.LeftButton)
 
     # ensure sound was played
     assert hypertts_instance.anki_utils.played_sound == {
@@ -1620,7 +1620,7 @@ def test_realtime_component(qtbot):
 
     # click apply
     assert realtime.apply_button.isEnabled() == True
-    qtbot.mouseClick(realtime.apply_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(realtime.apply_button, aqt.qt.Qt.LeftButton)
 
     # assertions on config saved
     assert constants.CONFIG_REALTIME_CONFIG in hypertts_instance.anki_utils.written_config
@@ -1682,7 +1682,7 @@ def test_realtime_component(qtbot):
     realtime.front.side_enabled_checkbox.setChecked(False)
 
     # save
-    qtbot.mouseClick(realtime.apply_button, PyQt5.QtCore.Qt.LeftButton)
+    qtbot.mouseClick(realtime.apply_button, aqt.qt.Qt.LeftButton)
 
     # assertions on config saved
     assert constants.CONFIG_REALTIME_CONFIG in hypertts_instance.anki_utils.written_config

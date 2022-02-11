@@ -1,6 +1,6 @@
 import sys
 import logging
-import PyQt5
+import aqt.qt
 import time
 import html
 
@@ -10,9 +10,9 @@ component_common = __import__('component_common', globals(), locals(), [], sys._
 batch_status = __import__('batch_status', globals(), locals(), [], sys._addon_import_level_base)
 
 
-class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
+class BatchPreviewTableModel(aqt.qt.QAbstractTableModel):
     def __init__(self, batch_status):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self, None)
+        aqt.qt.QAbstractTableModel.__init__(self, None)
         self.batch_status = batch_status
         self.note_id_header = 'Note Id'
         self.source_text_header = 'Source Text'
@@ -20,7 +20,7 @@ class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
         self.status_header = 'Status'
 
     def flags(self, index):
-        return PyQt5.QtCore.Qt.ItemIsSelectable | PyQt5.QtCore.Qt.ItemIsEnabled
+        return aqt.qt.Qt.ItemIsSelectable | aqt.qt.Qt.ItemIsEnabled
 
     def rowCount(self, parent):
         # logging.debug('SourceTextPreviewTableModel.rowCount')
@@ -33,14 +33,14 @@ class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
     def notifyChange(self, row):
         start_index = self.createIndex(row, 0)
         end_index = self.createIndex(row, 2)
-        self.dataChanged.emit(start_index, end_index, [PyQt5.QtCore.Qt.DisplayRole])
+        self.dataChanged.emit(start_index, end_index, [aqt.qt.Qt.DisplayRole])
 
     def data(self, index, role):
-        if role != PyQt5.QtCore.Qt.DisplayRole:
+        if role != aqt.qt.Qt.DisplayRole:
             return None
         # logging.debug('SourceTextPreviewTableModel.data')
         if not index.isValid():
-            return PyQt5.QtCore.QVariant()
+            return aqt.qt.QVariant()
         data = None
         note_status = self.batch_status[index.row()]
         if index.column() == 0:
@@ -53,21 +53,21 @@ class BatchPreviewTableModel(PyQt5.QtCore.QAbstractTableModel):
             if note_status.status != None:
                 data = note_status.status.name
         if data != None:
-            return PyQt5.QtCore.QVariant(data)
-        return PyQt5.QtCore.QVariant()
+            return aqt.qt.QVariant(data)
+        return aqt.qt.QVariant()
 
     def headerData(self, col, orientation, role):
         # logging.debug('SourceTextPreviewTableModel.headerData')
-        if orientation == PyQt5.QtCore.Qt.Horizontal and role == PyQt5.QtCore.Qt.DisplayRole:
+        if orientation == aqt.qt.Qt.Horizontal and role == aqt.qt.Qt.DisplayRole:
             if col == 0:
-                return PyQt5.QtCore.QVariant(self.note_id_header)
+                return aqt.qt.QVariant(self.note_id_header)
             elif col == 1:
-                return PyQt5.QtCore.QVariant(self.source_text_header)
+                return aqt.qt.QVariant(self.source_text_header)
             elif col == 2:
-                return PyQt5.QtCore.QVariant(self.processed_text_header)
+                return aqt.qt.QVariant(self.processed_text_header)
             elif col == 3:
-                return PyQt5.QtCore.QVariant(self.status_header)
-        return PyQt5.QtCore.QVariant()
+                return aqt.qt.QVariant(self.status_header)
+        return aqt.qt.QVariant()
 
 class BatchPreview(component_common.ComponentBase):
     def __init__(self, hypertts, note_id_list, sample_selection_fn, batch_start_fn, batch_end_fn):
@@ -81,8 +81,8 @@ class BatchPreview(component_common.ComponentBase):
         self.batch_preview_table_model = BatchPreviewTableModel(self.batch_status)
 
         # create certain widgets right away
-        self.stack = PyQt5.QtWidgets.QStackedWidget()
-        self.progress_bar = PyQt5.QtWidgets.QProgressBar()
+        self.stack = aqt.qt.QStackedWidget()
+        self.progress_bar = aqt.qt.QProgressBar()
         self.progress_bar.setMaximum(len(self.note_id_list))        
 
         self.selected_row = None
@@ -110,38 +110,38 @@ class BatchPreview(component_common.ComponentBase):
     def draw(self):
         # populate processed text
 
-        self.batch_preview_layout = PyQt5.QtWidgets.QVBoxLayout()
-        self.table_view = PyQt5.QtWidgets.QTableView()
+        self.batch_preview_layout = aqt.qt.QVBoxLayout()
+        self.table_view = aqt.qt.QTableView()
         self.table_view.setModel(self.batch_preview_table_model)
-        self.table_view.setSelectionMode(PyQt5.QtWidgets.QTableView.SingleSelection)
-        self.table_view.setSelectionBehavior(PyQt5.QtWidgets.QTableView.SelectRows)
+        self.table_view.setSelectionMode(aqt.qt.QTableView.SingleSelection)
+        self.table_view.setSelectionBehavior(aqt.qt.QTableView.SelectRows)
         self.table_view.selectionModel().selectionChanged.connect(self.selection_changed)
         self.batch_preview_layout.addWidget(self.table_view, stretch=1)
         
-        self.error_label = PyQt5.QtWidgets.QLabel()
+        self.error_label = aqt.qt.QLabel()
         self.error_label.setWordWrap(True)
         self.batch_preview_layout.addWidget(self.error_label)
 
         # create stack of widgets which will be toggled when we're running the batch
-        self.batchNotRunningStack = PyQt5.QtWidgets.QWidget()
-        self.batchRunningStack = PyQt5.QtWidgets.QWidget()
-        self.batchCompletedStack = PyQt5.QtWidgets.QWidget()
+        self.batchNotRunningStack = aqt.qt.QWidget()
+        self.batchRunningStack = aqt.qt.QWidget()
+        self.batchCompletedStack = aqt.qt.QWidget()
 
 
         # populate the "notRunning" stack
-        notRunningLayout = PyQt5.QtWidgets.QVBoxLayout()
+        notRunningLayout = aqt.qt.QVBoxLayout()
         self.batchNotRunningStack.setLayout(notRunningLayout)
 
         # poulate the "running" stack
-        runningLayout = PyQt5.QtWidgets.QVBoxLayout()
-        self.stop_button = PyQt5.QtWidgets.QPushButton('Stop')
+        runningLayout = aqt.qt.QVBoxLayout()
+        self.stop_button = aqt.qt.QPushButton('Stop')
         runningLayout.addWidget(self.stop_button)
         runningLayout.addWidget(self.progress_bar)
         self.batchRunningStack.setLayout(runningLayout)
 
         # populate the completed stack
-        completedLayout = PyQt5.QtWidgets.QVBoxLayout()
-        label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_BATCH_COMPLETED)
+        completedLayout = aqt.qt.QVBoxLayout()
+        label = aqt.qt.QLabel(constants.GUI_TEXT_BATCH_COMPLETED)
         label.setWordWrap(True)
         completedLayout.addWidget(label)
         self.batchCompletedStack.setLayout(completedLayout)

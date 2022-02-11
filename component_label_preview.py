@@ -1,6 +1,6 @@
 import sys
 import logging
-import PyQt5
+import aqt.qt
 import time
 
 
@@ -13,8 +13,8 @@ class LabelPreview(component_common.ComponentBase):
     def __init__(self, hypertts, note):
         self.hypertts = hypertts
         self.note = note
-        self.batch_label = PyQt5.QtWidgets.QLabel()
-        self.source_preview_label = PyQt5.QtWidgets.QLabel()
+        self.batch_label = aqt.qt.QLabel()
+        self.source_preview_label = aqt.qt.QLabel()
         self.source_preview_label.setWordWrap(True)
 
     def load_model(self, model):
@@ -31,7 +31,7 @@ class LabelPreview(component_common.ComponentBase):
     def draw(self):
         # populate processed text
 
-        self.batch_label_layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.batch_label_layout = aqt.qt.QVBoxLayout()
 
         self.batch_label_layout.addWidget(self.batch_label)
         self.batch_label_layout.addWidget(self.source_preview_label)

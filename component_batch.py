@@ -1,5 +1,5 @@
 import sys
-import PyQt5
+import aqt.qt
 import logging
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
@@ -24,10 +24,10 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.batch_model = config_models.BatchConfig()
 
         # create certain widgets upfront
-        self.show_settings_button = PyQt5.QtWidgets.QPushButton('Hide Settings')
-        self.preview_sound_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
-        self.apply_button = PyQt5.QtWidgets.QPushButton('Apply to Notes')
-        self.cancel_button = PyQt5.QtWidgets.QPushButton('Cancel')
+        self.show_settings_button = aqt.qt.QPushButton('Hide Settings')
+        self.preview_sound_button = aqt.qt.QPushButton('Preview Sound')
+        self.apply_button = aqt.qt.QPushButton('Apply to Notes')
+        self.cancel_button = aqt.qt.QPushButton('Cancel')
 
     def configure_browser(self, note_id_list):
         self.note_id_list = note_id_list
@@ -132,28 +132,28 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.profile_name_combobox.addItems(profile_name_list)
 
     def draw(self, layout):
-        self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        self.vlayout = aqt.qt.QVBoxLayout()
 
         # profile management
         # ==================
 
-        hlayout = PyQt5.QtWidgets.QHBoxLayout()
-        hlayout.addWidget(PyQt5.QtWidgets.QLabel('Preset:'))
+        hlayout = aqt.qt.QHBoxLayout()
+        hlayout.addWidget(aqt.qt.QLabel('Preset:'))
 
-        self.profile_name_combobox = PyQt5.QtWidgets.QComboBox()
+        self.profile_name_combobox = aqt.qt.QComboBox()
         self.profile_name_combobox.setEditable(True)
         # populate with existing profile names
         self.refresh_profile_combobox()
 
         hlayout.addWidget(self.profile_name_combobox)
-        self.profile_load_button = PyQt5.QtWidgets.QPushButton('Load')
+        self.profile_load_button = aqt.qt.QPushButton('Load')
         self.disable_load_profile_button('Load')
         hlayout.addWidget(self.profile_load_button)
-        self.profile_save_button = PyQt5.QtWidgets.QPushButton('Save')
+        self.profile_save_button = aqt.qt.QPushButton('Save')
         self.disable_save_profile_button('Save')
         hlayout.addWidget(self.profile_save_button)
 
-        self.profile_delete_button = PyQt5.QtWidgets.QPushButton('Delete')
+        self.profile_delete_button = aqt.qt.QPushButton('Delete')
         hlayout.addWidget(self.profile_delete_button)
 
         hlayout.addStretch()
@@ -168,11 +168,11 @@ class ComponentBatch(component_common.ConfigComponentBase):
         # preset settings tabs
         # ====================
 
-        self.tabs = PyQt5.QtWidgets.QTabWidget()
-        self.tab_source = PyQt5.QtWidgets.QWidget()
-        self.tab_target = PyQt5.QtWidgets.QWidget()
-        self.tab_voice_selection = PyQt5.QtWidgets.QWidget()
-        self.tab_text_processing = PyQt5.QtWidgets.QWidget()
+        self.tabs = aqt.qt.QTabWidget()
+        self.tab_source = aqt.qt.QWidget()
+        self.tab_target = aqt.qt.QWidget()
+        self.tab_voice_selection = aqt.qt.QWidget()
+        self.tab_text_processing = aqt.qt.QWidget()
 
         self.tab_source.setLayout(self.source.draw())
         self.tab_target.setLayout(self.target.draw())
@@ -185,16 +185,16 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.tabs.addTab(self.tab_text_processing, 'Text Processing')
 
         if self.editor_mode == False:
-            self.splitter = PyQt5.QtWidgets.QSplitter(PyQt5.QtCore.Qt.Horizontal)
+            self.splitter = aqt.qt.QSplitter(aqt.qt.Qt.Horizontal)
             self.splitter.addWidget(self.tabs)
 
-            self.preview_widget = PyQt5.QtWidgets.QWidget()
+            self.preview_widget = aqt.qt.QWidget()
             self.preview_widget.setLayout(self.preview.draw())
             self.splitter.addWidget(self.preview_widget)
             self.vlayout.addWidget(self.splitter, 1) # splitter is what should stretch
         else:
             self.vlayout.addWidget(self.tabs)
-            self.preview_widget = PyQt5.QtWidgets.QWidget()
+            self.preview_widget = aqt.qt.QWidget()
             self.preview_widget.setLayout(self.preview.draw())            
             self.vlayout.addWidget(self.preview_widget, 1) # the preview table should stretch
 
@@ -202,7 +202,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         # setup bottom buttons
         # ====================
 
-        hlayout = PyQt5.QtWidgets.QHBoxLayout()
+        hlayout = aqt.qt.QHBoxLayout()
         hlayout.addStretch()
 
         # show settings button

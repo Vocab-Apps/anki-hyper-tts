@@ -1,5 +1,5 @@
 import sys
-import PyQt5
+import aqt.qt
 import logging
 import copy
 
@@ -27,11 +27,11 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.existing_preset_fn = existing_preset_fn
 
         # create certain widgets upfront
-        self.side_enabled_checkbox = PyQt5.QtWidgets.QCheckBox(f'Enable Realtime TTS for {self.side.name} side')
+        self.side_enabled_checkbox = aqt.qt.QCheckBox(f'Enable Realtime TTS for {self.side.name} side')
 
-        self.text_preview_label = PyQt5.QtWidgets.QLabel()
+        self.text_preview_label = aqt.qt.QLabel()
 
-        self.preview_sound_button = PyQt5.QtWidgets.QPushButton('Preview Sound')
+        self.preview_sound_button = aqt.qt.QPushButton('Preview Sound')
 
     def configure_note(self, note):
         self.note = note
@@ -130,7 +130,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
 
 
     def draw(self):
-        self.vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        self.vlayout = aqt.qt.QVBoxLayout()
 
         # side enabled checkbox
         # =====================
@@ -141,10 +141,10 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         # preset settings tabs
         # ====================
 
-        self.tabs = PyQt5.QtWidgets.QTabWidget()
-        self.tab_source = PyQt5.QtWidgets.QWidget()
-        self.tab_voice_selection = PyQt5.QtWidgets.QWidget()
-        self.tab_text_processing = PyQt5.QtWidgets.QWidget()
+        self.tabs = aqt.qt.QTabWidget()
+        self.tab_source = aqt.qt.QWidget()
+        self.tab_voice_selection = aqt.qt.QWidget()
+        self.tab_text_processing = aqt.qt.QWidget()
 
         self.tab_source.setLayout(self.source.draw())
         self.tab_voice_selection.setLayout(self.voice_selection.draw())
@@ -161,9 +161,9 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         # add preview box
         # ===============
 
-        self.preview_groupbox = PyQt5.QtWidgets.QGroupBox('Preview')
-        preview_vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        source_preview_label = PyQt5.QtWidgets.QLabel('Text to be pronounced:')
+        self.preview_groupbox = aqt.qt.QGroupBox('Preview')
+        preview_vlayout = aqt.qt.QVBoxLayout()
+        source_preview_label = aqt.qt.QLabel('Text to be pronounced:')
         preview_vlayout.addWidget(source_preview_label)
         preview_vlayout.addWidget(self.text_preview_label)
         preview_vlayout.addWidget(self.preview_sound_button)

@@ -5,7 +5,7 @@ import anki.template
 import anki.sound
 import anki.collection
 import logging
-import PyQt5
+import aqt.qt
 from . import constants    
 
 if hasattr(sys, '_sentry_crash_reporting'):
@@ -106,7 +106,7 @@ class AnkiUtils():
         aqt.mw.taskman.run_on_main(task_fn)
 
     def wire_typing_timer(self, text_input, text_input_changed):
-        typing_timer = PyQt5.QtCore.QTimer()
+        typing_timer = aqt.qt.QTimer()
         typing_timer.setSingleShot(True)
         typing_timer.timeout.connect(text_input_changed)
         text_input.textChanged.connect(lambda: typing_timer.start(1000))
@@ -117,7 +117,7 @@ class AnkiUtils():
         if timer.timer_obj != None:
             # stop it first
             timer.timer_obj.stop()
-        timer.timer_obj = PyQt5.QtCore.QTimer()
+        timer.timer_obj = aqt.qt.QTimer()
         timer.timer_obj.setSingleShot(True)
         timer.timer_obj.timeout.connect(task)
         timer.timer_obj.start(timer.delay_ms)

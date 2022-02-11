@@ -2,7 +2,7 @@ import sys
 import json
 
 # pyqt
-import PyQt5
+import aqt.qt
 import logging
 import pprint
 
@@ -23,28 +23,28 @@ text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import
 ttsplayer = __import__('ttsplayer', globals(), locals(), [], sys._addon_import_level_base)
 
 
-class ConfigurationDialog(PyQt5.QtWidgets.QDialog):
+class ConfigurationDialog(aqt.qt.QDialog):
     def __init__(self, hypertts):
-        super(PyQt5.QtWidgets.QDialog, self).__init__()
+        super(aqt.qt.QDialog, self).__init__()
         self.configuration = component_configuration.Configuration(hypertts, self)
         self.configuration.load_model(hypertts.get_configuration())
 
     def setupUi(self):
         self.setWindowTitle(constants.GUI_CONFIGURATION_DIALOG_TITLE)
-        self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
+        self.main_layout = aqt.qt.QVBoxLayout(self)
         self.configuration.draw(self.main_layout)
 
     def close(self):
         self.accept()
 
-class BatchDialog(PyQt5.QtWidgets.QDialog):
+class BatchDialog(aqt.qt.QDialog):
     def __init__(self, hypertts):
-        super(PyQt5.QtWidgets.QDialog, self).__init__()
+        super(aqt.qt.QDialog, self).__init__()
         self.batch_component = component_batch.ComponentBatch(hypertts, self)
 
     def setupUi(self):
         self.setWindowTitle(constants.GUI_COLLECTION_DIALOG_TITLE)
-        self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
+        self.main_layout = aqt.qt.QVBoxLayout(self)
         self.batch_component.draw(self.main_layout)
 
     def configure_browser(self, note_id_list, batch_name=None):
@@ -65,14 +65,14 @@ class BatchDialog(PyQt5.QtWidgets.QDialog):
     def close(self):
         self.accept()
 
-class RealtimeDialog(PyQt5.QtWidgets.QDialog):
+class RealtimeDialog(aqt.qt.QDialog):
     def __init__(self, hypertts, card_ord):
-        super(PyQt5.QtWidgets.QDialog, self).__init__()
+        super(aqt.qt.QDialog, self).__init__()
         self.realtime_component = component_realtime.ComponentRealtime(hypertts, self, card_ord)
 
     def setupUi(self):
         self.setWindowTitle(constants.GUI_REALTIME_DIALOG_TITLE)
-        self.main_layout = PyQt5.QtWidgets.QVBoxLayout(self)
+        self.main_layout = aqt.qt.QVBoxLayout(self)
         self.realtime_component.draw(self.main_layout)
 
     def configure_note(self, note):

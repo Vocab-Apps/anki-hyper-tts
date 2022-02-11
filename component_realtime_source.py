@@ -1,5 +1,5 @@
 import sys
-import PyQt5
+import aqt.qt
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
@@ -17,9 +17,9 @@ class RealtimeSource(component_common.ConfigComponentBase):
         self.realtime_source_model = None
 
         # create certain widgets upfront
-        self.source_type_combobox = PyQt5.QtWidgets.QComboBox()
-        self.source_field_combobox = PyQt5.QtWidgets.QComboBox()
-        self.source_field_type_combobox = PyQt5.QtWidgets.QComboBox()        
+        self.source_type_combobox = aqt.qt.QComboBox()
+        self.source_field_combobox = aqt.qt.QComboBox()
+        self.source_field_type_combobox = aqt.qt.QComboBox()        
 
     def get_model(self):
         return self.realtime_source_model
@@ -36,7 +36,7 @@ class RealtimeSource(component_common.ConfigComponentBase):
 
 
     def draw(self):
-        self.realtime_source_layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.realtime_source_layout = aqt.qt.QVBoxLayout()
 
         self.draw_source_mode(self.realtime_source_layout)
         self.draw_source_config(self.realtime_source_layout)
@@ -57,9 +57,9 @@ class RealtimeSource(component_common.ConfigComponentBase):
 
     def draw_source_mode(self, overall_layout):
         # batch mode
-        groupbox = PyQt5.QtWidgets.QGroupBox('Source Mode')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        label = PyQt5.QtWidgets.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_SOURCE_MODE_REALTIME))
+        groupbox = aqt.qt.QGroupBox('Source Mode')
+        vlayout = aqt.qt.QVBoxLayout()
+        label = aqt.qt.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_SOURCE_MODE_REALTIME))
         label.setWordWrap(True)
         vlayout.addWidget(label)
         self.source_type_combobox.addItems([x.name for x in constants.RealtimeSourceType])
@@ -68,23 +68,23 @@ class RealtimeSource(component_common.ConfigComponentBase):
         overall_layout.addWidget(groupbox)
 
     def draw_source_config(self, overall_layout):
-        groupbox = PyQt5.QtWidgets.QGroupBox('Source Configuration')
-        self.source_config_stack = PyQt5.QtWidgets.QStackedWidget()
+        groupbox = aqt.qt.QGroupBox('Source Configuration')
+        self.source_config_stack = aqt.qt.QStackedWidget()
 
-        ankittstag_stack = PyQt5.QtWidgets.QWidget()
+        ankittstag_stack = aqt.qt.QWidget()
 
         # simple mode / source field
         # ==========================
-        stack_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        stack_vlayout = aqt.qt.QVBoxLayout()
 
         # field name
-        self.source_field_label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_FIELD_NAME)
+        self.source_field_label = aqt.qt.QLabel(constants.GUI_TEXT_SOURCE_FIELD_NAME)
         self.source_field_combobox.addItems(self.field_list)
         stack_vlayout.addWidget(self.source_field_label)
         stack_vlayout.addWidget(self.source_field_combobox)
 
         # field type
-        self.source_field_type_label = PyQt5.QtWidgets.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_SOURCE_FIELD_TYPE_REALTIME))
+        self.source_field_type_label = aqt.qt.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_SOURCE_FIELD_TYPE_REALTIME))
         self.source_field_type_label.setWordWrap(True)
         self.source_field_type_combobox.addItems([x.name for x in constants.AnkiTTSFieldType])
         stack_vlayout.addWidget(self.source_field_type_label)
@@ -98,7 +98,7 @@ class RealtimeSource(component_common.ConfigComponentBase):
 
         self.source_config_stack.addWidget(ankittstag_stack)
 
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        vlayout = aqt.qt.QVBoxLayout()
         vlayout.addWidget(self.source_config_stack)
         groupbox.setLayout(vlayout)
 

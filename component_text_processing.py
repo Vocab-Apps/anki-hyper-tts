@@ -1,5 +1,5 @@
 import sys
-import PyQt5
+import aqt.qt
 import logging
 import html
 
@@ -21,9 +21,9 @@ COL_INDEX_REPLACEMENT = 2
 
 BLANK_TEXT = '<i>Enter sample text to verify text processing settings.</i>'
 
-class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
+class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
     def __init__(self, model, model_change_callback):
-        PyQt5.QtCore.QAbstractTableModel.__init__(self, None)
+        aqt.qt.QAbstractTableModel.__init__(self, None)
 
         self.model = model
         self.model_change_callback = model_change_callback
@@ -44,9 +44,9 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
         col = index.column()
         if col == COL_INDEX_TYPE:
             # not editable
-            return PyQt5.QtCore.Qt.ItemIsSelectable | PyQt5.QtCore.Qt.ItemIsEnabled
+            return aqt.qt.Qt.ItemIsSelectable | aqt.qt.Qt.ItemIsEnabled
         if col == COL_INDEX_PATTERN or col == COL_INDEX_REPLACEMENT:
-            return PyQt5.QtCore.Qt.ItemIsEditable | PyQt5.QtCore.Qt.ItemIsSelectable | PyQt5.QtCore.Qt.ItemIsEnabled
+            return aqt.qt.Qt.ItemIsEditable | aqt.qt.Qt.ItemIsSelectable | aqt.qt.Qt.ItemIsEnabled
 
     def rowCount(self, parent):
         return len(self.model.text_replacement_rules)
@@ -70,36 +70,36 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
 
     def data(self, index, role):
         if not index.isValid():
-            return PyQt5.QtCore.QVariant()
+            return aqt.qt.QVariant()
 
         column = index.column()
         row = index.row()
 
         # check whether we've got data for this row
         if row >= len(self.model.text_replacement_rules):
-            return PyQt5.QtCore.QVariant()
+            return aqt.qt.QVariant()
 
         text_replacement_rule = self.model.get_text_replacement_rule_row(row)
 
-        if role == PyQt5.QtCore.Qt.DisplayRole or role == PyQt5.QtCore.Qt.EditRole:
+        if role == aqt.qt.Qt.DisplayRole or role == aqt.qt.Qt.EditRole:
 
             if column == COL_INDEX_TYPE:
-                return PyQt5.QtCore.QVariant(text_replacement_rule.rule_type.name.title())
+                return aqt.qt.QVariant(text_replacement_rule.rule_type.name.title())
             if column == COL_INDEX_PATTERN:
                 return self.data_display(text_replacement_rule.source, role)
             if column == COL_INDEX_REPLACEMENT:
                 return self.data_display(text_replacement_rule.target, role)
 
-        return PyQt5.QtCore.QVariant()
+        return aqt.qt.QVariant()
 
     def data_display(self, value, role):
-        if role == PyQt5.QtCore.Qt.DisplayRole:
+        if role == aqt.qt.Qt.DisplayRole:
             text = '""'
             if value != None:
                 text = '"' + value + '"'
-            return PyQt5.QtCore.QVariant(text)
-        elif role == PyQt5.QtCore.Qt.EditRole:
-            return PyQt5.QtCore.QVariant(value)
+            return aqt.qt.QVariant(text)
+        elif role == aqt.qt.Qt.EditRole:
+            return aqt.qt.QVariant(value)
 
     def setData(self, index, value, role):
         if not index.isValid():
@@ -114,7 +114,7 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
 
         text_replacement_rule = self.model.get_text_replacement_rule_row(row)
 
-        if role == PyQt5.QtCore.Qt.EditRole:
+        if role == aqt.qt.Qt.EditRole:
             
             # set the value into a TextReplacement object
             if column == COL_INDEX_TYPE:
@@ -136,9 +136,9 @@ class TextReplacementsTableModel(PyQt5.QtCore.QAbstractTableModel):
             return False
 
     def headerData(self, col, orientation, role):
-        if orientation == PyQt5.QtCore.Qt.Horizontal and role == PyQt5.QtCore.Qt.DisplayRole:
-            return PyQt5.QtCore.QVariant(self.header_text[col])
-        return PyQt5.QtCore.QVariant()
+        if orientation == aqt.qt.Qt.Horizontal and role == aqt.qt.Qt.DisplayRole:
+            return aqt.qt.QVariant(self.header_text[col])
+        return aqt.qt.QVariant()
 
 class TextProcessing(component_common.ConfigComponentBase):
     def __init__(self, hypertts, model_change_callback):
@@ -158,30 +158,30 @@ class TextProcessing(component_common.ConfigComponentBase):
 
     def draw(self):
 
-        global_vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        global_vlayout = aqt.qt.QVBoxLayout()
 
 
         # setup test input box
         # ====================
 
-        groupbox = PyQt5.QtWidgets.QGroupBox('Preview Text Processing Settings')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        groupbox = aqt.qt.QGroupBox('Preview Text Processing Settings')
+        vlayout = aqt.qt.QVBoxLayout()
 
-        vlayout.addWidget(PyQt5.QtWidgets.QLabel('You may verify your settings by entering sample text below:'))
+        vlayout.addWidget(aqt.qt.QLabel('You may verify your settings by entering sample text below:'))
 
         # first line
-        hlayout = PyQt5.QtWidgets.QHBoxLayout()
-        label = PyQt5.QtWidgets.QLabel('Enter sample text:')
+        hlayout = aqt.qt.QHBoxLayout()
+        label = aqt.qt.QLabel('Enter sample text:')
         hlayout.addWidget(label)
-        self.sample_text_input = PyQt5.QtWidgets.QLineEdit()
+        self.sample_text_input = aqt.qt.QLineEdit()
         hlayout.addWidget(self.sample_text_input)
         hlayout.addStretch()
         vlayout.addLayout(hlayout)
 
         # second line
-        hlayout = PyQt5.QtWidgets.QHBoxLayout()
-        hlayout.addWidget(PyQt5.QtWidgets.QLabel('Transformed Text:'))
-        self.sample_text_transformed_label = PyQt5.QtWidgets.QLabel(BLANK_TEXT)
+        hlayout = aqt.qt.QHBoxLayout()
+        hlayout.addWidget(aqt.qt.QLabel('Transformed Text:'))
+        self.sample_text_transformed_label = aqt.qt.QLabel(BLANK_TEXT)
         hlayout.addWidget(self.sample_text_transformed_label)
         hlayout.addStretch()
         vlayout.addLayout(hlayout)
@@ -191,14 +191,14 @@ class TextProcessing(component_common.ConfigComponentBase):
 
         # text processing rules
         # =====================
-        groupbox = PyQt5.QtWidgets.QGroupBox('Text Processing Rules')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        groupbox = aqt.qt.QGroupBox('Text Processing Rules')
+        vlayout = aqt.qt.QVBoxLayout()
 
-        self.html_to_text_line_checkbox = PyQt5.QtWidgets.QCheckBox('Process HTML tags, convert into single line')
+        self.html_to_text_line_checkbox = aqt.qt.QCheckBox('Process HTML tags, convert into single line')
         vlayout.addWidget(self.html_to_text_line_checkbox)
-        self.ssml_convert_characters_checkbox = PyQt5.QtWidgets.QCheckBox('Convert SSML characters (like <, &&, etc)')
+        self.ssml_convert_characters_checkbox = aqt.qt.QCheckBox('Convert SSML characters (like <, &&, etc)')
         vlayout.addWidget(self.ssml_convert_characters_checkbox)
-        self.run_replace_rules_after_checkbox = PyQt5.QtWidgets.QCheckBox('Run text replacement rules last (uncheck to run first)')
+        self.run_replace_rules_after_checkbox = aqt.qt.QCheckBox('Run text replacement rules last (uncheck to run first)')
         vlayout.addWidget(self.run_replace_rules_after_checkbox)        
 
         groupbox.setLayout(vlayout)
@@ -207,24 +207,24 @@ class TextProcessing(component_common.ConfigComponentBase):
         # setup preview table
         # ===================
 
-        groupbox = PyQt5.QtWidgets.QGroupBox('Text Replacement Rules')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()        
+        groupbox = aqt.qt.QGroupBox('Text Replacement Rules')
+        vlayout = aqt.qt.QVBoxLayout()        
 
-        vlayout.addWidget(PyQt5.QtWidgets.QLabel('Add replacement rules and double click to edit pattern / replacements'))
+        vlayout.addWidget(aqt.qt.QLabel('Add replacement rules and double click to edit pattern / replacements'))
 
-        self.table_view = PyQt5.QtWidgets.QTableView()
+        self.table_view = aqt.qt.QTableView()
         self.table_view.setModel(self.textReplacementTableModel)
-        self.table_view.setSelectionMode(PyQt5.QtWidgets.QTableView.SingleSelection)
-        # self.table_view.setSelectionBehavior(PyQt5.QtWidgets.QTableView.SelectRows)
+        self.table_view.setSelectionMode(aqt.qt.QTableView.SingleSelection)
+        # self.table_view.setSelectionBehavior(aqt.qt.QTableView.SelectRows)
         vlayout.addWidget(self.table_view)
         
         # setup buttons below table
-        hlayout = PyQt5.QtWidgets.QHBoxLayout()
-        self.add_replace_simple_button = PyQt5.QtWidgets.QPushButton('Add Simple Rule')
+        hlayout = aqt.qt.QHBoxLayout()
+        self.add_replace_simple_button = aqt.qt.QPushButton('Add Simple Rule')
         hlayout.addWidget(self.add_replace_simple_button)
-        self.add_replace_regex_button = PyQt5.QtWidgets.QPushButton('Add Regex Rule')
+        self.add_replace_regex_button = aqt.qt.QPushButton('Add Regex Rule')
         hlayout.addWidget(self.add_replace_regex_button)
-        self.remove_replace_button = PyQt5.QtWidgets.QPushButton('Remove Selected Rule')
+        self.remove_replace_button = aqt.qt.QPushButton('Remove Selected Rule')
         hlayout.addWidget(self.remove_replace_button)
         vlayout.addLayout(hlayout)
 

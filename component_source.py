@@ -1,5 +1,5 @@
 import sys
-import PyQt5
+import aqt.qt
 import logging
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
@@ -35,7 +35,7 @@ class BatchSource(component_common.ConfigComponentBase):
 
 
     def draw(self):
-        self.batch_source_layout = PyQt5.QtWidgets.QVBoxLayout()
+        self.batch_source_layout = aqt.qt.QVBoxLayout()
 
         self.draw_source_mode(self.batch_source_layout)
         self.draw_source_config(self.batch_source_layout)
@@ -54,30 +54,30 @@ class BatchSource(component_common.ConfigComponentBase):
 
     def draw_source_mode(self, overall_layout):
         # batch mode
-        groupbox = PyQt5.QtWidgets.QGroupBox('Source Mode')
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        label = PyQt5.QtWidgets.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_SOURCE_MODE))
+        groupbox = aqt.qt.QGroupBox('Source Mode')
+        vlayout = aqt.qt.QVBoxLayout()
+        label = aqt.qt.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_SOURCE_MODE))
         label.setWordWrap(True)
         vlayout.addWidget(label)
-        self.batch_mode_combobox = PyQt5.QtWidgets.QComboBox()
+        self.batch_mode_combobox = aqt.qt.QComboBox()
         self.batch_mode_combobox.addItems([x.name for x in constants.BatchMode])
         vlayout.addWidget(self.batch_mode_combobox)
         groupbox.setLayout(vlayout)
         overall_layout.addWidget(groupbox)
 
     def draw_source_config(self, overall_layout):
-        groupbox = PyQt5.QtWidgets.QGroupBox('Source Configuration')
-        self.source_config_stack = PyQt5.QtWidgets.QStackedWidget()
+        groupbox = aqt.qt.QGroupBox('Source Configuration')
+        self.source_config_stack = aqt.qt.QStackedWidget()
 
-        simple_stack = PyQt5.QtWidgets.QWidget()
-        template_stack = PyQt5.QtWidgets.QWidget()
-        advanced_template_stack = PyQt5.QtWidgets.QWidget()
+        simple_stack = aqt.qt.QWidget()
+        template_stack = aqt.qt.QWidget()
+        advanced_template_stack = aqt.qt.QWidget()
 
         # simple mode / source field
         # ==========================
-        stack_vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        self.source_field_label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_FIELD_NAME)
-        self.source_field_combobox = PyQt5.QtWidgets.QComboBox()
+        stack_vlayout = aqt.qt.QVBoxLayout()
+        self.source_field_label = aqt.qt.QLabel(constants.GUI_TEXT_SOURCE_FIELD_NAME)
+        self.source_field_combobox = aqt.qt.QComboBox()
         self.source_field_combobox.addItems(self.field_list)
         stack_vlayout.addWidget(self.source_field_label)
         stack_vlayout.addWidget(self.source_field_combobox)
@@ -86,10 +86,10 @@ class BatchSource(component_common.ConfigComponentBase):
 
         # simple template 
         # ===============
-        stack_vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_SIMPLE_TEMPLATE)
-        label.setTextInteractionFlags(PyQt5.QtCore.Qt.TextSelectableByMouse)
-        self.simple_template_input = PyQt5.QtWidgets.QLineEdit()
+        stack_vlayout = aqt.qt.QVBoxLayout()
+        label = aqt.qt.QLabel(constants.GUI_TEXT_SOURCE_SIMPLE_TEMPLATE)
+        label.setTextInteractionFlags(aqt.qt.Qt.TextSelectableByMouse)
+        self.simple_template_input = aqt.qt.QLineEdit()
         stack_vlayout.addWidget(label)
         stack_vlayout.addWidget(self.simple_template_input)
         stack_vlayout.addStretch()
@@ -97,10 +97,10 @@ class BatchSource(component_common.ConfigComponentBase):
 
         # advanced template
         # =================
-        stack_vlayout = PyQt5.QtWidgets.QVBoxLayout()
-        label = PyQt5.QtWidgets.QLabel(constants.GUI_TEXT_SOURCE_ADVANCED_TEMPLATE)
-        label.setTextInteractionFlags(PyQt5.QtCore.Qt.TextSelectableByMouse)
-        self.advanced_template_input = PyQt5.QtWidgets.QPlainTextEdit()
+        stack_vlayout = aqt.qt.QVBoxLayout()
+        label = aqt.qt.QLabel(constants.GUI_TEXT_SOURCE_ADVANCED_TEMPLATE)
+        label.setTextInteractionFlags(aqt.qt.Qt.TextSelectableByMouse)
+        self.advanced_template_input = aqt.qt.QPlainTextEdit()
         stack_vlayout.addWidget(label)
         stack_vlayout.addWidget(self.advanced_template_input)
         stack_vlayout.addStretch()
@@ -113,7 +113,7 @@ class BatchSource(component_common.ConfigComponentBase):
         self.source_config_stack.addWidget(template_stack)
         self.source_config_stack.addWidget(advanced_template_stack)
 
-        vlayout = PyQt5.QtWidgets.QVBoxLayout()
+        vlayout = aqt.qt.QVBoxLayout()
         vlayout.addWidget(self.source_config_stack)
         groupbox.setLayout(vlayout)
 
