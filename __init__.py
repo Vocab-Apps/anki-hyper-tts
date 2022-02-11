@@ -5,6 +5,9 @@ import logging
 import uuid
 import re
 
+root_logger = logging.getLogger('anki_hyper_tts')
+root_logger.setLevel(logging.CRITICAL)
+
 if hasattr(sys, '_pytest_mode'):
     # called from within a test run
     pass
@@ -97,9 +100,7 @@ else:
         logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
                             datefmt='%Y%m%d-%H:%M:%S',
                             stream=sys.stdout,
-                            level=logging.DEBUG)    
-    else:
-        logging.disable(logging.CRITICAL)
+                            level=logging.DEBUG)
 
     ankiutils = anki_utils.AnkiUtils()
 

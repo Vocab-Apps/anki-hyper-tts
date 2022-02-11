@@ -1,4 +1,3 @@
-import logging
 import json
 import tempfile
 import re
@@ -9,6 +8,10 @@ import constants
 import hypertts
 import errors
 import servicemanager
+
+from . import root_logger
+
+logger = root_logger.getChild(__name__)
 
 
 def get_test_services_dir():
@@ -118,7 +121,7 @@ class MockAnkiUtils():
         return av_tags
 
     def save_note_type_update(self, note_model):
-        logging.info('save_note_type_update')
+        logger.info('save_note_type_update')
         self.updated_note_model = note_model
 
     def run_in_background(self, task_fn, task_done_fn):
@@ -144,15 +147,15 @@ class MockAnkiUtils():
         task()
 
     def info_message(self, message, parent):
-        logging.info(f'info message: {message}')
+        logger.info(f'info message: {message}')
         self.info_message_received = message
 
     def critical_message(self, message, parent):
-        logging.info(f'critical error message: {message}')
+        logger.info(f'critical error message: {message}')
         self.critical_message_received = message
 
     def play_sound(self, filename):
-        logging.info('play_sound')
+        logger.info('play_sound')
         # load the json inside the file
         with open(filename) as json_file:
             self.played_sound = json.load(json_file)
@@ -188,16 +191,16 @@ class MockAnkiUtils():
     def report_known_exception_interactive(self, exception, action):
         self.last_exception = exception
         self.last_action = action
-        logging.error(f'during {action}: {str(exception)}')
+        logger.error(f'during {action}: {str(exception)}')
 
     def report_unknown_exception_interactive(self, exception, action):
         self.last_exception = exception
         self.last_action = action
-        logging.critical(exception, exc_info=True)
+        logger.critical(exception, exc_info=True)
 
     def report_unknown_exception_background(self, exception):
         self.last_exception = exception
-        logging.critical(exception, exc_info=True)
+        logger.critical(exception, exc_info=True)
 
     def extract_sound_tag_audio_full_path(self, sound_tag):
         filename = re.match('.*\[sound:([^\]]+)\]', sound_tag).groups()[0]
@@ -300,7 +303,7 @@ class MockCard():
         template_format = template_format.replace('\n', ' ')
         m = re.match('.*{{tts.*voices=HyperTTS:(.*)}}.*', template_format)
         if m == None:
-            logging.error(f'could not a TTS tag in template: [{template_format}]')
+            logger.error(f'could not a TTS tag in template: [{template_format}]')
             return []
         field_name = m.groups()[0]
         return [MockTTSTag(self.note[field_name])]

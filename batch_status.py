@@ -1,5 +1,8 @@
 import sys
-import logging
+
+from . import root_logger
+
+logger = root_logger.getChild(__name__)
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
@@ -82,7 +85,7 @@ class BatchStatus():
         return self.task_running
 
     def stop(self):
-        logging.info('stopping current batch')
+        logger.info('stopping current batch')
         self.must_continue = False
 
     def __getitem__(self, array_index):

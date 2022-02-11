@@ -1,8 +1,10 @@
 import sys
 import aqt.qt
-import logging
 import copy
 
+from . import root_logger
+
+logger = root_logger.getChild(__name__)
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 component_realtime_side = __import__('component_realtime_side', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
@@ -60,13 +62,13 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         return self.model
 
     def front_model_updated(self, model):
-        logging.info('front_model_updated')
+        logger.info('front_model_updated')
         self.model.front = model
         if self.manage_apply_button:
             self.enable_apply_button()
 
     def back_model_updated(self, model):
-        logging.info('back_model_update')
+        logger.info('back_model_update')
         self.model.back = model
         if self.manage_apply_button:
             self.enable_apply_button()
@@ -132,7 +134,7 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.apply_button.setStyleSheet(None)
 
     def enable_apply_button(self):
-        logging.info('enable_apply_button')
+        logger.info('enable_apply_button')
         self.apply_button.setEnabled(True)
         self.apply_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
 

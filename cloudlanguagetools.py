@@ -1,9 +1,11 @@
 import sys
 import os
-import logging
 import requests
 import json
 
+from . import root_logger
+
+logger = root_logger.getChild(__name__)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
@@ -36,7 +38,7 @@ class CloudLanguageTools():
             'voice_key': voice.voice_key,
             'options': options
         }
-        logging.info(f'request url: {full_url}, data: {data}')
+        logger.info(f'request url: {full_url}, data: {data}')
         response = requests.post(full_url, json=data, headers={
             'api_key': self.api_key, 
             'client': 'hypertts', 

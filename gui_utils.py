@@ -1,8 +1,10 @@
 import sys
 import os
-import logging
 import aqt.qt
 
+from . import root_logger
+
+logger = root_logger.getChild(__name__)
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 
@@ -16,7 +18,7 @@ class NonAliasedImage(aqt.qt.QWidget):
         self.setFixedHeight(self._pixmap.height())
 
     def paintEvent(self,event):
-        # logging.info('paintEvent')
+        # logger.info('paintEvent')
         painter = aqt.qt.QPainter(self)
         painter.setRenderHint(aqt.qt.QPainter.SmoothPixmapTransform)
         painter.setRenderHint(aqt.qt.QPainter.Antialiasing)

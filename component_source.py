@@ -1,7 +1,9 @@
 import sys
 import aqt.qt
-import logging
 
+from . import root_logger
+
+logger = root_logger.getChild(__name__)
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
@@ -135,7 +137,7 @@ class BatchSource(component_common.ConfigComponentBase):
     def source_field_change(self, current_index):
         current_index = self.source_field_combobox.currentIndex()
         if current_index == -1:
-            logging.error(f'current_index for source_field_combobox is {current_index}, field_list: {self.field_list}')
+            logger.error(f'current_index for source_field_combobox is {current_index}, field_list: {self.field_list}')
         field_name = self.field_list[current_index]
         self.batch_source_model = config_models.BatchSourceSimple(field_name)
         self.notify_model_update()
@@ -154,5 +156,5 @@ class BatchSource(component_common.ConfigComponentBase):
         self.model_change_callback(self.batch_source_model)
 
     def change_listener(self, note_id, row):
-        # logging.info(f'change_listener row {row}')
+        # logger.info(f'change_listener row {row}')
         self.source_text_preview_table_model.notifyChange(row)

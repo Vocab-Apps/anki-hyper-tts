@@ -2,8 +2,10 @@ from pydoc import describe
 import sys
 import aqt.qt
 import webbrowser
-import logging
 
+from . import root_logger
+
+logger = root_logger.getChild(__name__)
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
@@ -38,35 +40,35 @@ class Configuration(component_common.ConfigComponentBase):
     def get_service_enable_change_fn(self, service):
         def enable_change(value):
             enabled = value == 2
-            logging.info(f'{service.name} enabled: {enabled}')
+            logger.info(f'{service.name} enabled: {enabled}')
             self.model.set_service_enabled(service.name, enabled)
             self.model_change()
         return enable_change
 
     def get_service_config_str_change_fn(self, service, key):
         def str_change(text):
-            logging.info(f'{service.name} {key}: {text}')
+            logger.info(f'{service.name} {key}: {text}')
             self.model.set_service_configuration_key(service.name, key, text)
             self.model_change()
         return str_change
 
     def get_service_config_int_change_fn(self, service, key):
         def int_change(value):
-            logging.info(f'{service.name} {key}: {value}')
+            logger.info(f'{service.name} {key}: {value}')
             self.model.set_service_configuration_key(service.name, key, value)
             self.model_change()
         return int_change
 
     def get_service_config_float_change_fn(self, service, key):
         def float_change(value):
-            logging.info(f'{service.name} {key}: {value}')
+            logger.info(f'{service.name} {key}: {value}')
             self.model.set_service_configuration_key(service.name, key, value)
             self.model_change()
         return float_change
 
     def get_service_config_list_change_fn(self, service, key):
         def list_change(text):
-            logging.info(f'{service.name} {key}: {text}')
+            logger.info(f'{service.name} {key}: {text}')
             self.model.set_service_configuration_key(service.name, key, text)
             self.model_change()
         return list_change
@@ -74,7 +76,7 @@ class Configuration(component_common.ConfigComponentBase):
     def get_service_config_bool_change_fn(self, service, key):
         def bool_change(checkbox_value):
             value = checkbox_value == 2
-            logging.info(f'{service.name} {key}: {value}')
+            logger.info(f'{service.name} {key}: {value}')
             self.model.set_service_configuration_key(service.name, key, value)
             self.model_change()
         return bool_change
@@ -93,10 +95,10 @@ class Configuration(component_common.ConfigComponentBase):
 
     def manage_service_stack(self, service, stack):
         if self.cloud_language_tools_enabled() and service.cloudlanguagetools_enabled():
-            logging.info(f'{service.name}: show CLT stack')
+            logger.info(f'{service.name}: show CLT stack')
             stack.setCurrentIndex(self.STACK_LEVEL_PRO)
         else:
-            logging.info(f'{service.name}: show service stack')
+            logger.info(f'{service.name}: show service stack')
             stack.setCurrentIndex(self.STACK_LEVEL_LITE)
 
     def get_service_enabled_widget_name(self, service):
@@ -157,7 +159,7 @@ class Configuration(component_common.ConfigComponentBase):
         layout.addLayout(options_gridlayout)
 
     def draw_service(self, service, layout):
-        logging.info(f'draw_service {service.name}')
+        logger.info(f'draw_service {service.name}')
         
         # layout.addWidget(gui_utils.get_service_header_label(service.name))
         service_groupbox = aqt.qt.QGroupBox()
@@ -334,7 +336,7 @@ class Configuration(component_common.ConfigComponentBase):
         self.set_cloud_language_tools_enabled()        
 
     def update_pro_status(self):
-        logging.info('update_pro_status')
+        logger.info('update_pro_status')
         if 'error' in self.account_info:
             self.udpdate_gui_state_api_key_not_valid()
         else:

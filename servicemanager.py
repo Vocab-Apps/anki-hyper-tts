@@ -2,10 +2,12 @@ from re import sub
 import sys
 import os
 import importlib
-import logging
 import typing
 import requests
 
+from . import root_logger
+
+logger = root_logger.getChild(__name__)
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
@@ -60,19 +62,19 @@ class ServiceManager():
 
     def import_services(self):
         module_names = self.discover_services()
-        logging.info(f'discovered {len(module_names)} services')
+        logger.info(f'discovered {len(module_names)} services')
         # sys.path.insert(0, self.services_directory)
         for module_name in module_names:
-            logging.info(f'importing module {module_name}')
+            logger.info(f'importing module {module_name}')
             __import__(self.package_name, globals(), locals(), [module_name], sys._addon_import_level_base)
 
     def instantiate_services(self):
         for subclass in service.ServiceBase.__subclasses__():
             subclass_instance = subclass()
             if subclass_instance.test_service() and self.allow_test_services == False:
-                logging.info(f'skipping test service {subclass_instance.name}')
+                logger.info(f'skipping test service {subclass_instance.name}')
                 continue
-            logging.info(f'instantiating service {subclass_instance.name}')
+            logger.info(f'instantiating service {subclass_instance.name}')
             self.services[subclass_instance.name] = subclass_instance
 
     def get_service(self, service_name):
@@ -85,13 +87,13 @@ class ServiceManager():
     # =====================
 
     def configure_cloudlanguagetools(self, api_key):
-        logging.info('configure_cloudlanguagetools')
+        logger.info('configure_cloudlanguagetools')
         self.cloudlanguagetools.configure(api_key)
         self.cloudlanguagetools_enabled = True
         # enable all services which are supported by cloud language tools
         for service in self.get_all_services():
             if service.cloudlanguagetools_enabled():
-                logging.info(f'enabling {service.name} with cloud language tools')
+                logger.info(f'enabling {service.name} with cloud language tools')
                 service.enabled = True
 
     def service_configuration_options(self, service_name):

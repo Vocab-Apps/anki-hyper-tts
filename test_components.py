@@ -1,5 +1,4 @@
 import aqt.qt
-import logging
 import os
 import copy
 import pprint
@@ -19,6 +18,11 @@ import component_text_processing
 import component_realtime_source
 import component_realtime_side
 import component_realtime
+
+from . import root_logger
+
+logger = root_logger.getChild(__name__)
+
 
 class EmptyDialog(aqt.qt.QDialog):
     def __init__(self):
@@ -45,7 +49,7 @@ class MockModelChangeCallback():
         self.model = None
 
     def model_updated(self, model):
-        logging.info('MockModelChangeCallback.model_updated')
+        logger.info('MockModelChangeCallback.model_updated')
         self.model = copy.deepcopy(model)
 
 class MockBatchPreviewCallback():
@@ -273,7 +277,7 @@ def test_voice_selection_random_remove_voices(qtbot):
     assert len(model_change_callback.model.get_voice_list()) == 2
 
     # now remove one of the voices
-    logging.info('removing voice_row_1')
+    logger.info('removing voice_row_1')
     remove_voice_button = dialog.findChild(aqt.qt.QPushButton, 'remove_voice_row_1')
     qtbot.mouseClick(remove_voice_button, aqt.qt.Qt.LeftButton)
 
@@ -1648,7 +1652,7 @@ def test_realtime_component(qtbot):
     # try to load an existing configuration
     # =====================================
 
-    logging.info('loading an existing realtime configuration')
+    logger.info('loading an existing realtime configuration')
 
     # patch the config
     hypertts_instance.anki_utils.config[constants.CONFIG_REALTIME_CONFIG] = hypertts_instance.anki_utils.written_config[constants.CONFIG_REALTIME_CONFIG]
