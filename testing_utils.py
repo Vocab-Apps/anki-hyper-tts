@@ -136,7 +136,7 @@ class MockAnkiUtils():
 
     def wire_typing_timer(self, text_input, text_input_changed):
         # just fire the text_input_changed callback immediately, there won't be any typing
-        text_input.textChanged.connect(text_input_changed)
+        text_input.textChanged.connect(lambda: text_input_changed())
         return None
 
     def call_on_timer_expire(self, timer_obj, task):

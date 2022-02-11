@@ -127,7 +127,7 @@ class BatchSource(component_common.ConfigComponentBase):
             self.source_field_change(0)
         elif selected_batch_mode == constants.BatchMode.template:
             self.source_config_stack.setCurrentIndex(self.SOURCE_CONFIG_STACK_TEMPLATE)
-            self.simple_template_change(None)
+            self.simple_template_change()
         elif selected_batch_mode == constants.BatchMode.advanced_template:
             self.source_config_stack.setCurrentIndex(self.SOURCE_CONFIG_STACK_ADVANCED_TEMPLATE)
             self.advanced_template_change()
@@ -140,7 +140,7 @@ class BatchSource(component_common.ConfigComponentBase):
         self.batch_source_model = config_models.BatchSourceSimple(field_name)
         self.notify_model_update()
 
-    def simple_template_change(self, simple_template_text):
+    def simple_template_change(self):
         simple_template_text = self.simple_template_input.text()
         self.batch_source_model = config_models.BatchSourceTemplate(constants.BatchMode.template, simple_template_text, constants.TemplateFormatVersion.v1)
         self.notify_model_update()
