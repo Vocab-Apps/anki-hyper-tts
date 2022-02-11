@@ -99,8 +99,8 @@ class Azure(service.ServiceBase):
 
         voice_name = voice.voice_key['name']
 
-        rate = voice.options['rate']['default']
-        pitch = voice.options['pitch']['default']
+        rate = options.get('rate', voice.options['rate']['default'])
+        pitch = options.get('pitch', voice.options['pitch']['default'])
 
         base_url = f'https://{region}.tts.speech.microsoft.com/'
         url_path = 'cognitiveservices/v1'

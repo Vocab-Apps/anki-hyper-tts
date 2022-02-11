@@ -50,8 +50,8 @@ class Google(service.ServiceBase):
         payload = {
             "audioConfig": {
                 "audioEncoding": "MP3",
-                "pitch": voice.options['pitch']['default'],
-                "speakingRate": voice.options['speaking_rate']['default'],
+                "pitch": options.get('pitch', voice.options['pitch']['default']),
+                "speakingRate": options.get('speaking_rate', voice.options['speaking_rate']['default']),
             },
             "input": {
                 "ssml": f"<speak>{source_text}</speak>"
