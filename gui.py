@@ -90,12 +90,13 @@ def launch_configuration_dialog(hypertts):
         dialog.setupUi()
         dialog.exec_()
 
-def launch_batch_dialog_browser(hypertts, note_id_list, batch_name):
+def launch_batch_dialog_browser(hypertts, browser, note_id_list, batch_name):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Browser'):
         logging.info('launch_batch_dialog_browser')
         dialog = BatchDialog(hypertts)
         dialog.configure_browser(note_id_list, batch_name=batch_name)
         dialog.exec_()
+        browser.model.reset()
 
 def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Editor'):
@@ -145,7 +146,7 @@ def init(hypertts):
 
         def get_launch_dialog_browser_fn(hypertts, browser, batch_name):
             def launch():
-                launch_batch_dialog_browser(hypertts, browser.selectedNotes(), batch_name)
+                launch_batch_dialog_browser(hypertts, browser, browser.selectedNotes(), batch_name)
             return launch
 
         def get_launch_realtime_dialog_browser_fn(hypertts, browser):
