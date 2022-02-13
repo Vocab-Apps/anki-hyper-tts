@@ -356,9 +356,10 @@ class Configuration(component_common.ConfigComponentBase):
 
 
     def save_button_pressed(self):
-        self.hypertts.save_configuration(self.model)
-        self.hypertts.service_manager.configure(self.model)
-        self.dialog.close()
+        with self.hypertts.error_manager.get_single_action_context('Saving Service Configuration'):
+            self.hypertts.save_configuration(self.model)
+            self.hypertts.service_manager.configure(self.model)
+            self.dialog.close()
 
     def cancel_button_pressed(self):
         self.dialog.close()

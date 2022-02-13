@@ -111,5 +111,6 @@ else:
     service_manager.init_services()    
     hyper_tts = hypertts.HyperTTS(ankiutils, service_manager)
     # configure services based on config
-    service_manager.configure(hyper_tts.get_configuration())
+    with hyper_tts.error_manager.get_single_action_context('Configuring Services'):
+        service_manager.configure(hyper_tts.get_configuration())
     gui.init(hyper_tts)
