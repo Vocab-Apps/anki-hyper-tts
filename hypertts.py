@@ -171,7 +171,10 @@ class HyperTTS():
     def expand_simple_template(self, note, source_template):
         field_values = self.get_field_values(note)
         # logging.info(f'field_values: {field_values}')
-        return source_template.format_map(field_values)
+        try:
+            return source_template.format_map(field_values)
+        except Exception as e:
+            raise errors.TemplateExpansionError(e)
 
     def expand_advanced_template(self, note, source_template):
         local_variables = {
