@@ -359,7 +359,7 @@ class TTSTests(unittest.TestCase):
 
     def test_all_services_english(self):
         self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.en_US, 'The weather is good today.')
-        self.verify_all_services_language(constants.ServiceType.dictionary, languages.AudioLanguage.en_GB, 'successful')
+        self.verify_all_services_language(constants.ServiceType.dictionary, languages.AudioLanguage.en_GB, 'camera')
 
     def test_all_services_french(self):
         self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
