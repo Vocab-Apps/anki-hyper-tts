@@ -60,6 +60,13 @@ class TTSTests(unittest.TestCase):
             'aws_secret_access_key': os.environ['AWS_SECRET_ACCESS_KEY'],
             'aws_region': os.environ['AWS_DEFAULT_REGION']
         })
+        # vocalware
+        self.manager.get_service('VocalWare').enabled = True
+        self.manager.get_service('VocalWare').configure({
+            'secret_phrase': os.environ['VOCALWARE_SECRET_PHRASE'],
+            'account_id': os.environ['VOCALWARE_ACCOUNT_ID'],
+            'api_id': os.environ['VOCALWARE_API_ID'],
+        })        
         # forvo
         self.manager.get_service('Forvo').enabled = True
         self.manager.get_service('Forvo').configure({
@@ -224,6 +231,18 @@ class TTSTests(unittest.TestCase):
     def test_amazon(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_amazon'
         service_name = 'Amazon'
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        assert len(service_voices) > 50
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+    def test_vocalware(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_vocalware'
+        service_name = 'VocalWare'
 
         voice_list = self.manager.full_voice_list()
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
