@@ -19,10 +19,11 @@ VOICE_OPTIONS = {
 
 class ServiceA(service.ServiceBase):
     def __init__(self):
-        self.config = {}
+        self._config = {}
 
     def configure(self, config):
-        self.config = config
+        self._config = config
+        api_key = self.get_configuration_value_mandatory('api_key')
 
     def test_service(self):
         return True
@@ -43,7 +44,7 @@ class ServiceA(service.ServiceBase):
         ]
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
-        delay_s = self.config.get('delay', 0)
+        delay_s = self._config.get('delay', 0)
         if delay_s > 0:
             logging.info(f'sleeping for {delay_s}s')
             time.sleep(delay_s)

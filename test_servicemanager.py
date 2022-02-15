@@ -9,6 +9,7 @@ import languages
 import servicemanager
 import voice
 import testing_utils
+import errors
 
 
 class ServiceManagerTests(unittest.TestCase):
@@ -43,8 +44,8 @@ class ServiceManagerTests(unittest.TestCase):
 
         assert self.manager.get_service('ServiceA').enabled == True
         assert self.manager.get_service('ServiceB').enabled == False
-        assert self.manager.get_service('ServiceA').config['api_key'] == 'yoyo'
-        assert self.manager.get_service('ServiceA').config['region'] == 'europe'
+        assert self.manager.get_service('ServiceA')._config['api_key'] == 'yoyo'
+        assert self.manager.get_service('ServiceA')._config['region'] == 'europe'
 
         configuration = config_models.Configuration()
         configuration.set_service_enabled('ServiceA', False)
@@ -69,6 +70,25 @@ class ServiceManagerTests(unittest.TestCase):
         self.manager.configure(configuration)
         assert self.manager.cloudlanguagetools_enabled == False
 
+    def test_services_partial_configuration(self):
+        # try to partially configure a service
+
+        self.manager.init_services()
+        assert self.manager.get_service('ServiceA').enabled == False
+        assert self.manager.get_service('ServiceB').enabled == False
+
+        configuration = config_models.Configuration()
+        configuration.set_service_enabled('ServiceA', True)
+        configuration.set_service_configuration_key('ServiceA', 'region', 'europe')
+        # should throw an error, we don't have api_key set
+        self.assertRaises(errors.MissingServiceConfiguration, self.manager.configure, configuration)
+
+        # same thing, but service is not enabled, we should not throw an error
+        configuration = config_models.Configuration()
+        configuration.set_service_enabled('ServiceA', False)
+        configuration.set_service_configuration_key('ServiceA', 'region', 'europe')
+        # should throw an error, we don't have api_key set
+        self.manager.configure(configuration)
 
 
 
