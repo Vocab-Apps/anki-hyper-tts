@@ -50,6 +50,9 @@ class BatchDialog(aqt.qt.QDialog):
     def configure_browser(self, note_id_list, batch_name=None):
         self.batch_component.configure_browser(note_id_list)
         self.setupUi()
+        # logging.info(f'width: {self.width()} height: {self.height()}')
+        # self.resize(self.main_layout.width(), self.main_layout.height())
+        self.adjustSize()
         if batch_name != None:
             self.batch_component.load_batch(batch_name)
             # collapse splitter

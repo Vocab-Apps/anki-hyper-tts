@@ -16,7 +16,7 @@ gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_l
 
 class ComponentBatch(component_common.ConfigComponentBase):
     MIN_WIDTH_COMPONENT = 600
-    MIN_HEIGHT = 400
+    MIN_HEIGHT = 300
 
     def __init__(self, hypertts, dialog):
         self.hypertts = hypertts
@@ -281,6 +281,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
                 self.refresh_profile_combobox()
 
     def show_settings_button_pressed(self):
+        self.dialog.adjustSize()
+        return
         if self.show_settings:
             self.collapse_settings()
         else:
