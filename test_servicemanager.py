@@ -24,7 +24,7 @@ class ServiceManagerTests(unittest.TestCase):
     def test_discover(self):
         # discover available services
         module_names = self.manager.discover_services()
-        assert module_names == ['service_a', 'service_b']
+        assert module_names == ['service_a', 'service_c', 'service_b']
 
     def test_import(self):
         self.manager.init_services()
@@ -90,6 +90,87 @@ class ServiceManagerTests(unittest.TestCase):
         # should throw an error, we don't have api_key set
         self.manager.configure(configuration)
 
+    def test_services_pro_mode_configure(self):
+        # ensure that configuring services and pro mode don't conflict with each other
+
+        self.manager.init_services()
+        assert self.manager.get_service('ServiceA').enabled == False
+        assert self.manager.get_service('ServiceB').enabled == False
+        assert self.manager.get_service('ServiceC').enabled == False
+
+        service_name = 'ServiceC'
+
+        # missing password
+        self.manager.init_services()
+        self.assertEqual(self.manager.get_service(service_name).enabled, False)
+        configuration = config_models.Configuration()
+        self.assertFalse(configuration.hypertts_pro_api_key_set())
+        configuration.set_service_enabled(service_name, True)
+        configuration.set_service_configuration_key(service_name, 'user', 'user1')
+        # should throw an error, we don't have password set
+        self.assertRaises(errors.MissingServiceConfiguration, self.manager.configure, configuration)
+        self.assertEqual(self.manager.get_service(service_name).password, None)
+        self.assertEqual(self.manager.get_service(service_name).enabled, True)
+        self.assertFalse(self.manager.cloudlanguagetools_enabled)
+
+        # missing user
+        self.manager.init_services()
+        self.assertEqual(self.manager.get_service(service_name).enabled, False)        
+        configuration = config_models.Configuration()
+        self.assertFalse(configuration.hypertts_pro_api_key_set())
+        configuration.set_service_enabled(service_name, True)
+        configuration.set_service_configuration_key(service_name, 'password', 'pw1')
+        self.assertRaises(errors.MissingServiceConfiguration, self.manager.configure, configuration)
+        self.assertEqual(self.manager.get_service(service_name).user, None)
+        self.assertEqual(self.manager.get_service(service_name).enabled, True)
+        self.assertFalse(self.manager.cloudlanguagetools_enabled)        
+
+        # complete configuration
+        self.manager.init_services()
+        self.assertEqual(self.manager.get_service(service_name).enabled, False)        
+        configuration = config_models.Configuration()
+        self.assertFalse(configuration.hypertts_pro_api_key_set())
+        configuration.set_service_enabled(service_name, True)
+        configuration.set_service_configuration_key(service_name, 'user', 'user1')
+        configuration.set_service_configuration_key(service_name, 'password', 'pw1')
+        self.manager.configure(configuration)
+        self.assertEqual(self.manager.get_service(service_name).user, 'user1')
+        self.assertEqual(self.manager.get_service(service_name).password, 'pw1')
+        self.assertEqual(self.manager.get_service(service_name).enabled, True)
+        self.assertFalse(self.manager.cloudlanguagetools_enabled)
+
+        # now, set hypertts pro key
+        self.manager.init_services()
+        self.assertEqual(self.manager.get_service(service_name).enabled, False)        
+        configuration = config_models.Configuration()
+        configuration.set_hypertts_pro_api_key('key42')
+        self.assertTrue(configuration.hypertts_pro_api_key_set())
+        configuration.set_service_enabled(service_name, False)
+        self.manager.configure(configuration)
+        self.assertEqual(self.manager.get_service(service_name).enabled, True) # enabled any way, because of clt
+        self.assertEqual(self.manager.get_service(service_name).user, None)
+        self.assertEqual(self.manager.get_service(service_name).password, None)
+        self.assertTrue(self.manager.cloudlanguagetools_enabled)
+
+        # now, set hypertts pro key, partial service config
+        self.manager.init_services()
+        self.assertEqual(self.manager.get_service(service_name).enabled, False)        
+        configuration = config_models.Configuration()
+        configuration.set_hypertts_pro_api_key('key42')
+        self.assertTrue(configuration.hypertts_pro_api_key_set())
+        configuration.set_service_enabled(service_name, True)
+        configuration.set_service_configuration_key(service_name, 'password', 'pw1')
+        self.manager.configure(configuration)
+        self.assertEqual(self.manager.get_service(service_name).enabled, True) # enabled any way, because of clt
+        self.assertEqual(self.manager.get_service(service_name).user, None)
+        self.assertEqual(self.manager.get_service(service_name).password, None)
+        self.assertTrue(self.manager.cloudlanguagetools_enabled)
+
+
+        
+
+
+        
 
 
     def test_full_voice_list(self):
