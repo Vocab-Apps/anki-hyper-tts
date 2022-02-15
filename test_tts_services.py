@@ -67,6 +67,12 @@ class TTSTests(unittest.TestCase):
             'account_id': os.environ['VOCALWARE_ACCOUNT_ID'],
             'api_id': os.environ['VOCALWARE_API_ID'],
         })        
+        # watson
+        self.manager.get_service('Watson').enabled = True
+        self.manager.get_service('Watson').configure({
+            'speech_key': os.environ['WATSON_SERVICES_KEY'],
+            'speech_url': os.environ['WATSON_SERVICES_URL'],
+        })                
         # forvo
         self.manager.get_service('Forvo').enabled = True
         self.manager.get_service('Forvo').configure({
@@ -243,6 +249,18 @@ class TTSTests(unittest.TestCase):
     def test_vocalware(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_vocalware'
         service_name = 'VocalWare'
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        assert len(service_voices) > 50
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+    def test_watson(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_watson'
+        service_name = 'Watson'
 
         voice_list = self.manager.full_voice_list()
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
