@@ -1,3 +1,4 @@
+from calendar import c
 import aqt.qt
 import logging
 import os
@@ -87,7 +88,8 @@ def test_voice_selection_defaults_single(qtbot):
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
-    # voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
+
+    voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
     expected_output = {
         'voice_selection_mode': 'single',
         'voice': {
@@ -117,7 +119,7 @@ def test_voice_selection_single_1(qtbot):
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
-    voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
+    voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
 
     # dialog.exec_()
 
@@ -168,12 +170,14 @@ def test_voice_selection_random_1(qtbot):
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
+    # dialog.exec_()
+
     # choose random mode
     # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
     voiceselection.radio_button_random.setChecked(True)
 
     # pick second voice and add it
-    voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
+    voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
     qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
 
     # pick third voice and add it
@@ -297,7 +301,7 @@ def test_voice_selection_random_2(qtbot):
     voiceselection.radio_button_random.setChecked(True)
 
     # add the first voice twice, but with different options
-    voiceselection.voices_combobox.setCurrentIndex(0)
+    voiceselection.voices_combobox.setCurrentIndex(1)
     qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
 
     # change options
@@ -334,7 +338,7 @@ def test_voice_selection_priority_1(qtbot):
     # dialog.exec_()
 
     # pick second voice and add it
-    voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
+    voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
     qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
 
     # pick third voice and add it
@@ -433,6 +437,8 @@ def test_voice_selection_samples(qtbot):
     model_change_callback = MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
+
+    voiceselection.voices_combobox.setCurrentIndex(1)
 
     # simulate selection from the preview grid
     voiceselection.sample_text_selected('Bonjour')
@@ -814,6 +820,8 @@ def test_batch_dialog(qtbot):
     # select second row
     index_second_row = batch.preview.batch_preview_table_model.createIndex(1, 0)
     batch.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.Select)
+    # select voice
+    batch.voice_selection.voices_combobox.setCurrentIndex(1)
     # press preview button
     qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.LeftButton)
     # dialog.exec_()
@@ -897,6 +905,7 @@ def test_batch_dialog_sound_preview_error(qtbot):
     
     # play sound preview with error voice
     # ===================================
+    # dialog.exec_()
 
     # select error voice
     batch.voice_selection.voices_combobox.setCurrentIndex(5)
@@ -910,7 +919,7 @@ def test_batch_dialog_sound_preview_error(qtbot):
     # press preview button
     qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.LeftButton)
 
-    assert str(hypertts_instance.anki_utils.last_exception) == 'Audio not found for [hello] (voice: ServiceB, Japanese, Male, notfound)'
+    assert str(hypertts_instance.anki_utils.last_exception) == 'Audio not found for [hello] (voice: Japanese, Male, notfound, ServiceB)'
 
 
 def test_batch_dialog_manual(qtbot):
@@ -949,6 +958,8 @@ def test_batch_dialog_editor(qtbot):
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_editor(note, mock_editor, False)
     batch.draw(dialog.getLayout())
+
+    batch.voice_selection.voices_combobox.setCurrentIndex(1)
 
     # test sound preview
     # ==================
@@ -1564,6 +1575,9 @@ def test_realtime_side_component(qtbot):
     # preview should be updated
     assert realtime_side.text_preview_label.text() == 'old people'
 
+    # select voice
+    realtime_side.voice_selection.voices_combobox.setCurrentIndex(1)
+
     # press sound preview
     qtbot.mouseClick(realtime_side.preview_sound_button, aqt.qt.Qt.LeftButton)
 
@@ -1612,11 +1626,15 @@ def test_realtime_component(qtbot):
     assert realtime.get_model().front.source.field_name == 'English'
     assert realtime.get_model().front.source.field_type == constants.AnkiTTSFieldType.Regular
 
+    realtime.front.voice_selection.voices_combobox.setCurrentIndex(1)
+
     # enable back side
     realtime.back.side_enabled_checkbox.setChecked(True)
     realtime.back.source.source_field_combobox.setCurrentText('Chinese')
     assert realtime.get_model().back.side_enabled == True
     assert realtime.get_model().back.source.field_name == 'Chinese'
+
+    realtime.back.voice_selection.voices_combobox.setCurrentIndex(1)
 
     # click apply
     assert realtime.apply_button.isEnabled() == True
@@ -1639,6 +1657,8 @@ def test_realtime_component(qtbot):
 
     expected_front_tts_tag = '{{tts fr_FR hypertts_preset=Front_realtime_0 voices=HyperTTS:English}}'
     expected_back_tts_tag = '{{tts fr_FR hypertts_preset=Back_realtime_0 voices=HyperTTS:Chinese}}'
+
+    # dialog.exec_()
 
     assert expected_front_tts_tag in question_format
     assert expected_back_tts_tag in answer_format

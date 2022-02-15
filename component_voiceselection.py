@@ -149,16 +149,22 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # grid layout for filters
         groupbox = aqt.qt.QGroupBox('Voice Filters')
         gridlayout = aqt.qt.QGridLayout()
+    
 
-        gridlayout.addWidget(aqt.qt.QLabel('Locale'), 0, 0, 1, 1)
-        gridlayout.addWidget(self.audio_languages_combobox, 0, 1, 1, 1)
-        gridlayout.addWidget(aqt.qt.QLabel('Language'), 1, 0, 1, 1)
-        gridlayout.addWidget(self.languages_combobox, 1, 1, 1, 1)
-        gridlayout.addWidget(aqt.qt.QLabel('Service'), 2, 0, 1, 1)        
-        gridlayout.addWidget(self.services_combobox, 2, 1, 1, 1)
-        gridlayout.addWidget(aqt.qt.QLabel('Gender'), 3, 0, 1, 1)        
-        gridlayout.addWidget(self.genders_combobox, 3, 1, 1, 1)
-        gridlayout.addWidget(self.reset_filters_button, 4, 0, 1, 2)
+        row = 0
+        gridlayout.addWidget(aqt.qt.QLabel('Language'), row, 0, 1, 1)
+        gridlayout.addWidget(self.languages_combobox, row, 1, 1, 1)        
+        row +=1 
+        gridlayout.addWidget(aqt.qt.QLabel('Locale'), row, 0, 1, 1)
+        gridlayout.addWidget(self.audio_languages_combobox, row, 1, 1, 1)
+        row +=1 
+        gridlayout.addWidget(aqt.qt.QLabel('Service'), row, 0, 1, 1)        
+        gridlayout.addWidget(self.services_combobox, row, 1, 1, 1)
+        row +=1 
+        gridlayout.addWidget(aqt.qt.QLabel('Gender'), row, 0, 1, 1)        
+        gridlayout.addWidget(self.genders_combobox, row, 1, 1, 1)
+        row +=1 
+        gridlayout.addWidget(self.reset_filters_button, row, 0, 1, 2)
         groupbox.setLayout(gridlayout)
         self.voices_layout.addWidget(groupbox)
         
@@ -289,6 +295,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
         with self.hypertts.error_manager.get_single_action_context('Playing Voice Sample'):
             logging.info('play_sample')
             # get voice
+            if len(self.filtered_voice_list) == 0:
+                raise errors.NoVoiceSelected()
             selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
             # get options
             options = self.current_voice_options
@@ -341,9 +349,12 @@ class VoiceSelection(component_common.ConfigComponentBase):
         for key, value in voice.options.items():
             widget_name = f'voice_option_{key}'
             option_type = constants.VoiceOptionTypes[value['type']]
-            if option_type == constants.VoiceOptionTypes.number:
+            if option_type == constants.VoiceOptionTypes.number or option_type == constants.VoiceOptionTypes.number_int:
                 # create a spinner
-                widget = aqt.qt.QDoubleSpinBox()
+                if option_type == constants.VoiceOptionTypes.number:
+                    widget = aqt.qt.QDoubleSpinBox()
+                elif option_type == constants.VoiceOptionTypes.number_int:
+                    widget = aqt.qt.QSpinBox()
                 widget.setObjectName(widget_name)
                 # logging.info(f'objec name: {widget_name}')
                 widget.setRange(value['min'], value['max'])
@@ -382,6 +393,10 @@ class VoiceSelection(component_common.ConfigComponentBase):
         if self.genders_combobox.currentIndex() != 0:
             gender = self.genders[self.genders_combobox.currentIndex() - 2]
             voice_list = [voice for voice in voice_list if voice.gender == gender]
+        def voice_sort_key(voice):
+            return str(voice)
+        # sort
+        voice_list.sort(key=voice_sort_key)
         self.filtered_voice_list = voice_list
         self.draw_all_voices(self.filtered_voice_list)
 

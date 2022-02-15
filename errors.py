@@ -73,10 +73,16 @@ class RequestError(HyperTTSError):
         self.voice = voice
         self.error_message = error_message
 
+class NoVoiceSelected(HyperTTSError):
+    def __init__(self):
+        message = f'No voice selected. Please select a voice, you may need to update your filters.'
+        super().__init__(message)
+
 class NoVoicesAvailable(HyperTTSError):
     def __init__(self):
         message = f'No voices available. You may need to configure some services in the HyperTTS Configuration.'
         super().__init__(message)
+
 
 class NoVoicesAdded(HyperTTSError):
     def __init__(self):
