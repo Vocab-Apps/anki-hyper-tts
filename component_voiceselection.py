@@ -341,9 +341,12 @@ class VoiceSelection(component_common.ConfigComponentBase):
         for key, value in voice.options.items():
             widget_name = f'voice_option_{key}'
             option_type = constants.VoiceOptionTypes[value['type']]
-            if option_type == constants.VoiceOptionTypes.number:
+            if option_type == constants.VoiceOptionTypes.number or option_type == constants.VoiceOptionTypes.number_int:
                 # create a spinner
-                widget = aqt.qt.QDoubleSpinBox()
+                if option_type == constants.VoiceOptionTypes.number:
+                    widget = aqt.qt.QDoubleSpinBox()
+                elif option_type == constants.VoiceOptionTypes.number_int:
+                    widget = aqt.qt.QSpinBox()
                 widget.setObjectName(widget_name)
                 # logging.info(f'objec name: {widget_name}')
                 widget.setRange(value['min'], value['max'])

@@ -11,7 +11,10 @@ VOICE_OPTIONS = {
     'pitch': {
         'default': 0.0, 'max': 20.0, 'min': -20.0, 'type': 'number'}, 
     'speaking_rate': {
-        'default': 1.0, 'max': 4.0, 'min': 0.25, 'type': 'number'}
+        'default': 1.0, 'max': 4.0, 'min': 0.25, 'type': 'number'},
+    'style': {
+        'default': 1, 'max': 3, 'min': 0, 'type': 'number_int'},
+
 }
 
 class ServiceA(service.ServiceBase):

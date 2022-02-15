@@ -160,4 +160,5 @@ class Gender(enum.Enum):
 
 class VoiceOptionTypes(enum.Enum):
     number = enum.auto()
+    number_int = enum.auto()
 
