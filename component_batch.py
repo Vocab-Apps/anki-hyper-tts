@@ -34,7 +34,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         field_list = self.hypertts.get_all_fields_from_notes(note_id_list)
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
-        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
+        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.dialog, self.voice_selection_model_updated)
         self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
         self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, 
             self.sample_selected, self.apply_notes_batch_start, self.apply_notes_batch_end)
@@ -48,7 +48,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         field_list = list(self.note.keys())
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
-        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
+        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.dialog, self.voice_selection_model_updated)
         self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
         self.voice_selection.preview_enabled = False
         self.preview = component_label_preview.LabelPreview(self.hypertts, note)
@@ -281,8 +281,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
                 self.refresh_profile_combobox()
 
     def show_settings_button_pressed(self):
-        self.dialog.adjustSize()
-        return
         if self.show_settings:
             self.collapse_settings()
         else:

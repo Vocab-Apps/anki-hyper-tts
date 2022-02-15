@@ -32,9 +32,9 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         self.manage_apply_button = False
         self.note = note
         self.front = component_realtime_side.ComponentRealtimeSide(self.hypertts, 
-            constants.AnkiCardSide.Front, self.card_ord, self.front_model_updated, self.existing_preset_found)
+            self.dialog, constants.AnkiCardSide.Front, self.card_ord, self.front_model_updated, self.existing_preset_found)
         self.back = component_realtime_side.ComponentRealtimeSide(self.hypertts, 
-            constants.AnkiCardSide.Back, self.card_ord, self.back_model_updated, self.existing_preset_found)
+            self.dialog, constants.AnkiCardSide.Back, self.card_ord, self.back_model_updated, self.existing_preset_found)
         self.front.configure_note(note)
         self.back.configure_note(note)
         self.manage_apply_button = True

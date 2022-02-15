@@ -12,8 +12,9 @@ errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_b
 
 
 class VoiceSelection(component_common.ConfigComponentBase):
-    def __init__(self, hypertts, model_change_callback):
+    def __init__(self, hypertts, dialog, model_change_callback):
         self.hypertts = hypertts
+        self.dialog = dialog
         self.model_change_callback = model_change_callback
         self.enable_model_change_callback = True
 
@@ -147,7 +148,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
 
         # grid layout for filters
-        groupbox = aqt.qt.QGroupBox('Voice Filters')
+        self.groupbox_voice_filters = aqt.qt.QGroupBox('Voice Filters')
         gridlayout = aqt.qt.QGridLayout()
     
 
@@ -165,10 +166,10 @@ class VoiceSelection(component_common.ConfigComponentBase):
         gridlayout.addWidget(self.genders_combobox, row, 1, 1, 1)
         row +=1 
         gridlayout.addWidget(self.reset_filters_button, row, 0, 1, 2)
-        groupbox.setLayout(gridlayout)
-        self.voices_layout.addWidget(groupbox)
+        self.groupbox_voice_filters.setLayout(gridlayout)
+        self.voices_layout.addWidget(self.groupbox_voice_filters)
         
-        groupbox = aqt.qt.QGroupBox('Voice')
+        self.groupbox_voice = aqt.qt.QGroupBox('Voice')
         vlayout = aqt.qt.QVBoxLayout()
         vlayout.addWidget(self.voices_combobox)
 
@@ -177,8 +178,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         self.voice_options_layout = aqt.qt.QGridLayout()
         vlayout.addLayout(self.voice_options_layout)
-        groupbox.setLayout(vlayout)
-        self.voices_layout.addWidget(groupbox)
+        self.groupbox_voice.setLayout(vlayout)
+        self.voices_layout.addWidget(self.groupbox_voice)
 
 
         # voice selection mode groupbox
@@ -365,6 +366,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 self.voice_options_layout.addWidget(label, row, 0, 1, 1)
                 self.voice_options_layout.addWidget(widget, row, 1, 1, 1)
                 self.voice_options_widgets[widget_name] = widget
+                label.show()
+                widget.show()
             else:
                 raise Exception(f"voice option type not supported: {value['type']}")
             row += 1
@@ -373,6 +376,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
         if self.voice_selection_model.selection_mode == constants.VoiceSelectionMode.single:
             self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice, {}))
             self.notify_model_update()
+
+        self.dialog_check_size_adjust()
 
     def filter_and_draw_voices(self, current_index):
         logging.info('filter_and_draw_voices')
@@ -470,6 +475,13 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 column_index += 1
 
             row += 1
+
+        self.dialog_check_size_adjust()
+
+    def dialog_check_size_adjust(self):
+        logging.info('dialog_check_size_adjust')
+        self.dialog.checkSizeAdjust()
+
 
     def serialize(self):
         return self.voice_selection_model.serialize()

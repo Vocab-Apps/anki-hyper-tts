@@ -37,9 +37,26 @@ class ConfigurationDialog(aqt.qt.QDialog):
     def close(self):
         self.accept()
 
-class BatchDialog(aqt.qt.QDialog):
-    def __init__(self, hypertts):
+class DialogBase(aqt.qt.QDialog):
+    def __init__(self):
         super(aqt.qt.QDialog, self).__init__()
+
+    def checkSizeAdjust(self):
+        # when adding widgets into a layout, size may change and we may need to readjust the height
+        # unfortunately sizeHint() is not updated right away, so we need to do this some time in the future
+        aqt.qt.QTimer.singleShot(100, self.checkHeightAndAdjust)
+
+    def checkHeightAndAdjust(self):
+        logging.info('checking size and adjusting')
+        current_width = self.size().width()
+        current_height = self.size().height()
+        if self.sizeHint().height() > current_height:
+            logging.info('need to resize')
+            self.resize(current_width, self.sizeHint().height())
+
+class BatchDialog(DialogBase):
+    def __init__(self, hypertts):
+        super(DialogBase, self).__init__()
         self.batch_component = component_batch.ComponentBatch(hypertts, self)
 
     def setupUi(self):
@@ -65,12 +82,13 @@ class BatchDialog(aqt.qt.QDialog):
         self.setupUi()
         self.batch_component.no_settings_editor()
 
+
     def close(self):
         self.accept()
 
-class RealtimeDialog(aqt.qt.QDialog):
+class RealtimeDialog(DialogBase):
     def __init__(self, hypertts, card_ord):
-        super(aqt.qt.QDialog, self).__init__()
+        super(DialogBase, self).__init__()
         self.realtime_component = component_realtime.ComponentRealtime(hypertts, self, card_ord)
 
     def setupUi(self):

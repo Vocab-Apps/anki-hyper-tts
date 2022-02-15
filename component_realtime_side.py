@@ -17,8 +17,9 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
     MIN_WIDTH_COMPONENT = 600
     MIN_HEIGHT = 400
 
-    def __init__(self, hypertts, side, card_ord, model_change_callback, existing_preset_fn):
+    def __init__(self, hypertts, dialog, side, card_ord, model_change_callback, existing_preset_fn):
         self.hypertts = hypertts
+        self.dialog = dialog
         self.side = side
         self.card_ord = card_ord
         self.model_change_callback = model_change_callback
@@ -37,7 +38,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.note = note
         field_list = self.hypertts.get_fields_from_note(self.note)
         self.source = component_realtime_source.RealtimeSource(self.hypertts, field_list, self.source_model_updated)
-        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.voice_selection_model_updated)
+        self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.dialog, self.voice_selection_model_updated)
         self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
 
     def load_existing_preset(self):

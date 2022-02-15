@@ -41,6 +41,9 @@ class EmptyDialog(aqt.qt.QDialog):
     def close(self):
         self.closed = True
 
+    def checkSizeAdjust(self):
+        pass
+
 class MockModelChangeCallback():
     def __init__(self):
         self.model = None
@@ -85,7 +88,7 @@ def test_voice_selection_defaults_single(qtbot):
     dialog.setupUi()
 
     model_change_callback = MockModelChangeCallback()
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
 
@@ -116,7 +119,7 @@ def test_voice_selection_single_1(qtbot):
     dialog.setupUi()
 
     model_change_callback = MockModelChangeCallback()
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
     voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
@@ -167,7 +170,7 @@ def test_voice_selection_random_1(qtbot):
     dialog.setupUi()
 
     model_change_callback = MockModelChangeCallback()
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
     # dialog.exec_()
@@ -222,7 +225,7 @@ def test_voice_selection_random_to_single(qtbot):
     dialog.setupUi()
 
     model_change_callback = MockModelChangeCallback()
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
     # choose random mode
@@ -257,7 +260,7 @@ def test_voice_selection_random_remove_voices(qtbot):
     dialog.setupUi()
 
     model_change_callback = MockModelChangeCallback()
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
     # choose random mode
@@ -294,7 +297,7 @@ def test_voice_selection_random_2(qtbot):
     dialog.setupUi()
 
     model_change_callback = MockModelChangeCallback()
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
     # choose random mode
@@ -328,7 +331,7 @@ def test_voice_selection_priority_1(qtbot):
     dialog.setupUi()
 
     model_change_callback = MockModelChangeCallback()
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
     # choose random mode
@@ -370,7 +373,7 @@ def test_voice_selection_filters(qtbot):
     dialog.setupUi()
 
     model_change_callback = MockModelChangeCallback()
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
     # ensure filters are set to All by default
@@ -435,7 +438,7 @@ def test_voice_selection_samples(qtbot):
     dialog.setupUi()
 
     model_change_callback = MockModelChangeCallback()
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
     voiceselection.voices_combobox.setCurrentIndex(1)
@@ -466,7 +469,7 @@ def test_voice_selection_load_model(qtbot):
     dialog.setupUi()
 
     model_change_callback = MockModelChangeCallback()
-    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
     voice_list = hypertts_instance.service_manager.full_voice_list()
@@ -1550,7 +1553,7 @@ def test_realtime_side_component(qtbot):
     note_id = config_gen.note_id_1
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     model_change_callback = MockModelChangeCallback()
-    realtime_side = component_realtime_side.ComponentRealtimeSide(hypertts_instance,
+    realtime_side = component_realtime_side.ComponentRealtimeSide(hypertts_instance, dialog,
         constants.AnkiCardSide.Front, 0, model_change_callback.model_updated, existing_preset_fn)
     realtime_side.configure_note(note_1)
     dialog.addChildLayout(realtime_side.draw())
