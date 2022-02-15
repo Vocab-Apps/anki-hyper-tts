@@ -157,8 +157,10 @@ class TTSTests(unittest.TestCase):
 
     def pick_random_voices_sample(self, voice_list, service_name, language, count):
         voice_subset = [voice for voice in voice_list if voice.service.name == service_name and voice.language == language]
-        random_voice_sample = random.sample(voice_subset, count)
-        return random_voice_sample
+        if len(voice_subset) > count:
+            return random.sample(voice_subset, count)
+        return []
+
 
 
     def test_google(self):
