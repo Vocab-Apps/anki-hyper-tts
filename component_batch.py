@@ -237,21 +237,25 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
         layout.addLayout(self.vlayout)
 
+    def get_min_size(self):
+        recommended_height = self.dialog.sizeHint().height()
+        return max(recommended_height, self.MIN_HEIGHT)
+
     def no_settings_editor(self):
         # when launched from the editor
-        self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT, self.MIN_HEIGHT)
+        self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT, self.get_min_size())
 
     def collapse_settings(self):
         # when we have already loaded a batch
         self.splitter.setSizes([0, self.MIN_WIDTH_COMPONENT])
-        self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT, self.MIN_HEIGHT)
+        self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT, self.get_min_size())
         self.show_settings = False
         self.show_settings_button.setText('Show Settings')
 
     def display_settings(self):
         # when configuring a new batch
         self.splitter.setSizes([self.MIN_WIDTH_COMPONENT, self.MIN_WIDTH_COMPONENT])
-        self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT * 2, self.MIN_HEIGHT)
+        self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT * 2, self.get_min_size())
         self.show_settings = True
         self.show_settings_button.setText('Hide Settings')
 

@@ -63,6 +63,7 @@ class BatchDialog(DialogBase):
         self.setWindowTitle(constants.GUI_COLLECTION_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
         self.batch_component.draw(self.main_layout)
+        self.adjustSize()
 
     def configure_browser(self, note_id_list, batch_name=None):
         self.batch_component.configure_browser(note_id_list)
@@ -95,6 +96,7 @@ class RealtimeDialog(DialogBase):
         self.setWindowTitle(constants.GUI_REALTIME_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
         self.realtime_component.draw(self.main_layout)
+        self.adjustSize()
 
     def configure_note(self, note):
         self.realtime_component.configure_note(note)
