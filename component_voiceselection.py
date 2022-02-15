@@ -367,8 +367,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 self.voice_options_layout.addWidget(label, row, 0, 1, 1)
                 self.voice_options_layout.addWidget(widget, row, 1, 1, 1)
                 self.voice_options_widgets[widget_name] = widget
-                label.show()
-                widget.show()
             else:
                 raise Exception(f"voice option type not supported: {value['type']}")
             row += 1
