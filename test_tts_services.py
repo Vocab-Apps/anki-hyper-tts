@@ -73,6 +73,12 @@ class TTSTests(unittest.TestCase):
             'speech_key': os.environ['WATSON_SERVICES_KEY'],
             'speech_url': os.environ['WATSON_SERVICES_URL'],
         })                
+        # naver
+        self.manager.get_service('Naver').enabled = True
+        self.manager.get_service('Naver').configure({
+            'client_id': os.environ['NAVER_CLIENT_ID'],
+            'client_secret': os.environ['NAVER_CLIENT_SECRET'],
+        })                        
         # forvo
         self.manager.get_service('Forvo').enabled = True
         self.manager.get_service('Forvo').configure({
@@ -269,6 +275,20 @@ class TTSTests(unittest.TestCase):
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+    def test_naver(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_naver'
+        service_name = 'Naver'
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        assert len(service_voices) > 30
+
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ko_KR)
+        self.verify_audio_output(selected_voice, '여보세요')
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ja_JP)
+        self.verify_audio_output(selected_voice, 'おはようございます')
+
 
     def test_forvo(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_forvo'
