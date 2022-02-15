@@ -87,7 +87,8 @@ def test_voice_selection_defaults_single(qtbot):
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildLayout(voiceselection.draw())
 
-    # voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
+
+    voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
     expected_output = {
         'voice_selection_mode': 'single',
         'voice': {
