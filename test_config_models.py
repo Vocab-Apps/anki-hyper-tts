@@ -454,6 +454,16 @@ class ConfigModelsTests(unittest.TestCase):
 
         assert configuration.serialize() == deserialized_configuration.serialize()
 
+        # hypertts pro key
+        configuration = config_models.Configuration()
+        configuration.hypertts_pro_api_key = None
+        self.assertFalse(configuration.hypertts_pro_api_key_set())
+        configuration = config_models.Configuration()
+        configuration.hypertts_pro_api_key = ''
+        self.assertFalse(configuration.hypertts_pro_api_key_set())
+        configuration = config_models.Configuration()
+        configuration.hypertts_pro_api_key = 'yoyo'
+        self.assertTrue(configuration.hypertts_pro_api_key_set())
 
         # some services' enabled flag not defined
         configuration = config_models.Configuration()

@@ -33,11 +33,13 @@ class ServiceManager():
         hypertts_pro_mode = configuration_model.hypertts_pro_api_key_set()
         for service_name, enabled in configuration_model.get_service_enabled_map().items():
             service = self.get_service(service_name)
-            service.enabled = enabled
-            # do we need to set configuration for this service ? only do so if the service is enabled
-            if enabled and service_name in configuration_model.get_service_config():
-                service_config = configuration_model.get_service_config()[service_name]
-                service.configure(service_config)
+            logging.info(f'configuring service {service_name}, hypertts_pro_mode: {hypertts_pro_mode}, clt_enabled: {service.cloudlanguagetools_enabled()}')
+            if not (hypertts_pro_mode == True and service.cloudlanguagetools_enabled()):
+                service.enabled = enabled
+                # do we need to set configuration for this service ? only do so if the service is enabled
+                if enabled and service_name in configuration_model.get_service_config():
+                    service_config = configuration_model.get_service_config()[service_name]
+                    service.configure(service_config)
         # if we enable cloudlanguagetools, it may force some services to enabled
         if hypertts_pro_mode:
             self.configure_cloudlanguagetools(configuration_model.hypertts_pro_api_key)

@@ -378,7 +378,7 @@ class Configuration(ConfigModelBase):
         self._hypertts_pro_api_key = api_key
 
     def hypertts_pro_api_key_set(self):
-        return self.hypertts_pro_api_key != None and len(self.hypertts_pro_api_key)
+        return self.hypertts_pro_api_key != None and len(self.hypertts_pro_api_key) > 0
 
     hypertts_pro_api_key = property(get_hypertts_pro_api_key, set_hypertts_pro_api_key)
 
