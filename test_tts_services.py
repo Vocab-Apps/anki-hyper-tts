@@ -85,6 +85,12 @@ class TTSTests(unittest.TestCase):
             'api_key': os.environ['FORVO_SERVICES_KEY'],
             'api_url': os.environ['FORVO_SERVICES_URL'],
         })        
+        # cereproc
+        self.manager.get_service('CereProc').enabled = True
+        self.manager.get_service('CereProc').configure({
+            'username': os.environ['CEREPROC_USERNAME'],
+            'password': os.environ['CEREPROC_PASSWORD'],
+        })                
         # free services 
         # =============
         # google translate
@@ -276,6 +282,18 @@ class TTSTests(unittest.TestCase):
 
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+    def test_cereproc(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_cereproc'
+        service_name = 'CereProc'
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        assert len(service_voices) > 50
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
 
     def test_naver(self):
