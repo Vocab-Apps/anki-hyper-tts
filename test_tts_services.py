@@ -91,6 +91,11 @@ class TTSTests(unittest.TestCase):
             'username': os.environ['CEREPROC_USERNAME'],
             'password': os.environ['CEREPROC_PASSWORD'],
         })                
+        # fptai
+        self.manager.get_service('FptAi').enabled = True
+        self.manager.get_service('FptAi').configure({
+            'api_key': os.environ['FPTAPI_SERVICES_KEY'],
+        })
         # free services 
         # =============
         # google translate
@@ -134,6 +139,7 @@ class TTSTests(unittest.TestCase):
             languages.AudioLanguage.es_ES: 'es-ES',
             languages.AudioLanguage.it_IT: 'it-IT',
             languages.AudioLanguage.ko_KR: 'ko-KR',
+            languages.AudioLanguage.vi_VN: 'vi-VN',
         }
 
         recognition_language = recognition_language_map[voice.language]
@@ -295,6 +301,18 @@ class TTSTests(unittest.TestCase):
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+    def test_fptai(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_fptai'
+        service_name = 'FptAi'
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        assert len(service_voices) > 5
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.vi_VN)
+        self.verify_audio_output(selected_voice, 'Tôi bị mất cái ví.')
 
     def test_naver(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_naver'
