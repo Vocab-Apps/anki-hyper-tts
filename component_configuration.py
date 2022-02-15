@@ -266,7 +266,12 @@ class Configuration(component_common.ConfigComponentBase):
         services_scroll_area.setHorizontalScrollBarPolicy(aqt.qt.Qt.ScrollBarAlwaysOff)
         services_widget = aqt.qt.QWidget()
         services_vlayout = aqt.qt.QVBoxLayout(services_widget)
-        for service in self.hypertts.service_manager.get_all_services():
+        
+        def service_sort_key(service):
+            return service.name
+        service_list = self.hypertts.service_manager.get_all_services()
+        service_list.sort(key=service_sort_key)
+        for service in service_list:
             self.draw_service(service, services_vlayout)
 
         services_scroll_area.setWidget(services_widget)

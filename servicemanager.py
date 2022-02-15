@@ -79,7 +79,7 @@ class ServiceManager():
         return self.services[service_name]
 
     def get_all_services(self):
-        return self.services.values()
+        return list(self.services.values())
 
     # service configuration
     # =====================
