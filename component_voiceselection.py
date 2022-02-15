@@ -295,6 +295,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
         with self.hypertts.error_manager.get_single_action_context('Playing Voice Sample'):
             logging.info('play_sample')
             # get voice
+            if len(self.filtered_voice_list) == 0:
+                raise errors.NoVoiceSelected()
             selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
             # get options
             options = self.current_voice_options
