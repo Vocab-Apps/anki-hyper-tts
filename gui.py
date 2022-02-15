@@ -47,12 +47,7 @@ class DialogBase(aqt.qt.QDialog):
         aqt.qt.QTimer.singleShot(100, self.checkHeightAndAdjust)
 
     def checkHeightAndAdjust(self):
-        logging.info('checking size and adjusting')
-        current_width = self.size().width()
-        current_height = self.size().height()
-        if self.sizeHint().height() > current_height:
-            logging.info('need to resize')
-            self.resize(current_width, self.sizeHint().height())
+        self.setMinimumHeight(self.sizeHint().height())
 
 class BatchDialog(DialogBase):
     def __init__(self, hypertts):
