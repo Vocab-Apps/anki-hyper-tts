@@ -449,7 +449,9 @@ class HyperTTS():
     def get_batch_config_list(self):
         if constants.CONFIG_BATCH_CONFIG not in self.config:
             return []
-        return list(self.config[constants.CONFIG_BATCH_CONFIG].keys())
+        batch_config_list = list(self.config[constants.CONFIG_BATCH_CONFIG].keys())
+        batch_config_list.sort()
+        return batch_config_list
 
     def get_batch_config_list_editor(self):
         return [constants.BATCH_CONFIG_NEW] + self.get_batch_config_list()
