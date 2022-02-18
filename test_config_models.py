@@ -377,6 +377,7 @@ class ConfigModelsTests(unittest.TestCase):
 
 
     def test_text_processing(self):
+        hypertts_instance = get_hypertts_instance()
         
         text_processing = config_models.TextProcessing()
         rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
@@ -425,6 +426,24 @@ class ConfigModelsTests(unittest.TestCase):
             ]
         }
         assert text_processing.serialize() == expected_output
+
+        # set strip brackets to true
+        text_processing.strip_brackets = True
+        expected_output = {
+            'html_to_text_line': True,
+            'strip_brackets': True,
+            'run_replace_rules_after': True,
+            'ssml_convert_characters': True,        
+            'text_replacement_rules': [
+                {
+                    'rule_type': 'Regex',
+                    'source': 'c',
+                    'target': 'd'
+                },            
+            ]
+        }
+        assert hypertts_instance.deserialize_text_processing(text_processing.serialize()).serialize() == expected_output
+
 
     def test_configuration(self):
         hypertts_instance = get_hypertts_instance()
