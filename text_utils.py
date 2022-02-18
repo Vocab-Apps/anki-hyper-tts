@@ -44,9 +44,18 @@ def process_text_replacement(text, text_processing_model):
         text = process_text_replacement_rule(text, text_replacement_rule)    
     return text
 
+def strip_brackets(text):
+    text = re.sub(r'\(.*\)', '', text)
+    text = re.sub(r'\[.*\]', '', text)
+    text = re.sub(r'\{.*\}', '', text)
+    text = re.sub(r'\<.*\>', '', text)
+    return text
+
 def process_text_rules(text, text_processing_model):
     if text_processing_model.html_to_text_line:
         text = anki.utils.htmlToTextLine(text)
+    if text_processing_model.strip_brackets:
+        text = strip_brackets(text)
     if text_processing_model.ssml_convert_characters:
         for pattern, replace in SSML_CONVERSION_MAP.items():
             text = text.replace(pattern, replace)

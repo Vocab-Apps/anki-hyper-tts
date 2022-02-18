@@ -87,3 +87,20 @@ def test_regex_backref(qtbot):
     source_text = 'word1 (word2)'
     expected_result = 'word2 word1'
     assert text_utils.process_text(source_text, text_processing) == expected_result
+
+
+def test_strip_brackets(qtbot):
+    text_processing = config_models.TextProcessing()
+
+    text_processing.strip_brackets = False
+    assert text_utils.process_text('word1 (word2)', text_processing) == 'word1 (word2)'
+
+    text_processing.strip_brackets = True
+    text_processing.html_to_text_line = False
+    assert text_utils.process_text('word1 (word2)', text_processing) == 'word1 '
+    assert text_utils.process_text('word1 [word2]', text_processing) == 'word1 '
+    assert text_utils.process_text('word1 [word2][word3]', text_processing) == 'word1 '
+    assert text_utils.process_text('word1[word2]', text_processing) == 'word1'
+    assert text_utils.process_text('word1 {word2}', text_processing) == 'word1 '
+    assert text_utils.process_text('word1 <word2>', text_processing) == 'word1 '
+    assert text_utils.process_text('word1 <word2>(word3)[word4]', text_processing) == 'word1 '
