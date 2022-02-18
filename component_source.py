@@ -138,6 +138,8 @@ class BatchSource(component_common.ConfigComponentBase):
             logging.error(f'current_index for source_field_combobox is {current_index}, field_list: {self.field_list}')
         if current_index >= len(self.field_list):
             logging.error(f'current_index: {current_index}, field_list: {self.field_list}')
+        if len(self.field_list) == 0:
+            logging.error(f'source_field_change: no fields configured, current_index: {current_index}')
         field_name = self.field_list[current_index]
         self.batch_source_model = config_models.BatchSourceSimple(field_name)
         self.notify_model_update()
