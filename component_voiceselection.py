@@ -292,30 +292,39 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.services_combobox.setCurrentIndex(0)
         self.genders_combobox.setCurrentIndex(0)
 
+    def get_selected_voice(self):
+        if len(self.filtered_voice_list) == 0:
+            # most likely user configured filters in a way that no voices match
+            raise errors.NoVoiceSelected()
+        current_index = self.voices_combobox.currentIndex()
+        if current_index >= len(self.filtered_voice_list):
+            logging.error(f'filtered_voice_list: {self.filtered_voice_list} current_index: {current_index}')
+            raise errors.NoVoiceSelected()
+        selected_voice = self.filtered_voice_list[current_index]
+        return selected_voice
+
 
     def play_sample(self):
         with self.hypertts.error_manager.get_single_action_context('Playing Voice Sample'):
             logging.info('play_sample')
-            # get voice
-            if len(self.filtered_voice_list) == 0:
-                raise errors.NoVoiceSelected()
-            selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
+            selected_voice = self.get_selected_voice()
             # get options
             options = self.current_voice_options
             self.hypertts.play_sound(self.sample_text, selected_voice, options)
 
     def add_voice(self):
-        selected_voice = self.filtered_voice_list[self.voices_combobox.currentIndex()]
-        options = copy.copy(self.current_voice_options)
+        with self.hypertts.error_manager.get_single_action_context('Adding Voice'):
+            selected_voice = self.get_selected_voice()
+            options = copy.copy(self.current_voice_options)
 
-        if self.radio_button_random.isChecked():
-            self.voice_selection_model.add_voice(config_models.VoiceWithOptionsRandom(selected_voice, options))
-        elif self.radio_button_priority.isChecked():
-            self.voice_selection_model.add_voice(config_models.VoiceWithOptionsPriority(selected_voice, options))
+            if self.radio_button_random.isChecked():
+                self.voice_selection_model.add_voice(config_models.VoiceWithOptionsRandom(selected_voice, options))
+            elif self.radio_button_priority.isChecked():
+                self.voice_selection_model.add_voice(config_models.VoiceWithOptionsPriority(selected_voice, options))
 
-        self.redraw_selected_voices()
-        
-        self.notify_model_update()
+            self.redraw_selected_voices()
+            
+            self.notify_model_update()
 
 
     def voice_selected(self, current_index):
