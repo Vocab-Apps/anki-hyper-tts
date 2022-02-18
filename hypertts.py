@@ -216,6 +216,8 @@ class HyperTTS():
 
     def play_sound(self, source_text, voice, options):
         logging.info(f'playing audio for {source_text}')
+        if len(source_text) == 0:
+            raise errors.SourceTextEmpty()        
         full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options, context.AudioRequestContext(constants.AudioRequestReason.preview))
         self.anki_utils.play_sound(full_filename)
 
