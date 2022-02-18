@@ -328,6 +328,7 @@ class TextProcessing(ConfigModelBase):
     def __init__(self):
         self._text_replacement_rules = []
         self.html_to_text_line = constants.TEXT_PROCESSING_DEFAULT_HTMLTOTEXTLINE
+        self.strip_brackets = constants.TEXT_PROCESSING_DEFAULT_STRIP_BRACKETS
         self.ssml_convert_characters = constants.TEXT_PROCESSING_DEFAULT_SSML_CHARACTERS
         self.run_replace_rules_after = constants.TEXT_PROCESSING_DEFAULT_REPLACE_AFTER
 
@@ -351,6 +352,7 @@ class TextProcessing(ConfigModelBase):
     def serialize(self):
         return {
             'html_to_text_line': self.html_to_text_line,
+            'strip_brackets': self.strip_brackets,
             'ssml_convert_characters': self.ssml_convert_characters,
             'run_replace_rules_after': self.run_replace_rules_after,
             'text_replacement_rules': [x.serialize() for x in self.text_replacement_rules]

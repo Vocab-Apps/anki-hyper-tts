@@ -320,6 +320,7 @@ class ConfigModelsTests(unittest.TestCase):
             },
             'text_processing': {
                 'html_to_text_line': True,
+                'strip_brackets': False,
                 'run_replace_rules_after': True,
                 'ssml_convert_characters': True,            
                 'text_replacement_rules': [
@@ -389,6 +390,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         expected_output = {
             'html_to_text_line': True,
+            'strip_brackets': False,
             'run_replace_rules_after': True,
             'ssml_convert_characters': True,
             'text_replacement_rules': [
@@ -411,6 +413,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         expected_output = {
             'html_to_text_line': True,
+            'strip_brackets': False,
             'run_replace_rules_after': True,
             'ssml_convert_characters': True,        
             'text_replacement_rules': [
@@ -535,6 +538,7 @@ class ConfigModelsTests(unittest.TestCase):
             },
             'text_processing': {
                 'html_to_text_line': True,
+                'strip_brackets': False,
                 'run_replace_rules_after': True,
                 'ssml_convert_characters': True,            
                 'text_replacement_rules': [
@@ -674,6 +678,7 @@ class ConfigModelsTests(unittest.TestCase):
                 },
                 'text_processing': {
                     'html_to_text_line': True,
+                    'strip_brackets': False,
                     'run_replace_rules_after': True,
                     'ssml_convert_characters': True,            
                     'text_replacement_rules': []
