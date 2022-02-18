@@ -64,6 +64,10 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
 
     def delete_rows(self, row_index):
         row = row_index.row()
+        if row >= len(self.model.text_replacement_rules):
+            logging.error(f'num replacement rules: {len(self.model.text_replacement_rules)} row: {row}, cannot delete rows')
+            return
+
         self.model.remove_text_replacement_rule(row)
         self.layoutChanged.emit()
         self.model_change_callback()        
