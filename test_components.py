@@ -1123,6 +1123,14 @@ def test_text_processing(qtbot):
     text_processing.run_replace_rules_after_checkbox.setChecked(False)
     assert model_change_callback.model.run_replace_rules_after == False    
 
+    # default should be unchecked
+    assert text_processing.strip_brackets_checkbox.isChecked() == False
+
+    text_processing.strip_brackets_checkbox.setChecked(True)
+    assert model_change_callback.model.strip_brackets == True
+    text_processing.strip_brackets_checkbox.setChecked(False)
+    assert model_change_callback.model.strip_brackets == False
+
     # dialog.exec_()
 
 
@@ -1140,6 +1148,7 @@ def test_text_processing(qtbot):
     text_processing.add_text_replacement_rule(rule)
 
     text_processing.html_to_text_line = False
+    text_processing.strip_brackets = True
     text_processing.ssml_convert_characters = True
     text_processing.run_replace_rules_after = False
 
@@ -1176,12 +1185,14 @@ def test_text_processing(qtbot):
     assert target.value() == '"d"'    
 
     assert text_processing_component.html_to_text_line_checkbox.isChecked() == False
+    assert text_processing_component.strip_brackets_checkbox.isChecked() == True
     assert text_processing_component.ssml_convert_characters_checkbox.isChecked() == True
     assert text_processing_component.run_replace_rules_after_checkbox.isChecked() == False
 
     # dialog.exec_()
 
 def test_text_processing_manual(qtbot):
+    # HYPERTTS_TEXT_PROCESSING_DIALOG_DEBUG=yes pytest test_components.py -k test_text_processing_manual
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 

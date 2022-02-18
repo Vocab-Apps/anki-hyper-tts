@@ -200,6 +200,8 @@ class TextProcessing(component_common.ConfigComponentBase):
 
         self.html_to_text_line_checkbox = aqt.qt.QCheckBox('Process HTML tags, convert into single line')
         vlayout.addWidget(self.html_to_text_line_checkbox)
+        self.strip_brackets_checkbox = aqt.qt.QCheckBox('Remove text in brackets (), [], {}, <>')
+        vlayout.addWidget(self.strip_brackets_checkbox)
         self.ssml_convert_characters_checkbox = aqt.qt.QCheckBox('Convert SSML characters (like <, &&, etc)')
         vlayout.addWidget(self.ssml_convert_characters_checkbox)
         self.run_replace_rules_after_checkbox = aqt.qt.QCheckBox('Run text replacement rules last (uncheck to run first)')
@@ -238,6 +240,7 @@ class TextProcessing(component_common.ConfigComponentBase):
         # wire events
         # ===========
         self.html_to_text_line_checkbox.stateChanged.connect(self.html_to_text_line_checkbox_change)
+        self.strip_brackets_checkbox.stateChanged.connect(self.strip_brackets_change)
         self.ssml_convert_characters_checkbox.stateChanged.connect(self.ssml_convert_characters_checkbox_change)
         self.run_replace_rules_after_checkbox.stateChanged.connect(self.run_replace_rules_after_checkbox_change)
 
@@ -254,6 +257,7 @@ class TextProcessing(component_common.ConfigComponentBase):
 
     def set_text_processing_rules_widget_state(self):
         self.html_to_text_line_checkbox.setChecked(self.model.html_to_text_line)
+        self.strip_brackets_checkbox.setChecked(self.model.strip_brackets)
         self.ssml_convert_characters_checkbox.setChecked(self.model.ssml_convert_characters)
         self.run_replace_rules_after_checkbox.setChecked(self.model.run_replace_rules_after)
 
@@ -262,6 +266,11 @@ class TextProcessing(component_common.ConfigComponentBase):
         self.model.html_to_text_line = enabled
         logging.info(f'self.model.html_to_text_line: {self.model.html_to_text_line}')
         self.model_change()
+
+    def strip_brackets_change(self, value):
+        enabled = value == 2
+        self.model.strip_brackets = enabled
+        self.model_change()        
 
     def ssml_convert_characters_checkbox_change(self, value):
         enabled = value == 2
