@@ -101,6 +101,8 @@ class HyperTTS():
     def get_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
         source_text = text
         processed_text = text_utils.process_text(source_text, realtime_model.text_processing)
+        if len(processed_text) == 0:
+            raise errors.SourceTextEmpty()
         return self.get_audio_file(processed_text, realtime_model.voice_selection, context.AudioRequestContext(constants.AudioRequestReason.realtime))
 
     def get_audio_file(self, processed_text, voice_selection, audio_request_context):
