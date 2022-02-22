@@ -1608,6 +1608,20 @@ def test_realtime_side_component(qtbot):
         'options': {}
     }        
     
+    # add text processing rule
+    # ========================
+
+    # add a text transformation rule
+    qtbot.mouseClick(realtime_side.text_processing.add_replace_simple_button, aqt.qt.Qt.LeftButton)
+    # enter pattern and replacement
+    row = 0
+    index_pattern = realtime_side.text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
+    realtime_side.text_processing.textReplacementTableModel.setData(index_pattern, 'old', aqt.qt.Qt.EditRole)
+    index_replacement = realtime_side.text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
+    realtime_side.text_processing.textReplacementTableModel.setData(index_replacement, 'young', aqt.qt.Qt.EditRole)
+
+    # preview should be updated
+    assert realtime_side.text_preview_label.text() == 'young people'
 
     # dialog.exec_()
 
