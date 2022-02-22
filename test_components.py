@@ -1583,6 +1583,10 @@ def test_realtime_side_component(qtbot):
 
     # dialog.exec_()
 
+    # the chinese text should be in the preview (default text)
+    assert model_change_callback.model.source.field_name == 'Chinese'
+    assert realtime_side.text_preview_label.text() == '老人家'
+
     # select a field
     realtime_side.source.source_field_combobox.setCurrentText('English')
     assert model_change_callback.model.source.field_name == 'English'
@@ -1745,6 +1749,7 @@ def test_realtime_component(qtbot):
     assert '{{tts' not in hypertts_instance.anki_utils.updated_note_model['tmpls'][0]['qfmt']
 
 def test_realtime_component_manual(qtbot):
+    # HYPERTTS_REALTIME_DIALOG_DEBUG=yes pytest test_components.py -k test_realtime_component_manual
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 

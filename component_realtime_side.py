@@ -32,6 +32,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.side_enabled_checkbox = aqt.qt.QCheckBox(f'Enable Realtime TTS for {self.side.name} side')
 
         self.text_preview_label = aqt.qt.QLabel()
+        self.text_preview_label.setWordWrap(True)
 
         self.preview_sound_button = aqt.qt.QPushButton('Preview Sound')
 
@@ -92,6 +93,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.model_change_callback(self.model)
 
     def update_preview(self):
+        logging.info('update_preview')
         try:
             # does the realtime model pass validation ?
             if self.get_model().side_enabled:
@@ -103,6 +105,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
             self.text_preview_label.setText(error_message)
 
     def preview_process_tts_tags(self, tts_tags):
+        logging.info('preview_process_tts_tags')
         # retain elements which are TTS tags
         tts_tags = self.hypertts.anki_utils.extract_tts_tags(tts_tags)
         if len(tts_tags) == 0:
@@ -128,7 +131,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.tabs.setEnabled(self.side_enabled)
         self.preview_groupbox.setEnabled(self.side_enabled)
         self.model.side_enabled = self.side_enabled
-        self.notify_model_update()
+        self.model_part_updated_common()
 
     def sample_selected(self, note_id, text):
         self.voice_selection.sample_text_selected(text)
