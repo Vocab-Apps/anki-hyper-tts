@@ -11,6 +11,7 @@ config_models = __import__('config_models', globals(), locals(), [], sys._addon_
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
+text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class ComponentRealtimeSide(component_common.ConfigComponentBase):
@@ -113,7 +114,13 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
             return []
             # raise Exception(f'more than one TTS tag found: {str(tts_tags)}')
         tts_tag = tts_tags[0]
-        self.text_preview_label.setText(tts_tag.field_text)
+        try:
+            processed_text = text_utils.process_text(tts_tag.field_text, self.get_model().text_processing)
+            self.text_preview_label.setText(processed_text)            
+        except Exception as e:
+            error_message = f'could not process text: {str(e)}'
+            logging.error(error_message)
+            self.text_preview_label.setText(error_message)
 
     def side_enabled_change(self, checkbox_value):
         self.side_enabled = checkbox_value == 2

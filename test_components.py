@@ -1613,6 +1613,7 @@ def test_realtime_side_component(qtbot):
 
     # add a text transformation rule
     qtbot.mouseClick(realtime_side.text_processing.add_replace_simple_button, aqt.qt.Qt.LeftButton)
+
     # enter pattern and replacement
     row = 0
     index_pattern = realtime_side.text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
