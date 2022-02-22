@@ -31,56 +31,59 @@ else:
     from . import constants
 
     if constants.ENABLE_SENTRY_CRASH_REPORTING:
-        sys._sentry_crash_reporting = True
         import sentry_sdk
-        from . import version
+        # check version. some anki addons package an obsolete version of sentry_sdk
+        sentry_sdk_int_version = int(sentry_sdk.VERSION.replace('.', '')) * 100
+        if sentry_sdk_int_version >= 155:
+            # setup crash reporting
+            # =====================
 
-        addon_config = aqt.mw.addonManager.getConfig(__name__)
-        api_key = addon_config.get('configuration', {}).get('hypertts_pro_api_key', None)
-        if api_key != None:
-            user_id = f'api_key:{api_key}'
+            sys._sentry_crash_reporting = True
+            from . import version
+
+            addon_config = aqt.mw.addonManager.getConfig(__name__)
+            api_key = addon_config.get('configuration', {}).get('hypertts_pro_api_key', None)
+            if api_key != None:
+                user_id = f'api_key:{api_key}'
+            else:
+                unique_id = addon_config.get('unique_id', None)
+                if unique_id == None:
+                    unique_id = f'uuid:{uuid.uuid4().hex[:12]}'
+                    addon_config['unique_id'] = unique_id
+                    aqt.mw.addonManager.writeConfig(__name__, addon_config)
+                user_id = unique_id
+
+            def sentry_filter(event, hint):
+                if 'exc_info' in hint:
+                    exc_type, exc_value, tb = hint['exc_info']
+
+                    event['contexts']['cloudlanguagetools'] = {'user_id': api_key}
+
+                    # do we recognize the paths in this stack trace ?
+                    relevant_exception = False
+                    stack_summary = traceback.extract_tb(tb)
+                    for stack_frame in stack_summary:
+                        filename = stack_frame.filename
+                        if 'anki-hyper-tts' in filename or '111623432' in filename:
+                            relevant_exception = True
+                    
+                    # if not, discard
+                    if not relevant_exception:
+                        return None
+
+                return event
+
+            # need to create an anki-hyper-tts project in sentry.io first
+            sentry_sdk.init(
+                "https://a4170596966d47bb9f8fda74a9370bc7@o968582.ingest.sentry.io/6170140",
+                traces_sample_rate=1.0,
+                release=f'anki-hyper-tts@{version.ANKI_HYPER_TTS_VERSION}-{anki.version}',
+                environment=os.environ.get('SENTRY_ENV', 'production'),
+                before_send=sentry_filter
+            )
+            sentry_sdk.set_user({"id": user_id})
         else:
-            unique_id = addon_config.get('unique_id', None)
-            if unique_id == None:
-                unique_id = f'uuid:{uuid.uuid4().hex[:12]}'
-                addon_config['unique_id'] = unique_id
-                aqt.mw.addonManager.writeConfig(__name__, addon_config)
-            user_id = unique_id
-
-
-
-        # setup crash reporting
-        # =====================
-
-        def sentry_filter(event, hint):
-            if 'exc_info' in hint:
-                exc_type, exc_value, tb = hint['exc_info']
-
-                event['contexts']['cloudlanguagetools'] = {'user_id': api_key}
-
-                # do we recognize the paths in this stack trace ?
-                relevant_exception = False
-                stack_summary = traceback.extract_tb(tb)
-                for stack_frame in stack_summary:
-                    filename = stack_frame.filename
-                    if 'anki-hyper-tts' in filename or '111623432' in filename:
-                        relevant_exception = True
-                
-                # if not, discard
-                if not relevant_exception:
-                    return None
-
-            return event
-
-        # need to create an anki-hyper-tts project in sentry.io first
-        sentry_sdk.init(
-            "https://a4170596966d47bb9f8fda74a9370bc7@o968582.ingest.sentry.io/6170140",
-            traces_sample_rate=1.0,
-            release=f'anki-hyper-tts@{version.ANKI_HYPER_TTS_VERSION}-{anki.version}',
-            environment=os.environ.get('SENTRY_ENV', 'production'),
-            before_send=sentry_filter
-        )
-        sentry_sdk.set_user({"id": user_id})
+            logging.info(f'sentry_sdk.VERSION: {sentry_sdk.VERSION}, disabling crash reporting')
 
     # addon imports
     # =============
