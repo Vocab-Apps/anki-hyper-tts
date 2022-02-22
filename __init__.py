@@ -33,7 +33,7 @@ else:
     if constants.ENABLE_SENTRY_CRASH_REPORTING:
         import sentry_sdk
         # check version. some anki addons package an obsolete version of sentry_sdk
-        sentry_sdk_int_version = int(sentry_sdk.VERSION.replace('.', '')) * 100
+        sentry_sdk_int_version = int(sentry_sdk.VERSION.replace('.', ''))
         if sentry_sdk_int_version >= 155:
             # setup crash reporting
             # =====================
