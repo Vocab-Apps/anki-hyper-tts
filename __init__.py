@@ -79,7 +79,8 @@ else:
                 traces_sample_rate=1.0,
                 release=f'anki-hyper-tts@{version.ANKI_HYPER_TTS_VERSION}-{anki.version}',
                 environment=os.environ.get('SENTRY_ENV', 'production'),
-                before_send=sentry_filter
+                before_send=sentry_filter,
+                traces_sample_rate=0.25,
             )
             sentry_sdk.set_user({"id": user_id})
         else:
