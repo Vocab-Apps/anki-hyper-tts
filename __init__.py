@@ -76,11 +76,10 @@ else:
             # need to create an anki-hyper-tts project in sentry.io first
             sentry_sdk.init(
                 "https://a4170596966d47bb9f8fda74a9370bc7@o968582.ingest.sentry.io/6170140",
-                traces_sample_rate=1.0,
+                traces_sample_rate=0.25,
                 release=f'anki-hyper-tts@{version.ANKI_HYPER_TTS_VERSION}-{anki.version}',
                 environment=os.environ.get('SENTRY_ENV', 'production'),
-                before_send=sentry_filter,
-                traces_sample_rate=0.25,
+                before_send=sentry_filter
             )
             sentry_sdk.set_user({"id": user_id})
         else:
