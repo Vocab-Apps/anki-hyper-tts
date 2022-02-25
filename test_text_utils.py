@@ -104,3 +104,7 @@ def test_strip_brackets(qtbot):
     assert text_utils.process_text('word1 {word2}', text_processing) == 'word1 '
     assert text_utils.process_text('word1 <word2>', text_processing) == 'word1 '
     assert text_utils.process_text('word1 <word2>(word3)[word4]', text_processing) == 'word1 '
+    assert text_utils.process_text('word1 (word2) word3 (word4)', text_processing) == 'word1  word3 '
+    assert text_utils.process_text('word1 [word2] word3 [word4]', text_processing) == 'word1  word3 '
+    assert text_utils.process_text('word1 {word2} word3 {word4}', text_processing) == 'word1  word3 '
+    assert text_utils.process_text('word1 <word2> word3 <word4>', text_processing) == 'word1  word3 '

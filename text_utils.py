@@ -45,10 +45,10 @@ def process_text_replacement(text, text_processing_model):
     return text
 
 def strip_brackets(text):
-    text = re.sub(r'\(.*\)', '', text)
-    text = re.sub(r'\[.*\]', '', text)
-    text = re.sub(r'\{.*\}', '', text)
-    text = re.sub(r'\<.*\>', '', text)
+    text = re.sub(r'\([^\)]*\)', '', text)
+    text = re.sub(r'\[[^\]]*\]', '', text)
+    text = re.sub(r'\{[^\}]*\}', '', text)
+    text = re.sub(r'\<[^\>]*\>', '', text)
     return text
 
 def process_text_rules(text, text_processing_model):
