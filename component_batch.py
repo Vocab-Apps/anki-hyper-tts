@@ -32,6 +32,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def configure_browser(self, note_id_list):
         self.note_id_list = note_id_list
         field_list = self.hypertts.get_all_fields_from_notes(note_id_list)
+        if len(field_list) == 0:
+            raise Exception(f'could not find any fields in the selected notes')
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.dialog, self.voice_selection_model_updated)
