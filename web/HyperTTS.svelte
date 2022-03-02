@@ -34,6 +34,11 @@
         bridgeCommand(cmdString);
     }
 
+    function previewAudio() {
+        const cmdString = 'hypertts:previewaudio:' + selectedBatchName;
+        bridgeCommand(cmdString);
+    }    
+
 </script>
 
 <style>
@@ -71,4 +76,5 @@ div {
     </div>
 
     <button on:click={addAudio} class="lt-field-button">Add Audio</button>
+    <button on:click={previewAudio} class="lt-field-button">Preview Audio</button>
 </div>

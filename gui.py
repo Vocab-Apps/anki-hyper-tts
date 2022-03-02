@@ -228,6 +228,14 @@ def init(hypertts):
                     hypertts.editor_note_add_audio(batch, editor, editor.note, editor.addMode)
             return True, None
 
+        if str.startswith(constants.PYCMD_PREVIEW_AUDIO_PREFIX):
+            with hypertts.error_manager.get_single_action_context('Previewing Audio'):
+                # logging.info(f'received message: {str}')
+                batch_name = str.replace(constants.PYCMD_PREVIEW_AUDIO_PREFIX, '')
+                batch = hypertts.load_batch_config(batch_name)
+                hypertts.preview_note_audio(batch, editor.note)
+            return True, None            
+
         return handled
 
     # anki tools menu

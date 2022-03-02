@@ -82,6 +82,7 @@ GUI_CONFIGURATION_DIALOG_TITLE = TITLE_PREFIX + 'Configuration'
 TTS_TAG_HYPERTTS_PRESET = 'hypertts_preset'
 
 PYCMD_ADD_AUDIO_PREFIX = 'hypertts:addaudio:'
+PYCMD_PREVIEW_AUDIO_PREFIX = 'hypertts:previewaudio:'
 
 UNDO_ENTRY_NAME = ADDON_NAME + ': Add Audio to Notes'
 
