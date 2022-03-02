@@ -233,8 +233,9 @@ class HyperTTS():
         hash_str = self.get_hash_for_audio_request(source_text, voice, options)
         audio_filename = self.get_audio_filename(hash_str)
         full_filename = self.get_full_audio_file_name(hash_str)
-        with open(full_filename, 'wb') as f:
-            f.write(self.service_manager.get_tts_audio(source_text, voice, options, audio_request_context))
+        f = open(full_filename, 'wb')
+        f.write(self.service_manager.get_tts_audio(source_text, voice, options, audio_request_context))
+        f.close()
         return full_filename, audio_filename
 
     def get_collection_sound_tag(self, full_filename, audio_filename):
