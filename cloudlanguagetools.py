@@ -45,6 +45,8 @@ class CloudLanguageTools():
 
         if response.status_code == 200:
             return response.content
+        elif response.status_code == 404:
+            raise errors.AudioNotFoundError(source_text, voice)
         else:
             error_message = f"Status code: {response.status_code} ({response.content})"
             raise errors.RequestError(source_text, voice, error_message)    
