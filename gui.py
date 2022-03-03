@@ -16,6 +16,7 @@ import anki.hooks
 
 # addon imports
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
 component_realtime = __import__('component_realtime', globals(), locals(), [], sys._addon_import_level_base)
 component_configuration = __import__('component_configuration', globals(), locals(), [], sys._addon_import_level_base)
@@ -109,6 +110,8 @@ def launch_configuration_dialog(hypertts):
 def launch_batch_dialog_browser(hypertts, browser, note_id_list, batch_name):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Browser'):
         logging.info('launch_batch_dialog_browser')
+        if len(note_id_list) == 0:
+            raise errors.NoNotesSelected()
         dialog = BatchDialog(hypertts)
         dialog.configure_browser(note_id_list, batch_name=batch_name)
         dialog.exec_()

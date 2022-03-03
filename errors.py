@@ -89,6 +89,13 @@ class NoVoicesAdded(HyperTTSError):
         message = f'No voices have been added. You must add at least one voice when in Random or Priority mode.'
         super().__init__(message)
 
+class NoNotesSelected(HyperTTSError):
+    def __init__(self):
+        message = f'No notes have been selected. You must select at least one note from the browser.'
+        super().__init__(message)
+
+
+
 # template expansion errors
 class NoResultVar(HyperTTSError):
     def __init__(self):
