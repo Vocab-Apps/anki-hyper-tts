@@ -924,6 +924,51 @@ def test_batch_dialog_sound_preview_error(qtbot):
 
     assert str(hypertts_instance.anki_utils.last_exception) == 'Audio not found for [hello] (voice: Japanese, Male, notfound, ServiceB)'
 
+def test_batch_dialog_voice_selection_sample(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+
+
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
+    batch.configure_browser(note_id_list)
+    batch.draw(dialog.getLayout())
+
+    # select English source
+    batch.source.source_field_combobox.setCurrentText('English')
+
+    # play sample button should be disabled
+    assert batch.voice_selection.play_sample_button.isEnabled() == False
+
+    # now select the first row
+    index_first_row = batch.preview.batch_preview_table_model.createIndex(0, 0)
+    batch.preview.table_view.selectionModel().select(index_first_row, aqt.qt.QItemSelectionModel.Select)    
+
+    # button should be enabled
+    assert batch.voice_selection.play_sample_button.isEnabled() == True
+
+    # press button
+    qtbot.mouseClick(batch.voice_selection.play_sample_button, aqt.qt.Qt.LeftButton)
+
+    assert hypertts_instance.anki_utils.played_sound == {
+        'source_text': 'old people',
+        'voice': {
+            'gender': 'Female', 
+            'language': 'en_US', 
+            'name': 'voice_a_2', 
+            'service': 'ServiceA',
+            'voice_key': {'name': 'voice_2'}
+        },
+        'options': {}
+    }    
+
+
+    # dialog.exec_()
+
 
 def test_batch_dialog_manual(qtbot):
     # HYPERTTS_BATCH_DIALOG_DEBUG=yes pytest test_components.py -k test_batch_dialog_manual
