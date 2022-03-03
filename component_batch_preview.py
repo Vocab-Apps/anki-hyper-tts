@@ -230,3 +230,4 @@ class BatchPreview(component_common.ComponentBase):
         self.hypertts.anki_utils.run_on_main(lambda: self.update_progress_bar(row))
         if row == self.selected_row:
             self.hypertts.anki_utils.run_on_main(self.update_error_label_for_selected)
+            self.hypertts.anki_utils.run_on_main(self.report_sample_text)
