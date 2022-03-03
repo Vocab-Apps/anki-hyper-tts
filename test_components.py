@@ -966,6 +966,23 @@ def test_batch_dialog_voice_selection_sample(qtbot):
         'options': {}
     }    
 
+    # now change to Chinese field
+    batch.source.source_field_combobox.setCurrentText('Chinese')
+
+    # press play sample button again
+    qtbot.mouseClick(batch.voice_selection.play_sample_button, aqt.qt.Qt.LeftButton)
+    assert hypertts_instance.anki_utils.played_sound == {
+        'source_text': '老人家',
+        'voice': {
+            'gender': 'Female', 
+            'language': 'en_US', 
+            'name': 'voice_a_2', 
+            'service': 'ServiceA',
+            'voice_key': {'name': 'voice_2'}
+        },
+        'options': {}
+    }        
+
 
     # dialog.exec_()
 
