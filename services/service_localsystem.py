@@ -64,7 +64,9 @@ class LocalSystem(service.ServiceBase):
             result = []
             engine = pyttsx3.init()
             voices = engine.getProperty('voices')
+            logging.info(f'found {len(voices)} voices')
             for pyttsx_voice in voices:
+                logging.info(f'processing voice: {pyttsx_voice}')
                 # pprint.pprint(voice)
                 for language_id in pyttsx_voice.languages:
                     logging.info(f'voice name: {pyttsx_voice.name} gender: {pyttsx_voice.gender} language_id: {language_id}')
