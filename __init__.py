@@ -97,17 +97,23 @@ else:
     # ===================
 
     if os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'enable':
+        # log everything to stdout
         logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
                             datefmt='%Y%m%d-%H:%M:%S',
                             stream=sys.stdout,
                             level=logging.DEBUG)    
-    if os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'file':
+    elif os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'file':
+        # log everything to file
         logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
                             datefmt='%Y%m%d-%H:%M:%S',
                             filename=os.environ['HYPER_TTS_DEBUG_LOGFILE'],
                             level=logging.DEBUG)
     else:
-        logging.disable(logging.CRITICAL)
+        # log only errors, to stdout (to avoid anki picking them up), this is necessary to ensure sentry picks up
+        logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+                            datefmt='%Y%m%d-%H:%M:%S',
+                            stream=sys.stdout,
+                            level=logging.ERROR)
 
     ankiutils = anki_utils.AnkiUtils()
 
