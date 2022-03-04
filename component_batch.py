@@ -11,6 +11,7 @@ component_batch_preview = __import__('component_batch_preview', globals(), local
 component_label_preview = __import__('component_label_preview', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
 
 
@@ -22,6 +23,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.hypertts = hypertts
         self.dialog = dialog
         self.batch_model = config_models.BatchConfig()
+        self.note = None
 
         # create certain widgets upfront
         self.show_settings_button = aqt.qt.QPushButton('Hide Settings')
@@ -328,6 +330,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.apply_button.setText('Apply To Note')
 
     def sound_preview_task(self):
+        if self.note == None:
+            raise errors.NoNotesSelectedPreview()
         self.hypertts.preview_note_audio(self.batch_model, self.note)
         return True
 

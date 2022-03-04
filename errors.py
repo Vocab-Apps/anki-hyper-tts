@@ -94,6 +94,11 @@ class NoNotesSelected(HyperTTSError):
         message = f'No notes have been selected. You must select at least one note from the browser.'
         super().__init__(message)
 
+class NoNotesSelectedPreview(HyperTTSError):
+    def __init__(self):
+        message = f'No notes have been selected. Select one note to preview sound.'
+        super().__init__(message)        
+
 
 
 # template expansion errors
