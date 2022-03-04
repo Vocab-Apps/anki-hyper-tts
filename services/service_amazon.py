@@ -78,6 +78,10 @@ class Amazon(service.ServiceBase):
         return self.basic_voice_list()
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+        # try to get mandatory configuration items to ensure configuration has been done
+        aws_access_key_id=self.get_configuration_value_mandatory(self.CONFIG_ACCESS_KEY_ID)
+        aws_secret_access_key=self.get_configuration_value_mandatory(self.CONFIG_SECRET_ACCESS_KEY)
+
         throttle_seconds = self.get_configuration_value_optional(self.CONFIG_THROTTLE_SECONDS, 0)
         if throttle_seconds > 0:
             time.sleep(throttle_seconds)        
