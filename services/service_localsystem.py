@@ -82,8 +82,8 @@ class LocalSystem(service.ServiceBase):
                         logging.warn(f'could not find language enum for {language_id}')
             return result
 
-        except:
-            logging.exception(f'could not get voicelist with pyttsx3')
+        except Exception as e:
+            logging.error(f'could not get voicelist with pyttsx3: {e}', exc_info=True)
 
         return []
 
