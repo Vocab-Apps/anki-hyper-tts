@@ -382,12 +382,11 @@ class TTSTests(unittest.TestCase):
 
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'This is the first sentence')
-        return
+        self.verify_audio_output(selected_voice, 'hello')
 
         # french
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
-        self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')        
+        self.verify_audio_output(selected_voice, 'bonjour')
 
     def test_naverpapago(self):
         service_name = 'NaverPapago'

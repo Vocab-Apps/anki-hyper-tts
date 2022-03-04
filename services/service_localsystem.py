@@ -3,6 +3,7 @@ import logging
 import io
 import pyttsx3
 import re
+import tempfile
 import pprint
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
@@ -85,15 +86,17 @@ class LocalSystem(service.ServiceBase):
 
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
-        # configuration options
-        throttle_seconds = self.get_configuration_value_optional(self.CONFIG_THROTTLE_SECONDS, 0)
+        logging.info(f'getting audio with voice {voice}')
+        engine = pyttsx3.init()
+        
+        temp_file = tempfile.NamedTemporaryFile(prefix='hypertts_pyttsx3', suffix='.mp3')
 
-        if throttle_seconds > 0:
-            time.sleep(throttle_seconds)
+        engine.setProperty('voice', voice.voice_key)
+        logging.info(f'writing to file {temp_file.name}')
+        engine.save_to_file(source_text , temp_file.name)
+        engine.runAndWait()
 
-        tts = gtts.gTTS(text=source_text, lang=voice.voice_key)
-        buffer = io.BytesIO()
-        tts.write_to_fp(buffer)
-
-        return buffer.getbuffer()
+        f = open(temp_file.name, mode='rb')
+        content = f.read()
+        return content
 
