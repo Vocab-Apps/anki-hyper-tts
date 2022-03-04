@@ -3,8 +3,10 @@ import logging
 import io
 import pyttsx3
 import re
+import os
 import tempfile
 import pprint
+import hashlib
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
@@ -23,6 +25,8 @@ class LocalSystem(service.ServiceBase):
 
     def __init__(self):
         service.ServiceBase.__init__(self)
+        # reduce logging coming from comtypes
+        logging.getLogger("comtypes").setLevel(logging.WARNING)
 
     @property
     def service_type(self) -> constants.ServiceType:
@@ -58,6 +62,17 @@ class LocalSystem(service.ServiceBase):
         
         return None
 
+    def get_audio_language_from_voice_id(self, voice_id):
+        # TTS_MS_EN-US
+        m = re.match(r'.*TTS_MS_([A-Z]+)-([A-Z]+).*', voice_id)
+        if m != None:
+            language_component = m.groups()[0]
+            country_component = m.groups()[1]            
+            locale = f'{language_component.lower()}_{country_component.upper()}'
+            if locale in languages.AudioLanguage.__members__:
+                return languages.AudioLanguage[locale]
+        return None
+    
 
     def voice_list(self):
         try:
@@ -68,20 +83,31 @@ class LocalSystem(service.ServiceBase):
             for pyttsx_voice in voices:
                 logging.info(f'processing voice: {pyttsx_voice}')
                 # pprint.pprint(voice)
-                for language_id in pyttsx_voice.languages:
-                    logging.info(f'voice name: {pyttsx_voice.name} gender: {pyttsx_voice.gender} language_id: {language_id}')
-                    language = self.get_audio_language(language_id)
-                    if pyttsx_voice.gender == None:
-                        gender = constants.Gender.Any
-                    else:
-                        gender = constants.Gender[pyttsx_voice.gender.capitalize()]
+                if len(pyttsx_voice.languages) == 0:
+                    # SAPI5 voices don't have language, has to be infered from the voice id
+                    language = self.get_audio_language_from_voice_id(pyttsx_voice.id)
                     if language != None:
-                        result.append(voice.Voice(pyttsx_voice.name, gender, language, self, pyttsx_voice.id, {
-                            'rate': {'default': 200, 'type': 'number_int', 'min': 50, 'max': 400},
-                            'volume': {'default': 1.0, 'type': 'number', 'min': 0.0, 'max': 1.0}
-                        }))
+                        result.append(voice.Voice(pyttsx_voice.name, constants.Gender.Any, language, self, pyttsx_voice.id, {
+                                'rate': {'default': 200, 'type': 'number_int', 'min': 50, 'max': 400},
+                                'volume': {'default': 1.0, 'type': 'number', 'min': 0.0, 'max': 1.0}
+                            }))
                     else:
-                        logging.warn(f'could not find language enum for {language_id}')
+                        logging.error(f'could not find language for voice {pyttsx_voice}')
+                else:
+                    for language_id in pyttsx_voice.languages:
+                        logging.info(f'voice name: {pyttsx_voice.name} gender: {pyttsx_voice.gender} language_id: {language_id}')
+                        language = self.get_audio_language(language_id)
+                        if pyttsx_voice.gender == None:
+                            gender = constants.Gender.Any
+                        else:
+                            gender = constants.Gender[pyttsx_voice.gender.capitalize()]
+                        if language != None:
+                            result.append(voice.Voice(pyttsx_voice.name, gender, language, self, pyttsx_voice.id, {
+                                'rate': {'default': 200, 'type': 'number_int', 'min': 50, 'max': 400},
+                                'volume': {'default': 1.0, 'type': 'number', 'min': 0.0, 'max': 1.0}
+                            }))
+                        else:
+                            logging.warn(f'could not find language enum for {language_id}')
             return result
 
         except Exception as e:
@@ -94,14 +120,27 @@ class LocalSystem(service.ServiceBase):
         logging.info(f'getting audio with voice {voice}')
         engine = pyttsx3.init()
         
-        temp_file = tempfile.NamedTemporaryFile(prefix='hypertts_pyttsx3', suffix='.mp3')
+        # for some reason only filename is accepted by sapi
+        combined_data = {
+            'source_text': source_text,
+            'voice_key': voice.voice_key,
+            'options': options
+        }
+        file_hash = hashlib.sha224(str(combined_data).encode('utf-8')).hexdigest()        
+        filename = f'hypertts_{file_hash}.mp3'
 
         engine.setProperty('voice', voice.voice_key)
-        logging.info(f'writing to file {temp_file.name}')
-        engine.save_to_file(source_text , temp_file.name)
+        
+        logging.info(f'writing to file {filename}')
+        engine.save_to_file(source_text , filename)
         engine.runAndWait()
 
-        f = open(temp_file.name, mode='rb')
+        f = open(filename, mode='rb')
         content = f.read()
+        f.close()
+            
+        # delete temp file
+        os.remove(filename)
+        
         return content
 
