@@ -85,6 +85,8 @@ class LocalSystem(service.ServiceBase):
         except:
             logging.exception(f'could not get voicelist with pyttsx3')
 
+        return []
+
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
         logging.info(f'getting audio with voice {voice}')
