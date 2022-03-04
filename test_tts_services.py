@@ -7,6 +7,7 @@ import random
 import tempfile
 import copy
 import pytest
+import pprint
 import unittest
 import pydub
 import azure.cognitiveservices.speech
@@ -102,6 +103,7 @@ class TTSTests(unittest.TestCase):
         self.manager.get_service('GoogleTranslate').enabled = True
         self.manager.get_service('Collins').enabled = True
         self.manager.get_service('NaverPapago').enabled = True
+        self.manager.get_service('LocalSystem').enabled = True        
 
     def sanitize_recognized_text(self, recognized_text):
         recognized_text = re.sub('<[^<]+?>', '', recognized_text)
@@ -364,6 +366,30 @@ class TTSTests(unittest.TestCase):
         # french
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
+
+    def test_localsystem(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_localsystem'
+        service_name = 'LocalSystem'
+        if self.manager.get_service(service_name).enabled == False:
+            logging.warning(f'service {service_name} not enabled, skipping')
+            return
+
+        voice_list = self.manager.full_voice_list()
+        pprint.pprint(voice_list)
+        self.assertTrue(False)
+        return
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        
+        logging.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 2
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+        # french
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
+        self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')        
 
     def test_naverpapago(self):
         service_name = 'NaverPapago'
