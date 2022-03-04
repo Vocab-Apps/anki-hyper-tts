@@ -375,17 +375,15 @@ class TTSTests(unittest.TestCase):
             return
 
         voice_list = self.manager.full_voice_list()
-        pprint.pprint(voice_list)
-        self.assertTrue(False)
-        return
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
         
         logging.info(f'found {len(service_voices)} voices for {service_name} services')
-        assert len(service_voices) >= 2
+        assert len(service_voices) >= 10
 
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
+        return
 
         # french
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)

@@ -286,3 +286,18 @@ class AudioLanguage(enum.Enum):
     def __init__(self, lang, audio_lang_name):
         self.lang = lang
         self.audio_lang_name = audio_lang_name    
+
+LanguageCountryDefaults = {
+    Language.de: AudioLanguage.de_DE,
+    Language.en: AudioLanguage.en_US,
+}
+
+# if only one locale is available, make that the default
+language_map_to_audio_language = {}
+for audio_language in AudioLanguage:
+    if audio_language.lang not in language_map_to_audio_language:
+        language_map_to_audio_language[audio_language.lang] = []
+    language_map_to_audio_language[audio_language.lang].append(audio_language)
+for key, value in language_map_to_audio_language.items():
+    if len(value) == 1:
+        LanguageCountryDefaults[key] = value[0]
