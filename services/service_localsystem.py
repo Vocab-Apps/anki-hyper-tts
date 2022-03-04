@@ -15,6 +15,7 @@ languages = __import__('languages', globals(), locals(), [], sys._addon_import_l
 LANGUAGE_MAP_OVERRIDE = {
     'an': languages.AudioLanguage.af_ZA,
     'zh-yue': languages.AudioLanguage.zh_HK,
+    'zh': languages.AudioLanguage.zh_CN,
     'en-uk-north': languages.AudioLanguage.en_GB
 }
 

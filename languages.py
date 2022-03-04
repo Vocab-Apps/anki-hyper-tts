@@ -290,6 +290,7 @@ class AudioLanguage(enum.Enum):
 LanguageCountryDefaults = {
     Language.de: AudioLanguage.de_DE,
     Language.en: AudioLanguage.en_US,
+    Language.es: AudioLanguage.es_ES,
 }
 
 # if only one locale is available, make that the default
