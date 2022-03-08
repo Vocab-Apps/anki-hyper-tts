@@ -64,7 +64,7 @@ class Google(service.ServiceBase):
             }
         }
 
-        logging.debug(f'requesting audio with payload {payload}')
+        logger.debug(f'requesting audio with payload {payload}')
 
         headers = {}
         if is_explorer_api_key:

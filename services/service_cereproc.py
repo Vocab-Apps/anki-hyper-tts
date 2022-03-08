@@ -63,7 +63,7 @@ class CereProc(service.ServiceBase):
         ssml_text = f"""<?xml version="1.0" encoding="UTF-8"?>
 <speak xmlns="http://www.w3.org/2001/10/synthesis">{source_text}</speak>""".encode(encoding='utf-8')
 
-        # logging.debug(f'querying url: {url}')
+        # logger.debug(f'querying url: {url}')
         response = requests.post(url, data=ssml_text, headers=self.get_auth_headers(), timeout=constants.RequestTimeout)
 
         if response.status_code == 200:

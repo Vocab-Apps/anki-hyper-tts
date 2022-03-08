@@ -55,7 +55,7 @@ class FptAi(service.ServiceBase):
         if response.status_code == 200:
             response_data = response.json()
             async_url = response_data['async']
-            logging.debug(f'received async_url: {async_url}')
+            logger.debug(f'received async_url: {async_url}')
 
             # wait until the audio is available
             audio_available = False
@@ -64,7 +64,7 @@ class FptAi(service.ServiceBase):
             wait_time = 0.2
             while max_tries > 0:
                 time.sleep(wait_time)
-                logging.debug(f'checking whether audio is available on {async_url}')
+                logger.debug(f'checking whether audio is available on {async_url}')
                 response = requests.get(async_url, allow_redirects=True, timeout=constants.RequestTimeout)
                 if response.status_code == 200 and len(response.content) > 0:
                     return response.content

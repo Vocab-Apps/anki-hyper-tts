@@ -212,7 +212,7 @@ def init(hypertts):
         update_editor_batch_list(hypertts, editor)
 
     def onBridge(handled, str, editor):
-        # logging.debug(f'bridge str: {str}')
+        # logger.debug(f'bridge str: {str}')
 
         # return handled # don't do anything for now
         if not isinstance(editor, aqt.editor.Editor):

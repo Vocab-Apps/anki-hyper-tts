@@ -71,15 +71,15 @@ class Azure(service.ServiceBase):
         response = requests.post(fetch_token_url, headers=headers)
         self.access_token = str(response.text)
         self.access_token_timestamp = datetime.datetime.now()
-        logging.debug(f'requested access_token')
+        logger.debug(f'requested access_token')
 
     def token_refresh_required(self):
         if self.access_token == None:
-            logging.debug(f'no token, must request')
+            logger.debug(f'no token, must request')
             return True
         time_diff = datetime.datetime.now() - self.access_token_timestamp
         if time_diff.total_seconds() > 300:
-            logging.debug(f'time_diff: {time_diff}, requesting token')
+            logger.debug(f'time_diff: {time_diff}, requesting token')
             return True
         return False
 

@@ -23,11 +23,11 @@ class BatchPreviewTableModel(aqt.qt.QAbstractTableModel):
         return aqt.qt.Qt.ItemFlag.ItemIsSelectable | aqt.qt.Qt.ItemFlag.ItemIsEnabled
 
     def rowCount(self, parent):
-        # logging.debug('SourceTextPreviewTableModel.rowCount')
+        # logger.debug('SourceTextPreviewTableModel.rowCount')
         return len(self.batch_status.note_id_list)
 
     def columnCount(self, parent):
-        # logging.debug('SourceTextPreviewTableModel.columnCount')
+        # logger.debug('SourceTextPreviewTableModel.columnCount')
         return 4
     
     def notifyChange(self, row):
@@ -38,7 +38,7 @@ class BatchPreviewTableModel(aqt.qt.QAbstractTableModel):
     def data(self, index, role):
         if role != aqt.qt.Qt.ItemDataRole.DisplayRole:
             return None
-        # logging.debug('SourceTextPreviewTableModel.data')
+        # logger.debug('SourceTextPreviewTableModel.data')
         if not index.isValid():
             return aqt.qt.QVariant()
         data = None
@@ -57,7 +57,7 @@ class BatchPreviewTableModel(aqt.qt.QAbstractTableModel):
         return aqt.qt.QVariant()
 
     def headerData(self, col, orientation, role):
-        # logging.debug('SourceTextPreviewTableModel.headerData')
+        # logger.debug('SourceTextPreviewTableModel.headerData')
         if orientation == aqt.qt.Qt.Orientation.Horizontal and role == aqt.qt.Qt.ItemDataRole.DisplayRole:
             if col == 0:
                 return aqt.qt.QVariant(self.note_id_header)
