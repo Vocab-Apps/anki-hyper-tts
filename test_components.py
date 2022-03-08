@@ -44,8 +44,6 @@ class EmptyDialog(aqt.qt.QDialog):
     def close(self):
         self.closed = True
 
-    def checkSizeAdjust(self):
-        pass
 
 class MockModelChangeCallback():
     def __init__(self):
@@ -1814,7 +1812,7 @@ def test_realtime_component(qtbot):
     assert '{{tts' not in hypertts_instance.anki_utils.updated_note_model['tmpls'][0]['qfmt']
 
 def test_realtime_component_manual(qtbot):
-    # HYPERTTS_REALTIME_DIALOG_DEBUG=yes pytest test_components.py -k test_realtime_component_manual
+    # HYPERTTS_REALTIME_DIALOG_DEBUG=yes pytest test_components.py -k test_realtime_component_manual -s -rPP
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 

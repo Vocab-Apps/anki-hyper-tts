@@ -38,7 +38,12 @@ class RealtimeSource(component_common.ConfigComponentBase):
 
 
     def draw(self):
-        self.realtime_source_layout = aqt.qt.QVBoxLayout()
+        self.scroll_area = aqt.qt.QScrollArea()
+        self.scroll_area.setWidgetResizable(True)        
+
+        self.layout_widget = aqt.qt.QWidget()
+
+        self.realtime_source_layout = aqt.qt.QVBoxLayout(self.layout_widget)
 
         self.draw_source_mode(self.realtime_source_layout)
         self.draw_source_config(self.realtime_source_layout)
@@ -54,8 +59,8 @@ class RealtimeSource(component_common.ConfigComponentBase):
         self.source_field_change(0)
         self.field_type_change(0)
 
-
-        return self.realtime_source_layout
+        self.scroll_area.setWidget(self.layout_widget)
+        return self.scroll_area
 
     def draw_source_mode(self, overall_layout):
         # batch mode
