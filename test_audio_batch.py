@@ -435,7 +435,7 @@ def test_sound_tag_only_keep_other_sound_tags(qtbot):
     assert 'Sound' in note_4.set_values 
 
     two_audio_tags = note_4.set_values['Sound']
-    assert '[sound:blabla.mp3][sound:' in two_audio_tags
+    assert '[sound:blabla.mp3] [sound:' in two_audio_tags
     assert note_4.flush_called == True
 
 def test_simple_same_field_source_target(qtbot):

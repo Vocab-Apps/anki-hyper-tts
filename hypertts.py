@@ -80,13 +80,10 @@ class HyperTTS():
         
         # do we need to remove existing sound tags ?
         if batch.target.remove_sound_tag == True:
-                target_field_content = self.strip_sound_tag(target_field_content)
+            target_field_content = self.strip_sound_tag(target_field_content)
         
-        # does the user want text and sound together?
-        if batch.target.text_and_sound_tag == True:
-            target_field_content = f'{target_field_content} {sound_tag}'
-        else:
-            target_field_content = f'{sound_tag}'
+        target_field_content = f'{target_field_content} {sound_tag}'
+        target_field_content = target_field_content.strip()
 
         note[target_field] = target_field_content
         if not add_mode:
