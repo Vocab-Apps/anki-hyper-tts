@@ -45,7 +45,7 @@ class BatchSource(component_common.ConfigComponentBase):
 
         self.draw_source_mode(self.batch_source_layout)
         self.draw_source_config(self.batch_source_layout)
-        # self.batch_source_layout.addStretch()
+        self.batch_source_layout.addStretch()
 
         # wire events
         self.batch_mode_combobox.currentIndexChanged.connect(self.batch_mode_change)
