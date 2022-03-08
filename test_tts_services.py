@@ -122,16 +122,19 @@ class TTSTests(unittest.TestCase):
             context.AudioRequestContext(constants.AudioRequestReason.batch))
         assert len(audio_data) > 0
 
-        output_temp_file = tempfile.NamedTemporaryFile()
-        output_temp_filename = output_temp_file.name
-        with open(output_temp_filename, "wb") as out:
-            out.write(audio_data)
+        output_temp_filename = "generated_audio.mp3"
+        # cannot use tempfiles because windows is weird
+        out = open(output_temp_filename, "wb")
+        out.write(audio_data)
+        out.close()
 
         speech_config = azure.cognitiveservices.speech.SpeechConfig(subscription=os.environ['AZURE_SERVICES_KEY'], region='eastus')
 
         sound = pydub.AudioSegment.from_mp3(output_temp_filename)
-        wav_filepath = tempfile.NamedTemporaryFile(suffix='.wav').name
-        sound.export(wav_filepath, format="wav")
+        # cannot use tempfiles because windows is weird
+        wav_filepath = "converted_wav.wav"
+        out_filehandle = sound.export(wav_filepath, format="wav")
+        out_filehandle.close()
 
         recognition_language_map = {
             languages.AudioLanguage.en_US: 'en-US',
