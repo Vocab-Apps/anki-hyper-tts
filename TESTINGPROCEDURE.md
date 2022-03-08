@@ -16,5 +16,6 @@ coverage html
 coverage erase
 
 # testing on windows
-
-set PATH=C:\Program Files\Anki;%PATH%
+# need to activate virtual env
+# set tts keys
+set PATH=C:\Program Files\Anki;C:\storage\dev\libav;%PATH%
