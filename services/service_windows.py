@@ -251,11 +251,13 @@ class Windows(service.ServiceBase):
             for sapi_voice in sapi_voices:
                 langs = sapi_voice.GetAttribute("language")
                 name = sapi_voice.GetAttribute("name")
+                gender = sapi_voice.GetAttribute("gender")
                 langs = lcid_hex_str_to_lang_codes(langs)
                 for lang in langs:
                     if lang in languages.AudioLanguage.__members__:
                         audio_language = languages.AudioLanguage[lang]
-                        logger.info(f'sapi_voice: {name} lang: {audio_language}')
+                        gender_enum = constants.Gender[gender]
+                        logger.info(f'sapi_voice: {name} lang: {audio_language} gender: {gender_enum}')
                     else:
                         logger.error(f'unknown language: {lang}')
 
