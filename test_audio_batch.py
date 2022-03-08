@@ -1,10 +1,12 @@
 import sys
+import re
 import hypertts
 import testing_utils
 import constants
 import languages
 import config_models
 import batch_status
+
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
@@ -437,6 +439,61 @@ def test_sound_tag_only_keep_other_sound_tags(qtbot):
     two_audio_tags = note_4.set_values['Sound']
     assert '[sound:blabla.mp3] [sound:' in two_audio_tags
     assert note_4.flush_called == True
+
+def test_clear_sound_field_previous_content(qtbot):
+    # pytest test_audio_batch.py -k test_clear_sound_field_previous_content
+    # there is some existing content in the sound field which should be cleared
+
+    # create batch configuration
+    # ==========================
+
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        
+    # build voice selection model
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
+
+    batch = config_models.BatchConfig()
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget('Sound', 
+        False,  # sound tag only
+        True)  # do not remove other sound tags
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(single)
+    batch.set_text_processing(config_models.TextProcessing())
+
+    # create list of notes
+    # ====================
+    note_id_list = [config_gen.note_id_5]
+
+    # run batch add audio (simple mode)
+    # =================================
+    listener = MockBatchStatusListener()
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+
+    # verify effect on notes
+    # ======================
+
+    note_5 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_5)
+    assert 'Sound' in note_5.set_values 
+
+    sound_tag = note_5.set_values['Sound']
+    logger.debug(f'sound_tag: [{sound_tag}]')
+    assert re.match(r'\[sound:[^]]+\]', sound_tag) != None
+
+    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+    assert audio_data['source_text'] == '大使馆'
+    assert audio_data['voice']['name'] == 'voice_a_1'
+    assert note_5.flush_called == True
+
 
 def test_simple_same_field_source_target(qtbot):
     # create batch configuration

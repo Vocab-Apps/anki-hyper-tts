@@ -371,6 +371,7 @@ class TestConfigGenerator():
         self.note_id_2 = 43005
         self.note_id_3 = 44005 # empty chinese note
         self.note_id_4 = 45005
+        self.note_id_5 = 46005
 
         # german notes
         self.note_id_german_1 = 51001
@@ -422,6 +423,12 @@ class TestConfigGenerator():
                 self.field_sound: '[sound:blabla.mp3]',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
+            self.note_id_5: MockNote(self.note_id_5, self.model_id, {
+                self.field_chinese: '大使馆',
+                self.field_english: 'embassy',
+                self.field_sound: 'some content in sound field',
+                self.field_pinyin: ''
+            }, self.all_fields, self.model_chinese),            
             # german notes
             self.note_id_german_1: MockNote(self.note_id_german_1, self.model_id_german, {
                 self.field_german_article: 'Das',

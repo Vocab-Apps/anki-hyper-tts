@@ -82,7 +82,14 @@ class HyperTTS():
         if batch.target.remove_sound_tag == True:
             target_field_content = self.strip_sound_tag(target_field_content)
         
-        target_field_content = f'{target_field_content} {sound_tag}'
+        if batch.target.text_and_sound_tag == True:
+            # user wants text and sound tag together, append the sound tag
+            target_field_content = f'{target_field_content} {sound_tag}'
+        else:
+            # user only wants sound tags
+            target_field_content = self.keep_only_sound_tags(target_field_content)
+            target_field_content = f'{target_field_content} {sound_tag}'
+
         target_field_content = target_field_content.strip()
 
         note[target_field] = target_field_content
@@ -261,6 +268,11 @@ class HyperTTS():
     def strip_sound_tag(self, field_value):
         field_value = re.sub('\[sound:[^\]]+\]', '', field_value)
         return field_value.strip()
+
+    def keep_only_sound_tags(self, field_value):
+        matches = re.findall(r'\[sound:[^\]]+\]', field_value)
+        return ' '.join(matches)
+
 
     # processing of Anki TTS tags
     # ===========================
