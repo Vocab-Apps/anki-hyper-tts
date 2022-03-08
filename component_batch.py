@@ -18,7 +18,7 @@ logger = logging_utils.get_child_logger(__name__)
 
 class ComponentBatch(component_common.ConfigComponentBase):
     MIN_WIDTH_COMPONENT = 600
-    MIN_HEIGHT = 300
+    MIN_HEIGHT = 250
 
     def __init__(self, hypertts, dialog):
         self.hypertts = hypertts
@@ -243,8 +243,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         layout.addLayout(self.vlayout)
 
     def get_min_size(self):
-        recommended_height = self.dialog.sizeHint().height()
-        return max(recommended_height, self.MIN_HEIGHT)
+        return self.MIN_HEIGHT
 
     def no_settings_editor(self):
         # when launched from the editor

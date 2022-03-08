@@ -284,7 +284,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.voice_selection_model = config_models.VoiceSelectionPriority()
         self.redraw_selected_voices()
         self.notify_model_update()
-        self.dialog_check_size_adjust()
 
     def reset_filters(self):
         self.audio_languages_combobox.setCurrentIndex(0)
@@ -385,8 +384,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice, {}))
             self.notify_model_update()
 
-        self.dialog_check_size_adjust()
-
     def filter_and_draw_voices(self, current_index):
         logger.info('filter_and_draw_voices')
         voice_list = self.voice_list
@@ -483,11 +480,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 column_index += 1
 
             row += 1
-
-    def dialog_check_size_adjust(self):
-        logger.info('dialog_check_size_adjust')
-        self.dialog.checkSizeAdjust()
-
 
     def serialize(self):
         return self.voice_selection_model.serialize()

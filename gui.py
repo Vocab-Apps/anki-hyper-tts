@@ -43,14 +43,6 @@ class DialogBase(aqt.qt.QDialog):
     def __init__(self):
         super(aqt.qt.QDialog, self).__init__()
 
-    def checkSizeAdjust(self):
-        # when adding widgets into a layout, size may change and we may need to readjust the height
-        # unfortunately sizeHint() is not updated right away, so we need to do this some time in the future
-        aqt.qt.QTimer.singleShot(100, self.checkHeightAndAdjust)
-
-    def checkHeightAndAdjust(self):
-        self.setMinimumHeight(self.sizeHint().height())
-
 class BatchDialog(DialogBase):
     def __init__(self, hypertts):
         super(DialogBase, self).__init__()
@@ -60,12 +52,10 @@ class BatchDialog(DialogBase):
         self.setWindowTitle(constants.GUI_COLLECTION_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
         self.batch_component.draw(self.main_layout)
-        self.adjustSize()
 
     def configure_browser(self, note_id_list, batch_name=None):
         self.batch_component.configure_browser(note_id_list)
         self.setupUi()
-        self.adjustSize()
         if batch_name != None:
             self.batch_component.load_batch(batch_name)
             # collapse splitter
@@ -91,7 +81,6 @@ class RealtimeDialog(DialogBase):
         self.setWindowTitle(constants.GUI_REALTIME_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
         self.realtime_component.draw(self.main_layout)
-        self.adjustSize()
 
     def configure_note(self, note):
         self.realtime_component.configure_note(note)
