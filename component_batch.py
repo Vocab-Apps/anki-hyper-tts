@@ -189,10 +189,10 @@ class ComponentBatch(component_common.ConfigComponentBase):
             self.splitter.addWidget(self.preview_widget)
             self.vlayout.addWidget(self.splitter, 1) # splitter is what should stretch
         else:
-            self.vlayout.addWidget(self.tabs)
+            self.vlayout.addWidget(self.tabs, 1) # the tabs should stretch
             self.preview_widget = aqt.qt.QWidget()
             self.preview_widget.setLayout(self.preview.draw())            
-            self.vlayout.addWidget(self.preview_widget, 1) # the preview table should stretch
+            self.vlayout.addWidget(self.preview_widget) # the preview table should stretch
 
 
         # setup bottom buttons
