@@ -224,14 +224,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # voice list grid
         # ---------------
 
-        self.voice_list_grid_scrollarea = aqt.qt.QScrollArea()
-        self.voice_list_grid_scrollarea.setHorizontalScrollBarPolicy(aqt.qt.Qt.ScrollBarAlwaysOff)
-        voice_list_grid_widget = aqt.qt.QWidget()
-        self.voice_list_grid_layout = aqt.qt.QGridLayout(voice_list_grid_widget)
-        self.voice_list_grid_scrollarea.setWidgetResizable(True)
-        self.voice_list_grid_scrollarea.setWidget(voice_list_grid_widget)
-
-        vlayout.addWidget(self.voice_list_grid_scrollarea)
+        self.voice_list_grid_layout = aqt.qt.QGridLayout()
+        vlayout.addLayout(self.voice_list_grid_layout)
 
         # finalize stack setup
         self.voice_list_display_stack.addWidget(no_voice_list_stack)
