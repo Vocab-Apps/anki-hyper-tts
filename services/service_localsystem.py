@@ -59,8 +59,8 @@ class LocalSystem(service.ServiceBase):
 
         if language_str in languages.Language.__members__:
             language_enum = languages.Language[language_str]
-            if language_enum in languages.LanguageCountryDefaults:
-                return languages.LanguageCountryDefaults[language_enum]
+            if language_enum in languages.AudioLanguageDefaults:
+                return languages.AudioLanguageDefaults[language_enum]
         
         return None
 

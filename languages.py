@@ -38,8 +38,11 @@ class Language(enum.Enum):
     ht = ("Haitian Creole")
     ha = ("Hausa")
     haw = ("Hawaiian")
+    hsb = ("Upper Sorbian")
+    ikt = ("Inuinnaqtun")
     iw = ("Hebrew")
     iu = ("Inuktitut")
+    iu_latn = ("Inuktitut (Latin)")
     hi = ("Hindi")
     hmn = ("Hmong")
     hu = ("Hungarian")
@@ -234,6 +237,7 @@ class AudioLanguage(enum.Enum):
     it_IT = (Language.it, "Italian")
     ja_JP = (Language.ja, "Japanese")
     jv_ID = (Language.jw, "Javanese (Indonesia)")
+    ka_GE = (Language.ka, "Georgian (Georgia)")
     ko_KR = (Language.ko, "Korean")
     kk_KZ = (Language.kk, "Kazakh (Kazakhstan)")
     kn_IN = (Language.kn, "Kannada (India)")
@@ -287,7 +291,8 @@ class AudioLanguage(enum.Enum):
         self.lang = lang
         self.audio_lang_name = audio_lang_name    
 
-LanguageCountryDefaults = {
+
+AudioLanguageDefaults = {
     Language.de: AudioLanguage.de_DE,
     Language.en: AudioLanguage.en_US,
     Language.es: AudioLanguage.es_ES,
@@ -301,4 +306,5 @@ for audio_language in AudioLanguage:
     language_map_to_audio_language[audio_language.lang].append(audio_language)
 for key, value in language_map_to_audio_language.items():
     if len(value) == 1:
-        LanguageCountryDefaults[key] = value[0]
+        AudioLanguageDefaults[key] = value[0]
+
