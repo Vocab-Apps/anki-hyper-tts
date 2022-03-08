@@ -5,8 +5,9 @@ import os
 import tempfile
 import pprint
 import hashlib
-import logging
+import aqt.sound
 import win32com.client
+import comtypes.gen.SpeechLib
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
@@ -258,18 +259,29 @@ class Windows(service.ServiceBase):
                         audio_language = languages.AudioLanguage[lang]
                         gender_enum = constants.Gender[gender]
                         logger.info(f'sapi_voice: {name} lang: {audio_language} gender: {gender_enum}')
+                        result.append(voice.Voice(name, gender_enum, audio_language, self, name, {}))
                     else:
                         logger.error(f'unknown language: {lang}')
+
+            return result
 
         except Exception as e:
             logger.error(f'could not get voicelist: {e}', exc_info=True)
 
         return []
 
+    def get_sapi_voice_by_name(self, voice_name):
+        speaker = win32com.client.Dispatch("SAPI.SpVoice")
+        sapi_voices = speaker.GetVoices()
+        for sapi_voice in sapi_voices:
+            current_name = sapi_voice.GetAttribute("name")
+            if current_name == voice_name:
+                return sapi_voice
+        raise Exception(f'could not find voice with name {voice_name}')
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
         logger.info(f'getting audio with voice {voice}')
-        engine = pyttsx3.init()
+        speaker = win32com.client.Dispatch("SAPI.SpVoice")
         
         # for some reason only filename is accepted by sapi
         combined_data = {
@@ -278,20 +290,28 @@ class Windows(service.ServiceBase):
             'options': options
         }
         file_hash = hashlib.sha224(str(combined_data).encode('utf-8')).hexdigest()        
-        filename = f'hypertts_{file_hash}.mp3'
+        filename = f'hypertts_{file_hash}.wav'
 
-        engine.setProperty('voice', voice.voice_key)
+        logger.debug(f'writing to file {filename}')
+
+        speaker.Voice = self.get_sapi_voice_by_name(voice.voice_key)
+
+        stream = win32com.client.Dispatch('SAPI.SPFileStream')
+        stream.Open(filename, comtypes.gen.SpeechLib.SSFMCreateForWrite)
+        temp_stream = speaker.AudioOutputStream
+        speaker.AudioOutputStream = stream
+        speaker.Speak(source_text)
+        speaker.AudioOutputStream = temp_stream
+        stream.close()
         
-        logger.info(f'writing to file {filename}')
-        engine.save_to_file(source_text , filename)
-        engine.runAndWait()
+        # convert wav to mp3
+        filename_mp3 = f'hypertts_{file_hash}.mp3'
+        logger.debug(f'converting from {filename} to {filename_mp3}')
+        aqt.sound._encode_mp3(filename, filename_mp3)
 
-        f = open(filename, mode='rb')
+        # read filename contents
+        f = open(filename_mp3)
         content = f.read()
         f.close()
-            
-        # delete temp file
-        os.remove(filename)
-        
         return content
 
