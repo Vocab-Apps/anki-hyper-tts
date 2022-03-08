@@ -1,13 +1,11 @@
 import sys
-import io
-import re
 import os
-import tempfile
-import pprint
 import hashlib
 import aqt.sound
-import win32com.client
-import comtypes.gen.SpeechLib
+
+if os.name == 'nt':
+    import win32com.client
+    import comtypes.gen.SpeechLib
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
@@ -244,6 +242,10 @@ class Windows(service.ServiceBase):
 
     def voice_list(self):
         try:
+            if os.name != 'nt':
+                logger.info(f'running on os {os.name}, disabling {self.name} service')
+                return []
+
             result = []
             # https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ms723614(v=vs.85)
             # https://github.com/DeepHorizons/tts/blob/master/tts/sapi.py
