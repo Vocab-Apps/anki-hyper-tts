@@ -384,6 +384,60 @@ def test_simple_append(qtbot):
     assert audio_data['voice']['name'] == 'voice_a_1'
     assert note_1.flush_called == True
 
+def test_sound_tag_only_keep_other_sound_tags(qtbot):
+    # sound tags only, but append, do not remove other sound tags
+
+    # create batch configuration
+    # ==========================
+
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        
+    # build voice selection model
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
+
+    batch = config_models.BatchConfig()
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget('Sound', 
+        False,  # sound tag only
+        False)  # do not remove other sound tags
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(single)
+    batch.set_text_processing(config_models.TextProcessing())
+
+
+    # create list of notes
+    # ====================
+    note_id_list = [config_gen.note_id_4]
+
+    # run batch add audio (simple mode)
+    # =================================
+    listener = MockBatchStatusListener()
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+
+    # check progress bar
+    assert listener.current_row == 0
+
+    # verify effect on notes
+    # ======================
+    # target field has the sound tag
+    # note.flush() has been called
+
+    # check note 1
+
+    note_4 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_4)
+    assert 'Sound' in note_4.set_values 
+
+    two_audio_tags = note_4.set_values['Sound']
+    assert '[sound:blabla.mp3][sound:' in two_audio_tags
+    assert note_4.flush_called == True
+
 def test_simple_same_field_source_target(qtbot):
     # create batch configuration
     # ==========================
