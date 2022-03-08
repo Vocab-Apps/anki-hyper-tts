@@ -13,4 +13,3 @@ web/package-lock.json
 # temporary files when testing
 converted_wav.wav
 generated_audio.mp3
-external/comtypes/gen/
