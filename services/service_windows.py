@@ -313,5 +313,9 @@ class Windows(service.ServiceBase):
         f = open(filename_mp3, 'rb')
         content = f.read()
         f.close()
+
+        # remove temporary files
+        os.remove(filename_mp3)
+
         return content
 
