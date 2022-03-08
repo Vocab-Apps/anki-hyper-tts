@@ -25,7 +25,32 @@ else:
     import anki.hooks
     import aqt
     import anki.sound
+
+    # setup logger
+    # ============
+
+    if os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'enable':
+        # log everything to stdout
+        logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+                            datefmt='%Y%m%d-%H:%M:%S',
+                            stream=sys.stdout,
+                            level=logging.DEBUG)    
+    elif os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'file':
+        # log everything to file
+        logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+                            datefmt='%Y%m%d-%H:%M:%S',
+                            filename=os.environ['HYPER_TTS_DEBUG_LOGFILE'],
+                            level=logging.DEBUG)
+    else:
+        # log only errors, to stdout (to avoid anki picking them up), this is necessary to ensure sentry picks up
+        logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+                            datefmt='%Y%m%d-%H:%M:%S',
+                            handlers=[logging.NullHandler()],
+                            level=logging.INFO)
     
+    logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+    logger = logging_utils.get_child_logger(__name__)
+
     # setup sentry crash reporting
     # ============================
     from . import constants
@@ -83,7 +108,7 @@ else:
             )
             sentry_sdk.set_user({"id": user_id})
         else:
-            logging.info(f'sentry_sdk.VERSION: {sentry_sdk.VERSION}, disabling crash reporting')
+            logger.info(f'sentry_sdk.VERSION: {sentry_sdk.VERSION}, disabling crash reporting')
 
     # addon imports
     # =============
@@ -95,25 +120,6 @@ else:
 
     # initialize hypertts
     # ===================
-
-    if os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'enable':
-        # log everything to stdout
-        logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-                            datefmt='%Y%m%d-%H:%M:%S',
-                            stream=sys.stdout,
-                            level=logging.DEBUG)    
-    elif os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'file':
-        # log everything to file
-        logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-                            datefmt='%Y%m%d-%H:%M:%S',
-                            filename=os.environ['HYPER_TTS_DEBUG_LOGFILE'],
-                            level=logging.DEBUG)
-    else:
-        # log only errors, to stdout (to avoid anki picking them up), this is necessary to ensure sentry picks up
-        logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-                            datefmt='%Y%m%d-%H:%M:%S',
-                            stream=sys.stdout,
-                            level=logging.ERROR)
 
     ankiutils = anki_utils.AnkiUtils()
 

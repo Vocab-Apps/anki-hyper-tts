@@ -1,13 +1,12 @@
 import sys
-import logging
 import aqt.qt
-import time
-
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 batch_status = __import__('batch_status', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 class LabelPreview(component_common.ComponentBase):
     def __init__(self, hypertts, note):

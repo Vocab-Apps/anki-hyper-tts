@@ -9,20 +9,21 @@ import sys
 from concurrent.futures import Future
 from dataclasses import dataclass
 from typing import List, cast
-import logging
 
 # import aqt
 import aqt.tts
 import anki
 
 languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 
 class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
     def __init__(self, taskman: aqt.taskman.TaskManager, hypertts) -> None:
         super(aqt.tts.TTSProcessPlayer, self).__init__(taskman)
         self.hypertts = hypertts
-        logging.info('created AnkiHyperTTSPlayer')
+        logger.info('created AnkiHyperTTSPlayer')
 
     # this is called the first time Anki tries to play a TTS file
     def get_available_voices(self) -> List[aqt.tts.TTSVoice]:
@@ -44,7 +45,7 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
         self.playback_error_message = None
 
         assert isinstance(tag, anki.sound.TTSTag)
-        logging.info(f'playing TTS sound for {tag}')
+        logger.info(f'playing TTS sound for {tag}')
 
         audio_filename = self.hypertts.get_audio_filename_tts_tag(tag)
         return audio_filename
@@ -53,7 +54,7 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
     def _on_done(self, ret: Future, cb: aqt.sound.OnDoneCallback) -> None:
         with self.hypertts.error_manager.get_single_action_context('Playing Realtime Audio'):
             audio_filename = ret.result()
-            logging.info(f'got audio_filename: {audio_filename}')
+            logger.info(f'got audio_filename: {audio_filename}')
             aqt.sound.av_player.insert_file(audio_filename)
         cb()
 

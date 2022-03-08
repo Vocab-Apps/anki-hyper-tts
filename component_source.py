@@ -1,11 +1,12 @@
 import sys
 import aqt.qt
-import logging
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 class BatchSource(component_common.ConfigComponentBase):
     SOURCE_CONFIG_STACK_SIMPLE = 0
@@ -155,5 +156,5 @@ class BatchSource(component_common.ConfigComponentBase):
         self.model_change_callback(self.batch_source_model)
 
     def change_listener(self, note_id, row):
-        # logging.info(f'change_listener row {row}')
+        # logger.info(f'change_listener row {row}')
         self.source_text_preview_table_model.notifyChange(row)

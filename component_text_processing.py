@@ -1,6 +1,5 @@
 import sys
 import aqt.qt
-import logging
 import html
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
@@ -8,6 +7,8 @@ component_common = __import__('component_common', globals(), locals(), [], sys._
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 
 class TextProcessing(component_common.ConfigComponentBase):
@@ -36,7 +37,7 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
 
     def load_model(self, model):
         self.model = model
-        logging.info(model)
+        logger.info(model)
         self.layoutChanged.emit()
 
     def flags(self, index):
@@ -65,7 +66,7 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
     def delete_rows(self, row_index):
         row = row_index.row()
         if row >= len(self.model.text_replacement_rules):
-            logging.error(f'num replacement rules: {len(self.model.text_replacement_rules)} row: {row}, cannot delete rows')
+            logger.error(f'num replacement rules: {len(self.model.text_replacement_rules)} row: {row}, cannot delete rows')
             return
 
         self.model.remove_text_replacement_rule(row)
@@ -113,7 +114,7 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
         row = index.row()
 
         if row >= len(self.model.get_text_replacement_rules()):
-            logging.error(f'setData column {column} row {row}, num rules: {len(self.model.get_text_replacement_rules())}')
+            logger.error(f'setData column {column} row {row}, num rules: {len(self.model.get_text_replacement_rules())}')
             return False
 
         text_replacement_rule = self.model.get_text_replacement_rule_row(row)
@@ -155,7 +156,7 @@ class TextProcessing(component_common.ConfigComponentBase):
         return self.model
 
     def load_model(self, model):
-        logging.info(f'load_model')
+        logger.info(f'load_model')
         self.model = model
         self.textReplacementTableModel.load_model(self.model)
         self.set_text_processing_rules_widget_state()
@@ -264,7 +265,7 @@ class TextProcessing(component_common.ConfigComponentBase):
     def html_to_text_line_checkbox_change(self, value):
         enabled = value == 2
         self.model.html_to_text_line = enabled
-        logging.info(f'self.model.html_to_text_line: {self.model.html_to_text_line}')
+        logger.info(f'self.model.html_to_text_line: {self.model.html_to_text_line}')
         self.model_change()
 
     def strip_brackets_change(self, value):

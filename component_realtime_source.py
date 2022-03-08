@@ -5,6 +5,8 @@ component_common = __import__('component_common', globals(), locals(), [], sys._
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 class RealtimeSource(component_common.ConfigComponentBase):
     SOURCE_CONFIG_STACK_ANKITTS = 0

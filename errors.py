@@ -1,9 +1,4 @@
 import sys
-import logging
-if hasattr(sys, '_pytest_mode'):
-    import constants
-else:
-    from . import constants
 
 # all known exceptions inherit from this one
 class HyperTTSError(Exception):

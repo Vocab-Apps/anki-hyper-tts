@@ -1,12 +1,13 @@
 import sys
 import os
-import logging
 import requests
 import json
 
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
@@ -36,7 +37,7 @@ class CloudLanguageTools():
             'voice_key': voice.voice_key,
             'options': options
         }
-        logging.info(f'request url: {full_url}, data: {data}')
+        logger.info(f'request url: {full_url}, data: {data}')
         response = requests.post(full_url, json=data, headers={
             'api_key': self.api_key, 
             'client': 'hypertts', 

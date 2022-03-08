@@ -1,7 +1,6 @@
 import sys
 import requests
 import base64
-import logging
 import time
 import uuid
 import hmac
@@ -13,6 +12,8 @@ service = __import__('service', globals(), locals(), [], sys._addon_import_level
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
 languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_services)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
+logger = logging_utils.get_child_logger(__name__)
 
 
 
@@ -109,20 +110,20 @@ class NaverPapago(service.ServiceBase):
             'text': source_text,
         }
         headers = self.generate_headers()
-        logging.info(f'executing POST request on {url} with headers={headers}, data={params}')
+        logger.info(f'executing POST request on {url} with headers={headers}, data={params}')
         response = requests.post(url, headers=headers, data=params)
         if response.status_code != 200:
             raise errors.RequestError(source_text, voice, f'got status_code {response.status_code} from {url}: {response.content}')
 
         response_data = response.json()
         sound_id = response_data['id']
-        logging.info(f'retrieved sound_id successfully: {sound_id}')
+        logger.info(f'retrieved sound_id successfully: {sound_id}')
 
         # actually retrieve sound file
         # ============================
 
         final_url = self.TRANSLATE_ENDPOINT + sound_id
-        logging.info(f'final_url: {final_url}')
+        logger.info(f'final_url: {final_url}')
 
         response = requests.get(final_url)
         if response.status_code != 200:

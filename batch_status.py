@@ -1,8 +1,9 @@
 import sys
-import logging
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 class NoteStatus():
     def __init__(self, note_id):
@@ -82,7 +83,7 @@ class BatchStatus():
         return self.task_running
 
     def stop(self):
-        logging.info('stopping current batch')
+        logger.info('stopping current batch')
         self.must_continue = False
 
     def __getitem__(self, array_index):

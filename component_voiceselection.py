@@ -1,14 +1,14 @@
 import sys
 import aqt.qt
-import logging
 import copy
-
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 
 class VoiceSelection(component_common.ConfigComponentBase):
@@ -77,21 +77,21 @@ class VoiceSelection(component_common.ConfigComponentBase):
     def load_model(self, model):
         # don't report changes back to parent dialog as we adjust widgets
         self.enable_model_change_callback = False
-        logging.info(f'load_model, model: {model}')
+        logger.info(f'load_model, model: {model}')
         # self.voice_selection_model = model
 
         if model.selection_mode == constants.VoiceSelectionMode.single:
-            logging.info(f'options: {model.voice.options}')
+            logger.info(f'options: {model.voice.options}')
             # single voice
             self.radio_button_single.setChecked(True)
             voice_index = self.voice_list.index(model.voice.voice)
             self.voices_combobox.setCurrentIndex(voice_index)
             # self.voice_options_layout
             #self.voice_options_widgets[widget_name]
-            logging.info(f'options: {model.voice.options}')
+            logger.info(f'options: {model.voice.options}')
             for key, value in model.voice.options.items():
                 widget_name = f'voice_option_{key}'
-                logging.info(f'setting value of {key} to {value}')
+                logger.info(f'setting value of {key} to {value}')
                 self.voice_options_widgets[widget_name].setValue(value)
         elif model.selection_mode == constants.VoiceSelectionMode.random:
             self.radio_button_random.setChecked(True)
@@ -298,7 +298,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
             raise errors.NoVoiceSelected()
         current_index = self.voices_combobox.currentIndex()
         if current_index >= len(self.filtered_voice_list):
-            logging.error(f'filtered_voice_list: {self.filtered_voice_list} current_index: {current_index}')
+            logger.error(f'filtered_voice_list: {self.filtered_voice_list} current_index: {current_index}')
             raise errors.NoVoiceSelected()
         selected_voice = self.filtered_voice_list[current_index]
         return selected_voice
@@ -306,7 +306,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
     def play_sample(self):
         with self.hypertts.error_manager.get_single_action_context('Playing Voice Sample'):
-            logging.info('play_sample')
+            logger.info('play_sample')
             selected_voice = self.get_selected_voice()
             # get options
             options = self.current_voice_options
@@ -344,12 +344,12 @@ class VoiceSelection(component_common.ConfigComponentBase):
             return
 
         voice = self.filtered_voice_list[current_index]
-        logging.info(f'voice_selected: {voice} options: {voice.options}')
+        logger.info(f'voice_selected: {voice} options: {voice.options}')
 
         def get_set_option_lambda(voice, key):
             def set_value(value):
                 self.current_voice_options[key] = value
-                logging.info(f'set option {key} to {value}')
+                logger.info(f'set option {key} to {value}')
                 if self.voice_selection_model.selection_mode == constants.VoiceSelectionMode.single:
                     self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice, self.current_voice_options))
                     self.notify_model_update()
@@ -367,7 +367,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 elif option_type == constants.VoiceOptionTypes.number_int:
                     widget = aqt.qt.QSpinBox()
                 widget.setObjectName(widget_name)
-                # logging.info(f'objec name: {widget_name}')
+                # logger.info(f'objec name: {widget_name}')
                 widget.setRange(value['min'], value['max'])
                 widget.setValue(value['default'])
                 widget.valueChanged.connect(get_set_option_lambda(voice, key))
@@ -388,7 +388,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.dialog_check_size_adjust()
 
     def filter_and_draw_voices(self, current_index):
-        logging.info('filter_and_draw_voices')
+        logger.info('filter_and_draw_voices')
         voice_list = self.voice_list
         # check filtering by audio language
         if self.audio_languages_combobox.currentIndex() != 0:
@@ -485,7 +485,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
             row += 1
 
     def dialog_check_size_adjust(self):
-        logging.info('dialog_check_size_adjust')
+        logger.info('dialog_check_size_adjust')
         self.dialog.checkSizeAdjust()
 
 

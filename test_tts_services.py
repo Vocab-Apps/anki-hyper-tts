@@ -155,7 +155,7 @@ class TTSTests(unittest.TestCase):
             recognized_text =  self.sanitize_recognized_text(result.text)
             expected_text = self.sanitize_recognized_text(source_text)
             assert expected_text == recognized_text, f'expected and actual text not matching (voice: {str(voice)})'
-            logging.info(f'actual and expected text match [{recognized_text}]')
+            logger.info(f'actual and expected text match [{recognized_text}]')
         elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
             error_message = "No speech could be recognized: {}".format(result.no_match_details)
             raise Exception(error_message)
@@ -181,7 +181,7 @@ class TTSTests(unittest.TestCase):
         voice_list = self.manager.full_voice_list()
         google_voices = [voice for voice in voice_list if voice.service.name == 'Google']
         # print(voice_list)
-        logging.info(f'found {len(google_voices)} voices for Google services')
+        logger.info(f'found {len(google_voices)} voices for Google services')
         assert len(google_voices) > 300
 
         # pick a random en_US voice
@@ -350,13 +350,13 @@ class TTSTests(unittest.TestCase):
     def test_googletranslate(self):
         service_name = 'GoogleTranslate'
         if self.manager.get_service(service_name).enabled == False:
-            logging.warning(f'service {service_name} not enabled, skipping')
+            logger.warning(f'service {service_name} not enabled, skipping')
             return
 
         voice_list = self.manager.full_voice_list()
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
         
-        logging.info(f'found {len(service_voices)} voices for {service_name} services')
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 2
 
         # pick a random en_US voice
@@ -371,13 +371,13 @@ class TTSTests(unittest.TestCase):
         # pytest test_tts_services.py  -k 'TTSTests and test_localsystem'
         service_name = 'LocalSystem'
         if self.manager.get_service(service_name).enabled == False:
-            logging.warning(f'service {service_name} not enabled, skipping')
+            logger.warning(f'service {service_name} not enabled, skipping')
             return
 
         voice_list = self.manager.full_voice_list()
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
         
-        logging.info(f'found {len(service_voices)} voices for {service_name} services')
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 10
 
         # pick a random en_US voice
@@ -391,13 +391,13 @@ class TTSTests(unittest.TestCase):
     def test_naverpapago(self):
         service_name = 'NaverPapago'
         if self.manager.get_service(service_name).enabled == False:
-            logging.warning(f'service {service_name} not enabled, skipping')
+            logger.warning(f'service {service_name} not enabled, skipping')
             return
 
         voice_list = self.manager.full_voice_list()
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
         
-        logging.info(f'found {len(service_voices)} voices for {service_name} services')
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 2
 
         # pick a random ko_KR voice
@@ -410,13 +410,13 @@ class TTSTests(unittest.TestCase):
     def test_collins(self):
         service_name = 'Collins'
         if self.manager.get_service(service_name).enabled == False:
-            logging.warning(f'service {service_name} not enabled, skipping')
+            logger.warning(f'service {service_name} not enabled, skipping')
             return
 
         voice_list = self.manager.full_voice_list()
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
         
-        logging.info(f'found {len(service_voices)} voices for {service_name} services')
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 2
 
         # pick a random en_GB voice
@@ -470,7 +470,7 @@ class TTSTests(unittest.TestCase):
         for service_name in service_name_list:
             service = self.manager.get_service(service_name)
             if service.enabled and service.service_type == service_type:
-                logging.info(f'testing language {language.name}, service {service_name}')
+                logger.info(f'testing language {language.name}, service {service_name}')
                 random_voices = self.pick_random_voices_sample(voice_list, service_name, language, self.RANDOM_VOICE_COUNT)
                 for voice in random_voices:
                     self.verify_audio_output(voice, source_text)    

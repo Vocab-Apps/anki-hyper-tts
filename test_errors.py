@@ -33,7 +33,7 @@ def test_error_manager(qtbot):
     # ==============
 
     with error_manager.get_single_action_context('single action 1'):
-        logging.info('single action 1')
+        logger.info('single action 1')
         raise errors.FieldEmptyError('field1')
 
 
@@ -42,15 +42,15 @@ def test_error_manager(qtbot):
     mock_hypertts.anki_utils.reset_exceptions()
 
     with error_manager.get_single_action_context('single action 2'):
-        logging.info('single action 2')
-        logging.info('successful')
+        logger.info('single action 2')
+        logger.info('successful')
 
     assert mock_hypertts.anki_utils.last_exception == None
     mock_hypertts.anki_utils.reset_exceptions()
 
     # unhandled exception
     with error_manager.get_single_action_context('single action 3'):
-        logging.info('single action 3')
+        logger.info('single action 3')
         raise Exception('this is unhandled')
     
     assert isinstance(mock_hypertts.anki_utils.last_exception, Exception)
@@ -64,15 +64,15 @@ def test_error_manager(qtbot):
     batch_error_manager = error_manager.get_batch_error_manager('batch test 1')
 
     with batch_error_manager.get_batch_action_context(42):
-        logging.info('batch iteration 1')
+        logger.info('batch iteration 1')
         raise errors.FieldEmptyError('field 3')
 
     with batch_error_manager.get_batch_action_context(43):
-        logging.info('batch iteration 2')
-        logging.info('ok')
+        logger.info('batch iteration 2')
+        logger.info('ok')
 
     with batch_error_manager.get_batch_action_context(44):
-        logging.info('batch iteration 3')
+        logger.info('batch iteration 3')
         raise errors.FieldNotFoundError('field 4')
 
     expected_action_stats = {
@@ -93,11 +93,11 @@ def test_error_manager(qtbot):
     batch_error_manager = error_manager.get_batch_error_manager('batch test 2')
 
     with batch_error_manager.get_batch_action_context(45):
-        logging.info('batch iteration 1')
-        logging.info('ok')
+        logger.info('batch iteration 1')
+        logger.info('ok')
 
     with batch_error_manager.get_batch_action_context(46):
-        logging.info('batch iteration 2')
+        logger.info('batch iteration 2')
         raise Exception('this is unhandled')
 
     expected_action_stats = {

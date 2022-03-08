@@ -1,11 +1,12 @@
 from asyncio.proactor_events import constants
 import sys
 import aqt.qt
-import logging
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 
 class BatchTarget(component_common.ConfigComponentBase):
@@ -20,7 +21,7 @@ class BatchTarget(component_common.ConfigComponentBase):
         return self.batch_target_model
 
     def load_model(self, model):
-        logging.info('load_model')
+        logger.info('load_model')
         self.batch_target_model = model
 
         self.target_field_combobox.setCurrentText(self.batch_target_model.target_field)

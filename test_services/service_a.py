@@ -1,3 +1,4 @@
+import sys
 import constants
 import languages
 import service
@@ -5,7 +6,9 @@ import voice
 import typing
 import json
 import time
-import logging
+
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
+logger = logging_utils.get_child_logger(__name__)
 
 VOICE_OPTIONS = {
     'pitch': {
@@ -46,7 +49,7 @@ class ServiceA(service.ServiceBase):
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
         delay_s = self._config.get('delay', 0)
         if delay_s > 0:
-            logging.info(f'sleeping for {delay_s}s')
+            logger.info(f'sleeping for {delay_s}s')
             time.sleep(delay_s)
 
         self.requested_audio = {

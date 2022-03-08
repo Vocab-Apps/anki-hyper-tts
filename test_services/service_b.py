@@ -1,8 +1,12 @@
+import sys
 import constants
 import languages
 import service
 import voice
 import errors
+
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
+logger = logging_utils.get_child_logger(__name__)
 
 class VoiceB(voice.VoiceBase):
 

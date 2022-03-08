@@ -1,3 +1,4 @@
+import sys
 import constants
 import languages
 import service
@@ -5,7 +6,9 @@ import voice
 import typing
 import json
 import time
-import logging
+
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
+logger = logging_utils.get_child_logger(__name__)
 
 class ServiceC(service.ServiceBase):
     CONFIG_USER = 'user'

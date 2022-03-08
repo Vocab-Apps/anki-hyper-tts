@@ -4,7 +4,6 @@ import os
 import sys
 import re
 import hashlib
-import logging
 import random
 import copy
 import json
@@ -23,6 +22,8 @@ errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_b
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 context = __import__('context', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 
 class HyperTTS():
@@ -59,7 +60,7 @@ class HyperTTS():
                     note_action_context.set_sound(sound_file)
                     note_action_context.set_status(constants.BatchNoteStatus.Done)                    
                 if batch_status.must_continue == False:
-                    logging.info('batch_status execution interrupted')
+                    logger.info('batch_status execution interrupted')
                     break
             self.anki_utils.undo_end(undo_id)
 
@@ -139,7 +140,7 @@ class HyperTTS():
         if voice_selection.selection_mode == constants.VoiceSelectionMode.single:
             return voice_selection.voice
         elif voice_selection.selection_mode == constants.VoiceSelectionMode.random:
-            logging.info(f'choosing from {len(voice_selection.voice_list)} voices')
+            logger.info(f'choosing from {len(voice_selection.voice_list)} voices')
             choice = random.choices(voice_selection.voice_list, weights=[x.random_weight for x in voice_selection.voice_list])
             return choice[0]
         elif voice_selection.selection_mode == constants.VoiceSelectionMode.priority:
@@ -174,7 +175,7 @@ class HyperTTS():
 
     def expand_simple_template(self, note, source_template):
         field_values = self.get_field_values(note)
-        # logging.info(f'field_values: {field_values}')
+        # logger.info(f'field_values: {field_values}')
         try:
             return source_template.format_map(field_values)
         except Exception as e:
@@ -201,7 +202,7 @@ class HyperTTS():
 
     def process_text(self, source_text, batch_text_processing):
         processed_text = text_utils.process_text(source_text, batch_text_processing)
-        # logging.info(f'before text processing: [{source_text}], after text processing: [{processed_text}]')
+        # logger.info(f'before text processing: [{source_text}], after text processing: [{processed_text}]')
         if len(processed_text) == 0:
             raise errors.SourceTextEmpty()
         return processed_text
@@ -219,7 +220,7 @@ class HyperTTS():
         self.anki_utils.play_sound(full_filename)
 
     def play_sound(self, source_text, voice, options):
-        logging.info(f'playing audio for {source_text}')
+        logger.info(f'playing audio for {source_text}')
         if len(source_text) == 0:
             raise errors.SourceTextEmpty()        
         full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options, context.AudioRequestContext(constants.AudioRequestReason.preview))
@@ -293,7 +294,7 @@ class HyperTTS():
     def extract_hypertts_preset(self, extra_args_array):
         subset = [x for x in extra_args_array if constants.TTS_TAG_HYPERTTS_PRESET in x]
         if len(subset) != 1:
-            logging.error(f'could not process TTS tag extra args: {extra_args_array}')
+            logger.error(f'could not process TTS tag extra args: {extra_args_array}')
             raise errors.TTSTagProcessingError()
         array_entry = subset[0]
         components = array_entry.split('=')
@@ -324,10 +325,10 @@ class HyperTTS():
         if m != None:
             preset_name = m.groups()[0]
             preset_name = preset_name.replace(side.name + '_', '')
-            logging.info(f'found preset name in TTS tag inside card template: {preset_name}')
+            logger.info(f'found preset name in TTS tag inside card template: {preset_name}')
             return preset_name
         else:
-            logging.info(f'didnt find a TTS tag in card template: {side_template}')
+            logger.info(f'didnt find a TTS tag in card template: {side_template}')
         return None
 
 
@@ -337,7 +338,7 @@ class HyperTTS():
     def set_tts_tag_note_model(self, realtime_side_model: config_models.RealtimeConfigSide, setting_key, note_model, side, card_ord, clear_only):
         # build tts tag
         tts_tag = self.build_realtime_tts_tag(realtime_side_model, setting_key)
-        logging.info(f'tts tag: {tts_tag}')
+        logger.info(f'tts tag: {tts_tag}')
 
         # alter card template
         card_template = note_model["tmpls"][card_ord]
@@ -418,7 +419,7 @@ class HyperTTS():
                     note_action_context.set_processed_text(processed_text)
                     note_action_context.set_status(constants.BatchNoteStatus.OK)
                 if batch_status.must_continue == False:
-                    logging.info('batch_status execution interrupted')
+                    logger.info('batch_status execution interrupted')
                     break
 
     def get_source_processed_text(self, note, batch_source, text_processing):
@@ -438,16 +439,16 @@ class HyperTTS():
         self.config[constants.CONFIG_BATCH_CONFIG][batch_name] = batch.serialize()
         self.anki_utils.write_config(self.config)
         self.latest_saved_batch_name = batch_name
-        logging.info(f'saved batch config [{batch_name}]')
+        logger.info(f'saved batch config [{batch_name}]')
 
     def load_batch_config(self, batch_name):
-        logging.info(f'loading batch config [{batch_name}]')
+        logger.info(f'loading batch config [{batch_name}]')
         if batch_name not in self.config[constants.CONFIG_BATCH_CONFIG]:
             raise errors.PresetNotFound(batch_name)
         return self.deserialize_batch_config(self.config[constants.CONFIG_BATCH_CONFIG][batch_name])
 
     def delete_batch_config(self, batch_name):
-        logging.info(f'deleting batch config [{batch_name}]')
+        logger.info(f'deleting batch config [{batch_name}]')
         if batch_name not in self.config[constants.CONFIG_BATCH_CONFIG]:
             raise errors.PresetNotFound(batch_name)
         del self.config[constants.CONFIG_BATCH_CONFIG][batch_name]
@@ -495,7 +496,7 @@ class HyperTTS():
         return final_key
 
     def load_realtime_config(self, settings_key):
-        logging.info(f'loading realtime config [{settings_key}]')
+        logger.info(f'loading realtime config [{settings_key}]')
         if settings_key not in self.config[constants.CONFIG_REALTIME_CONFIG]:
             raise errors.PresetNotFound(settings_key)
         return self.deserialize_realtime_config(self.config[constants.CONFIG_REALTIME_CONFIG][settings_key])

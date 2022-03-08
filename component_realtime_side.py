@@ -1,7 +1,5 @@
 import sys
 import aqt.qt
-import logging
-import copy
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 component_realtime_source = __import__('component_realtime_source', globals(), locals(), [], sys._addon_import_level_base)
@@ -12,6 +10,8 @@ constants = __import__('constants', globals(), locals(), [], sys._addon_import_l
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 
 class ComponentRealtimeSide(component_common.ConfigComponentBase):
@@ -71,17 +71,17 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         return self.model
 
     def source_model_updated(self, model):
-        logging.info(f'source_model_updated: {model}')
+        logger.info(f'source_model_updated: {model}')
         self.model.source = model
         self.model_part_updated_common()
 
     def voice_selection_model_updated(self, model):
-        logging.info('voice_selection_model_updated')
+        logger.info('voice_selection_model_updated')
         self.model.voice_selection = model
         self.model_part_updated_common()
 
     def text_processing_model_updated(self, model):
-        logging.info('text_processing_model_updated')
+        logger.info('text_processing_model_updated')
         self.model.text_processing = model
         self.model_part_updated_common()
 
@@ -93,7 +93,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         self.model_change_callback(self.model)
 
     def update_preview(self):
-        logging.info('update_preview')
+        logger.info('update_preview')
         try:
             # does the realtime model pass validation ?
             if self.get_model().side_enabled:
@@ -105,15 +105,15 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
             self.text_preview_label.setText(error_message)
 
     def preview_process_tts_tags(self, tts_tags):
-        logging.info('preview_process_tts_tags')
+        logger.info('preview_process_tts_tags')
         # retain elements which are TTS tags
         tts_tags = self.hypertts.anki_utils.extract_tts_tags(tts_tags)
         if len(tts_tags) == 0:
-            logging.error('no TTS tags found')
+            logger.error('no TTS tags found')
             return []
             # raise Exception('no TTS tags found')
         if len(tts_tags) > 1:
-            logging.error('more than one TTS tag found')
+            logger.error('more than one TTS tag found')
             return []
             # raise Exception(f'more than one TTS tag found: {str(tts_tags)}')
         tts_tag = tts_tags[0]
@@ -122,12 +122,12 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
             self.text_preview_label.setText(processed_text)            
         except Exception as e:
             error_message = f'could not process text: {str(e)}'
-            logging.error(error_message)
+            logger.error(error_message)
             self.text_preview_label.setText(error_message)
 
     def side_enabled_change(self, checkbox_value):
         self.side_enabled = checkbox_value == 2
-        logging.info(f'side_enabled: {self.side_enabled}')
+        logger.info(f'side_enabled: {self.side_enabled}')
         self.tabs.setEnabled(self.side_enabled)
         self.preview_groupbox.setEnabled(self.side_enabled)
         self.model.side_enabled = self.side_enabled
@@ -194,13 +194,13 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         return self.vlayout
 
     def sound_preview_button_pressed(self):
-        logging.info('sound_preview_button_pressed')
+        logger.info('sound_preview_button_pressed')
         self.preview_sound_button.setText('Playing Preview...')
         self.preview_sound_button.setEnabled(False)
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
     def sound_preview_task(self):
-        logging.info('sound_preview_task')
+        logger.info('sound_preview_task')
         tts_tags = self.hypertts.render_card_template_extract_tts_tag(self.get_model(),
             self.note, self.side, self.card_ord)
         text = tts_tags[0].field_text
@@ -208,7 +208,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         return True
 
     def sound_preview_task_done(self, result):
-        logging.info('sound_preview_task_done')
+        logger.info('sound_preview_task_done')
         with self.hypertts.error_manager.get_single_action_context('Playing Realtime Sound Preview'):
             result = result.result()
         self.hypertts.anki_utils.run_on_main(self.finish_sound_preview)

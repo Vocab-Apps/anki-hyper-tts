@@ -1,13 +1,13 @@
 import sys
-import logging
 import aqt.qt
 import time
 import html
 
-
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 batch_status = __import__('batch_status', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 
 class BatchPreviewTableModel(aqt.qt.QAbstractTableModel):
@@ -100,12 +100,12 @@ class BatchPreview(component_common.ComponentBase):
         while self.batch_status.is_running():
             time.sleep(0.1)
 
-        logging.info('update_batch_status_task')
+        logger.info('update_batch_status_task')
         if self.batch_model.text_processing != None:
             self.hypertts.populate_batch_status_processed_text(self.note_id_list, self.batch_model.source, self.batch_model.text_processing, self.batch_status)
 
     def update_batch_status_task_done(self, result):
-        logging.info('update_batch_status_task_done')
+        logger.info('update_batch_status_task_done')
 
     def draw(self):
         # populate processed text
@@ -168,7 +168,7 @@ class BatchPreview(component_common.ComponentBase):
         self.stack.setCurrentIndex(2)
 
     def selection_changed(self):
-        logging.info('selection_changed')
+        logger.info('selection_changed')
         self.report_sample_text()
         self.update_error_label_for_selected()
 
@@ -202,11 +202,11 @@ class BatchPreview(component_common.ComponentBase):
         self.batch_status.stop()
 
     def load_audio_task(self):
-        logging.info('load_audio_task')
+        logger.info('load_audio_task')
         self.hypertts.process_batch_audio(self.note_id_list, self.batch_model, self.batch_status)
 
     def load_audio_task_done(self, result):
-        logging.info('load_audio_task_done')
+        logger.info('load_audio_task_done')
 
 
     def batch_start(self):
@@ -225,7 +225,7 @@ class BatchPreview(component_common.ComponentBase):
         self.progress_bar.setValue(row + 1)
 
     def batch_change(self, note_id, row):
-        # logging.info(f'change_listener row {row}')
+        # logger.info(f'change_listener row {row}')
         self.batch_preview_table_model.notifyChange(row)
         self.hypertts.anki_utils.run_on_main(lambda: self.update_progress_bar(row))
         if row == self.selected_row:

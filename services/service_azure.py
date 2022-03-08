@@ -1,13 +1,14 @@
 import sys
 import requests
 import datetime
-import logging
 import time
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
+logger = logging_utils.get_child_logger(__name__)
 
 class Azure(service.ServiceBase):
     CONFIG_REGION = 'region'
@@ -121,7 +122,7 @@ class Azure(service.ServiceBase):
         response = requests.post(constructed_url, headers=headers, data=body, timeout=constants.RequestTimeout)
         if response.status_code != 200:
             error_message = f'status code {response.status_code}: {response.reason}'
-            logging.error(error_message)
+            logger.error(error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
         return response.content

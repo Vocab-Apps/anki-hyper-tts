@@ -1,13 +1,15 @@
 import sys
 import requests
 import base64
-import logging
 import time
+
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
+logger = logging_utils.get_child_logger(__name__)
 
 class Google(service.ServiceBase):
     CONFIG_API_KEY = 'api_key'
@@ -73,7 +75,7 @@ class Google(service.ServiceBase):
         if response.status_code != 200:
             data = response.json()
             error_message = data.get('error', {}).get('message', str(data))
-            logging.error(error_message)
+            logger.error(error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
         data = response.json()

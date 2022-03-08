@@ -1,6 +1,5 @@
 import sys
 import aqt.qt
-import logging
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 component_source = __import__('component_source', globals(), locals(), [], sys._addon_import_level_base)
@@ -13,6 +12,8 @@ config_models = __import__('config_models', globals(), locals(), [], sys._addon_
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 
 class ComponentBatch(component_common.ConfigComponentBase):
@@ -79,22 +80,22 @@ class ComponentBatch(component_common.ConfigComponentBase):
         return self.batch_model
 
     def source_model_updated(self, model):
-        logging.info(f'source_model_updated: {model}')
+        logger.info(f'source_model_updated: {model}')
         self.batch_model.set_source(model)
         self.model_part_updated_common()
 
     def target_model_updated(self, model):
-        logging.info('target_model_updated')
+        logger.info('target_model_updated')
         self.batch_model.set_target(model)
         self.model_part_updated_common()
 
     def voice_selection_model_updated(self, model):
-        logging.info('voice_selection_model_updated')
+        logger.info('voice_selection_model_updated')
         self.batch_model.set_voice_selection(model)
         self.model_part_updated_common()
 
     def text_processing_model_updated(self, model):
-        logging.info('text_processing_model_updated')
+        logger.info('text_processing_model_updated')
         self.batch_model.text_processing = model
         self.model_part_updated_common()
 
@@ -103,13 +104,13 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.enable_save_profile_button()
 
     def enable_save_profile_button(self):
-        logging.info('enable_save_profile_button')
+        logger.info('enable_save_profile_button')
         self.profile_save_button.setEnabled(True)
         self.profile_save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         self.profile_save_button.setText('Save')
 
     def disable_save_profile_button(self, text):
-        logging.info('disable_save_profile_button')
+        logger.info('disable_save_profile_button')
         self.profile_save_button.setEnabled(False)
         self.profile_save_button.setStyleSheet(None)
         self.profile_save_button.setText(text)
@@ -302,7 +303,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def apply_button_pressed(self):
         with self.hypertts.error_manager.get_single_action_context('Applying Audio to Notes'):
             self.get_model().validate()
-            logging.info('apply_button_pressed')
+            logger.info('apply_button_pressed')
             if self.editor_mode:
                 self.disable_bottom_buttons()
                 self.apply_button.setText('Loading...')

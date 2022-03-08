@@ -4,9 +4,11 @@ import aqt
 import anki.template
 import anki.sound
 import anki.collection
-import logging
 import aqt.qt
 from . import constants    
+
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
@@ -96,7 +98,7 @@ class AnkiUtils():
         return tts_tags
 
     def save_note_type_update(self, note_model):
-        logging.info(f"""updating note type: {note_model['name']}""")
+        logger.info(f"""updating note type: {note_model['name']}""")
         aqt.mw.col.models.update_dict(note_model)
 
     def run_in_background(self, task_fn, task_done_fn):

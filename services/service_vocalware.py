@@ -3,12 +3,13 @@ import requests
 import urllib
 import hashlib
 import time
-import logging
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
+logger = logging_utils.get_child_logger(__name__)
 
 class VocalWare(service.ServiceBase):
     CONFIG_SECRET_PHRASE= 'secret_phrase'

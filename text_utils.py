@@ -1,5 +1,4 @@
 import sys
-import logging
 import aqt
 import anki.utils
 import re
@@ -10,6 +9,9 @@ if hasattr(sys, '_pytest_mode'):
 else:
     from . import constants
     from . import errors
+
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 
 REGEXP_REALTIME_SIMPLE_TEMPLATE = '.*<hypertts-template\s+setting="(.*)"\s+version="([a-z1-9]*)"[^>]*>(.*)</hypertts-template>.*'

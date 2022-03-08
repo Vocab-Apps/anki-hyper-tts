@@ -3,7 +3,6 @@ import json
 
 # pyqt
 import aqt.qt
-import logging
 import pprint
 
 # anki imports
@@ -22,6 +21,8 @@ component_realtime = __import__('component_realtime', globals(), locals(), [], s
 component_configuration = __import__('component_configuration', globals(), locals(), [], sys._addon_import_level_base)
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 ttsplayer = __import__('ttsplayer', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 
 class ConfigurationDialog(aqt.qt.QDialog):
@@ -102,14 +103,14 @@ class RealtimeDialog(DialogBase):
 
 def launch_configuration_dialog(hypertts):
     with hypertts.error_manager.get_single_action_context('Launching Configuration Dialog'):
-        logging.info('launch_configuration_dialog')
+        logger.info('launch_configuration_dialog')
         dialog = ConfigurationDialog(hypertts)
         dialog.setupUi()
         dialog.exec_()
 
 def launch_batch_dialog_browser(hypertts, browser, note_id_list, batch_name):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Browser'):
-        logging.info('launch_batch_dialog_browser')
+        logger.info('launch_batch_dialog_browser')
         if len(note_id_list) == 0:
             raise errors.NoNotesSelected()
         dialog = BatchDialog(hypertts)
@@ -119,7 +120,7 @@ def launch_batch_dialog_browser(hypertts, browser, note_id_list, batch_name):
 
 def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Editor'):
-        logging.info('launch_batch_dialog_editor')
+        logger.info('launch_batch_dialog_editor')
         dialog = BatchDialog(hypertts)
         dialog.configure_editor(note, editor, add_mode)
         dialog.exec_()
@@ -138,7 +139,7 @@ def launch_realtime_dialog_browser(hypertts, note_id_list):
             # ask user to choose a template
             card_template_names = [x['name'] for x in templates]
             chosen_row = aqt.utils.chooseList(constants.TITLE_PREFIX + constants.GUI_TEXT_REALTIME_CHOOSE_TEMPLATE, card_template_names)
-            logging.info(f'user chose row {chosen_row}')
+            logger.info(f'user chose row {chosen_row}')
             card_ord = chosen_row
 
         dialog = RealtimeDialog(hypertts, card_ord)
@@ -218,14 +219,14 @@ def init(hypertts):
             return handled
 
         if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX):
-            logging.info(f'{str}')
+            logger.info(f'{str}')
             if str == constants.PYCMD_ADD_AUDIO_PREFIX + constants.BATCH_CONFIG_NEW:
                 hypertts.clear_latest_saved_batch_name()
                 launch_batch_dialog_editor(hypertts, editor.note, editor, editor.addMode)
                 update_editor_batch_list(hypertts, editor)
             else:
                 with hypertts.error_manager.get_single_action_context('Adding Audio to Note'):
-                    # logging.info(f'received message: {str}')
+                    # logger.info(f'received message: {str}')
                     batch_name = str.replace(constants.PYCMD_ADD_AUDIO_PREFIX, '')
                     batch = hypertts.load_batch_config(batch_name)
                     hypertts.editor_note_add_audio(batch, editor, editor.note, editor.addMode)
@@ -233,7 +234,7 @@ def init(hypertts):
 
         if str.startswith(constants.PYCMD_PREVIEW_AUDIO_PREFIX):
             with hypertts.error_manager.get_single_action_context('Previewing Audio'):
-                # logging.info(f'received message: {str}')
+                # logger.info(f'received message: {str}')
                 batch_name = str.replace(constants.PYCMD_PREVIEW_AUDIO_PREFIX, '')
                 batch = hypertts.load_batch_config(batch_name)
                 hypertts.preview_note_audio(batch, editor.note)

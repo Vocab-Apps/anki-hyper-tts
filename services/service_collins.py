@@ -2,15 +2,14 @@ import sys
 import re
 import requests
 import bs4
-import pprint
-import logging
-import time
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
 languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_services)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
+logger = logging_utils.get_child_logger(__name__)
 
 class Collins(service.ServiceBase):
     COLLINS_WEBSITE = 'https://www.collinsdictionary.com'
@@ -63,9 +62,9 @@ class Collins(service.ServiceBase):
         if sound_tag == None:
             raise errors.AudioNotFoundError(source_text, voice)
         sound_url = sound_tag['data-src-mp3']
-        logging.info(f'found sound_url: {sound_url}')
+        logger.info(f'found sound_url: {sound_url}')
 
-        logging.info(f'downloading url {sound_url}')
+        logger.info(f'downloading url {sound_url}')
         response = requests.get(sound_url, headers=headers)
         if response.status_code != 200:
             raise errors.RequestError(source_text, voice, f'download audio returned status code {response.status_code} ({sound_url})')
