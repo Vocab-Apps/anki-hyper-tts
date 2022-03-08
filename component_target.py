@@ -32,8 +32,12 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.radio_button_keep_sound.setChecked(not self.batch_target_model.remove_sound_tag)
 
 
-    def draw(self):
-        self.batch_target_layout = aqt.qt.QVBoxLayout()
+    def draw(self): # return scrollarea
+        self.scroll_area = aqt.qt.QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.layout_widget = aqt.qt.QWidget()
+
+        self.batch_target_layout = aqt.qt.QVBoxLayout(self.layout_widget)
         
         # target field
         # ============
@@ -45,6 +49,7 @@ class BatchTarget(component_common.ConfigComponentBase):
         vlayout.addWidget(self.target_field_combobox)
         groupbox.setLayout(vlayout)
         self.batch_target_layout.addWidget(groupbox)
+
 
         # text and sound tag
         # ==================
@@ -94,7 +99,8 @@ class BatchTarget(component_common.ConfigComponentBase):
         # select default to trigger model update
         self.update_field()
 
-        return self.batch_target_layout
+        self.scroll_area.setWidget(self.layout_widget)
+        return self.scroll_area
 
     def update_text_sound(self):
         self.batch_target_model.text_and_sound_tag = self.radio_button_text_sound.isChecked()

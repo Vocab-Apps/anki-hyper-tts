@@ -161,9 +161,12 @@ class TextProcessing(component_common.ConfigComponentBase):
         self.textReplacementTableModel.load_model(self.model)
         self.set_text_processing_rules_widget_state()
 
-    def draw(self):
+    def draw(self): # return scrollarea
+        self.scroll_area = aqt.qt.QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.layout_widget = aqt.qt.QWidget()        
 
-        global_vlayout = aqt.qt.QVBoxLayout()
+        global_vlayout = aqt.qt.QVBoxLayout(self.layout_widget)
 
 
         # setup test input box
@@ -254,7 +257,8 @@ class TextProcessing(component_common.ConfigComponentBase):
 
         self.model_change()
 
-        return global_vlayout
+        self.scroll_area.setWidget(self.layout_widget)
+        return self.scroll_area
 
     def set_text_processing_rules_widget_state(self):
         self.html_to_text_line_checkbox.setChecked(self.model.html_to_text_line)

@@ -20,8 +20,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         # initialize widgets
 
-        self.voices_layout = aqt.qt.QVBoxLayout()
-
         self.audio_languages_combobox = aqt.qt.QComboBox()
         self.languages_combobox = aqt.qt.QComboBox()
         self.services_combobox = aqt.qt.QComboBox()
@@ -126,7 +124,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         combobox.insertSeparator(1)
         combobox.addItems(items)
 
-    def draw(self):
+    def draw(self): # return scrollarea
         # filters:
         # - language
         # - locale
@@ -138,6 +136,11 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # 3. populate filters
         # 4. draw all voices
 
+        self.scroll_area = aqt.qt.QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.layout_widget = aqt.qt.QWidget()
+
+        self.voices_layout = aqt.qt.QVBoxLayout(self.layout_widget)
 
         self.get_voices()
 
@@ -270,7 +273,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         self.filter_and_draw_voices(0)
 
-        return self.voices_layout
+        self.scroll_area.setWidget(self.layout_widget)
+        return self.scroll_area
 
     def voice_selection_mode_change(self):
         if self.radio_button_single.isChecked():
