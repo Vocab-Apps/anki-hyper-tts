@@ -253,6 +253,7 @@ class Windows(service.ServiceBase):
                 langs = sapi_voice.GetAttribute("language")
                 name = sapi_voice.GetAttribute("name")
                 gender = sapi_voice.GetAttribute("gender")
+                logger.info(f'processing voice name: [{name}] langs: [{langs}] gender: {gender}')
                 langs = lcid_hex_str_to_lang_codes(langs)
                 for lang in langs:
                     if lang in languages.AudioLanguage.__members__:

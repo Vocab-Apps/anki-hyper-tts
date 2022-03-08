@@ -10,3 +10,7 @@ web/package-lock.json
 # these get built
 /hypertts.js
 /hypertts.css
+# temporary files when testing
+converted_wav.wav
+generated_audio.mp3
+external/comtypes/gen/
