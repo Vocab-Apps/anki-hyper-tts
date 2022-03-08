@@ -262,7 +262,7 @@ class Windows(service.ServiceBase):
                         logger.info(f'sapi_voice: {name} lang: {audio_language} gender: {gender_enum}')
                         result.append(voice.Voice(name, gender_enum, audio_language, self, name, {}))
                     else:
-                        logger.error(f'unknown language: {lang}')
+                        logger.error(f'unknown language: {lang}, could not process voice [{name}]')
 
             return result
 
