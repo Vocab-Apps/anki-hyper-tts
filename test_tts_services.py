@@ -106,6 +106,7 @@ class TTSTests(unittest.TestCase):
         self.manager.get_service('Collins').enabled = True
         self.manager.get_service('NaverPapago').enabled = True
         self.manager.get_service('LocalSystem').enabled = True        
+        self.manager.get_service('Windows').enabled = True
 
     def sanitize_recognized_text(self, recognized_text):
         recognized_text = re.sub('<[^<]+?>', '', recognized_text)
@@ -122,16 +123,19 @@ class TTSTests(unittest.TestCase):
             context.AudioRequestContext(constants.AudioRequestReason.batch))
         assert len(audio_data) > 0
 
-        output_temp_file = tempfile.NamedTemporaryFile()
-        output_temp_filename = output_temp_file.name
-        with open(output_temp_filename, "wb") as out:
-            out.write(audio_data)
+        output_temp_filename = "generated_audio.mp3"
+        # cannot use tempfiles because windows is weird
+        out = open(output_temp_filename, "wb")
+        out.write(audio_data)
+        out.close()
 
         speech_config = azure.cognitiveservices.speech.SpeechConfig(subscription=os.environ['AZURE_SERVICES_KEY'], region='eastus')
 
         sound = pydub.AudioSegment.from_mp3(output_temp_filename)
-        wav_filepath = tempfile.NamedTemporaryFile(suffix='.wav').name
-        sound.export(wav_filepath, format="wav")
+        # cannot use tempfiles because windows is weird
+        wav_filepath = "converted_wav.wav"
+        out_filehandle = sound.export(wav_filepath, format="wav")
+        out_filehandle.close()
 
         recognition_language_map = {
             languages.AudioLanguage.en_US: 'en-US',
@@ -389,6 +393,23 @@ class TTSTests(unittest.TestCase):
         # french
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'bonjour')
+
+    def test_windows(self):
+        # pytest test_tts_services.py  -k test_windows
+        service_name = 'Windows'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            return
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 5
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'this is the first sentence')
 
     def test_naverpapago(self):
         service_name = 'NaverPapago'
