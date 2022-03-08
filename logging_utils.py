@@ -6,3 +6,7 @@ constants = __import__('constants', globals(), locals(), [], sys._addon_import_l
 def get_child_logger(name):
     root_logger = logging.getLogger(constants.LOGGER_NAME)
     return root_logger.getChild(name)
+
+def get_test_child_logger(name):
+    root_logger = logging.getLogger(constants.LOGGER_NAME_TEST)
+    return root_logger.getChild(name)

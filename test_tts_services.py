@@ -1,7 +1,6 @@
 from calendar import c
 import sys
 import os
-import logging
 import re
 import random
 import tempfile
@@ -19,6 +18,9 @@ import voice
 import servicemanager
 import errors
 import languages
+
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_test_child_logger(__name__)
 
 # add external dir to sys.path
 addon_dir = os.path.dirname(os.path.realpath(__file__))

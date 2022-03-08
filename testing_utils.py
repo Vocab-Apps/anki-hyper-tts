@@ -10,6 +10,8 @@ import hypertts
 import errors
 import servicemanager
 
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_test_child_logger(__name__)
 
 def get_test_services_dir():
     current_script_path = os.path.realpath(__file__)

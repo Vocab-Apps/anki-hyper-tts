@@ -5,6 +5,7 @@ ENV_VAR_ANKI_LANGUAGE_TOOLS_BASE_URL = 'ANKI_LANGUAGE_TOOLS_BASE_URL'
 ENABLE_SENTRY_CRASH_REPORTING = True
 
 LOGGER_NAME = 'anki_hyper_tts'
+LOGGER_NAME_TEST = 'test_anki_hyper_tts'
 
 # requests related constants
 RequestTimeout = 15 # 15 seconds max

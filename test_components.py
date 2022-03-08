@@ -1,6 +1,6 @@
+import sys
 from calendar import c
 import aqt.qt
-import logging
 import os
 import copy
 import pprint
@@ -20,6 +20,9 @@ import component_text_processing
 import component_realtime_source
 import component_realtime_side
 import component_realtime
+
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_test_child_logger(__name__)
 
 class EmptyDialog(aqt.qt.QDialog):
     def __init__(self):
