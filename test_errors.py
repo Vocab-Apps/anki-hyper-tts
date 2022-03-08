@@ -1,10 +1,9 @@
-import unittest
-import pytest
-import pprint
-import logging
-
+import sys
 import errors
 import testing_utils
+
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_test_child_logger(__name__)
 
 def test_exceptions(qtbot):
     try:

@@ -1,5 +1,5 @@
+import sys
 import pprint
-import logging
 import unittest
 
 import constants
@@ -8,6 +8,9 @@ import testing_utils
 import config_models
 import hypertts
 import errors
+
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_test_child_logger(__name__)
 
 def get_service_manager():
     manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services', True)

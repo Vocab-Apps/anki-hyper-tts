@@ -1,4 +1,3 @@
-import logging
 import json
 import tempfile
 import re
@@ -195,11 +194,11 @@ class MockAnkiUtils():
     def report_unknown_exception_interactive(self, exception, action):
         self.last_exception = exception
         self.last_action = action
-        logging.critical(exception, exc_info=True)
+        logger.critical(exception, exc_info=True)
 
     def report_unknown_exception_background(self, exception):
         self.last_exception = exception
-        logging.critical(exception, exc_info=True)
+        logger.critical(exception, exc_info=True)
 
     def extract_sound_tag_audio_full_path(self, sound_tag):
         filename = re.match('.*\[sound:([^\]]+)\]', sound_tag).groups()[0]

@@ -177,11 +177,11 @@ class AnkiUtils():
         if hasattr(sys, '_sentry_crash_reporting'):
             sentry_sdk.capture_exception(exception)
         else:
-            logging.critical(exception, exc_info=True)
+            logger.critical(exception, exc_info=True)
         self.critical_message(error_message, None)
 
     def report_unknown_exception_background(self, exception):
         if hasattr(sys, '_sentry_crash_reporting'):
             sentry_sdk.capture_exception(exception)
         else:
-            logging.critical(exception, exc_info=True)
+            logger.critical(exception, exc_info=True)

@@ -1,11 +1,13 @@
+import sys
 import hypertts
 import testing_utils
 import constants
 import languages
 import config_models
 import batch_status
-import logging
-import pprint
+
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_test_child_logger(__name__)
 
 class mock_progress_bar():
     def __init__(self):
