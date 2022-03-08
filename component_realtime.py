@@ -102,9 +102,6 @@ class ComponentRealtime(component_common.ConfigComponentBase):
 
         self.vlayout.addWidget(self.tabs)
 
-
-        self.vlayout.addStretch()
-
         # setup bottom buttons
         # ====================
 
