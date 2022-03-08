@@ -90,12 +90,18 @@ else:
 
                 return event
 
+            traces_sample_rate_map = {
+                'development': 1.0,
+                'production': 0.25
+            }
+
             # need to create an anki-hyper-tts project in sentry.io first
+            sentry_env = os.environ.get('SENTRY_ENV', 'production')
             sentry_sdk.init(
                 "https://a4170596966d47bb9f8fda74a9370bc7@o968582.ingest.sentry.io/6170140",
-                traces_sample_rate=0.25,
+                traces_sample_rate=traces_sample_rate_map[sentry_env],
                 release=f'anki-hyper-tts@{version.ANKI_HYPER_TTS_VERSION}-{anki.version}',
-                environment=os.environ.get('SENTRY_ENV', 'production'),
+                environment=sentry_env,
                 before_send=sentry_filter
             )
             sentry_sdk.set_user({"id": user_id})
