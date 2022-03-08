@@ -40,6 +40,9 @@ class EmptyDialog(aqt.qt.QDialog):
 
     def addChildLayout(self, layout):
         self.main_layout.addLayout(layout)
+
+    def addChildWidget(self, widget):
+        self.main_layout.addWidget(widget)
     
     def close(self):
         self.closed = True
@@ -90,7 +93,7 @@ def test_voice_selection_defaults_single(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
-    dialog.addChildLayout(voiceselection.draw())
+    dialog.addChildWidget(voiceselection.draw())
 
 
     voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
@@ -121,7 +124,7 @@ def test_voice_selection_single_1(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
-    dialog.addChildLayout(voiceselection.draw())
+    dialog.addChildWidget(voiceselection.draw())
 
     voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
 
@@ -172,7 +175,7 @@ def test_voice_selection_random_1(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
-    dialog.addChildLayout(voiceselection.draw())
+    dialog.addChildWidget(voiceselection.draw())
 
     # dialog.exec_()
 
@@ -227,7 +230,7 @@ def test_voice_selection_random_to_single(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
-    dialog.addChildLayout(voiceselection.draw())
+    dialog.addChildWidget(voiceselection.draw())
 
     # choose random mode
     # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
@@ -262,7 +265,7 @@ def test_voice_selection_random_remove_voices(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
-    dialog.addChildLayout(voiceselection.draw())
+    dialog.addChildWidget(voiceselection.draw())
 
     # choose random mode
     # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
@@ -299,7 +302,7 @@ def test_voice_selection_random_2(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
-    dialog.addChildLayout(voiceselection.draw())
+    dialog.addChildWidget(voiceselection.draw())
 
     # choose random mode
     voiceselection.radio_button_random.setChecked(True)
@@ -333,7 +336,7 @@ def test_voice_selection_priority_1(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
-    dialog.addChildLayout(voiceselection.draw())
+    dialog.addChildWidget(voiceselection.draw())
 
     # choose random mode
     # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
@@ -375,7 +378,7 @@ def test_voice_selection_filters(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
-    dialog.addChildLayout(voiceselection.draw())
+    dialog.addChildWidget(voiceselection.draw())
 
     # ensure filters are set to All by default
     assert voiceselection.audio_languages_combobox.currentText() == constants.LABEL_FILTER_ALL
@@ -440,7 +443,7 @@ def test_voice_selection_samples(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
-    dialog.addChildLayout(voiceselection.draw())
+    dialog.addChildWidget(voiceselection.draw())
 
     voiceselection.voices_combobox.setCurrentIndex(1)
 
@@ -471,7 +474,7 @@ def test_voice_selection_load_model(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
-    dialog.addChildLayout(voiceselection.draw())
+    dialog.addChildWidget(voiceselection.draw())
 
     voice_list = hypertts_instance.service_manager.full_voice_list()
     voice_a_2 = [x for x in voice_list if x.name == 'voice_a_2'][0]
@@ -539,7 +542,7 @@ def test_batch_source_1(qtbot):
     model_change_callback = MockModelChangeCallback()
     field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
     batch_source = component_source.BatchSource(hypertts_instance, field_list, model_change_callback.model_updated)
-    dialog.addChildLayout(batch_source.draw())
+    dialog.addChildWidget(batch_source.draw())
 
     # the field selected should be "Chinese"
     expected_source_model = config_models.BatchSourceSimple('Chinese')
@@ -616,7 +619,7 @@ def test_target(qtbot):
     model_change_callback = MockModelChangeCallback()
     field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
     batch_target = component_target.BatchTarget(hypertts_instance, field_list, model_change_callback.model_updated)
-    dialog.addChildLayout(batch_target.draw())
+    dialog.addChildWidget(batch_target.draw())
 
     # pick the Sound field
     batch_target.target_field_combobox.setCurrentText('Sound')
@@ -989,7 +992,7 @@ def test_batch_dialog_voice_selection_sample(qtbot):
 
 
 def test_batch_dialog_manual(qtbot):
-    # HYPERTTS_BATCH_DIALOG_DEBUG=yes pytest test_components.py -k test_batch_dialog_manual
+    # HYPERTTS_BATCH_DIALOG_DEBUG=yes pytest test_components.py -k test_batch_dialog_manual -s -rPP
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
@@ -1106,7 +1109,7 @@ def test_text_processing(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     text_processing = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
-    dialog.addChildLayout(text_processing.draw())
+    dialog.addChildWidget(text_processing.draw())
 
     # dialog.exec_()
 
@@ -1220,7 +1223,7 @@ def test_text_processing(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     text_processing_component = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
-    dialog.addChildLayout(text_processing_component.draw())
+    dialog.addChildWidget(text_processing_component.draw())
     text_processing_component.load_model(text_processing)
 
     # check first row
@@ -1264,7 +1267,7 @@ def test_text_processing_manual(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     text_processing = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
-    dialog.addChildLayout(text_processing.draw())
+    dialog.addChildWidget(text_processing.draw())
 
     if os.environ.get('HYPERTTS_TEXT_PROCESSING_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec_()        
@@ -1578,7 +1581,7 @@ def test_realtime_source(qtbot):
     model_change_callback = MockModelChangeCallback()
     field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
     source = component_realtime_source.RealtimeSource(hypertts_instance, field_list, model_change_callback.model_updated)
-    dialog.addChildLayout(source.draw())
+    dialog.addChildWidget(source.draw())
 
     # dialog.exec_()
 
