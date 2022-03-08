@@ -29,26 +29,18 @@ else:
     # setup logger
     # ============
 
+    logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+
     if os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'enable':
         # log everything to stdout
-        logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-                            datefmt='%Y%m%d-%H:%M:%S',
-                            stream=sys.stdout,
-                            level=logging.DEBUG)    
+        logging_utils.configure_console_logging()
     elif os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'file':
         # log everything to file
-        logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-                            datefmt='%Y%m%d-%H:%M:%S',
-                            filename=os.environ['HYPER_TTS_DEBUG_LOGFILE'],
-                            level=logging.DEBUG)
+        logging_utils.configure_file_logging(os.environ['HYPER_TTS_DEBUG_LOGFILE'])
     else:
-        # log only errors, to stdout (to avoid anki picking them up), this is necessary to ensure sentry picks up
-        logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-                            datefmt='%Y%m%d-%H:%M:%S',
-                            handlers=[logging.NullHandler()],
-                            level=logging.INFO)
-    
-    logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+        # log at info level, but with null handler, so that sentry picks up breadcrumbs and errors
+        logging_utils.configure_silent()
+
     logger = logging_utils.get_child_logger(__name__)
 
     # setup sentry crash reporting
