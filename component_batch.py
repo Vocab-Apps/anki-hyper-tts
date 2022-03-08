@@ -174,17 +174,15 @@ class ComponentBatch(component_common.ConfigComponentBase):
         # ====================
 
         self.tabs = aqt.qt.QTabWidget()
-        self.tab_source = aqt.qt.QWidget()
         self.tab_target = aqt.qt.QWidget()
         self.tab_voice_selection = aqt.qt.QWidget()
         self.tab_text_processing = aqt.qt.QWidget()
 
-        self.tab_source.setLayout(self.source.draw())
         self.tab_target.setLayout(self.target.draw())
         self.tab_voice_selection.setLayout(self.voice_selection.draw())
         self.tab_text_processing.setLayout(self.text_processing.draw())
 
-        self.tabs.addTab(self.tab_source, 'Source')
+        self.tabs.addTab(self.source.draw(), 'Source')
         self.tabs.addTab(self.tab_target, 'Target')
         self.tabs.addTab(self.tab_voice_selection, 'Voice Selection')
         self.tabs.addTab(self.tab_text_processing, 'Text Processing')

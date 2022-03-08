@@ -35,8 +35,13 @@ class BatchSource(component_common.ConfigComponentBase):
             self.advanced_template_input.setPlainText(model.source_template)
 
 
-    def draw(self):
-        self.batch_source_layout = aqt.qt.QVBoxLayout()
+    def draw(self): # return a widget
+
+        self.scroll_area = aqt.qt.QScrollArea()
+        self.scroll_area.setWidgetResizable(True)        
+
+        self.layout_widget = aqt.qt.QWidget()
+        self.batch_source_layout = aqt.qt.QVBoxLayout(self.layout_widget)
 
         self.draw_source_mode(self.batch_source_layout)
         self.draw_source_config(self.batch_source_layout)
@@ -51,7 +56,10 @@ class BatchSource(component_common.ConfigComponentBase):
         # select default
         self.source_field_change(0)
 
-        return self.batch_source_layout
+        # return self.batch_source_layout
+        
+        self.scroll_area.setWidget(self.layout_widget)
+        return self.scroll_area
 
     def draw_source_mode(self, overall_layout):
         # batch mode
