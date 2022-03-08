@@ -310,7 +310,7 @@ class Windows(service.ServiceBase):
         aqt.sound._encode_mp3(filename, filename_mp3)
 
         # read filename contents
-        f = open(filename_mp3)
+        f = open(filename_mp3, 'rb')
         content = f.read()
         f.close()
         return content

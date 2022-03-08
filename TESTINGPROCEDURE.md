@@ -14,3 +14,7 @@ coverage run -m pytest
 coverage html
 
 coverage erase
+
+# testing on windows
+
+set PATH=C:\Program Files\Anki;%PATH%
