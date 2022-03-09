@@ -358,7 +358,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'GoogleTranslate'
         if self.manager.get_service(service_name).enabled == False:
             logger.warning(f'service {service_name} not enabled, skipping')
-            return
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
@@ -379,7 +379,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'Windows'
         if self.manager.get_service(service_name).enabled == False:
             logger.warning(f'service {service_name} not enabled, skipping')
-            return
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
@@ -395,7 +395,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'NaverPapago'
         if self.manager.get_service(service_name).enabled == False:
             logger.warning(f'service {service_name} not enabled, skipping')
-            return
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
@@ -414,7 +414,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'Collins'
         if self.manager.get_service(service_name).enabled == False:
             logger.warning(f'service {service_name} not enabled, skipping')
-            return
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
