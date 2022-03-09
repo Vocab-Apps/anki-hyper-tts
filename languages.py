@@ -168,6 +168,7 @@ class AudioLanguage(enum.Enum):
     bg_BG = (Language.bg, "Bulgarian")
     bn_BD = (Language.bn, "Bangla (Bangladesh)")
     bn_IN = (Language.bn, "Bengali (India)")
+    bs_BA = (Language.bs, "Bosnian (Bosnia and Herzegovina)")
     ca_ES = (Language.ca, "Catalan")
     cs_CZ = (Language.cs, "Czech")
     cy_GB = (Language.cy, "Welsh")
@@ -232,6 +233,7 @@ class AudioLanguage(enum.Enum):
     hi_IN = (Language.hi, "Hindi (India)")
     hr_HR = (Language.hr, "Croatian")
     hu_HU = (Language.hu, "Hungarian")
+    hy_AM = (Language.hy, "Armenian (Armenia)")
     id_ID = (Language.id_, "Indonesian")
     is_IS = (Language.is_, "Icelandic")
     it_IT = (Language.it, "Italian")
@@ -242,6 +244,7 @@ class AudioLanguage(enum.Enum):
     kk_KZ = (Language.kk, "Kazakh (Kazakhstan)")
     kn_IN = (Language.kn, "Kannada (India)")
     km_KH = (Language.km, "Khmer (Cambodia)")
+    la = (Language.la, "Latin")
     lo_LA = (Language.lo, "Lao (Lao People's Democratic Republic")
     lt_LT = (Language.lt, "Lithuanian")
     lv_LV = (Language.lv, "Latvian")
@@ -252,6 +255,7 @@ class AudioLanguage(enum.Enum):
     mt_MT = (Language.mt, "Maltese (Malta)")
     my_MM = (Language.my, "Burmese (Myanmar [Burma])")
     nb_NO = (Language.nb, "Norwegian")
+    ne_NP = (Language.ne, "Nepali (Nepal)")
     nl_BE = (Language.nl, "Dutch (Belgium)")
     nl_NL = (Language.nl, "Dutch")
     pa_IN = (Language.pa, "Punjabi (India)")
@@ -265,6 +269,7 @@ class AudioLanguage(enum.Enum):
     sk_SK = (Language.sk, "Slovak")
     sl_SI = (Language.sl, "Slovenian")
     so_SO = (Language.so, "Somali (Somalia)")
+    sq_AL = (Language.sq, "Albanian (Albania)")
     sr_RS = (Language.sr_cyrl, "Serbian (Serbia)")
     su_ID = (Language.su, "Sundanese (Indonesia)")
     sv_SE = (Language.sv, "Swedish")
@@ -293,9 +298,16 @@ class AudioLanguage(enum.Enum):
 
 
 AudioLanguageDefaults = {
+    Language.ar: AudioLanguage.ar_XA,
+    Language.bn: AudioLanguage.bn_BD,
     Language.de: AudioLanguage.de_DE,
     Language.en: AudioLanguage.en_US,
     Language.es: AudioLanguage.es_ES,
+    Language.fr: AudioLanguage.fr_FR,
+    Language.nl: AudioLanguage.nl_NL,
+    Language.sw: AudioLanguage.sw_TZ,
+    Language.ta: AudioLanguage.ta_IN,
+    Language.ur: AudioLanguage.ur_PK
 }
 
 # if only one locale is available, make that the default
