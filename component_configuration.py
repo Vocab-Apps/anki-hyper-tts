@@ -310,6 +310,7 @@ class Configuration(component_common.ConfigComponentBase):
         api_key = self.hypertts_pro_api_key.text()
         if len(api_key) > 0:
             self.api_key = api_key.strip()
+            logger.info(f'verifying api_key [{self.api_key}]')
             self.account_info_label.setText('Verifying...')
             self.hypertts.anki_utils.run_in_background(self.get_account_data_task, self.get_account_data_task_done)
         else:
