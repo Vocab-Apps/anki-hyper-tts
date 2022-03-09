@@ -16,6 +16,13 @@ coverage html
 coverage erase
 
 # testing on windows
+# go to C:\storage\dev\anki-hyper-tts
 # need to activate virtual env
-# set tts keys
+c:\storage\dev\env-anki-hyper-tts\Scripts\activate
+# setup PATH
 set PATH=C:\Program Files\Anki;C:\storage\dev\libav;%PATH%
+# set tts keys
+cat language_tools_tts_dev.sh | sed 's/export/set/g'
+cat hypertts_testing_keys.sh  | sed 's/export/set/g'
+# then
+pytest test_tts_services.py  -k test_windows
