@@ -105,7 +105,6 @@ class TTSTests(unittest.TestCase):
         self.manager.get_service('GoogleTranslate').enabled = True
         self.manager.get_service('Collins').enabled = True
         self.manager.get_service('NaverPapago').enabled = True
-        self.manager.get_service('LocalSystem').enabled = True      
         if os.name == 'nt':
             logger.info('running on windows, enabling Windows service')
             self.manager.get_service('Windows').enabled = True
