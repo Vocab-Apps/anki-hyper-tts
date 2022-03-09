@@ -374,27 +374,6 @@ class TTSTests(unittest.TestCase):
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
 
-    def test_localsystem(self):
-        # pytest test_tts_services.py  -k 'TTSTests and test_localsystem'
-        service_name = 'LocalSystem'
-        if self.manager.get_service(service_name).enabled == False:
-            logger.warning(f'service {service_name} not enabled, skipping')
-            return
-
-        voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
-        
-        logger.info(f'found {len(service_voices)} voices for {service_name} services')
-        assert len(service_voices) >= 10
-
-        # pick a random en_US voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'hello')
-
-        # french
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
-        self.verify_audio_output(selected_voice, 'bonjour')
-
     def test_windows(self):
         # pytest test_tts_services.py  -k test_windows
         service_name = 'Windows'
