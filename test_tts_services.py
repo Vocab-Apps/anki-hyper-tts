@@ -149,6 +149,7 @@ class TTSTests(unittest.TestCase):
             languages.AudioLanguage.it_IT: 'it-IT',
             languages.AudioLanguage.ko_KR: 'ko-KR',
             languages.AudioLanguage.vi_VN: 'vi-VN',
+            languages.AudioLanguage.he_IL: 'he-IL',
         }
 
         recognition_language = recognition_language_map[voice.language]
@@ -366,6 +367,7 @@ class TTSTests(unittest.TestCase):
         
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 2
+        pprint.pprint(service_voices)
 
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
@@ -374,6 +376,10 @@ class TTSTests(unittest.TestCase):
         # french
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
+
+        # hebrew
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.he_IL)
+        self.verify_audio_output(selected_voice, '.בבקשה')
 
     def test_windows(self):
         # pytest test_tts_services.py  -k test_windows

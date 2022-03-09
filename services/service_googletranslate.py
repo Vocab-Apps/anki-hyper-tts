@@ -17,6 +17,7 @@ lang = languages.AudioLanguage
 LANGUAGE_KEY_MAP = {
     'id': lang.id_ID,
     'is': lang.is_IS,
+    'iw': lang.he_IL,
     'pt': lang.pt_PT,
     'sr': lang.sr_RS,
     'zh-CN': lang.zh_CN,
