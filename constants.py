@@ -8,7 +8,7 @@ LOGGER_NAME = 'anki_hyper_tts'
 LOGGER_NAME_TEST = 'test_anki_hyper_tts'
 
 # requests related constants
-RequestTimeout = 15 # 15 seconds max
+RequestTimeout = 20 # 20 seconds max
 
 class ServiceType(enum.Enum):
     dictionary = ("Dictionary, contains recordings of words.")
