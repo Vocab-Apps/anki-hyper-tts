@@ -14,6 +14,7 @@ from typing import List, cast
 import aqt.tts
 import anki
 
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_child_logger(__name__)
@@ -34,7 +35,7 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
         voices = []
         for audio_language in languages.AudioLanguage:
             language_name = audio_language.name
-            voices.append(aqt.tts.TTSVoice(name="HyperTTS", lang=language_name))
+            voices.append(aqt.tts.TTSVoice(name=constants.TTS_TAG_VOICE, lang=language_name))
 
         return voices  # type: ignore
 
@@ -45,7 +46,12 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
         self.playback_error_message = None
 
         assert isinstance(tag, anki.sound.TTSTag)
-        logger.info(f'playing TTS sound for {tag}')
+
+        if constants.TTS_TAG_VOICE not in tag.voices:
+            logger.warn(f'HyperTTS voice not found in tag {tag}, skipping')
+            return None
+
+        logger.info(f'playing TTS sound for {tag}, voices: {tag.voices}')
 
         audio_filename = self.hypertts.get_audio_filename_tts_tag(tag)
         return audio_filename
@@ -54,7 +60,10 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
     def _on_done(self, ret: Future, cb: aqt.sound.OnDoneCallback) -> None:
         with self.hypertts.error_manager.get_single_action_context('Playing Realtime Audio'):
             audio_filename = ret.result()
-            logger.info(f'got audio_filename: {audio_filename}')
-            aqt.sound.av_player.insert_file(audio_filename)
+            if audio_filename != None:
+                logger.info(f'got audio_filename: {audio_filename}')
+                aqt.sound.av_player.insert_file(audio_filename)
+            else:
+                logger.warn(f'no audio filename, not playing any audio')
         cb()
 

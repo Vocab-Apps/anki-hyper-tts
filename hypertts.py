@@ -296,7 +296,7 @@ class HyperTTS():
                 field_format = f'cloze:{realtime_side_model.source.field_name}'
             elif realtime_side_model.source.field_type == constants.AnkiTTSFieldType.ClozeOnly:
                 field_format = f'cloze-only:{realtime_side_model.source.field_name}'
-            return '{{tts ' + f"""{audio_language.name} {constants.TTS_TAG_HYPERTTS_PRESET}={setting_key} voices=HyperTTS:{field_format}""" + '}}'
+            return '{{tts ' + f"""{audio_language.name} {constants.TTS_TAG_HYPERTTS_PRESET}={setting_key} voices={constants.TTS_TAG_VOICE}:{field_format}""" + '}}'
         else:
             raise Exception(f'unsupported RealtimeSourceType: {realtime_side_model.source.mode}')
 
