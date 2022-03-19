@@ -48,6 +48,7 @@
 	"remoteUser": "vscode",
 	// some environment variables
 	"remoteEnv": {
-		"LANG": "en_US.UTF-8"
+		"LANG": "en_US.UTF-8",
+		"DISPLAY": ":2"
 	}	
 }
