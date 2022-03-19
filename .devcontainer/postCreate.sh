@@ -7,12 +7,15 @@ ln -s /workspaces/anki-hyper-tts $HOME/.local/share/Anki2/addons21/anki-hyper-tt
 # start up the processes we need directly
 
 # vncserver on display :1
+sudo rm -f /tmp/.X*-lock
+sudo rm -f /tmp/.X11-unix/X*
 cp -rv $PWD/.devcontainer/config/.vnc $HOME/
 /usr/bin/vncserver -SecurityTypes None -geometry 1920x1080 :1
 # to shutdown:
 # /usr/bin/vncserver -kill :1
 
 # novnc
+sudo ln -s $PWD/.devcontainer/config/novnc/index.html /opt/novnc/index.html
 PIDFILE=/var/run/novnc.pid
 DAEMON=/opt/novnc/utils/novnc_proxy
 DAEMON_OPTS="--vnc localhost:5901"
