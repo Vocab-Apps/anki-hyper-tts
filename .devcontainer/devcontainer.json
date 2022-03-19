@@ -51,6 +51,7 @@
 	"remoteUser": "vscode",
 	// some environment variables
 	"remoteEnv": {
+		"SENTRY_ENV": "development",
 		"LANG": "en_US.UTF-8",
 		"DISPLAY": ":2"
 	},
