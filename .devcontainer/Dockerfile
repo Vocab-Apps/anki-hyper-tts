@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-20.04
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends xfce4 xfce4-goodies tigervnc-standalone-server dbus-x11 xfonts-base xfonts-100dpi xfonts-75dpi \
-    python3 python3-pip libnss3 libasound2
+    python3 python3-pip libnss3 libasound2 zstd libqt5x11extras5
 
 RUN git clone https://github.com/novnc/noVNC.git /opt/novnc
 RUN git clone https://github.com/novnc/websockify /opt/novnc/utils/websockify
@@ -23,3 +23,10 @@ RUN pip3 install numpy
 COPY requirements.txt /tmp/pip-tmp/
 RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
    && rm -rf /tmp/pip-tmp
+
+# install anki versions 
+RUN mkdir /opt/anki
+ARG ANKI_2150_FILE=anki-2.1.50+beta8_02c580e4-linux-qt6.tar.zst
+RUN cd /opt/anki && wget https://apps.ankiweb.net/downloads/beta/${ANKI_2150_FILE} && tar xavf ${ANKI_2150_FILE} && rm ${ANKI_2150_FILE}
+ARG ANKI_2149_FILE=anki-2.1.49-linux.tar.bz2
+RUN cd /opt/anki && wget https://github.com/ankitects/anki/releases/download/2.1.49/${ANKI_2149_FILE} && tar xvjf ${ANKI_2149_FILE} && rm ${ANKI_2149_FILE}
