@@ -7,7 +7,8 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-20.04
 
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends xfce4 xfce4-goodies tigervnc-standalone-server dbus-x11 xfonts-base xfonts-100dpi xfonts-75dpi \
+    && apt-get -y install --no-install-recommends xfce4 xfce4-goodies tigervnc-common tigervnc-standalone-server \ 
+    dbus-x11 xfonts-base xfonts-100dpi xfonts-75dpi \
     python3 python3-pip libnss3 libasound2 zstd libqt5x11extras5
 
 RUN git clone https://github.com/novnc/noVNC.git /opt/novnc
