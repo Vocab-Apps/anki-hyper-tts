@@ -1,3 +1,2 @@
 #!/bin/bash
-xrdb $HOME/.Xresources
-startxfce4 &
+exec startxfce4
