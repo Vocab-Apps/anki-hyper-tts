@@ -7,7 +7,7 @@ DISPLAY="1"
 # The Desktop geometry to use.
 GEOMETRY="1920x1080"
 
-OPTIONS="-geometry ${GEOMETRY} :${DISPLAY}"
+OPTIONS="-SecurityTypes None -geometry ${GEOMETRY} :${DISPLAY}"
 
 . /lib/lsb/init-functions
 
