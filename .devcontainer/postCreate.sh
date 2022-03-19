@@ -34,8 +34,3 @@ DAEMON=/usr/bin/vncserver
 # will run on display 2
 DAEMON_OPTS="-fg -SecurityTypes None -geometry 1920x1080 :1"
 start-stop-daemon --start --quiet --background --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS
-
-#/usr/bin/vncserver -kill :1
-#/usr/bin/vncserver -SecurityTypes None -geometry 1920x1080 :1
-# to shutdown:
-# /usr/bin/vncserver -kill :1
