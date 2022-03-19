@@ -1,0 +1,31 @@
+#!/bin/bash -e
+
+export USER="vscode"
+
+DISPLAY="1"
+
+# The Desktop geometry to use.
+GEOMETRY="1920x1080"
+
+OPTIONS="-geometry ${GEOMETRY} :${DISPLAY}"
+
+. /lib/lsb/init-functions
+
+case "$1" in
+start)
+log_action_begin_msg "Starting vncserver on localhost:${DISPLAY}"
+su ${USER} -c "/usr/bin/vncserver ${OPTIONS}"
+;;
+
+stop)
+log_action_begin_msg "Stoping vncserver on localhost:${DISPLAY}"
+su ${USER} -c "/usr/bin/vncserver -kill :${DISPLAY}"
+;;
+
+restart)
+$0 stop
+$0 start
+;;
+esac
+
+exit 0
