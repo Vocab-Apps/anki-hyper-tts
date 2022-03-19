@@ -9,12 +9,7 @@ ln -s /workspaces/anki-hyper-tts $HOME/.local/share/Anki2/addons21/anki-hyper-tt
 # clear all locks on X servers
 sudo rm -f /tmp/.X*-lock
 sudo rm -f /tmp/.X11-unix/X*
-
-# vncserver on display :1
-cp -rv $PWD/.devcontainer/config/.vnc $HOME/
-/usr/bin/vncserver -SecurityTypes None -geometry 1920x1080 :1
-# to shutdown:
-# /usr/bin/vncserver -kill :1
+touch $HOME/.Xauthority
 
 # novnc
 sudo ln -s $PWD/.devcontainer/config/novnc/index.html /opt/novnc/index.html
@@ -29,3 +24,10 @@ DAEMON=/usr/bin/Xvfb
 # will run on display 2
 DAEMON_OPTS=":2 -screen 0 1024x768x24 -ac +extension GLX +render -noreset"
 start-stop-daemon --start --quiet --background --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS
+
+# vncserver on display :1
+cp -rv $PWD/.devcontainer/config/.vnc $HOME/
+/usr/bin/vncserver -kill :1
+/usr/bin/vncserver -SecurityTypes None -geometry 1920x1080 :1
+# to shutdown:
+# /usr/bin/vncserver -kill :1
