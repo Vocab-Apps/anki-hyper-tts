@@ -28,6 +28,6 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requ
 # install anki versions 
 RUN mkdir /opt/anki
 ARG ANKI_2150_FILE=anki-2.1.50+beta8_02c580e4-linux-qt6.tar.zst
-RUN cd /opt/anki && wget https://apps.ankiweb.net/downloads/beta/${ANKI_2150_FILE} && tar xavf ${ANKI_2150_FILE} && rm ${ANKI_2150_FILE}
+RUN cd /opt/anki && wget -q https://apps.ankiweb.net/downloads/beta/${ANKI_2150_FILE} && tar xaf ${ANKI_2150_FILE} && rm ${ANKI_2150_FILE}
 ARG ANKI_2149_FILE=anki-2.1.49-linux.tar.bz2
-RUN cd /opt/anki && wget https://github.com/ankitects/anki/releases/download/2.1.49/${ANKI_2149_FILE} && tar xvjf ${ANKI_2149_FILE} && rm ${ANKI_2149_FILE}
+RUN cd /opt/anki && wget -q https://github.com/ankitects/anki/releases/download/2.1.49/${ANKI_2149_FILE} && tar xjf ${ANKI_2149_FILE} && rm ${ANKI_2149_FILE}
