@@ -163,21 +163,26 @@ class Configuration(component_common.ConfigComponentBase):
     def draw_service(self, service, layout):
         logger.info(f'draw_service {service.name}')
         
-        # layout.addWidget(gui_utils.get_service_header_label(service.name))
-        service_groupbox = aqt.qt.QGroupBox()
-
         def get_service_header_label(service):
             header_label = gui_utils.get_service_header_label(service.name)
-            header_label.setMargin(0)
-            header_label.setStyleSheet("border: 1px solid black;")
+            # header_label.setStyleSheet("border: 1px solid black;")
             return header_label        
 
         def get_service_description_label(service):
             service_description = f'{service.service_fee.name}, {service.service_type.description}'
             service_description_label = aqt.qt.QLabel(service_description)
             service_description_label.setMargin(0)
-            service_description_label.setStyleSheet("border: 1px solid black;")
             return service_description_label            
+
+        combined_service_vlayout = aqt.qt.QVBoxLayout()
+        # leave some space above/below services
+        combined_service_vlayout.setContentsMargins(0, 10, 0, 10)
+
+        # draw service header and description
+        # ===================================
+
+        combined_service_vlayout.addWidget(get_service_header_label(service))
+        combined_service_vlayout.addWidget(get_service_description_label(service))
 
         # add service config options, when cloudlanguagetools not enabled
         # ===============================================================
@@ -185,8 +190,6 @@ class Configuration(component_common.ConfigComponentBase):
         service_stack = aqt.qt.QWidget()
         service_vlayout = aqt.qt.QVBoxLayout()
         service_vlayout.setContentsMargins(0, 0, 0, 0)
-        service_vlayout.addWidget(get_service_header_label(service))
-        service_vlayout.addWidget(get_service_description_label(service))
         if service.cloudlanguagetools_enabled():
             hlayout = aqt.qt.QHBoxLayout()
             logo = gui_utils.get_graphic(constants.GRAPHICS_SERVICE_COMPATIBLE)
@@ -201,8 +204,6 @@ class Configuration(component_common.ConfigComponentBase):
         clt_stack = aqt.qt.QWidget()
         clt_vlayout = aqt.qt.QVBoxLayout()
         clt_vlayout.setContentsMargins(0, 0, 0, 0)
-        clt_vlayout.addWidget(get_service_header_label(service))
-        clt_vlayout.addWidget(get_service_description_label(service))
         logo = gui_utils.get_graphic(constants.GRAPHICS_SERVICE_ENABLED)
         clt_vlayout.addWidget(logo)
         clt_stack.setLayout(clt_vlayout)
@@ -213,14 +214,10 @@ class Configuration(component_common.ConfigComponentBase):
         self.service_stack_map[service.name] = service_stack
         self.clt_stack_map[service.name] = clt_stack
 
-        combined_service_vlayout = aqt.qt.QVBoxLayout()
         combined_service_vlayout.addWidget(service_stack)
         combined_service_vlayout.addWidget(clt_stack)
 
-        service_groupbox.setLayout(combined_service_vlayout)
-        service_groupbox.layout().setContentsMargins(0, 0, 0, 0)
-
-        layout.addWidget(service_groupbox)
+        layout.addLayout(combined_service_vlayout)
 
     def draw(self, layout):
         self.global_vlayout = aqt.qt.QVBoxLayout()
@@ -276,6 +273,14 @@ class Configuration(component_common.ConfigComponentBase):
         # services
         # ========
 
+        def get_separator():
+            separator = aqt.qt.QFrame()
+            separator.setFrameShape(aqt.qt.QFrame.HLine)
+            separator.setSizePolicy(aqt.qt.QSizePolicy.Minimum, aqt.qt.QSizePolicy.Expanding)
+            separator.setStyleSheet('color: #cccccc;')
+            separator.setLineWidth(2)
+            return separator
+
         self.global_vlayout.addWidget(aqt.qt.QLabel('Services'))
         services_scroll_area = aqt.qt.QScrollArea()
         services_scroll_area.setHorizontalScrollBarPolicy(aqt.qt.Qt.ScrollBarAlwaysOff)
@@ -288,6 +293,7 @@ class Configuration(component_common.ConfigComponentBase):
         service_list.sort(key=service_sort_key)
         for service in service_list:
             self.draw_service(service, services_vlayout)
+            services_vlayout.addWidget(get_separator())
 
         services_scroll_area.setWidget(services_widget)
         self.global_vlayout.addWidget(services_scroll_area, 1)
