@@ -165,7 +165,6 @@ class Configuration(component_common.ConfigComponentBase):
         
         def get_service_header_label(service):
             header_label = gui_utils.get_service_header_label(service.name)
-            # header_label.setStyleSheet("border: 1px solid black;")
             return header_label        
 
         def get_service_description_label(service):
@@ -284,6 +283,7 @@ class Configuration(component_common.ConfigComponentBase):
         self.global_vlayout.addWidget(aqt.qt.QLabel('Services'))
         services_scroll_area = aqt.qt.QScrollArea()
         services_scroll_area.setHorizontalScrollBarPolicy(aqt.qt.Qt.ScrollBarAlwaysOff)
+        services_scroll_area.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignHCenter)
         services_widget = aqt.qt.QWidget()
         services_vlayout = aqt.qt.QVBoxLayout(services_widget)
         
