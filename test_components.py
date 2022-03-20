@@ -1297,8 +1297,9 @@ def test_configuration(qtbot):
     assert configuration.account_info_label.text() == '<b>error</b>: Key invalid'
 
     # we entered an error key, so pro mode is not enabled
-    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_LITE
-    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
+    assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == False
+    assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
     service_a_enabled_checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceA_enabled")
@@ -1363,8 +1364,9 @@ def test_configuration(qtbot):
     qtbot.keyClicks(configuration.hypertts_pro_api_key, 'valid_key')
     assert '250 chars' in configuration.account_info_label.text()
 
-    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_PRO
-    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == False
+    assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == True # clt displayed
+    assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_PRO
 
     assert configuration.model.hypertts_pro_api_key == 'valid_key'
@@ -1372,8 +1374,9 @@ def test_configuration(qtbot):
     # switch to an invalid key
     configuration.hypertts_pro_api_key.setText('invalid_key')
     assert configuration.model.hypertts_pro_api_key == None
-    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_LITE
-    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
+    assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == False
+    assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
     assert configuration.account_info_label.text() == '<b>error</b>: Key invalid'
@@ -1405,8 +1408,8 @@ def test_configuration(qtbot):
 
     assert configuration.hypertts_pro_api_key.text() == ''
 
-    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_LITE
-    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
+    assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
     service_a_enabled_checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceA_enabled")
@@ -1446,8 +1449,8 @@ def test_configuration(qtbot):
     assert configuration.hypertts_pro_api_key.text() == 'valid_key'
 
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_PRO
-    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_PRO
-    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+    assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == True
+    assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
 
     assert configuration.save_button.isEnabled() == False # since we didn't change anything
 
@@ -1478,8 +1481,13 @@ def test_configuration_pro_key_exception(qtbot):
     # assert configuration.account_info_label.text() == '<b>error</b>: Key invalid'
 
     # we entered an error key, so pro mode is not enabled
-    assert configuration.service_stack_map['ServiceB'].currentIndex() == configuration.STACK_LEVEL_LITE
-    assert configuration.service_stack_map['ServiceA'].currentIndex() == configuration.STACK_LEVEL_LITE
+    # logger.info(f"service_stack_map ServiceB: {configuration.service_stack_map['ServiceB'].isVisible()}")
+    # logger.info(f"service_stack_map ServiceB (isVisibleTo): {configuration.service_stack_map['ServiceB'].isVisibleTo(dialog)}")
+    # logger.info(f"clt_stack_map ServiceB: {configuration.clt_stack_map['ServiceB'].isVisible()}")
+    # dialog.exec_()
+    assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
+    assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == False
+    assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
 def test_configuration_manual(qtbot):

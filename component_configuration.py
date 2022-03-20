@@ -175,7 +175,7 @@ class Configuration(component_common.ConfigComponentBase):
 
         combined_service_vlayout = aqt.qt.QVBoxLayout()
         # leave some space above/below services
-        combined_service_vlayout.setContentsMargins(0, 10, 0, 10)
+        combined_service_vlayout.setContentsMargins(0, 5, 0, 5)
 
         # draw service header and description
         # ===================================
