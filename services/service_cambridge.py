@@ -45,16 +45,7 @@ class Cambridge(service.ServiceBase):
         logger.info(f'loading url: {complete_url}')
         response = requests.get(complete_url, headers=headers)
 
-        f = open('temp.html', 'w')
-        f.write(response.content.decode('utf-8'))
-        f.close()
-
         soup = bs4.BeautifulSoup(response.content, 'html.parser')
-
-        # find all spans
-        # all_spans = soup.find_all('span')
-        # for entry in all_spans:
-        #     logger.debug(entry)
 
         section_class_map = {
             languages.AudioLanguage.en_GB: 'uk dpron-i',
