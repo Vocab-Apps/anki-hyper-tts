@@ -21,6 +21,7 @@ class Configuration(component_common.ConfigComponentBase):
         self.dialog = dialog
         self.model = config_models.Configuration()
         self.service_stack_map = {}
+        self.clt_stack_map = {}
         self.account_info = None
         self.api_key_valid = False
         self.enable_model_change = False
@@ -90,15 +91,17 @@ class Configuration(component_common.ConfigComponentBase):
             self.header_logo_stack_widget.setCurrentIndex(self.STACK_LEVEL_LITE)
         # will enable/disable checkboxes
         for service in self.hypertts.service_manager.get_all_services():
-            self.manage_service_stack(service, self.service_stack_map[service.name])
+            self.manage_service_stack(service, self.service_stack_map[service.name], self.clt_stack_map[service.name])
 
-    def manage_service_stack(self, service, stack):
+    def manage_service_stack(self, service, service_stack, clt_stack):
         if self.cloud_language_tools_enabled() and service.cloudlanguagetools_enabled():
             logger.info(f'{service.name}: show CLT stack')
-            stack.setCurrentIndex(self.STACK_LEVEL_PRO)
+            service_stack.setVisible(False)
+            clt_stack.setVisible(True)
         else:
             logger.info(f'{service.name}: show service stack')
-            stack.setCurrentIndex(self.STACK_LEVEL_LITE)
+            service_stack.setVisible(True)
+            clt_stack.setVisible(False)
 
     def get_service_enabled_widget_name(self, service):
         return f'{service.name}_enabled'
@@ -191,18 +194,16 @@ class Configuration(component_common.ConfigComponentBase):
         clt_vlayout.addWidget(logo)
         clt_stack.setLayout(clt_vlayout)
 
-        # create the stack widget
-        # =======================
-        stack_widget = aqt.qt.QStackedWidget()
-        stack_widget.addWidget(service_stack)
-        stack_widget.addWidget(clt_stack)
 
-        self.manage_service_stack(service, stack_widget)
 
-        self.service_stack_map[service.name] = stack_widget
+        self.manage_service_stack(service, service_stack, clt_stack)
+
+        self.service_stack_map[service.name] = service_stack
+        self.clt_stack_map[service.name] = clt_stack
 
         combined_service_vlayout = aqt.qt.QVBoxLayout()
-        combined_service_vlayout.addWidget(stack_widget)
+        combined_service_vlayout.addWidget(service_stack)
+        combined_service_vlayout.addWidget(clt_stack)
 
         service_groupbox.setLayout(combined_service_vlayout)
 
