@@ -53,3 +53,6 @@ class DigitalesWorterbuchDeutschenSprache(service.ServiceBase):
             logger.info(f'downloading url {sound_url}')
             response = requests.get(sound_url, headers=headers)
             return response.content
+        
+        # if we couldn't locate the source tag, raise notfound
+        raise errors.AudioNotFoundError(source_text, voice)

@@ -493,6 +493,14 @@ class TTSTests(unittest.TestCase):
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.de_DE)
         self.verify_audio_output(selected_voice, 'Gesundheit', 'die Gesundheit')
 
+        # test error handling
+        self.assertRaises(errors.AudioNotFoundError, 
+                          self.manager.get_tts_audio,
+                          'xxoanetuhsoae', # non-existent word
+                          selected_voice,
+                          {},
+                          context.AudioRequestContext(constants.AudioRequestReason.batch))
+
 
     def verify_all_services_language(self, service_type: constants.ServiceType, language, source_text):
         voice_list = self.manager.full_voice_list()
