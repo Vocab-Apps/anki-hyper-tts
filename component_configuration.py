@@ -166,14 +166,27 @@ class Configuration(component_common.ConfigComponentBase):
         # layout.addWidget(gui_utils.get_service_header_label(service.name))
         service_groupbox = aqt.qt.QGroupBox()
 
+        def get_service_header_label(service):
+            header_label = gui_utils.get_service_header_label(service.name)
+            header_label.setMargin(0)
+            header_label.setStyleSheet("border: 1px solid black;")
+            return header_label        
+
+        def get_service_description_label(service):
+            service_description = f'{service.service_fee.name}, {service.service_type.description}'
+            service_description_label = aqt.qt.QLabel(service_description)
+            service_description_label.setMargin(0)
+            service_description_label.setStyleSheet("border: 1px solid black;")
+            return service_description_label            
+
         # add service config options, when cloudlanguagetools not enabled
         # ===============================================================
 
         service_stack = aqt.qt.QWidget()
         service_vlayout = aqt.qt.QVBoxLayout()
-        service_vlayout.addWidget(gui_utils.get_service_header_label(service.name))
-        service_description = f'{service.service_fee.name}, {service.service_type.description}'
-        service_vlayout.addWidget(aqt.qt.QLabel(service_description))
+        service_vlayout.setContentsMargins(0, 0, 0, 0)
+        service_vlayout.addWidget(get_service_header_label(service))
+        service_vlayout.addWidget(get_service_description_label(service))
         if service.cloudlanguagetools_enabled():
             hlayout = aqt.qt.QHBoxLayout()
             logo = gui_utils.get_graphic(constants.GRAPHICS_SERVICE_COMPATIBLE)
@@ -187,13 +200,12 @@ class Configuration(component_common.ConfigComponentBase):
         # ==================================
         clt_stack = aqt.qt.QWidget()
         clt_vlayout = aqt.qt.QVBoxLayout()
-        clt_vlayout.addWidget(gui_utils.get_service_header_label(service.name))
-        service_description = f'{service.service_fee.name}, {service.service_type.description}'
-        clt_vlayout.addWidget(aqt.qt.QLabel(service_description))
+        clt_vlayout.setContentsMargins(0, 0, 0, 0)
+        clt_vlayout.addWidget(get_service_header_label(service))
+        clt_vlayout.addWidget(get_service_description_label(service))
         logo = gui_utils.get_graphic(constants.GRAPHICS_SERVICE_ENABLED)
         clt_vlayout.addWidget(logo)
         clt_stack.setLayout(clt_vlayout)
-
 
 
         self.manage_service_stack(service, service_stack, clt_stack)
@@ -206,6 +218,7 @@ class Configuration(component_common.ConfigComponentBase):
         combined_service_vlayout.addWidget(clt_stack)
 
         service_groupbox.setLayout(combined_service_vlayout)
+        service_groupbox.layout().setContentsMargins(0, 0, 0, 0)
 
         layout.addWidget(service_groupbox)
 
