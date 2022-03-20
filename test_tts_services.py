@@ -104,6 +104,7 @@ class TTSTests(unittest.TestCase):
         # google translate
         self.manager.get_service('GoogleTranslate').enabled = True
         self.manager.get_service('Collins').enabled = True
+        self.manager.get_service('DigitalesWorterbuchDeutschenSprache').enabled = True
         self.manager.get_service('NaverPapago').enabled = True
         if os.name == 'nt':
             logger.info('running on windows, enabling Windows service')
@@ -119,7 +120,7 @@ class TTSTests(unittest.TestCase):
             replace(':', '').lower()
         return result_text
 
-    def verify_audio_output(self, voice, source_text):
+    def verify_audio_output(self, voice, source_text, expected_text_override=None):
         audio_data = self.manager.get_tts_audio(source_text, voice, {}, 
             context.AudioRequestContext(constants.AudioRequestReason.batch))
         assert len(audio_data) > 0
@@ -162,6 +163,8 @@ class TTSTests(unittest.TestCase):
         if result.reason == azure.cognitiveservices.speech.ResultReason.RecognizedSpeech:
             recognized_text =  self.sanitize_recognized_text(result.text)
             expected_text = self.sanitize_recognized_text(source_text)
+            if expected_text_override != None:
+                expected_text = self.sanitize_recognized_text(expected_text_override)    
             assert expected_text == recognized_text, f'expected and actual text not matching (voice: {str(voice)})'
             logger.info(f'actual and expected text match [{recognized_text}]')
         elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
@@ -471,6 +474,24 @@ class TTSTests(unittest.TestCase):
                           selected_voice,
                           {},
                           context.AudioRequestContext(constants.AudioRequestReason.batch))                                  
+
+
+    def test_dwds(self):
+        # pytest test_tts_services.py -k test_dwds
+        service_name = 'DigitalesWorterbuchDeutschenSprache'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 1
+
+        # test german voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.de_DE)
+        self.verify_audio_output(selected_voice, 'Gesundheit', 'die Gesundheit')
 
 
     def verify_all_services_language(self, service_type: constants.ServiceType, language, source_text):
