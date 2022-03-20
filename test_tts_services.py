@@ -105,6 +105,7 @@ class TTSTests(unittest.TestCase):
         self.manager.get_service('GoogleTranslate').enabled = True
         self.manager.get_service('Collins').enabled = True
         self.manager.get_service('DigitalesWorterbuchDeutschenSprache').enabled = True
+        self.manager.get_service('Duden').enabled = True
         self.manager.get_service('NaverPapago').enabled = True
         if os.name == 'nt':
             logger.info('running on windows, enabling Windows service')
@@ -502,6 +503,32 @@ class TTSTests(unittest.TestCase):
                           {},
                           context.AudioRequestContext(constants.AudioRequestReason.batch))
 
+
+    def test_duden(self):
+        # pytest test_tts_services.py -k test_duden
+        service_name = 'Duden'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 1
+
+        # test german voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.de_DE)
+        self.verify_audio_output(selected_voice, 'Gesundheit')
+        self.verify_audio_output(selected_voice, 'Entschuldigung')
+
+        # test error handling
+        self.assertRaises(errors.AudioNotFoundError, 
+                          self.manager.get_tts_audio,
+                          'xxoanetuhsoae', # non-existent word
+                          selected_voice,
+                          {},
+                          context.AudioRequestContext(constants.AudioRequestReason.batch))
 
     def verify_all_services_language(self, service_type: constants.ServiceType, language, source_text):
         voice_list = self.manager.full_voice_list()
