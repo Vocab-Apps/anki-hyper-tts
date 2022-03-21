@@ -168,6 +168,9 @@ class AudioLanguage(enum.Enum):
     ar_YE = (Language.ar, "Arabic (Yemen)")
     
     as_IN = (Language.as_, "Assamese (India)")
+    az_AZ = (Language.az, "Azerbaijani (Azerbaijan)")
+    ba = (Language.ba, "Basque (Basque Country)")
+    ba_RU = (Language.ba, "Bashkir (Russia)")
 
     bg_BG = (Language.bg, "Bulgarian")
     bn_BD = (Language.bn, "Bangla (Bangladesh)")
@@ -183,6 +186,7 @@ class AudioLanguage(enum.Enum):
     el_GR = (Language.el, "Greek")
     en_AU = (Language.en, "English (Australia)")
     en_CA = (Language.en, "English (Canada)")
+    en_CB = (Language.en, "English (Carribean)")
     en_GB = (Language.en, "English (UK)")
     en_GB_WLS = (Language.en, "English (Welsh)")
     en_IE = (Language.en, "English (Ireland)")

@@ -15,7 +15,24 @@ logger = logging_utils.get_child_logger(__name__)
 
 AUDIO_LANGUAGE_OVERRIDE_MAP = {
     'as': languages.AudioLanguage.as_IN,
+    'cmn': languages.AudioLanguage.zh_CN,
     'en-us': languages.AudioLanguage.en_US,
+    'en-gb': languages.AudioLanguage.en_GB,
+    'en-gb-scotland': languages.AudioLanguage.en_GB,
+    'en-gb-x-gbclan': languages.AudioLanguage.en_GB,
+    'en-gb-x-gbcwmd': languages.AudioLanguage.en_GB,
+    'en-gb-x-rp': languages.AudioLanguage.en_GB,
+    'en-029': languages.AudioLanguage.en_CB,
+    'en-029': languages.AudioLanguage.en_CB,
+    'es-419': languages.AudioLanguage.es_LA,
+    'fr-be': languages.AudioLanguage.fr_BE,
+    'fr-ch': languages.AudioLanguage.fr_CH,
+    'fr-fr': languages.AudioLanguage.fr_FR,
+
+    'pt': languages.AudioLanguage.pt_PT,
+    'pt-br': languages.AudioLanguage.pt_BR,
+
+    
     'vi-vn-x-south': languages.AudioLanguage.vi_VN,
     'vi-vn-x-central': languages.AudioLanguage.vi_VN,
 }
@@ -55,7 +72,7 @@ class ESpeakNg(service.ServiceBase):
             result = []
             esng = espeakng.ESpeakNG()
             for espeakng_voice in esng.voices:
-                logger.debug(espeakng_voice)
+                # logger.debug(espeakng_voice)
                 voice_name = espeakng_voice['voice_name']
                 gender = gender_map[espeakng_voice['gender']]
                 espeakng_language = espeakng_voice['language']
