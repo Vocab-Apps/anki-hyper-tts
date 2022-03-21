@@ -1486,6 +1486,46 @@ def test_configuration_pro_key_exception(qtbot):
     assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
+def test_configuration_enable_disable_services(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    # start by disabling both services
+    hypertts_instance.service_manager.get_service('ServiceA').enabled = False
+    hypertts_instance.service_manager.get_service('ServiceB').enabled = False
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # model_change_callback = MockModelChangeCallback()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())
+
+    # enable all free services
+    # ========================
+    qtbot.mouseClick(configuration.enable_all_free_services_button, aqt.qt.Qt.LeftButton)
+
+    # check effect on model
+    assert configuration.model.get_service_enabled('ServiceA') == True
+
+    # now enable services B and C
+    # ============================
+    checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceB_enabled")
+    checkbox.setChecked(True)    
+    checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceC_enabled")
+    checkbox.setChecked(True)
+
+    assert configuration.model.get_service_enabled('ServiceA') == True
+    assert configuration.model.get_service_enabled('ServiceB') == True
+    assert configuration.model.get_service_enabled('ServiceC') == True
+
+    # now disable all services
+    # ========================
+    qtbot.mouseClick(configuration.disable_all_services_button, aqt.qt.Qt.LeftButton)
+    assert configuration.model.get_service_enabled('ServiceA') == False
+    assert configuration.model.get_service_enabled('ServiceB') == False
+    assert configuration.model.get_service_enabled('ServiceC') == False   
+
+
 def test_configuration_manual(qtbot):
     # HYPERTTS_CONFIGURATION_DIALOG_DEBUG=yes pytest test_components.py -k test_configuration_manual
     config_gen = testing_utils.TestConfigGenerator()
