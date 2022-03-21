@@ -111,6 +111,10 @@ class TTSTests(unittest.TestCase):
         if os.name == 'nt':
             logger.info('running on windows, enabling Windows service')
             self.manager.get_service('Windows').enabled = True
+        if sys.platform == 'linux':
+            logger.info('running on Linux, enabling espeakng service')
+            self.manager.get_service('ESpeakNg').enabled = True            
+
 
     def sanitize_recognized_text(self, recognized_text):
         recognized_text = re.sub('<[^<]+?>', '', recognized_text)
@@ -179,6 +183,8 @@ class TTSTests(unittest.TestCase):
 
     def pick_random_voice(self, voice_list, service_name, language):
         voice_subset = [voice for voice in voice_list if voice.service.name == service_name and voice.language == language]
+        if len(voice_subset) == 0:
+            logger.error(f'found no voices for service {service_name}, language {language}')
         random_voice = random.choice(voice_subset)
         return random_voice
 
@@ -402,6 +408,23 @@ class TTSTests(unittest.TestCase):
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, 'this is the first sentence')
+
+    def test_espeakng(self):
+        service_name = 'ESpeakNg'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        
+        logger.info(f'found {len(service_voices)} voices for {service_name} service')
+        assert len(service_voices) >= 5
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'welcome home')
+
 
     def test_naverpapago(self):
         service_name = 'NaverPapago'

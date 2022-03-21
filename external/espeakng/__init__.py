@@ -60,6 +60,7 @@ class ESpeakNG(object):
         cmd.extend(args)
 
         logging.debug('espeakng: executing %s' % repr(cmd))
+        # logging.debug(f"commandline: {' '.join(cmd)}")
 
         # '-w', f.name, s
 
@@ -156,7 +157,7 @@ class ESpeakNG(object):
 
         res = self._espeak_exe(['--voices'], sync=True)
 
-        logging.debug ('espeakng: voices: %s' % res)
+        # logging.debug ('espeakng: voices: %s' % res)
 
         # ['Pty', 'Language', 'Age/Gender', 'VoiceName', 'File', 'Other', 'Languages']
 
@@ -185,7 +186,7 @@ class ESpeakNG(object):
                         'file'       : parts[4],
                     }
 
-            logging.debug ('espeakng: voices: parts= %s %s -> %s' % (len(parts), repr(parts), repr(voice)))
+            # logging.debug ('espeakng: voices: parts= %s %s -> %s' % (len(parts), repr(parts), repr(voice)))
             voices.append(voice)
 
         return voices
