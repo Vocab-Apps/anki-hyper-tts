@@ -9,7 +9,7 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-20.04
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends xfce4 xfce4-goodies tigervnc-common tigervnc-standalone-server \ 
     dbus-x11 xfonts-base xfonts-100dpi xfonts-75dpi \
-    python3 python3-pip libnss3 libasound2 zstd libqt5x11extras5 xvfb ffmpeg \
+    python3 python3-pip libnss3 libasound2 zstd libqt5x11extras5 xvfb ffmpeg mplayer espeak-ng \
     fonts-arphic-ukai fonts-arphic-uming fonts-ipafont-mincho fonts-ipafont-gothic fonts-unfonts-core \
     nodejs npm
 
