@@ -94,17 +94,20 @@ class ESpeakNg(service.ServiceBase):
         esng.voice = voice.voice_key
         wavs = esng.synth_wav(source_text)
 
-        wav_temp_file = tempfile.NamedTemporaryFile(prefix='hyper_tts_espeakng', suffix='.wav')
-        f = open(wav_temp_file.name, 'wb')
+        fh, wav_temp_file_name = tempfile.mkstemp(prefix='hyper_tts_espeakng', suffix='.wav')
+        f = open(wav_temp_file_name, 'wb')
         f.write(wavs)
         f.close()
 
-        mp3_temp_file = tempfile.NamedTemporaryFile(prefix='hyper_tts_espeakng', suffix='.mp3') 
-        aqt.sound._encode_mp3(wav_temp_file.name, mp3_temp_file.name)
+        fh, mp3_temp_file_name = tempfile.mkstemp(prefix='hyper_tts_espeakng', suffix='.mp3') 
+        aqt.sound._encode_mp3(wav_temp_file_name, mp3_temp_file_name)
 
         # read final mp3 file
-        f = open(mp3_temp_file.name, 'rb')
+        f = open(mp3_temp_file_name, 'rb')
         content = f.read()
         f.close()        
+
+        # remove temporary files (wav sound already removed)
+        os.remove(mp3_temp_file_name)
 
         return content
