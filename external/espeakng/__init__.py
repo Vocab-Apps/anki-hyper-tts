@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-import logging
+# import logging
 import subprocess
 import tempfile
 
@@ -59,7 +59,7 @@ class ESpeakNG(object):
 
         cmd.extend(args)
 
-        logging.debug('espeakng: executing %s' % repr(cmd))
+        # logging.debug('espeakng: executing %s' % repr(cmd))
         # logging.debug(f"commandline: {' '.join(cmd)}")
 
         # '-w', f.name, s
@@ -124,7 +124,7 @@ class ESpeakNG(object):
             f.seek(0)
             wav = f.read()
 
-            logging.debug('read %s, got %d bytes.' % (f.name, len(wav)))
+            # logging.debug('read %s, got %d bytes.' % (f.name, len(wav)))
 
         return wav
 
@@ -146,7 +146,7 @@ class ESpeakNG(object):
 
         for line in self._espeak_exe(args, sync=True):
 
-            logging.debug(u'line: %s' % repr(line))
+            # logging.debug(u'line: %s' % repr(line))
             
             phonemes += line.decode('utf8').strip()
 
