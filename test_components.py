@@ -1481,10 +1481,6 @@ def test_configuration_pro_key_exception(qtbot):
     # assert configuration.account_info_label.text() == '<b>error</b>: Key invalid'
 
     # we entered an error key, so pro mode is not enabled
-    # logger.info(f"service_stack_map ServiceB: {configuration.service_stack_map['ServiceB'].isVisible()}")
-    # logger.info(f"service_stack_map ServiceB (isVisibleTo): {configuration.service_stack_map['ServiceB'].isVisibleTo(dialog)}")
-    # logger.info(f"clt_stack_map ServiceB: {configuration.clt_stack_map['ServiceB'].isVisible()}")
-    # dialog.exec_()
     assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
     assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == False
     assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True

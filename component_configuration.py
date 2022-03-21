@@ -103,6 +103,21 @@ class Configuration(component_common.ConfigComponentBase):
             service_stack.setVisible(True)
             clt_stack.setVisible(False)
 
+    def disable_all_services(self):
+        for service in self.get_service_list():
+            checkbox_name = self.get_service_enabled_widget_name(service)
+            # find the checkbox
+            checkbox = self.dialog.findChild(aqt.qt.QCheckBox, checkbox_name)
+            checkbox.setChecked(False)
+
+    def enable_all_free_services(self):
+        for service in self.get_service_list():
+            if service.service_fee == constants.ServiceFee.Free:
+                checkbox_name = self.get_service_enabled_widget_name(service)
+                # find the checkbox
+                checkbox = self.dialog.findChild(aqt.qt.QCheckBox, checkbox_name)
+                checkbox.setChecked(True)
+
     def get_service_enabled_widget_name(self, service):
         return f'{service.name}_enabled'
 
@@ -218,6 +233,13 @@ class Configuration(component_common.ConfigComponentBase):
 
         layout.addLayout(combined_service_vlayout)
 
+    def get_service_list(self):
+        def service_sort_key(service):
+            return service.name
+        service_list = self.hypertts.service_manager.get_all_services()
+        service_list.sort(key=service_sort_key)
+        return service_list
+
     def draw(self, layout):
         self.global_vlayout = aqt.qt.QVBoxLayout()
 
@@ -281,19 +303,21 @@ class Configuration(component_common.ConfigComponentBase):
             return separator
 
         self.global_vlayout.addWidget(aqt.qt.QLabel('Services'))
+        hlayout = aqt.qt.QHBoxLayout()
+        self.enable_all_free_services_button = aqt.qt.QPushButton('Enable All Free Services')
+        self.disable_all_services_button = aqt.qt.QPushButton('Disable All Services')
+        hlayout.addWidget(self.enable_all_free_services_button)
+        hlayout.addWidget(self.disable_all_services_button)
+        self.global_vlayout.addLayout(hlayout)
         services_scroll_area = aqt.qt.QScrollArea()
         services_scroll_area.setHorizontalScrollBarPolicy(aqt.qt.Qt.ScrollBarAlwaysOff)
         services_scroll_area.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignHCenter)
         services_widget = aqt.qt.QWidget()
-        services_vlayout = aqt.qt.QVBoxLayout(services_widget)
+        self.services_vlayout = aqt.qt.QVBoxLayout(services_widget)
         
-        def service_sort_key(service):
-            return service.name
-        service_list = self.hypertts.service_manager.get_all_services()
-        service_list.sort(key=service_sort_key)
-        for service in service_list:
-            self.draw_service(service, services_vlayout)
-            services_vlayout.addWidget(get_separator())
+        for service in self.get_service_list():
+            self.draw_service(service, self.services_vlayout)
+            self.services_vlayout.addWidget(get_separator())
 
         services_scroll_area.setWidget(services_widget)
         self.global_vlayout.addWidget(services_scroll_area, 1)
@@ -313,6 +337,9 @@ class Configuration(component_common.ConfigComponentBase):
 
         # wire events
         # ===========
+        self.enable_all_free_services_button.pressed.connect(self.enable_all_free_services)
+        self.disable_all_services_button.pressed.connect(self.disable_all_services)
+
         self.save_button.pressed.connect(self.save_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
