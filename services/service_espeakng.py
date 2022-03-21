@@ -14,7 +14,10 @@ logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_
 logger = logging_utils.get_child_logger(__name__)
 
 AUDIO_LANGUAGE_OVERRIDE_MAP = {
-    'en-us': languages.AudioLanguage.en_US
+    'as': languages.AudioLanguage.as_IN,
+    'en-us': languages.AudioLanguage.en_US,
+    'vi-vn-x-south': languages.AudioLanguage.vi_VN,
+    'vi-vn-x-central': languages.AudioLanguage.vi_VN,
 }
 
 

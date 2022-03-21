@@ -167,6 +167,8 @@ class AudioLanguage(enum.Enum):
     ar_XA = (Language.ar, "Arabic")
     ar_YE = (Language.ar, "Arabic (Yemen)")
     
+    as_IN = (Language.as_, "Assamese (India)")
+
     bg_BG = (Language.bg, "Bulgarian")
     bn_BD = (Language.bn, "Bangla (Bangladesh)")
     bn_IN = (Language.bn, "Bengali (India)")
@@ -283,6 +285,7 @@ class AudioLanguage(enum.Enum):
     te_IN = (Language.te, "Telugu (India)")
     th_TH = (Language.th, "Thai")
     tr_TR = (Language.tr, "Turkish (Turkey)")
+    tt_RU = (Language.tt, "Tatar (Russia)")
     ur_IN = (Language.ur, "Urdu (India)")
     ur_PK = (Language.ur, "Urdu (Pakistan)")
     uk_UA = (Language.uk, "Ukrainian (Ukraine)")
