@@ -26,6 +26,12 @@ else:
     import aqt
     import anki.sound
 
+    # need to declare upfront whethere we're doing crash reporting
+    # ============================================================
+    from . import constants
+    if constants.ENABLE_SENTRY_CRASH_REPORTING:
+        sys._sentry_crash_reporting = True
+
     # setup logger
     # ============
 
@@ -45,9 +51,8 @@ else:
 
     # setup sentry crash reporting
     # ============================
-    from . import constants
 
-    if constants.ENABLE_SENTRY_CRASH_REPORTING:
+    if hasattr(sys, '_sentry_crash_reporting'):
         import sentry_sdk
         # check version. some anki addons package an obsolete version of sentry_sdk
         sentry_sdk_int_version = int(sentry_sdk.VERSION.replace('.', ''))
@@ -55,7 +60,6 @@ else:
             # setup crash reporting
             # =====================
 
-            sys._sentry_crash_reporting = True
             from . import version
 
             addon_config = aqt.mw.addonManager.getConfig(__name__)
