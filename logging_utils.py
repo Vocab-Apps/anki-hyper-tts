@@ -1,5 +1,7 @@
 import sys
+import os
 import logging
+import inspect
 
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
@@ -29,31 +31,42 @@ class NullLogger():
 
 """use this logger class to avoid any possibility of logging to stdout/stderr,
 which may be caught by anki and will display a confusing error message to the user"""
-class BreadcrumbLogger():
+class SentryLogger():
     def __init__(self, name):
         self.name = name
     
-    def send_breadcrumb(self, level, msg):
-        sentry_sdk.add_breadcrumb(
-            type='log',
-            message=msg,
-            level=level,
-        )        
+    def send_event(self, level, msg):
+        log_location = {}
+        if level >= logging.ERROR:
+            # extract data from stack
+            caller = inspect.getframeinfo(inspect.stack()[2][0])
+            pathname = caller.filename
+            lineno = caller.lineno
+            file = os.path.basename(pathname)
+            log_location['line_number'] = lineno
+            log_location['filename'] = file
+        
+        record = logging.LogRecord(self.name, level, '', 0, msg, None, None)
+        if log_location != {}:
+            record.__dict__['log_location'] = log_location
+        integration = sentry_sdk.hub.Hub.current.get_integration(sentry_sdk.integrations.logging.LoggingIntegration)
+        if integration != None:
+            integration._handle_record(record)
 
     def debug(self, msg, *args, **kwargs):
-        self.send_breadcrumb('debug', msg)
+        self.send_event(logging.DEBUG, msg)
 
     def info(self, msg, *args, **kwargs):
-        self.send_breadcrumb('info', msg)
+        self.send_event(logging.INFO, msg)
 
     def warning(self, msg, *args, **kwargs):
-        self.send_breadcrumb('warning', msg)
+        self.send_event(logging.WARNING, msg)
 
     def error(self, msg, *args, **kwargs):
-        self.send_breadcrumb('error', msg)
+        self.send_event(logging.ERROR, msg)
 
     def critical(self, msg, *args, **kwargs):
-        self.send_breadcrumb('fatal', msg)
+        self.send_event(logging.CRITICAL, msg)
 
 def get_stream_handler():
     handler = logging.StreamHandler(stream=sys.stdout)
@@ -85,7 +98,7 @@ def configure_silent():
 def get_child_logger(name):
     if SILENT_LOGGING_MODE:
         if hasattr(sys, '_sentry_crash_reporting'):
-            return BreadcrumbLogger(name)
+            return SentryLogger(name)
         else:
             return NullLogger()
     else:
