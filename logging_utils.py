@@ -93,6 +93,7 @@ def configure_file_logging(filename):
     root_logger.addHandler(get_file_handler(filename))
 
 def configure_silent():
+    global SILENT_LOGGING_MODE
     SILENT_LOGGING_MODE = True
 
 def get_child_logger(name):
