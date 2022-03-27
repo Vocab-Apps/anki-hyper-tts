@@ -1129,9 +1129,9 @@ def test_text_processing(qtbot):
     # enter pattern and replacement
     row = 0
     index_pattern = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
-    text_processing.textReplacementTableModel.setData(index_pattern, '1234', aqt.qt.Qt.EditRole)
+    text_processing.textReplacementTableModel.setData(index_pattern, '1234', aqt.qt.Qt.ItemDataRole.EditRole)
     index_replacement = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
-    text_processing.textReplacementTableModel.setData(index_replacement, '5678', aqt.qt.Qt.EditRole)
+    text_processing.textReplacementTableModel.setData(index_replacement, '5678', aqt.qt.Qt.ItemDataRole.EditRole)
 
     # verify preview
     assert text_processing.sample_text_transformed_label.text() == '<b>abdc5678</b>'
@@ -1141,9 +1141,9 @@ def test_text_processing(qtbot):
     # enter pattern and replacement
     row = 1
     index_pattern = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
-    text_processing.textReplacementTableModel.setData(index_pattern, ' / ', aqt.qt.Qt.EditRole)
+    text_processing.textReplacementTableModel.setData(index_pattern, ' / ', aqt.qt.Qt.ItemDataRole.EditRole)
     index_replacement = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
-    text_processing.textReplacementTableModel.setData(index_replacement, ' ', aqt.qt.Qt.EditRole)
+    text_processing.textReplacementTableModel.setData(index_replacement, ' ', aqt.qt.Qt.ItemDataRole.EditRole)
 
     # check processing preview
     text_processing.sample_text_input.clear()
@@ -1165,9 +1165,9 @@ def test_text_processing(qtbot):
     # enter pattern and replacement
     row = 2
     index_pattern = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
-    text_processing.textReplacementTableModel.setData(index_pattern, '[0-9]+', aqt.qt.Qt.EditRole)
+    text_processing.textReplacementTableModel.setData(index_pattern, '[0-9]+', aqt.qt.Qt.ItemDataRole.EditRole)
     index_replacement = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
-    text_processing.textReplacementTableModel.setData(index_replacement, 'number', aqt.qt.Qt.EditRole)
+    text_processing.textReplacementTableModel.setData(index_replacement, 'number', aqt.qt.Qt.ItemDataRole.EditRole)
 
     text_processing.sample_text_input.clear()
     qtbot.keyClicks(text_processing.sample_text_input, '1234')
@@ -1731,9 +1731,9 @@ def test_realtime_side_component(qtbot):
     # enter pattern and replacement
     row = 0
     index_pattern = realtime_side.text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
-    realtime_side.text_processing.textReplacementTableModel.setData(index_pattern, 'old', aqt.qt.Qt.EditRole)
+    realtime_side.text_processing.textReplacementTableModel.setData(index_pattern, 'old', aqt.qt.Qt.ItemDataRole.EditRole)
     index_replacement = realtime_side.text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_REPLACEMENT)
-    realtime_side.text_processing.textReplacementTableModel.setData(index_replacement, 'young', aqt.qt.Qt.EditRole)
+    realtime_side.text_processing.textReplacementTableModel.setData(index_replacement, 'young', aqt.qt.Qt.ItemDataRole.EditRole)
 
     # preview should be updated
     assert realtime_side.text_preview_label.text() == 'young people'

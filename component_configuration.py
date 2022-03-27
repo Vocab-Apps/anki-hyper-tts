@@ -296,8 +296,8 @@ class Configuration(component_common.ConfigComponentBase):
 
         def get_separator():
             separator = aqt.qt.QFrame()
-            separator.setFrameShape(aqt.qt.QFrame.HLine)
-            separator.setSizePolicy(aqt.qt.QSizePolicy.Minimum, aqt.qt.QSizePolicy.Expanding)
+            separator.setFrameShape(aqt.qt.QFrame.Shape.HLine)
+            separator.setSizePolicy(aqt.qt.QSizePolicy.Policy.Minimum, aqt.qt.QSizePolicy.Policy.Expanding)
             separator.setStyleSheet('color: #cccccc;')
             separator.setLineWidth(2)
             return separator
@@ -310,7 +310,7 @@ class Configuration(component_common.ConfigComponentBase):
         hlayout.addWidget(self.disable_all_services_button)
         self.global_vlayout.addLayout(hlayout)
         services_scroll_area = aqt.qt.QScrollArea()
-        services_scroll_area.setHorizontalScrollBarPolicy(aqt.qt.Qt.ScrollBarAlwaysOff)
+        services_scroll_area.setHorizontalScrollBarPolicy(aqt.qt.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         services_scroll_area.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignHCenter)
         services_widget = aqt.qt.QWidget()
         self.services_vlayout = aqt.qt.QVBoxLayout(services_widget)

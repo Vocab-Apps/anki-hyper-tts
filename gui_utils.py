@@ -16,8 +16,8 @@ class NonAliasedImage(aqt.qt.QWidget):
 
     def paintEvent(self,event):
         painter = aqt.qt.QPainter(self)
-        painter.setRenderHint(aqt.qt.QPainter.SmoothPixmapTransform)
-        painter.setRenderHint(aqt.qt.QPainter.Antialiasing)
+        painter.setRenderHint(aqt.qt.QPainter.RenderHint.SmoothPixmapTransform)
+        painter.setRenderHint(aqt.qt.QPainter.RenderHint.Antialiasing)
         painter.drawPixmap(self.rect(), self._pixmap)
 
 def get_graphic(graphic_name):

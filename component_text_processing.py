@@ -47,7 +47,7 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
             # not editable
             return aqt.qt.Qt.ItemFlag.ItemIsSelectable | aqt.qt.Qt.ItemFlag.ItemIsEnabled
         if col == COL_INDEX_PATTERN or col == COL_INDEX_REPLACEMENT:
-            return aqt.qt.Qt.ItemIsEditable | aqt.qt.Qt.ItemFlag.ItemIsSelectable | aqt.qt.Qt.ItemFlag.ItemIsEnabled
+            return aqt.qt.Qt.ItemFlag.ItemIsEditable | aqt.qt.Qt.ItemFlag.ItemIsSelectable | aqt.qt.Qt.ItemFlag.ItemIsEnabled
         logger.error(f'unknown column: {col}')
         return aqt.qt.Qt.ItemFlag.ItemIsSelectable | aqt.qt.Qt.ItemFlag.ItemIsEnabled
 
@@ -89,7 +89,7 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
 
         text_replacement_rule = self.model.get_text_replacement_rule_row(row)
 
-        if role == aqt.qt.Qt.ItemDataRole.DisplayRole or role == aqt.qt.Qt.EditRole:
+        if role == aqt.qt.Qt.ItemDataRole.DisplayRole or role == aqt.qt.Qt.ItemDataRole.EditRole:
 
             if column == COL_INDEX_TYPE:
                 return aqt.qt.QVariant(text_replacement_rule.rule_type.name.title())
@@ -106,7 +106,7 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
             if value != None:
                 text = '"' + value + '"'
             return aqt.qt.QVariant(text)
-        elif role == aqt.qt.Qt.EditRole:
+        elif role == aqt.qt.Qt.ItemDataRole.EditRole:
             return aqt.qt.QVariant(value)
 
     def setData(self, index, value, role):
@@ -122,7 +122,7 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
 
         text_replacement_rule = self.model.get_text_replacement_rule_row(row)
 
-        if role == aqt.qt.Qt.EditRole:
+        if role == aqt.qt.Qt.ItemDataRole.EditRole:
             
             # set the value into a TextReplacement object
             if column == COL_INDEX_TYPE:
