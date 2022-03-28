@@ -48,7 +48,7 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
         assert isinstance(tag, anki.sound.TTSTag)
 
         if constants.TTS_TAG_VOICE not in tag.voices:
-            logger.warn(f'HyperTTS voice not found in tag {tag}, skipping')
+            logger.warning(f'HyperTTS voice not found in tag {tag}, skipping')
             return None
 
         logger.info(f'playing TTS sound for {tag}, voices: {tag.voices}')
@@ -64,6 +64,6 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
                 logger.info(f'got audio_filename: {audio_filename}')
                 aqt.sound.av_player.insert_file(audio_filename)
             else:
-                logger.warn(f'no audio filename, not playing any audio')
+                logger.warning(f'no audio filename, not playing any audio')
         cb()
 
