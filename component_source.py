@@ -97,7 +97,7 @@ class BatchSource(component_common.ConfigComponentBase):
         # ===============
         stack_vlayout = aqt.qt.QVBoxLayout()
         label = aqt.qt.QLabel(constants.GUI_TEXT_SOURCE_SIMPLE_TEMPLATE)
-        label.setTextInteractionFlags(aqt.qt.Qt.TextSelectableByMouse)
+        label.setTextInteractionFlags(aqt.qt.Qt.TextInteractionFlag.TextSelectableByMouse)
         self.simple_template_input = aqt.qt.QLineEdit()
         stack_vlayout.addWidget(label)
         stack_vlayout.addWidget(self.simple_template_input)
@@ -108,7 +108,7 @@ class BatchSource(component_common.ConfigComponentBase):
         # =================
         stack_vlayout = aqt.qt.QVBoxLayout()
         label = aqt.qt.QLabel(constants.GUI_TEXT_SOURCE_ADVANCED_TEMPLATE)
-        label.setTextInteractionFlags(aqt.qt.Qt.TextSelectableByMouse)
+        label.setTextInteractionFlags(aqt.qt.Qt.TextInteractionFlag.TextSelectableByMouse)
         self.advanced_template_input = aqt.qt.QPlainTextEdit()
         stack_vlayout.addWidget(label)
         stack_vlayout.addWidget(self.advanced_template_input)
