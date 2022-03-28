@@ -139,12 +139,13 @@ def launch_realtime_dialog_browser(hypertts, note_id_list):
 
 def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
     batch_name_list = hypertts.get_batch_config_list_editor()
-    configure_editor(editor, batch_name_list, hypertts.get_latest_saved_batch_name())
+    configure_editor(editor, batch_name_list, hypertts.get_editor_default_batch_name())
 
-def configure_editor(editor: aqt.editor.Editor, batch_name_list, latest_saved_batch_name):
+def configure_editor(editor: aqt.editor.Editor, batch_name_list, editor_default_batch_name):
+    logger.info(f'configure_editor, batch_name_list: {batch_name_list} editor_default_batch_name: {editor_default_batch_name}')
     default_batch_name = 'null'
-    if latest_saved_batch_name != None:
-        default_batch_name = f'"{latest_saved_batch_name}"'
+    if editor_default_batch_name != None:
+        default_batch_name = f'"{editor_default_batch_name}"'
     js_command = f"configureEditorHyperTTS({json.dumps(batch_name_list)}, {default_batch_name})"
     print(js_command)
     editor.web.eval(js_command)    
@@ -219,6 +220,7 @@ def init(hypertts):
                     # logger.info(f'received message: {str}')
                     batch_name = str.replace(constants.PYCMD_ADD_AUDIO_PREFIX, '')
                     batch = hypertts.load_batch_config(batch_name)
+                    hypertts.set_editor_last_used_batch_name(batch_name)
                     hypertts.editor_note_add_audio(batch, editor, editor.note, editor.addMode)
             return True, None
 
@@ -227,6 +229,7 @@ def init(hypertts):
                 # logger.info(f'received message: {str}')
                 batch_name = str.replace(constants.PYCMD_PREVIEW_AUDIO_PREFIX, '')
                 batch = hypertts.load_batch_config(batch_name)
+                hypertts.set_editor_last_used_batch_name(batch_name)
                 hypertts.preview_note_audio(batch, editor.note)
             return True, None            
 

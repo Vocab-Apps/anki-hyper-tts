@@ -42,6 +42,7 @@ class HyperTTS():
         self.config = self.anki_utils.get_config()
         self.error_manager = errors.ErrorManager(self.anki_utils)
         self.latest_saved_batch_name = None
+        self.latest_used_editor_batch_name = None
 
 
     def process_batch_audio(self, note_id_list, batch, batch_status):
@@ -447,7 +448,7 @@ class HyperTTS():
             self.config[constants.CONFIG_BATCH_CONFIG] = {}
         self.config[constants.CONFIG_BATCH_CONFIG][batch_name] = batch.serialize()
         self.anki_utils.write_config(self.config)
-        self.latest_saved_batch_name = batch_name
+        self.set_latest_saved_batch_name(batch_name)
         logger.info(f'saved batch config [{batch_name}]')
 
     def load_batch_config(self, batch_name):
@@ -526,8 +527,18 @@ class HyperTTS():
     def clear_latest_saved_batch_name(self):
         self.latest_saved_batch_name = None
 
-    def get_latest_saved_batch_name(self):
-        return self.latest_saved_batch_name
+    def set_latest_saved_batch_name(self, batch_name):
+        self.latest_saved_batch_name = batch_name
+
+    def set_editor_last_used_batch_name(self, batch_name):
+        self.latest_used_editor_batch_name = batch_name
+
+    def get_editor_default_batch_name(self):
+        if self.latest_used_editor_batch_name != None:
+            return self.latest_used_editor_batch_name
+        if self.latest_saved_batch_name != None:
+            return self.latest_saved_batch_name
+        return None
 
     # deserialization routines for loading from config
     # ================================================

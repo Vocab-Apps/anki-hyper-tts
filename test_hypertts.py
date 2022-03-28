@@ -107,3 +107,18 @@ yoyo
         field_value = 'hello [sound:yoyo1.mp3] [sound:test2.mp3] yoyo'
         output = hypertts_instance.keep_only_sound_tags(field_value)
         self.assertEqual(output, '[sound:yoyo1.mp3] [sound:test2.mp3]')
+
+    def test_get_editor_default_batch_name(self):
+        config_gen = testing_utils.TestConfigGenerator()
+        hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+        # by default, it's none
+        self.assertEqual(hypertts_instance.get_editor_default_batch_name(), None)
+
+        # save a batch config
+        hypertts_instance.latest_saved_batch_name = 'new_batch_1'
+        self.assertEqual(hypertts_instance.get_editor_default_batch_name(), 'new_batch_1')
+
+        # now, use a batch config from the editor
+        hypertts_instance.set_editor_last_used_batch_name('used_batch_2')
+        self.assertEqual(hypertts_instance.get_editor_default_batch_name(), 'used_batch_2')
