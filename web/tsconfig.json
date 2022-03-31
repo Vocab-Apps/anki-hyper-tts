@@ -1,0 +1,17 @@
+{
+    "extends": "@tsconfig/svelte/tsconfig.json",
+    "include": ["src/**/*"],
+    "compilerOptions": {
+        "target": "es6",
+        "strict": true,
+        /* Svelte template variables, e.g. on:event or @const, cannot be typed yet */
+        "noImplicitAny": false,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "typeRoots": ["node_modules/@types", "../anki/ts/typings"],
+        "paths": {
+            /* This alias should only be used for typing needs */
+            "@anki/*": ["../anki/ts/*"]
+        }
+    }
+}
