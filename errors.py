@@ -60,6 +60,12 @@ class PresetNotFound(HyperTTSError):
         super().__init__(message)
 
 
+class MissingDirectory(HyperTTSError):
+    def __init__(self, directory):
+        message = f'Could not find directory {directory}, cannot generate audio files. Please check whether this directory exists.'
+        super().__init__(message)        
+
+
 class RequestError(HyperTTSError):
     def __init__(self, source_text, voice, error_message):
         message = f'Could not request audio for [{source_text}]: {error_message} (voice: {voice})'

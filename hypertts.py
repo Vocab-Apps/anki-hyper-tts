@@ -251,6 +251,9 @@ class HyperTTS():
     def get_full_audio_file_name(self, hash_str):
         # return the absolute path of the audio file in the user_files directory
         user_files_dir = self.anki_utils.get_user_files_dir()
+        # check whether the directory exists
+        if not os.path.isdir(user_files_dir):
+            raise errors.MissingDirectory(user_files_dir)
         filename = self.get_audio_filename(hash_str)
         return os.path.join(user_files_dir, filename)
     
