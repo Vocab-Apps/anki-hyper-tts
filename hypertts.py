@@ -514,6 +514,7 @@ class HyperTTS():
     # services config
 
     def save_configuration(self, configuration_model):
+        configuration_model = self.service_manager.remove_non_existent_services(configuration_model)
         configuration_model.validate()
         self.config[constants.CONFIG_CONFIGURATION] = configuration_model.serialize()
         self.anki_utils.write_config(self.config)
