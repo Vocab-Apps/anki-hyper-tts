@@ -991,6 +991,7 @@ def test_batch_dialog_voice_selection_sample(qtbot):
     # dialog.exec_()
 
 def test_batch_dialog_load_missing_field(qtbot):
+    logger.info('test_batch_dialog_load_missing_field')
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
@@ -1032,9 +1033,6 @@ def test_batch_dialog_load_missing_field(qtbot):
     # select preset
     batch.profile_name_combobox.setCurrentText('batch profile 1')
     # load preset
-    assert batch.profile_load_button.text() == 'Load'
-
-    # open
     qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.LeftButton)    
 
     # check the target field on the model
