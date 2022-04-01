@@ -201,7 +201,11 @@ class Configuration(component_common.ConfigComponentBase):
         # add service config options, when cloudlanguagetools not enabled
         # ===============================================================
 
-        service_stack = aqt.qt.QWidget()
+        invisible_widget = aqt.qt.QWidget()
+        invisible_widget.setVisible(False)
+
+
+        service_stack = aqt.qt.QWidget(invisible_widget)
         service_vlayout = aqt.qt.QVBoxLayout()
         service_vlayout.setContentsMargins(0, 0, 0, 0)
         if service.cloudlanguagetools_enabled():
@@ -215,7 +219,7 @@ class Configuration(component_common.ConfigComponentBase):
 
         # when cloudlanguagetools is enabled
         # ==================================
-        clt_stack = aqt.qt.QWidget()
+        clt_stack = aqt.qt.QWidget(invisible_widget)
         clt_vlayout = aqt.qt.QVBoxLayout()
         clt_vlayout.setContentsMargins(0, 0, 0, 0)
         logo = gui_utils.get_graphic(constants.GRAPHICS_SERVICE_ENABLED)
