@@ -31,9 +31,10 @@ class BatchPreviewTableModel(aqt.qt.QAbstractTableModel):
         return 4
     
     def notifyChange(self, row):
+        # logger.info(f'notifyChange, row: {row}')
         start_index = self.createIndex(row, 0)
         end_index = self.createIndex(row, 2)
-        self.dataChanged.emit(start_index, end_index, [aqt.qt.Qt.ItemDataRole.DisplayRole])
+        self.dataChanged.emit(start_index, end_index)
 
     def data(self, index, role):
         if role != aqt.qt.Qt.ItemDataRole.DisplayRole:
@@ -79,6 +80,7 @@ class BatchPreview(component_common.ComponentBase):
 
         self.batch_status = batch_status.BatchStatus(hypertts.anki_utils, note_id_list, self)
         self.batch_preview_table_model = BatchPreviewTableModel(self.batch_status)
+        self.table_view = None
 
         # create certain widgets right away
         self.stack = aqt.qt.QStackedWidget()
@@ -226,7 +228,9 @@ class BatchPreview(component_common.ComponentBase):
 
     def batch_change(self, note_id, row):
         # logger.info(f'change_listener row {row}')
-        self.batch_preview_table_model.notifyChange(row)
+        self.hypertts.anki_utils.run_on_main(lambda: self.batch_preview_table_model.notifyChange(row))
+        if self.table_view != None:
+            self.hypertts.anki_utils.run_on_main(lambda: self.table_view.viewport().repaint())
         self.hypertts.anki_utils.run_on_main(lambda: self.update_progress_bar(row))
         if row == self.selected_row:
             self.hypertts.anki_utils.run_on_main(self.update_error_label_for_selected)
