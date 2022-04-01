@@ -48,7 +48,7 @@ class TextReplacementsTableModel(aqt.qt.QAbstractTableModel):
             return aqt.qt.Qt.ItemFlag.ItemIsSelectable | aqt.qt.Qt.ItemFlag.ItemIsEnabled
         if col == COL_INDEX_PATTERN or col == COL_INDEX_REPLACEMENT:
             return aqt.qt.Qt.ItemFlag.ItemIsEditable | aqt.qt.Qt.ItemFlag.ItemIsSelectable | aqt.qt.Qt.ItemFlag.ItemIsEnabled
-        logger.error(f'unknown column: {col}')
+        logger.warning(f'unknown column: {col}')
         return aqt.qt.Qt.ItemFlag.ItemIsSelectable | aqt.qt.Qt.ItemFlag.ItemIsEnabled
 
 

@@ -51,6 +51,25 @@ class ServiceManager():
         else:
             self.cloudlanguagetools_enabled = False
 
+    def remove_non_existent_services(self, configuration_model):
+        # remove non existent services from the service enabled map
+        service_enabled_map = configuration_model.get_service_enabled_map()
+        service_list = list(service_enabled_map.keys())
+        for service_name in service_list:
+            if not self.service_exists(service_name):
+                del service_enabled_map[service_name]
+        # do the same thing from the service config map
+        service_config_map = configuration_model.get_service_config()
+        service_list = list(service_config_map.keys())
+        for service_name in service_list:
+            if not self.service_exists(service_name):
+                del service_config_map[service_name]        
+        configuration_model.set_service_enabled_map(service_enabled_map)
+        configuration_model.set_service_config(service_config_map)
+
+        return configuration_model
+
+            
 
     # service discovery
     # =================

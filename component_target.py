@@ -31,6 +31,11 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.radio_button_remove_sound.setChecked(self.batch_target_model.remove_sound_tag)
         self.radio_button_keep_sound.setChecked(not self.batch_target_model.remove_sound_tag)
 
+        # ensure model at the higher level gets updated
+        # this is important for example if the target field doesn't exist in the field list, we want to make
+        # sure the model is updated to select another field
+        self.update_field()
+
 
     def draw(self): # return scrollarea
         self.scroll_area = aqt.qt.QScrollArea()
@@ -90,6 +95,7 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.batch_target_layout.addStretch()
 
         # connect events
+        logger.info('wire events')
         self.target_field_combobox.currentIndexChanged.connect(lambda x: self.update_field())
         self.radio_button_sound_only.toggled.connect(self.update_text_sound)
         self.radio_button_text_sound.toggled.connect(self.update_text_sound)
@@ -111,6 +117,7 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.notify_model_update()
 
     def update_field(self):
+        logger.info('update_field')
         self.batch_target_model.target_field = self.field_list[self.target_field_combobox.currentIndex()]
         self.notify_model_update()
 

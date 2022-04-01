@@ -990,6 +990,59 @@ def test_batch_dialog_voice_selection_sample(qtbot):
 
     # dialog.exec_()
 
+def test_batch_dialog_load_missing_field(qtbot):
+    logger.info('test_batch_dialog_load_missing_field')
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+
+    # test saving of config
+    # =====================
+
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
+    batch.configure_browser(note_id_list)
+    batch.draw(dialog.getLayout())
+
+    # select a source field and target field
+    # target field will be Chinese
+    batch.source.source_field_combobox.setCurrentText('English')
+    batch.target.target_field_combobox.setCurrentText('Chinese')
+
+    # set profile name
+    batch.profile_name_combobox.setCurrentText('batch profile 1')
+
+    # click save button
+    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.LeftButton)
+
+    # test loading of config
+    # ======================
+
+    # use the german note type, which doesn't have the Chinese field
+    note_id_list = [config_gen.note_id_german_1]
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
+    batch.configure_browser(note_id_list)
+    batch.draw(dialog.getLayout())    
+
+    # select preset
+    batch.profile_name_combobox.setCurrentText('batch profile 1')
+    # load preset
+    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.LeftButton)    
+
+    # check the target field on the model
+    # ===================================
+
+    target_field_selected = batch.target.target_field_combobox.currentText()
+    assert batch.get_model().target.target_field == target_field_selected
+
+    # dialog.exec_()
+
 
 def test_batch_dialog_manual(qtbot):
     # HYPERTTS_BATCH_DIALOG_DEBUG=yes pytest test_components.py -k test_batch_dialog_manual -s -rPP

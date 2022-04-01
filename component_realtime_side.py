@@ -197,6 +197,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         tts_tags = self.hypertts.render_card_template_extract_tts_tag(self.get_model(),
             self.note, self.side, self.card_ord)
         text = tts_tags[0].field_text
+        logger.info(f'playing text: [{text}]')
         self.hypertts.play_realtime_audio(self.get_model(), text)
         return True
 

@@ -11,6 +11,7 @@
 			"**/external": true,
 			"**/web/node_modules": true
 		},
-		"editor.detectIndentation": false
+        "editor.detectIndentation": false,
+        "editor.minimap.enabled": false
 	}
 }

@@ -251,6 +251,9 @@ class HyperTTS():
     def get_full_audio_file_name(self, hash_str):
         # return the absolute path of the audio file in the user_files directory
         user_files_dir = self.anki_utils.get_user_files_dir()
+        # check whether the directory exists
+        if not os.path.isdir(user_files_dir):
+            raise errors.MissingDirectory(user_files_dir)
         filename = self.get_audio_filename(hash_str)
         return os.path.join(user_files_dir, filename)
     
@@ -509,11 +512,14 @@ class HyperTTS():
         logger.info(f'loading realtime config [{settings_key}]')
         if settings_key not in self.config[constants.CONFIG_REALTIME_CONFIG]:
             raise errors.PresetNotFound(settings_key)
-        return self.deserialize_realtime_config(self.config[constants.CONFIG_REALTIME_CONFIG][settings_key])
+        realtime_config = self.config[constants.CONFIG_REALTIME_CONFIG][settings_key]
+        logger.info(f'loaded realtime config {pprint.pformat(realtime_config, compact=True, width=500)}')
+        return self.deserialize_realtime_config(realtime_config)
 
     # services config
 
     def save_configuration(self, configuration_model):
+        configuration_model = self.service_manager.remove_non_existent_services(configuration_model)
         configuration_model.validate()
         self.config[constants.CONFIG_CONFIGURATION] = configuration_model.serialize()
         self.anki_utils.write_config(self.config)

@@ -68,6 +68,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.disable_save_profile_button('Save')
 
     def load_model(self, model):
+        logger.info('load_model')
         self.batch_model = model
         # disseminate to all components
         self.source.load_model(model.source)

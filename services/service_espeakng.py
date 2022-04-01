@@ -84,7 +84,7 @@ class ESpeakNg(service.ServiceBase):
             return result
 
         except Exception as e:
-            logger.error(f'could not get voicelist: {e}', exc_info=True)
+            logger.warning(f'could not get voicelist: {e}', exc_info=True)
 
         return []
 
