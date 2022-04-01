@@ -32,7 +32,7 @@ class ConfigurationDialog(aqt.qt.QDialog):
         self.configuration.load_model(hypertts.get_configuration())
 
     def setupUi(self):
-        self.setMinimumSize(500, 700)
+        self.setMinimumSize(500, 300)
         self.setWindowTitle(constants.GUI_CONFIGURATION_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
         self.configuration.draw(self.main_layout)
