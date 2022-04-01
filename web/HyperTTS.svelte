@@ -42,17 +42,21 @@
 </script>
 
 <style>
+.rounded-corners {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #b6b6b6;
+    border-radius: 3px;
+}
 .language-tools-block {
     display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;
     font-size: 12px;
     align-items: center;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #b6b6b6;
-    border-radius: 3px;
-  margin-top: 3px;    
+    margin-bottom: 3px;
+}
+.hypertts-button {
 }
 div {
     padding-left: 5px;
@@ -61,7 +65,7 @@ div {
 </style>
 
 
-<div class="language-tools-block">
+<div class="language-tools-block rounded-corners">
     <div>
         <b>HyperTTS</b>
     </div>
@@ -75,6 +79,6 @@ div {
         </select>        
     </div>
 
-    <button on:click={addAudio} class="lt-field-button">Add Audio</button>
-    <button on:click={previewAudio} class="lt-field-button">Preview Audio</button>
+    <button on:click={addAudio} class="hypertts-button rounded-corners">Add Audio</button>
+    <button on:click={previewAudio} class="hypertts-button rounded-corners">Preview Audio</button>
 </div>

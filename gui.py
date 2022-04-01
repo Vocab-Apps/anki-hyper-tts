@@ -143,9 +143,10 @@ def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
 
 def configure_editor(editor: aqt.editor.Editor, batch_name_list, editor_default_batch_name):
     logger.info(f'configure_editor, batch_name_list: {batch_name_list} editor_default_batch_name: {editor_default_batch_name}')
-    default_batch_name = 'null'
     if editor_default_batch_name != None:
         default_batch_name = f'"{editor_default_batch_name}"'
+    else:
+        default_batch_name = f'"{batch_name_list[0]}"'
     js_command = f"configureEditorHyperTTS({json.dumps(batch_name_list)}, {default_batch_name})"
     print(js_command)
     editor.web.eval(js_command)    

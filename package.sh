@@ -4,7 +4,7 @@ VERSION_NUMBER=$1 # for example 0.1
 GIT_TAG=v${VERSION_NUMBER}
 
 # build web assets
-cd web; npm run build || { echo 'npm build failed' ; exit 1; }
+cd web; yarn build || { echo 'yarn build failed' ; exit 1; }
 cd ..
 
 echo "ANKI_HYPER_TTS_VERSION='${VERSION_NUMBER}'" > version.py
