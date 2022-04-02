@@ -10,6 +10,12 @@ gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_l
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_child_logger(__name__)
 
+class ScrollAreaCustom(aqt.qt.QScrollArea):
+    def __init__(self):
+        aqt.qt.QScrollArea.__init__(self)
+
+    def sizeHint(self):
+        return aqt.qt.QSize(100, 100)
 
 class Configuration(component_common.ConfigComponentBase):
 
@@ -313,7 +319,7 @@ class Configuration(component_common.ConfigComponentBase):
         hlayout.addWidget(self.enable_all_free_services_button)
         hlayout.addWidget(self.disable_all_services_button)
         self.global_vlayout.addLayout(hlayout)
-        services_scroll_area = aqt.qt.QScrollArea()
+        services_scroll_area = ScrollAreaCustom()
         services_scroll_area.setHorizontalScrollBarPolicy(aqt.qt.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         services_scroll_area.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignHCenter)
         services_widget = aqt.qt.QWidget()
