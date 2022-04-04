@@ -53,6 +53,16 @@ def get_service_header_label(text):
     header.setFont(font)
     return header
 
+def get_small_cta_label(text):
+    label = aqt.qt.QLabel()
+    label.setText(text)
+    font = aqt.qt.QFont()
+    label_font_size = 8
+    font.setItalic(True)
+    font.setPointSize(label_font_size)
+    label.setFont(font)
+    return label
+
 def get_large_button_font():
     font2 = aqt.qt.QFont()
     font2.setPointSize(14)

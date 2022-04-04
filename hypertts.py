@@ -239,9 +239,15 @@ class HyperTTS():
         hash_str = self.get_hash_for_audio_request(source_text, voice, options)
         audio_filename = self.get_audio_filename(hash_str)
         full_filename = self.get_full_audio_file_name(hash_str)
-        f = open(full_filename, 'wb')
-        f.write(self.service_manager.get_tts_audio(source_text, voice, options, audio_request_context))
-        f.close()
+        logger.info(f'requesting audio for hash {hash_str}, full filename {full_filename}')
+        if not os.path.exists(full_filename) or os.path.getsize(full_filename) == 0:
+            audio_data = self.service_manager.get_tts_audio(source_text, voice, options, audio_request_context)
+            logger.info(f'not found in cache, requesting')
+            f = open(full_filename, 'wb')
+            f.write(audio_data)
+            f.close()
+        else:
+            logger.info(f'file exists in cache')
         return full_filename, audio_filename
 
     def get_collection_sound_tag(self, full_filename, audio_filename):
