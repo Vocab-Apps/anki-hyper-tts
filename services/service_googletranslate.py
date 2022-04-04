@@ -79,9 +79,15 @@ class GoogleTranslate(service.ServiceBase):
         if throttle_seconds > 0:
             time.sleep(throttle_seconds)
 
-        tts = gtts.gTTS(text=source_text, lang=voice.voice_key)
-        buffer = io.BytesIO()
-        tts.write_to_fp(buffer)
+        try:
+            tts = gtts.gTTS(text=source_text, lang=voice.voice_key)
+            buffer = io.BytesIO()
+            tts.write_to_fp(buffer)
 
-        return buffer.getbuffer()
+            return buffer.getbuffer()
+        except gtts.gTTSError as e:
+            logger.warning(f'exception while retrieving sound for {source_text}: {e}')
+            # this error will be handled, and not reported as unusual
+            raise errors.RequestError(str(e))
+
 
