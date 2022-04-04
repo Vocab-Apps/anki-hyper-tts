@@ -240,7 +240,7 @@ class HyperTTS():
         audio_filename = self.get_audio_filename(hash_str)
         full_filename = self.get_full_audio_file_name(hash_str)
         logger.info(f'requesting audio for hash {hash_str}, full filename {full_filename}')
-        if not os.path.exists(full_filename):
+        if not os.path.exists(full_filename) or os.path.getsize(full_filename) == 0:
             audio_data = self.service_manager.get_tts_audio(source_text, voice, options, audio_request_context)
             logger.info(f'not found in cache, requesting')
             f = open(full_filename, 'wb')
