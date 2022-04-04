@@ -66,6 +66,7 @@ class ServiceB(service.ServiceBase):
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
         if voice.voice_key['voice_id'] == 'notfound':
+            logger.warning('special notfound voice')
             raise errors.AudioNotFoundError(source_text, voice)
         raise Exception('not implemented')
 

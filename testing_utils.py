@@ -48,7 +48,8 @@ class MockAnkiUtils():
         self.undo_finished = False
 
         # user_files dir
-        self.user_files_dir = tempfile.gettempdir()
+        self.user_files_dir = tempfile.mkdtemp(prefix='hypertts_testing_user_files_')
+        logger.info(f'created userfiles temp dir: {self.user_files_dir}')
 
         # exception handling
         self.last_exception = None
