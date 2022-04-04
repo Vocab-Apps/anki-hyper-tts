@@ -24,7 +24,7 @@ class AnkiUtils():
         aqt.mw.addonManager.writeConfig(__name__, config)
 
     def night_mode_enabled(self):
-        night_mode = aqt.mw.pm.night_mode()
+        night_mode = aqt.theme.theme_manager.night_mode
         return night_mode
 
     def get_green_stylesheet(self):
