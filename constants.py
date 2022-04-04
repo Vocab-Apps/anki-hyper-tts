@@ -137,8 +137,23 @@ GUI_TEXT_BATCH_COMPLETED = """<b>Finished adding Audio to notes</b>. You can und
 Undo HyperTTS: Add Audio to Notes. You may close this dialog.
 """
 
-GUI_TEXT_HYPERTTS_PRO = """HyperTTS Pro gives you access to all premium services.""" +\
-""" (You can use the same API key as AwesomeTTS Plus / Language Tools)"""
+GUI_TEXT_HYPERTTS_PRO = """HyperTTS Pro gives you access to <b>all premium TTS services</b>."""\
+""" Azure, Google, Amazon, Watson and others. Over <b>1200 voices, 60+ languages</b>. """ +\
+""""""
+
+GUI_TEXT_BUTTON_TRIAL = """Free Trial"""
+GUI_TEXT_BUTTON_API_KEY = """Enter API Key"""
+GUI_TEXT_BUTTON_BUY = """Sign Up"""
+
+BUY_PLAN_URL = """https://languagetools.anki.study/hypertts-pro?utm_campaign=hypertts_config&utm_source=hypertts&utm_medium=addon"""
+
+GUI_TEXT_HYPERTTS_PRO_TRIAL = """Free Trial access instantly, just enter your email."""
+GUI_TEXT_HYPERTTS_PRO_BUY_PLAN = """Subscribe to HyperTTS Pro. Get access in 5mn."""
+GUI_TEXT_HYPERTTS_PRO_ENTER_API_KEY = """Enter HyperTTS Pro / AwesomeTTS Plus / Language Tools API Key."""
+
+GUI_TEXT_HYPERTTS_PRO_ENABLED = """<b>HyperTTS Pro Enabled</b>"""
+GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL = """Enter your email to get trial access instantly. """\
+"""Try all <b>1200 premium voices, 60+ languages</b>. Trial quota of 5,000 characters."""
 
 GUI_TEXT_REALTIME_SINGLE_NOTE = """Please select a single note to add Realtime Audio"""
 GUI_TEXT_REALTIME_CHOOSE_TEMPLATE = """Choose card template"""

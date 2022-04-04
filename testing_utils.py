@@ -275,6 +275,18 @@ class MockCloudLanguageTools():
         }
 
 
+    def request_trial_key(self, email):
+        self.request_trial_key_called = True
+        self.request_trial_key_email = email
+
+        if email == 'valid@email.com':
+            return {
+                'api_key': 'trial_key'
+            }
+
+        return {
+            'error': 'invalid email'
+        }
 
 
     def get_tts_audio(self, api_key, source_text, service, language_code, voice_key, options):

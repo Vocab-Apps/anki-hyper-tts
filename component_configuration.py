@@ -4,6 +4,7 @@ import aqt.qt
 import webbrowser
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
+component_hyperttspro = __import__('component_hyperttspro', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
@@ -28,15 +29,27 @@ class Configuration(component_common.ConfigComponentBase):
         self.model = config_models.Configuration()
         self.service_stack_map = {}
         self.clt_stack_map = {}
-        self.account_info = None
-        self.api_key_valid = False
         self.enable_model_change = False
+        self.api_key_valid = False
+        self.hyperttspro = component_hyperttspro.HyperTTSPro(self.hypertts, self.hyperttspro_api_key_change)
 
     def get_model(self):
         return self.model
 
     def load_model(self, model):
         self.model = model
+        self.hyperttspro.load_model(self.model.get_hypertts_pro_api_key())
+
+    def hyperttspro_api_key_change(self, api_key):
+        if api_key != None:
+            self.api_key_valid = True
+        else:
+            self.api_key_valid = False
+        is_change = self.model.get_hypertts_pro_api_key() != api_key
+        self.model.set_hypertts_pro_api_key(api_key)
+        self.set_cloud_language_tools_enabled()
+        if is_change:
+            self.model_change()
 
     def model_change(self):
         if self.enable_model_change:
@@ -215,11 +228,11 @@ class Configuration(component_common.ConfigComponentBase):
         service_vlayout = aqt.qt.QVBoxLayout()
         service_vlayout.setContentsMargins(0, 0, 0, 0)
         if service.cloudlanguagetools_enabled():
-            hlayout = aqt.qt.QHBoxLayout()
+            buttons_layout = aqt.qt.QHBoxLayout()
             logo = gui_utils.get_graphic(constants.GRAPHICS_SERVICE_COMPATIBLE)
-            hlayout.addStretch()
-            hlayout.addWidget(logo)
-            service_vlayout.addLayout(hlayout)
+            buttons_layout.addStretch()
+            buttons_layout.addWidget(logo)
+            service_vlayout.addLayout(buttons_layout)
         self.draw_service_options(service, service_vlayout)
         service_stack.setLayout(service_vlayout)
 
@@ -250,6 +263,7 @@ class Configuration(component_common.ConfigComponentBase):
         service_list.sort(key=service_sort_key)
         return service_list
 
+
     def draw(self, layout):
         self.global_vlayout = aqt.qt.QVBoxLayout()
 
@@ -270,36 +284,7 @@ class Configuration(component_common.ConfigComponentBase):
 
         # hypertts pro
         # ============
-
-        groupbox = aqt.qt.QGroupBox('HyperTTS Pro')
-        vlayout = aqt.qt.QVBoxLayout()
-
-        description_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO)
-        description_label.setWordWrap(True)
-        vlayout.addWidget(description_label)
-        vlayout.addWidget(aqt.qt.QLabel('API Key'))
-        self.hypertts_pro_api_key = aqt.qt.QLineEdit()
-        self.hypertts_pro_api_key.setText(self.model.hypertts_pro_api_key)
-        # self.hypertts_pro_api_key.textChanged.connect(self.get_hypertts_pro_api_key_change_fn())
-        vlayout.addWidget(self.hypertts_pro_api_key)
-
-        self.account_info_label = aqt.qt.QLabel()
-        vlayout.addWidget(self.account_info_label)
-
-        self.account_update_button = aqt.qt.QPushButton()
-        self.account_update_button.setText('Upgrade / Downgrade / Payment options')
-        self.account_update_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
-        self.account_cancel_button = aqt.qt.QPushButton()
-        self.account_cancel_button.setText('Cancel Plan')
-        self.account_cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
-        vlayout.addWidget(self.account_update_button)
-        vlayout.addWidget(self.account_cancel_button)
-        self.account_update_button.setVisible(False)
-        self.account_cancel_button.setVisible(False)
-
-        groupbox.setLayout(vlayout)
-        self.global_vlayout.addWidget(groupbox)
-
+        self.hyperttspro.draw(self.global_vlayout)
 
         # services
         # ========
@@ -313,12 +298,12 @@ class Configuration(component_common.ConfigComponentBase):
             return separator
 
         self.global_vlayout.addWidget(aqt.qt.QLabel('Services'))
-        hlayout = aqt.qt.QHBoxLayout()
+        buttons_layout = aqt.qt.QHBoxLayout()
         self.enable_all_free_services_button = aqt.qt.QPushButton('Enable All Free Services')
         self.disable_all_services_button = aqt.qt.QPushButton('Disable All Services')
-        hlayout.addWidget(self.enable_all_free_services_button)
-        hlayout.addWidget(self.disable_all_services_button)
-        self.global_vlayout.addLayout(hlayout)
+        buttons_layout.addWidget(self.enable_all_free_services_button)
+        buttons_layout.addWidget(self.disable_all_services_button)
+        self.global_vlayout.addLayout(buttons_layout)
         services_scroll_area = ScrollAreaCustom()
         services_scroll_area.setHorizontalScrollBarPolicy(aqt.qt.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         services_scroll_area.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignHCenter)
@@ -335,89 +320,30 @@ class Configuration(component_common.ConfigComponentBase):
         # bottom buttons
         # ==============
 
-        hlayout = aqt.qt.QHBoxLayout()
+        buttons_layout = aqt.qt.QHBoxLayout()
         self.save_button = aqt.qt.QPushButton('Save')
         self.save_button.setEnabled(False)
         self.cancel_button = aqt.qt.QPushButton('Cancel')
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
-        hlayout.addStretch()
-        hlayout.addWidget(self.save_button)
-        hlayout.addWidget(self.cancel_button)
-        self.global_vlayout.addLayout(hlayout)
+        buttons_layout.addStretch()
+        buttons_layout.addWidget(self.save_button)
+        buttons_layout.addWidget(self.cancel_button)
+        self.global_vlayout.addLayout(buttons_layout)
 
         # wire events
         # ===========
+
         self.enable_all_free_services_button.pressed.connect(self.enable_all_free_services)
         self.disable_all_services_button.pressed.connect(self.disable_all_services)
 
         self.save_button.pressed.connect(self.save_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
-        self.hypertts.anki_utils.wire_typing_timer(self.hypertts_pro_api_key, self.pro_api_key_entered)
-
         # run event once
-        self.pro_api_key_entered()
+        # self.pro_api_key_entered()
         self.enable_model_change = True
 
         layout.addLayout(self.global_vlayout)
-
-
-    def pro_api_key_entered(self):
-        # get data for the API key in the background
-        api_key = self.hypertts_pro_api_key.text()
-        if len(api_key) > 0:
-            self.api_key = api_key.strip()
-            logger.info(f'verifying api_key [{self.api_key}]')
-            self.account_info_label.setText('Verifying...')
-            self.hypertts.anki_utils.run_in_background(self.get_account_data_task, self.get_account_data_task_done)
-        else:
-            self.udpdate_gui_state_api_key_not_valid()
-
-
-    def get_account_data_task(self):
-        return self.hypertts.service_manager.cloudlanguagetools.account_info(self.api_key)
-
-    def get_account_data_task_done(self, result):
-        with self.hypertts.error_manager.get_single_action_context('Getting Account Data'):
-            self.account_info = result.result()
-            self.hypertts.anki_utils.run_on_main(self.update_pro_status)
-
-    def udpdate_gui_state_api_key_not_valid(self):
-        self.api_key_valid = False
-        self.model.set_hypertts_pro_api_key(None)
-        self.account_info_label.setText('')
-        self.account_update_button.setVisible(False)
-        self.account_cancel_button.setVisible(False)
-        self.model_change()
-        self.set_cloud_language_tools_enabled()
-
-    def udpdate_gui_state_api_key_valid(self, api_key):
-        self.api_key_valid = True
-        self.model.set_hypertts_pro_api_key(self.api_key)
-        self.model_change()
-        self.set_cloud_language_tools_enabled()        
-
-    def update_pro_status(self):
-        logger.info('update_pro_status')
-        if 'error' in self.account_info:
-            self.udpdate_gui_state_api_key_not_valid()
-        else:
-            self.udpdate_gui_state_api_key_valid(self.api_key)
-        # update account info label
-        lines = []
-        for key, value in self.account_info.items():
-            if key == 'update_url':
-                self.account_update_button.setVisible(True)
-                self.account_update_url = value
-                self.account_update_button.pressed.connect(lambda: webbrowser.open(self.account_update_url))
-            elif key == 'cancel_url':
-                self.account_cancel_button.setVisible(True)
-                self.account_cancel_url = value
-                self.account_cancel_button.pressed.connect(lambda: webbrowser.open(self.account_cancel_url))
-            else:
-                lines.append(f'<b>{key}</b>: {value}')
-        self.account_info_label.setText('<br/>'.join(lines))
-
 
     def save_button_pressed(self):
         with self.hypertts.error_manager.get_single_action_context('Saving Service Configuration'):

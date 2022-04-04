@@ -56,3 +56,10 @@ class CloudLanguageTools():
         response = requests.get(self.base_url + '/account', headers={'api_key': api_key})
         data = json.loads(response.content)
         return data
+
+    def request_trial_key(self, email):
+        logger.info(f'requesting trial key for email {email}')
+        response = requests.post(self.base_url + '/request_trial_key', json={'email': email})
+        data = json.loads(response.content)
+        logger.info(f'retrieved {data}')
+        return data        

@@ -20,6 +20,7 @@ import component_text_processing
 import component_realtime_source
 import component_realtime_side
 import component_realtime
+import component_hyperttspro
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
@@ -1344,10 +1345,11 @@ def test_configuration(qtbot):
     # try making changes to the service config and saving
     # ===================================================
 
-    qtbot.keyClicks(configuration.hypertts_pro_api_key, 'error_key')
+    qtbot.mouseClick(configuration.hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)
+    qtbot.keyClicks(configuration.hyperttspro.hypertts_pro_api_key, 'error_key')
     assert configuration.model.hypertts_pro_api_key == None
 
-    assert configuration.account_info_label.text() == '<b>error</b>: Key invalid'
+    assert configuration.hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
 
     # we entered an error key, so pro mode is not enabled
     assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
@@ -1414,8 +1416,9 @@ def test_configuration(qtbot):
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
 
-    qtbot.keyClicks(configuration.hypertts_pro_api_key, 'valid_key')
-    assert '250 chars' in configuration.account_info_label.text()
+    qtbot.mouseClick(configuration.hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)
+    qtbot.keyClicks(configuration.hyperttspro.hypertts_pro_api_key, 'valid_key')
+    assert '250 chars' in configuration.hyperttspro.account_info_label.text()
 
     assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == False
     assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == True # clt displayed
@@ -1425,14 +1428,17 @@ def test_configuration(qtbot):
     assert configuration.model.hypertts_pro_api_key == 'valid_key'
 
     # switch to an invalid key
-    configuration.hypertts_pro_api_key.setText('invalid_key')
+    # remove key first
+    qtbot.mouseClick(configuration.hyperttspro.remove_api_key_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(configuration.hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)
+    configuration.hyperttspro.hypertts_pro_api_key.setText('invalid_key')
     assert configuration.model.hypertts_pro_api_key == None
     assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
     assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == False
     assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
-    assert configuration.account_info_label.text() == '<b>error</b>: Key invalid'
+    assert configuration.hyperttspro.account_info_label.text() == '<b>error</b>: Key invalid'
 
     # dialog.exec_()
 
@@ -1459,7 +1465,7 @@ def test_configuration(qtbot):
     configuration.load_model(configuration_model)
     configuration.draw(dialog.getLayout())
 
-    assert configuration.hypertts_pro_api_key.text() == ''
+    assert configuration.hyperttspro.hypertts_pro_api_key.text() == ''
 
     assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
     assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
@@ -1499,7 +1505,9 @@ def test_configuration(qtbot):
     configuration.load_model(configuration_model)
     configuration.draw(dialog.getLayout())
 
-    assert configuration.hypertts_pro_api_key.text() == 'valid_key'
+    # dialog.exec_()
+    assert configuration.hyperttspro.hypertts_pro_stack.currentIndex() == configuration.hyperttspro.PRO_STACK_LEVEL_ENABLED
+    assert configuration.hyperttspro.api_key_label.text() == '<b>API Key:</b> valid_key'
 
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_PRO
     assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == True
@@ -1528,7 +1536,7 @@ def test_configuration_pro_key_exception(qtbot):
     # try making changes to the service config and saving
     # ===================================================
 
-    qtbot.keyClicks(configuration.hypertts_pro_api_key, 'exception_key')
+    qtbot.keyClicks(configuration.hyperttspro.hypertts_pro_api_key, 'exception_key')
     assert configuration.model.hypertts_pro_api_key == None
 
     # assert configuration.account_info_label.text() == '<b>error</b>: Key invalid'
@@ -1596,6 +1604,130 @@ def test_configuration_manual(qtbot):
 
     if os.environ.get('HYPERTTS_CONFIGURATION_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec_()    
+
+def test_hyperttspro_test_1(qtbot):
+    # pytest test_components.py -k test_hyperttspro_test_1
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    model_change_callback = MockModelChangeCallback()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
+    hyperttspro.draw(dialog.getLayout())
+
+    # enter API key
+    # =============
+
+    # enter API key
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)
+    # ensure the right stack is visible
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
+    assert model_change_callback.model == None
+    # click cancel
+    qtbot.mouseClick(hyperttspro.enter_api_key_cancel_button, aqt.qt.Qt.LeftButton)
+    # back in the main screen
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_BUTTONS
+    assert model_change_callback.model == None
+    # now actual enter a valid API key
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)
+    qtbot.keyClicks(hyperttspro.hypertts_pro_api_key, 'valid_key')
+    # should now be in the enabled screen
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_ENABLED
+    assert hyperttspro.api_key_label.text() == '<b>API Key:</b> valid_key'
+    assert model_change_callback.model == 'valid_key'
+
+    # now remove the API key
+    qtbot.mouseClick(hyperttspro.remove_api_key_button, aqt.qt.Qt.LeftButton)
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_BUTTONS
+    assert model_change_callback.model == None
+
+    # go back to enter API key screen
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)
+    assert hyperttspro.hypertts_pro_api_key.text() == ''
+    assert hyperttspro.api_key_validation_label.text() == ''
+
+    # enter invalid api key
+    qtbot.keyClicks(hyperttspro.hypertts_pro_api_key, 'invalid_key')
+    assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
+    assert model_change_callback.model == None
+    # cancel
+    qtbot.mouseClick(hyperttspro.enter_api_key_cancel_button, aqt.qt.Qt.LeftButton)
+    assert model_change_callback.model == None
+
+    # load_model with a valid API key
+    # ===============================
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
+    hyperttspro.load_model('valid_key')    
+    hyperttspro.draw(dialog.getLayout())
+
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_ENABLED
+    assert hyperttspro.api_key_label.text() == '<b>API Key:</b> valid_key'
+    assert model_change_callback.model == 'valid_key'    
+
+    # load with an invalid API key
+    # ============================
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
+    hyperttspro.load_model('invalid_key')
+    hyperttspro.draw(dialog.getLayout())
+
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
+    assert hyperttspro.hypertts_pro_api_key.text() == 'invalid_key'
+    assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
+    assert model_change_callback.model == None
+    # dialog.exec_()
+
+    # request trial key by email
+    # ==========================
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
+    hyperttspro.draw(dialog.getLayout())    
+
+    qtbot.mouseClick(hyperttspro.trial_button, aqt.qt.Qt.LeftButton)
+    
+    # enter incorrect email
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_TRIAL
+    qtbot.keyClicks(hyperttspro.trial_email_input, 'spam@spam.com')    
+    qtbot.mouseClick(hyperttspro.enter_trial_email_ok_button, aqt.qt.Qt.LeftButton)
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_TRIAL
+    assert hyperttspro.trial_email_validation_label.text() == 'invalid email'
+    assert model_change_callback.model == None
+
+    # enter correct email
+    hyperttspro.trial_email_input.setText('')
+    qtbot.keyClicks(hyperttspro.trial_email_input, 'valid@email.com')    
+    qtbot.mouseClick(hyperttspro.enter_trial_email_ok_button, aqt.qt.Qt.LeftButton)    
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_ENABLED
+    assert model_change_callback.model == 'trial_key'
+
+    # dialog.exec_()
+
+
+
+def test_hyperttspro_manual(qtbot):
+    # HYPERTTS_PRO_DIALOG_DEBUG=yes pytest test_components.py -k test_hyperttspro_manual
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    model_change_callback = MockModelChangeCallback()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
+    hyperttspro.draw(dialog.getLayout())
+
+    if os.environ.get('HYPERTTS_PRO_DIALOG_DEBUG', 'no') == 'yes':
+        dialog.exec_()            
 
 def test_batch_dialog_load_random(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
