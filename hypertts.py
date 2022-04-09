@@ -443,6 +443,7 @@ class HyperTTS():
 
     def get_source_processed_text(self, note, batch_source, text_processing):
         source_text = self.get_source_text(note, batch_source)
+        logger.debug(f'get_source_processed_text: source_text: {source_text}')
         processed_text = text_utils.process_text(source_text, text_processing)
         return source_text, processed_text
 

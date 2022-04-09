@@ -64,6 +64,7 @@ def process_text_rules(text, text_processing_model):
     return text
 
 def process_text(source_text, text_processing_model):
+    logger.debug(f'process_text source_text: {source_text}')
     if text_processing_model.run_replace_rules_after:
         # text replacement rules run after other text rules
         text = process_text_rules(source_text, text_processing_model)
