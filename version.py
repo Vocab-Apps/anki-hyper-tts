@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-ANKI_HYPER_TTS_VERSION='0.56-2150'
-=======
 ANKI_HYPER_TTS_VERSION='0.57'
->>>>>>> main
