@@ -1713,6 +1713,32 @@ def test_hyperttspro_test_1(qtbot):
     # dialog.exec_()
 
 
+    # enter invalid key, then delete it
+    # =================================
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
+    hyperttspro.draw(dialog.getLayout())
+
+    # enter API key
+    # =============
+
+    # enter invalid api key (must click the button first)
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)    
+    qtbot.keyClicks(hyperttspro.hypertts_pro_api_key, 'invalid_key')
+    assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
+    assert model_change_callback.model == None    
+
+    # now remove this incorrect API key
+    hyperttspro.hypertts_pro_api_key.setText('')
+    assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: please enter API key'
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
+    assert model_change_callback.model == None        
+
+
+
 
 def test_hyperttspro_manual(qtbot):
     # HYPERTTS_PRO_DIALOG_DEBUG=yes pytest test_components.py -k test_hyperttspro_manual
