@@ -88,6 +88,6 @@ class GoogleTranslate(service.ServiceBase):
         except gtts.gTTSError as e:
             logger.warning(f'exception while retrieving sound for {source_text}: {e}')
             # this error will be handled, and not reported as unusual
-            raise errors.RequestError(str(e))
+            raise errors.RequestError(source_text, voice, str(e))
 
 
