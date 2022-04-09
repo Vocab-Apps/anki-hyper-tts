@@ -55,7 +55,7 @@ def strip_brackets(text):
 
 def process_text_rules(text, text_processing_model):
     if text_processing_model.html_to_text_line:
-        text = anki.utils.htmlToTextLine(text)
+        text = anki.utils.html_to_text_line(text)
     if text_processing_model.strip_brackets:
         text = strip_brackets(text)
     if text_processing_model.ssml_convert_characters:

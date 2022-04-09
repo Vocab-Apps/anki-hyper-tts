@@ -56,7 +56,7 @@ class AnkiUtils():
             aqt.sound.av_player.play_file(filename)
 
     def get_note_by_id(self, note_id):
-        note = aqt.mw.col.getNote(note_id)
+        note = aqt.mw.col.get_note(note_id)
         return note
 
     def get_model(self, model_id):
@@ -72,7 +72,7 @@ class AnkiUtils():
         return aqt.mw.col.decks.id_for_name(deck_name)
 
     def media_add_file(self, filename):
-        full_filename = aqt.mw.col.media.addFile(filename)
+        full_filename = aqt.mw.col.media.add_file(filename)
         return full_filename
 
     def undo_start(self):
