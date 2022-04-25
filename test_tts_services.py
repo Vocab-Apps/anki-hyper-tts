@@ -104,6 +104,7 @@ class TTSTests(unittest.TestCase):
         # google translate
         self.manager.get_service('GoogleTranslate').enabled = True
         self.manager.get_service('Collins').enabled = True
+        self.manager.get_service('Oxford').enabled = True
         self.manager.get_service('DigitalesWorterbuchDeutschenSprache').enabled = True
         self.manager.get_service('Duden').enabled = True
         self.manager.get_service('Cambridge').enabled = True
@@ -499,6 +500,40 @@ class TTSTests(unittest.TestCase):
                           selected_voice,
                           {},
                           context.AudioRequestContext(constants.AudioRequestReason.batch))                                  
+
+
+    def test_oxford(self):
+        service_name = 'Oxford'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 2
+
+        # pick a random en_GB voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
+        self.verify_audio_output(selected_voice, 'successful')
+
+        # pick a random en_GB voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'successful')        
+
+
+        # error handling
+        # ==============
+
+        # ensure that a non-existent word raises AudioNotFoundError
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
+        self.assertRaises(errors.AudioNotFoundError, 
+                          self.manager.get_tts_audio,
+                          'xxoanetuhsoae', # non-existent word
+                          selected_voice,
+                          {},
+                          context.AudioRequestContext(constants.AudioRequestReason.batch))
 
 
     def test_dwds(self):
