@@ -294,9 +294,11 @@ class HyperTTS():
         return full_filename
 
     def build_realtime_tts_tag(self, realtime_side_model: config_models.RealtimeConfigSide, setting_key):
+        logger.debug('build_realtime_tts_tag')
         if realtime_side_model.source.mode == constants.RealtimeSourceType.AnkiTTSTag:
             # get the audio language of the first voice
             voice_selection = realtime_side_model.voice_selection
+            logger.debug(f'voice_selection.selection_mode: {voice_selection.selection_mode}')
             if voice_selection.selection_mode == constants.VoiceSelectionMode.single:
                 audio_language = voice_selection.voice.voice.language
             else:
@@ -355,6 +357,7 @@ class HyperTTS():
         return re.sub('{{tts.*}}', '', card_template)
 
     def set_tts_tag_note_model(self, realtime_side_model: config_models.RealtimeConfigSide, setting_key, note_model, side, card_ord, clear_only):
+        logger.debug('set_tts_tag_note_model')
         # build tts tag
         tts_tag = self.build_realtime_tts_tag(realtime_side_model, setting_key)
         logger.info(f'tts tag: {tts_tag}')
@@ -392,6 +395,7 @@ class HyperTTS():
 
 
     def persist_realtime_config_update_note_type(self, realtime_model: config_models.RealtimeConfig, note, card_ord, current_settings_key):
+        logger.debug('persist_realtime_config_update_note_type')
         settings_key = self.save_realtime_config(realtime_model, current_settings_key)
         note_model = note.note_type()
         
