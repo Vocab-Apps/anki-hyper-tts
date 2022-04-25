@@ -150,3 +150,12 @@ yoyo
         }
 
         self.assertEqual(hypertts_instance.anki_utils.written_config['configuration'], expected_saved_config)
+
+    def test_play_sound_empty(self):
+        config_gen = testing_utils.TestConfigGenerator()
+        hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')        
+
+        source_text = ''
+        self.assertRaises(errors.SourceTextEmpty, hypertts_instance.play_sound, source_text, None, None)
+        source_text = None
+        self.assertRaises(errors.SourceTextEmpty, hypertts_instance.play_sound, source_text, None, None)

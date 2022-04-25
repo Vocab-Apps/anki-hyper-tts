@@ -103,6 +103,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.enable_model_change_callback = True
 
     def sample_text_selected(self, text):
+        logger.debug(f'sample_text_selected: {text}')
         self.sample_text = text
         self.play_sample_button.setText('Play Audio Sample')
         self.play_sample_button.setEnabled(True)
@@ -307,6 +308,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
             selected_voice = self.get_selected_voice()
             # get options
             options = self.current_voice_options
+            logger.debug(f'play_sample, sample_text: {self.sample_text}')
             self.hypertts.play_sound(self.sample_text, selected_voice, options)
 
     def add_voice(self):
