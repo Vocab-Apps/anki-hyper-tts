@@ -450,7 +450,9 @@ class RealtimeConfig(ConfigModelBase):
 
     def validate(self):
         logger.debug('RealtimeConfig.validate')
+        logger.debug('self.front.validate()')
         self.front.validate()
+        logger.debug('self.back.validate()')
         self.back.validate()
 
 class RealtimeConfigSide(ConfigModelBase):
