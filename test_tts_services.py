@@ -99,6 +99,11 @@ class TTSTests(unittest.TestCase):
         self.manager.get_service('FptAi').configure({
             'api_key': os.environ['FPTAPI_SERVICES_KEY'],
         })
+        # voicen
+        self.manager.get_service('Voicen').enabled = True
+        self.manager.get_service('Voicen').configure({
+            'api_key': os.environ['VOICEN_API_KEY'],
+        })        
         # free services 
         # =============
         # google translate
@@ -158,6 +163,8 @@ class TTSTests(unittest.TestCase):
             languages.AudioLanguage.ko_KR: 'ko-KR',
             languages.AudioLanguage.vi_VN: 'vi-VN',
             languages.AudioLanguage.he_IL: 'he-IL',
+            languages.AudioLanguage.tr_TR: 'tr-TR',
+            languages.AudioLanguage.ru_RU: 'ru-RU',
         }
 
         recognition_language = recognition_language_map[voice.language]
@@ -335,6 +342,22 @@ class TTSTests(unittest.TestCase):
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.vi_VN)
         self.verify_audio_output(selected_voice, 'Tôi bị mất cái ví.')
+
+    def test_voicen(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_voicen'
+        service_name = 'Voicen'
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        assert len(service_voices) > 5
+
+        # test turkish
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.tr_TR)
+        self.verify_audio_output(selected_voice, 'kahvaltı')
+
+        # test russian
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ru_RU)
+        self.verify_audio_output(selected_voice, 'улица') 
 
     def test_naver(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_naver'
