@@ -2226,6 +2226,9 @@ def test_preferences_save(qtbot):
     with qtbot.waitSignal(preferences.shortcuts.editor_add_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
         qtbot.keyClicks(preferences.shortcuts.editor_add_audio_key_sequence, 'a')
 
+    with qtbot.waitSignal(preferences.shortcuts.editor_preview_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
+        qtbot.keyClicks(preferences.shortcuts.editor_preview_audio_key_sequence, 'c')
+
     assert preferences.save_button.isEnabled() == True
 
     # click save
@@ -2239,7 +2242,7 @@ def test_preferences_save(qtbot):
     # try to deserialize
     deserialized_preferences = hypertts_instance.deserialize_preferences(hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES])
     assert deserialized_preferences.keyboard_shortcuts.shortcut_editor_add_audio == 'A'
-    assert deserialized_preferences.keyboard_shortcuts.shortcut_editor_preview_audio == None
+    assert deserialized_preferences.keyboard_shortcuts.shortcut_editor_preview_audio == 'C'
 
 
 def test_preferences_load(qtbot):

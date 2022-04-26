@@ -670,5 +670,5 @@ class HyperTTS():
         keyboard_shortcuts = config_models.KeyboardShortcuts()
         if keyboard_shortcuts_config != None:
             keyboard_shortcuts.shortcut_editor_add_audio = keyboard_shortcuts_config.get('shortcut_editor_add_audio', None)
-            keyboard_shortcuts.shortcut_editor_add_audio = keyboard_shortcuts_config.get('shortcut_editor_add_audio', None)
+            keyboard_shortcuts.shortcut_editor_preview_audio = keyboard_shortcuts_config.get('shortcut_editor_preview_audio', None)
         return keyboard_shortcuts
