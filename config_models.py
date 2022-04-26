@@ -521,4 +521,11 @@ class KeyboardShortcuts(ConfigModelBase):
         self.shortcut_editor_add_audio = None
         self.shortcut_editor_preview_audio = None
 
+    def serialize(self):
+        return {
+            'shortcut_editor_add_audio': self.shortcut_editor_add_audio,
+            'shortcut_editor_preview_audio': self.shortcut_editor_preview_audio
+        }
+
+    
     

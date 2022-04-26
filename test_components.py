@@ -21,6 +21,7 @@ import component_realtime_source
 import component_realtime_side
 import component_realtime
 import component_hyperttspro
+import component_shortcuts
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
@@ -2088,3 +2089,20 @@ def test_realtime_component_manual(qtbot):
 
     if os.environ.get('HYPERTTS_REALTIME_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec_()    
+
+def test_shortcuts_manual(qtbot):
+    # HYPERTTS_SHORTCUTS_DIALOG_DEBUG=yes pytest test_components.py -k test_shortcuts_manual -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog)
+    shortcuts.draw(dialog.getLayout())    
+
+    if os.environ.get('HYPERTTS_SHORTCUTS_DIALOG_DEBUG', 'no') == 'yes':
+        dialog.exec_()            
