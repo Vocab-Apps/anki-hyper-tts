@@ -251,6 +251,9 @@ def init(hypertts):
         shortcut_combination = 'Ctrl+T'
         shortcut_entry = (shortcut_combination, lambda editor=editor: send_add_audio_command(editor), True)
         shortcuts.append(shortcut_entry)
+        shortcut_combination = 'Ctrl+R'
+        shortcut_entry = (shortcut_combination, lambda editor=editor: send_preview_audio_command(editor), True)
+        shortcuts.append(shortcut_entry)
 
     # anki tools menu
     action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Configuration', aqt.mw)
