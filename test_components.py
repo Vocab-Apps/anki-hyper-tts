@@ -2203,7 +2203,7 @@ def test_preferences_manual(qtbot):
 
 
 
-def test_preferences_1(qtbot):
+def test_preferences_save(qtbot):
     # pytest test_components.py -k test_preferences_1 -s -rPP
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
@@ -2242,3 +2242,29 @@ def test_preferences_1(qtbot):
     assert deserialized_preferences.keyboard_shortcuts.shortcut_editor_preview_audio == None
 
 
+def test_preferences_load(qtbot):
+    # pytest test_components.py -k test_preferences_load -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    preferences = component_preferences.ComponentPreferences(hypertts_instance, dialog)
+    preferences.draw(dialog.getLayout())    
+
+    preferences_model = config_models.Preferences()
+    preferences_model.keyboard_shortcuts.shortcut_editor_add_audio = 'Ctrl+H'
+    preferences_model.keyboard_shortcuts.shortcut_editor_preview_audio = 'Alt+P'
+
+    # button state checks
+    # ===================
+
+    preferences.load_model(preferences_model)
+    assert preferences.save_button.isEnabled() == False
+
+    assert preferences.shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+H'
+    assert preferences.shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Alt+P'

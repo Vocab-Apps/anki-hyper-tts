@@ -532,7 +532,7 @@ class KeyboardShortcuts(ConfigModelBase):
 
 class Preferences(ConfigModelBase):
     def __init__(self):
-        self.keyboard_shortcuts = None
+        self.keyboard_shortcuts = KeyboardShortcuts()
 
     def serialize(self):
         return {
