@@ -56,14 +56,24 @@ class ComponentPreferences(component_common.ConfigComponentBase):
         hlayout.addStretch()
 
         # apply button
-        self.apply_button = aqt.qt.QPushButton('Apply')
-        self.apply_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
-        hlayout.addWidget(self.apply_button)
+        self.save_button = aqt.qt.QPushButton('Apply')
+        self.save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        hlayout.addWidget(self.save_button)
         # cancel button
         self.cancel_button = aqt.qt.QPushButton('Cancel')
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
         hlayout.addWidget(self.cancel_button)
 
+        self.save_button.pressed.connect(self.save_button_pressed)
+        self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
         layout.addLayout(hlayout)        
     
+
+    def save_button_pressed(self):
+        with self.hypertts.error_manager.get_single_action_context('Saving Preferences'):
+            self.hypertts.save_preferences(self.model)
+            self.dialog.close()
+
+    def cancel_button_pressed(self):
+        self.dialog.close()    

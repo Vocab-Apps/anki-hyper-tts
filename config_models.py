@@ -536,7 +536,7 @@ class Preferences(ConfigModelBase):
 
     def serialize(self):
         return {
-            'keyboard_shortcuts': self.keyboard_shortcuts
+            constants.CONFIG_KEYBOARD_SHORTCUTS: self.keyboard_shortcuts
         }
 
     def validate(self):

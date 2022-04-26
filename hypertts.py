@@ -556,6 +556,15 @@ class HyperTTS():
             return self.latest_saved_batch_name
         return None
 
+    # preferences
+    def get_preferences(self):
+        return self.deserialize_preferences(self.config.get(constants.CONFIG_PREFERENCES, {}))
+
+    def save_preferences(self, preferences_model):
+        preferences_model.validate()
+        self.config[constants.CONFIG_PREFERENCES] = preferences_model.serialize()
+        self.anki_utils.write_config(self.config)
+
     # deserialization routines for loading from config
     # ================================================
 
@@ -650,3 +659,16 @@ class HyperTTS():
         configuration.set_service_enabled_map(configuration_config.get('service_enabled', {}))
         configuration.set_service_config(configuration_config.get('service_config', {}))
         return configuration
+
+    def deserialize_preferences(self, preferences_config):
+        preferences = config_models.Preferences()
+        keyboard_shortcuts = self.deserialize_keyboard_shortcuts(preferences_config.get(constants.CONFIG_KEYBOARD_SHORTCUTS, None))
+        preferences.keyboard_shortcuts = keyboard_shortcuts
+        return preferences
+
+    def deserialize_keyboard_shortcuts(self, keyboard_shortcuts_config):
+        keyboard_shortcuts = config_models.KeyboardShortcuts()
+        if keyboard_shortcuts_config != None:
+            keyboard_shortcuts.shortcut_editor_add_audio = keyboard_shortcuts_config.get('shortcut_editor_add_audio', None)
+            keyboard_shortcuts.shortcut_editor_add_audio = keyboard_shortcuts_config.get('shortcut_editor_add_audio', None)
+        return keyboard_shortcuts

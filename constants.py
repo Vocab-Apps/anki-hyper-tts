@@ -73,6 +73,8 @@ class AnkiCardSide(enum.Enum):
 CONFIG_BATCH_CONFIG = 'batch_config'
 CONFIG_REALTIME_CONFIG = 'realtime_config'
 CONFIG_CONFIGURATION = 'configuration'
+CONFIG_PREFERENCES = 'preferences'
+CONFIG_KEYBOARD_SHORTCUTS = 'keyboard_shortcuts'
 
 ADDON_NAME = 'HyperTTS'
 MENU_PREFIX = ADDON_NAME + ':'
