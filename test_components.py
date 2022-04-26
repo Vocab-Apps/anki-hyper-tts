@@ -2132,3 +2132,13 @@ def test_shortcuts_1(qtbot):
         qtbot.mouseClick(shortcuts.editor_add_audio_clear_button, aqt.qt.Qt.LeftButton)
     assert model_change_callback.model.shortcut_editor_add_audio == None
     assert model_change_callback.model.shortcut_editor_preview_audio == None    
+
+    with qtbot.waitSignal(shortcuts.editor_add_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
+        qtbot.keyClicks(shortcuts.editor_add_audio_key_sequence, 'b')
+    assert model_change_callback.model.shortcut_editor_add_audio == 'B'
+    assert model_change_callback.model.shortcut_editor_preview_audio == None    
+
+    with qtbot.waitSignal(shortcuts.editor_preview_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
+        qtbot.keyClicks(shortcuts.editor_preview_audio_key_sequence, 'c')
+    assert model_change_callback.model.shortcut_editor_add_audio == 'B'
+    assert model_change_callback.model.shortcut_editor_preview_audio == 'C'
