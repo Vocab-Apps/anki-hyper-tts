@@ -2,18 +2,15 @@
     import { writable, get } from 'svelte/store';
     
     export const batchNameListStore = writable([]);
-    export const defaultBatchName = writable("");
-    export const selectedBatchNameStore = writable("");
+    export const selectedBatchNameStore = writable("New Preset");
 
     export function configureEditorHyperTTS(batchConfigList, defaultBatch) {
         console.log('setLanguageToolsEditorSettings: ', batchConfigList);
         batchNameListStore.set(batchConfigList)
-        if( defaultBatch != null) {
-            defaultBatchName.set(defaultBatch);
-        }
+        selectedBatchNameStore.set(defaultBatch);
     }
 
-    let selectedBatchNameStoreCopy;
+    let selectedBatchNameStoreCopy = null;
     selectedBatchNameStore.subscribe( value => {
         console.log('selectedBatchNameStore: ', value);
         selectedBatchNameStoreCopy = value;

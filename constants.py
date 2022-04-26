@@ -75,6 +75,7 @@ CONFIG_REALTIME_CONFIG = 'realtime_config'
 CONFIG_CONFIGURATION = 'configuration'
 CONFIG_PREFERENCES = 'preferences'
 CONFIG_KEYBOARD_SHORTCUTS = 'keyboard_shortcuts'
+CONFIG_LAST_USED_BATCH = 'last_used_batch'
 
 ADDON_NAME = 'HyperTTS'
 MENU_PREFIX = ADDON_NAME + ':'

@@ -42,7 +42,6 @@ class HyperTTS():
         self.config = self.anki_utils.get_config()
         self.error_manager = errors.ErrorManager(self.anki_utils)
         self.latest_saved_batch_name = None
-        self.latest_used_editor_batch_name = None
 
 
     def process_batch_audio(self, note_id_list, batch, batch_status):
@@ -547,14 +546,17 @@ class HyperTTS():
         self.latest_saved_batch_name = batch_name
 
     def set_editor_last_used_batch_name(self, batch_name):
-        self.latest_used_editor_batch_name = batch_name
+        self.latest_saved_batch_name = None
+        self.config[constants.CONFIG_LAST_USED_BATCH] = batch_name
+        self.anki_utils.write_config(self.config)
 
     def get_editor_default_batch_name(self):
-        if self.latest_used_editor_batch_name != None:
-            return self.latest_used_editor_batch_name
         if self.latest_saved_batch_name != None:
             return self.latest_saved_batch_name
-        return None
+        latest_used_editor_batch_name = self.config.get(constants.CONFIG_LAST_USED_BATCH, None)
+        if latest_used_editor_batch_name != None:
+            return latest_used_editor_batch_name
+        return constants.BATCH_CONFIG_NEW
 
     # preferences
     def get_preferences(self):
