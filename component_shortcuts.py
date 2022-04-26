@@ -14,7 +14,7 @@ class Shortcuts(component_common.ConfigComponentBase):
     def __init__(self, hypertts, dialog, model_change_callback):
         self.hypertts = hypertts
         self.dialog = dialog
-        self.model = config_models.Configuration()
+        self.model = config_models.KeyboardShortcuts()
         self.model_change_callback = model_change_callback
 
     def get_model(self):
@@ -43,8 +43,8 @@ class Shortcuts(component_common.ConfigComponentBase):
         self.editor_add_audio_key_sequence = aqt.qt.QKeySequenceEdit()
         hlayout.addWidget(self.editor_add_audio_key_sequence)
 
-        editor_add_audio_clear_button = aqt.qt.QPushButton('Clear')
-        hlayout.addWidget(editor_add_audio_clear_button)
+        self.editor_add_audio_clear_button = aqt.qt.QPushButton('Clear')
+        hlayout.addWidget(self.editor_add_audio_clear_button)
         
         vlayout.addLayout(hlayout)
 
@@ -66,8 +66,8 @@ class Shortcuts(component_common.ConfigComponentBase):
         self.editor_preview_audio_key_sequence = aqt.qt.QKeySequenceEdit()
         hlayout.addWidget(self.editor_preview_audio_key_sequence)
 
-        editor_preview_audio_clear_button = aqt.qt.QPushButton('Clear')
-        hlayout.addWidget(editor_preview_audio_clear_button)
+        self.editor_preview_audio_clear_button = aqt.qt.QPushButton('Clear')
+        hlayout.addWidget(self.editor_preview_audio_clear_button)
 
         vlayout.addLayout(hlayout)
 
@@ -82,8 +82,8 @@ class Shortcuts(component_common.ConfigComponentBase):
         layout.addStretch()
 
         # wire events
-        editor_add_audio_clear_button.pressed.connect(self.editor_add_audio_clear)
-        editor_preview_audio_clear_button.pressed.connect(self.editor_preview_audio_clear)
+        self.editor_add_audio_clear_button.pressed.connect(self.editor_add_audio_clear)
+        self.editor_preview_audio_clear_button.pressed.connect(self.editor_preview_audio_clear)
         
         self.editor_add_audio_key_sequence.keySequenceChanged.connect(self.editor_add_audio_changed)
         self.editor_preview_audio_key_sequence.keySequenceChanged.connect(self.editor_preview_audio_changed)
@@ -95,14 +95,20 @@ class Shortcuts(component_common.ConfigComponentBase):
     def editor_preview_audio_clear(self):
         self.editor_preview_audio_key_sequence.clear()
 
+    def convert_shortcut(self, key_sequence):
+        shortcut_str = key_sequence.toString()
+        if shortcut_str == '':
+            return None
+        return shortcut_str
+
     def editor_add_audio_changed(self, key_sequence):
         logger.info(f'editor_add_audio_changed {key_sequence}')
         logger.info(f'key_sequence.toString(): {key_sequence.toString()}')
-        self.model.shortcut_editor_add_audio = key_sequence.toString()
+        self.model.shortcut_editor_add_audio = self.convert_shortcut(key_sequence)
         self.notify_model_update()
 
     def editor_preview_audio_changed(self, key_sequence):
         logger.info(f'editor_preview_audio_changed')
         logger.info(f'key_sequence.toString(): {key_sequence.toString()}')        
-        self.model.shortcut_editor_preview_audio = key_sequence.toString()
+        self.model.shortcut_editor_preview_audio = self.convert_shortcut(key_sequence)
         self.notify_model_update()

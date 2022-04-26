@@ -527,5 +527,5 @@ class KeyboardShortcuts(ConfigModelBase):
             'shortcut_editor_preview_audio': self.shortcut_editor_preview_audio
         }
 
-    
-    
+    def validate(self):
+        pass

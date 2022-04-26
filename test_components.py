@@ -183,7 +183,7 @@ def test_voice_selection_random_1(qtbot):
     # dialog.exec_()
 
     # choose random mode
-    # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
+    # qtbot.t(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
     voiceselection.radio_button_random.setChecked(True)
 
     # pick second voice and add it
@@ -2125,5 +2125,10 @@ def test_shortcuts_1(qtbot):
 
     with qtbot.waitSignal(shortcuts.editor_add_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
         qtbot.keyClicks(shortcuts.editor_add_audio_key_sequence, 'a')
-    
     assert model_change_callback.model.shortcut_editor_add_audio == 'A'
+    assert model_change_callback.model.shortcut_editor_preview_audio == None
+
+    with qtbot.waitSignal(shortcuts.editor_add_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
+        qtbot.mouseClick(shortcuts.editor_add_audio_clear_button, aqt.qt.Qt.LeftButton)
+    assert model_change_callback.model.shortcut_editor_add_audio == None
+    assert model_change_callback.model.shortcut_editor_preview_audio == None    
