@@ -272,12 +272,16 @@ def init(hypertts):
         return handled
 
     def setup_editor_shortcuts(shortcuts: List[Tuple], editor: aqt.editor.Editor):
-        shortcut_combination = 'Ctrl+T'
-        shortcut_entry = (shortcut_combination, lambda editor=editor: send_add_audio_command(editor), True)
-        shortcuts.append(shortcut_entry)
-        shortcut_combination = 'Ctrl+R'
-        shortcut_entry = (shortcut_combination, lambda editor=editor: send_preview_audio_command(editor), True)
-        shortcuts.append(shortcut_entry)
+        preferences = hypertts.get_preferences()
+        if preferences.keyboard_shortcuts.shortcut_editor_add_audio != None:
+            shortcut = preferences.keyboard_shortcuts.shortcut_editor_add_audio
+            logger.info(f'keyboard shortcut for editor_add_audio: {shortcut}')
+            shortcut_entry = (shortcut, lambda editor=editor: send_add_audio_command(editor), True)
+            shortcuts.append(shortcut_entry)
+        if preferences.keyboard_shortcuts.shortcut_editor_preview_audio != None:            
+            shortcut = preferences.keyboard_shortcuts.shortcut_editor_preview_audio
+            shortcut_entry = (shortcut, lambda editor=editor: send_preview_audio_command(editor), True)
+            shortcuts.append(shortcut_entry)
 
     # anki tools menu
     action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Services Configuration', aqt.mw)
