@@ -16,18 +16,22 @@ class Shortcuts(component_common.ConfigComponentBase):
         self.dialog = dialog
         self.model = config_models.KeyboardShortcuts()
         self.model_change_callback = model_change_callback
+        self.propagate_model_change = True
 
     def get_model(self):
         return self.model
 
     def load_model(self, model):
         self.model = model
+        self.propagate_model_change = False
         self.editor_add_audio_key_sequence.setKeySequence(aqt.qt.QKeySequence(self.model.shortcut_editor_add_audio))
         self.editor_preview_audio_key_sequence.setKeySequence(aqt.qt.QKeySequence(self.model.shortcut_editor_preview_audio))
+        self.propagate_model_change = True
 
 
     def notify_model_update(self):
-        self.model_change_callback(self.model)
+        if self.propagate_model_change == True:
+            self.model_change_callback(self.model)
 
     def draw(self, layout):
 

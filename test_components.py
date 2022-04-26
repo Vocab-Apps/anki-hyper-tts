@@ -2169,6 +2169,7 @@ def test_shortcuts_load_model(qtbot):
 
     assert shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+H'
     assert shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == ''
+    assert model_change_callback.model == None
 
     model = config_models.KeyboardShortcuts()
     model.shortcut_editor_add_audio = 'Ctrl+T'
@@ -2178,3 +2179,4 @@ def test_shortcuts_load_model(qtbot):
 
     assert shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+T'
     assert shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Ctrl+Alt+B'
+    assert model_change_callback.model == None
