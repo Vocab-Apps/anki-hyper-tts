@@ -256,7 +256,7 @@ def init(hypertts):
         shortcuts.append(shortcut_entry)
 
     # anki tools menu
-    action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Configuration', aqt.mw)
+    action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Services Configuration', aqt.mw)
     action.triggered.connect(lambda: launch_configuration_dialog(hypertts))
     aqt.mw.form.menuTools.addAction(action)    
 

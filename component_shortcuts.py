@@ -33,7 +33,9 @@ class Shortcuts(component_common.ConfigComponentBase):
         if self.propagate_model_change == True:
             self.model_change_callback(self.model)
 
-    def draw(self, layout):
+    def draw(self):
+        layout_widget = aqt.qt.QWidget()
+        layout = aqt.qt.QVBoxLayout(layout_widget)
 
         # editor add audio
         # ================
@@ -94,6 +96,8 @@ class Shortcuts(component_common.ConfigComponentBase):
         
         self.editor_add_audio_key_sequence.keySequenceChanged.connect(self.editor_add_audio_changed)
         self.editor_preview_audio_key_sequence.keySequenceChanged.connect(self.editor_preview_audio_changed)
+
+        return layout_widget
 
 
     def editor_add_audio_clear(self):

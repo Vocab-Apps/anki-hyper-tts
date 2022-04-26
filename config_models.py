@@ -529,3 +529,17 @@ class KeyboardShortcuts(ConfigModelBase):
 
     def validate(self):
         pass
+
+class Preferences(ConfigModelBase):
+    def __init__(self):
+        self.keyboard_shortcuts = None
+
+    def serialize(self):
+        return {
+            'keyboard_shortcuts': self.keyboard_shortcuts
+        }
+
+    def validate(self):
+        pass
+
+        

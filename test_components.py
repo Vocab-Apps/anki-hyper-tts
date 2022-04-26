@@ -23,6 +23,7 @@ import component_realtime_side
 import component_realtime
 import component_hyperttspro
 import component_shortcuts
+import component_preferences
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
@@ -2102,8 +2103,9 @@ def test_shortcuts_manual(qtbot):
     # instantiate dialog
     # ==================
 
-    shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog)
-    shortcuts.draw(dialog.getLayout())    
+    model_change_callback = MockModelChangeCallback()
+    shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(shortcuts.draw())
 
     if os.environ.get('HYPERTTS_SHORTCUTS_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec_()            
@@ -2121,7 +2123,7 @@ def test_shortcuts_1(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
-    shortcuts.draw(dialog.getLayout())    
+    dialog.addChildWidget(shortcuts.draw())
 
     with qtbot.waitSignal(shortcuts.editor_add_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
         qtbot.keyClicks(shortcuts.editor_add_audio_key_sequence, 'a')
@@ -2156,7 +2158,7 @@ def test_shortcuts_load_model(qtbot):
 
     model_change_callback = MockModelChangeCallback()
     shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
-    shortcuts.draw(dialog.getLayout())    
+    dialog.addChildWidget(shortcuts.draw())
 
     # load model
     # ==========
@@ -2180,3 +2182,21 @@ def test_shortcuts_load_model(qtbot):
     assert shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+T'
     assert shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Ctrl+Alt+B'
     assert model_change_callback.model == None
+
+
+def test_preferences_manual(qtbot):
+    # HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest test_components.py -k test_preferences_manual -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    preferences = component_preferences.ComponentPreferences(hypertts_instance, dialog)
+    preferences.draw(dialog.getLayout())    
+
+    if os.environ.get('HYPERTTS_PREFERENCES_DIALOG_DEBUG', 'no') == 'yes':
+        dialog.exec_()            
