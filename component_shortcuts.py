@@ -34,11 +34,15 @@ class Shortcuts(component_common.ConfigComponentBase):
         editor_add_audio_label.setWordWrap(True)
         vlayout.addWidget(editor_add_audio_label)
 
+        hlayout = aqt.qt.QHBoxLayout()
+
         self.editor_add_audio_key_sequence = aqt.qt.QKeySequenceEdit()
-        vlayout.addWidget(self.editor_add_audio_key_sequence)
+        hlayout.addWidget(self.editor_add_audio_key_sequence)
 
         editor_add_audio_clear_button = aqt.qt.QPushButton('Clear')
-        vlayout.addWidget(editor_add_audio_clear_button)
+        hlayout.addWidget(editor_add_audio_clear_button)
+        
+        vlayout.addLayout(hlayout)
 
         groupbox.setLayout(vlayout)
         layout.addWidget(groupbox)
@@ -53,23 +57,44 @@ class Shortcuts(component_common.ConfigComponentBase):
         editor_preview_audio_label.setWordWrap(True)
         vlayout.addWidget(editor_preview_audio_label)
 
+        hlayout = aqt.qt.QHBoxLayout()
+
         self.editor_preview_audio_key_sequence = aqt.qt.QKeySequenceEdit()
-        vlayout.addWidget(self.editor_preview_audio_key_sequence)
+        hlayout.addWidget(self.editor_preview_audio_key_sequence)
 
         editor_preview_audio_clear_button = aqt.qt.QPushButton('Clear')
-        vlayout.addWidget(editor_preview_audio_clear_button)
+        hlayout.addWidget(editor_preview_audio_clear_button)
+
+        vlayout.addLayout(hlayout)
 
         groupbox.setLayout(vlayout)
         layout.addWidget(groupbox)
 
-        layout.addStretch()
+        # warning label
+        note_label = aqt.qt.QLabel(constants.GUI_TEXT_SHORTCUTS_ANKI_RESTART)
+        note_label.setWordWrap(True)
+        layout.addWidget(note_label)
 
+        layout.addStretch()
 
         # wire events
         editor_add_audio_clear_button.pressed.connect(self.editor_add_audio_clear)
-
-
+        editor_preview_audio_clear_button.pressed.connect(self.editor_preview_audio_clear)
+        
+        self.editor_add_audio_key_sequence.keySequenceChanged.connect(self.editor_add_audio_changed)
+        self.editor_preview_audio_key_sequence.keySequenceChanged.connect(self.editor_preview_audio_changed)
 
 
     def editor_add_audio_clear(self):
         self.editor_add_audio_key_sequence.clear()
+
+    def editor_preview_audio_clear(self):
+        self.editor_preview_audio_key_sequence.clear()
+
+    def editor_add_audio_changed(self, key_sequence):
+        logger.info(f'editor_add_audio_changed {key_sequence}')
+        logger.info(f'key_sequence.toString(): {key_sequence.toString()}')
+
+    def editor_preview_audio_changed(self, key_sequence):
+        logger.info(f'editor_preview_audio_changed')
+        logger.info(f'key_sequence.toString(): {key_sequence.toString()}')        
