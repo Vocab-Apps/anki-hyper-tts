@@ -2200,3 +2200,30 @@ def test_preferences_manual(qtbot):
 
     if os.environ.get('HYPERTTS_PREFERENCES_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec_()            
+
+
+
+def test_preferences_1(qtbot):
+    # pytest test_components.py -k test_preferences_1 -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    preferences = component_preferences.ComponentPreferences(hypertts_instance, dialog)
+    preferences.draw(dialog.getLayout())    
+
+    # button state checks
+    # ===================
+
+    assert preferences.save_button.isEnabled() == False
+
+    # change a keyboard shortcut
+    with qtbot.waitSignal(preferences.shortcuts.editor_add_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
+        qtbot.keyClicks(preferences.shortcuts.editor_add_audio_key_sequence, 'a')
+
+    assert preferences.save_button.isEnabled() == True

@@ -27,6 +27,10 @@ class ComponentPreferences(component_common.ConfigComponentBase):
 
     def shortcuts_updated(self, model):
         self.model.keyboard_shortcuts = model
+        self.model_part_updated_common()
+
+    def model_part_updated_common(self):
+        self.save_button.setEnabled(True)
 
     def draw(self, layout):
         vlayout = aqt.qt.QVBoxLayout()
@@ -58,6 +62,7 @@ class ComponentPreferences(component_common.ConfigComponentBase):
         # apply button
         self.save_button = aqt.qt.QPushButton('Apply')
         self.save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        self.save_button.setEnabled(False)
         hlayout.addWidget(self.save_button)
         # cancel button
         self.cancel_button = aqt.qt.QPushButton('Cancel')
