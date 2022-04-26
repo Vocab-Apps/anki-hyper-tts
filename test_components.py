@@ -12,6 +12,7 @@ import testing_utils
 import hypertts
 import constants
 import languages
+import time
 import component_voiceselection
 import component_source
 import component_target
@@ -2106,3 +2107,23 @@ def test_shortcuts_manual(qtbot):
 
     if os.environ.get('HYPERTTS_SHORTCUTS_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec_()            
+
+def test_shortcuts_1(qtbot):
+    # pytest test_components.py -k test_shortcuts_1 -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    model_change_callback = MockModelChangeCallback()
+    shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
+    shortcuts.draw(dialog.getLayout())    
+
+    with qtbot.waitSignal(shortcuts.editor_add_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
+        qtbot.keyClicks(shortcuts.editor_add_audio_key_sequence, 'a')
+    
+    assert model_change_callback.model.shortcut_editor_add_audio == 'A'

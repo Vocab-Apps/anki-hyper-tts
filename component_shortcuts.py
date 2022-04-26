@@ -11,16 +11,20 @@ logger = logging_utils.get_child_logger(__name__)
 
 class Shortcuts(component_common.ConfigComponentBase):
 
-    def __init__(self, hypertts, dialog):
+    def __init__(self, hypertts, dialog, model_change_callback):
         self.hypertts = hypertts
         self.dialog = dialog
         self.model = config_models.Configuration()
+        self.model_change_callback = model_change_callback
 
     def get_model(self):
         return self.model
 
     def load_model(self, model):
         self.model = model
+
+    def notify_model_update(self):
+        self.model_change_callback(self.model)
 
     def draw(self, layout):
 
@@ -94,7 +98,11 @@ class Shortcuts(component_common.ConfigComponentBase):
     def editor_add_audio_changed(self, key_sequence):
         logger.info(f'editor_add_audio_changed {key_sequence}')
         logger.info(f'key_sequence.toString(): {key_sequence.toString()}')
+        self.model.shortcut_editor_add_audio = key_sequence.toString()
+        self.notify_model_update()
 
     def editor_preview_audio_changed(self, key_sequence):
         logger.info(f'editor_preview_audio_changed')
         logger.info(f'key_sequence.toString(): {key_sequence.toString()}')        
+        self.model.shortcut_editor_preview_audio = key_sequence.toString()
+        self.notify_model_update()
