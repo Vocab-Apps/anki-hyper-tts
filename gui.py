@@ -51,11 +51,10 @@ class PreferencesDialog(aqt.qt.QDialog):
         self.preferences.load_model(hypertts.get_preferences())
 
     def setupUi(self):
-        self.setMinimumSize(500, 300)
         self.setWindowTitle(constants.GUI_PREFERENCES_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
         self.preferences.draw(self.main_layout)
-        self.resize(500, 700)
+        self.resize(450, 500)
 
     def close(self):
         self.accept()
