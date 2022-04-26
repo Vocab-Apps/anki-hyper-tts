@@ -13,6 +13,8 @@ import aqt.sound
 import aqt.utils
 import anki.hooks
 
+from typing import List, Tuple
+
 # addon imports
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
@@ -151,6 +153,15 @@ def configure_editor(editor: aqt.editor.Editor, batch_name_list, editor_default_
     print(js_command)
     editor.web.eval(js_command)    
 
+def send_add_audio_command(editor: aqt.editor.Editor):
+    logger.info('send_add_audio_command')
+    js_command = f"hyperTTSAddAudio()"
+    editor.web.eval(js_command)        
+
+def send_preview_audio_command(editor: aqt.editor.Editor):
+    js_command = f"hyperTTSPreviewAudio()"
+    editor.web.eval(js_command)            
+
 def init(hypertts):
     aqt.mw.addonManager.setWebExports(__name__, r".*(css|js)")
 
@@ -236,6 +247,11 @@ def init(hypertts):
 
         return handled
 
+    def setup_editor_shortcuts(shortcuts: List[Tuple], editor: aqt.editor.Editor):
+        shortcut_combination = 'Ctrl+T'
+        shortcut_entry = (shortcut_combination, lambda editor=editor: send_add_audio_command(editor), True)
+        shortcuts.append(shortcut_entry)
+
     # anki tools menu
     action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Configuration', aqt.mw)
     action.triggered.connect(lambda: launch_configuration_dialog(hypertts))
@@ -248,6 +264,9 @@ def init(hypertts):
     aqt.gui_hooks.editor_did_load_note.append(loadNote)
     aqt.gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
     aqt.gui_hooks.webview_did_receive_js_message.append(onBridge)
+
+    # editor shortcuts
+    aqt.gui_hooks.editor_did_init_shortcuts.append(setup_editor_shortcuts)
 
     # register TTS player
     aqt.sound.av_player.players.append(ttsplayer.AnkiHyperTTSPlayer(aqt.mw.taskman, hypertts))

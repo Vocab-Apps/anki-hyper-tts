@@ -514,3 +514,11 @@ class RealtimeSourceAnkiTTS(ConfigModelBase):
         if self.field_name == None or self.field_type == None:
             return f"""Undefined"""
         return f"""field: {self.field_name} ({self.field_type.name})"""
+
+    
+class KeyboardShortcuts(ConfigModelBase):
+    def __init__(self):
+        self.shortcut_editor_add_audio = None
+        self.shortcut_editor_preview_audio = None
+
+    
