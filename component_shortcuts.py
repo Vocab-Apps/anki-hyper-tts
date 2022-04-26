@@ -22,6 +22,9 @@ class Shortcuts(component_common.ConfigComponentBase):
 
     def load_model(self, model):
         self.model = model
+        self.editor_add_audio_key_sequence.setKeySequence(aqt.qt.QKeySequence(self.model.shortcut_editor_add_audio))
+        self.editor_preview_audio_key_sequence.setKeySequence(aqt.qt.QKeySequence(self.model.shortcut_editor_preview_audio))
+
 
     def notify_model_update(self):
         self.model_change_callback(self.model)

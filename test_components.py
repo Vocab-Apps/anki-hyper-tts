@@ -2142,3 +2142,39 @@ def test_shortcuts_1(qtbot):
         qtbot.keyClicks(shortcuts.editor_preview_audio_key_sequence, 'c')
     assert model_change_callback.model.shortcut_editor_add_audio == 'B'
     assert model_change_callback.model.shortcut_editor_preview_audio == 'C'
+
+def test_shortcuts_load_model(qtbot):
+    # pytest test_components.py -k test_shortcuts_load_model -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    model_change_callback = MockModelChangeCallback()
+    shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
+    shortcuts.draw(dialog.getLayout())    
+
+    # load model
+    # ==========
+
+    model = config_models.KeyboardShortcuts()
+    model.shortcut_editor_add_audio = 'Ctrl+H'
+    model.shortcut_editor_preview_audio = None
+
+    shortcuts.load_model(model)
+
+    assert shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+H'
+    assert shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == ''
+
+    model = config_models.KeyboardShortcuts()
+    model.shortcut_editor_add_audio = 'Ctrl+T'
+    model.shortcut_editor_preview_audio = 'Ctrl+Alt+B'
+
+    shortcuts.load_model(model)
+
+    assert shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+T'
+    assert shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Ctrl+Alt+B'
