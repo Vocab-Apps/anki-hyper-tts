@@ -34,6 +34,7 @@ class ComponentPreferences(component_common.ConfigComponentBase):
 
     def model_part_updated_common(self):
         self.save_button.setEnabled(True)
+        self.save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())        
 
     def draw(self, layout):
         vlayout = aqt.qt.QVBoxLayout()
@@ -63,7 +64,6 @@ class ComponentPreferences(component_common.ConfigComponentBase):
         hlayout.addStretch()
 
         # apply button
-        self.save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         self.save_button.setEnabled(False)
         hlayout.addWidget(self.save_button)
         # cancel button
