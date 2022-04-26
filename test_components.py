@@ -2227,3 +2227,18 @@ def test_preferences_1(qtbot):
         qtbot.keyClicks(preferences.shortcuts.editor_add_audio_key_sequence, 'a')
 
     assert preferences.save_button.isEnabled() == True
+
+    # click save
+    qtbot.mouseClick(preferences.save_button, aqt.qt.Qt.LeftButton)
+
+    # make sure config was saved
+    assert constants.CONFIG_KEYBOARD_SHORTCUTS in hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES]
+
+    assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES][constants.CONFIG_KEYBOARD_SHORTCUTS]['shortcut_editor_add_audio'] == 'A'
+
+    # try to deserialize
+    deserialized_preferences = hypertts_instance.deserialize_preferences(hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES])
+    assert deserialized_preferences.keyboard_shortcuts.shortcut_editor_add_audio == 'A'
+    assert deserialized_preferences.keyboard_shortcuts.shortcut_editor_preview_audio == None
+
+
