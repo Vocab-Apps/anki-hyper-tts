@@ -2254,7 +2254,6 @@ def test_preferences_load(qtbot):
     # ==================
 
     preferences = component_preferences.ComponentPreferences(hypertts_instance, dialog)
-    preferences.draw(dialog.getLayout())    
 
     preferences_model = config_models.Preferences()
     preferences_model.keyboard_shortcuts.shortcut_editor_add_audio = 'Ctrl+H'
@@ -2264,7 +2263,10 @@ def test_preferences_load(qtbot):
     # ===================
 
     preferences.load_model(preferences_model)
+    preferences.draw(dialog.getLayout())
+
     assert preferences.save_button.isEnabled() == False
 
     assert preferences.shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+H'
     assert preferences.shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Alt+P'
+

@@ -18,6 +18,9 @@ class Shortcuts(component_common.ConfigComponentBase):
         self.model_change_callback = model_change_callback
         self.propagate_model_change = True
 
+        self.editor_add_audio_key_sequence = aqt.qt.QKeySequenceEdit()
+        self.editor_preview_audio_key_sequence = aqt.qt.QKeySequenceEdit()        
+
     def get_model(self):
         return self.model
 
@@ -49,7 +52,6 @@ class Shortcuts(component_common.ConfigComponentBase):
 
         hlayout = aqt.qt.QHBoxLayout()
 
-        self.editor_add_audio_key_sequence = aqt.qt.QKeySequenceEdit()
         hlayout.addWidget(self.editor_add_audio_key_sequence)
 
         self.editor_add_audio_clear_button = aqt.qt.QPushButton('Clear')
@@ -72,7 +74,6 @@ class Shortcuts(component_common.ConfigComponentBase):
 
         hlayout = aqt.qt.QHBoxLayout()
 
-        self.editor_preview_audio_key_sequence = aqt.qt.QKeySequenceEdit()
         hlayout.addWidget(self.editor_preview_audio_key_sequence)
 
         self.editor_preview_audio_clear_button = aqt.qt.QPushButton('Clear')

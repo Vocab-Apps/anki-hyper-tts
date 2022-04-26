@@ -21,6 +21,7 @@ errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_b
 component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
 component_realtime = __import__('component_realtime', globals(), locals(), [], sys._addon_import_level_base)
 component_configuration = __import__('component_configuration', globals(), locals(), [], sys._addon_import_level_base)
+component_preferences = __import__('component_preferences', globals(), locals(), [], sys._addon_import_level_base)
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 ttsplayer = __import__('ttsplayer', globals(), locals(), [], sys._addon_import_level_base)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
@@ -42,6 +43,23 @@ class ConfigurationDialog(aqt.qt.QDialog):
 
     def close(self):
         self.accept()
+
+class PreferencesDialog(aqt.qt.QDialog):
+    def __init__(self, hypertts):
+        super(aqt.qt.QDialog, self).__init__()
+        self.preferences = component_preferences.ComponentPreferences(hypertts, self)
+        self.preferences.load_model(hypertts.get_preferences())
+
+    def setupUi(self):
+        self.setMinimumSize(500, 300)
+        self.setWindowTitle(constants.GUI_PREFERENCES_DIALOG_TITLE)
+        self.main_layout = aqt.qt.QVBoxLayout(self)
+        self.preferences.draw(self.main_layout)
+        self.resize(500, 700)
+
+    def close(self):
+        self.accept()
+
 
 class DialogBase(aqt.qt.QDialog):
     def __init__(self):
@@ -100,6 +118,13 @@ def launch_configuration_dialog(hypertts):
         dialog = ConfigurationDialog(hypertts)
         dialog.setupUi()
         dialog.exec_()
+
+def launch_preferences_dialog(hypertts):
+    with hypertts.error_manager.get_single_action_context('Launching Preferences Dialog'):
+        logger.info('launch_preferences_dialog')
+        dialog = PreferencesDialog(hypertts)
+        dialog.setupUi()
+        dialog.exec_()        
 
 def launch_batch_dialog_browser(hypertts, browser, note_id_list, batch_name):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Browser'):
@@ -259,6 +284,10 @@ def init(hypertts):
     action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Services Configuration', aqt.mw)
     action.triggered.connect(lambda: launch_configuration_dialog(hypertts))
     aqt.mw.form.menuTools.addAction(action)    
+
+    action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Preferences', aqt.mw)
+    action.triggered.connect(lambda: launch_preferences_dialog(hypertts))
+    aqt.mw.form.menuTools.addAction(action)        
 
     # browser menus
     aqt.gui_hooks.browser_menus_did_init.append(browerMenusInit)

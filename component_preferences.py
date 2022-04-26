@@ -17,6 +17,9 @@ class ComponentPreferences(component_common.ConfigComponentBase):
         self.model = config_models.Preferences()
         self.shortcuts = component_shortcuts.Shortcuts(self.hypertts, self.dialog, self.shortcuts_updated)
 
+        self.save_button = aqt.qt.QPushButton('Apply')   
+        self.cancel_button = aqt.qt.QPushButton('Cancel')        
+
     def load_model(self, model):
         logger.info('load_model')
         self.model = model
@@ -60,12 +63,10 @@ class ComponentPreferences(component_common.ConfigComponentBase):
         hlayout.addStretch()
 
         # apply button
-        self.save_button = aqt.qt.QPushButton('Apply')
         self.save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         self.save_button.setEnabled(False)
         hlayout.addWidget(self.save_button)
         # cancel button
-        self.cancel_button = aqt.qt.QPushButton('Cancel')
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
         hlayout.addWidget(self.cancel_button)
 
