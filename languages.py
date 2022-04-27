@@ -27,6 +27,7 @@ class Language(enum.Enum):
     en = ("English")
     eo = ("Esperanto")
     et = ("Estonian")
+    fo = ("Faroese")
     tl = ("Filipino")
     fi = ("Finnish")
     fr = ("French")
@@ -169,7 +170,6 @@ class AudioLanguage(enum.Enum):
     
     as_IN = (Language.as_, "Assamese (India)")
     az_AZ = (Language.az, "Azerbaijani (Azerbaijan)")
-    ba = (Language.ba, "Basque (Basque Country)")
     ba_RU = (Language.ba, "Bashkir (Russia)")
 
     bg_BG = (Language.bg, "Bulgarian")
@@ -180,6 +180,7 @@ class AudioLanguage(enum.Enum):
     cs_CZ = (Language.cs, "Czech")
     cy_GB = (Language.cy, "Welsh")
     da_DK = (Language.da, "Danish")
+    fo_FO = (Language.fo, "Faroese (Faroe Islands)")
     de_AT = (Language.de, "German (Austria)")
     de_CH = (Language.de, "German (Switzerland)")
     de_DE = (Language.de, "German (Germany)")
@@ -227,6 +228,7 @@ class AudioLanguage(enum.Enum):
     es_VE = (Language.es, "Spanish (Venezuela)")
 
     et_EE = (Language.et, "Estonian")
+    eu = (Language.ba, "Basque (Basque Country)")
     fi_FI = (Language.fi, "Finnish")
     fil_PH = (Language.tl, "Filipino (Philippines)")
     fr_BE = (Language.fr, "French (Belgium)")

@@ -5,6 +5,8 @@ import copy
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+logger = logging_utils.get_child_logger(__name__)
 
 """
 the various objects here dictate how HyperTTS is configured and these objects will serialize to/from the anki config
@@ -208,6 +210,7 @@ class VoiceSelectionSingle(VoiceSelectionBase):
         }
 
     def validate(self):
+        logger.debug('VoiceSelectionSingle.validate')
         if self.voice == None:
             raise errors.NoVoiceSet()
 
@@ -265,6 +268,7 @@ class VoiceSelectionMultipleBase(VoiceSelectionBase):
         }
 
     def validate(self):
+        logger.debug(f'VoiceSelectionMultipleBase.validate, len(voice_list): {len(self._voice_list)}')
         if len(self._voice_list) == 0:
             raise errors.NoVoiceSet()
 
@@ -445,7 +449,10 @@ class RealtimeConfig(ConfigModelBase):
         }
 
     def validate(self):
+        logger.debug('RealtimeConfig.validate')
+        logger.debug('self.front.validate()')
         self.front.validate()
+        logger.debug('self.back.validate()')
         self.back.validate()
 
 class RealtimeConfigSide(ConfigModelBase):
@@ -469,6 +476,7 @@ class RealtimeConfigSide(ConfigModelBase):
             }            
 
     def validate(self):
+        logger.debug('RealtimeConfigSide.validate')
         if self.side_enabled:
             self.source.validate()
             if self.voice_selection == None:
@@ -506,3 +514,32 @@ class RealtimeSourceAnkiTTS(ConfigModelBase):
         if self.field_name == None or self.field_type == None:
             return f"""Undefined"""
         return f"""field: {self.field_name} ({self.field_type.name})"""
+
+    
+class KeyboardShortcuts(ConfigModelBase):
+    def __init__(self):
+        self.shortcut_editor_add_audio = None
+        self.shortcut_editor_preview_audio = None
+
+    def serialize(self):
+        return {
+            'shortcut_editor_add_audio': self.shortcut_editor_add_audio,
+            'shortcut_editor_preview_audio': self.shortcut_editor_preview_audio
+        }
+
+    def validate(self):
+        pass
+
+class Preferences(ConfigModelBase):
+    def __init__(self):
+        self.keyboard_shortcuts = KeyboardShortcuts()
+
+    def serialize(self):
+        return {
+            constants.CONFIG_KEYBOARD_SHORTCUTS: self.keyboard_shortcuts.serialize()
+        }
+
+    def validate(self):
+        pass
+
+        

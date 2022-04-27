@@ -2,7 +2,7 @@
 // npm run build
 
 import * as NoteEditor from "anki/NoteEditor";
-import HyperTTS, {configureEditorHyperTTS} from "./HyperTTS.svelte";
+import HyperTTS, {configureEditorHyperTTS, hyperTTSAddAudio, hyperTTSPreviewAudio} from "./HyperTTS.svelte";
 
 
 NoteEditor.lifecycle.onMount(({ toolbar }) => {
@@ -11,3 +11,5 @@ NoteEditor.lifecycle.onMount(({ toolbar }) => {
 });
 
 window.configureEditorHyperTTS = configureEditorHyperTTS;
+window.hyperTTSAddAudio = hyperTTSAddAudio;
+window.hyperTTSPreviewAudio = hyperTTSPreviewAudio;

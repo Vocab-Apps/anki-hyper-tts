@@ -1,43 +1,40 @@
 <script context="module">
-    import { writable } from 'svelte/store';
+    import { writable, get } from 'svelte/store';
     
     export const batchNameListStore = writable([]);
-    export const defaultBatchName = writable("");
+    export const selectedBatchNameStore = writable("New Preset");
 
     export function configureEditorHyperTTS(batchConfigList, defaultBatch) {
         console.log('setLanguageToolsEditorSettings: ', batchConfigList);
         batchNameListStore.set(batchConfigList)
-        if( defaultBatch != null) {
-            defaultBatchName.set(defaultBatch);
-        }
+        selectedBatchNameStore.set(defaultBatch);
     }
+
+    let selectedBatchNameStoreCopy = null;
+    selectedBatchNameStore.subscribe( value => {
+        console.log('selectedBatchNameStore: ', value);
+        selectedBatchNameStoreCopy = value;
+    })
+
+    export function hyperTTSAddAudio() {
+        console.log("addAudio");
+        const cmdString = 'hypertts:addaudio:' + selectedBatchNameStoreCopy;
+        bridgeCommand(cmdString);
+    }
+
+    export function hyperTTSPreviewAudio() {
+        const cmdString = 'hypertts:previewaudio:' + selectedBatchNameStoreCopy;
+        bridgeCommand(cmdString);
+    }        
 
 </script>
 
 <script>
 
-    let selectedBatchName;
-    defaultBatchName.subscribe(value => {
-        if (value) {
-            selectedBatchName = value;
-        }
-    })
-
 	let batchNameList;
 	batchNameListStore.subscribe(value => {
 		batchNameList = value;
 	});    
-
-    function addAudio() {
-        console.log("addAudio");
-        const cmdString = 'hypertts:addaudio:' + selectedBatchName;
-        bridgeCommand(cmdString);
-    }
-
-    function previewAudio() {
-        const cmdString = 'hypertts:previewaudio:' + selectedBatchName;
-        bridgeCommand(cmdString);
-    }    
 
 </script>
 
@@ -70,7 +67,7 @@ div {
         <b>HyperTTS</b>
     </div>
     <div>
-        <select bind:value={selectedBatchName}>
+        <select bind:value={$selectedBatchNameStore}>
             {#each batchNameList as batch}
                 <option value={batch}>
                     {batch}
@@ -79,6 +76,6 @@ div {
         </select>        
     </div>
 
-    <button on:click={addAudio} class="hypertts-button rounded-corners">Add Audio</button>
-    <button on:click={previewAudio} class="hypertts-button rounded-corners">Preview Audio</button>
+    <button on:click={hyperTTSAddAudio} class="lt-field-button">Add Audio</button>
+    <button on:click={hyperTTSPreviewAudio} class="lt-field-button">Preview Audio</button>
 </div>

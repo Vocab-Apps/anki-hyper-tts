@@ -42,7 +42,6 @@ class HyperTTS():
         self.config = self.anki_utils.get_config()
         self.error_manager = errors.ErrorManager(self.anki_utils)
         self.latest_saved_batch_name = None
-        self.latest_used_editor_batch_name = None
 
 
     def process_batch_audio(self, note_id_list, batch, batch_status):
@@ -226,7 +225,7 @@ class HyperTTS():
 
     def play_sound(self, source_text, voice, options):
         logger.info(f'playing audio for {source_text}')
-        if len(source_text) == 0:
+        if source_text == None or len(source_text) == 0:
             raise errors.SourceTextEmpty()        
         full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options, context.AudioRequestContext(constants.AudioRequestReason.preview))
         self.anki_utils.play_sound(full_filename)
@@ -294,9 +293,11 @@ class HyperTTS():
         return full_filename
 
     def build_realtime_tts_tag(self, realtime_side_model: config_models.RealtimeConfigSide, setting_key):
+        logger.debug('build_realtime_tts_tag')
         if realtime_side_model.source.mode == constants.RealtimeSourceType.AnkiTTSTag:
             # get the audio language of the first voice
             voice_selection = realtime_side_model.voice_selection
+            logger.debug(f'voice_selection.selection_mode: {voice_selection.selection_mode}')
             if voice_selection.selection_mode == constants.VoiceSelectionMode.single:
                 audio_language = voice_selection.voice.voice.language
             else:
@@ -355,6 +356,7 @@ class HyperTTS():
         return re.sub('{{tts.*}}', '', card_template)
 
     def set_tts_tag_note_model(self, realtime_side_model: config_models.RealtimeConfigSide, setting_key, note_model, side, card_ord, clear_only):
+        logger.debug('set_tts_tag_note_model')
         # build tts tag
         tts_tag = self.build_realtime_tts_tag(realtime_side_model, setting_key)
         logger.info(f'tts tag: {tts_tag}')
@@ -392,6 +394,7 @@ class HyperTTS():
 
 
     def persist_realtime_config_update_note_type(self, realtime_model: config_models.RealtimeConfig, note, card_ord, current_settings_key):
+        logger.debug('persist_realtime_config_update_note_type')
         settings_key = self.save_realtime_config(realtime_model, current_settings_key)
         note_model = note.note_type()
         
@@ -544,14 +547,26 @@ class HyperTTS():
         self.latest_saved_batch_name = batch_name
 
     def set_editor_last_used_batch_name(self, batch_name):
-        self.latest_used_editor_batch_name = batch_name
+        self.latest_saved_batch_name = None
+        self.config[constants.CONFIG_LAST_USED_BATCH] = batch_name
+        self.anki_utils.write_config(self.config)
 
     def get_editor_default_batch_name(self):
-        if self.latest_used_editor_batch_name != None:
-            return self.latest_used_editor_batch_name
         if self.latest_saved_batch_name != None:
             return self.latest_saved_batch_name
-        return None
+        latest_used_editor_batch_name = self.config.get(constants.CONFIG_LAST_USED_BATCH, None)
+        if latest_used_editor_batch_name != None:
+            return latest_used_editor_batch_name
+        return constants.BATCH_CONFIG_NEW
+
+    # preferences
+    def get_preferences(self):
+        return self.deserialize_preferences(self.config.get(constants.CONFIG_PREFERENCES, {}))
+
+    def save_preferences(self, preferences_model):
+        preferences_model.validate()
+        self.config[constants.CONFIG_PREFERENCES] = preferences_model.serialize()
+        self.anki_utils.write_config(self.config)
 
     # deserialization routines for loading from config
     # ================================================
@@ -647,3 +662,16 @@ class HyperTTS():
         configuration.set_service_enabled_map(configuration_config.get('service_enabled', {}))
         configuration.set_service_config(configuration_config.get('service_config', {}))
         return configuration
+
+    def deserialize_preferences(self, preferences_config):
+        preferences = config_models.Preferences()
+        keyboard_shortcuts = self.deserialize_keyboard_shortcuts(preferences_config.get(constants.CONFIG_KEYBOARD_SHORTCUTS, None))
+        preferences.keyboard_shortcuts = keyboard_shortcuts
+        return preferences
+
+    def deserialize_keyboard_shortcuts(self, keyboard_shortcuts_config):
+        keyboard_shortcuts = config_models.KeyboardShortcuts()
+        if keyboard_shortcuts_config != None:
+            keyboard_shortcuts.shortcut_editor_add_audio = keyboard_shortcuts_config.get('shortcut_editor_add_audio', None)
+            keyboard_shortcuts.shortcut_editor_preview_audio = keyboard_shortcuts_config.get('shortcut_editor_preview_audio', None)
+        return keyboard_shortcuts

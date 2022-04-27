@@ -73,6 +73,9 @@ class AnkiCardSide(enum.Enum):
 CONFIG_BATCH_CONFIG = 'batch_config'
 CONFIG_REALTIME_CONFIG = 'realtime_config'
 CONFIG_CONFIGURATION = 'configuration'
+CONFIG_PREFERENCES = 'preferences'
+CONFIG_KEYBOARD_SHORTCUTS = 'keyboard_shortcuts'
+CONFIG_LAST_USED_BATCH = 'last_used_batch'
 
 ADDON_NAME = 'HyperTTS'
 MENU_PREFIX = ADDON_NAME + ':'
@@ -81,6 +84,7 @@ TITLE_PREFIX = ADDON_NAME + ': '
 GUI_COLLECTION_DIALOG_TITLE = TITLE_PREFIX + 'Add Audio (Collection)'
 GUI_REALTIME_DIALOG_TITLE = TITLE_PREFIX + 'Add Audio (Realtime)'
 GUI_CONFIGURATION_DIALOG_TITLE = TITLE_PREFIX + 'Configuration'
+GUI_PREFERENCES_DIALOG_TITLE = TITLE_PREFIX + 'Preferences'
 
 TTS_TAG_VOICE = 'HyperTTS'
 TTS_TAG_HYPERTTS_PRESET = 'hypertts_preset'
@@ -157,6 +161,11 @@ GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL = """Enter your email to get trial acces
 
 GUI_TEXT_REALTIME_SINGLE_NOTE = """Please select a single note to add Realtime Audio"""
 GUI_TEXT_REALTIME_CHOOSE_TEMPLATE = """Choose card template"""
+
+GUI_TEXT_SHORTCUTS_ANKI_RESTART = """Note: You'll need to restart Anki after modifying these shortcuts."""
+
+GUI_TEXT_SHORTCUTS_EDITOR_ADD_AUDIO = """Add Audio to note using the selected preset"""
+GUI_TEXT_SHORTCUTS_EDITOR_PREVIEW_AUDIO = """Preview Audio for a note using the selected preset"""
 
 GRAPHICS_PRO_BANNER = 'hypertts_pro_banner.png'
 GRAPHICS_LITE_BANNER = 'hypertts_lite_banner.png'

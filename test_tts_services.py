@@ -99,11 +99,18 @@ class TTSTests(unittest.TestCase):
         self.manager.get_service('FptAi').configure({
             'api_key': os.environ['FPTAPI_SERVICES_KEY'],
         })
+        # voicen
+        self.manager.get_service('Voicen').enabled = True
+        self.manager.get_service('Voicen').configure({
+            'api_key': os.environ['VOICEN_API_KEY'],
+        })        
         # free services 
         # =============
         # google translate
         self.manager.get_service('GoogleTranslate').enabled = True
         self.manager.get_service('Collins').enabled = True
+        self.manager.get_service('Oxford').enabled = True
+        self.manager.get_service('Lexico').enabled = True
         self.manager.get_service('DigitalesWorterbuchDeutschenSprache').enabled = True
         self.manager.get_service('Duden').enabled = True
         self.manager.get_service('Cambridge').enabled = True
@@ -157,6 +164,8 @@ class TTSTests(unittest.TestCase):
             languages.AudioLanguage.ko_KR: 'ko-KR',
             languages.AudioLanguage.vi_VN: 'vi-VN',
             languages.AudioLanguage.he_IL: 'he-IL',
+            languages.AudioLanguage.tr_TR: 'tr-TR',
+            languages.AudioLanguage.ru_RU: 'ru-RU',
         }
 
         recognition_language = recognition_language_map[voice.language]
@@ -335,6 +344,22 @@ class TTSTests(unittest.TestCase):
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.vi_VN)
         self.verify_audio_output(selected_voice, 'Tôi bị mất cái ví.')
 
+    def test_voicen(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_voicen'
+        service_name = 'Voicen'
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        assert len(service_voices) > 5
+
+        # test turkish
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.tr_TR)
+        self.verify_audio_output(selected_voice, 'kahvaltı')
+
+        # test russian
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ru_RU)
+        self.verify_audio_output(selected_voice, 'улица') 
+
     def test_naver(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_naver'
         service_name = 'Naver'
@@ -500,6 +525,68 @@ class TTSTests(unittest.TestCase):
                           {},
                           context.AudioRequestContext(constants.AudioRequestReason.batch))                                  
 
+
+    def test_oxford(self):
+        service_name = 'Oxford'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 2
+
+        # pick a random en_GB voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
+        self.verify_audio_output(selected_voice, 'successful')
+
+        # pick a random en_GB voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'successful')        
+
+
+        # error handling
+        # ==============
+
+        # ensure that a non-existent word raises AudioNotFoundError
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
+        self.assertRaises(errors.AudioNotFoundError, 
+                          self.manager.get_tts_audio,
+                          'xxoanetuhsoae', # non-existent word
+                          selected_voice,
+                          {},
+                          context.AudioRequestContext(constants.AudioRequestReason.batch))
+
+
+    def test_lexico(self):
+        service_name = 'Lexico'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 1
+
+        # pick a random en_GB voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
+        self.verify_audio_output(selected_voice, 'vehicle')
+
+        # error handling
+        # ==============
+
+        # ensure that a non-existent word raises AudioNotFoundError
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
+        self.assertRaises(errors.AudioNotFoundError, 
+                          self.manager.get_tts_audio,
+                          'xxoanetuhsoae', # non-existent word
+                          selected_voice,
+                          {},
+                          context.AudioRequestContext(constants.AudioRequestReason.batch))
 
     def test_dwds(self):
         # pytest test_tts_services.py -k test_dwds

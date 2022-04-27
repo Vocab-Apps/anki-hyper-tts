@@ -39,7 +39,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         self.reset_filters_button = aqt.qt.QPushButton('Reset Filters')        
 
-        self.preview_enabled = True
 
     def get_voices(self):
         self.voice_list = self.hypertts.service_manager.full_voice_list()
@@ -103,6 +102,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.enable_model_change_callback = True
 
     def sample_text_selected(self, text):
+        logger.debug(f'sample_text_selected: {text}')
         self.sample_text = text
         self.play_sample_button.setText('Play Audio Sample')
         self.play_sample_button.setEnabled(True)
@@ -176,8 +176,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         vlayout = aqt.qt.QVBoxLayout()
         vlayout.addWidget(self.voices_combobox)
 
-        if self.preview_enabled:
-            vlayout.addWidget(self.play_sample_button)
+        vlayout.addWidget(self.play_sample_button)
 
         self.voice_options_layout = aqt.qt.QGridLayout()
         vlayout.addLayout(self.voice_options_layout)
@@ -307,6 +306,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
             selected_voice = self.get_selected_voice()
             # get options
             options = self.current_voice_options
+            logger.debug(f'play_sample, sample_text: {self.sample_text}')
             self.hypertts.play_sound(self.sample_text, selected_voice, options)
 
     def add_voice(self):

@@ -13,12 +13,15 @@ import aqt.sound
 import aqt.utils
 import anki.hooks
 
+from typing import List, Tuple
+
 # addon imports
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
 component_realtime = __import__('component_realtime', globals(), locals(), [], sys._addon_import_level_base)
 component_configuration = __import__('component_configuration', globals(), locals(), [], sys._addon_import_level_base)
+component_preferences = __import__('component_preferences', globals(), locals(), [], sys._addon_import_level_base)
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 ttsplayer = __import__('ttsplayer', globals(), locals(), [], sys._addon_import_level_base)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
@@ -40,6 +43,22 @@ class ConfigurationDialog(aqt.qt.QDialog):
 
     def close(self):
         self.accept()
+
+class PreferencesDialog(aqt.qt.QDialog):
+    def __init__(self, hypertts):
+        super(aqt.qt.QDialog, self).__init__()
+        self.preferences = component_preferences.ComponentPreferences(hypertts, self)
+        self.preferences.load_model(hypertts.get_preferences())
+
+    def setupUi(self):
+        self.setWindowTitle(constants.GUI_PREFERENCES_DIALOG_TITLE)
+        self.main_layout = aqt.qt.QVBoxLayout(self)
+        self.preferences.draw(self.main_layout)
+        self.resize(450, 500)
+
+    def close(self):
+        self.accept()
+
 
 class DialogBase(aqt.qt.QDialog):
     def __init__(self):
@@ -99,6 +118,13 @@ def launch_configuration_dialog(hypertts):
         dialog.setupUi()
         dialog.exec_()
 
+def launch_preferences_dialog(hypertts):
+    with hypertts.error_manager.get_single_action_context('Launching Preferences Dialog'):
+        logger.info('launch_preferences_dialog')
+        dialog = PreferencesDialog(hypertts)
+        dialog.setupUi()
+        dialog.exec_()        
+
 def launch_batch_dialog_browser(hypertts, browser, note_id_list, batch_name):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Browser'):
         logger.info('launch_batch_dialog_browser')
@@ -144,13 +170,18 @@ def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
 
 def configure_editor(editor: aqt.editor.Editor, batch_name_list, editor_default_batch_name):
     logger.info(f'configure_editor, batch_name_list: {batch_name_list} editor_default_batch_name: {editor_default_batch_name}')
-    if editor_default_batch_name != None:
-        default_batch_name = f'"{editor_default_batch_name}"'
-    else:
-        default_batch_name = f'"{batch_name_list[0]}"'
-    js_command = f"configureEditorHyperTTS({json.dumps(batch_name_list)}, {default_batch_name})"
+    js_command = f"configureEditorHyperTTS({json.dumps(batch_name_list)}, '{editor_default_batch_name}')"
     print(js_command)
     editor.web.eval(js_command)    
+
+def send_add_audio_command(editor: aqt.editor.Editor):
+    logger.info('send_add_audio_command')
+    js_command = f"hyperTTSAddAudio()"
+    editor.web.eval(js_command)        
+
+def send_preview_audio_command(editor: aqt.editor.Editor):
+    js_command = f"hyperTTSPreviewAudio()"
+    editor.web.eval(js_command)            
 
 def init(hypertts):
     aqt.mw.addonManager.setWebExports(__name__, r".*(css|js)")
@@ -237,10 +268,26 @@ def init(hypertts):
 
         return handled
 
+    def setup_editor_shortcuts(shortcuts: List[Tuple], editor: aqt.editor.Editor):
+        preferences = hypertts.get_preferences()
+        if preferences.keyboard_shortcuts.shortcut_editor_add_audio != None:
+            shortcut = preferences.keyboard_shortcuts.shortcut_editor_add_audio
+            logger.info(f'keyboard shortcut for editor_add_audio: {shortcut}')
+            shortcut_entry = (shortcut, lambda editor=editor: send_add_audio_command(editor), True)
+            shortcuts.append(shortcut_entry)
+        if preferences.keyboard_shortcuts.shortcut_editor_preview_audio != None:            
+            shortcut = preferences.keyboard_shortcuts.shortcut_editor_preview_audio
+            shortcut_entry = (shortcut, lambda editor=editor: send_preview_audio_command(editor), True)
+            shortcuts.append(shortcut_entry)
+
     # anki tools menu
-    action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Configuration', aqt.mw)
+    action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Services Configuration', aqt.mw)
     action.triggered.connect(lambda: launch_configuration_dialog(hypertts))
     aqt.mw.form.menuTools.addAction(action)    
+
+    action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Preferences', aqt.mw)
+    action.triggered.connect(lambda: launch_preferences_dialog(hypertts))
+    aqt.mw.form.menuTools.addAction(action)        
 
     # browser menus
     aqt.gui_hooks.browser_menus_did_init.append(browerMenusInit)
@@ -249,6 +296,9 @@ def init(hypertts):
     aqt.gui_hooks.editor_did_load_note.append(loadNote)
     aqt.gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
     aqt.gui_hooks.webview_did_receive_js_message.append(onBridge)
+
+    # editor shortcuts
+    aqt.gui_hooks.editor_did_init_shortcuts.append(setup_editor_shortcuts)
 
     # register TTS player
     aqt.sound.av_player.players.append(ttsplayer.AnkiHyperTTSPlayer(aqt.mw.taskman, hypertts))

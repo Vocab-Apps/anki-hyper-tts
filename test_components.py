@@ -12,6 +12,7 @@ import testing_utils
 import hypertts
 import constants
 import languages
+import time
 import component_voiceselection
 import component_source
 import component_target
@@ -21,6 +22,8 @@ import component_realtime_source
 import component_realtime_side
 import component_realtime
 import component_hyperttspro
+import component_shortcuts
+import component_preferences
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
@@ -181,7 +184,7 @@ def test_voice_selection_random_1(qtbot):
     # dialog.exec_()
 
     # choose random mode
-    # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
+    # qtbot.t(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
     voiceselection.radio_button_random.setChecked(True)
 
     # pick second voice and add it
@@ -1123,6 +1126,46 @@ def test_batch_dialog_editor(qtbot):
     assert hypertts_instance.anki_utils.undo_finished == True
 
     assert dialog.closed == True
+
+def test_batch_dialog_editor_sound_sample(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+    note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+
+    mock_editor = MockEditor()
+
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
+    batch.configure_editor(note, mock_editor, False)
+    batch.draw(dialog.getLayout())
+
+    batch.source.source_field_combobox.setCurrentText('English')
+
+    batch.voice_selection.voices_combobox.setCurrentIndex(1)
+
+    # test sound preview for the voice
+    # ================================
+
+    assert batch.voice_selection.play_sample_button.isEnabled() == True
+
+    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.LeftButton)
+    assert hypertts_instance.anki_utils.played_sound == {
+        'source_text': 'old people',
+        'voice': {
+            'gender': 'Male', 
+            'language': 'fr_FR', 
+            'name': 'voice_a_1', 
+            'service': 'ServiceA',
+            'voice_key': {'name': 'voice_1'}
+        },
+        'options': {}
+    }    
+
+
 
 def test_batch_dialog_editor_template_error(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
@@ -2088,3 +2131,185 @@ def test_realtime_component_manual(qtbot):
 
     if os.environ.get('HYPERTTS_REALTIME_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec_()    
+
+def test_shortcuts_manual(qtbot):
+    # HYPERTTS_SHORTCUTS_DIALOG_DEBUG=yes pytest test_components.py -k test_shortcuts_manual -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    model_change_callback = MockModelChangeCallback()
+    shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(shortcuts.draw())
+
+    if os.environ.get('HYPERTTS_SHORTCUTS_DIALOG_DEBUG', 'no') == 'yes':
+        dialog.exec_()            
+
+def test_shortcuts_1(qtbot):
+    # pytest test_components.py -k test_shortcuts_1 -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    model_change_callback = MockModelChangeCallback()
+    shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(shortcuts.draw())
+
+    with qtbot.waitSignal(shortcuts.editor_add_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
+        qtbot.keyClicks(shortcuts.editor_add_audio_key_sequence, 'a')
+    assert model_change_callback.model.shortcut_editor_add_audio == 'A'
+    assert model_change_callback.model.shortcut_editor_preview_audio == None
+
+    with qtbot.waitSignal(shortcuts.editor_add_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
+        qtbot.mouseClick(shortcuts.editor_add_audio_clear_button, aqt.qt.Qt.LeftButton)
+    assert model_change_callback.model.shortcut_editor_add_audio == None
+    assert model_change_callback.model.shortcut_editor_preview_audio == None    
+
+    with qtbot.waitSignal(shortcuts.editor_add_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
+        qtbot.keyClicks(shortcuts.editor_add_audio_key_sequence, 'b')
+    assert model_change_callback.model.shortcut_editor_add_audio == 'B'
+    assert model_change_callback.model.shortcut_editor_preview_audio == None    
+
+    with qtbot.waitSignal(shortcuts.editor_preview_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
+        qtbot.keyClicks(shortcuts.editor_preview_audio_key_sequence, 'c')
+    assert model_change_callback.model.shortcut_editor_add_audio == 'B'
+    assert model_change_callback.model.shortcut_editor_preview_audio == 'C'
+
+def test_shortcuts_load_model(qtbot):
+    # pytest test_components.py -k test_shortcuts_load_model -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    model_change_callback = MockModelChangeCallback()
+    shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(shortcuts.draw())
+
+    # load model
+    # ==========
+
+    model = config_models.KeyboardShortcuts()
+    model.shortcut_editor_add_audio = 'Ctrl+H'
+    model.shortcut_editor_preview_audio = None
+
+    shortcuts.load_model(model)
+
+    assert shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+H'
+    assert shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == ''
+    assert model_change_callback.model == None
+
+    model = config_models.KeyboardShortcuts()
+    model.shortcut_editor_add_audio = 'Ctrl+T'
+    model.shortcut_editor_preview_audio = 'Ctrl+Alt+B'
+
+    shortcuts.load_model(model)
+
+    assert shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+T'
+    assert shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Ctrl+Alt+B'
+    assert model_change_callback.model == None
+
+
+def test_preferences_manual(qtbot):
+    # HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest test_components.py -k test_preferences_manual -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    preferences = component_preferences.ComponentPreferences(hypertts_instance, dialog)
+    preferences.draw(dialog.getLayout())    
+
+    if os.environ.get('HYPERTTS_PREFERENCES_DIALOG_DEBUG', 'no') == 'yes':
+        dialog.exec_()            
+
+
+
+def test_preferences_save(qtbot):
+    # pytest test_components.py -k test_preferences_1 -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    preferences = component_preferences.ComponentPreferences(hypertts_instance, dialog)
+    preferences.draw(dialog.getLayout())    
+
+    # button state checks
+    # ===================
+
+    assert preferences.save_button.isEnabled() == False
+
+    # change a keyboard shortcut
+    with qtbot.waitSignal(preferences.shortcuts.editor_add_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
+        qtbot.keyClicks(preferences.shortcuts.editor_add_audio_key_sequence, 'a')
+
+    with qtbot.waitSignal(preferences.shortcuts.editor_preview_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
+        qtbot.keyClicks(preferences.shortcuts.editor_preview_audio_key_sequence, 'c')
+
+    assert preferences.save_button.isEnabled() == True
+
+    # click save
+    qtbot.mouseClick(preferences.save_button, aqt.qt.Qt.LeftButton)
+
+    # make sure config was saved
+    assert constants.CONFIG_KEYBOARD_SHORTCUTS in hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES]
+
+    assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES][constants.CONFIG_KEYBOARD_SHORTCUTS]['shortcut_editor_add_audio'] == 'A'
+
+    # try to deserialize
+    deserialized_preferences = hypertts_instance.deserialize_preferences(hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES])
+    assert deserialized_preferences.keyboard_shortcuts.shortcut_editor_add_audio == 'A'
+    assert deserialized_preferences.keyboard_shortcuts.shortcut_editor_preview_audio == 'C'
+
+
+def test_preferences_load(qtbot):
+    # pytest test_components.py -k test_preferences_load -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    preferences = component_preferences.ComponentPreferences(hypertts_instance, dialog)
+
+    preferences_model = config_models.Preferences()
+    preferences_model.keyboard_shortcuts.shortcut_editor_add_audio = 'Ctrl+H'
+    preferences_model.keyboard_shortcuts.shortcut_editor_preview_audio = 'Alt+P'
+
+    # button state checks
+    # ===================
+
+    preferences.load_model(preferences_model)
+    preferences.draw(dialog.getLayout())
+
+    assert preferences.save_button.isEnabled() == False
+
+    assert preferences.shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+H'
+    assert preferences.shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Alt+P'
+
