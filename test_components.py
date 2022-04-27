@@ -1127,6 +1127,46 @@ def test_batch_dialog_editor(qtbot):
 
     assert dialog.closed == True
 
+def test_batch_dialog_editor_sound_sample(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+    note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+
+    mock_editor = MockEditor()
+
+    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
+    batch.configure_editor(note, mock_editor, False)
+    batch.draw(dialog.getLayout())
+
+    batch.source.source_field_combobox.setCurrentText('English')
+
+    batch.voice_selection.voices_combobox.setCurrentIndex(1)
+
+    # test sound preview for the voice
+    # ================================
+
+    assert batch.voice_selection.play_sample_button.isEnabled() == True
+
+    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.LeftButton)
+    assert hypertts_instance.anki_utils.played_sound == {
+        'source_text': 'old people',
+        'voice': {
+            'gender': 'Male', 
+            'language': 'fr_FR', 
+            'name': 'voice_a_1', 
+            'service': 'ServiceA',
+            'voice_key': {'name': 'voice_1'}
+        },
+        'options': {}
+    }    
+
+
+
 def test_batch_dialog_editor_template_error(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')

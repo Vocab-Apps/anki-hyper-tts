@@ -55,7 +55,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.dialog, self.voice_selection_model_updated)
         self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
-        self.voice_selection.preview_enabled = False
         self.preview = component_label_preview.LabelPreview(self.hypertts, note)
         self.editor_mode = True
 
@@ -102,6 +101,14 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
     def model_part_updated_common(self):
         self.preview.load_model(self.batch_model)
+        # are we in editor mode ? if so, set the sample text on the voice component
+        if self.note != None:
+            if self.batch_model.source != None and self.batch_model.text_processing != None:
+                try:
+                    source_text, processed_text = self.hypertts.get_source_processed_text(self.note, self.batch_model.source, self.batch_model.text_processing)
+                    self.voice_selection.sample_text_selected(processed_text)
+                except Exception as e:
+                    logger.warning(f'could not set sample text: {e}')
         self.enable_save_profile_button()
 
     def enable_save_profile_button(self):
