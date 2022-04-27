@@ -76,6 +76,6 @@ div {
         </select>        
     </div>
 
-    <button on:click={hyperTTSAddAudio} class="lt-field-button">Add Audio</button>
-    <button on:click={hyperTTSPreviewAudio} class="lt-field-button">Preview Audio</button>
+    <button on:click={hyperTTSAddAudio} class="hypertts-button rounded-corners">Add Audio</button>
+    <button on:click={hyperTTSPreviewAudio} class="hypertts-button rounded-corners">Preview Audio</button>
 </div>
