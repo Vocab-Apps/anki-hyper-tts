@@ -395,6 +395,8 @@ class HyperTTS():
 
     def persist_realtime_config_update_note_type(self, realtime_model: config_models.RealtimeConfig, note, card_ord, current_settings_key):
         logger.debug('persist_realtime_config_update_note_type')
+        undo_id = self.anki_utils.undo_tts_tag_start()
+
         settings_key = self.save_realtime_config(realtime_model, current_settings_key)
         note_model = note.note_type()
         
@@ -416,6 +418,8 @@ class HyperTTS():
 
         # save note model
         self.anki_utils.save_note_type_update(note_model)
+
+        self.anki_utils.undo_end(undo_id)
 
     # functions related to getting data from notes
     # ============================================

@@ -78,6 +78,9 @@ class AnkiUtils():
     def undo_start(self):
         return aqt.mw.col.add_custom_undo_entry(constants.UNDO_ENTRY_NAME)
 
+    def undo_tts_tag_start(self):
+        return aqt.mw.col.add_custom_undo_entry(constants.UNDO_ENTRY_ADD_TTS_TAG)    
+
     def undo_end(self, undo_id):
         aqt.mw.col.merge_undo_entries(undo_id)
         aqt.mw.update_undo_actions()
@@ -100,6 +103,7 @@ class AnkiUtils():
     def save_note_type_update(self, note_model):
         logger.info(f"""updating note type: {note_model['name']}""")
         aqt.mw.col.models.update_dict(note_model)
+
 
     def run_in_background(self, task_fn, task_done_fn):
         aqt.mw.taskman.run_in_background(task_fn, task_done_fn)

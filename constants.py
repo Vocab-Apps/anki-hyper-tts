@@ -93,6 +93,7 @@ PYCMD_ADD_AUDIO_PREFIX = 'hypertts:addaudio:'
 PYCMD_PREVIEW_AUDIO_PREFIX = 'hypertts:previewaudio:'
 
 UNDO_ENTRY_NAME = ADDON_NAME + ': Add Audio to Notes'
+UNDO_ENTRY_ADD_TTS_TAG = ADDON_NAME + ': Configure Realtime TTS Tag'
 
 GREEN_STYLESHEET = 'background-color: #69F0AE;'
 RED_STYLESHEET = 'background-color: #FFCDD2;'
