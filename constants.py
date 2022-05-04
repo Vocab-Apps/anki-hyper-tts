@@ -162,6 +162,7 @@ GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL = """Enter your email to get trial acces
 
 GUI_TEXT_REALTIME_SINGLE_NOTE = """Please select a single note to add Realtime Audio"""
 GUI_TEXT_REALTIME_CHOOSE_TEMPLATE = """Choose card template"""
+GUI_TEXT_REALTIME_REMOVED_TAG = """Removed TTS Tag. Realtime audio will not play anymore."""
 
 GUI_TEXT_SHORTCUTS_ANKI_RESTART = """Note: You'll need to restart Anki after modifying these shortcuts."""
 

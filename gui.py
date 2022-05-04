@@ -163,6 +163,26 @@ def launch_realtime_dialog_browser(hypertts, note_id_list):
         dialog.configure_note(note)
         dialog.exec_()
 
+def remove_realtime_tts_tag(hypertts, browser, note_id_list):
+    with hypertts.error_manager.get_single_action_context('Removing TTS Tag'):
+        if len(note_id_list) != 1:
+            aqt.utils.showCritical(constants.GUI_TEXT_REALTIME_SINGLE_NOTE)
+            return
+
+        note = hypertts.anki_utils.get_note_by_id(note_id_list[0])
+        note_model = note.note_type()
+        templates = note_model['tmpls']
+        card_ord = 0 # default
+        if len(templates) > 1:
+            # ask user to choose a template
+            card_template_names = [x['name'] for x in templates]
+            chosen_row = aqt.utils.chooseList(constants.TITLE_PREFIX + constants.GUI_TEXT_REALTIME_CHOOSE_TEMPLATE, card_template_names)
+            logger.info(f'user chose row {chosen_row}')
+            card_ord = chosen_row
+
+        hypertts.remove_tts_tags(note, card_ord)
+        hypertts.anki_utils.info_message(constants.GUI_TEXT_REALTIME_REMOVED_TAG, browser)
+
 
 def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
     batch_name_list = hypertts.get_batch_config_list_editor()
@@ -198,7 +218,10 @@ def init(hypertts):
                 launch_realtime_dialog_browser(hypertts, browser.selectedNotes())
             return launch
 
-
+        def get_remove_realtime_tts_tag_fn(hypertts, browser):
+            def launch():
+                remove_realtime_tts_tag(hypertts, browser, browser.selectedNotes())
+            return launch
 
         menu = aqt.qt.QMenu(constants.ADDON_NAME, browser.form.menubar)
         browser.form.menubar.addMenu(menu)
@@ -217,7 +240,12 @@ def init(hypertts):
 
         action = aqt.qt.QAction(f'Add Audio (Realtime)...', browser)
         action.triggered.connect(get_launch_realtime_dialog_browser_fn(hypertts, browser))
-        menu.addAction(action)            
+        menu.addAction(action)
+
+        action = aqt.qt.QAction(f'Remove Audio (Realtime) / TTS Tag...', browser)
+        action.triggered.connect(get_remove_realtime_tts_tag_fn(hypertts, browser))
+        menu.addAction(action)
+
 
     def on_webview_will_set_content(web_content: aqt.webview.WebContent, context):
         if not isinstance(context, aqt.editor.Editor):

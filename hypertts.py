@@ -361,6 +361,10 @@ class HyperTTS():
         tts_tag = self.build_realtime_tts_tag(realtime_side_model, setting_key)
         logger.info(f'tts tag: {tts_tag}')
 
+        return self.alter_tts_tag_note_model(note_model, side, card_ord, clear_only, tts_tag)
+
+
+    def alter_tts_tag_note_model(self, note_model, side, card_ord, clear_only, tts_tag):
         # alter card template
         card_template = note_model["tmpls"][card_ord]
         side_template_key = 'qfmt'
@@ -420,6 +424,18 @@ class HyperTTS():
         self.anki_utils.save_note_type_update(note_model)
 
         self.anki_utils.undo_end(undo_id)
+
+    def remove_tts_tags(self, note, card_ord):
+        logger.debug('remove_tts_tags')
+        undo_id = self.anki_utils.undo_tts_tag_start()
+        note_model = note.note_type()
+        side = constants.AnkiCardSide.Front
+        note_model = self.alter_tts_tag_note_model(note_model, side, card_ord, True, None)
+        side = constants.AnkiCardSide.Back
+        note_model = self.alter_tts_tag_note_model(note_model, side, card_ord, True, None)
+        self.anki_utils.save_note_type_update(note_model)
+        self.anki_utils.undo_end(undo_id)        
+
 
     # functions related to getting data from notes
     # ============================================
