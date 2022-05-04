@@ -540,7 +540,7 @@ class HyperTTS():
     def load_realtime_config(self, settings_key):
         logger.info(f'loading realtime config [{settings_key}]')
         if settings_key not in self.config[constants.CONFIG_REALTIME_CONFIG]:
-            raise errors.PresetNotFound(settings_key)
+            raise errors.RealtimePresetNotFound(settings_key)
         realtime_config = self.config[constants.CONFIG_REALTIME_CONFIG][settings_key]
         logger.info(f'loaded realtime config {pprint.pformat(realtime_config, compact=True, width=500)}')
         return self.deserialize_realtime_config(realtime_config)
