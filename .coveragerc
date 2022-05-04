@@ -4,3 +4,4 @@ omit =
     conftest.py
     test_*.py
     testing_utils.py
+    *external*
