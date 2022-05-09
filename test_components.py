@@ -120,6 +120,20 @@ def test_voice_selection_defaults_single(qtbot):
 
     # dialog.exec_()
     
+def test_voice_selection_manual(qtbot):
+    # HYPERTTS_VOICE_SELECTION_DIALOG_DEBUG=yes pytest test_components.py -k test_voice_selection_manual -s -rPP
+    hypertts_instance = get_hypertts_instance()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+
+    if os.environ['HYPERTTS_VOICE_SELECTION_DIALOG_DEBUG'] == 'yes':
+        dialog.exec_()
+
 def test_voice_selection_single_1(qtbot):
     hypertts_instance = get_hypertts_instance()
 

@@ -7,6 +7,8 @@ import typing
 import json
 import time
 
+
+options = __import__('options', globals(), locals(), [], sys._addon_import_level_services)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
 logger = logging_utils.get_child_logger(__name__)
 
@@ -17,6 +19,13 @@ VOICE_OPTIONS = {
         'default': 1.0, 'max': 4.0, 'min': 0.25, 'type': 'number'},
     'style': {
         'default': 1, 'max': 3, 'min': 0, 'type': 'number_int'},
+    options.AUDIO_FORMAT_PARAMETER: {
+        'type': options.ParameterType.list.name,
+        'values': [
+            options.AudioFormat.mp3.name,
+            options.AudioFormat.ogg_opus.name,
+        ]
+    }
 
 }
 

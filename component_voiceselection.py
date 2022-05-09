@@ -3,6 +3,7 @@ import aqt.qt
 import copy
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+options = __import__('options', globals(), locals(), [], sys._addon_import_level_base)
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
@@ -356,12 +357,12 @@ class VoiceSelection(component_common.ConfigComponentBase):
         row = 0
         for key, value in voice.options.items():
             widget_name = f'voice_option_{key}'
-            option_type = constants.VoiceOptionTypes[value['type']]
-            if option_type == constants.VoiceOptionTypes.number or option_type == constants.VoiceOptionTypes.number_int:
+            option_type = options.ParameterType[value['type']]
+            if option_type == options.ParameterType.number or option_type == options.ParameterType.number_int:
                 # create a spinner
-                if option_type == constants.VoiceOptionTypes.number:
+                if option_type == options.ParameterType.number:
                     widget = aqt.qt.QDoubleSpinBox()
-                elif option_type == constants.VoiceOptionTypes.number_int:
+                elif option_type == options.ParameterType.number_int:
                     widget = aqt.qt.QSpinBox()
                 widget.setObjectName(widget_name)
                 # logger.info(f'objec name: {widget_name}')
@@ -373,6 +374,18 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 self.voice_options_layout.addWidget(label, row, 0, 1, 1)
                 self.voice_options_layout.addWidget(widget, row, 1, 1, 1)
                 self.voice_options_widgets[widget_name] = widget
+            elif option_type == options.ParameterType.list:
+                # create a combobox
+                widget = aqt.qt.QComboBox()
+                widget.setObjectName(widget_name)
+                widget.addItems(value['values'])
+                widget.currentTextChanged.connect(get_set_option_lambda(voice, key))
+                label_text = f"""{key}"""
+                label = aqt.qt.QLabel(label_text)
+                self.voice_options_layout.addWidget(label, row, 0, 1, 1)
+                self.voice_options_layout.addWidget(widget, row, 1, 1, 1)
+                self.voice_options_widgets[widget_name] = widget                
+
             else:
                 raise Exception(f"voice option type not supported: {value['type']}")
             row += 1
