@@ -185,6 +185,39 @@ def test_voice_selection_single_1(qtbot):
     }
     assert voiceselection.serialize() == expected_output        
 
+def test_voice_selection_format_ogg(qtbot):
+    hypertts_instance = get_hypertts_instance()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+
+    voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
+
+    # change options
+    format_widget = dialog.findChild(aqt.qt.QComboBox, "voice_option_format")
+    format_widget.setCurrentText('ogg_opus')
+
+    expected_output = {
+        'voice_selection_mode': 'single',
+        'voice': {
+            'voice': {
+                'gender': 'Female', 
+                'language': 'en_US',
+                'name': 'voice_a_2', 
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_2'}
+            },
+            'options': {
+                'format': 'ogg_opus'
+            }
+        }        
+    }
+    assert voiceselection.serialize() == expected_output        
+
 def test_voice_selection_random_1(qtbot):
     hypertts_instance = get_hypertts_instance()
 
