@@ -306,6 +306,7 @@ class HyperTTS():
     def build_realtime_tts_tag(self, realtime_side_model: config_models.RealtimeConfigSide, setting_key):
         logger.debug('build_realtime_tts_tag')
         if realtime_side_model.source.mode == constants.RealtimeSourceType.AnkiTTSTag:
+            logger.debug(f'build_realtime_tts_tag, realtime_side_model: {realtime_side_model}')
             # get the audio language of the first voice
             voice_selection = realtime_side_model.voice_selection
             logger.debug(f'voice_selection.selection_mode: {voice_selection.selection_mode}')
