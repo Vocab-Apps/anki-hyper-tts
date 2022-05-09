@@ -14,3 +14,4 @@ web/package-lock.json
 # temporary files when testing
 converted_wav.wav
 generated_audio.mp3
+generated_audio.ogg
