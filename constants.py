@@ -190,7 +190,3 @@ class Gender(enum.Enum):
     Female = enum.auto()
     Any = enum.auto()
 
-class VoiceOptionTypes(enum.Enum):
-    number = enum.auto()
-    number_int = enum.auto()
-
