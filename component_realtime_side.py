@@ -49,8 +49,10 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
             self.existing_preset_fn(existing_preset_name)
             realtime_model = self.hypertts.load_realtime_config(existing_preset_name)
             if self.side == constants.AnkiCardSide.Front:
+                logger.info(f'loading realtime_model.front: {realtime_model.front}')
                 self.load_model(realtime_model.front)
             else:
+                logger.info(f'loading realtime_model.back: {realtime_model.back}')
                 self.load_model(realtime_model.back)
 
     def load_batch(self, batch_name):
@@ -62,6 +64,7 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         # is this side enabled
         self.side_enabled_checkbox.setChecked(model.side_enabled)
         # disseminate to all components
+        logger.info(f'loading source model: {model.source}')
         self.source.load_model(model.source)
         self.voice_selection.load_model(model.voice_selection)
         self.text_processing.load_model(model.text_processing)
