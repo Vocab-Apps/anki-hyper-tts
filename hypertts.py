@@ -18,6 +18,7 @@ import anki.notes
 import anki.cards
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+options = __import__('options', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
@@ -233,14 +234,18 @@ class HyperTTS():
     # processing of sound tags / collection stuff
     # ===========================================
 
-    def generate_audio_write_file(self, source_text, voice, options, audio_request_context):
+    def generate_audio_write_file(self, source_text, voice, voice_options, audio_request_context):
+        format = options.AudioFormat.mp3 # default to mp3
+        if options.AUDIO_FORMAT_PARAMETER in voice_options:
+            format = options.AudioFormat[voice_options[options.AUDIO_FORMAT_PARAMETER]]
+
         # write to user files directory
-        hash_str = self.get_hash_for_audio_request(source_text, voice, options)
-        audio_filename = self.get_audio_filename(hash_str)
-        full_filename = self.get_full_audio_file_name(hash_str)
+        hash_str = self.get_hash_for_audio_request(source_text, voice, voice_options)
+        audio_filename = self.get_audio_filename(hash_str, format)
+        full_filename = self.get_full_audio_file_name(hash_str, format)
         logger.info(f'requesting audio for hash {hash_str}, full filename {full_filename}')
         if not os.path.exists(full_filename) or os.path.getsize(full_filename) == 0:
-            audio_data = self.service_manager.get_tts_audio(source_text, voice, options, audio_request_context)
+            audio_data = self.service_manager.get_tts_audio(source_text, voice, voice_options, audio_request_context)
             logger.info(f'not found in cache, requesting')
             f = open(full_filename, 'wb')
             f.write(audio_data)
@@ -253,17 +258,23 @@ class HyperTTS():
         self.anki_utils.media_add_file(full_filename)
         return f'[sound:{audio_filename}]', audio_filename
 
-    def get_full_audio_file_name(self, hash_str):
+    def get_full_audio_file_name(self, hash_str, format: options.AudioFormat):
         # return the absolute path of the audio file in the user_files directory
         user_files_dir = self.anki_utils.get_user_files_dir()
         # check whether the directory exists
         if not os.path.isdir(user_files_dir):
             raise errors.MissingDirectory(user_files_dir)
-        filename = self.get_audio_filename(hash_str)
+        filename = self.get_audio_filename(hash_str, format)
         return os.path.join(user_files_dir, filename)
     
-    def get_audio_filename(self, hash_str):
-        filename = f'hypertts-{hash_str}.mp3'
+    def get_audio_filename(self, hash_str, format: options.AudioFormat):
+        extension_map = {
+            options.AudioFormat.mp3: 'mp3',
+            options.AudioFormat.ogg_vorbis: 'ogg',
+            options.AudioFormat.ogg_opus: 'ogg',
+        }
+        extension = extension_map[format]
+        filename = f'hypertts-{hash_str}.{extension}'
         return filename
 
     def get_hash_for_audio_request(self, source_text, voice, options):
