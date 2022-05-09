@@ -227,6 +227,8 @@ class TTSTests(unittest.TestCase):
 
 
     def test_google(self):
+        service_name = 'Google'
+
         voice_list = self.manager.full_voice_list()
         google_voices = [voice for voice in voice_list if voice.service.name == 'Google']
         # print(voice_list)
@@ -240,6 +242,10 @@ class TTSTests(unittest.TestCase):
         # french
         selected_voice = self.pick_random_voice(voice_list, 'Google', languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
+
+        # test ogg format
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence', voice_options={'format': 'ogg_opus'})
 
         # error checking
         # try a voice which doesn't exist
@@ -320,6 +326,10 @@ class TTSTests(unittest.TestCase):
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+        # test ogg format
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence', voice_options={'format': 'ogg_vorbis'})
 
     def test_vocalware(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_vocalware'
