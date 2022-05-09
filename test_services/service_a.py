@@ -22,9 +22,10 @@ VOICE_OPTIONS = {
     options.AUDIO_FORMAT_PARAMETER: {
         'type': options.ParameterType.list.name,
         'values': [
-            options.AudioFormat.mp3.name,
             options.AudioFormat.ogg_opus.name,
-        ]
+            options.AudioFormat.mp3.name,
+        ],
+        'default': options.AudioFormat.mp3.name
     }
 
 }

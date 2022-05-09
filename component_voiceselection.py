@@ -379,6 +379,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 widget = aqt.qt.QComboBox()
                 widget.setObjectName(widget_name)
                 widget.addItems(value['values'])
+                widget.setCurrentText(value['default'])
                 widget.currentTextChanged.connect(get_set_option_lambda(voice, key))
                 label_text = f"""{key}"""
                 label = aqt.qt.QLabel(label_text)

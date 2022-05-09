@@ -199,6 +199,10 @@ def test_voice_selection_format_ogg(qtbot):
 
     # change options
     format_widget = dialog.findChild(aqt.qt.QComboBox, "voice_option_format")
+
+    # default should be mp3
+    assert format_widget.currentText() == 'mp3'
+
     format_widget.setCurrentText('ogg_opus')
 
     expected_output = {
