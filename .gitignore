@@ -5,6 +5,7 @@ temp/
 .vscode/
 htmlcov/
 user_files/*.mp3
+user_files/*.ogg
 web/node_modules/
 web/package-lock.json
 # these get built
@@ -13,3 +14,4 @@ web/package-lock.json
 # temporary files when testing
 converted_wav.wav
 generated_audio.mp3
+generated_audio.ogg

@@ -93,6 +93,7 @@ PYCMD_ADD_AUDIO_PREFIX = 'hypertts:addaudio:'
 PYCMD_PREVIEW_AUDIO_PREFIX = 'hypertts:previewaudio:'
 
 UNDO_ENTRY_NAME = ADDON_NAME + ': Add Audio to Notes'
+UNDO_ENTRY_ADD_TTS_TAG = ADDON_NAME + ': Configure Realtime TTS Tag'
 
 GREEN_STYLESHEET = 'background-color: #69F0AE;'
 RED_STYLESHEET = 'background-color: #FFCDD2;'
@@ -161,6 +162,7 @@ GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL = """Enter your email to get trial acces
 
 GUI_TEXT_REALTIME_SINGLE_NOTE = """Please select a single note to add Realtime Audio"""
 GUI_TEXT_REALTIME_CHOOSE_TEMPLATE = """Choose card template"""
+GUI_TEXT_REALTIME_REMOVED_TAG = """Removed TTS Tag. Realtime audio will not play anymore."""
 
 GUI_TEXT_SHORTCUTS_ANKI_RESTART = """Note: You'll need to restart Anki after modifying these shortcuts."""
 
@@ -187,8 +189,4 @@ class Gender(enum.Enum):
     Male = enum.auto()
     Female = enum.auto()
     Any = enum.auto()
-
-class VoiceOptionTypes(enum.Enum):
-    number = enum.auto()
-    number_int = enum.auto()
 

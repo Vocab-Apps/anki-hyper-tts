@@ -106,6 +106,9 @@ class MockAnkiUtils():
     def undo_start(self):
         self.undo_started = True
 
+    def undo_tts_tag_start(self):
+        self.undo_started = True
+
     def undo_end(self, undo_id):
         self.undo_finished = True
 

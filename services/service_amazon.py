@@ -11,6 +11,7 @@ voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_ser
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
+options = __import__('options', globals(), locals(), [], sys._addon_import_level_services)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
 logger = logging_utils.get_child_logger(__name__)
 
@@ -79,7 +80,7 @@ class Amazon(service.ServiceBase):
     def voice_list(self):
         return self.basic_voice_list()
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice.VoiceBase, voice_options):
         # try to get mandatory configuration items to ensure configuration has been done
         aws_access_key_id=self.get_configuration_value_mandatory(self.CONFIG_ACCESS_KEY_ID)
         aws_secret_access_key=self.get_configuration_value_mandatory(self.CONFIG_SECRET_ACCESS_KEY)
@@ -88,10 +89,17 @@ class Amazon(service.ServiceBase):
         if throttle_seconds > 0:
             time.sleep(throttle_seconds)        
 
-        pitch = options.get('pitch', voice.options['pitch']['default'])
+        pitch = voice_options.get('pitch', voice.options['pitch']['default'])
         pitch_str = f'{pitch:+.0f}%'
-        rate = options.get('rate', voice.options['rate']['default'])
+        rate = voice_options.get('rate', voice.options['rate']['default'])
         rate_str = f'{rate:0.0f}%'
+
+        audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
+        audio_format = options.AudioFormat[audio_format_str]
+        audio_format_map = {
+            options.AudioFormat.mp3: 'mp3',
+            options.AudioFormat.ogg_vorbis: 'ogg_vorbis'
+        }
 
         prosody_tags = f'pitch="{pitch_str}" rate="{rate_str}"'
         if voice.voice_key['engine'] == 'neural':
@@ -106,7 +114,7 @@ class Amazon(service.ServiceBase):
 </speak>"""
 
         try:
-            response = self.polly_client.synthesize_speech(Text=ssml_str, TextType="ssml", OutputFormat="mp3", VoiceId=voice.voice_key['voice_id'], Engine=voice.voice_key['engine'])
+            response = self.polly_client.synthesize_speech(Text=ssml_str, TextType="ssml", OutputFormat=audio_format_map[audio_format], VoiceId=voice.voice_key['voice_id'], Engine=voice.voice_key['engine'])
         except (botocore.exceptions.BotoCoreError, botocore.exceptions.ClientError) as error:
             raise errors.RequestError(source_text, voice, str(error))
 

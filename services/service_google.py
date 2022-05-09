@@ -8,6 +8,7 @@ voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_ser
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
+options = __import__('options', globals(), locals(), [], sys._addon_import_level_services)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
 logger = logging_utils.get_child_logger(__name__)
 
@@ -40,7 +41,7 @@ class Google(service.ServiceBase):
     def voice_list(self):
         return self.basic_voice_list()
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice.VoiceBase, voice_options):
         # configuration options
         api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
         is_explorer_api_key = self.get_configuration_value_optional(self.CONFIG_EXPLORER_API_KEY, False)
@@ -49,11 +50,18 @@ class Google(service.ServiceBase):
         if throttle_seconds > 0:
             time.sleep(throttle_seconds)
 
+        audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
+        audio_format = options.AudioFormat[audio_format_str]
+        audio_format_map = {
+            options.AudioFormat.mp3: 'MP3',
+            options.AudioFormat.ogg_opus: 'OGG_OPUS'
+        }
+
         payload = {
             "audioConfig": {
-                "audioEncoding": "MP3",
-                "pitch": options.get('pitch', voice.options['pitch']['default']),
-                "speakingRate": options.get('speaking_rate', voice.options['speaking_rate']['default']),
+                "audioEncoding": audio_format_map[audio_format],
+                "pitch": voice_options.get('pitch', voice.options['pitch']['default']),
+                "speakingRate": voice_options.get('speaking_rate', voice.options['speaking_rate']['default']),
             },
             "input": {
                 "ssml": f"<speak>{source_text}</speak>"

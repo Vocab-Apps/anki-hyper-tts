@@ -5,3 +5,4 @@ anki
 coverage
 azure-cognitiveservices-speech
 pydub
+python-magic

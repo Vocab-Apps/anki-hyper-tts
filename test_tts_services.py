@@ -9,6 +9,7 @@ import pytest
 import pprint
 import unittest
 import pydub
+import magic
 import azure.cognitiveservices.speech
 import azure.cognitiveservices.speech.audio
 
@@ -20,6 +21,7 @@ import errors
 import languages
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+options = __import__('options', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
 
 # add external dir to sys.path
@@ -133,20 +135,39 @@ class TTSTests(unittest.TestCase):
             replace(':', '').lower()
         return result_text
 
-    def verify_audio_output(self, voice, source_text, expected_text_override=None):
-        audio_data = self.manager.get_tts_audio(source_text, voice, {}, 
+    def verify_audio_output(self, voice, source_text, expected_text_override=None, voice_options={}):
+        audio_data = self.manager.get_tts_audio(source_text, voice, voice_options, 
             context.AudioRequestContext(constants.AudioRequestReason.batch))
         assert len(audio_data) > 0
 
-        output_temp_filename = "generated_audio.mp3"
+        audio_format = options.AudioFormat.mp3
+        if options.AUDIO_FORMAT_PARAMETER in voice_options:
+            audio_format = options.AudioFormat[voice_options[options.AUDIO_FORMAT_PARAMETER]]
+        extension_map = {
+            options.AudioFormat.mp3: 'mp3',
+            options.AudioFormat.ogg_vorbis: 'ogg',
+            options.AudioFormat.ogg_opus: 'ogg',
+        }
+
+        output_temp_filename = f'generated_audio.{extension_map[audio_format]}'
         # cannot use tempfiles because windows is weird
         out = open(output_temp_filename, "wb")
         out.write(audio_data)
         out.close()
+        file_type = magic.from_file(output_temp_filename)
 
         speech_config = azure.cognitiveservices.speech.SpeechConfig(subscription=os.environ['AZURE_SERVICES_KEY'], region='eastus')
 
-        sound = pydub.AudioSegment.from_mp3(output_temp_filename)
+
+        if audio_format == options.AudioFormat.mp3:
+            self.assertIn('MPEG ADTS, layer III', file_type)
+            sound = pydub.AudioSegment.from_mp3(output_temp_filename)
+        elif audio_format == options.AudioFormat.ogg_opus:
+            self.assertIn('Ogg data, Opus audio', file_type)
+            sound = pydub.AudioSegment.from_ogg(output_temp_filename)
+        elif audio_format == options.AudioFormat.ogg_vorbis:
+            self.assertIn('Ogg data, Vorbis audio', file_type)
+            sound = pydub.AudioSegment.from_ogg(output_temp_filename)
         # cannot use tempfiles because windows is weird
         wav_filepath = "converted_wav.wav"
         out_filehandle = sound.export(wav_filepath, format="wav")
@@ -206,6 +227,8 @@ class TTSTests(unittest.TestCase):
 
 
     def test_google(self):
+        service_name = 'Google'
+
         voice_list = self.manager.full_voice_list()
         google_voices = [voice for voice in voice_list if voice.service.name == 'Google']
         # print(voice_list)
@@ -219,6 +242,10 @@ class TTSTests(unittest.TestCase):
         # french
         selected_voice = self.pick_random_voice(voice_list, 'Google', languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
+
+        # test ogg format
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence', voice_options={'format': 'ogg_opus'})
 
         # error checking
         # try a voice which doesn't exist
@@ -260,6 +287,10 @@ class TTSTests(unittest.TestCase):
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
 
+        # test ogg format
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence', voice_options={'format': 'ogg_opus'})
+
         # error checking
         # try a voice which doesn't exist
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
@@ -295,6 +326,10 @@ class TTSTests(unittest.TestCase):
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+        # test ogg format
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence', voice_options={'format': 'ogg_vorbis'})
 
     def test_vocalware(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_vocalware'

@@ -18,6 +18,7 @@ git push origin ${GIT_TAG}
 rm meta.json
 rm -rf __pycache__
 rm user_files/*.mp3
+rm user_files/*.ogg
 rm -rvf htmlcov/
 ADDON_FILENAME=${HOME}/anki-addons-releases/anki-hyper-tts-${VERSION_NUMBER}.ankiaddon
 zip --exclude "*node_modules*" "*__pycache__*" "test_*.py" "*test_services*" "*.ini" "*.workspace" "*.md" "*.sh" requirements.txt "*.code-workspace" "web" -r ${ADDON_FILENAME} *

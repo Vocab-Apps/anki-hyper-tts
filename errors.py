@@ -59,6 +59,11 @@ class PresetNotFound(HyperTTSError):
         message = f'Preset not found: {preset_name}]'
         super().__init__(message)
 
+class RealtimePresetNotFound(HyperTTSError):
+    def __init__(self, preset_name):
+        message = f'Realtime Preset not found: {preset_name}. Please remove, then re-add TTS tag.]'
+        super().__init__(message)        
+
 
 class MissingDirectory(HyperTTSError):
     def __init__(self, directory):

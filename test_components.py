@@ -120,6 +120,20 @@ def test_voice_selection_defaults_single(qtbot):
 
     # dialog.exec_()
     
+def test_voice_selection_manual(qtbot):
+    # HYPERTTS_VOICE_SELECTION_DIALOG_DEBUG=yes pytest test_components.py -k test_voice_selection_manual -s -rPP
+    hypertts_instance = get_hypertts_instance()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+
+    if os.environ.get('HYPERTTS_VOICE_SELECTION_DIALOG_DEBUG', 'no') == 'yes':
+        dialog.exec_()
+
 def test_voice_selection_single_1(qtbot):
     hypertts_instance = get_hypertts_instance()
 
@@ -166,6 +180,43 @@ def test_voice_selection_single_1(qtbot):
             },
             'options': {
                 'speaking_rate': 0.25
+            }
+        }        
+    }
+    assert voiceselection.serialize() == expected_output        
+
+def test_voice_selection_format_ogg(qtbot):
+    hypertts_instance = get_hypertts_instance()
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+
+    voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
+
+    # change options
+    format_widget = dialog.findChild(aqt.qt.QComboBox, "voice_option_format")
+
+    # default should be mp3
+    assert format_widget.currentText() == 'mp3'
+
+    format_widget.setCurrentText('ogg_opus')
+
+    expected_output = {
+        'voice_selection_mode': 'single',
+        'voice': {
+            'voice': {
+                'gender': 'Female', 
+                'language': 'en_US',
+                'name': 'voice_a_2', 
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_2'}
+            },
+            'options': {
+                'format': 'ogg_opus'
             }
         }        
     }
@@ -499,6 +550,38 @@ def test_voice_selection_load_model(qtbot):
     speaking_rate_widget = voiceselection.voice_options_widgets['voice_option_speaking_rate']
     assert speaking_rate_widget != None
     assert speaking_rate_widget.value() == 3.5
+
+    # single voice, ogg format
+    # ========================
+
+    model = config_models.VoiceSelectionSingle()
+    model.voice = config_models.VoiceWithOptions(voice_a_2, {'format': 'ogg_opus'})
+
+    voiceselection.load_model(model)
+
+    assert voiceselection.radio_button_single.isChecked()
+    assert voiceselection.voices_combobox.currentText() == str(voice_a_2)
+
+
+    format_widget = voiceselection.voice_options_widgets['voice_option_format']
+    assert format_widget != None
+    assert format_widget.currentText() == 'ogg_opus'
+
+    # single voice, mp3 format
+    # ========================
+
+    model = config_models.VoiceSelectionSingle()
+    model.voice = config_models.VoiceWithOptions(voice_a_2, {'format': 'mp3'})
+
+    voiceselection.load_model(model)
+
+    assert voiceselection.radio_button_single.isChecked()
+    assert voiceselection.voices_combobox.currentText() == str(voice_a_2)
+
+
+    format_widget = voiceselection.voice_options_widgets['voice_option_format']
+    assert format_widget != None
+    assert format_widget.currentText() == 'mp3'
 
     # random
     # =======
