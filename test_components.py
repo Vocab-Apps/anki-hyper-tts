@@ -131,7 +131,7 @@ def test_voice_selection_manual(qtbot):
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
-    if os.environ['HYPERTTS_VOICE_SELECTION_DIALOG_DEBUG'] == 'yes':
+    if os.environ.get('HYPERTTS_VOICE_SELECTION_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec_()
 
 def test_voice_selection_single_1(qtbot):
@@ -550,6 +550,38 @@ def test_voice_selection_load_model(qtbot):
     speaking_rate_widget = voiceselection.voice_options_widgets['voice_option_speaking_rate']
     assert speaking_rate_widget != None
     assert speaking_rate_widget.value() == 3.5
+
+    # single voice, ogg format
+    # ========================
+
+    model = config_models.VoiceSelectionSingle()
+    model.voice = config_models.VoiceWithOptions(voice_a_2, {'format': 'ogg_opus'})
+
+    voiceselection.load_model(model)
+
+    assert voiceselection.radio_button_single.isChecked()
+    assert voiceselection.voices_combobox.currentText() == str(voice_a_2)
+
+
+    format_widget = voiceselection.voice_options_widgets['voice_option_format']
+    assert format_widget != None
+    assert format_widget.currentText() == 'ogg_opus'
+
+    # single voice, mp3 format
+    # ========================
+
+    model = config_models.VoiceSelectionSingle()
+    model.voice = config_models.VoiceWithOptions(voice_a_2, {'format': 'mp3'})
+
+    voiceselection.load_model(model)
+
+    assert voiceselection.radio_button_single.isChecked()
+    assert voiceselection.voices_combobox.currentText() == str(voice_a_2)
+
+
+    format_widget = voiceselection.voice_options_widgets['voice_option_format']
+    assert format_widget != None
+    assert format_widget.currentText() == 'mp3'
 
     # random
     # =======

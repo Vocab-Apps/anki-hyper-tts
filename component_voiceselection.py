@@ -90,7 +90,14 @@ class VoiceSelection(component_common.ConfigComponentBase):
             for key, value in model.voice.options.items():
                 widget_name = f'voice_option_{key}'
                 logger.info(f'setting value of {key} to {value}')
-                self.voice_options_widgets[widget_name].setValue(value)
+                voice_option_widget = self.voice_options_widgets[widget_name]
+                setCurrentTextFn = getattr(voice_option_widget, 'setCurrentText', None)
+                if callable(setCurrentTextFn):
+                    # qcombobox detected
+                    voice_option_widget.setCurrentText(value)
+                else:
+                    # slider
+                    self.voice_options_widgets[widget_name].setValue(value)
         elif model.selection_mode == constants.VoiceSelectionMode.random:
             self.radio_button_random.setChecked(True)
             self.voice_selection_model = model
