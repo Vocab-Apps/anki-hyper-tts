@@ -7,6 +7,7 @@ voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_ser
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
+options = __import__('options', globals(), locals(), [], sys._addon_import_level_services)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
 logger = logging_utils.get_child_logger(__name__)
 
@@ -86,7 +87,7 @@ class Azure(service.ServiceBase):
     def voice_list(self):
         return self.basic_voice_list()
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice.VoiceBase, voice_options):
 
         region = self.get_configuration_value_mandatory(self.CONFIG_REGION)
         subscription_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
@@ -100,8 +101,15 @@ class Azure(service.ServiceBase):
 
         voice_name = voice.voice_key['name']
 
-        rate = options.get('rate', voice.options['rate']['default'])
-        pitch = options.get('pitch', voice.options['pitch']['default'])
+        rate = voice_options.get('rate', voice.options['rate']['default'])
+        pitch = voice_options.get('pitch', voice.options['pitch']['default'])
+
+        audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
+        audio_format = options.AudioFormat[audio_format_str]
+        audio_format_map = {
+            options.AudioFormat.mp3: 'audio-24khz-96kbitrate-mono-mp3',
+            options.AudioFormat.ogg_opus: 'ogg-48khz-16bit-mono-opus'
+        }
 
         base_url = f'https://{region}.tts.speech.microsoft.com/'
         url_path = 'cognitiveservices/v1'
@@ -109,7 +117,7 @@ class Azure(service.ServiceBase):
         headers = {
             'Authorization': 'Bearer ' + self.access_token,
             'Content-Type': 'application/ssml+xml',
-            'X-Microsoft-OutputFormat': 'audio-24khz-96kbitrate-mono-mp3',
+            'X-Microsoft-OutputFormat': audio_format_map[audio_format],
             'User-Agent': 'anki-hyper-tts'
         }
 
