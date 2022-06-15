@@ -9,6 +9,11 @@ batch_status = __import__('batch_status', globals(), locals(), [], sys._addon_im
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_child_logger(__name__)
 
+class TableRepaintTimer():
+    def __init__(self, delay_ms):
+        self.delay_ms = delay_ms
+        self.timer_obj = None
+
 
 class BatchPreviewTableModel(aqt.qt.QAbstractTableModel):
     def __init__(self, batch_status):
@@ -90,6 +95,8 @@ class BatchPreview(component_common.ComponentBase):
         self.selected_row = None
 
         self.apply_to_notes_batch_started = False
+
+        self.table_repaint_timer = TableRepaintTimer(500)
 
     def load_model(self, model):
         self.batch_model = model
@@ -226,12 +233,20 @@ class BatchPreview(component_common.ComponentBase):
     def update_progress_bar(self, row):
         self.progress_bar.setValue(row + 1)
 
+    def table_viewport_repaint_refresh_timer(self):
+        # needs to be called on main thread
+        self.hypertts.anki_utils.call_on_timer_expire(self.table_repaint_timer, self.table_viewport_repaint)        
+
+    def table_viewport_repaint(self):
+        if self.table_view != None:
+            # logger.info('table_viewport_repaint')
+            self.table_view.viewport().repaint()
+
     def batch_change(self, note_id, row):
         # logger.info(f'change_listener row {row}')
         self.hypertts.anki_utils.run_on_main(lambda: self.batch_preview_table_model.notifyChange(row))
-        if self.table_view != None:
-            self.hypertts.anki_utils.run_on_main(lambda: self.table_view.viewport().repaint())
         self.hypertts.anki_utils.run_on_main(lambda: self.update_progress_bar(row))
+        self.hypertts.anki_utils.run_on_main(lambda: self.table_viewport_repaint_refresh_timer())
         if row == self.selected_row:
             self.hypertts.anki_utils.run_on_main(self.update_error_label_for_selected)
             self.hypertts.anki_utils.run_on_main(self.report_sample_text)
