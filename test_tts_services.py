@@ -187,6 +187,7 @@ class TTSTests(unittest.TestCase):
             languages.AudioLanguage.he_IL: 'he-IL',
             languages.AudioLanguage.tr_TR: 'tr-TR',
             languages.AudioLanguage.ru_RU: 'ru-RU',
+            languages.AudioLanguage.th_TH: 'th-TH',
         }
 
         recognition_language = recognition_language_map[voice.language]
@@ -503,6 +504,9 @@ class TTSTests(unittest.TestCase):
         self.verify_audio_output(selected_voice, '여보세요')
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ja_JP)
         self.verify_audio_output(selected_voice, 'おはようございます')
+
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.th_TH)
+        self.verify_audio_output(selected_voice, 'สวัสดีค่ะ')
 
 
     def test_collins(self):
