@@ -293,32 +293,43 @@ class Windows(service.ServiceBase):
             'options': options
         }
         file_hash = hashlib.sha224(str(combined_data).encode('utf-8')).hexdigest()        
-        filename = f'hypertts_{file_hash}.wav'
 
-        logger.debug(f'writing to file {filename}')
+        # python/windows somehow doesn't handle temporary files. create files in %TEMP% instead, 
+        # the user should have write access to that location.
+        temp_dir = os.environ['TEMP']
+        filename_wav = f'hypertts-{file_hash}.wav'
+        filename_mp3 = f'hypertts-{file_hash}.mp3'
+        
+        full_path_wav = os.path.join(temp_dir, filename_wav)
+        full_path_mp3 = os.path.join(temp_dir, filename_mp3)
+
+        logger.debug(f'writing to file {full_path_wav}')
 
         speaker.Voice = self.get_sapi_voice_by_name(voice.voice_key)
 
+        logger.debug(f'opening stream')
         stream = win32com.client.Dispatch('SAPI.SPFileStream')
-        stream.Open(filename, comtypes.gen.SpeechLib.SSFMCreateForWrite)
+        stream.Open(full_path_wav, comtypes.gen.SpeechLib.SSFMCreateForWrite)
         temp_stream = speaker.AudioOutputStream
         speaker.AudioOutputStream = stream
         speaker.Speak(source_text)
         speaker.AudioOutputStream = temp_stream
         stream.close()
+
+        logger.debug(f'closing stream')
         
         # convert wav to mp3
-        filename_mp3 = f'hypertts_{file_hash}.mp3'
-        logger.debug(f'converting from {filename} to {filename_mp3}')
-        aqt.sound._encode_mp3(filename, filename_mp3)
+        logger.debug(f'converting from {full_path_wav} to {full_path_mp3}')
+        aqt.sound._encode_mp3(full_path_wav, full_path_mp3)
 
         # read filename contents
-        f = open(filename_mp3, 'rb')
+        f = open(full_path_mp3, 'rb')
         content = f.read()
         f.close()
 
         # remove temporary files
-        os.remove(filename_mp3)
+        # note: the conversion process seems to have removed the original wav file
+        os.remove(full_path_mp3)
 
         return content
 
