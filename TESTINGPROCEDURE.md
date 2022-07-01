@@ -20,7 +20,7 @@ coverage erase
 # need to activate virtual env
 c:\storage\dev\env-anki-hyper-tts\Scripts\activate
 # setup PATH
-set PATH=C:\Program Files\Anki;C:\storage\dev\libav;%PATH%
+set PATH=C:\Program Files\Anki\audio;C:\storage\dev\libav;%PATH%
 # set tts keys
 cat language_tools_tts_dev.sh | sed 's/export/set/g'
 cat hypertts_testing_keys.sh  | sed 's/export/set/g'
