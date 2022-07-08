@@ -6,4 +6,3 @@ coverage
 azure-cognitiveservices-speech
 pydub
 python-magic
-python-magic-bin
