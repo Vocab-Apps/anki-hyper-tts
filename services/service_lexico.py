@@ -51,9 +51,10 @@ class Lexico(service.ServiceBase):
         h3_pronunciations = soup.find('h3', {'class': 'pronunciations'})
         if h3_pronunciations != None:
             audio_tag = h3_pronunciations.find('audio')
-            sound_url = audio_tag['src']
-            response = requests.get(sound_url, headers=headers)
-            return response.content                            
+            if audio_tag != None:
+                sound_url = audio_tag['src']
+                response = requests.get(sound_url, headers=headers)
+                return response.content                            
 
         # if we couldn't locate the source tag, raise notfound
         raise errors.AudioNotFoundError(source_text, voice)

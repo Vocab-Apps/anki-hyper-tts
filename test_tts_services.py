@@ -627,6 +627,14 @@ class TTSTests(unittest.TestCase):
                           {},
                           context.AudioRequestContext(constants.AudioRequestReason.batch))
 
+        # saw this issue on sentry
+        self.assertRaises(errors.AudioNotFoundError, 
+                          self.manager.get_tts_audio,
+                          "to be at one's wits' end", # non-existent word
+                          selected_voice,
+                          {},
+                          context.AudioRequestContext(constants.AudioRequestReason.batch))                          
+
     def test_dwds(self):
         # pytest test_tts_services.py -k test_dwds
         service_name = 'DigitalesWorterbuchDeutschenSprache'
