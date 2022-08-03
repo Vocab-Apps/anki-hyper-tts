@@ -242,7 +242,7 @@ class TTSTests(unittest.TestCase):
 
         # french
         selected_voice = self.pick_random_voice(voice_list, 'Google', languages.AudioLanguage.fr_FR)
-        self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
+        self.verify_audio_output(selected_voice, 'Je ne suis pas disponible.')
 
         # test ogg format
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
@@ -286,7 +286,7 @@ class TTSTests(unittest.TestCase):
 
         # french
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
-        self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
+        self.verify_audio_output(selected_voice, 'Je ne suis pas disponible.')
 
         # test ogg format
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
@@ -447,7 +447,7 @@ class TTSTests(unittest.TestCase):
 
         # french
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
-        self.verify_audio_output(selected_voice, 'Je ne suis pas intéressé.')
+        self.verify_audio_output(selected_voice, 'Je ne suis pas disponible.')
 
         # hebrew
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.he_IL)
