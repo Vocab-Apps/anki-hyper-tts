@@ -326,6 +326,14 @@ class AudioLanguage(enum.Enum):
     zh_CN = (Language.zh_cn, "Chinese (Mandarin, Simplified)")
     zh_HK = (Language.yue, "Chinese (Cantonese, Traditional)")
     zh_TW = (Language.zh_tw, "Chinese (Taiwanese Mandarin)")
+
+    # azure has introduced a bunch of new mandarin locales
+    zh_CN_henan = (Language.zh_cn, 'Chinese (Zhongyuan Mandarin Henan, Simplified)')
+    zh_CN_liaoning = (Language.zh_cn, 'Chinese (Northeastern Mandarin, Simplified)')
+    zh_CN_shaanxi = (Language.zh_cn, 'Chinese (Zhongyuan Mandarin Shaanxi, Simplified)')
+    zh_CN_shandong = (Language.zh_cn, 'Chinese (Jilu Mandarin, Simplified)')
+    zh_CN_sichuan = (Language.zh_cn, 'Chinese (Southwestern Mandarin, Simplified)')
+
     fa_IR = (Language.fa, "Persian (Iran)")
     zu_ZA = (Language.zu, "Zulu (South Africa)")
 
@@ -344,7 +352,8 @@ AudioLanguageDefaults = {
     Language.nl: AudioLanguage.nl_NL,
     Language.sw: AudioLanguage.sw_TZ,
     Language.ta: AudioLanguage.ta_IN,
-    Language.ur: AudioLanguage.ur_PK
+    Language.ur: AudioLanguage.ur_PK,
+    Language.zh_cn: AudioLanguage.zh_CN
 }
 
 # if only one locale is available, make that the default
