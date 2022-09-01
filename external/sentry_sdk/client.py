@@ -48,6 +48,9 @@ def _get_options(*args, **kwargs):
     else:
         dsn = None
 
+    if len(args) > 1:
+        raise TypeError("Only single positional argument is expected")
+
     rv = dict(DEFAULT_OPTIONS)
     options = dict(*args, **kwargs)
     if dsn is not None and options.get("dsn") is None:
@@ -224,17 +227,18 @@ class _Client(object):
         if exc_info is None:
             return False
 
-        type_name = get_type_name(exc_info[0])
-        full_name = "%s.%s" % (exc_info[0].__module__, type_name)
+        error = exc_info[0]
+        error_type_name = get_type_name(exc_info[0])
+        error_full_name = "%s.%s" % (exc_info[0].__module__, error_type_name)
 
-        for errcls in self.options["ignore_errors"]:
+        for ignored_error in self.options["ignore_errors"]:
             # String types are matched against the type name in the
             # exception only
-            if isinstance(errcls, string_types):
-                if errcls == full_name or errcls == type_name:
+            if isinstance(ignored_error, string_types):
+                if ignored_error == error_full_name or ignored_error == error_type_name:
                     return True
             else:
-                if issubclass(exc_info[0], errcls):
+                if issubclass(error, ignored_error):
                     return True
 
         return False
@@ -246,23 +250,35 @@ class _Client(object):
         scope=None,  # type: Optional[Scope]
     ):
         # type: (...) -> bool
-        if event.get("type") == "transaction":
-            # Transactions are sampled independent of error events.
+        # Transactions are sampled independent of error events.
+        is_transaction = event.get("type") == "transaction"
+        if is_transaction:
             return True
 
-        if scope is not None and not scope._should_capture:
+        ignoring_prevents_recursion = scope is not None and not scope._should_capture
+        if ignoring_prevents_recursion:
             return False
 
-        if (
+        ignored_by_config_option = self._is_ignored_error(event, hint)
+        if ignored_by_config_option:
+            return False
+
+        return True
+
+    def _should_sample_error(
+        self,
+        event,  # type: Event
+    ):
+        # type: (...) -> bool
+        not_in_sample_rate = (
             self.options["sample_rate"] < 1.0
             and random.random() >= self.options["sample_rate"]
-        ):
-            # record a lost event if we did not sample this.
+        )
+        if not_in_sample_rate:
+            # because we will not sample this event, record a "lost event".
             if self.transport:
                 self.transport.record_lost_event("sample_rate", data_category="error")
-            return False
 
-        if self._is_ignored_error(event, hint):
             return False
 
         return True
@@ -343,14 +359,24 @@ class _Client(object):
         if session:
             self._update_session_from_event(session, event)
 
-        attachments = hint.get("attachments")
         is_transaction = event_opt.get("type") == "transaction"
+
+        if not is_transaction and not self._should_sample_error(event):
+            return None
+
+        attachments = hint.get("attachments")
 
         # this is outside of the `if` immediately below because even if we don't
         # use the value, we want to make sure we remove it before the event is
         # sent
         raw_tracestate = (
             event_opt.get("contexts", {}).get("trace", {}).pop("tracestate", "")
+        )
+
+        dynamic_sampling_context = (
+            event_opt.get("contexts", {})
+            .get("trace", {})
+            .pop("dynamic_sampling_context", {})
         )
 
         # Transactions or events with attachments should go to the /envelope/
@@ -362,15 +388,23 @@ class _Client(object):
                 "sent_at": format_timestamp(datetime.utcnow()),
             }
 
-            tracestate_data = raw_tracestate and reinflate_tracestate(
-                raw_tracestate.replace("sentry=", "")
-            )
-            if tracestate_data and has_tracestate_enabled():
-                headers["trace"] = tracestate_data
+            if has_tracestate_enabled():
+                tracestate_data = raw_tracestate and reinflate_tracestate(
+                    raw_tracestate.replace("sentry=", "")
+                )
+
+                if tracestate_data:
+                    headers["trace"] = tracestate_data
+            elif dynamic_sampling_context:
+                headers["trace"] = dynamic_sampling_context
 
             envelope = Envelope(headers=headers)
 
             if is_transaction:
+                if "profile" in event_opt:
+                    event_opt["profile"]["transaction_id"] = event_opt["event_id"]
+                    event_opt["profile"]["version_name"] = event_opt.get("release", "")
+                    envelope.add_profile(event_opt.pop("profile"))
                 envelope.add_transaction(event_opt)
             else:
                 envelope.add_event(event_opt)
@@ -450,7 +484,6 @@ if MYPY:
 
     class Client(ClientConstructor, _Client):
         pass
-
 
 else:
     # Alias `get_options` for actual usage. Go through the lambda indirection

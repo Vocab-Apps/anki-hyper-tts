@@ -3,7 +3,11 @@ import contextlib
 from inspect import iscoroutinefunction
 
 from sentry_sdk.hub import Hub, _should_send_default_pii
-from sentry_sdk.tracing import Transaction
+from sentry_sdk.tracing import (
+    TRANSACTION_SOURCE_COMPONENT,
+    TRANSACTION_SOURCE_ROUTE,
+    Transaction,
+)
 from sentry_sdk.utils import (
     HAS_REAL_CONTEXTVARS,
     CONTEXTVARS_ERROR_MESSAGE,
@@ -21,7 +25,7 @@ from sentry_sdk.integrations.logging import ignore_logger
 from sentry_sdk._compat import iteritems
 
 try:
-    from tornado import version_info as TORNADO_VERSION  # type: ignore
+    from tornado import version_info as TORNADO_VERSION
     from tornado.web import RequestHandler, HTTPError
     from tornado.gen import coroutine
 except ImportError:
@@ -58,7 +62,7 @@ class TornadoIntegration(Integration):
 
         ignore_logger("tornado.access")
 
-        old_execute = RequestHandler._execute  # type: ignore
+        old_execute = RequestHandler._execute
 
         awaitable = iscoroutinefunction(old_execute)
 
@@ -79,16 +83,16 @@ class TornadoIntegration(Integration):
                     result = yield from old_execute(self, *args, **kwargs)
                     return result
 
-        RequestHandler._execute = sentry_execute_request_handler  # type: ignore
+        RequestHandler._execute = sentry_execute_request_handler
 
         old_log_exception = RequestHandler.log_exception
 
         def sentry_log_exception(self, ty, value, tb, *args, **kwargs):
             # type: (Any, type, BaseException, Any, *Any, **Any) -> Optional[Any]
             _capture_exception(ty, value, tb)
-            return old_log_exception(self, ty, value, tb, *args, **kwargs)  # type: ignore
+            return old_log_exception(self, ty, value, tb, *args, **kwargs)
 
-        RequestHandler.log_exception = sentry_log_exception  # type: ignore
+        RequestHandler.log_exception = sentry_log_exception
 
 
 @contextlib.contextmanager
@@ -105,7 +109,7 @@ def _handle_request_impl(self):
     with Hub(hub) as hub:
         with hub.configure_scope() as scope:
             scope.clear_breadcrumbs()
-            processor = _make_event_processor(weak_handler)  # type: ignore
+            processor = _make_event_processor(weak_handler)
             scope.add_event_processor(processor)
 
         transaction = Transaction.continue_from_headers(
@@ -116,6 +120,7 @@ def _handle_request_impl(self):
             # sentry_urldispatcher_resolve is responsible for
             # setting a transaction name later.
             name="generic Tornado request",
+            source=TRANSACTION_SOURCE_ROUTE,
         )
 
         with hub.start_transaction(
@@ -155,8 +160,9 @@ def _make_event_processor(weak_handler):
         request = handler.request
 
         with capture_internal_exceptions():
-            method = getattr(handler, handler.request.method.lower())  # type: ignore
+            method = getattr(handler, handler.request.method.lower())
             event["transaction"] = transaction_from_function(method)
+            event["transaction_info"] = {"source": TRANSACTION_SOURCE_COMPONENT}
 
         with capture_internal_exceptions():
             extractor = TornadoRequestExtractor(request)

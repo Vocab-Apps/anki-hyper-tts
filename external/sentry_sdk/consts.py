@@ -33,6 +33,8 @@ if MYPY:
             "record_sql_params": Optional[bool],
             "smart_transaction_trimming": Optional[bool],
             "propagate_tracestate": Optional[bool],
+            "custom_measurements": Optional[bool],
+            "enable_profiling": Optional[bool],
         },
         total=False,
     )
@@ -101,7 +103,7 @@ DEFAULT_OPTIONS = _get_default_options()
 del _get_default_options
 
 
-VERSION = "1.5.5"
+VERSION = "1.9.6"
 SDK_INFO = {
     "name": "sentry.python",
     "version": VERSION,

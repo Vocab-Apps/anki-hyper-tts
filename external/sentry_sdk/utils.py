@@ -40,7 +40,6 @@ epoch = datetime(1970, 1, 1)
 logger = logging.getLogger("sentry_sdk.errors")
 
 MAX_STRING_LENGTH = 512
-MAX_FORMAT_PARAM_LENGTH = 128
 BASE64_ALPHABET = re.compile(r"^[a-zA-Z0-9/+=]*$")
 
 
@@ -162,7 +161,7 @@ class Dsn(object):
             return
         parts = urlparse.urlsplit(text_type(value))
 
-        if parts.scheme not in (u"http", u"https"):
+        if parts.scheme not in ("http", "https"):
             raise BadDsn("Unsupported scheme %r" % parts.scheme)
         self.scheme = parts.scheme
 
@@ -172,7 +171,7 @@ class Dsn(object):
         self.host = parts.hostname
 
         if parts.port is None:
-            self.port = self.scheme == "https" and 443 or 80
+            self.port = self.scheme == "https" and 443 or 80  # type: int
         else:
             self.port = parts.port
 
@@ -271,17 +270,15 @@ class Auth(object):
             type,
         )
 
-    def to_header(self, timestamp=None):
-        # type: (Optional[datetime]) -> str
+    def to_header(self):
+        # type: () -> str
         """Returns the auth header a string."""
         rv = [("sentry_key", self.public_key), ("sentry_version", self.version)]
-        if timestamp is not None:
-            rv.append(("sentry_timestamp", str(to_timestamp(timestamp))))
         if self.client is not None:
             rv.append(("sentry_client", self.client))
         if self.secret_key is not None:
             rv.append(("sentry_secret", self.secret_key))
-        return u"Sentry " + u", ".join("%s=%s" % (key, value) for key, value in rv)
+        return "Sentry " + ", ".join("%s=%s" % (key, value) for key, value in rv)
 
 
 class AnnotatedValue(object):
@@ -441,8 +438,7 @@ if PY2:
                 return rv
         except Exception:
             # If e.g. the call to `repr` already fails
-            return u"<broken repr>"
-
+            return "<broken repr>"
 
 else:
 
@@ -468,6 +464,9 @@ def filename_for_module(module, abs_path):
             return os.path.basename(abs_path)
 
         base_module_path = sys.modules[base_module].__file__
+        if not base_module_path:
+            return abs_path
+
         return abs_path.split(base_module_path.rsplit(os.sep, 2)[0], 1)[-1].lstrip(
             os.sep
         )
@@ -606,7 +605,6 @@ if HAS_CHAINED_EXCEPTIONS:
             exc_type = type(cause)
             exc_value = cause
             tb = getattr(cause, "__traceback__", None)
-
 
 else:
 
@@ -773,7 +771,7 @@ def strip_string(value, max_length=None):
 
     if length > max_length:
         return AnnotatedValue(
-            value=value[: max_length - 3] + u"...",
+            value=value[: max_length - 3] + "...",
             metadata={
                 "len": length,
                 "rem": [["!limit", "x", max_length - 3, max_length]],
@@ -931,7 +929,7 @@ def transaction_from_function(func):
 disable_capture_event = ContextVar("disable_capture_event")
 
 
-class ServerlessTimeoutWarning(Exception):
+class ServerlessTimeoutWarning(Exception):  # noqa: N818
     """Raised when a serverless method is about to reach its timeout."""
 
     pass

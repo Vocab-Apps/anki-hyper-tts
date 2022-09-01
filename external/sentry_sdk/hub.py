@@ -96,6 +96,20 @@ class _InitGuard(object):
             c.close()
 
 
+def _check_python_deprecations():
+    # type: () -> None
+    version = sys.version_info[:2]
+
+    if version == (3, 4) or version == (3, 5):
+        logger.warning(
+            "sentry-sdk 2.0.0 will drop support for Python %s.",
+            "{}.{}".format(*version),
+        )
+        logger.warning(
+            "Please upgrade to the latest version to continue receiving upgrades and bugfixes."
+        )
+
+
 def _init(*args, **kwargs):
     # type: (*Optional[str], **Any) -> ContextManager[Any]
     """Initializes the SDK and optionally integrations.
@@ -104,6 +118,7 @@ def _init(*args, **kwargs):
     """
     client = Client(*args, **kwargs)  # type: ignore
     Hub.current.bind_client(client)
+    _check_python_deprecations()
     rv = _InitGuard(client)
     return rv
 
@@ -117,9 +132,8 @@ if MYPY:
     # Use `ClientConstructor` to define the argument types of `init` and
     # `ContextManager[Any]` to tell static analyzers about the return type.
 
-    class init(ClientConstructor, ContextManager[Any]):  # noqa: N801
+    class init(ClientConstructor, _InitGuard):  # noqa: N801
         pass
-
 
 else:
     # Alias `init` for actual usage. Go through the lambda indirection to throw

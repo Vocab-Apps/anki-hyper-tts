@@ -3,7 +3,7 @@ from os import environ
 import sys
 
 from sentry_sdk.hub import Hub, _should_send_default_pii
-from sentry_sdk.tracing import Transaction
+from sentry_sdk.tracing import TRANSACTION_SOURCE_COMPONENT, Transaction
 from sentry_sdk._compat import reraise
 from sentry_sdk.utils import (
     AnnotatedValue,
@@ -139,7 +139,10 @@ def _wrap_handler(handler):
             if headers is None:
                 headers = {}
             transaction = Transaction.continue_from_headers(
-                headers, op="serverless.function", name=aws_context.function_name
+                headers,
+                op="serverless.function",
+                name=aws_context.function_name,
+                source=TRANSACTION_SOURCE_COMPONENT,
             )
             with hub.start_transaction(
                 transaction,
@@ -302,12 +305,12 @@ def get_lambda_bootstrap():
         module = sys.modules["__main__"]
         # python3.9 runtime
         if hasattr(module, "awslambdaricmain") and hasattr(
-            module.awslambdaricmain, "bootstrap"  # type: ignore
+            module.awslambdaricmain, "bootstrap"
         ):
-            return module.awslambdaricmain.bootstrap  # type: ignore
+            return module.awslambdaricmain.bootstrap
         elif hasattr(module, "bootstrap"):
             # awslambdaric python module in container builds
-            return module.bootstrap  # type: ignore
+            return module.bootstrap
 
         # python3.8 runtime
         return module

@@ -8,9 +8,10 @@ from sentry_sdk.utils import (
     event_from_exception,
 )
 from sentry_sdk._compat import PY2, reraise, iteritems
-from sentry_sdk.tracing import Transaction
+from sentry_sdk.tracing import Transaction, TRANSACTION_SOURCE_ROUTE
 from sentry_sdk.sessions import auto_session_tracking
 from sentry_sdk.integrations._wsgi_common import _filter_headers
+from sentry_sdk.profiler import profiling
 
 from sentry_sdk._types import MYPY
 
@@ -45,7 +46,6 @@ if PY2:
     def wsgi_decoding_dance(s, charset="utf-8", errors="replace"):
         # type: (str, str, str) -> str
         return s.decode(charset, errors)
-
 
 else:
 
@@ -123,12 +123,15 @@ class SentryWsgiMiddleware(object):
                             )
 
                     transaction = Transaction.continue_from_environ(
-                        environ, op="http.server", name="generic WSGI request"
+                        environ,
+                        op="http.server",
+                        name="generic WSGI request",
+                        source=TRANSACTION_SOURCE_ROUTE,
                     )
 
                     with hub.start_transaction(
                         transaction, custom_sampling_context={"wsgi_environ": environ}
-                    ):
+                    ), profiling(transaction, hub):
                         try:
                             rv = self.app(
                                 environ,
