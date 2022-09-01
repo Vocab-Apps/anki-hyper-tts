@@ -235,16 +235,16 @@ def test_voice_selection_random_1(qtbot):
     # dialog.exec_()
 
     # choose random mode
-    # qtbot.t(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
+    # qtbot.t(voiceselection.radio_button_random, aqt.qt.Qt.MouseButton.LeftButton)
     voiceselection.radio_button_random.setChecked(True)
 
     # pick second voice and add it
     voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # pick third voice and add it
     voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)    
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)    
 
     expected_output = {
         'voice_selection_mode': 'random',
@@ -288,16 +288,16 @@ def test_voice_selection_random_to_single(qtbot):
     dialog.addChildWidget(voiceselection.draw())
 
     # choose random mode
-    # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
+    # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.MouseButton.LeftButton)
     voiceselection.radio_button_random.setChecked(True)
 
     # pick second voice and add it
     voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # pick third voice and add it
     voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)    
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)    
 
     # check model change callback
     assert model_change_callback.model.selection_mode == constants.VoiceSelectionMode.random
@@ -323,16 +323,16 @@ def test_voice_selection_random_remove_voices(qtbot):
     dialog.addChildWidget(voiceselection.draw())
 
     # choose random mode
-    # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
+    # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.MouseButton.LeftButton)
     voiceselection.radio_button_random.setChecked(True)
 
     # pick second voice and add it
     voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # pick third voice and add it
     voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)    
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)    
 
     # check model change callback
     assert model_change_callback.model.selection_mode == constants.VoiceSelectionMode.random
@@ -341,7 +341,7 @@ def test_voice_selection_random_remove_voices(qtbot):
     # now remove one of the voices
     logger.info('removing voice_row_1')
     remove_voice_button = dialog.findChild(aqt.qt.QPushButton, 'remove_voice_row_1')
-    qtbot.mouseClick(remove_voice_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(remove_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # check model change callback
     assert model_change_callback.model.selection_mode == constants.VoiceSelectionMode.random
@@ -364,14 +364,14 @@ def test_voice_selection_random_2(qtbot):
 
     # add the first voice twice, but with different options
     voiceselection.voices_combobox.setCurrentIndex(1)
-    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # change options
     speaking_rate_widget = dialog.findChild(aqt.qt.QDoubleSpinBox, "voice_option_speaking_rate")
     speaking_rate_widget.setValue(0.25)    
 
     # add again
-    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # build expected voice selection model
     expected_model = config_models.VoiceSelectionRandom()
@@ -394,18 +394,18 @@ def test_voice_selection_priority_1(qtbot):
     dialog.addChildWidget(voiceselection.draw())
 
     # choose random mode
-    # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.LeftButton)
+    # qtbot.mouseClick(voiceselection.radio_button_random, aqt.qt.Qt.MouseButton.LeftButton)
     voiceselection.radio_button_priority.setChecked(True)
 
     # dialog.exec_()
 
     # pick second voice and add it
     voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # pick third voice and add it
     voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
-    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.LeftButton)    
+    qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)    
 
     expected_model = config_models.VoiceSelectionPriority()
     voice_2 = [x for x in hypertts_instance.service_manager.full_voice_list() if x.service.name == 'ServiceA' and x.name == 'voice_a_2'][0]
@@ -451,7 +451,7 @@ def test_voice_selection_filters(qtbot):
         assert voice.language.lang == languages.Language.ja
 
     # reset filters
-    qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # ensure all voices are available now
     assert len(voiceselection.filtered_voice_list) == len(voiceselection.voice_list)
@@ -466,7 +466,7 @@ def test_voice_selection_filters(qtbot):
         assert voice.gender == constants.Gender.Male
 
     # reset filters again
-    qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.MouseButton.LeftButton)
     # ensure all voices are available now
     assert len(voiceselection.filtered_voice_list) == len(voiceselection.voice_list)
     
@@ -482,7 +482,7 @@ def test_voice_selection_filters(qtbot):
         assert voice.language.lang == languages.Language.ja
 
     # reset filters again
-    qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.LeftButton)    
+    qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.MouseButton.LeftButton)    
 
     # select random mode and add some voices
     # ======================================
@@ -505,7 +505,7 @@ def test_voice_selection_samples(qtbot):
     # simulate selection from the preview grid
     voiceselection.sample_text_selected('Bonjour')
 
-    qtbot.mouseClick(voiceselection.play_sample_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(voiceselection.play_sample_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     assert hypertts_instance.anki_utils.played_sound == {
         'source_text': 'Bonjour',
@@ -843,7 +843,7 @@ def test_batch_dialog(qtbot):
     # save button should be enabled
     assert batch.profile_save_button.isEnabled() == True
     # save
-    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
     # should be disabled after saving
     assert batch.profile_save_button.isEnabled() == False
     assert batch.profile_load_button.isEnabled() == False
@@ -876,7 +876,7 @@ def test_batch_dialog(qtbot):
     assert batch.profile_load_button.text() == 'Load'
 
     # open
-    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # button should go back to disabled
     assert batch.profile_load_button.isEnabled() == False
@@ -913,11 +913,11 @@ def test_batch_dialog(qtbot):
 
     # select second row
     index_second_row = batch.preview.batch_preview_table_model.createIndex(1, 0)
-    batch.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.Select)
+    batch.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)
     # select voice
     batch.voice_selection.voices_combobox.setCurrentIndex(1)
     # press preview button
-    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
     # dialog.exec_()
 
     assert hypertts_instance.anki_utils.played_sound == {
@@ -936,7 +936,7 @@ def test_batch_dialog(qtbot):
     # ==========
 
     batch.source.source_field_combobox.setCurrentText('Chinese')
-    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # make sure notes were updated
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
@@ -967,7 +967,7 @@ def test_batch_dialog(qtbot):
 
     assert batch.profile_name_combobox.count() == 2
     assert batch.profile_name_combobox.currentText() == 'batch profile 1'
-    qtbot.mouseClick(batch.profile_delete_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.profile_delete_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # make sure the profile was deleted
     assert 'batch profile 1' not in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]    
@@ -1006,12 +1006,12 @@ def test_batch_dialog_sound_preview_error(qtbot):
 
     # select second row
     index_second_row = batch.preview.batch_preview_table_model.createIndex(1, 0)
-    batch.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.Select)
+    batch.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)
 
     # dialog.exec_()
 
     # press preview button
-    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     assert str(hypertts_instance.anki_utils.last_exception) == 'Audio not found for [hello] (voice: Japanese, Male, notfound, ServiceB)'
 
@@ -1037,13 +1037,13 @@ def test_batch_dialog_voice_selection_sample(qtbot):
 
     # now select the first row
     index_first_row = batch.preview.batch_preview_table_model.createIndex(0, 0)
-    batch.preview.table_view.selectionModel().select(index_first_row, aqt.qt.QItemSelectionModel.Select)    
+    batch.preview.table_view.selectionModel().select(index_first_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)    
 
     # button should be enabled
     assert batch.voice_selection.play_sample_button.isEnabled() == True
 
     # press button
-    qtbot.mouseClick(batch.voice_selection.play_sample_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.voice_selection.play_sample_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     assert hypertts_instance.anki_utils.played_sound == {
         'source_text': 'old people',
@@ -1061,7 +1061,7 @@ def test_batch_dialog_voice_selection_sample(qtbot):
     batch.source.source_field_combobox.setCurrentText('Chinese')
 
     # press play sample button again
-    qtbot.mouseClick(batch.voice_selection.play_sample_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.voice_selection.play_sample_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert hypertts_instance.anki_utils.played_sound == {
         'source_text': '老人家',
         'voice': {
@@ -1103,7 +1103,7 @@ def test_batch_dialog_load_missing_field(qtbot):
     batch.profile_name_combobox.setCurrentText('batch profile 1')
 
     # click save button
-    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # test loading of config
     # ======================
@@ -1120,7 +1120,7 @@ def test_batch_dialog_load_missing_field(qtbot):
     # select preset
     batch.profile_name_combobox.setCurrentText('batch profile 1')
     # load preset
-    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.LeftButton)    
+    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.MouseButton.LeftButton)    
 
     # check the target field on the model
     # ===================================
@@ -1173,7 +1173,7 @@ def test_batch_dialog_editor(qtbot):
     # test sound preview
     # ==================
     # dialog.exec_()
-    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert hypertts_instance.anki_utils.played_sound == {
         'source_text': '老人家',
         'voice': {
@@ -1195,7 +1195,7 @@ def test_batch_dialog_editor(qtbot):
     batch.target.target_field_combobox.setCurrentText('Sound')
 
     # apply not note
-    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     sound_tag = note.set_values['Sound']
     audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
@@ -1235,7 +1235,7 @@ def test_batch_dialog_editor_sound_sample(qtbot):
 
     assert batch.voice_selection.play_sample_button.isEnabled() == True
 
-    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert hypertts_instance.anki_utils.played_sound == {
         'source_text': 'old people',
         'voice': {
@@ -1305,7 +1305,7 @@ def test_text_processing(qtbot):
     assert text_processing.sample_text_transformed_label.text() == '<b>abdc1234</b>'
 
     # add a text transformation rule
-    qtbot.mouseClick(text_processing.add_replace_simple_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(text_processing.add_replace_simple_button, aqt.qt.Qt.MouseButton.LeftButton)
     # enter pattern and replacement
     row = 0
     index_pattern = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
@@ -1317,7 +1317,7 @@ def test_text_processing(qtbot):
     assert text_processing.sample_text_transformed_label.text() == '<b>abdc5678</b>'
 
     # add another transformation rule
-    qtbot.mouseClick(text_processing.add_replace_simple_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(text_processing.add_replace_simple_button, aqt.qt.Qt.MouseButton.LeftButton)
     # enter pattern and replacement
     row = 1
     index_pattern = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
@@ -1341,7 +1341,7 @@ def test_text_processing(qtbot):
 
     # add a regex rule
     # add another transformation rule
-    qtbot.mouseClick(text_processing.add_replace_regex_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(text_processing.add_replace_regex_button, aqt.qt.Qt.MouseButton.LeftButton)
     # enter pattern and replacement
     row = 2
     index_pattern = text_processing.textReplacementTableModel.createIndex(row, component_text_processing.COL_INDEX_PATTERN)
@@ -1471,7 +1471,7 @@ def test_configuration(qtbot):
     # try making changes to the service config and saving
     # ===================================================
 
-    qtbot.mouseClick(configuration.hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(configuration.hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
     qtbot.keyClicks(configuration.hyperttspro.hypertts_pro_api_key, 'error_key')
     assert configuration.model.hypertts_pro_api_key == None
 
@@ -1513,7 +1513,7 @@ def test_configuration(qtbot):
     assert configuration.save_button.isEnabled() == True
 
     # press save button
-    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert 'configuration' in hypertts_instance.anki_utils.written_config
     expected_output = {
         'hypertts_pro_api_key': None,
@@ -1542,7 +1542,7 @@ def test_configuration(qtbot):
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
 
-    qtbot.mouseClick(configuration.hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(configuration.hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
     qtbot.keyClicks(configuration.hyperttspro.hypertts_pro_api_key, 'valid_key')
     assert '250 chars' in configuration.hyperttspro.account_info_label.text()
 
@@ -1555,8 +1555,8 @@ def test_configuration(qtbot):
 
     # switch to an invalid key
     # remove key first
-    qtbot.mouseClick(configuration.hyperttspro.remove_api_key_button, aqt.qt.Qt.LeftButton)
-    qtbot.mouseClick(configuration.hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(configuration.hyperttspro.remove_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    qtbot.mouseClick(configuration.hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
     configuration.hyperttspro.hypertts_pro_api_key.setText('invalid_key')
     assert configuration.model.hypertts_pro_api_key == None
     assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
@@ -1689,7 +1689,7 @@ def test_configuration_enable_disable_services(qtbot):
 
     # enable all free services
     # ========================
-    qtbot.mouseClick(configuration.enable_all_free_services_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(configuration.enable_all_free_services_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # check effect on model
     assert configuration.model.get_service_enabled('ServiceA') == True
@@ -1707,7 +1707,7 @@ def test_configuration_enable_disable_services(qtbot):
 
     # now disable all services
     # ========================
-    qtbot.mouseClick(configuration.disable_all_services_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(configuration.disable_all_services_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert configuration.model.get_service_enabled('ServiceA') == False
     assert configuration.model.get_service_enabled('ServiceB') == False
     assert configuration.model.get_service_enabled('ServiceC') == False   
@@ -1747,17 +1747,17 @@ def test_hyperttspro_test_1(qtbot):
     # =============
 
     # enter API key
-    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
     # ensure the right stack is visible
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
     assert model_change_callback.model == None
     # click cancel
-    qtbot.mouseClick(hyperttspro.enter_api_key_cancel_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(hyperttspro.enter_api_key_cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
     # back in the main screen
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_BUTTONS
     assert model_change_callback.model == None
     # now actual enter a valid API key
-    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
     qtbot.keyClicks(hyperttspro.hypertts_pro_api_key, 'valid_key')
     # should now be in the enabled screen
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_ENABLED
@@ -1765,12 +1765,12 @@ def test_hyperttspro_test_1(qtbot):
     assert model_change_callback.model == 'valid_key'
 
     # now remove the API key
-    qtbot.mouseClick(hyperttspro.remove_api_key_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(hyperttspro.remove_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_BUTTONS
     assert model_change_callback.model == None
 
     # go back to enter API key screen
-    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert hyperttspro.hypertts_pro_api_key.text() == ''
     assert hyperttspro.api_key_validation_label.text() == ''
 
@@ -1780,7 +1780,7 @@ def test_hyperttspro_test_1(qtbot):
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
     assert model_change_callback.model == None
     # cancel
-    qtbot.mouseClick(hyperttspro.enter_api_key_cancel_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(hyperttspro.enter_api_key_cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert model_change_callback.model == None
 
     # load_model with a valid API key
@@ -1819,12 +1819,12 @@ def test_hyperttspro_test_1(qtbot):
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.draw(dialog.getLayout())    
 
-    qtbot.mouseClick(hyperttspro.trial_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(hyperttspro.trial_button, aqt.qt.Qt.MouseButton.LeftButton)
     
     # enter incorrect email
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_TRIAL
     qtbot.keyClicks(hyperttspro.trial_email_input, 'spam@spam.com')    
-    qtbot.mouseClick(hyperttspro.enter_trial_email_ok_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(hyperttspro.enter_trial_email_ok_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_TRIAL
     assert hyperttspro.trial_email_validation_label.text() == 'invalid email'
     assert model_change_callback.model == None
@@ -1832,7 +1832,7 @@ def test_hyperttspro_test_1(qtbot):
     # enter correct email
     hyperttspro.trial_email_input.setText('')
     qtbot.keyClicks(hyperttspro.trial_email_input, 'valid@email.com')    
-    qtbot.mouseClick(hyperttspro.enter_trial_email_ok_button, aqt.qt.Qt.LeftButton)    
+    qtbot.mouseClick(hyperttspro.enter_trial_email_ok_button, aqt.qt.Qt.MouseButton.LeftButton)    
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_ENABLED
     assert model_change_callback.model == 'trial_key'
 
@@ -1851,7 +1851,7 @@ def test_hyperttspro_test_1(qtbot):
     # =============
 
     # enter invalid api key (must click the button first)
-    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.LeftButton)    
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)    
     qtbot.keyClicks(hyperttspro.hypertts_pro_api_key, 'invalid_key')
     assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
@@ -1905,14 +1905,14 @@ def test_batch_dialog_load_random(qtbot):
     batch.voice_selection.radio_button_random.setChecked(True)
     # pick second voice and add it
     batch.voice_selection.voices_combobox.setCurrentIndex(1) # pick second voice
-    qtbot.mouseClick(batch.voice_selection.add_voice_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.voice_selection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
     # pick third voice and add it
     batch.voice_selection.voices_combobox.setCurrentIndex(2) # pick second voice
-    qtbot.mouseClick(batch.voice_selection.add_voice_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.voice_selection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # set profile name
     batch.profile_name_combobox.setCurrentText('batch random 1')
-    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     assert 'batch random 1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]
 
@@ -1932,14 +1932,14 @@ def test_batch_dialog_load_random(qtbot):
     batch.profile_name_combobox.setCurrentText('batch random 1')
 
     # open
-    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # check that the voice selection mode is random
     assert batch.get_model().voice_selection.selection_mode == constants.VoiceSelectionMode.random
     assert len(batch.get_model().voice_selection.get_voice_list()) == 2
 
     # apply to notes
-    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # ensure audio was applied to 2 notes
     # make sure notes were updated
@@ -2044,7 +2044,7 @@ def test_realtime_side_component(qtbot):
     realtime_side.voice_selection.voices_combobox.setCurrentIndex(1)
 
     # press sound preview
-    qtbot.mouseClick(realtime_side.preview_sound_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(realtime_side.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # ensure sound was played
     assert hypertts_instance.anki_utils.played_sound == {
@@ -2063,7 +2063,7 @@ def test_realtime_side_component(qtbot):
     # ========================
 
     # add a text transformation rule
-    qtbot.mouseClick(realtime_side.text_processing.add_replace_simple_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(realtime_side.text_processing.add_replace_simple_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # enter pattern and replacement
     row = 0
@@ -2118,7 +2118,7 @@ def test_realtime_component(qtbot):
 
     # click apply
     assert realtime.apply_button.isEnabled() == True
-    qtbot.mouseClick(realtime.apply_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(realtime.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # assertions on config saved
     assert constants.CONFIG_REALTIME_CONFIG in hypertts_instance.anki_utils.written_config
@@ -2182,7 +2182,7 @@ def test_realtime_component(qtbot):
     realtime.front.side_enabled_checkbox.setChecked(False)
 
     # save
-    qtbot.mouseClick(realtime.apply_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(realtime.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # assertions on config saved
     assert constants.CONFIG_REALTIME_CONFIG in hypertts_instance.anki_utils.written_config
@@ -2254,7 +2254,7 @@ def test_shortcuts_1(qtbot):
     assert model_change_callback.model.shortcut_editor_preview_audio == None
 
     with qtbot.waitSignal(shortcuts.editor_add_audio_key_sequence.keySequenceChanged, timeout=5000) as blocker:
-        qtbot.mouseClick(shortcuts.editor_add_audio_clear_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(shortcuts.editor_add_audio_clear_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert model_change_callback.model.shortcut_editor_add_audio == None
     assert model_change_callback.model.shortcut_editor_preview_audio == None    
 
@@ -2355,7 +2355,7 @@ def test_preferences_save(qtbot):
     assert preferences.save_button.isEnabled() == True
 
     # click save
-    qtbot.mouseClick(preferences.save_button, aqt.qt.Qt.LeftButton)
+    qtbot.mouseClick(preferences.save_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # make sure config was saved
     assert constants.CONFIG_KEYBOARD_SHORTCUTS in hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES]
