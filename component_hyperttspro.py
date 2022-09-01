@@ -115,11 +115,11 @@ class HyperTTSPro(component_common.ConfigComponentBase):
         vlayout.addWidget(enabled_label)
 
         self.api_key_label = aqt.qt.QLabel()
-        self.api_key_label.setTextInteractionFlags(aqt.qt.Qt.TextSelectableByMouse)
+        self.api_key_label.setTextInteractionFlags(aqt.qt.Qt.TextInteractionFlag.TextSelectableByMouse)
         vlayout.addWidget(self.api_key_label)
 
         self.account_info_label = aqt.qt.QLabel()
-        self.account_info_label.setTextInteractionFlags(aqt.qt.Qt.TextSelectableByMouse)
+        self.account_info_label.setTextInteractionFlags(aqt.qt.Qt.TextInteractionFlag.TextSelectableByMouse)
         vlayout.addWidget(self.account_info_label)
 
         self.account_update_button = aqt.qt.QPushButton()

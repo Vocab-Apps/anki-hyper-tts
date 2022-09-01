@@ -88,7 +88,7 @@ class ComponentRealtime(component_common.ConfigComponentBase):
         # ==========
 
         self.tabs = aqt.qt.QTabWidget()
-        self.tabs.setTabPosition(aqt.qt.QTabWidget.West)
+        self.tabs.setTabPosition(aqt.qt.QTabWidget.TabPosition.West)
         self.tab_front = aqt.qt.QWidget()
         self.tab_back = aqt.qt.QWidget()
 
