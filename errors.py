@@ -4,6 +4,11 @@ import sys
 class HyperTTSError(Exception):
     pass
 
+class CollectionNotOpen(HyperTTSError):
+    def __init__(self):
+        message = "Anki Collection not open. Please ensure your profile is loaded and that you can access your notes."
+        super().__init__(message)    
+
 class FieldNotFoundError(HyperTTSError):
     def __init__(self, field_name):
         message = f'Field <b>{field_name}</b> not found'

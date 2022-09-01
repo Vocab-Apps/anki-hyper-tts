@@ -6,12 +6,17 @@ import anki.sound
 import anki.collection
 import aqt.qt
 from . import constants    
+from . import errors
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_child_logger(__name__)
 
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
+
+def ensure_anki_collection_open():
+    if not aqt.mw.col:
+        raise errors.CollectionNotOpen()
 
 class AnkiUtils():
     def __init__(self):
@@ -45,6 +50,7 @@ class AnkiUtils():
         return user_files_dir        
 
     def play_anki_sound_tag(self, text):
+        ensure_anki_collection_open()
         out = aqt.mw.col.backend.extract_av_tags(text=text, question_side=True)
         file_list = [
             x.filename
@@ -56,37 +62,47 @@ class AnkiUtils():
             aqt.sound.av_player.play_file(filename)
 
     def get_note_by_id(self, note_id):
+        ensure_anki_collection_open()
         note = aqt.mw.col.get_note(note_id)
         return note
 
     def get_model(self, model_id):
+        ensure_anki_collection_open()
         return aqt.mw.col.models.get(model_id)
 
     def get_deck(self, deck_id):
+        ensure_anki_collection_open()
         return aqt.mw.col.decks.get(deck_id)
 
     def get_model_id(self, model_name):
+        ensure_anki_collection_open()
         return aqt.mw.col.models.id_for_name(model_name)
 
     def get_deck_id(self, deck_name):
+        ensure_anki_collection_open()
         return aqt.mw.col.decks.id_for_name(deck_name)
 
     def media_add_file(self, filename):
+        ensure_anki_collection_open()
         full_filename = aqt.mw.col.media.add_file(filename)
         return full_filename
 
     def undo_start(self):
+        ensure_anki_collection_open()
         return aqt.mw.col.add_custom_undo_entry(constants.UNDO_ENTRY_NAME)
 
     def undo_tts_tag_start(self):
+        ensure_anki_collection_open()
         return aqt.mw.col.add_custom_undo_entry(constants.UNDO_ENTRY_ADD_TTS_TAG)    
 
     def undo_end(self, undo_id):
+        ensure_anki_collection_open()
         aqt.mw.col.merge_undo_entries(undo_id)
         aqt.mw.update_undo_actions()
         aqt.mw.autosave()
 
     def update_note(self, note):
+        ensure_anki_collection_open()
         aqt.mw.col.update_note(note)
 
     def create_card_from_note(self, note, card_ord, model, template):
@@ -101,6 +117,7 @@ class AnkiUtils():
         return tts_tags
 
     def save_note_type_update(self, note_model):
+        ensure_anki_collection_open()
         logger.info(f"""updating note type: {note_model['name']}""")
         aqt.mw.col.models.update_dict(note_model)
 
