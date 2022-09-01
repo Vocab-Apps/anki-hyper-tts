@@ -116,14 +116,14 @@ def launch_configuration_dialog(hypertts):
         logger.info('launch_configuration_dialog')
         dialog = ConfigurationDialog(hypertts)
         dialog.setupUi()
-        dialog.exec_()
+        dialog.exec()
 
 def launch_preferences_dialog(hypertts):
     with hypertts.error_manager.get_single_action_context('Launching Preferences Dialog'):
         logger.info('launch_preferences_dialog')
         dialog = PreferencesDialog(hypertts)
         dialog.setupUi()
-        dialog.exec_()        
+        dialog.exec()        
 
 def launch_batch_dialog_browser(hypertts, browser, note_id_list, batch_name):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Browser'):
@@ -132,7 +132,7 @@ def launch_batch_dialog_browser(hypertts, browser, note_id_list, batch_name):
             raise errors.NoNotesSelected()
         dialog = BatchDialog(hypertts)
         dialog.configure_browser(note_id_list, batch_name=batch_name)
-        dialog.exec_()
+        dialog.exec()
         browser.model.reset()
 
 def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
@@ -140,7 +140,7 @@ def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
         logger.info('launch_batch_dialog_editor')
         dialog = BatchDialog(hypertts)
         dialog.configure_editor(note, editor, add_mode)
-        dialog.exec_()
+        dialog.exec()
 
 def launch_realtime_dialog_browser(hypertts, note_id_list):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Realtime Dialog from Browser'):
@@ -161,7 +161,7 @@ def launch_realtime_dialog_browser(hypertts, note_id_list):
 
         dialog = RealtimeDialog(hypertts, card_ord)
         dialog.configure_note(note)
-        dialog.exec_()
+        dialog.exec()
 
 def remove_realtime_tts_tag(hypertts, browser, note_id_list):
     with hypertts.error_manager.get_single_action_context('Removing TTS Tag'):
