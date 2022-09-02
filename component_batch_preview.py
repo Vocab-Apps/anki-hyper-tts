@@ -91,7 +91,7 @@ class BatchPreview(component_common.ComponentBase):
         self.stack = aqt.qt.QStackedWidget()
         self.progress_bar = aqt.qt.QProgressBar()
         self.progress_bar.setMaximum(len(self.note_id_list))        
-        self.progress_details = aqt.qt.QLabel('progress label')
+        self.progress_details = aqt.qt.QLabel()
 
         self.selected_row = None
 
@@ -239,8 +239,21 @@ class BatchPreview(component_common.ComponentBase):
         elapsed_time_seconds = elapsed_time.seconds
         time_per_note = elapsed_time_seconds / completed_note_count
         remaining_count = total_count - completed_note_count
-        time_remaining = time_per_note * remaining_count
-        status_text = f'Completed {row} out of {total_count}, {time_remaining}s remaining'
+
+        completed_text = f'Completed {row} out of {total_count}'
+
+        # time remaining computation
+        time_remaining_s = time_per_note * remaining_count
+        time_remaining_m = time_remaining_s / 60
+        time_remaining_s = time_remaining_s % 60
+        if time_remaining_m >= 5:
+            time_remaining_text = f', {time_remaining_m:.0f} minutes remaining'
+        else:
+            time_remaining_text = f', {time_remaining_m:.0f} minutes, {time_remaining_s:.0f} seconds remaining'
+
+        status_text = completed_text
+        if completed_note_count >= 2:
+            status_text = f'{completed_text}{time_remaining_text}'
         self.progress_details.setText(status_text)
 
 
