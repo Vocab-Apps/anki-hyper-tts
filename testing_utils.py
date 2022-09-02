@@ -585,6 +585,10 @@ class TestConfigGenerator():
         manager.get_service('ServiceA').enabled = True
         manager.get_service('ServiceB').enabled = True
 
+        if 'HYPERTTS_SERVICE_FAKE_DELAY' in os.environ:
+            delay_int = int(os.environ['HYPERTTS_SERVICE_FAKE_DELAY'])
+            manager.get_service('ServiceA').configure({'delay': delay_int, 'api_key': 'valid_key'})
+
         mock_hypertts = hypertts.HyperTTS(anki_utils, manager)
 
         anki_utils.models = self.get_model_map()
