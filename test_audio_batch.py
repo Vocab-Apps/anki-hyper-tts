@@ -89,6 +89,7 @@ def test_simple_1(qtbot):
     assert listener.batch_ended == True
     assert listener.start_time == start_time
     assert listener.current_time == completion_time
+    assert listener.total_count == 2
 
     # undo handling
     # =============

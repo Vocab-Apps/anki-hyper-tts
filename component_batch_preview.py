@@ -232,8 +232,17 @@ class BatchPreview(component_common.ComponentBase):
         if self.apply_to_notes_batch_started:
             self.batch_end_fn(completed)
 
-    def update_progress_bar(self, row):
+    def update_progress_bar(self, row, total_count, start_time, current_time):
         self.progress_bar.setValue(row + 1)
+        completed_note_count = row + 1
+        elapsed_time = current_time - start_time
+        elapsed_time_seconds = elapsed_time.seconds
+        time_per_note = elapsed_time_seconds / completed_note_count
+        remaining_count = total_count - completed_note_count
+        time_remaining = time_per_note * remaining_count
+        status_text = f'Completed {row} out of {total_count}, {time_remaining}s remaining'
+        self.progress_details.setText(status_text)
+
 
     def table_viewport_repaint_refresh_timer(self):
         # needs to be called on main thread
@@ -244,10 +253,10 @@ class BatchPreview(component_common.ComponentBase):
             # logger.info('table_viewport_repaint')
             self.table_view.viewport().repaint()
 
-    def batch_change(self, note_id, row):
+    def batch_change(self, note_id, row, total_count, start_time, current_time):
         # logger.info(f'change_listener row {row}')
         self.hypertts.anki_utils.run_on_main(lambda: self.batch_preview_table_model.notifyChange(row))
-        self.hypertts.anki_utils.run_on_main(lambda: self.update_progress_bar(row))
+        self.hypertts.anki_utils.run_on_main(lambda: self.update_progress_bar(row, total_count, start_time, current_time))
         self.hypertts.anki_utils.run_on_main(lambda: self.table_viewport_repaint_refresh_timer())
         if row == self.selected_row:
             self.hypertts.anki_utils.run_on_main(self.update_error_label_for_selected)

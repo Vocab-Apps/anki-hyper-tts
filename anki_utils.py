@@ -1,5 +1,6 @@
 import sys
 import os
+import datetime
 import aqt
 import anki.template
 import anki.sound
@@ -163,6 +164,9 @@ class AnkiUtils():
 
     def stop_progress_bar(self):
         aqt.mw.progress.finish()
+
+    def get_current_time(self):
+        return datetime.datetime.now()
 
     def editor_set_field_value(self, editor, field_index, text):
         if field_index >= len(editor.note.fields):
