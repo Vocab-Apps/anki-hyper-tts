@@ -134,11 +134,12 @@ class BatchStatus():
         self.notify_change(note_id)
 
     def notify_start(self):
+        self.start_time = self.anki_utils.get_current_time()
         self.change_listener.batch_start()
 
     def notify_change(self, note_id):
         row = self.note_id_map[note_id]
-        self.change_listener.batch_change(note_id, row)
+        self.change_listener.batch_change(note_id, row, len(self.note_id_list), self.start_time, self.anki_utils.get_current_time())
 
     def notify_end(self, completed):
         self.change_listener.batch_end(completed)

@@ -3,6 +3,7 @@ import tempfile
 import re
 import os
 import sys
+import datetime
 
 import constants
 import hypertts
@@ -54,6 +55,9 @@ class MockAnkiUtils():
         # exception handling
         self.last_exception = None
         self.last_action = None
+
+        # time
+        self.current_time = datetime.datetime.now()
 
     def get_config(self):
         return self.config
@@ -211,6 +215,12 @@ class MockAnkiUtils():
     def extract_mock_tts_audio(self, full_path):
         file_content = open(full_path, 'r').read()
         return json.loads(file_content)
+
+    def get_current_time(self):
+        return self.current_time
+
+    def tick_time(self):
+        self.current_time = self.current_time + datetime.timedelta(seconds=1)
 
 class MockServiceManager():
     def __init__(self):

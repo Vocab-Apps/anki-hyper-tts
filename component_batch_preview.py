@@ -91,6 +91,7 @@ class BatchPreview(component_common.ComponentBase):
         self.stack = aqt.qt.QStackedWidget()
         self.progress_bar = aqt.qt.QProgressBar()
         self.progress_bar.setMaximum(len(self.note_id_list))        
+        self.progress_details = aqt.qt.QLabel('progress label')
 
         self.selected_row = None
 
@@ -146,6 +147,7 @@ class BatchPreview(component_common.ComponentBase):
         self.stop_button = aqt.qt.QPushButton('Stop')
         runningLayout.addWidget(self.stop_button)
         runningLayout.addWidget(self.progress_bar)
+        runningLayout.addWidget(self.progress_details)
         self.batchRunningStack.setLayout(runningLayout)
 
         # populate the completed stack
