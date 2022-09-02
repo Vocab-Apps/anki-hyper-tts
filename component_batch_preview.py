@@ -145,9 +145,11 @@ class BatchPreview(component_common.ComponentBase):
         # poulate the "running" stack
         runningLayout = aqt.qt.QVBoxLayout()
         self.stop_button = aqt.qt.QPushButton('Stop')
-        runningLayout.addWidget(self.stop_button)
+        stop_and_status = aqt.qt.QHBoxLayout()
+        stop_and_status.addWidget(self.progress_details, stretch=1)
+        stop_and_status.addWidget(self.stop_button)
+        runningLayout.addLayout(stop_and_status)
         runningLayout.addWidget(self.progress_bar)
-        runningLayout.addWidget(self.progress_details)
         self.batchRunningStack.setLayout(runningLayout)
 
         # populate the completed stack
@@ -240,7 +242,7 @@ class BatchPreview(component_common.ComponentBase):
         time_per_note = elapsed_time_seconds / completed_note_count
         remaining_count = total_count - completed_note_count
 
-        completed_text = f'Completed {row} out of {total_count}'
+        completed_text = f'Completed {row} / {total_count}'
 
         # time remaining computation
         time_remaining_s = time_per_note * remaining_count
