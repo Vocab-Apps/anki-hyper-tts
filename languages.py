@@ -252,7 +252,7 @@ class AudioLanguage(enum.Enum):
     es_VE = (Language.es, "Spanish (Venezuela)")
 
     et_EE = (Language.et, "Estonian")
-    eu = (Language.ba, "Basque (Basque Country)")
+    eu_ES = (Language.ba, "Basque (Basque Country)")
     fi_FI = (Language.fi, "Finnish")
     fil_PH = (Language.tl, "Filipino (Philippines)")
     fr_BE = (Language.fr, "French (Belgium)")
