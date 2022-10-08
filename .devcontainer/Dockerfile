@@ -1,7 +1,9 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.222.0/containers/python-3/.devcontainer/base.Dockerfile
 
 # python 3.9 image
-FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-21.04
+# see available images: https://hub.docker.com/_/microsoft-vscode-devcontainers
+# https://github.com/microsoft/vscode-dev-containers/tree/main/containers/ubuntu
+FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-22.04
 
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
