@@ -36,6 +36,8 @@
 		batchNameList = value;
 	});    
 
+    let enable_selection = 1;
+
 </script>
 
 <style>
@@ -78,4 +80,15 @@ div {
 
     <button on:click={hyperTTSAddAudio} class="hypertts-button rounded-corners">Add Audio</button>
     <button on:click={hyperTTSPreviewAudio} class="hypertts-button rounded-corners">Preview Audio</button>
+    
+    <span class="hypertts-button" title="Generate audio using the entire content of the field.">
+        <input type=radio bind:group={enable_selection} name="scoops" value={1} >
+        Full text
+    </span>
+    
+    <span class="hypertts-button" title="Generate audio only using the selected portion of the field.">
+        <input type=radio bind:group={enable_selection} name="scoops" value={2} >
+        Selection
+    </span>
+    
 </div>
