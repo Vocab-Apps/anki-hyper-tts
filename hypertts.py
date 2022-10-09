@@ -167,6 +167,14 @@ class HyperTTS():
     # editor pycmd commands processing 
     # ================================
 
+    def decode_preview_add_message(self, msg):
+        components = msg.split(':')
+        enable_selection_str = components[2]
+        enable_selection = enable_selection_str == 'true'
+        final_components = components[3:]
+        batch_name = ':'.join(final_components)
+        return batch_name, enable_selection
+
     def process_bridge_cmd(self, str, editor, handled):
         if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX):
             logger.info(f'{str}')
@@ -177,7 +185,10 @@ class HyperTTS():
             else:
                 with self.error_manager.get_single_action_context('Adding Audio to Note'):
                     logger.info(f'received message: {str}')
-                    batch_name = str.replace(constants.PYCMD_ADD_AUDIO_PREFIX, '')
+                    # logger.debug(f'editor.web.selectedText(): {type(editor.web)} {editor.web.selectedText()}')
+
+                    batch_name, enable_selection = self.decode_preview_add_message(str)
+
                     batch = self.load_batch_config(batch_name)
                     self.set_editor_last_used_batch_name(batch_name)
                     self.editor_note_add_audio(batch, editor, editor.note, editor.addMode)
@@ -186,7 +197,7 @@ class HyperTTS():
         if str.startswith(constants.PYCMD_PREVIEW_AUDIO_PREFIX):
             with self.error_manager.get_single_action_context('Previewing Audio'):
                 logger.info(f'received message: {str}')
-                batch_name = str.replace(constants.PYCMD_PREVIEW_AUDIO_PREFIX, '')
+                batch_name, enable_selection = self.decode_preview_add_message(str)
                 batch = self.load_batch_config(batch_name)
                 self.set_editor_last_used_batch_name(batch_name)
                 self.preview_note_audio(batch, editor.note)

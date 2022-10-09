@@ -205,7 +205,7 @@ yoyo
         # previewing audio
         # ----------------
 
-        pycmd_str = 'hypertts:previewaudio:test_preset_1'
+        pycmd_str = 'hypertts:previewaudio:false:test_preset_1'
         hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)        
 
         self.assertEqual(hypertts_instance.anki_utils.played_sound['source_text'], '老人家')
@@ -214,7 +214,7 @@ yoyo
         # adding audio
         # ------------
 
-        pycmd_str = 'hypertts:addaudio:test_preset_1'
+        pycmd_str = 'hypertts:addaudio:false:test_preset_1'
         hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
 
         # verify that audio was added
