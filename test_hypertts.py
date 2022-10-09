@@ -197,10 +197,23 @@ yoyo
         # save the preset
         hypertts_instance.save_batch_config('test_preset_1', batch_config)
 
+
+        # configure mock editor
+        # =====================
+        mock_editor = config_gen.get_mock_editor_with_note(config_gen.note_id_1)
+
+        # previewing audio
+        # ----------------
+
+        pycmd_str = 'hypertts:previewaudio:test_preset_1'
+        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)        
+
+        self.assertEqual(hypertts_instance.anki_utils.played_sound['source_text'], '老人家')
+
+
         # adding audio
         # ------------
 
-        mock_editor = config_gen.get_mock_editor_with_note(config_gen.note_id_1)
         pycmd_str = 'hypertts:addaudio:test_preset_1'
         hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
 
@@ -214,5 +227,7 @@ yoyo
         audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
         assert audio_data['source_text'] == '老人家'
+
+
 
 
