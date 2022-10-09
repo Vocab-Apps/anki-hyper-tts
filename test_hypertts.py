@@ -200,10 +200,19 @@ yoyo
         # adding audio
         # ------------
 
-        # mock_editor = testing_utils.MockEditor()
-        # mock_note = testing_util.MockNote()
         mock_editor = config_gen.get_mock_editor_with_note(config_gen.note_id_1)
         pycmd_str = 'hypertts:addaudio:test_preset_1'
         hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
+
+        # verify that audio was added
+
+        note_1 = mock_editor.note
+        assert 'Sound' in note_1.set_values 
+
+        sound_tag = note_1.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+        assert audio_data['source_text'] == '老人家'
 
 
