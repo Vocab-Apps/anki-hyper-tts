@@ -252,3 +252,38 @@ yoyo
 
         self.assertEqual(hypertts_instance.anki_utils.played_sound['source_text'], '老人家')
 
+        # adding audio
+        # ------------
+
+        mock_editor.web.selected_text = '人'
+
+        pycmd_str = 'hypertts:addaudio:true:test_preset_1'
+        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
+
+        # verify that audio was added
+
+        note_1 = mock_editor.note
+        assert 'Sound' in note_1.set_values 
+
+        sound_tag = note_1.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+        assert audio_data['source_text'] == '人'
+
+        # with empty selection, we should get the full field
+        mock_editor.web.selected_text = ''
+
+        pycmd_str = 'hypertts:addaudio:true:test_preset_1'
+        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
+
+        # verify that audio was added
+
+        note_1 = mock_editor.note
+        assert 'Sound' in note_1.set_values 
+
+        sound_tag = note_1.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+        assert audio_data['source_text'] == '老人家'
