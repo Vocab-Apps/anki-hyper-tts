@@ -331,7 +331,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def sound_preview_task(self):
         if self.note == None:
             raise errors.NoNotesSelectedPreview()
-        self.hypertts.preview_note_audio(self.batch_model, self.note)
+        self.hypertts.preview_note_audio(self.batch_model, self.note, None)
         return True
 
     def sound_preview_task_done(self, result):
