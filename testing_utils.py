@@ -18,6 +18,8 @@ def get_test_services_dir():
     current_script_dir = os.path.dirname(current_script_path)    
     return os.path.join(current_script_dir, 'test_services')
 
+
+
 class MockFuture():
     def __init__(self, result_data):
         self.result_data = result_data
@@ -32,6 +34,14 @@ class MockFutureException():
     def result(self):
         # raise stored exception
         raise self.exception_value
+
+class MockEditor():
+    def __init__(self):
+        self.set_note_called = None
+        self.addMode = False
+
+    def set_note(self, note):
+        self.set_note_called = True
 
 
 class MockAnkiUtils():
@@ -372,11 +382,6 @@ class MockNote():
     def flush(self):
         self.flush_called = True
 
-
-class MockEditor():
-    def __init__(self):
-        self.addMode = False
-
 class TestConfigGenerator():
     def __init__(self):
         self.deck_id = 42001
@@ -559,14 +564,17 @@ class TestConfigGenerator():
 
     def get_mock_editor_with_note(self, note_id):
         editor = MockEditor()
-        editor.card = MockCard(self.deck_id)
+
         field_array = []
         notes_by_id, notes = self.get_notes()
         note_data = notes_by_id[note_id]        
-        for field_entry in self.get_model_map()[self.model_id]['flds']:
+        model = self.get_model_map()[self.model_id]
+        for field_entry in model['flds']:
             field_name = field_entry['name']
             field_array.append(note_data[field_name])
-        editor.note = MockNote(note_id, self.model_id, note_data, field_array)
+        editor.note = MockNote(note_id, self.model_id, note_data, field_array, model)
+        editor.card = MockCard(self.deck_id, editor.note, 0, model, '')
+
         return editor
 
 

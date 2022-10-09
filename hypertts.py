@@ -164,6 +164,36 @@ class HyperTTS():
         self.anki_utils.undo_end(undo_id)
         self.anki_utils.play_sound(full_filename)
 
+    # editor pycmd commands processing 
+    # ================================
+
+    def process_bridge_cmd(self, str, editor, handled):
+        if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX):
+            logger.info(f'{str}')
+            if str == constants.PYCMD_ADD_AUDIO_PREFIX + constants.BATCH_CONFIG_NEW:
+                self.clear_latest_saved_batch_name()
+                launch_batch_dialog_editor(self, editor.note, editor, editor.addMode)
+                update_editor_batch_list(self, editor)
+            else:
+                with self.error_manager.get_single_action_context('Adding Audio to Note'):
+                    logger.info(f'received message: {str}')
+                    batch_name = str.replace(constants.PYCMD_ADD_AUDIO_PREFIX, '')
+                    batch = self.load_batch_config(batch_name)
+                    self.set_editor_last_used_batch_name(batch_name)
+                    self.editor_note_add_audio(batch, editor, editor.note, editor.addMode)
+            return True, None
+
+        if str.startswith(constants.PYCMD_PREVIEW_AUDIO_PREFIX):
+            with self.error_manager.get_single_action_context('Previewing Audio'):
+                logger.info(f'received message: {str}')
+                batch_name = str.replace(constants.PYCMD_PREVIEW_AUDIO_PREFIX, '')
+                batch = self.load_batch_config(batch_name)
+                self.set_editor_last_used_batch_name(batch_name)
+                self.preview_note_audio(batch, editor.note)
+            return True, None        
+
+        return handled            
+
     # text processing
     # ===============
 

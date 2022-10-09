@@ -3,11 +3,13 @@
     
     export const batchNameListStore = writable([]);
     export const selectedBatchNameStore = writable("New Preset");
+    export const enableSelectionStore = writable(false);
 
-    export function configureEditorHyperTTS(batchConfigList, defaultBatch) {
+    export function configureEditorHyperTTS(batchConfigList, defaultBatch, enableSelection) {
         console.log('setLanguageToolsEditorSettings: ', batchConfigList);
         batchNameListStore.set(batchConfigList)
         selectedBatchNameStore.set(defaultBatch);
+        enableSelectionStore.set(enableSelection);
     }
 
     let selectedBatchNameStoreCopy = null;
@@ -16,14 +18,19 @@
         selectedBatchNameStoreCopy = value;
     })
 
+    let enableSelectionCopy = false;
+    enableSelectionStore.subscribe( value => {
+        enableSelectionCopy  = value;
+    })
+
     export function hyperTTSAddAudio() {
         console.log("addAudio");
-        const cmdString = 'hypertts:addaudio:' + selectedBatchNameStoreCopy;
+        const cmdString = 'hypertts:addaudio:' + enableSelectionCopy + ':' + selectedBatchNameStoreCopy;
         bridgeCommand(cmdString);
     }
 
     export function hyperTTSPreviewAudio() {
-        const cmdString = 'hypertts:previewaudio:' + selectedBatchNameStoreCopy;
+        const cmdString = 'hypertts:previewaudio:' + enableSelectionCopy + ':' + selectedBatchNameStoreCopy;
         bridgeCommand(cmdString);
     }        
 
@@ -35,8 +42,6 @@
 	batchNameListStore.subscribe(value => {
 		batchNameList = value;
 	});    
-
-    let enable_selection = 1;
 
 </script>
 
@@ -61,6 +66,10 @@ div {
     padding-left: 5px;
     padding-right: 5px;
 }
+.hypertts-radio-button {
+    padding-left: 5px;
+    padding-top: 5px;
+}
 </style>
 
 
@@ -81,13 +90,13 @@ div {
     <button on:click={hyperTTSAddAudio} class="hypertts-button rounded-corners">Add Audio</button>
     <button on:click={hyperTTSPreviewAudio} class="hypertts-button rounded-corners">Preview Audio</button>
     
-    <span class="hypertts-button" title="Generate audio using the entire content of the field.">
-        <input type=radio bind:group={enable_selection} name="scoops" value={1} >
+    <span class="hypertts-radio-button" title="Generate audio using the entire content of the field.">
+        <input type=radio bind:group={$enableSelectionStore} name="enableSelection" value={false} >
         Full text
     </span>
     
-    <span class="hypertts-button" title="Generate audio only using the selected portion of the field.">
-        <input type=radio bind:group={enable_selection} name="scoops" value={2} >
+    <span class="hypertts-radio-button" title="Generate audio only using the selected portion of the field.">
+        <input type=radio bind:group={$enableSelectionStore} name="enableSelection" value={true} >
         Selection
     </span>
     

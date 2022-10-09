@@ -264,37 +264,11 @@ def init(hypertts):
         update_editor_batch_list(hypertts, editor)
 
     def onBridge(handled, str, editor):
-        # logger.debug(f'bridge str: {str}')
-
         # return handled # don't do anything for now
         if not isinstance(editor, aqt.editor.Editor):
             return handled
 
-        if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX):
-            logger.info(f'{str}')
-            if str == constants.PYCMD_ADD_AUDIO_PREFIX + constants.BATCH_CONFIG_NEW:
-                hypertts.clear_latest_saved_batch_name()
-                launch_batch_dialog_editor(hypertts, editor.note, editor, editor.addMode)
-                update_editor_batch_list(hypertts, editor)
-            else:
-                with hypertts.error_manager.get_single_action_context('Adding Audio to Note'):
-                    # logger.info(f'received message: {str}')
-                    batch_name = str.replace(constants.PYCMD_ADD_AUDIO_PREFIX, '')
-                    batch = hypertts.load_batch_config(batch_name)
-                    hypertts.set_editor_last_used_batch_name(batch_name)
-                    hypertts.editor_note_add_audio(batch, editor, editor.note, editor.addMode)
-            return True, None
-
-        if str.startswith(constants.PYCMD_PREVIEW_AUDIO_PREFIX):
-            with hypertts.error_manager.get_single_action_context('Previewing Audio'):
-                # logger.info(f'received message: {str}')
-                batch_name = str.replace(constants.PYCMD_PREVIEW_AUDIO_PREFIX, '')
-                batch = hypertts.load_batch_config(batch_name)
-                hypertts.set_editor_last_used_batch_name(batch_name)
-                hypertts.preview_note_audio(batch, editor.note)
-            return True, None            
-
-        return handled
+        return hypertts.process_bridge_cmd(str, editor, handled)
 
     def setup_editor_shortcuts(shortcuts: List[Tuple], editor: aqt.editor.Editor):
         preferences = hypertts.get_preferences()

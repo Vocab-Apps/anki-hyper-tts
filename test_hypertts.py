@@ -169,3 +169,41 @@ yoyo
         self.assertRaises(errors.SourceTextEmpty, hypertts_instance.play_sound, source_text, None, None)
 
 
+    def test_process_bridge_cmd(self):
+        # initialize hypertts instance
+        # ============================
+        config_gen = testing_utils.TestConfigGenerator()
+        hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+        # configure a batch/preset
+        # ========================
+
+        voice_list = hypertts_instance.service_manager.full_voice_list()
+
+        voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+        voice_selection = config_models.VoiceSelectionSingle()
+        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
+
+        batch_config = config_models.BatchConfig()
+        source = config_models.BatchSourceSimple('Chinese')
+        target = config_models.BatchTarget('Sound', False, True)
+        text_processing = config_models.TextProcessing()
+
+        batch_config.set_source(source)
+        batch_config.set_target(target)
+        batch_config.set_voice_selection(voice_selection)
+        batch_config.set_text_processing(text_processing)
+
+        # save the preset
+        hypertts_instance.save_batch_config('test_preset_1', batch_config)
+
+        # adding audio
+        # ------------
+
+        # mock_editor = testing_utils.MockEditor()
+        # mock_note = testing_util.MockNote()
+        mock_editor = config_gen.get_mock_editor_with_note(config_gen.note_id_1)
+        pycmd_str = 'hypertts:addaudio:test_preset_1'
+        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
+
+

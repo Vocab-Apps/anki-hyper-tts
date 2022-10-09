@@ -76,12 +76,6 @@ class MockBatchPreviewCallback():
     def batch_end(self, completed):
         self.batch_end_called = True
 
-class MockEditor():
-    def __init__(self):
-        self.set_note_called = None
-
-    def set_note(self, note):
-        self.set_note_called = True
 
 def get_hypertts_instance():
     # return hypertts_instance    
@@ -1162,7 +1156,7 @@ def test_batch_dialog_editor(qtbot):
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
 
-    mock_editor = MockEditor()
+    mock_editor = testing_utils.MockEditor()
 
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_editor(note, mock_editor, False)
@@ -1220,7 +1214,7 @@ def test_batch_dialog_editor_sound_sample(qtbot):
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
 
-    mock_editor = MockEditor()
+    mock_editor = testing_utils.MockEditor()
 
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_editor(note, mock_editor, False)
@@ -1260,7 +1254,7 @@ def test_batch_dialog_editor_template_error(qtbot):
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
 
-    mock_editor = MockEditor()
+    mock_editor = testing_utils.MockEditor()
 
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_editor(note, mock_editor, False)
