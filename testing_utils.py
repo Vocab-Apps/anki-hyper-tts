@@ -35,10 +35,18 @@ class MockFutureException():
         # raise stored exception
         raise self.exception_value
 
+class MockWebView():
+    def __init__(self):
+        self.selected_text = ''
+
+    def selectedText(self):
+        return self.selected_text
+
 class MockEditor():
     def __init__(self):
         self.set_note_called = None
         self.addMode = False
+        self.web = MockWebView()
 
     def set_note(self, note):
         self.set_note_called = True

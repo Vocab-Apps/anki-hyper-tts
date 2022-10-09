@@ -315,7 +315,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.dialog.close()
 
     def apply_note_editor_task(self):
-        self.hypertts.editor_note_add_audio(self.batch_model, self.editor, self.note, self.add_mode)
+        self.hypertts.editor_note_add_audio(self.batch_model, self.editor, self.note, self.add_mode, None)
         return True
 
     def apply_note_editor_task_done(self, result):

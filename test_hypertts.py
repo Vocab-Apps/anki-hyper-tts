@@ -202,6 +202,9 @@ yoyo
         # =====================
         mock_editor = config_gen.get_mock_editor_with_note(config_gen.note_id_1)
 
+        # using full field
+        # ================
+
         # previewing audio
         # ----------------
 
@@ -228,6 +231,24 @@ yoyo
 
         assert audio_data['source_text'] == '老人家'
 
+        # using selected field
+        # ====================
 
+        # previewing audio
+        # ----------------
 
+        mock_editor.web.selected_text = '人'
+
+        pycmd_str = 'hypertts:previewaudio:true:test_preset_1'
+        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
+
+        self.assertEqual(hypertts_instance.anki_utils.played_sound['source_text'], '人')        
+
+        # when no text is selected
+        mock_editor.web.selected_text = ''
+
+        pycmd_str = 'hypertts:previewaudio:true:test_preset_1'
+        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
+
+        self.assertEqual(hypertts_instance.anki_utils.played_sound['source_text'], '老人家')
 

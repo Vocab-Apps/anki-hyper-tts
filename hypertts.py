@@ -54,7 +54,7 @@ class HyperTTS():
                     note = self.anki_utils.get_note_by_id(note_id)
                     # process note
                     source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, False,
-                        context.AudioRequestContext(constants.AudioRequestReason.batch))
+                        context.AudioRequestContext(constants.AudioRequestReason.batch), None)
                     # update note action context
                     note_action_context.set_source_text(source_text)
                     note_action_context.set_processed_text(processed_text)
@@ -65,13 +65,13 @@ class HyperTTS():
                     break
             self.anki_utils.undo_end(undo_id)
 
-    def process_note_audio(self, batch, note, add_mode, audio_request_context):
+    def process_note_audio(self, batch, note, add_mode, audio_request_context, text_override):
         target_field = batch.target.target_field
 
         if target_field not in note:
             raise errors.TargetFieldNotFoundError(target_field)
 
-        source_text = self.get_source_text(note, batch.source)
+        source_text = self.get_source_text(note, batch.source, text_override)
         processed_text = self.process_text(source_text, batch.text_processing)
 
         full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)
@@ -99,8 +99,8 @@ class HyperTTS():
 
         return source_text, processed_text, sound_file, full_filename
 
-    def get_note_audio(self, batch, note, audio_request_context):
-        source_text = self.get_source_text(note, batch.source)
+    def get_note_audio(self, batch, note, audio_request_context, text_override):
+        source_text = self.get_source_text(note, batch.source, text_override)
         processed_text = text_utils.process_text(source_text, batch.text_processing)
         if len(processed_text) == 0:
             raise errors.SourceTextEmpty()        
@@ -153,13 +153,13 @@ class HyperTTS():
             voice = voice_list.pop(0)
             return voice
 
-    def editor_note_add_audio(self, batch, editor, note, add_mode, enable_selection):
+    def editor_note_add_audio(self, batch, editor, note, add_mode, text_override):
         undo_id = self.anki_utils.undo_start()
         audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_browser)
         if add_mode:
             audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_add)
         source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode,
-            audio_request_context)
+            audio_request_context, text_override)
         editor.set_note(note)
         self.anki_utils.undo_end(undo_id)
         self.anki_utils.play_sound(full_filename)
@@ -179,6 +179,10 @@ class HyperTTS():
     def process_bridge_cmd(self, str, editor, handled):
         if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX) or str.startswith(constants.PYCMD_PREVIEW_AUDIO_PREFIX):
             command, batch_name, enable_selection = self.decode_preview_add_message(str)
+            text_override = None
+            if enable_selection:
+                if len(editor.web.selectedText()) > 0:
+                    text_override = editor.web.selectedText()
 
             if command == constants.PYCMD_ADD_AUDIO:
                 logger.info(f'processing pycmd bridge command: {str}')
@@ -193,7 +197,7 @@ class HyperTTS():
 
                         batch = self.load_batch_config(batch_name)
                         self.set_editor_last_used_batch_name(batch_name)
-                        self.editor_note_add_audio(batch, editor, editor.note, editor.addMode, enable_selection)
+                        self.editor_note_add_audio(batch, editor, editor.note, editor.addMode, text_override)
                 return True, None
 
             if command == constants.PYCMD_PREVIEW_AUDIO:
@@ -201,7 +205,7 @@ class HyperTTS():
                     logger.info(f'received message: {str}')
                     batch = self.load_batch_config(batch_name)
                     self.set_editor_last_used_batch_name(batch_name)
-                    self.preview_note_audio(batch, editor.note)
+                    self.preview_note_audio(batch, editor.note, text_override)
                 return True, None        
 
         return handled            
@@ -209,7 +213,10 @@ class HyperTTS():
     # text processing
     # ===============
 
-    def get_source_text(self, note, batch_source):
+    def get_source_text(self, note, batch_source, text_override):
+        if text_override != None:
+            return text_override
+
         if batch_source.mode == constants.BatchMode.simple:
             if batch_source.source_field not in note:
                 raise errors.SourceFieldNotFoundError(batch_source.source_field)
@@ -257,9 +264,10 @@ class HyperTTS():
     # sound generation
     # ================
 
-    def preview_note_audio(self, batch, note):
+    def preview_note_audio(self, batch, note, text_override):
         batch.validate()
-        full_filename, audio_filename = self.get_note_audio(batch, note, context.AudioRequestContext(constants.AudioRequestReason.preview))
+        full_filename, audio_filename = self.get_note_audio(batch, 
+            note, context.AudioRequestContext(constants.AudioRequestReason.preview), text_override)
         self.anki_utils.play_sound(full_filename)
     
     def play_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
@@ -519,7 +527,7 @@ class HyperTTS():
                     break
 
     def get_source_processed_text(self, note, batch_source, text_processing):
-        source_text = self.get_source_text(note, batch_source)
+        source_text = self.get_source_text(note, batch_source, None)
         logger.debug(f'get_source_processed_text: source_text: {source_text}')
         processed_text = text_utils.process_text(source_text, text_processing)
         return source_text, processed_text
