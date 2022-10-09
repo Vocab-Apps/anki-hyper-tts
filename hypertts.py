@@ -24,6 +24,7 @@ text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 context = __import__('context', globals(), locals(), [], sys._addon_import_level_base)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+gui = __import__('gui', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_child_logger(__name__)
 
 
@@ -184,12 +185,14 @@ class HyperTTS():
                 if len(editor.web.selectedText()) > 0:
                     text_override = editor.web.selectedText()
 
+            self.set_editor_use_selection(enable_selection)
+
             if command == constants.PYCMD_ADD_AUDIO:
                 logger.info(f'processing pycmd bridge command: {str}')
-                if str == constants.PYCMD_ADD_AUDIO_PREFIX + constants.BATCH_CONFIG_NEW:
+                if batch_name == constants.BATCH_CONFIG_NEW:
                     self.clear_latest_saved_batch_name()
-                    launch_batch_dialog_editor(self, editor.note, editor, editor.addMode)
-                    update_editor_batch_list(self, editor)
+                    gui.launch_batch_dialog_editor(self, editor.note, editor, editor.addMode)
+                    gui.update_editor_batch_list(self, editor)
                 else:
                     with self.error_manager.get_single_action_context('Adding Audio to Note'):
                         logger.info(f'received message: {str}')
@@ -640,6 +643,13 @@ class HyperTTS():
         if latest_used_editor_batch_name != None:
             return latest_used_editor_batch_name
         return constants.BATCH_CONFIG_NEW
+
+    def set_editor_use_selection(self, use_selection):
+        self.config[constants.CONFIG_USE_SELECTION] = use_selection
+        self.anki_utils.write_config(self.config)
+
+    def get_editor_use_selection(self):
+        return self.config.get(constants.CONFIG_USE_SELECTION, False)
 
     # preferences
     def get_preferences(self):

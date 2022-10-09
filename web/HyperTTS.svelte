@@ -95,7 +95,7 @@ div {
         Full text
     </span>
     
-    <span class="hypertts-radio-button" title="Generate audio only using the selected portion of the field.">
+    <span class="hypertts-radio-button" title="Generate audio only using the selected portion of the field, or the full field if no selection is found.">
         <input type=radio bind:group={$enableSelectionStore} name="enableSelection" value={true} >
         Selection
     </span>

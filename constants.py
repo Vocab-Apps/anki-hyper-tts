@@ -76,6 +76,7 @@ CONFIG_CONFIGURATION = 'configuration'
 CONFIG_PREFERENCES = 'preferences'
 CONFIG_KEYBOARD_SHORTCUTS = 'keyboard_shortcuts'
 CONFIG_LAST_USED_BATCH = 'last_used_batch'
+CONFIG_USE_SELECTION = 'use_selection' # whether to use the selected portion of the field
 
 ADDON_NAME = 'HyperTTS'
 MENU_PREFIX = ADDON_NAME + ':'

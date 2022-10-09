@@ -186,11 +186,12 @@ def remove_realtime_tts_tag(hypertts, browser, note_id_list):
 
 def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
     batch_name_list = hypertts.get_batch_config_list_editor()
-    configure_editor(editor, batch_name_list, hypertts.get_editor_default_batch_name())
+    configure_editor(editor, 
+        batch_name_list, hypertts.get_editor_default_batch_name(), hypertts.get_editor_use_selection())
 
-def configure_editor(editor: aqt.editor.Editor, batch_name_list, editor_default_batch_name):
+def configure_editor(editor: aqt.editor.Editor, batch_name_list, editor_default_batch_name, use_selection):
     logger.info(f'configure_editor, batch_name_list: {batch_name_list} editor_default_batch_name: {editor_default_batch_name}')
-    js_command = f"configureEditorHyperTTS({json.dumps(batch_name_list)}, '{editor_default_batch_name}')"
+    js_command = f"configureEditorHyperTTS({json.dumps(batch_name_list)}, '{editor_default_batch_name}', {str(use_selection).lower()})"
     print(js_command)
     editor.web.eval(js_command)    
 
