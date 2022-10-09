@@ -153,7 +153,7 @@ class HyperTTS():
             voice = voice_list.pop(0)
             return voice
 
-    def editor_note_add_audio(self, batch, editor, note, add_mode):
+    def editor_note_add_audio(self, batch, editor, note, add_mode, enable_selection):
         undo_id = self.anki_utils.undo_start()
         audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_browser)
         if add_mode:
@@ -169,39 +169,40 @@ class HyperTTS():
 
     def decode_preview_add_message(self, msg):
         components = msg.split(':')
+        command = components[1]
         enable_selection_str = components[2]
         enable_selection = enable_selection_str == 'true'
         final_components = components[3:]
         batch_name = ':'.join(final_components)
-        return batch_name, enable_selection
+        return command, batch_name, enable_selection
 
     def process_bridge_cmd(self, str, editor, handled):
-        if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX):
-            logger.info(f'{str}')
-            if str == constants.PYCMD_ADD_AUDIO_PREFIX + constants.BATCH_CONFIG_NEW:
-                self.clear_latest_saved_batch_name()
-                launch_batch_dialog_editor(self, editor.note, editor, editor.addMode)
-                update_editor_batch_list(self, editor)
-            else:
-                with self.error_manager.get_single_action_context('Adding Audio to Note'):
+        if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX) or str.startswith(constants.PYCMD_PREVIEW_AUDIO_PREFIX):
+            command, batch_name, enable_selection = self.decode_preview_add_message(str)
+
+            if command == constants.PYCMD_ADD_AUDIO:
+                logger.info(f'processing pycmd bridge command: {str}')
+                if str == constants.PYCMD_ADD_AUDIO_PREFIX + constants.BATCH_CONFIG_NEW:
+                    self.clear_latest_saved_batch_name()
+                    launch_batch_dialog_editor(self, editor.note, editor, editor.addMode)
+                    update_editor_batch_list(self, editor)
+                else:
+                    with self.error_manager.get_single_action_context('Adding Audio to Note'):
+                        logger.info(f'received message: {str}')
+                        # logger.debug(f'editor.web.selectedText(): {type(editor.web)} {editor.web.selectedText()}')
+
+                        batch = self.load_batch_config(batch_name)
+                        self.set_editor_last_used_batch_name(batch_name)
+                        self.editor_note_add_audio(batch, editor, editor.note, editor.addMode, enable_selection)
+                return True, None
+
+            if command == constants.PYCMD_PREVIEW_AUDIO:
+                with self.error_manager.get_single_action_context('Previewing Audio'):
                     logger.info(f'received message: {str}')
-                    # logger.debug(f'editor.web.selectedText(): {type(editor.web)} {editor.web.selectedText()}')
-
-                    batch_name, enable_selection = self.decode_preview_add_message(str)
-
                     batch = self.load_batch_config(batch_name)
                     self.set_editor_last_used_batch_name(batch_name)
-                    self.editor_note_add_audio(batch, editor, editor.note, editor.addMode)
-            return True, None
-
-        if str.startswith(constants.PYCMD_PREVIEW_AUDIO_PREFIX):
-            with self.error_manager.get_single_action_context('Previewing Audio'):
-                logger.info(f'received message: {str}')
-                batch_name, enable_selection = self.decode_preview_add_message(str)
-                batch = self.load_batch_config(batch_name)
-                self.set_editor_last_used_batch_name(batch_name)
-                self.preview_note_audio(batch, editor.note)
-            return True, None        
+                    self.preview_note_audio(batch, editor.note)
+                return True, None        
 
         return handled            
 

@@ -89,8 +89,11 @@ GUI_PREFERENCES_DIALOG_TITLE = TITLE_PREFIX + 'Preferences'
 TTS_TAG_VOICE = 'HyperTTS'
 TTS_TAG_HYPERTTS_PRESET = 'hypertts_preset'
 
-PYCMD_ADD_AUDIO_PREFIX = 'hypertts:addaudio:'
-PYCMD_PREVIEW_AUDIO_PREFIX = 'hypertts:previewaudio:'
+PYCMD_ADD_AUDIO = 'addaudio'
+PYCMD_PREVIEW_AUDIO = 'previewaudio'
+
+PYCMD_ADD_AUDIO_PREFIX = f'hypertts:{PYCMD_ADD_AUDIO}:'
+PYCMD_PREVIEW_AUDIO_PREFIX = f'hypertts:{PYCMD_PREVIEW_AUDIO}:'
 
 UNDO_ENTRY_NAME = ADDON_NAME + ': Add Audio to Notes'
 UNDO_ENTRY_ADD_TTS_TAG = ADDON_NAME + ': Configure Realtime TTS Tag'
