@@ -116,6 +116,7 @@ class TTSTests(unittest.TestCase):
         self.manager.get_service('DigitalesWorterbuchDeutschenSprache').enabled = True
         self.manager.get_service('Duden').enabled = True
         self.manager.get_service('Cambridge').enabled = True
+        self.manager.get_service('SpanishDict').enabled = True
         self.manager.get_service('NaverPapago').enabled = True
         if os.name == 'nt':
             logger.info('running on windows, enabling Windows service')
@@ -714,6 +715,26 @@ class TTSTests(unittest.TestCase):
                           selected_voice,
                           {},
                           context.AudioRequestContext(constants.AudioRequestReason.batch))
+
+    def test_spanishdict(self):
+        service_name = 'SpanishDict'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 2 # spanish and english
+
+        # test spanish voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.es_ES)
+        self.verify_audio_output(selected_voice, 'furgoneta')
+        # test english voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'vehicle')
+
 
     def verify_all_services_language(self, service_type: constants.ServiceType, language, source_text):
         voice_list = self.manager.full_voice_list()
