@@ -38,7 +38,7 @@ const entryPoints = ["hypertts.ts"];
  */
 const options = {
     entryPoints,
-    outdir: "../",
+    outdir: "./",
     format: "iife",
     target: "es6",
     bundle: true,
