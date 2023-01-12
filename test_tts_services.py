@@ -600,6 +600,7 @@ class TTSTests(unittest.TestCase):
                           context.AudioRequestContext(constants.AudioRequestReason.batch))
 
 
+    @pytest.mark.skip(reason="lexico has shutdown")
     def test_lexico(self):
         service_name = 'Lexico'
         if self.manager.get_service(service_name).enabled == False:
