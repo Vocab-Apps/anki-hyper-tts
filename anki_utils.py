@@ -146,10 +146,17 @@ class AnkiUtils():
         timer.timer_obj.timeout.connect(task)
         timer.timer_obj.start(timer.delay_ms)
 
+    def restrict_message_length(self, message):
+        if len(message) > constants.MESSAGE_TEXT_MAX_LENGTH:
+            message = message[0:constants.MESSAGE_TEXT_MAX_LENGTH] + '...'
+        return message
+
     def info_message(self, message, parent):
+        message = self.restrict_message_length(message)
         aqt.utils.showInfo(message, title=constants.ADDON_NAME, textFormat='rich', parent=parent)
 
     def critical_message(self, message, parent):
+        message = self.restrict_message_length(message)
         aqt.utils.showCritical(message, title=constants.ADDON_NAME, parent=parent)
 
     def ask_user(self, message, parent):

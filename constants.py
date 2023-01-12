@@ -183,6 +183,9 @@ TEXT_PROCESSING_DEFAULT_STRIP_BRACKETS = False
 TEXT_PROCESSING_DEFAULT_SSML_CHARACTERS = True
 TEXT_PROCESSING_DEFAULT_REPLACE_AFTER = True
 
+# prevent message boxes from getting too big
+MESSAGE_TEXT_MAX_LENGTH = 500
+
 CLIENT_NAME = 'hypertts'
 
 class ReplaceType(enum.Enum):
