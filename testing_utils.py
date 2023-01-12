@@ -67,7 +67,8 @@ class MockAnkiUtils():
         self.undo_finished = False
 
         # user_files dir
-        self.user_files_dir = tempfile.mkdtemp(prefix='hypertts_testing_user_files_')
+        self.user_files_dir_tempdir = tempfile.TemporaryDirectory(prefix='hypertts_testing_user_files_')
+        self.user_files_dir = self.user_files_dir_tempdir.name
         logger.info(f'created userfiles temp dir: {self.user_files_dir}')
 
         # exception handling
