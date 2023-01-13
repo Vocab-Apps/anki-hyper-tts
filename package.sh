@@ -4,8 +4,7 @@ VERSION_NUMBER=$1 # for example 0.1
 GIT_TAG=v${VERSION_NUMBER}
 
 # build web assets
-cd web; yarn build || { echo 'yarn build failed' ; exit 1; }
-cd ..
+./build_web_assets.sh
 
 echo "ANKI_HYPER_TTS_VERSION='${VERSION_NUMBER}'" > version.py
 git commit -a -m "upgraded version to ${VERSION_NUMBER}"
