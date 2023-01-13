@@ -23,6 +23,8 @@ rm -rvf htmlcov/
 ADDON_FILENAME=${HOME}/anki-addons-releases/anki-hyper-tts-${VERSION_NUMBER}.ankiaddon
 zip --exclude "*node_modules*" "*__pycache__*" "test_*.py" "*test_services*" "*.ini" "*.workspace" "*.md" "*.sh" requirements.txt "*.code-workspace" "web" -r ${ADDON_FILENAME} *
 
+# sync 
+rclone sync ~/anki-addons-releases/ dropbox:Anki/anki-addons-releases/
 
 # if you need to undo a release:
 # git tag -d v0.2
