@@ -325,7 +325,9 @@ class AudioLanguage(enum.Enum):
     vi_VN = (Language.vi, "Vietnamese")
     zh_CN = (Language.zh_cn, "Chinese (Mandarin, Simplified)")
     zh_HK = (Language.yue, "Chinese (Cantonese, Traditional)")
+    yue_CN = (Language.yue, "Chinese (Cantonese, Simplified)")
     zh_TW = (Language.zh_tw, "Chinese (Taiwanese Mandarin)")
+    wuu_CN = (Language.zh_cn, "Chinese (Wu, Simplified)")
 
     # azure has introduced a bunch of new mandarin locales
     zh_CN_henan = (Language.zh_cn, 'Chinese (Zhongyuan Mandarin Henan, Simplified)')
