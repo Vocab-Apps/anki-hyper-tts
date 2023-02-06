@@ -55,7 +55,8 @@ class Azure(service.ServiceBase):
                 'westeurope',
                 'francecentral',
                 'switzerlandnorth',
-                'uksouth',                
+                'uksouth',
+                'germanywestcentral'
             ],
             self.CONFIG_API_KEY: str,
             self.CONFIG_THROTTLE_SECONDS: float
