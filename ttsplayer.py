@@ -13,6 +13,7 @@ from typing import List, cast
 # import aqt
 import aqt.tts
 import anki
+import anki.utils
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
@@ -35,7 +36,10 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
         voices = []
         for audio_language in languages.AudioLanguage:
             language_name = audio_language.name
-            voices.append(aqt.tts.TTSVoice(name=constants.TTS_TAG_VOICE, lang=language_name))
+            if anki.utils.point_version() >= 58:
+                voices.append(aqt.tts.TTSVoice(name=constants.TTS_TAG_VOICE, lang=language_name, available=True))
+            else:
+                voices.append(aqt.tts.TTSVoice(name=constants.TTS_TAG_VOICE, lang=language_name))
 
         return voices  # type: ignore
 
