@@ -36,7 +36,7 @@ class AnkiHyperTTSPlayer(aqt.tts.TTSProcessPlayer):
         voices = []
         for audio_language in languages.AudioLanguage:
             language_name = audio_language.name
-            if anki.utils.point_version() >= 58:
+            if anki.utils.point_version() == 58: # this regression only concerns Anki 2.1.58
                 voices.append(aqt.tts.TTSVoice(name=constants.TTS_TAG_VOICE, lang=language_name, available=True))
             else:
                 voices.append(aqt.tts.TTSVoice(name=constants.TTS_TAG_VOICE, lang=language_name))
