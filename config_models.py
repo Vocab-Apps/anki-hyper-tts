@@ -335,6 +335,7 @@ class TextProcessing(ConfigModelBase):
         self.strip_brackets = constants.TEXT_PROCESSING_DEFAULT_STRIP_BRACKETS
         self.ssml_convert_characters = constants.TEXT_PROCESSING_DEFAULT_SSML_CHARACTERS
         self.run_replace_rules_after = constants.TEXT_PROCESSING_DEFAULT_REPLACE_AFTER
+        self.ignore_case = constants.TEXT_PROCESSING_DEFAULT_IGNORE_CASE
 
     def add_text_replacement_rule(self, rule):
         self._text_replacement_rules.append(rule)
@@ -359,6 +360,7 @@ class TextProcessing(ConfigModelBase):
             'strip_brackets': self.strip_brackets,
             'ssml_convert_characters': self.ssml_convert_characters,
             'run_replace_rules_after': self.run_replace_rules_after,
+            'ignore_case': self.ignore_case,
             'text_replacement_rules': [x.serialize() for x in self.text_replacement_rules]
         }
 

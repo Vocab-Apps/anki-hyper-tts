@@ -43,7 +43,7 @@ def extract_advanced_template(input):
 
 def process_text_replacement(text, text_processing_model):
     for text_replacement_rule in text_processing_model.text_replacement_rules:
-        text = process_text_replacement_rule(text, text_replacement_rule)    
+        text = process_text_replacement_rule(text, text_replacement_rule, text_processing_model)
     return text
 
 def strip_brackets(text):
@@ -75,14 +75,18 @@ def process_text(source_text, text_processing_model):
         processed_text = process_text_rules(text, text_processing_model)
     return processed_text
 
-def process_text_replacement_rule(input_text, rule):
+def process_text_replacement_rule(input_text, rule, text_processing_model):
     try:
         if rule.source == None:
             raise Exception('missing pattern in text replacement rule')
         if rule.target == None:
             raise Exception('missing replacement in text replacement rule')
         if rule.rule_type == constants.TextReplacementRuleType.Regex:
-            result = re.sub(rule.source, rule.target, input_text)
+            flags = 0
+            # enable flags selected
+            if text_processing_model.ignore_case:
+                flags = flags | re.IGNORECASE
+            result = re.sub(rule.source, rule.target, input_text, flags=flags)
         elif rule.rule_type == constants.TextReplacementRuleType.Simple:
             result = input_text.replace(rule.source,  rule.target)
         else:

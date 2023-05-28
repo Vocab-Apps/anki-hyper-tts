@@ -88,6 +88,29 @@ def test_regex_backref(qtbot):
     expected_result = 'word2 word1'
     assert text_utils.process_text(source_text, text_processing) == expected_result
 
+def test_regex_ignore_case_default(qtbot):
+    text_processing = config_models.TextProcessing()
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Regex)
+    rule.source = 'abc'
+    rule.target = 'def'
+    text_processing.add_text_replacement_rule(rule)
+
+    source_text = 'ABC123'
+    expected_result = 'ABC123'
+    assert text_utils.process_text(source_text, text_processing) == expected_result    
+
+def test_regex_ignore_case(qtbot):
+    text_processing = config_models.TextProcessing()
+    text_processing.ignore_case = True
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Regex)
+    rule.source = 'abc'
+    rule.target = 'def'
+    text_processing.add_text_replacement_rule(rule)
+
+    source_text = 'ABC123'
+    expected_result = 'def123'
+    assert text_utils.process_text(source_text, text_processing) == expected_result    
+
 
 def test_strip_brackets(qtbot):
     text_processing = config_models.TextProcessing()
