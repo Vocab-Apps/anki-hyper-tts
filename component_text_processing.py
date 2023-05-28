@@ -212,7 +212,9 @@ class TextProcessing(component_common.ConfigComponentBase):
         self.ssml_convert_characters_checkbox = aqt.qt.QCheckBox('Convert SSML characters (like <, &&, etc)')
         vlayout.addWidget(self.ssml_convert_characters_checkbox)
         self.run_replace_rules_after_checkbox = aqt.qt.QCheckBox('Run text replacement rules last (uncheck to run first)')
-        vlayout.addWidget(self.run_replace_rules_after_checkbox)        
+        vlayout.addWidget(self.run_replace_rules_after_checkbox)
+        self.ignore_case_checkbox = aqt.qt.QCheckBox('Ignore case (Regex rules only)')
+        vlayout.addWidget(self.ignore_case_checkbox)
 
         groupbox.setLayout(vlayout)
         global_vlayout.addWidget(groupbox)
@@ -250,6 +252,7 @@ class TextProcessing(component_common.ConfigComponentBase):
         self.strip_brackets_checkbox.stateChanged.connect(self.strip_brackets_change)
         self.ssml_convert_characters_checkbox.stateChanged.connect(self.ssml_convert_characters_checkbox_change)
         self.run_replace_rules_after_checkbox.stateChanged.connect(self.run_replace_rules_after_checkbox_change)
+        self.ignore_case_checkbox.stateChanged.connect(self.ignore_case_checkbox_change)
 
         self.add_replace_simple_button.pressed.connect(lambda: self.textReplacementTableModel.add_replacement(constants.TextReplacementRuleType.Simple))
         self.add_replace_regex_button.pressed.connect(lambda: self.textReplacementTableModel.add_replacement(constants.TextReplacementRuleType.Regex))
@@ -288,6 +291,11 @@ class TextProcessing(component_common.ConfigComponentBase):
     def run_replace_rules_after_checkbox_change(self, value):
         enabled = value == 2
         self.model.run_replace_rules_after = enabled
+        self.model_change()
+
+    def ignore_case_checkbox_change(self, value):
+        enabled = value == 2
+        self.model.ignore_case = enabled
         self.model_change()        
 
     def model_change(self):

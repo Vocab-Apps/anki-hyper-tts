@@ -1370,6 +1370,12 @@ def test_text_processing(qtbot):
     assert model_change_callback.model.strip_brackets == True
     text_processing.strip_brackets_checkbox.setChecked(False)
     assert model_change_callback.model.strip_brackets == False
+    # ignore case
+    text_processing.ignore_case_checkbox.setChecked(True)
+    assert model_change_callback.model.ignore_case == True
+    text_processing.ignore_case_checkbox.setChecked(False)
+    assert model_change_callback.model.ignore_case == False
+
 
     # dialog.exec()
 
