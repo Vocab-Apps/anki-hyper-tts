@@ -325,7 +325,8 @@ class ConfigModelsTests(unittest.TestCase):
                 'html_to_text_line': True,
                 'strip_brackets': False,
                 'run_replace_rules_after': True,
-                'ssml_convert_characters': True,            
+                'ssml_convert_characters': True,
+                'ignore_case': False,
                 'text_replacement_rules': [
                     {
                         'rule_type': 'Simple',
@@ -397,6 +398,7 @@ class ConfigModelsTests(unittest.TestCase):
             'strip_brackets': False,
             'run_replace_rules_after': True,
             'ssml_convert_characters': True,
+            'ignore_case': False,
             'text_replacement_rules': [
                 {
                     'rule_type': 'Simple',
@@ -419,7 +421,8 @@ class ConfigModelsTests(unittest.TestCase):
             'html_to_text_line': True,
             'strip_brackets': False,
             'run_replace_rules_after': True,
-            'ssml_convert_characters': True,        
+            'ssml_convert_characters': True,
+            'ignore_case': False,
             'text_replacement_rules': [
                 {
                     'rule_type': 'Regex',
@@ -437,6 +440,7 @@ class ConfigModelsTests(unittest.TestCase):
             'strip_brackets': True,
             'run_replace_rules_after': True,
             'ssml_convert_characters': True,        
+            'ignore_case': False,
             'text_replacement_rules': [
                 {
                     'rule_type': 'Regex',
@@ -562,7 +566,8 @@ class ConfigModelsTests(unittest.TestCase):
                 'html_to_text_line': True,
                 'strip_brackets': False,
                 'run_replace_rules_after': True,
-                'ssml_convert_characters': True,            
+                'ssml_convert_characters': True,
+                'ignore_case': False,
                 'text_replacement_rules': [
                     {
                         'rule_type': 'Simple',
@@ -702,7 +707,8 @@ class ConfigModelsTests(unittest.TestCase):
                     'html_to_text_line': True,
                     'strip_brackets': False,
                     'run_replace_rules_after': True,
-                    'ssml_convert_characters': True,            
+                    'ssml_convert_characters': True,
+                    'ignore_case': False,   
                     'text_replacement_rules': []
                 }
             },
