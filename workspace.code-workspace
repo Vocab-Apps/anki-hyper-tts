@@ -5,6 +5,7 @@
 		}
 	],
 	"settings": {
+        "python.defaultInterpreterPath": "/home/luc/python-env/anki-hyper-tts/bin/python",        
 		"files.exclude": {
 			"**/__pycache__": true,
 			"**/.pytest_cache": true,
