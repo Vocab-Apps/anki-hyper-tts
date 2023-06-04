@@ -22,6 +22,14 @@ coverage erase
 * install Python 3.11 for windows
 * install ffmpeg
 * create python virtual env
+* create virtualenv
+  * `cd c:\dev\python-env`
+  * `python -m venv anki-hyper-tts`
+  * `C:\dev\python-env\anki-hyper-tts\Scripts\activate`  
+  * `cd C:\dev\python\anki-hyper-tts`
+  * `c:\dev\python-env\anki-hyper-tts\Scripts\python.exe -m pip install --upgrade pip`
+  * `pip install -r requirements.txt`
+  * `pip install -r requirements.windows.txt`
 * install requirements.txt and requirements.windows.txt
 * directory junction for anki addon: `mklink /j C:\Users\Luc\AppData\Roaming\Anki2\addons21\anki-hyper-tts C:\dev\python\anki-hyper-tts`
 
