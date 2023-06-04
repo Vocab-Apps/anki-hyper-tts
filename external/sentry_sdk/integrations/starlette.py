@@ -2,9 +2,11 @@ from __future__ import absolute_import
 
 import asyncio
 import functools
+from copy import deepcopy
 
 from sentry_sdk._compat import iteritems
-from sentry_sdk._types import MYPY
+from sentry_sdk._types import TYPE_CHECKING
+from sentry_sdk.consts import OP
 from sentry_sdk.hub import Hub, _should_send_default_pii
 from sentry_sdk.integrations import DidNotEnable, Integration
 from sentry_sdk.integrations._wsgi_common import (
@@ -20,10 +22,10 @@ from sentry_sdk.utils import (
     transaction_from_function,
 )
 
-if MYPY:
-    from typing import Any, Awaitable, Callable, Dict, Optional, Union
+if TYPE_CHECKING:
+    from typing import Any, Awaitable, Callable, Dict, Optional
 
-    from sentry_sdk._types import Event
+    from sentry_sdk.scope import Scope as SentryScope
 
 try:
     import starlette  # type: ignore
@@ -35,7 +37,7 @@ try:
     )
     from starlette.requests import Request  # type: ignore
     from starlette.routing import Match  # type: ignore
-    from starlette.types import ASGIApp, Receive, Scope, Send  # type: ignore
+    from starlette.types import ASGIApp, Receive, Scope as StarletteScope, Send  # type: ignore
 except ImportError:
     raise DidNotEnable("Starlette is not installed")
 
@@ -48,7 +50,7 @@ except ImportError:
 
 try:
     # Optional dependency of Starlette to parse form data.
-    import multipart  # type: ignore # noqa: F401
+    import multipart  # type: ignore
 except ImportError:
     multipart = None
 
@@ -84,21 +86,52 @@ def _enable_span_for_middleware(middleware_class):
     # type: (Any) -> type
     old_call = middleware_class.__call__
 
-    async def _create_span_call(*args, **kwargs):
-        # type: (Any, Any) -> None
+    async def _create_span_call(app, scope, receive, send, **kwargs):
+        # type: (Any, Dict[str, Any], Callable[[], Awaitable[Dict[str, Any]]], Callable[[Dict[str, Any]], Awaitable[None]], Any) -> None
         hub = Hub.current
         integration = hub.get_integration(StarletteIntegration)
         if integration is not None:
-            middleware_name = args[0].__class__.__name__
+            middleware_name = app.__class__.__name__
+
             with hub.start_span(
-                op="starlette.middleware", description=middleware_name
+                op=OP.MIDDLEWARE_STARLETTE, description=middleware_name
             ) as middleware_span:
                 middleware_span.set_tag("starlette.middleware_name", middleware_name)
 
-                await old_call(*args, **kwargs)
+                # Creating spans for the "receive" callback
+                async def _sentry_receive(*args, **kwargs):
+                    # type: (*Any, **Any) -> Any
+                    hub = Hub.current
+                    with hub.start_span(
+                        op=OP.MIDDLEWARE_STARLETTE_RECEIVE,
+                        description=getattr(receive, "__qualname__", str(receive)),
+                    ) as span:
+                        span.set_tag("starlette.middleware_name", middleware_name)
+                        return await receive(*args, **kwargs)
+
+                receive_name = getattr(receive, "__name__", str(receive))
+                receive_patched = receive_name == "_sentry_receive"
+                new_receive = _sentry_receive if not receive_patched else receive
+
+                # Creating spans for the "send" callback
+                async def _sentry_send(*args, **kwargs):
+                    # type: (*Any, **Any) -> Any
+                    hub = Hub.current
+                    with hub.start_span(
+                        op=OP.MIDDLEWARE_STARLETTE_SEND,
+                        description=getattr(send, "__qualname__", str(send)),
+                    ) as span:
+                        span.set_tag("starlette.middleware_name", middleware_name)
+                        return await send(*args, **kwargs)
+
+                send_name = getattr(send, "__name__", str(send))
+                send_patched = send_name == "_sentry_send"
+                new_send = _sentry_send if not send_patched else send
+
+                return await old_call(app, scope, new_receive, new_send, **kwargs)
 
         else:
-            await old_call(*args, **kwargs)
+            return await old_call(app, scope, receive, send, **kwargs)
 
     not_yet_patched = old_call.__name__ not in [
         "_create_span_call",
@@ -135,62 +168,68 @@ def patch_exception_middleware(middleware_class):
     """
     old_middleware_init = middleware_class.__init__
 
-    def _sentry_middleware_init(self, *args, **kwargs):
-        # type: (Any, Any, Any) -> None
-        old_middleware_init(self, *args, **kwargs)
+    not_yet_patched = "_sentry_middleware_init" not in str(old_middleware_init)
 
-        # Patch existing exception handlers
-        old_handlers = self._exception_handlers.copy()
+    if not_yet_patched:
 
-        async def _sentry_patched_exception_handler(self, *args, **kwargs):
+        def _sentry_middleware_init(self, *args, **kwargs):
             # type: (Any, Any, Any) -> None
-            exp = args[0]
+            old_middleware_init(self, *args, **kwargs)
 
-            is_http_server_error = (
-                hasattr(exp, "status_code") and exp.status_code >= 500
-            )
-            if is_http_server_error:
-                _capture_exception(exp, handled=True)
+            # Patch existing exception handlers
+            old_handlers = self._exception_handlers.copy()
 
-            # Find a matching handler
-            old_handler = None
-            for cls in type(exp).__mro__:
-                if cls in old_handlers:
-                    old_handler = old_handlers[cls]
-                    break
+            async def _sentry_patched_exception_handler(self, *args, **kwargs):
+                # type: (Any, Any, Any) -> None
+                exp = args[0]
 
-            if old_handler is None:
-                return
+                is_http_server_error = (
+                    hasattr(exp, "status_code")
+                    and isinstance(exp.status_code, int)
+                    and exp.status_code >= 500
+                )
+                if is_http_server_error:
+                    _capture_exception(exp, handled=True)
 
-            if _is_async_callable(old_handler):
-                return await old_handler(self, *args, **kwargs)
-            else:
-                return old_handler(self, *args, **kwargs)
+                # Find a matching handler
+                old_handler = None
+                for cls in type(exp).__mro__:
+                    if cls in old_handlers:
+                        old_handler = old_handlers[cls]
+                        break
 
-        for key in self._exception_handlers.keys():
-            self._exception_handlers[key] = _sentry_patched_exception_handler
+                if old_handler is None:
+                    return
 
-    middleware_class.__init__ = _sentry_middleware_init
+                if _is_async_callable(old_handler):
+                    return await old_handler(self, *args, **kwargs)
+                else:
+                    return old_handler(self, *args, **kwargs)
 
-    old_call = middleware_class.__call__
+            for key in self._exception_handlers.keys():
+                self._exception_handlers[key] = _sentry_patched_exception_handler
 
-    async def _sentry_exceptionmiddleware_call(self, scope, receive, send):
-        # type: (Dict[str, Any], Dict[str, Any], Callable[[], Awaitable[Dict[str, Any]]], Callable[[Dict[str, Any]], Awaitable[None]]) -> None
-        # Also add the user (that was eventually set by be Authentication middle
-        # that was called before this middleware). This is done because the authentication
-        # middleware sets the user in the scope and then (in the same function)
-        # calls this exception middelware. In case there is no exception (or no handler
-        # for the type of exception occuring) then the exception bubbles up and setting the
-        # user information into the sentry scope is done in auth middleware and the
-        # ASGI middleware will then send everything to Sentry and this is fine.
-        # But if there is an exception happening that the exception middleware here
-        # has a handler for, it will send the exception directly to Sentry, so we need
-        # the user information right now.
-        # This is why we do it here.
-        _add_user_to_sentry_scope(scope)
-        await old_call(self, scope, receive, send)
+        middleware_class.__init__ = _sentry_middleware_init
 
-    middleware_class.__call__ = _sentry_exceptionmiddleware_call
+        old_call = middleware_class.__call__
+
+        async def _sentry_exceptionmiddleware_call(self, scope, receive, send):
+            # type: (Dict[str, Any], Dict[str, Any], Callable[[], Awaitable[Dict[str, Any]]], Callable[[Dict[str, Any]], Awaitable[None]]) -> None
+            # Also add the user (that was eventually set by be Authentication middle
+            # that was called before this middleware). This is done because the authentication
+            # middleware sets the user in the scope and then (in the same function)
+            # calls this exception middelware. In case there is no exception (or no handler
+            # for the type of exception occuring) then the exception bubbles up and setting the
+            # user information into the sentry scope is done in auth middleware and the
+            # ASGI middleware will then send everything to Sentry and this is fine.
+            # But if there is an exception happening that the exception middleware here
+            # has a handler for, it will send the exception directly to Sentry, so we need
+            # the user information right now.
+            # This is why we do it here.
+            _add_user_to_sentry_scope(scope)
+            await old_call(self, scope, receive, send)
+
+        middleware_class.__call__ = _sentry_exceptionmiddleware_call
 
 
 def _add_user_to_sentry_scope(scope):
@@ -235,12 +274,16 @@ def patch_authentication_middleware(middleware_class):
     """
     old_call = middleware_class.__call__
 
-    async def _sentry_authenticationmiddleware_call(self, scope, receive, send):
-        # type: (Dict[str, Any], Dict[str, Any], Callable[[], Awaitable[Dict[str, Any]]], Callable[[Dict[str, Any]], Awaitable[None]]) -> None
-        await old_call(self, scope, receive, send)
-        _add_user_to_sentry_scope(scope)
+    not_yet_patched = "_sentry_authenticationmiddleware_call" not in str(old_call)
 
-    middleware_class.__call__ = _sentry_authenticationmiddleware_call
+    if not_yet_patched:
+
+        async def _sentry_authenticationmiddleware_call(self, scope, receive, send):
+            # type: (Dict[str, Any], Dict[str, Any], Callable[[], Awaitable[Dict[str, Any]]], Callable[[Dict[str, Any]], Awaitable[None]]) -> None
+            await old_call(self, scope, receive, send)
+            _add_user_to_sentry_scope(scope)
+
+        middleware_class.__call__ = _sentry_authenticationmiddleware_call
 
 
 def patch_middlewares():
@@ -257,6 +300,9 @@ def patch_middlewares():
 
         def _sentry_middleware_init(self, cls, **options):
             # type: (Any, Any, Any) -> None
+            if cls == SentryAsgiMiddleware:
+                return old_middleware_init(self, cls, **options)
+
             span_enabled_cls = _enable_span_for_middleware(cls)
             old_middleware_init(self, span_enabled_cls, **options)
 
@@ -277,7 +323,7 @@ def patch_asgi_app():
     old_app = Starlette.__call__
 
     async def _sentry_patched_asgi_app(self, scope, receive, send):
-        # type: (Starlette, Scope, Receive, Send) -> None
+        # type: (Starlette, StarletteScope, Receive, Send) -> None
         if Hub.current.get_integration(StarletteIntegration) is None:
             return await old_app(self, scope, receive, send)
 
@@ -285,6 +331,7 @@ def patch_asgi_app():
             lambda *a, **kw: old_app(self, *a, **kw),
             mechanism_type=StarletteIntegration.identifier,
         )
+
         middleware.__call__ = middleware._run_asgi3
         return await middleware(scope, receive, send)
 
@@ -323,6 +370,11 @@ def patch_request_response():
 
                 with hub.configure_scope() as sentry_scope:
                     request = args[0]
+
+                    _set_transaction_name_and_source(
+                        sentry_scope, integration.transaction_style, request
+                    )
+
                     extractor = StarletteRequestExtractor(request)
                     info = await extractor.extract_request_info()
 
@@ -331,18 +383,14 @@ def patch_request_response():
                         def event_processor(event, hint):
                             # type: (Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
 
-                            # Extract information from request
+                            # Add info from request to event
                             request_info = event.get("request", {})
                             if info:
-                                if "cookies" in info and _should_send_default_pii():
+                                if "cookies" in info:
                                     request_info["cookies"] = info["cookies"]
                                 if "data" in info:
                                     request_info["data"] = info["data"]
-                            event["request"] = request_info
-
-                            _set_transaction_name_and_source(
-                                event, integration.transaction_style, req
-                            )
+                            event["request"] = deepcopy(request_info)
 
                             return event
 
@@ -366,7 +414,15 @@ def patch_request_response():
                     return old_func(*args, **kwargs)
 
                 with hub.configure_scope() as sentry_scope:
+                    if sentry_scope.profile is not None:
+                        sentry_scope.profile.update_active_thread_id()
+
                     request = args[0]
+
+                    _set_transaction_name_and_source(
+                        sentry_scope, integration.transaction_style, request
+                    )
+
                     extractor = StarletteRequestExtractor(request)
                     cookies = extractor.extract_cookies_from_request()
 
@@ -380,11 +436,7 @@ def patch_request_response():
                             if cookies:
                                 request_info["cookies"] = cookies
 
-                            event["request"] = request_info
-
-                            _set_transaction_name_and_source(
-                                event, integration.transaction_style, req
-                            )
+                            event["request"] = deepcopy(request_info)
 
                             return event
 
@@ -434,66 +486,71 @@ class StarletteRequestExtractor:
         if client is None:
             return None
 
-        data = None  # type: Union[Dict[str, Any], AnnotatedValue, None]
-
-        content_length = await self.content_length()
         request_info = {}  # type: Dict[str, Any]
 
         with capture_internal_exceptions():
+            # Add cookies
             if _should_send_default_pii():
                 request_info["cookies"] = self.cookies()
 
-            if not request_body_within_bounds(client, content_length):
-                data = AnnotatedValue(
-                    "",
-                    {
-                        "rem": [["!config", "x", 0, content_length]],
-                        "len": content_length,
-                    },
-                )
-            else:
-                parsed_body = await self.parsed_body()
-                if parsed_body is not None:
-                    data = parsed_body
-                elif await self.raw_data():
-                    data = AnnotatedValue(
-                        "",
-                        {
-                            "rem": [["!raw", "x", 0, content_length]],
-                            "len": content_length,
-                        },
+            # If there is no body, just return the cookies
+            content_length = await self.content_length()
+            if not content_length:
+                return request_info
+
+            # Add annotation if body is too big
+            if content_length and not request_body_within_bounds(
+                client, content_length
+            ):
+                request_info["data"] = AnnotatedValue.removed_because_over_size_limit()
+                return request_info
+
+            # Add JSON body, if it is a JSON request
+            json = await self.json()
+            if json:
+                request_info["data"] = json
+                return request_info
+
+            # Add form as key/value pairs, if request has form data
+            form = await self.form()
+            if form:
+                form_data = {}
+                for key, val in iteritems(form):
+                    is_file = isinstance(val, UploadFile)
+                    form_data[key] = (
+                        val
+                        if not is_file
+                        else AnnotatedValue.removed_because_raw_data()
                     )
-                else:
-                    data = None
 
-            if data is not None:
-                request_info["data"] = data
+                request_info["data"] = form_data
+                return request_info
 
-        return request_info
+            # Raw data, do not add body just an annotation
+            request_info["data"] = AnnotatedValue.removed_because_raw_data()
+            return request_info
 
     async def content_length(self):
-        # type: (StarletteRequestExtractor) -> int
-        raw_data = await self.raw_data()
-        if raw_data is None:
-            return 0
-        return len(raw_data)
+        # type: (StarletteRequestExtractor) -> Optional[int]
+        if "content-length" in self.request.headers:
+            return int(self.request.headers["content-length"])
+
+        return None
 
     def cookies(self):
         # type: (StarletteRequestExtractor) -> Dict[str, Any]
         return self.request.cookies
 
-    async def raw_data(self):
-        # type: (StarletteRequestExtractor) -> Any
-        return await self.request.body()
-
     async def form(self):
         # type: (StarletteRequestExtractor) -> Any
-        """
-        curl -X POST http://localhost:8000/upload/somethign -H "Content-Type: application/x-www-form-urlencoded" -d "username=kevin&password=welcome123"
-        curl -X POST http://localhost:8000/upload/somethign  -F username=Julian -F password=hello123
-        """
         if multipart is None:
             return None
+
+        # Parse the body first to get it cached, as Starlette does not cache form() as it
+        # does with body() and json() https://github.com/encode/starlette/discussions/1933
+        # Calling `.form()` without calling `.body()` first will
+        # potentially break the users project.
+        await self.request.body()
 
         return await self.request.form()
 
@@ -503,39 +560,14 @@ class StarletteRequestExtractor:
 
     async def json(self):
         # type: (StarletteRequestExtractor) -> Optional[Dict[str, Any]]
-        """
-        curl -X POST localhost:8000/upload/something -H 'Content-Type: application/json' -d '{"login":"my_login","password":"my_password"}'
-        """
         if not self.is_json():
             return None
 
         return await self.request.json()
 
-    async def parsed_body(self):
-        # type: (StarletteRequestExtractor) -> Any
-        """
-        curl -X POST http://localhost:8000/upload/somethign  -F username=Julian -F password=hello123 -F photo=@photo.jpg
-        """
-        form = await self.form()
-        if form:
-            data = {}
-            for key, val in iteritems(form):
-                if isinstance(val, UploadFile):
-                    size = len(await val.read())
-                    data[key] = AnnotatedValue(
-                        "", {"len": size, "rem": [["!raw", "x", 0, size]]}
-                    )
-                else:
-                    data[key] = val
 
-            return data
-
-        json_data = await self.json()
-        return json_data
-
-
-def _set_transaction_name_and_source(event, transaction_style, request):
-    # type: (Event, str, Any) -> None
+def _set_transaction_name_and_source(scope, transaction_style, request):
+    # type: (SentryScope, str, Any) -> None
     name = ""
 
     if transaction_style == "endpoint":
@@ -557,9 +589,9 @@ def _set_transaction_name_and_source(event, transaction_style, request):
                     break
 
     if not name:
-        event["transaction"] = _DEFAULT_TRANSACTION_NAME
-        event["transaction_info"] = {"source": TRANSACTION_SOURCE_ROUTE}
-        return
+        name = _DEFAULT_TRANSACTION_NAME
+        source = TRANSACTION_SOURCE_ROUTE
+    else:
+        source = SOURCE_FOR_STYLE[transaction_style]
 
-    event["transaction"] = name
-    event["transaction_info"] = {"source": SOURCE_FOR_STYLE[transaction_style]}
+    scope.set_transaction_name(name, source=source)

@@ -1,7 +1,9 @@
+import sys
+from copy import deepcopy
 from datetime import datetime, timedelta
 from os import environ
-import sys
 
+from sentry_sdk.consts import OP
 from sentry_sdk.hub import Hub, _should_send_default_pii
 from sentry_sdk.tracing import TRANSACTION_SOURCE_COMPONENT, Transaction
 from sentry_sdk._compat import reraise
@@ -15,13 +17,13 @@ from sentry_sdk.utils import (
 from sentry_sdk.integrations import Integration
 from sentry_sdk.integrations._wsgi_common import _filter_headers
 
-from sentry_sdk._types import MYPY
+from sentry_sdk._types import TYPE_CHECKING
 
 # Constants
 TIMEOUT_WARNING_BUFFER = 1.5  # Buffer time required to send timeout warning to Sentry
 MILLIS_TO_SECONDS = 1000.0
 
-if MYPY:
+if TYPE_CHECKING:
     from typing import Any
     from typing import TypeVar
     from typing import Callable
@@ -82,7 +84,7 @@ def _wrap_func(func):
                 headers = gcp_event.headers
             transaction = Transaction.continue_from_headers(
                 headers,
-                op="serverless.function",
+                op=OP.FUNCTION_GCP,
                 name=environ.get("FUNCTION_NAME", ""),
                 source=TRANSACTION_SOURCE_COMPONENT,
             )
@@ -190,9 +192,9 @@ def _make_request_event_processor(gcp_event, configured_timeout, initial_time):
             if hasattr(gcp_event, "data"):
                 # Unfortunately couldn't find a way to get structured body from GCP
                 # event. Meaning every body is unstructured to us.
-                request["data"] = AnnotatedValue("", {"rem": [["!raw", "x", 0, 0]]})
+                request["data"] = AnnotatedValue.removed_because_raw_data()
 
-        event["request"] = request
+        event["request"] = deepcopy(request)
 
         return event
 

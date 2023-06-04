@@ -1,15 +1,17 @@
 """
 An ASGI middleware.
 
-Based on Tom Christie's `sentry-asgi <https://github.com/encode/sentry-asgi>`_.
+Based on Tom Christie's `sentry-asgi <https://github.com/encode/sentry-asgi>`.
 """
 
 import asyncio
 import inspect
 import urllib
+from copy import deepcopy
 
 from sentry_sdk._functools import partial
-from sentry_sdk._types import MYPY
+from sentry_sdk._types import TYPE_CHECKING
+from sentry_sdk.consts import OP
 from sentry_sdk.hub import Hub, _should_send_default_pii
 from sentry_sdk.integrations._wsgi_common import _filter_headers
 from sentry_sdk.integrations.modules import _get_installed_modules
@@ -23,11 +25,12 @@ from sentry_sdk.utils import (
     event_from_exception,
     HAS_REAL_CONTEXTVARS,
     CONTEXTVARS_ERROR_MESSAGE,
+    logger,
     transaction_from_function,
 )
 from sentry_sdk.tracing import Transaction
 
-if MYPY:
+if TYPE_CHECKING:
     from typing import Dict
     from typing import Any
     from typing import Optional
@@ -104,19 +107,20 @@ class SentryAsgiMiddleware:
                 "Invalid value for transaction_style: %s (must be in %s)"
                 % (transaction_style, TRANSACTION_STYLE_VALUES)
             )
-        self.transaction_style = transaction_style
-        self.mechanism_type = mechanism_type
-        self.app = app
 
         asgi_middleware_while_using_starlette_or_fastapi = (
-            "starlette" in _get_installed_modules() and self.mechanism_type == "asgi"
+            mechanism_type == "asgi" and "starlette" in _get_installed_modules()
         )
         if asgi_middleware_while_using_starlette_or_fastapi:
-            raise RuntimeError(
+            logger.warning(
                 "The Sentry Python SDK can now automatically support ASGI frameworks like Starlette and FastAPI. "
                 "Please remove 'SentryAsgiMiddleware' from your project. "
                 "See https://docs.sentry.io/platforms/python/guides/asgi/ for more information."
             )
+
+        self.transaction_style = transaction_style
+        self.mechanism_type = mechanism_type
+        self.app = app
 
         if _looks_like_asgi3(app):
             self.__call__ = self._run_asgi3  # type: Callable[..., Any]
@@ -138,7 +142,6 @@ class SentryAsgiMiddleware:
     async def _run_app(self, scope, callback):
         # type: (Any, Any) -> Any
         is_recursive_asgi_middleware = _asgi_middleware_applied.get(False)
-
         if is_recursive_asgi_middleware:
             try:
                 return await callback()
@@ -165,7 +168,7 @@ class SentryAsgiMiddleware:
                             op="{}.server".format(ty),
                         )
                     else:
-                        transaction = Transaction(op="asgi.server")
+                        transaction = Transaction(op=OP.HTTP_SERVER)
 
                     transaction.name = _DEFAULT_TRANSACTION_NAME
                     transaction.source = TRANSACTION_SOURCE_ROUTE
@@ -209,7 +212,7 @@ class SentryAsgiMiddleware:
 
         self._set_transaction_name_and_source(event, self.transaction_style, asgi_scope)
 
-        event["request"] = request_info
+        event["request"] = deepcopy(request_info)
 
         return event
 

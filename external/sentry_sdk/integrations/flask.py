@@ -1,18 +1,18 @@
 from __future__ import absolute_import
 
-from sentry_sdk._types import MYPY
+from sentry_sdk._types import TYPE_CHECKING
 from sentry_sdk.hub import Hub, _should_send_default_pii
 from sentry_sdk.integrations import DidNotEnable, Integration
 from sentry_sdk.integrations._wsgi_common import RequestExtractor
 from sentry_sdk.integrations.wsgi import SentryWsgiMiddleware
 from sentry_sdk.scope import Scope
-from sentry_sdk.tracing import SOURCE_FOR_STYLE
+from sentry_sdk.tracing import SENTRY_TRACE_HEADER_NAME, SOURCE_FOR_STYLE
 from sentry_sdk.utils import (
     capture_internal_exceptions,
     event_from_exception,
 )
 
-if MYPY:
+if TYPE_CHECKING:
     from typing import Any, Callable, Dict, Union
 
     from sentry_sdk._types import EventProcessor
@@ -26,7 +26,7 @@ except ImportError:
     flask_login = None
 
 try:
-    from flask import Flask, Markup, Request  # type: ignore
+    from flask import Flask, Request  # type: ignore
     from flask import __version__ as FLASK_VERSION
     from flask import request as flask_request
     from flask.signals import (
@@ -34,6 +34,7 @@ try:
         got_request_exception,
         request_started,
     )
+    from markupsafe import Markup
 except ImportError:
     raise DidNotEnable("Flask is not installed")
 
@@ -101,8 +102,11 @@ def _add_sentry_trace(sender, template, context, **extra):
     sentry_span = Hub.current.scope.span
     context["sentry_trace"] = (
         Markup(
-            '<meta name="sentry-trace" content="%s" />'
-            % (sentry_span.to_traceparent(),)
+            '<meta name="%s" content="%s" />'
+            % (
+                SENTRY_TRACE_HEADER_NAME,
+                sentry_span.to_traceparent(),
+            )
         )
         if sentry_span
         else ""
@@ -170,7 +174,7 @@ class FlaskRequestExtractor(RequestExtractor):
 
     def json(self):
         # type: () -> Any
-        return self.request.get_json()
+        return self.request.get_json(silent=True)
 
     def size_of_file(self, file):
         # type: (FileStorage) -> int
@@ -258,6 +262,5 @@ def _add_user_to_event(event):
 
         try:
             user_info.setdefault("username", user.username)
-            user_info.setdefault("username", user.email)
         except Exception:
             pass
