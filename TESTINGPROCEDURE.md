@@ -23,6 +23,7 @@ coverage erase
 * install ffmpeg
 * create python virtual env
 * install requirements.txt and requirements.windows.txt
+* directory junction for anki addon: `mklink /j C:\Users\Luc\AppData\Roaming\Anki2\addons21\anki-hyper-tts C:\dev\python\anki-hyper-tts`
 
 ## Running
 ### need to activate virtual env
