@@ -4,6 +4,7 @@ import traceback
 import logging
 import uuid
 import re
+import pprint
 
 if hasattr(sys, '_pytest_mode'):
     # called from within a test run
@@ -94,6 +95,12 @@ else:
 
             return event
 
+        def filter_transactions(event, hint):
+            operation = event.get('contexts', {}).get('trace', {}).get('op', None)
+            if operation == 'audio':
+                return event
+            return None
+
         traces_sample_rate_map = {
             'development': 1.0,
             'production': 0.06
@@ -106,7 +113,8 @@ else:
             traces_sample_rate=traces_sample_rate_map[sentry_env],
             release=f'anki-hyper-tts@{version.ANKI_HYPER_TTS_VERSION}',
             environment=sentry_env,
-            before_send=sentry_filter
+            before_send=sentry_filter,
+            before_send_transaction=filter_transactions
         )
         sentry_sdk.set_user({"id": user_id})
         sentry_sdk.set_tag("anki_version", anki.version)
