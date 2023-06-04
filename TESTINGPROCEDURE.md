@@ -21,14 +21,19 @@ coverage erase
 * install ffmpeg
 * create python virtual env
 * install requirements.txt and requirements.windows.txt
+
 ## Running
 # go to C:\storage\dev\anki-hyper-tts
 # need to activate virtual env
-c:\storage\dev\env-anki-hyper-tts\Scripts\activate
+C:\dev\python-env\anki-hyper-tts\Scripts\activate
 # setup PATH
 set PATH=C:\Users\Luc\AppData\Local\Programs\Anki;C:\Program Files\ffmpeg;%PATH%
 # set tts keys
-cat language_tools_tts_dev.sh | sed 's/export/set/g'
-cat hypertts_testing_keys.sh  | sed 's/export/set/g'
+# created this way
+# cat ~/secrets/cloudlanguagetools/post_deploy_tts_prod.sh | sed 's/export/set/g'
+# cat ~/secrets/hypertts/hypertts_services_keys.sh
+execute ~/secrets/hypertts/hypertts_windows.bat
+# go to hypertts directory
+cd C:\dev\python\anki-hyper-tts
 # then
 pytest test_tts_services.py  -k test_windows
