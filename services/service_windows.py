@@ -236,6 +236,9 @@ def lcid_hex_str_to_lang_codes(hex_codes: str):
     ]
 
 class Windows(service.ServiceBase):
+    DEFAULT_RATE = 0
+    RATE_MIN = -10
+    RATE_MAX = 10
 
     def __init__(self):
         service.ServiceBase.__init__(self)
@@ -270,7 +273,10 @@ class Windows(service.ServiceBase):
                         audio_language = languages.AudioLanguage[lang]
                         gender_enum = constants.Gender[gender]
                         logger.info(f'sapi_voice: {name} lang: {audio_language} gender: {gender_enum}')
-                        result.append(voice.Voice(name, gender_enum, audio_language, self, name, {}))
+                        options = {
+                            'rate': {'default': self.DEFAULT_RATE, 'max': self.RATE_MAX, 'min': self.RATE_MIN, 'type': 'number_int'}
+                        }
+                        result.append(voice.Voice(name, gender_enum, audio_language, self, name, options))
                     else:
                         logger.error(f'unknown language: {lang}, could not process voice [{name}]')
 
@@ -314,6 +320,7 @@ class Windows(service.ServiceBase):
         logger.debug(f'writing to file {full_path_wav}')
 
         speaker.Voice = self.get_sapi_voice_by_name(voice.voice_key)
+        speaker.Rate = options.get('rate', self.DEFAULT_RATE)
 
         logger.debug(f'opening stream')
         stream = win32com.client.Dispatch('SAPI.SPFileStream')
