@@ -4,8 +4,16 @@ import hashlib
 import aqt.sound
 
 if os.name == 'nt':
+    import comtypes.client  # Importing comtypes.client will make the gen subpackage
+    try:
+        from comtypes.gen import SpeechLib  # comtypes
+    except ImportError:
+        # Generate the SpeechLib lib and any associated files
+        engine = comtypes.client.CreateObject("SAPI.SpVoice")
+        stream = comtypes.client.CreateObject("SAPI.SpFileStream")
+        from comtypes.gen import SpeechLib
     import win32com.client
-    import comtypes.gen.SpeechLib
+
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)

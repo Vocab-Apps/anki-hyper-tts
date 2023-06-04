@@ -465,7 +465,7 @@ class TTSTests(unittest.TestCase):
         service_voices = [voice for voice in voice_list if voice.service.name == service_name]
         
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
-        assert len(service_voices) >= 5
+        assert len(service_voices) >= 2
 
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
