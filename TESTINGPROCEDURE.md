@@ -1,3 +1,4 @@
+# Manual testing Procedure
 reset config
 
 add single preset,
@@ -9,11 +10,12 @@ add  random preset,
 run from browser/menu
 run from editor
 
-automated tests:
+# automated tests
+```
 coverage run -m pytest
 coverage html
-
 coverage erase
+```
 
 # Testing on Windows
 ## Initial setup
@@ -23,17 +25,18 @@ coverage erase
 * install requirements.txt and requirements.windows.txt
 
 ## Running
-# go to C:\storage\dev\anki-hyper-tts
-# need to activate virtual env
+### need to activate virtual env
 C:\dev\python-env\anki-hyper-tts\Scripts\activate
-# setup PATH
+### setup PATH
 set PATH=C:\Users\Luc\AppData\Local\Programs\Anki;C:\Program Files\ffmpeg;%PATH%
-# set tts keys
-# created this way
-# cat ~/secrets/cloudlanguagetools/post_deploy_tts_prod.sh | sed 's/export/set/g'
-# cat ~/secrets/hypertts/hypertts_services_keys.sh
+### set tts keys
+```
+created this way
+cat ~/secrets/cloudlanguagetools/post_deploy_tts_prod.sh | sed 's/export/set/g'
+cat ~/secrets/hypertts/hypertts_services_keys.sh
+```
 execute ~/secrets/hypertts/hypertts_windows.bat
-# go to hypertts directory
+## go to hypertts directory
 cd C:\dev\python\anki-hyper-tts
-# then
+## then
 pytest test_tts_services.py  -k test_windows
