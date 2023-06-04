@@ -8,6 +8,8 @@ user_files/*.mp3
 user_files/*.ogg
 web/node_modules/
 web/package-lock.json
+# comtypes generated
+external/comtypes/gen/
 # these get built
 /hypertts.js
 /hypertts.css
