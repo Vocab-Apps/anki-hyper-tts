@@ -84,6 +84,11 @@ class TTSTests(unittest.TestCase):
             'client_id': os.environ['NAVER_CLIENT_ID'],
             'client_secret': os.environ['NAVER_CLIENT_SECRET'],
         })                        
+        # elevenlabs
+        self.manager.get_service('ElevenLabs').enabled = True
+        self.manager.get_service('ElevenLabs').configure({
+            'api_key': os.environ['ELEVENLABS_API_KEY']
+        })                                
         # forvo
         self.manager.get_service('Forvo').enabled = True
         self.manager.get_service('Forvo').configure({
@@ -368,6 +373,18 @@ class TTSTests(unittest.TestCase):
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+    def test_elevenlabs_english(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_elevenlabs_english'
+        service_name = 'ElevenLabs'
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        assert len(service_voices) > 5
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence')        
 
     def test_fptai(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_fptai'
