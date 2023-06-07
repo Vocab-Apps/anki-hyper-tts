@@ -1,7 +1,5 @@
 import sys
 import requests
-import time
-import contextlib
 
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
