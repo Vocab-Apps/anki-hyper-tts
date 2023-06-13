@@ -166,7 +166,12 @@ class HyperTTS():
         source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode,
             audio_request_context, text_override)
         logger.debug('after process_note_audio')
-        editor.set_note(note)
+        logger.debug(f'about to call editor.set_note: {note}')
+        def get_set_note_lambda(editor, note):
+            def editor_set_note():
+                editor.set_note(note)
+            return editor_set_note
+        self.anki_utils.run_on_main(get_set_note_lambda(editor, note))
         logger.debug('after set_note')
         self.anki_utils.undo_end(undo_id)
         self.anki_utils.play_sound(full_filename)
