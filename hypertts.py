@@ -131,8 +131,10 @@ class HyperTTS():
         while loop_condition:
             try:
                 voice_with_options = self.choose_voice(voice_selection, voice_list)
+                logger.debug(f'about to generate audio file and write to file for {processed_text}')
                 full_filename, audio_filename = self.generate_audio_write_file(processed_text, 
                     voice_with_options.voice, voice_with_options.options, audio_request_context)
+                logger.debug(f'finished generating audio file and write to file for {processed_text}')
                 return full_filename, audio_filename
             except errors.AudioNotFoundError as exc:
                 # try the next voice, as long as one is available
@@ -155,13 +157,22 @@ class HyperTTS():
             return voice
 
     def editor_note_add_audio(self, batch, editor, note, add_mode, text_override):
+        logger.debug('editor_note_add_audio')
         undo_id = self.anki_utils.undo_start()
         audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_browser)
         if add_mode:
             audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_add)
+        logger.debug('before process_note_audio')
         source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode,
             audio_request_context, text_override)
-        editor.set_note(note)
+        logger.debug('after process_note_audio')
+        logger.debug(f'about to call editor.set_note: {note}')
+        def get_set_note_lambda(editor, note):
+            def editor_set_note():
+                editor.set_note(note)
+            return editor_set_note
+        self.anki_utils.run_on_main(get_set_note_lambda(editor, note))
+        logger.debug('after set_note')
         self.anki_utils.undo_end(undo_id)
         self.anki_utils.play_sound(full_filename)
 
@@ -300,8 +311,11 @@ class HyperTTS():
         if not os.path.exists(full_filename) or os.path.getsize(full_filename) == 0:
             audio_data = self.service_manager.get_tts_audio(source_text, voice, voice_options, audio_request_context)
             logger.info(f'not found in cache, requesting')
+            logger.debug(f'opening {full_filename}')
             f = open(full_filename, 'wb')
+            logger.debug(f'done opening {full_filename}')
             f.write(audio_data)
+            logger.debug(f'wrote audio data')
             f.close()
         else:
             logger.info(f'file exists in cache')

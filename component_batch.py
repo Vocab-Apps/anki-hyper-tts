@@ -315,10 +315,12 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.dialog.close()
 
     def apply_note_editor_task(self):
+        logger.debug('apply_note_editor_task')
         self.hypertts.editor_note_add_audio(self.batch_model, self.editor, self.note, self.add_mode, None)
         return True
 
     def apply_note_editor_task_done(self, result):
+        logger.debug('apply_note_editor_task_done')
         with self.hypertts.error_manager.get_single_action_context('Adding Audio to Note'):
             result = result.result()
             self.dialog.close()
