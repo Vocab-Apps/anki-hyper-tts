@@ -14,7 +14,7 @@ if hasattr(sys, '_sentry_crash_reporting'):
 
 class CloudLanguageTools():
     def __init__(self):
-        self.base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_BASE_URL', 'https://cloud-language-tools-tts-prod.anki.study')
+        self.base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_BASE_URL', 'https://cloudlanguagetools-api.vocab.ai')
 
     def configure(self, api_key):
         self.api_key = api_key
