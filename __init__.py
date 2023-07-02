@@ -103,7 +103,7 @@ else:
 
         traces_sample_rate_map = {
             'development': 1.0,
-            'production': 0.06
+            'production': 0.021
         }
 
         # need to create an anki-hyper-tts project in sentry.io first
