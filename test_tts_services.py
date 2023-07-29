@@ -407,8 +407,6 @@ class TTSTests(unittest.TestCase):
 
         voice_list = self.manager.full_voice_list()
 
-        pprint.pprint(voice_list)
-        
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
