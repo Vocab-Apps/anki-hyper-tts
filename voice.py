@@ -80,6 +80,9 @@ class Voice(VoiceBase):
     def _get_options(self):
         return self._options
 
+    def __repr__(self):
+        return f'{self.service} {self.name}, {self.language}'
+
     name = property(fget=_get_name)
     gender = property(fget=_get_gender)
     language = property(fget=_get_language)
