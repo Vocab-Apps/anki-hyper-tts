@@ -63,6 +63,13 @@ class ElevenLabsCustom(service.ServiceBase):
         self._config = config
         self.api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
 
+    def get_headers(self):
+        api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
+        headers = {
+            "Accept": "application/json",
+            "xi-api-key": api_key
+        }
+        return headers
 
     def get_audio_language(self, language_id):
         override_map = {
@@ -75,33 +82,19 @@ class ElevenLabsCustom(service.ServiceBase):
         return audio_language_enum
 
     def voice_list(self):
-        api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
-
-        headers = {
-            "Accept": "application/json",
-            "xi-api-key": api_key
-        }
 
         # get the list of models
         url = "https://api.elevenlabs.io/v1/models"
-        response = requests.get(url, headers=headers, timeout=constants.RequestTimeout)
+        response = requests.get(url, headers=self.get_headers(), timeout=constants.RequestTimeout)
         response.raise_for_status()
         model_data = response.json()      
 
-        # write model_data to elevenlabs_models.json  
-        # with open('elevenlabs_models.json', 'w') as f:
-        #    json.dump(model_data, f, indent=4)        
-
         url = "https://api.elevenlabs.io/v1/voices"
 
-        response = requests.get(url, headers=headers, timeout=constants.RequestTimeout)
+        response = requests.get(url, headers=self.get_headers(), timeout=constants.RequestTimeout)
         response.raise_for_status
         voice_data = response.json()['voices']
         
-        # write voice_data to elevenlabs.json
-        # with open('elevenlabs.json', 'w') as f:
-        #     json.dump(voice_data, f, indent=4)
-
         result = []
         for model in model_data:
             model_id = model['model_id']
@@ -121,20 +114,16 @@ class ElevenLabsCustom(service.ServiceBase):
                     name = f'{voice_name} ({model_short_name})'
                     result.append(voice.Voice(name, gender, audio_language_enum, self, voice_key, VOICE_OPTIONS))
 
-        logger.debug(pprint.pformat(result))
+        # logger.debug(pprint.pformat(result))
         return result
 
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, voice_options):
-        api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
 
         voice_id = voice.voice_key['voice_id']
         url = f'https://api.elevenlabs.io/v1/text-to-speech/{voice_id}'
 
-        headers = {
-            "Accept": "application/json",
-            "xi-api-key": api_key
-        }
+        headers = self.get_headers()
         headers['Accept'] = "audio/mpeg"
 
         data = {

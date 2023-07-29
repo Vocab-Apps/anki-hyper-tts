@@ -399,9 +399,16 @@ class TTSTests(unittest.TestCase):
 
     def test_elevenlabs_custom(self):
         # pytest --log-cli-level=DEBUG test_tts_services.py  -k 'TTSTests and test_elevenlabs_custom'
+
         service_name = 'ElevenLabsCustom'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
         voice_list = self.manager.full_voice_list()
 
+        pprint.pprint(voice_list)
+        
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
