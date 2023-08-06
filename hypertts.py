@@ -775,4 +775,5 @@ class HyperTTS():
     # error handling
     # ==============
     def get_tts_player_action_context(self):
-        return self.error_manager.get_single_action_context_configurable('Playing Realtime Audio', constants.ErrorDialogType.Dialog)
+        return self.error_manager.get_single_action_context_configurable('Playing Realtime Audio', 
+            self.get_preferences().error_handling.realtime_tts_errors_dialog_type)
