@@ -721,3 +721,20 @@ class ConfigModelsTests(unittest.TestCase):
 
         deserialized_realtime_config = hypertts_instance.deserialize_realtime_config(realtime_config.serialize())
         self.assertEqual(deserialized_realtime_config.serialize(), realtime_config.serialize())
+
+    def test_preferences(self):
+        # pytest test_config_models.py -k test_preferences
+        hypertts_instance = get_hypertts_instance()
+
+        preferences = config_models.Preferences()
+        preferences.keyboard_shortcuts.shortcut_editor_add_audio = 'Ctrl+A'
+        preferences.keyboard_shortcuts.shortcut_editor_preview_audio = 'Ctrl+P'
+
+        expected_output = {
+            'keyboard_shortcuts': {
+                'shortcut_editor_add_audio': 'Ctrl+A',
+                'shortcut_editor_preview_audio': 'Ctrl+P'
+            }
+        }
+
+        self.assertEqual(preferences.serialize(), expected_output)
