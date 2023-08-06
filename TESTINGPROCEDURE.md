@@ -15,6 +15,7 @@ run from editor
 coverage run -m pytest
 coverage html
 coverage erase
+python -m http.server --bind :: 8000
 ```
 
 # Testing on Windows
