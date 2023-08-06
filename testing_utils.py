@@ -212,11 +212,19 @@ class MockAnkiUtils():
     def reset_exceptions(self):
         self.last_exception = None
         self.last_action = None
+        self.last_exception_dialog_type = None
 
     def report_known_exception_interactive_dialog(self, exception, action):
         self.last_exception = exception
         self.last_action = action
+        self.last_exception_dialog_type = 'dialog'
         logger.error(f'during {action}: {str(exception)}')
+
+    def report_known_exception_interactive_tooltip(self, exception, action):
+        self.last_exception = exception
+        self.last_action = action
+        self.last_exception_dialog_type = 'tooltip'
+        logger.error(f'during {action}: {str(exception)}')        
 
     def report_unknown_exception_interactive(self, exception, action):
         self.last_exception = exception

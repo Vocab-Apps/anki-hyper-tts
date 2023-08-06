@@ -5,3 +5,4 @@ omit =
     test_*.py
     testing_utils.py
     *external*
+    external*

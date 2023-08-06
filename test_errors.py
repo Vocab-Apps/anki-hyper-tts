@@ -1,8 +1,15 @@
 import sys
+import os
+
+addon_dir = os.path.dirname(os.path.realpath(__file__))
+external_dir = os.path.join(addon_dir, 'external')
+sys.path.insert(0, external_dir)
+
 import errors
 import testing_utils
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
 
 def test_exceptions(qtbot):
@@ -56,6 +63,37 @@ def test_error_manager(qtbot):
     assert mock_hypertts.anki_utils.last_action == 'single action 3'
     mock_hypertts.anki_utils.reset_exceptions()
 
+    # single actions, configurable
+    # ============================
+
+    # dialog
+    with error_manager.get_single_action_context_configurable('single action 4', constants.ErrorDialogType.Dialog):
+        logger.info('single action 4')
+        raise errors.FieldEmptyError('field1')
+
+    assert isinstance(mock_hypertts.anki_utils.last_exception, errors.FieldEmptyError)
+    assert mock_hypertts.anki_utils.last_action == 'single action 4'
+    assert mock_hypertts.anki_utils.last_exception_dialog_type == 'dialog'
+    mock_hypertts.anki_utils.reset_exceptions()
+
+    # tooltip
+    with error_manager.get_single_action_context_configurable('single action 5', constants.ErrorDialogType.Tooltip):
+        logger.info('single action 5')
+        raise errors.FieldEmptyError('field1')
+
+    assert isinstance(mock_hypertts.anki_utils.last_exception, errors.FieldEmptyError)
+    assert mock_hypertts.anki_utils.last_action == 'single action 5'
+    assert mock_hypertts.anki_utils.last_exception_dialog_type == 'tooltip'
+    mock_hypertts.anki_utils.reset_exceptions()    
+
+    # nothing
+    with error_manager.get_single_action_context_configurable('single action 6', constants.ErrorDialogType.Nothing):
+        logger.info('single action 6')
+        raise errors.FieldEmptyError('field1')
+
+    assert mock_hypertts.anki_utils.last_action == None
+    assert mock_hypertts.anki_utils.last_exception_dialog_type == None
+    mock_hypertts.anki_utils.reset_exceptions()        
 
     # batch actions
     # =============
