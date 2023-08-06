@@ -3,6 +3,7 @@ import aqt.qt
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 component_shortcuts = __import__('component_shortcuts', globals(), locals(), [], sys._addon_import_level_base)
+component_errorhandling = __import__('component_errorhandling', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
@@ -16,6 +17,7 @@ class ComponentPreferences(component_common.ConfigComponentBase):
         self.dialog = dialog
         self.model = config_models.Preferences()
         self.shortcuts = component_shortcuts.Shortcuts(self.hypertts, self.dialog, self.shortcuts_updated)
+        self.error_handling = component_errorhandling.ErrorHandling(self.hypertts, self.dialog, self.error_handling_updated)
 
         self.save_button = aqt.qt.QPushButton('Apply')   
         self.cancel_button = aqt.qt.QPushButton('Cancel')        
@@ -30,6 +32,10 @@ class ComponentPreferences(component_common.ConfigComponentBase):
 
     def shortcuts_updated(self, model):
         self.model.keyboard_shortcuts = model
+        self.model_part_updated_common()
+
+    def error_handling_updated(self, model):
+        self.model.error_handling = model
         self.model_part_updated_common()
 
     def model_part_updated_common(self):
@@ -55,6 +61,7 @@ class ComponentPreferences(component_common.ConfigComponentBase):
 
         self.tabs = aqt.qt.QTabWidget()
         self.tabs.addTab(self.shortcuts.draw(), 'Keyboard Shortcuts')
+        self.tabs.addTab(self.error_handling.draw(), 'Error Handling')
         layout.addWidget(self.tabs)
 
         # setup bottom buttons
