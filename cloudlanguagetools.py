@@ -41,7 +41,8 @@ class CloudLanguageTools():
         response = requests.post(full_url, json=data, headers={
             'api_key': self.api_key, 
             'client': 'hypertts', 
-            'client_version': version.ANKI_HYPER_TTS_VERSION},
+            'client_version': version.ANKI_HYPER_TTS_VERSION,
+            'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'},
             timeout=constants.RequestTimeout)
 
         if response.status_code == 200:
