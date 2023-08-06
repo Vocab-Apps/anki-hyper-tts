@@ -417,6 +417,7 @@ class TTSTests(unittest.TestCase):
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.vi_VN)
         self.verify_audio_output(selected_voice, 'Tôi bị mất cái ví.')
 
+    @pytest.mark.skip(reason="voicen decommissioned")
     def test_voicen(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_voicen'
         service_name = 'Voicen'
