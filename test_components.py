@@ -2392,6 +2392,9 @@ def test_preferences_save(qtbot):
 
     assert preferences.save_button.isEnabled() == True
 
+    # change the realtime tts dialog type
+    preferences.error_handling.realtime_tts_errors_dialog_type.setCurrentText('Tooltip')
+
     # click save
     qtbot.mouseClick(preferences.save_button, aqt.qt.Qt.MouseButton.LeftButton)
 
@@ -2399,6 +2402,7 @@ def test_preferences_save(qtbot):
     assert constants.CONFIG_KEYBOARD_SHORTCUTS in hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES]
 
     assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES][constants.CONFIG_KEYBOARD_SHORTCUTS]['shortcut_editor_add_audio'] == 'A'
+    assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES]['error_handling']['realtime_tts_errors_dialog_type'] == 'Tooltip'
 
     # try to deserialize
     deserialized_preferences = hypertts_instance.deserialize_preferences(hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES])
