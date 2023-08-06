@@ -26,6 +26,7 @@ class ComponentPreferences(component_common.ConfigComponentBase):
         logger.info('load_model')
         self.model = model
         self.shortcuts.load_model(self.model.keyboard_shortcuts)
+        self.error_handling.load_model(self.model.error_handling)
 
     def get_model(self):
         return self.model

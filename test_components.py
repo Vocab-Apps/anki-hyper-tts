@@ -29,6 +29,7 @@ import component_realtime_side
 import component_realtime
 import component_hyperttspro
 import component_shortcuts
+import component_errorhandling
 import component_preferences
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
@@ -2311,6 +2312,37 @@ def test_shortcuts_load_model(qtbot):
     assert shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+T'
     assert shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Ctrl+Alt+B'
     assert model_change_callback.model == None
+
+def test_error_handling(qtbot):
+    # pytest test_components.py -k test_error_handling -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    model_change_callback = MockModelChangeCallback()
+    error_handling = component_errorhandling.ErrorHandling(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(error_handling.draw())
+
+    # load model
+    # ==========
+
+    model = config_models.ErrorHandling()
+    model.realtime_tts_errors_dialog_type = constants.ErrorDialogType.Tooltip
+
+    error_handling.load_model(model)
+
+    assert error_handling.realtime_tts_errors_dialog_type.currentText() == 'Tooltip'
+
+    # try to make a change
+    # ====================
+
+    error_handling.realtime_tts_errors_dialog_type.setCurrentText('Nothing')
+    assert model_change_callback.model.realtime_tts_errors_dialog_type == constants.ErrorDialogType.Nothing
 
 
 def test_preferences_manual(qtbot):
