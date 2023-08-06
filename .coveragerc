@@ -6,3 +6,4 @@ omit =
     testing_utils.py
     *external*
     external*
+    */external/*
