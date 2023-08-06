@@ -1,6 +1,8 @@
 import sys
 import abc
 import copy
+# import pydantic
+from pydantic import BaseModel, Field
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
@@ -518,28 +520,21 @@ class RealtimeSourceAnkiTTS(ConfigModelBase):
         return f"""field: {self.field_name} ({self.field_type.name})"""
 
     
-class KeyboardShortcuts(ConfigModelBase):
-    def __init__(self):
-        self.shortcut_editor_add_audio = None
-        self.shortcut_editor_preview_audio = None
+class KeyboardShortcuts(BaseModel):
+    shortcut_editor_add_audio: str = None
+    shortcut_editor_preview_audio: str = None
 
     def serialize(self):
-        return {
-            'shortcut_editor_add_audio': self.shortcut_editor_add_audio,
-            'shortcut_editor_preview_audio': self.shortcut_editor_preview_audio
-        }
+        return self.model_dump()
 
     def validate(self):
         pass
 
-class Preferences(ConfigModelBase):
-    def __init__(self):
-        self.keyboard_shortcuts = KeyboardShortcuts()
+class Preferences(BaseModel):
+    keyboard_shortcuts: KeyboardShortcuts = Field(default_factory=KeyboardShortcuts)
 
     def serialize(self):
-        return {
-            constants.CONFIG_KEYBOARD_SHORTCUTS: self.keyboard_shortcuts.serialize()
-        }
+        return self.model_dump()
 
     def validate(self):
         pass

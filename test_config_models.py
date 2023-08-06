@@ -1,6 +1,12 @@
 import sys
+import os
 import pprint
 import unittest
+
+# add external modules to sys.path
+addon_dir = os.path.dirname(os.path.realpath(__file__))
+external_dir = os.path.join(addon_dir, 'external')
+sys.path.insert(0, external_dir)
 
 import constants
 import servicemanager
@@ -726,6 +732,9 @@ class ConfigModelsTests(unittest.TestCase):
         # pytest test_config_models.py -k test_preferences
         hypertts_instance = get_hypertts_instance()
 
+        # serialization test
+        # ==================
+
         preferences = config_models.Preferences()
         preferences.keyboard_shortcuts.shortcut_editor_add_audio = 'Ctrl+A'
         preferences.keyboard_shortcuts.shortcut_editor_preview_audio = 'Ctrl+P'
@@ -736,5 +745,18 @@ class ConfigModelsTests(unittest.TestCase):
                 'shortcut_editor_preview_audio': 'Ctrl+P'
             }
         }
-
         self.assertEqual(preferences.serialize(), expected_output)
+
+        # deserialization test
+        # ====================
+        preferences_config = {
+        }
+        preferences = hypertts_instance.deserialize_preferences(preferences_config)
+        self.assertEqual(preferences.serialize(), 
+        {
+            'keyboard_shortcuts': {
+                'shortcut_editor_add_audio': None,
+                'shortcut_editor_preview_audio': None
+            }               
+        })
+

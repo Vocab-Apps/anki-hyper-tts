@@ -771,14 +771,4 @@ class HyperTTS():
         return configuration
 
     def deserialize_preferences(self, preferences_config):
-        preferences = config_models.Preferences()
-        keyboard_shortcuts = self.deserialize_keyboard_shortcuts(preferences_config.get(constants.CONFIG_KEYBOARD_SHORTCUTS, None))
-        preferences.keyboard_shortcuts = keyboard_shortcuts
-        return preferences
-
-    def deserialize_keyboard_shortcuts(self, keyboard_shortcuts_config):
-        keyboard_shortcuts = config_models.KeyboardShortcuts()
-        if keyboard_shortcuts_config != None:
-            keyboard_shortcuts.shortcut_editor_add_audio = keyboard_shortcuts_config.get('shortcut_editor_add_audio', None)
-            keyboard_shortcuts.shortcut_editor_preview_audio = keyboard_shortcuts_config.get('shortcut_editor_preview_audio', None)
-        return keyboard_shortcuts
+        return config_models.Preferences(**preferences_config)
