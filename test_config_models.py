@@ -8,11 +8,11 @@ addon_dir = os.path.dirname(os.path.realpath(__file__))
 external_dir = os.path.join(addon_dir, 'external')
 sys.path.insert(0, external_dir)
 
+import hypertts
 import constants
 import servicemanager
 import testing_utils
 import config_models
-import hypertts
 import errors
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
