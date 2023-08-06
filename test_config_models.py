@@ -743,6 +743,9 @@ class ConfigModelsTests(unittest.TestCase):
             'keyboard_shortcuts': {
                 'shortcut_editor_add_audio': 'Ctrl+A',
                 'shortcut_editor_preview_audio': 'Ctrl+P'
+            },
+            'error_handling': {
+                'realtime_tts_errors_dialog_type': 'Dialog'
             }
         }
         self.assertEqual(preferences.serialize(), expected_output)
@@ -757,14 +760,17 @@ class ConfigModelsTests(unittest.TestCase):
             'keyboard_shortcuts': {
                 'shortcut_editor_add_audio': None,
                 'shortcut_editor_preview_audio': None
-            }               
+            },
+            'error_handling': {
+                'realtime_tts_errors_dialog_type': 'Dialog'
+            }                           
         })
 
         preferences_config = {
             'keyboard_shortcuts': {
                 'shortcut_editor_add_audio': 'Ctrl+T',
                 'shortcut_editor_preview_audio': None
-            }                           
+            }
         }
         preferences = hypertts_instance.deserialize_preferences(preferences_config)
         self.assertEqual(preferences.serialize(), 
@@ -772,6 +778,9 @@ class ConfigModelsTests(unittest.TestCase):
             'keyboard_shortcuts': {
                 'shortcut_editor_add_audio': 'Ctrl+T',
                 'shortcut_editor_preview_audio': None
-            }               
+            },
+            'error_handling': {
+                'realtime_tts_errors_dialog_type': 'Dialog'
+            }                           
         })        
 

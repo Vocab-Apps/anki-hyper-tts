@@ -208,7 +208,7 @@ class SingleActionContextConfigurable():
     def __exit__(self, exception_type, exception_value, traceback):
         if exception_value != None:
             if isinstance(exception_value, HyperTTSError):
-                self.error_manager.report_single_exception(exception_value, self.action)
+                self.error_manager.report_single_exception_dialog_type(exception_value, self.action, self.error_dialog_type)
             else:
                 self.error_manager.report_unknown_exception_interactive(exception_value, self.action)
             return True
@@ -300,7 +300,7 @@ class ErrorManager():
         if error_dialog_type == constants.ErrorDialogType.Dialog:
             self.anki_utils.report_known_exception_interactive_dialog(exception, action)
         elif error_dialog_type == constants.ErrorDialogType.Tooltip:
-            self.anki_utils.report_known_exception_interactive_toolip(exception, action)
+            self.anki_utils.report_known_exception_interactive_tooltip(exception, action)
         elif error_dialog_type == constants.ErrorDialogType.Nothing:
             pass
         else:

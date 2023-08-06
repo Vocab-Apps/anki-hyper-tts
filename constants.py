@@ -198,7 +198,7 @@ class Gender(enum.Enum):
     Female = enum.auto()
     Any = enum.auto()
 
-class ErrorDialogType(enum.Enum):
-    Dialog = enum.auto()
-    Tooltip = enum.auto()
-    Nothing = enum.auto()
+class ErrorDialogType(str, enum.Enum):
+    Dialog = 'Dialog'
+    Tooltip = 'Tooltip'
+    Nothing = 'Nothing'

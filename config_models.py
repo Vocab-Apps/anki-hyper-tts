@@ -525,8 +525,12 @@ class KeyboardShortcuts(BaseModel):
     shortcut_editor_add_audio: Optional[str] = None
     shortcut_editor_preview_audio: Optional[str] = None
 
+class ErrorHandling(BaseModel):
+    realtime_tts_errors_dialog_type: constants.ErrorDialogType = constants.ErrorDialogType.Dialog
+
 class Preferences(BaseModel):
     keyboard_shortcuts: KeyboardShortcuts = Field(default_factory=KeyboardShortcuts)
+    error_handling: ErrorHandling = Field(default_factory=ErrorHandling)
 
     def serialize(self):
         return self.model_dump()
