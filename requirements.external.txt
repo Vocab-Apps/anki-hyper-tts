@@ -1,0 +1,7 @@
+# these modules get bundled into the external directory in hypertts
+boto3
+pydantic
+comtypes
+espeakng
+gtts
+sentry_sdk

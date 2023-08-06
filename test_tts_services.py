@@ -24,12 +24,6 @@ logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_
 options = __import__('options', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
 
-# add external dir to sys.path
-addon_dir = os.path.dirname(os.path.realpath(__file__))
-external_dir = os.path.join(addon_dir, 'external')
-sys.path.append(external_dir)
-
-
 def services_dir():
     current_script_path = os.path.realpath(__file__)
     current_script_dir = os.path.dirname(current_script_path)    
