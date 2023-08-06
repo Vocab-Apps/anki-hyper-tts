@@ -1,4 +1,9 @@
 import sys
+import logging
+
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+
+logger = logging.getLogger(__name__)
 
 # all known exceptions inherit from this one
 class HyperTTSError(Exception):
@@ -191,6 +196,24 @@ class SingleActionContext():
             return True
         return False
 
+class SingleActionContextConfigurable():
+    def __init__(self, error_manager, action: str, error_dialog_type: constants.ErrorDialogType):
+        self.error_manager = error_manager
+        self.action = action
+        self.error_dialog_type = error_dialog_type
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, exception_type, exception_value, traceback):
+        if exception_value != None:
+            if isinstance(exception_value, HyperTTSError):
+                self.error_manager.report_single_exception(exception_value, self.action)
+            else:
+                self.error_manager.report_unknown_exception_interactive(exception_value, self.action)
+            return True
+        return False        
+
 class BatchActionContext():
     def __init__(self, batch_error_manager, note_id):
         self.batch_error_manager = batch_error_manager
@@ -271,7 +294,17 @@ class ErrorManager():
         self.anki_utils = anki_utils
 
     def report_single_exception(self, exception, action):
-        self.anki_utils.report_known_exception_interactive(exception, action)
+        self.anki_utils.report_known_exception_interactive_dialog(exception, action)
+
+    def report_single_exception_dialog_type(self, exception, action, error_dialog_type: constants.ErrorDialogType):
+        if error_dialog_type == constants.ErrorDialogType.Dialog:
+            self.anki_utils.report_known_exception_interactive_dialog(exception, action)
+        elif error_dialog_type == constants.ErrorDialogType.Tooltip:
+            self.anki_utils.report_known_exception_interactive_toolip(exception, action)
+        elif error_dialog_type == constants.ErrorDialogType.Nothing:
+            pass
+        else:
+            logger.error(f'Unknown error dialog type: {error_dialog_type}')
 
     def report_unknown_exception_interactive(self, exception, action):
         self.anki_utils.report_unknown_exception_interactive(exception, action)
@@ -281,6 +314,9 @@ class ErrorManager():
 
     def get_single_action_context(self, action):
         return SingleActionContext(self, action)
+
+    def get_single_action_context_configurable(self, action, error_dialog_type: constants.ErrorDialogType):
+        return SingleActionContextConfigurable(self, action, error_dialog_type)
 
     def get_batch_error_manager(self, batch_action):
         return BatchErrorManager(self, batch_action)

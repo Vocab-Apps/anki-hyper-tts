@@ -159,6 +159,10 @@ class AnkiUtils():
         message = self.restrict_message_length(message)
         aqt.utils.showCritical(message, title=constants.ADDON_NAME, parent=parent)
 
+    def tooltip_message(self, message):
+        message = self.restrict_message_length(message)
+        aqt.utils.tooltip(message)
+
     def ask_user(self, message, parent):
         result = aqt.utils.askUser(message, parent=parent)
         return result
@@ -200,9 +204,13 @@ class AnkiUtils():
     def display_dialog(self, dialog):
         return dialog.exec()
 
-    def report_known_exception_interactive(self, exception, action):
+    def report_known_exception_interactive_dialog(self, exception, action):
         error_message = f'Encountered an error while {action}: {str(exception)}'
         self.critical_message(error_message, None)
+
+    def report_known_exception_interactive_tooltip(self, exception, action):
+        error_message = f'Encountered an error while {action}: {str(exception)}'
+        self.tooltip_message(error_message)
 
     def report_unknown_exception_interactive(self, exception, action):
         error_message = f'Encountered an unknown error while {action}: {str(exception)}'

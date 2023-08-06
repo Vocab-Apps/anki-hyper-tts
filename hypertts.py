@@ -42,7 +42,6 @@ class HyperTTS():
         self.service_manager = service_manager
         self.error_manager = errors.ErrorManager(self.anki_utils)
         self.config = self.anki_utils.get_config()
-        self.error_manager = errors.ErrorManager(self.anki_utils)
         self.latest_saved_batch_name = None
 
 
@@ -772,3 +771,8 @@ class HyperTTS():
 
     def deserialize_preferences(self, preferences_config):
         return config_models.Preferences(**preferences_config)
+
+    # error handling
+    # ==============
+    def get_tts_player_action_context(self):
+        return self.error_manager.get_single_action_context_configurable('Playing Realtime Audio', constants.ErrorDialogType)
