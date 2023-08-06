@@ -760,3 +760,18 @@ class ConfigModelsTests(unittest.TestCase):
             }               
         })
 
+        preferences_config = {
+            'keyboard_shortcuts': {
+                'shortcut_editor_add_audio': 'Ctrl+T',
+                'shortcut_editor_preview_audio': None
+            }                           
+        }
+        preferences = hypertts_instance.deserialize_preferences(preferences_config)
+        self.assertEqual(preferences.serialize(), 
+        {
+            'keyboard_shortcuts': {
+                'shortcut_editor_add_audio': 'Ctrl+T',
+                'shortcut_editor_preview_audio': None
+            }               
+        })        
+
