@@ -1,7 +1,7 @@
 import sys
 import abc
 import copy
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import databind.json
 from typing import List, Optional
 
@@ -532,8 +532,8 @@ class ErrorHandling:
 
 @dataclass
 class Preferences:
-    keyboard_shortcuts: KeyboardShortcuts = KeyboardShortcuts()
-    error_handling: ErrorHandling = ErrorHandling()
+    keyboard_shortcuts: KeyboardShortcuts = field(default_factory=KeyboardShortcuts)
+    error_handling: ErrorHandling = field(default_factory=ErrorHandling)
 
 def serialize_preferences(preferences):
     return databind.json.dump(preferences, Preferences)

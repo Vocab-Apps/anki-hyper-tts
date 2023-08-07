@@ -750,9 +750,6 @@ class ConfigModelsTests(unittest.TestCase):
         }
         self.assertEqual(config_models.serialize_preferences(preferences), expected_output)
 
-    def test_preferences_2(self):
-        # pytest test_config_models.py -k test_preferences_2
-        hypertts_instance = get_hypertts_instance()        
 
         # deserialization test
         # ====================
