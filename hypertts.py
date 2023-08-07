@@ -669,8 +669,7 @@ class HyperTTS():
         return self.deserialize_preferences(self.config.get(constants.CONFIG_PREFERENCES, {}))
 
     def save_preferences(self, preferences_model):
-        preferences_model.validate()
-        self.config[constants.CONFIG_PREFERENCES] = preferences_model.serialize()
+        self.config[constants.CONFIG_PREFERENCES] = config_models.serialize_preferences(preferences_model)
         self.anki_utils.write_config(self.config)
 
     # deserialization routines for loading from config
@@ -770,7 +769,7 @@ class HyperTTS():
         return configuration
 
     def deserialize_preferences(self, preferences_config):
-        return config_models.Preferences(**preferences_config)
+        return config_models.deserialize_preferences(preferences_config)
 
     # error handling
     # ==============

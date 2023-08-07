@@ -1,8 +1,8 @@
 import sys
 import abc
 import copy
-# import pydantic
-from pydantic import BaseModel, Field
+from dataclasses import dataclass
+import databind.json
 from typing import List, Optional
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
@@ -521,21 +521,22 @@ class RealtimeSourceAnkiTTS(ConfigModelBase):
         return f"""field: {self.field_name} ({self.field_type.name})"""
 
     
-class KeyboardShortcuts(BaseModel):
+@dataclass
+class KeyboardShortcuts:
     shortcut_editor_add_audio: Optional[str] = None
     shortcut_editor_preview_audio: Optional[str] = None
 
-class ErrorHandling(BaseModel):
+@dataclass
+class ErrorHandling:
     realtime_tts_errors_dialog_type: constants.ErrorDialogType = constants.ErrorDialogType.Dialog
 
-class Preferences(BaseModel):
-    keyboard_shortcuts: KeyboardShortcuts = Field(default_factory=KeyboardShortcuts)
-    error_handling: ErrorHandling = Field(default_factory=ErrorHandling)
+@dataclass
+class Preferences:
+    keyboard_shortcuts: KeyboardShortcuts = KeyboardShortcuts()
+    error_handling: ErrorHandling = ErrorHandling()
 
-    def serialize(self):
-        return self.model_dump()
-
-    def validate(self):
-        pass
-
+def serialize_preferences(preferences):
+    return databind.json.dump(preferences, Preferences)
         
+def deserialize_preferences(preferences_config):
+    return databind.json.load(preferences_config, Preferences)

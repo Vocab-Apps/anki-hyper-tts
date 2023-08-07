@@ -728,8 +728,8 @@ class ConfigModelsTests(unittest.TestCase):
         deserialized_realtime_config = hypertts_instance.deserialize_realtime_config(realtime_config.serialize())
         self.assertEqual(deserialized_realtime_config.serialize(), realtime_config.serialize())
 
-    def test_preferences(self):
-        # pytest test_config_models.py -k test_preferences
+    def test_preferences_1(self):
+        # pytest test_config_models.py -k test_preferences_1
         hypertts_instance = get_hypertts_instance()
 
         # serialization test
@@ -748,14 +748,21 @@ class ConfigModelsTests(unittest.TestCase):
                 'realtime_tts_errors_dialog_type': 'Dialog'
             }
         }
-        self.assertEqual(preferences.serialize(), expected_output)
+        self.assertEqual(config_models.serialize_preferences(preferences), expected_output)
+
+    def test_preferences_2(self):
+        # pytest test_config_models.py -k test_preferences_2
+        hypertts_instance = get_hypertts_instance()        
 
         # deserialization test
         # ====================
         preferences_config = {
         }
-        preferences = hypertts_instance.deserialize_preferences(preferences_config)
-        self.assertEqual(preferences.serialize(), 
+        preferences_1 = hypertts_instance.deserialize_preferences(preferences_config)
+        self.assertEqual(preferences_1.error_handling.realtime_tts_errors_dialog_type, constants.ErrorDialogType.Dialog)
+        self.assertEqual(preferences_1.keyboard_shortcuts.shortcut_editor_add_audio, None)
+        self.assertEqual(preferences_1.keyboard_shortcuts.shortcut_editor_preview_audio, None)
+        self.assertEqual(config_models.serialize_preferences(preferences_1), 
         {
             'keyboard_shortcuts': {
                 'shortcut_editor_add_audio': None,
@@ -773,7 +780,10 @@ class ConfigModelsTests(unittest.TestCase):
             }
         }
         preferences = hypertts_instance.deserialize_preferences(preferences_config)
-        self.assertEqual(preferences.serialize(), 
+        self.assertEquals(preferences.keyboard_shortcuts.shortcut_editor_add_audio, 'Ctrl+T')
+        self.assertEquals(preferences.keyboard_shortcuts.shortcut_editor_preview_audio, None)
+        self.assertEqual(preferences.error_handling.realtime_tts_errors_dialog_type, constants.ErrorDialogType.Dialog)
+        self.assertEqual(config_models.serialize_preferences(preferences), 
         {
             'keyboard_shortcuts': {
                 'shortcut_editor_add_audio': 'Ctrl+T',
