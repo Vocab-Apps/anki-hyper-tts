@@ -1,7 +1,7 @@
 # these modules get bundled into the external directory in hypertts
 boto3
-pydantic
 comtypes
+databind
 espeakng
 gtts
 sentry_sdk
