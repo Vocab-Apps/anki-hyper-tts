@@ -72,14 +72,24 @@ class ElevenLabsCustom(service.ServiceBase):
         return headers
 
     def get_audio_language(self, language_id):
+        logger.debug(f'processing language_id: {language_id}')
         override_map = {
             'pt': languages.AudioLanguage.pt_PT,
+            'en-uk': languages.AudioLanguage.en_GB,
         }
         if language_id in override_map:
             return override_map[language_id]
-        language_enum = languages.Language[language_id]
-        audio_language_enum = languages.AudioLanguageDefaults[language_enum]
-        return audio_language_enum
+        # try to reconstruct AudioLanguage
+        language_id_components = language_id.split('-')
+        if len(language_id_components) != 2:
+            language_enum = languages.Language[language_id]
+            audio_language_enum = languages.AudioLanguageDefaults[language_enum]
+            return audio_language_enum
+        else:
+            modified_language_id = language_id_components[0] + '_' + language_id_components[1].upper()
+            logger.debug(f'modified_language_id: {modified_language_id}')
+            audio_language_enum = languages.AudioLanguage[modified_language_id]
+            return audio_language_enum
 
     def voice_list(self):
 
