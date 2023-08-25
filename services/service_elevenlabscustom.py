@@ -120,11 +120,14 @@ class ElevenLabsCustom(service.ServiceBase):
                     'model_id': model_id
                 }
                 for language_record in model['languages']:
-                    language_id = language_record['language_id']
-                    audio_language_enum = self.get_audio_language(language_id)
-                    gender = GENDER_MAP[voice_entry['labels']['gender']]
-                    name = f'{voice_name} ({model_short_name})'
-                    result.append(voice.Voice(name, gender, audio_language_enum, self, voice_key, VOICE_OPTIONS))
+                    try:
+                        language_id = language_record['language_id']
+                        audio_language_enum = self.get_audio_language(language_id)
+                        gender = GENDER_MAP[voice_entry['labels']['gender']]
+                        name = f'{voice_name} ({model_short_name})'
+                        result.append(voice.Voice(name, gender, audio_language_enum, self, voice_key, VOICE_OPTIONS))
+                    except Exception as e:
+                        logger.exception(f'ElevenLabsCustom: error processing voice language_record: {language_record} voice_entry: {voice_entry}')
 
         # logger.debug(pprint.pformat(result))
         return result
