@@ -391,6 +391,18 @@ class TTSTests(unittest.TestCase):
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
         self.verify_audio_output(selected_voice, 'Il va pleuvoir demain.')
 
+    def test_elevenlabs_japanese(self):
+        service_name = 'ElevenLabs'
+        voice_list = self.manager.full_voice_list()
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ja_JP)
+        self.verify_audio_output(selected_voice, 'おはようございます')
+
+    def test_elevenlabs_chinese(self):
+        service_name = 'ElevenLabs'
+        voice_list = self.manager.full_voice_list()
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.zh_CN)
+        self.verify_audio_output(selected_voice, '赚钱')
+
     def test_elevenlabs_custom(self):
         # pytest --log-cli-level=DEBUG test_tts_services.py  -k 'TTSTests and test_elevenlabs_custom'
 
