@@ -11,12 +11,11 @@
 # distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
+import configparser
+import copy
 import os
 import shlex
-import copy
 import sys
-
-from botocore.compat import six
 
 import botocore.exceptions
 
@@ -144,12 +143,13 @@ def raw_config_parse(config_filename, parse_subsections=True):
         path = os.path.expanduser(path)
         if not os.path.isfile(path):
             raise botocore.exceptions.ConfigNotFound(path=_unicode_path(path))
-        cp = six.moves.configparser.RawConfigParser()
+        cp = configparser.RawConfigParser()
         try:
             cp.read([path])
-        except (six.moves.configparser.Error, UnicodeDecodeError) as e:
+        except (configparser.Error, UnicodeDecodeError) as e:
             raise botocore.exceptions.ConfigParseError(
-                path=_unicode_path(path), error=e) from None
+                path=_unicode_path(path), error=e
+            ) from None
         else:
             for section in cp.sections():
                 config[section] = {}
@@ -163,13 +163,14 @@ def raw_config_parse(config_filename, parse_subsections=True):
                             config_value = _parse_nested(config_value)
                         except ValueError as e:
                             raise botocore.exceptions.ConfigParseError(
-                                path=_unicode_path(path), error=e) from None
+                                path=_unicode_path(path), error=e
+                            ) from None
                     config[section][option] = config_value
     return config
 
 
 def _unicode_path(path):
-    if isinstance(path, six.text_type):
+    if isinstance(path, str):
         return path
     # According to the documentation getfilesystemencoding can return None
     # on unix in which case the default encoding is used instead.
@@ -197,6 +198,17 @@ def _parse_nested(config_value):
         key, value = line.split('=', 1)
         parsed[key.strip()] = value.strip()
     return parsed
+
+
+def _parse_section(key, values):
+    result = {}
+    try:
+        parts = shlex.split(key)
+    except ValueError:
+        return result
+    if len(parts) == 2:
+        result[parts[1]] = values
+    return result
 
 
 def build_profile_map(parsed_ini_config):
@@ -252,15 +264,16 @@ def build_profile_map(parsed_ini_config):
     """
     parsed_config = copy.deepcopy(parsed_ini_config)
     profiles = {}
+    sso_sessions = {}
+    services = {}
     final_config = {}
     for key, values in parsed_config.items():
         if key.startswith("profile"):
-            try:
-                parts = shlex.split(key)
-            except ValueError:
-                continue
-            if len(parts) == 2:
-                profiles[parts[1]] = values
+            profiles.update(_parse_section(key, values))
+        elif key.startswith("sso-session"):
+            sso_sessions.update(_parse_section(key, values))
+        elif key.startswith("services"):
+            services.update(_parse_section(key, values))
         elif key == 'default':
             # default section is special and is considered a profile
             # name but we don't require you use 'profile "default"'
@@ -269,4 +282,6 @@ def build_profile_map(parsed_ini_config):
         else:
             final_config[key] = values
     final_config['profiles'] = profiles
+    final_config['sso_sessions'] = sso_sessions
+    final_config['services'] = services
     return final_config

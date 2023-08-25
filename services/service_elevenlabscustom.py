@@ -76,6 +76,8 @@ class ElevenLabsCustom(service.ServiceBase):
         override_map = {
             'pt': languages.AudioLanguage.pt_PT,
             'en-uk': languages.AudioLanguage.en_GB,
+            'zh': languages.AudioLanguage.zh_CN,
+            'id': languages.AudioLanguage.id_ID
         }
         if language_id in override_map:
             return override_map[language_id]

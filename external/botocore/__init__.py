@@ -12,11 +12,11 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+import logging
 import os
 import re
-import logging
 
-__version__ = '1.23.53'
+__version__ = '1.31.34'
 
 
 class NullHandler(logging.Handler):
@@ -28,6 +28,7 @@ class NullHandler(logging.Handler):
 log = logging.getLogger('botocore')
 log.addHandler(NullHandler())
 
+_INITIALIZERS = []
 
 _first_cap_regex = re.compile('(.)([A-Z][a-z]+)')
 _end_cap_regex = re.compile('([a-z0-9])([A-Z])')
@@ -64,7 +65,7 @@ BOTOCORE_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 # Used to specify anonymous (unsigned) request signature
-class UNSIGNED(object):
+class UNSIGNED:
     def __copy__(self):
         return self
 
@@ -92,8 +93,47 @@ def xform_name(name, sep='_', _xform_cache=_xform_cache):
             is_special = _special_case_transform.search(name)
             matched = is_special.group()
             # Replace something like ARNs, ACLs with _arns, _acls.
-            name = name[:-len(matched)] + sep + matched.lower()
+            name = f"{name[: -len(matched)]}{sep}{matched.lower()}"
         s1 = _first_cap_regex.sub(r'\1' + sep + r'\2', name)
         transformed = _end_cap_regex.sub(r'\1' + sep + r'\2', s1).lower()
         _xform_cache[key] = transformed
     return _xform_cache[key]
+
+
+def register_initializer(callback):
+    """Register an initializer function for session creation.
+
+    This initializer function will be invoked whenever a new
+    `botocore.session.Session` is instantiated.
+
+    :type callback: callable
+    :param callback: A callable that accepts a single argument
+        of type `botocore.session.Session`.
+
+    """
+    _INITIALIZERS.append(callback)
+
+
+def unregister_initializer(callback):
+    """Unregister an initializer function.
+
+    :type callback: callable
+    :param callback: A callable that was previously registered
+        with `botocore.register_initializer`.
+
+    :raises ValueError: If a callback is provided that is not currently
+        registered as an initializer.
+
+    """
+    _INITIALIZERS.remove(callback)
+
+
+def invoke_initializers(session):
+    """Invoke all initializers for a session.
+
+    :type session: botocore.session.Session
+    :param session: The session to initialize.
+
+    """
+    for initializer in _INITIALIZERS:
+        initializer(session)

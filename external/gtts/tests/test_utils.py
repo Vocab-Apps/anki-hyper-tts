@@ -2,7 +2,7 @@
 import pytest
 from gtts.utils import _minimize, _len, _clean_tokens, _translate_url
 
-delim = ' '
+delim = " "
 Lmax = 10
 
 
@@ -58,5 +58,5 @@ def test_translate_url():
     assert _translate_url(**_in) == _out
 
 
-if __name__ == '__main__':
-    pytest.main(['-x', __file__])
+if __name__ == "__main__":
+    pytest.main(["-x", __file__])

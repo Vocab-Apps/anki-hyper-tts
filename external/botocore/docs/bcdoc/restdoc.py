@@ -11,16 +11,43 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 import logging
+import os
+import re
 
 from botocore.compat import OrderedDict
 from botocore.docs.bcdoc.docstringparser import DocStringParser
 from botocore.docs.bcdoc.style import ReSTStyle
 
+DEFAULT_AWS_DOCS_LINK = 'https://docs.aws.amazon.com/index.html'
+DOCUMENTATION_LINK_REGEX = re.compile(
+    r'`AWS API Documentation '
+    r'<https://docs.aws.amazon.com/goto/WebAPI/[a-z0-9-.]*/[a-zA-Z]*>`_'
+)
+LARGE_SECTION_MESSAGE = """
+
+    **{}**
+    ::
+
+        # This section is too large to render.
+        # Please see the AWS API Documentation linked below.
+
+    {}
+    """
 LOG = logging.getLogger('bcdocs')
+SECTION_LINE_LIMIT_CONFIG = {
+    'response-example': {'name': 'Response Syntax', 'line_limit': 1500},
+    'description': {'name': 'Response Structure', 'line_limit': 5000},
+    'request-example': {'name': 'Request Syntax', 'line_limit': 1500},
+    'request-params': {'name': 'Parameters', 'line_limit': 5000},
+}
+SECTION_METHOD_PATH_DEPTH = {
+    'client-api': 4,
+    'paginator-api': 3,
+    'waiter-api': 3,
+}
 
 
-class ReSTDocument(object):
-
+class ReSTDocument:
     def __init__(self, target='man'):
         self.style = ReSTStyle(self)
         self.target = target
@@ -46,7 +73,7 @@ class ReSTDocument(object):
         """
         Write content on a newline.
         """
-        self._write('%s%s\n' % (self.style.spaces(), content))
+        self._write(f'{self.style.spaces()}{content}\n')
 
     def peek_write(self):
         """
@@ -59,7 +86,7 @@ class ReSTDocument(object):
         """
         Removes and returns the last content written to the stack.
         """
-        return self._writes.pop()
+        return self._writes.pop() if len(self._writes) > 0 else None
 
     def push_write(self, s):
         """
@@ -117,7 +144,7 @@ class DocumentStructure(ReSTDocument):
         :param context: A dictionary of data to store with the strucuture. These
             are only stored per section not the entire structure.
         """
-        super(DocumentStructure, self).__init__(target=target)
+        super().__init__(target=target)
         self._name = name
         self._structure = OrderedDict()
         self._path = [self._name]
@@ -172,8 +199,9 @@ class DocumentStructure(ReSTDocument):
             to the document structure it was instantiated from.
         """
         # Add a new section
-        section = self.__class__(name=name, target=self.target,
-                                 context=context)
+        section = self.__class__(
+            name=name, target=self.target, context=context
+        )
         section.path = self.path + [name]
         # Indent the section apporpriately as well
         section.style.indentation = self.style.indentation
@@ -190,7 +218,7 @@ class DocumentStructure(ReSTDocument):
         """Delete a section"""
         del self._structure[name]
 
-    def flush_structure(self):
+    def flush_structure(self, docs_link=None):
         """Flushes a doc structure to a ReSTructed string
 
         The document is flushed out in a DFS style where sections and their
@@ -198,14 +226,38 @@ class DocumentStructure(ReSTDocument):
         """
         # We are at the root flush the links at the beginning of the
         # document
-        if len(self.path) == 1:
+        path_length = len(self.path)
+        if path_length == 1:
             if self.hrefs:
                 self.style.new_paragraph()
                 for refname, link in self.hrefs.items():
                     self.style.link_target_definition(refname, link)
+        # Clear docs_link at the correct depth to prevent passing a non-related link.
+        elif path_length == SECTION_METHOD_PATH_DEPTH.get(self.path[1]):
+            docs_link = None
         value = self.getvalue()
         for name, section in self._structure.items():
-            value += section.flush_structure()
+            # Checks is the AWS API Documentation link has been generated.
+            # If it has been generated, it gets passed as a the doc_link parameter.
+            match = DOCUMENTATION_LINK_REGEX.search(value.decode())
+            docs_link = (
+                f'{match.group(0)}\n\n'.encode() if match else docs_link
+            )
+            value += section.flush_structure(docs_link)
+
+        # Replace response/request sections if the line number exceeds our limit.
+        # The section is replaced with a message linking to AWS API Documentation.
+        line_count = len(value.splitlines())
+        section_config = SECTION_LINE_LIMIT_CONFIG.get(self.name)
+        aws_docs_link = (
+            docs_link.decode()
+            if docs_link is not None
+            else DEFAULT_AWS_DOCS_LINK
+        )
+        if section_config and line_count > section_config['line_limit']:
+            value = LARGE_SECTION_MESSAGE.format(
+                section_config['name'], aws_docs_link
+            ).encode()
         return value
 
     def getvalue(self):
@@ -216,3 +268,15 @@ class DocumentStructure(ReSTDocument):
 
     def clear_text(self):
         self._writes = []
+
+    def add_title_section(self, title):
+        title_section = self.add_new_section('title')
+        title_section.style.h1(title)
+        return title_section
+
+    def write_to_file(self, full_path, file_name):
+        if not os.path.exists(full_path):
+            os.makedirs(full_path)
+        sub_resource_file_path = os.path.join(full_path, f'{file_name}.rst')
+        with open(sub_resource_file_path, 'wb') as f:
+            f.write(self.flush_structure())
