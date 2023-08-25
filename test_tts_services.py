@@ -207,7 +207,7 @@ class TTSTests(unittest.TestCase):
             expected_text = self.sanitize_recognized_text(source_text)
             if expected_text_override != None:
                 expected_text = self.sanitize_recognized_text(expected_text_override)    
-            assert expected_text == recognized_text, f'expected and actual text not matching (voice: {str(voice)})'
+            assert expected_text == recognized_text, f'expected and actual text not matching (voice: {str(voice)}): expected: [{expected_text}] actual: [{recognized_text}]'
             logger.info(f'actual and expected text match [{recognized_text}]')
         elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
             error_message = "No speech could be recognized: {}".format(result.no_match_details)
