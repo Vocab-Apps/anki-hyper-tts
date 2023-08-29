@@ -2,6 +2,7 @@ import sys
 import requests
 import pprint
 import json
+import cachetools
 
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
@@ -93,6 +94,7 @@ class ElevenLabsCustom(service.ServiceBase):
             audio_language_enum = languages.AudioLanguage[modified_language_id]
             return audio_language_enum
 
+    @cachetools.cached(cache=cachetools.TTLCache(maxsize=1, ttl=600))
     def voice_list(self):
 
         # get the list of models

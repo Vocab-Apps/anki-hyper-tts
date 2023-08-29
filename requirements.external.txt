@@ -5,3 +5,4 @@ databind
 espeakng
 gtts
 sentry_sdk
+cachetools
