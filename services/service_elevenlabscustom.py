@@ -95,7 +95,7 @@ class ElevenLabsCustom(service.ServiceBase):
             return audio_language_enum
 
     @cachetools.cached(cache=cachetools.TTLCache(maxsize=1, ttl=600))
-    def voice_list(self):
+    def voice_list_cached(self):
 
         # get the list of models
         url = "https://api.elevenlabs.io/v1/models"
@@ -133,6 +133,9 @@ class ElevenLabsCustom(service.ServiceBase):
 
         # logger.debug(pprint.pformat(result))
         return result
+
+    def voice_list(self):
+        return self.voice_list_cached()
 
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, voice_options):

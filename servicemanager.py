@@ -172,9 +172,13 @@ class ServiceManager():
         else:
             return voice.service.get_tts_audio(source_text, voice, options)
 
-    def full_voice_list(self) -> typing.List[voice.VoiceBase]:
+    def full_voice_list(self, single_service_name=None) -> typing.List[voice.VoiceBase]:
         full_list = []
         for service_name, service_instance in self.services.items():
+            if single_service_name != None:
+                # we only want voices for a particular service
+                if service_name != single_service_name:
+                    continue
             logger.debug(f'getting voice list for service {service_name}, enabled: {service_instance.enabled}')
             if service_instance.enabled:
                 voices = service_instance.voice_list()
@@ -183,7 +187,9 @@ class ServiceManager():
         return full_list
 
     def deserialize_voice(self, voice_data):
-        voice_list = self.full_voice_list()
+        # avoid loading voice list for services we don't need, this is particularly important for ElevenLabsCustom which does
+        # an actual query to their API
+        voice_list = self.full_voice_list(single_service_name=voice_data['service'])
         voice_subset = [voice for voice in voice_list if voice.voice_key == voice_data['voice_key'] and voice.service.name == voice_data['service']]
         if len(voice_subset) == 0:
             raise errors.VoiceNotFound(voice_data)
