@@ -25,6 +25,7 @@ component_preferences = __import__('component_preferences', globals(), locals(),
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 ttsplayer = __import__('ttsplayer', globals(), locals(), [], sys._addon_import_level_base)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_child_logger(__name__)
 
 
@@ -283,6 +284,30 @@ def init(hypertts):
             shortcut_entry = (shortcut, lambda editor=editor: send_preview_audio_command(editor), True)
             shortcuts.append(shortcut_entry)
 
+    def run_hypertts_settings():
+        logger.info('clicked hypertts settings')
+
+    def setup_editor_buttons(buttons, editor):
+        new_button = editor.addButton(gui_utils.get_graphics_path('icon_speaker.png'),
+            'HyperTTS Settings',
+            run_hypertts_settings,
+            tip = "HyperTTS Settings")
+        buttons.append(new_button)
+
+        new_button = editor.addButton(gui_utils.get_graphics_path('icon_play.png'),
+            'HyperTTS Settings',
+            run_hypertts_settings,
+            tip = "HyperTTS Settings")
+        buttons.append(new_button)
+
+        new_button = editor.addButton(gui_utils.get_graphics_path('icon_settings.png'),
+            'HyperTTS Settings',
+            run_hypertts_settings,
+            tip = "HyperTTS Settings")
+        buttons.append(new_button)        
+
+        return buttons
+
     # anki tools menu
     action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Services Configuration', aqt.mw)
     action.triggered.connect(lambda: launch_configuration_dialog(hypertts))
@@ -302,6 +327,9 @@ def init(hypertts):
 
     # editor shortcuts
     aqt.gui_hooks.editor_did_init_shortcuts.append(setup_editor_shortcuts)
+
+    # editor buttons
+    aqt.gui_hooks.editor_did_init_buttons.append(setup_editor_buttons)
 
     # register TTS player
     aqt.sound.av_player.players.append(ttsplayer.AnkiHyperTTSPlayer(aqt.mw.taskman, hypertts))
