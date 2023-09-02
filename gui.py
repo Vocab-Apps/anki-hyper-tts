@@ -289,19 +289,19 @@ def init(hypertts):
 
     def setup_editor_buttons(buttons, editor):
         new_button = editor.addButton(gui_utils.get_graphics_path('icon_speaker.png'),
-            'HyperTTS: Add Audio',
+            'hypertts_add_audio',
             run_hypertts_settings,
             tip = 'HyperTTS: Add Audio')
         buttons.append(new_button)
 
         new_button = editor.addButton(gui_utils.get_graphics_path('icon_play.png'),
-            'HyperTTS: Preview Audio',
+            'hypertts_preview_audio',
             run_hypertts_settings,
             tip = 'HyperTTS: Preview Audio')
         buttons.append(new_button)
 
         new_button = editor.addButton(gui_utils.get_graphics_path('icon_settings.png'),
-            'HyperTTS: Settings',
+            'hypertts_settings',
             run_hypertts_settings,
             tip = 'HyperTTS: Settings')
         buttons.append(new_button)        
