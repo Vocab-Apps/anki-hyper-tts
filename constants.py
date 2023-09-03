@@ -70,6 +70,10 @@ class AnkiCardSide(enum.Enum):
     Front = enum.auto()
     Back = enum.auto()
 
+class MappingRuleType(enum.Enum):
+    NoteType = enum.auto()
+    DeckNoteType = enum.auto()
+
 CONFIG_BATCH_CONFIG = 'batch_config'
 CONFIG_REALTIME_CONFIG = 'realtime_config'
 CONFIG_CONFIGURATION = 'configuration'

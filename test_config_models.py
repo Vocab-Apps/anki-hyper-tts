@@ -1,4 +1,5 @@
 import sys
+import sys
 import os
 import pprint
 import unittest
@@ -790,4 +791,82 @@ class ConfigModelsTests(unittest.TestCase):
                 'realtime_tts_errors_dialog_type': 'Dialog'
             }                           
         })        
+
+    def test_preset_mapping_rules(self):
+        # pytest test_config_models.py -k test_preset_mapping_rules
+        hypertts_instance = get_hypertts_instance()
+
+        # serialization test
+        # ==================
+
+        mapping_rules = config_models.PresetMappingRules()
+        rule_1 = config_models.MappingRule(preset_name='preset_1', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            note_type="Chinese",
+            deck='Mandarin',
+            enabled=True, 
+            automatic=False)
+        mapping_rules.rules.append(rule_1)
+
+        expected_output = {
+            'rules': [
+                {
+                    'preset_name': 'preset_1',
+                    'rule_type': 'DeckNoteType',
+                    'note_type': 'Chinese',
+                    'deck': 'Mandarin',
+                    'enabled': True,
+                    'automatic': False
+                }
+            ]
+        }
+        self.assertEqual(config_models.serialize_preset_mapping_rules(mapping_rules), expected_output)
+
+
+        # deserialization test
+        # ==================
+
+        preset_mapping_rule_data = {
+            'rules': [
+                {
+                    'preset_name': 'preset_2',
+                    'rule_type': 'NoteType',
+                    'note_type': 'Chinese',
+                    'deck': 'Cantonese',
+                    'enabled': False,
+                    'automatic': False
+                }
+            ]
+        }
+
+        mapping_rules = config_models.deserialize_preset_mapping_rules(preset_mapping_rule_data)
+
+        self.assertEqual(mapping_rules.rules[0].preset_name, 'preset_2')
+        self.assertEqual(mapping_rules.rules[0].rule_type, constants.MappingRuleType.NoteType)
+        self.assertEqual(mapping_rules.rules[0].note_type, 'Chinese')
+        self.assertEqual(mapping_rules.rules[0].deck, 'Cantonese')
+        self.assertEqual(mapping_rules.rules[0].enabled, False)
+        self.assertEqual(mapping_rules.rules[0].automatic, False)
+
+        preset_mapping_rule_data = {
+            'rules': [
+                {
+                    'preset_name': 'preset_2',
+                    'rule_type': 'NoteType',
+                    'note_type': 'Chinese',
+                    'deck': None,
+                    'enabled': False,
+                    'automatic': False
+                }
+            ]
+        }
+
+        mapping_rules = config_models.deserialize_preset_mapping_rules(preset_mapping_rule_data)
+
+        self.assertEqual(mapping_rules.rules[0].preset_name, 'preset_2')
+        self.assertEqual(mapping_rules.rules[0].rule_type, constants.MappingRuleType.NoteType)
+        self.assertEqual(mapping_rules.rules[0].note_type, 'Chinese')
+        self.assertEqual(mapping_rules.rules[0].deck, None)
+        self.assertEqual(mapping_rules.rules[0].enabled, False)
+        self.assertEqual(mapping_rules.rules[0].automatic, False)        
 

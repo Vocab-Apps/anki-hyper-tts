@@ -540,3 +540,22 @@ def serialize_preferences(preferences):
         
 def deserialize_preferences(preferences_config):
     return databind.json.load(preferences_config, Preferences)
+
+@dataclass
+class MappingRule:
+    preset_name: str
+    rule_type: constants.MappingRuleType
+    note_type: str
+    enabled: bool
+    automatic: bool
+    deck: Optional[str] = None    
+
+@dataclass
+class PresetMappingRules:
+    rules: list[MappingRule] = field(default_factory=list)
+
+def serialize_preset_mapping_rules(preset_mapping_rules):
+    return databind.json.dump(preset_mapping_rules, PresetMappingRules)
+
+def deserialize_preset_mapping_rules(preset_mapping_rules_config):
+    return databind.json.load(preset_mapping_rules_config, PresetMappingRules)
