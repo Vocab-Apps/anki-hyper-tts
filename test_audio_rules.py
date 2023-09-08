@@ -52,7 +52,73 @@ class MockBatchStatusListener():
         self.current_time = current_time
 
 class AudioRulesTests(unittest.TestCase):
-    def test_process_bridge_cmd(self):
+    def test_editor_process_single_rules(self):
+        # initialize hypertts instance
+        # ============================
+        config_gen = testing_utils.TestConfigGenerator()
+        hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+        # configure two presets
+        # =====================
+
+        voice_list = hypertts_instance.service_manager.full_voice_list()
+
+        #  preset 1
+        voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+        voice_selection = config_models.VoiceSelectionSingle()
+        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
+
+        batch_config = config_models.BatchConfig()
+        source = config_models.BatchSourceSimple('Chinese')
+        target = config_models.BatchTarget('Sound', False, True)
+        text_processing = config_models.TextProcessing()
+
+        batch_config.set_source(source)
+        batch_config.set_target(target)
+        batch_config.set_voice_selection(voice_selection)
+        batch_config.set_text_processing(text_processing)
+
+        # save the preset
+        hypertts_instance.save_batch_config('test_preset_1', batch_config)
+
+        # configure preset rules
+        # ======================
+
+        rule_1 = config_models.MappingRule(preset_name='test_preset_1',
+                                           rule_type = constants.MappingRuleType.DeckNoteType,
+                                           model_id = config_gen.model_id,
+                                           enabled = True,
+                                           automatic = False,
+                                           deck_id = config_gen.deck_id)
+
+        # this is the target note
+        target_note_id = config_gen.note_id_1
+
+        # configure mock editor
+        # =====================
+        mock_editor = config_gen.get_mock_editor_with_note(target_note_id)
+
+        # process rules
+        # =============
+
+        hypertts_instance.editor_note_process_rule(rule_1, mock_editor, mock_editor.note, False, None)
+
+
+        # verify audio was added
+        # ======================
+
+        note_1 = mock_editor.note
+        assert 'Sound' in note_1.set_values 
+
+        sound_tag = note_1.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+        assert audio_data['source_text'] == '老人家'
+
+
+
+    def test_process_two_rules(self):
         # initialize hypertts instance
         # ============================
         config_gen = testing_utils.TestConfigGenerator()
@@ -119,35 +185,23 @@ class AudioRulesTests(unittest.TestCase):
                                              automatic = False)
         preset_mapping_rules.rules.append(rule_2)
 
-        return
 
-
-                                        
+        # this is the target note
+        target_note_id = config_gen.note_id_1
 
 
         # configure mock editor
         # =====================
-        mock_editor = config_gen.get_mock_editor_with_note(config_gen.note_id_1)
+        mock_editor = config_gen.get_mock_editor_with_note(target_note_id)
 
-        # using full field
-        # ================
+        # process rules
+        # =============
 
-        # previewing audio
-        # ----------------
-
-        pycmd_str = 'hypertts:previewaudio:false:test_preset_1'
-        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)        
-
-        self.assertEqual(hypertts_instance.anki_utils.played_sound['source_text'], '老人家')
+        hypertts_instance.editor_note_process_rules(preset_mapping_rules, mock_editor, mock_editor.note, False, None)
 
 
-        # adding audio
-        # ------------
-
-        pycmd_str = 'hypertts:addaudio:false:test_preset_1'
-        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
-
-        # verify that audio was added
+        # verify audio was added
+        # ======================
 
         note_1 = mock_editor.note
         assert 'Sound' in note_1.set_values 
@@ -158,76 +212,3 @@ class AudioRulesTests(unittest.TestCase):
 
         assert audio_data['source_text'] == '老人家'
 
-        # having something selected should have no effect
-        mock_editor.web.selected_text = '人'
-
-        pycmd_str = 'hypertts:addaudio:false:test_preset_1'
-        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
-
-        # verify that audio was added
-
-        note_1 = mock_editor.note
-        assert 'Sound' in note_1.set_values 
-
-        sound_tag = note_1.set_values['Sound']
-        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
-        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
-
-        assert audio_data['source_text'] == '老人家'        
-
-        # using selected field
-        # ====================
-
-        # previewing audio
-        # ----------------
-
-        mock_editor.web.selected_text = '人'
-
-        pycmd_str = 'hypertts:previewaudio:true:test_preset_1'
-        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
-
-        self.assertEqual(hypertts_instance.anki_utils.played_sound['source_text'], '人')        
-
-        # when no text is selected
-        mock_editor.web.selected_text = ''
-
-        pycmd_str = 'hypertts:previewaudio:true:test_preset_1'
-        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
-
-        self.assertEqual(hypertts_instance.anki_utils.played_sound['source_text'], '老人家')
-
-        # adding audio
-        # ------------
-
-        mock_editor.web.selected_text = '人'
-
-        pycmd_str = 'hypertts:addaudio:true:test_preset_1'
-        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
-
-        # verify that audio was added
-
-        note_1 = mock_editor.note
-        assert 'Sound' in note_1.set_values 
-
-        sound_tag = note_1.set_values['Sound']
-        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
-        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
-
-        assert audio_data['source_text'] == '人'
-
-        # with empty selection, we should get the full field
-        mock_editor.web.selected_text = ''
-
-        pycmd_str = 'hypertts:addaudio:true:test_preset_1'
-        hypertts_instance.process_bridge_cmd(pycmd_str, mock_editor, False)
-
-        # verify that audio was added
-
-        note_1 = mock_editor.note
-        assert 'Sound' in note_1.set_values 
-
-        sound_tag = note_1.set_values['Sound']
-        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
-        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
-
-        assert audio_data['source_text'] == '老人家'

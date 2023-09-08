@@ -545,10 +545,10 @@ def deserialize_preferences(preferences_config):
 class MappingRule:
     preset_name: str
     rule_type: constants.MappingRuleType
-    note_type: str
+    model_id: int
     enabled: bool
     automatic: bool
-    deck: Optional[str] = None    
+    deck_id: Optional[int] = None
 
 @dataclass
 class PresetMappingRules:

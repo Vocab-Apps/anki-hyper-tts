@@ -65,7 +65,7 @@ class HyperTTS():
                     break
             self.anki_utils.undo_end(undo_id)
 
-    def process_note_audio(self, batch, note, add_mode, audio_request_context, text_override):
+    def process_note_audio(self, batch: config_models.BatchConfig, note, add_mode, audio_request_context, text_override):
         target_field = batch.target.target_field
 
         if target_field not in note:
@@ -155,7 +155,7 @@ class HyperTTS():
             voice = voice_list.pop(0)
             return voice
 
-    def editor_note_add_audio(self, batch, editor, note, add_mode, text_override):
+    def editor_note_add_audio(self, batch: config_models.BatchConfig, editor, note, add_mode, text_override):
         logger.debug('editor_note_add_audio')
         undo_id = self.anki_utils.undo_start()
         audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_browser)
@@ -174,6 +174,16 @@ class HyperTTS():
         logger.debug('after set_note')
         self.anki_utils.undo_end(undo_id)
         self.anki_utils.play_sound(full_filename)
+
+    def editor_note_process_rules(self, rules: config_models.PresetMappingRules, editor, note, add_mode, selected_text):
+        """process all rules that apply"""
+        pass
+
+    def editor_note_process_rule(self, rule: config_models.MappingRule, editor, note, add_mode, selected_text):
+        """process a single rule"""
+        batch = self.load_batch_config(rule.preset_name)
+        self.editor_note_add_audio(batch, editor, note, add_mode, selected_text)
+
 
     # editor pycmd commands processing 
     # ================================
