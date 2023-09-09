@@ -25,12 +25,12 @@ class ConfigModelBase(abc.ABC):
         pass    
 
 class BatchConfig(ConfigModelBase):
-    def __init__(self):
+    def __init__(self, anki_utils):
         self._source = None
         self._target = None
         self._voice_selection = None
         self._text_processing = None
-        self.uuid = None
+        self.uuid = anki_utils.get_uuid()
         self.name = None
 
     def get_source(self):
@@ -66,6 +66,8 @@ class BatchConfig(ConfigModelBase):
 
     def serialize(self):
         return {
+            'uuid': self.uuid,
+            'name': self.name,
             'source': self.source.serialize(),
             'target': self.target.serialize(),
             'voice_selection': self.voice_selection.serialize(),

@@ -184,8 +184,8 @@ class HyperTTS():
 
     def editor_note_process_rule(self, rule: config_models.MappingRule, editor, note, add_mode, selected_text):
         """process a single rule"""
-        batch = self.load_batch_config(rule.preset_name)
-        self.editor_note_add_audio(batch, editor, note, add_mode, selected_text)
+        preset = self.load_preset(rule.preset_id)
+        self.editor_note_add_audio(preset, editor, note, add_mode, selected_text)
 
 
     # editor pycmd commands processing 
@@ -566,7 +566,7 @@ class HyperTTS():
 
     # batch config
 
-    def save_batch_config(self, batch_name, batch):
+    def save_batch_config_DEPRECATED(self, batch_name, batch):
         batch.validate()
         if constants.CONFIG_BATCH_CONFIG not in self.config:
             self.config[constants.CONFIG_BATCH_CONFIG] = {}
@@ -575,27 +575,27 @@ class HyperTTS():
         self.set_latest_saved_batch_name(batch_name)
         logger.info(f'saved batch config [{batch_name}]')
 
-    def load_batch_config(self, batch_name):
+    def load_batch_config_DEPRECATED(self, batch_name):
         logger.info(f'loading batch config [{batch_name}]')
         if batch_name not in self.config[constants.CONFIG_BATCH_CONFIG]:
             raise errors.PresetNotFound(batch_name)
         return self.deserialize_batch_config(self.config[constants.CONFIG_BATCH_CONFIG][batch_name])
 
-    def delete_batch_config(self, batch_name):
+    def delete_batch_config_DEPRECATED(self, batch_name):
         logger.info(f'deleting batch config [{batch_name}]')
         if batch_name not in self.config[constants.CONFIG_BATCH_CONFIG]:
             raise errors.PresetNotFound(batch_name)
         del self.config[constants.CONFIG_BATCH_CONFIG][batch_name]
         self.anki_utils.write_config(self.config)
 
-    def get_batch_config_list(self):
+    def get_batch_config_list_DEPRECATED(self):
         if constants.CONFIG_BATCH_CONFIG not in self.config:
             return []
         batch_config_list = list(self.config[constants.CONFIG_BATCH_CONFIG].keys())
         batch_config_list.sort()
         return batch_config_list
 
-    def get_batch_config_list_editor(self):
+    def get_batch_config_list_editor_DEPRECATED(self):
         return [constants.BATCH_CONFIG_NEW] + self.get_batch_config_list()
 
     def get_next_batch_name(self):
@@ -606,6 +606,21 @@ class HyperTTS():
             i += 1
             batch_name = f'Preset {i}'
         return batch_name
+
+    # presets
+    def save_preset(self, preset: config_models.BatchConfig):
+        preset.validate()
+        if constants.CONFIG_PRESETS not in self.config:
+            self.config[constants.CONFIG_PRESETS] = {}
+        self.config[constants.CONFIG_PRESETS][preset.uuid] = preset.serialize()
+        self.anki_utils.write_config(self.config)
+        logger.info(f'saved preset [{preset.name}]')
+
+    def load_preset(self, preset_id: str) -> config_models.BatchConfig:
+        logger.info(f'loading preset [{preset_id}]')
+        if preset_id not in self.config[constants.CONFIG_PRESETS]:
+            raise errors.PresetNotFound(preset_id)
+        return self.deserialize_batch_config(self.config[constants.CONFIG_PRESETS][preset_id])
 
     # realtime config
 
@@ -693,7 +708,7 @@ class HyperTTS():
         self.anki_utils.write_config(self.config)
 
     def deserialize_batch_config(self, batch_config):
-        batch = config_models.BatchConfig()
+        batch = config_models.BatchConfig(self.anki_utils)
         batch_mode = constants.BatchMode[batch_config['source']['mode']]
         if batch_mode == constants.BatchMode.simple:
             source = config_models.BatchSourceSimple(batch_config['source']['source_field'])
@@ -711,6 +726,7 @@ class HyperTTS():
         batch.set_target(target)
         batch.set_voice_selection(voice_selection)
         batch.text_processing = text_processing
+        batch.uuid = batch_config['uuid']
         
         return batch
 

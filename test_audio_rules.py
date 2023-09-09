@@ -68,7 +68,7 @@ class AudioRulesTests(unittest.TestCase):
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
 
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         source = config_models.BatchSourceSimple('Chinese')
         target = config_models.BatchTarget('Sound', False, True)
         text_processing = config_models.TextProcessing()
@@ -79,12 +79,12 @@ class AudioRulesTests(unittest.TestCase):
         batch_config.set_text_processing(text_processing)
 
         # save the preset
-        hypertts_instance.save_batch_config('test_preset_1', batch_config)
+        hypertts_instance.save_preset(batch_config)
 
         # configure preset rules
         # ======================
 
-        rule_1 = config_models.MappingRule(preset_name='test_preset_1',
+        rule_1 = config_models.MappingRule(preset_id=batch_config.uuid,
                                            rule_type = constants.MappingRuleType.DeckNoteType,
                                            model_id = config_gen.model_id,
                                            enabled = True,
@@ -134,7 +134,7 @@ class AudioRulesTests(unittest.TestCase):
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
 
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         source = config_models.BatchSourceSimple('Chinese')
         target = config_models.BatchTarget('Sound', False, True)
         text_processing = config_models.TextProcessing()
@@ -152,7 +152,7 @@ class AudioRulesTests(unittest.TestCase):
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_b_1, {}))
 
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         source = config_models.BatchSourceSimple('English')
         target = config_models.BatchTarget('Pinyin', False, True)
         text_processing = config_models.TextProcessing()
@@ -170,7 +170,7 @@ class AudioRulesTests(unittest.TestCase):
 
         preset_mapping_rules = config_models.PresetMappingRules()
 
-        rule_1 = config_models.MappingRule(preset_name='test_preset_1',
+        rule_1 = config_models.MappingRule(preset_id='test_preset_1',
                                            rule_type = constants.MappingRuleType.DeckNoteType,
                                            note_type = 'note-type',
                                            enabled = True,
@@ -178,7 +178,7 @@ class AudioRulesTests(unittest.TestCase):
                                            deck = 'deck 1')
         preset_mapping_rules.rules.append(rule_1)
 
-        rule_2 = config_models.MappingRule(preset_name='test_preset_2',
+        rule_2 = config_models.MappingRule(preset_id='test_preset_2',
                                              rule_type = constants.MappingRuleType.NoteType,
                                              note_type = 'note-type',
                                              enabled = True,
