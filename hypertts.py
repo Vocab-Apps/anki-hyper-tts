@@ -183,7 +183,7 @@ class HyperTTS():
         pass
 
     def editor_note_process_rule(self, rule: config_models.MappingRule, editor, note, add_mode, selected_text):
-        """process a single rule"""
+        """process a single rule, unconditionally"""
         preset = self.load_preset(rule.preset_id)
         self.editor_note_add_audio(preset, editor, note, add_mode, selected_text)
 

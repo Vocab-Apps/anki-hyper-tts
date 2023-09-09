@@ -934,3 +934,13 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['name'], 'preset_1')
         self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['uuid'], expected_preset_1_uuid)
 
+
+    def test_rule_applies(self):
+        rule = config_models.MappingRule(preset_id='preset_1', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            model_id=42,
+            deck_id=52,
+            enabled=True, 
+            automatic=True)
+        deck_note_type = config_models.DeckNoteType(model_id=142, deck_id=52)
+        self.assertFalse(rule.rule_applies(deck_note_type, True))

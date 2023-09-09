@@ -546,6 +546,11 @@ def deserialize_preferences(preferences_config):
     return databind.json.load(preferences_config, Preferences)
 
 @dataclass
+class DeckNoteType:
+    model_id: int
+    deck_id: int
+
+@dataclass
 class MappingRule:
     preset_id: str
     rule_type: constants.MappingRuleType
@@ -554,14 +559,27 @@ class MappingRule:
     automatic: bool
     deck_id: Optional[int] = None
 
+    def rule_applies(self, deck_note_type: DeckNoteType, automated: bool) -> bool:
+        if self.enabled == False:
+            # rule is disabled
+            return False
+        if self.model_id != deck_note_type.model_id:
+            # note type doesn't match
+            return False
+        if self.rule_type == constants.MappingRuleType.DeckNoteType:
+            if self.deck_id != deck_note_type.deck_id:
+                # deck doesn't match
+                return False
+        if automated == True:
+            if self.automatic == False:
+                # rule is not automatic
+                return False
+        return True
+
 @dataclass
 class PresetMappingRules:
     rules: list[MappingRule] = field(default_factory=list)
 
-@dataclass
-class DeckNoteType:
-    model_id: int
-    model_id: int
 
 def serialize_preset_mapping_rules(preset_mapping_rules):
     return databind.json.dump(preset_mapping_rules, PresetMappingRules)
