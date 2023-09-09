@@ -42,11 +42,24 @@ class MockWebView():
     def selectedText(self):
         return self.selected_text
 
+
+class MockDeckChooser():
+    def __init__(self):
+        self.deck_id = None
+
+    def selectedId(self):
+        return self.deck_id
+
+class MockAddCards():
+    def __init__(self):
+        self.deckChooser = MockDeckChooser()
+
 class MockEditor():
     def __init__(self):
         self.set_note_called = None
         self.addMode = False
         self.web = MockWebView()
+        self.parentWindow = MockAddCards()
 
     def set_note(self, note):
         self.set_note_called = True
@@ -587,7 +600,7 @@ class TestConfigGenerator():
         }
         return self.notes_by_id, notes
 
-    def get_mock_editor_with_note(self, note_id):
+    def get_mock_editor_with_note(self, note_id: int, deck_id: int, add_mode: bool = False):
         editor = MockEditor()
 
         field_array = []
@@ -598,7 +611,11 @@ class TestConfigGenerator():
             field_name = field_entry['name']
             field_array.append(note_data[field_name])
         editor.note = MockNote(note_id, self.model_id, note_data, field_array, model)
-        editor.card = MockCard(self.deck_id, editor.note, 0, model, '')
+        editor.card = MockCard(deck_id, editor.note, 0, model, '')
+
+        if add_mode:
+            editor.addMode = True
+            editor.parentWindow.deckChooser.deck_id = deck_id
 
         return editor
 

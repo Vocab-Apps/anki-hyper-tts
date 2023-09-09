@@ -96,7 +96,7 @@ class AudioRulesTests(unittest.TestCase):
 
         # configure mock editor
         # =====================
-        mock_editor = config_gen.get_mock_editor_with_note(target_note_id)
+        mock_editor = config_gen.get_mock_editor_with_note(target_note_id, config_gen.deck_id)
 
         # process rules
         # =============
@@ -194,7 +194,7 @@ class AudioRulesTests(unittest.TestCase):
 
         # configure mock editor
         # =====================
-        mock_editor = config_gen.get_mock_editor_with_note(target_note_id)
+        mock_editor = config_gen.get_mock_editor_with_note(target_note_id, config_gen.deck_id, add_mode=False)
 
         # process rules
         # =============

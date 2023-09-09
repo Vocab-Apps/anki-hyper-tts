@@ -188,6 +188,24 @@ class HyperTTS():
         self.editor_note_add_audio(preset, editor, note, add_mode, selected_text)
 
 
+    # editor related functions
+    # ========================
+
+    def get_editor_deck_note_type(self, editor) -> config_models.DeckNoteType:
+        note = editor.note
+        if note == None:
+            raise RuntimeError(f'editor.note not found')
+
+        if editor.addMode:
+            add_cards: aqt.addcards.AddCards = editor.parentWindow
+            return config_models.DeckNoteType(model_id=note.mid, deck_id=add_cards.deckChooser.selectedId())
+        else:
+            if editor.card == None:
+                raise RuntimeError(f'editor.card not found')
+            return config_models.DeckNoteType(model_id=note.mid, deck_id=editor.card.did)
+
+
+
     # editor pycmd commands processing 
     # ================================
 

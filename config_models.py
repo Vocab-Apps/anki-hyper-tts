@@ -558,6 +558,11 @@ class MappingRule:
 class PresetMappingRules:
     rules: list[MappingRule] = field(default_factory=list)
 
+@dataclass
+class DeckNoteType:
+    model_id: int
+    model_id: int
+
 def serialize_preset_mapping_rules(preset_mapping_rules):
     return databind.json.dump(preset_mapping_rules, PresetMappingRules)
 
