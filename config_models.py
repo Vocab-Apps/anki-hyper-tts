@@ -567,13 +567,14 @@ def migrate_configuration(anki_utils, config):
     if current_config_schema_version < 2:
         config[constants.CONFIG_PRESETS] = {}
         # need to convert presets to the uuid format
-        for key, value in config[constants.CONFIG_BATCH_CONFIG].items():
-            batch_name = key
-            batch = value
-            batch_uuid = anki_utils.get_uuid()
-            batch['uuid'] = batch_uuid
-            batch['name'] = batch_name
-            config[constants.CONFIG_PRESETS][batch_uuid] = batch
+        if constants.CONFIG_BATCH_CONFIG in config:
+            for key, value in config[constants.CONFIG_BATCH_CONFIG].items():
+                batch_name = key
+                batch = value
+                batch_uuid = anki_utils.get_uuid()
+                batch['uuid'] = batch_uuid
+                batch['name'] = batch_name
+                config[constants.CONFIG_PRESETS][batch_uuid] = batch
     # write current config
     config[constants.CONFIG_SCHEMA] = constants.CONFIG_SCHEMA_VERSION
 

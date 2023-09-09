@@ -802,8 +802,8 @@ class ConfigModelsTests(unittest.TestCase):
         mapping_rules = config_models.PresetMappingRules()
         rule_1 = config_models.MappingRule(preset_name='preset_1', 
             rule_type=constants.MappingRuleType.DeckNoteType, 
-            note_type="Chinese",
-            deck='Mandarin',
+            model_id=42,
+            deck_id=52,
             enabled=True, 
             automatic=False)
         mapping_rules.rules.append(rule_1)
@@ -813,8 +813,8 @@ class ConfigModelsTests(unittest.TestCase):
                 {
                     'preset_name': 'preset_1',
                     'rule_type': 'DeckNoteType',
-                    'note_type': 'Chinese',
-                    'deck': 'Mandarin',
+                    'model_id': 42,
+                    'deck_id': 52,
                     'enabled': True,
                     'automatic': False
                 }
@@ -831,8 +831,8 @@ class ConfigModelsTests(unittest.TestCase):
                 {
                     'preset_name': 'preset_2',
                     'rule_type': 'NoteType',
-                    'note_type': 'Chinese',
-                    'deck': 'Cantonese',
+                    'model_id': 43,
+                    'deck_id': 53,
                     'enabled': False,
                     'automatic': False
                 }
@@ -843,8 +843,8 @@ class ConfigModelsTests(unittest.TestCase):
 
         self.assertEqual(mapping_rules.rules[0].preset_name, 'preset_2')
         self.assertEqual(mapping_rules.rules[0].rule_type, constants.MappingRuleType.NoteType)
-        self.assertEqual(mapping_rules.rules[0].note_type, 'Chinese')
-        self.assertEqual(mapping_rules.rules[0].deck, 'Cantonese')
+        self.assertEqual(mapping_rules.rules[0].model_id, 43)
+        self.assertEqual(mapping_rules.rules[0].deck_id, 53)
         self.assertEqual(mapping_rules.rules[0].enabled, False)
         self.assertEqual(mapping_rules.rules[0].automatic, False)
 
@@ -853,8 +853,8 @@ class ConfigModelsTests(unittest.TestCase):
                 {
                     'preset_name': 'preset_2',
                     'rule_type': 'NoteType',
-                    'note_type': 'Chinese',
-                    'deck': None,
+                    'model_id': 42,
+                    'deck_id': None,
                     'enabled': False,
                     'automatic': False
                 }
@@ -865,10 +865,18 @@ class ConfigModelsTests(unittest.TestCase):
 
         self.assertEqual(mapping_rules.rules[0].preset_name, 'preset_2')
         self.assertEqual(mapping_rules.rules[0].rule_type, constants.MappingRuleType.NoteType)
-        self.assertEqual(mapping_rules.rules[0].note_type, 'Chinese')
-        self.assertEqual(mapping_rules.rules[0].deck, None)
+        self.assertEqual(mapping_rules.rules[0].model_id, 42)
+        self.assertEqual(mapping_rules.rules[0].deck_id, None)
         self.assertEqual(mapping_rules.rules[0].enabled, False)
         self.assertEqual(mapping_rules.rules[0].automatic, False)        
+
+
+    def test_migration_0_to_2_empty(self):
+        anki_utils = testing_utils.MockAnkiUtils({})
+        # config revision 0
+        config = {}
+        updated_config = config_models.migrate_configuration(anki_utils, config)
+        self.assertEqual(updated_config['config_schema'], 2)
 
 
     def test_migration_0_to_2(self):
