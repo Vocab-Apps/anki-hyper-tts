@@ -545,7 +545,7 @@ def deserialize_preferences(preferences_config):
 
 @dataclass
 class MappingRule:
-    preset_name: str
+    preset_id: str
     rule_type: constants.MappingRuleType
     model_id: int
     enabled: bool

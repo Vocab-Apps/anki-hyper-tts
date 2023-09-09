@@ -800,7 +800,7 @@ class ConfigModelsTests(unittest.TestCase):
         # ==================
 
         mapping_rules = config_models.PresetMappingRules()
-        rule_1 = config_models.MappingRule(preset_name='preset_1', 
+        rule_1 = config_models.MappingRule(preset_id='preset_1', 
             rule_type=constants.MappingRuleType.DeckNoteType, 
             model_id=42,
             deck_id=52,
@@ -811,7 +811,7 @@ class ConfigModelsTests(unittest.TestCase):
         expected_output = {
             'rules': [
                 {
-                    'preset_name': 'preset_1',
+                    'preset_id': 'preset_1',
                     'rule_type': 'DeckNoteType',
                     'model_id': 42,
                     'deck_id': 52,
@@ -829,7 +829,7 @@ class ConfigModelsTests(unittest.TestCase):
         preset_mapping_rule_data = {
             'rules': [
                 {
-                    'preset_name': 'preset_2',
+                    'preset_id': 'preset_2',
                     'rule_type': 'NoteType',
                     'model_id': 43,
                     'deck_id': 53,
@@ -841,7 +841,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         mapping_rules = config_models.deserialize_preset_mapping_rules(preset_mapping_rule_data)
 
-        self.assertEqual(mapping_rules.rules[0].preset_name, 'preset_2')
+        self.assertEqual(mapping_rules.rules[0].preset_id, 'preset_2')
         self.assertEqual(mapping_rules.rules[0].rule_type, constants.MappingRuleType.NoteType)
         self.assertEqual(mapping_rules.rules[0].model_id, 43)
         self.assertEqual(mapping_rules.rules[0].deck_id, 53)
@@ -851,7 +851,7 @@ class ConfigModelsTests(unittest.TestCase):
         preset_mapping_rule_data = {
             'rules': [
                 {
-                    'preset_name': 'preset_2',
+                    'preset_id': 'preset_2',
                     'rule_type': 'NoteType',
                     'model_id': 42,
                     'deck_id': None,
@@ -863,7 +863,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         mapping_rules = config_models.deserialize_preset_mapping_rules(preset_mapping_rule_data)
 
-        self.assertEqual(mapping_rules.rules[0].preset_name, 'preset_2')
+        self.assertEqual(mapping_rules.rules[0].preset_id, 'preset_2')
         self.assertEqual(mapping_rules.rules[0].rule_type, constants.MappingRuleType.NoteType)
         self.assertEqual(mapping_rules.rules[0].model_id, 42)
         self.assertEqual(mapping_rules.rules[0].deck_id, None)
