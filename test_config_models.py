@@ -942,5 +942,26 @@ class ConfigModelsTests(unittest.TestCase):
             deck_id=52,
             enabled=True, 
             automatic=True)
+        # different note
         deck_note_type = config_models.DeckNoteType(model_id=142, deck_id=52)
         self.assertFalse(rule.rule_applies(deck_note_type, True))
+
+        # different deck
+        deck_note_type = config_models.DeckNoteType(model_id=42, deck_id=53)
+        self.assertFalse(rule.rule_applies(deck_note_type, True))
+
+        # same deck, same note
+        deck_note_type = config_models.DeckNoteType(model_id=42, deck_id=52)
+        self.assertTrue(rule.rule_applies(deck_note_type, True))
+
+        # rule is not enabled
+        rule.enabled = False
+        self.assertFalse(rule.rule_applies(deck_note_type, True))
+
+        # rule is not automatic
+        rule.enabled = True
+        rule.automatic = False
+        self.assertFalse(rule.rule_applies(deck_note_type, True))
+
+        # however when we do a manual run, apply the rule
+        self.assertTrue(rule.rule_applies(deck_note_type, False))
