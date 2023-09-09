@@ -1,6 +1,7 @@
 import sys
 import os
 import datetime
+import uuid
 import aqt
 import anki.template
 import anki.sound
@@ -225,3 +226,6 @@ class AnkiUtils():
             sentry_sdk.capture_exception(exception)
         else:
             logger.critical(exception, exc_info=True)
+
+    def get_uuid(self):
+        return str(uuid.uuid4())

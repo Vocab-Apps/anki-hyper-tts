@@ -75,6 +75,9 @@ class MockAnkiUtils():
         self.last_exception = None
         self.last_action = None
 
+        # uuid generation
+        self.uuid_current_num = 0
+
         # time
         self.current_time = datetime.datetime.now()
 
@@ -248,6 +251,11 @@ class MockAnkiUtils():
 
     def tick_time(self):
         self.current_time = self.current_time + datetime.timedelta(seconds=1)
+
+    def get_uuid(self):
+        result = f'uuid_{self.uuid_current_num}'
+        self.uuid_current_num += 1
+        return result
 
 class MockServiceManager():
     def __init__(self):

@@ -30,6 +30,8 @@ class BatchConfig(ConfigModelBase):
         self._target = None
         self._voice_selection = None
         self._text_processing = None
+        self.uuid = None
+        self.name = None
 
     def get_source(self):
         return self._source
@@ -559,3 +561,21 @@ def serialize_preset_mapping_rules(preset_mapping_rules):
 
 def deserialize_preset_mapping_rules(preset_mapping_rules_config):
     return databind.json.load(preset_mapping_rules_config, PresetMappingRules)
+
+def migrate_configuration(anki_utils, config):
+    current_config_schema_version = config.get(constants.CONFIG_SCHEMA_VERSION, 0)
+    if current_config_schema_version < 2:
+        config[constants.CONFIG_PRESETS] = {}
+        # need to convert presets to the uuid format
+        for key, value in config[constants.CONFIG_BATCH_CONFIG].items():
+            batch_name = key
+            batch = value
+            batch_uuid = anki_utils.get_uuid()
+            batch['uuid'] = batch_uuid
+            batch['name'] = batch_name
+            config[constants.CONFIG_PRESETS][batch_uuid] = batch
+    # write current config
+    config[constants.CONFIG_SCHEMA] = constants.CONFIG_SCHEMA_VERSION
+
+    return config
+    

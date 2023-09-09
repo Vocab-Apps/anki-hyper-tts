@@ -44,6 +44,9 @@ class HyperTTS():
         self.config = self.anki_utils.get_config()
         self.latest_saved_batch_name = None
 
+        # do maintenance on the configuration
+        self.perform_config_migration()
+
 
     def process_batch_audio(self, note_id_list, batch, batch_status):
         # for each note, generate audio
@@ -684,6 +687,10 @@ class HyperTTS():
 
     # deserialization routines for loading from config
     # ================================================
+
+    def perform_config_migration(self):
+        self.config = config_models.migrate_configuration(self.anki_utils, self.config)
+        self.anki_utils.write_config(self.config)
 
     def deserialize_batch_config(self, batch_config):
         batch = config_models.BatchConfig()

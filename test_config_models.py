@@ -870,3 +870,59 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(mapping_rules.rules[0].enabled, False)
         self.assertEqual(mapping_rules.rules[0].automatic, False)        
 
+
+    def test_migration_0_to_2(self):
+        anki_utils = testing_utils.MockAnkiUtils({})
+        # config revision 0
+        config = {
+            'batch_config': {
+                'preset_1': {
+                    'source': {
+                        'mode': 'simple',            
+                        'source_field': 'Chinese'
+                    },
+                    'target': {
+                        'target_field': 'Sound',
+                        'text_and_sound_tag': False,
+                        'remove_sound_tag': False
+                    },
+                    'voice_selection': {
+                        'voice_selection_mode': 'single',
+                        'voice': 
+                            {
+                                'voice': {
+                                    'gender': 'Male', 
+                                    'language': 'fr_FR', 
+                                    'name': 'voice_a_1', 
+                                    'service': 'ServiceA',
+                                    'voice_key': {'name': 'voice_1'}
+                                },
+                                'options': {
+                                    'speed': 43
+                                },
+                            },        
+                    },
+                    'text_processing': {
+                        'html_to_text_line': True,
+                        'strip_brackets': False,
+                        'run_replace_rules_after': True,
+                        'ssml_convert_characters': True,
+                        'ignore_case': False,
+                        'text_replacement_rules': [
+                            {
+                                'rule_type': 'Simple',
+                                'source': 'a',
+                                'target': 'b'
+                            }]
+                    }
+                }
+            }
+        }
+
+        updated_config = config_models.migrate_configuration(anki_utils, config)
+        self.assertEqual(updated_config['config_schema'], 2)
+        expected_preset_1_uuid = 'uuid_0'
+        self.assertIn(expected_preset_1_uuid, updated_config['presets'])
+        self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['name'], 'preset_1')
+        self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['uuid'], expected_preset_1_uuid)
+
