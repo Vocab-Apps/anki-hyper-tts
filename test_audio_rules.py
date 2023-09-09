@@ -145,7 +145,8 @@ class AudioRulesTests(unittest.TestCase):
         batch_config.set_text_processing(text_processing)
 
         # save the preset
-        hypertts_instance.save_batch_config('test_preset_1', batch_config)
+        hypertts_instance.save_preset(batch_config)
+        preset_id_1 = batch_config.uuid
 
         # preset 2
         voice_b_1 = [x for x in voice_list if x.name == 'jane'][0]
@@ -163,24 +164,25 @@ class AudioRulesTests(unittest.TestCase):
         batch_config.set_text_processing(text_processing)
 
         # save the preset
-        hypertts_instance.save_batch_config('test_preset_2', batch_config)
+        hypertts_instance.save_preset(batch_config)
+        preset_id_2 = batch_config.uuid
 
         # configure preset rules
         # ======================
 
         preset_mapping_rules = config_models.PresetMappingRules()
 
-        rule_1 = config_models.MappingRule(preset_id='test_preset_1',
+        rule_1 = config_models.MappingRule(preset_id=preset_id_1,
                                            rule_type = constants.MappingRuleType.DeckNoteType,
-                                           note_type = 'note-type',
+                                           model_id = config_gen.model_id,
                                            enabled = True,
                                            automatic = False,
-                                           deck = 'deck 1')
+                                           deck_id = config_gen.deck_id)
         preset_mapping_rules.rules.append(rule_1)
 
-        rule_2 = config_models.MappingRule(preset_id='test_preset_2',
+        rule_2 = config_models.MappingRule(preset_id=preset_id_2,
                                              rule_type = constants.MappingRuleType.NoteType,
-                                             note_type = 'note-type',
+                                             model_id = config_gen.model_id,
                                              enabled = True,
                                              automatic = False)
         preset_mapping_rules.rules.append(rule_2)

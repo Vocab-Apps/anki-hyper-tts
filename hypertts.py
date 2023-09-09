@@ -727,6 +727,7 @@ class HyperTTS():
         batch.set_voice_selection(voice_selection)
         batch.text_processing = text_processing
         batch.uuid = batch_config['uuid']
+        batch.name = batch_config['name']
         
         return batch
 

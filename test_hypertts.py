@@ -1,5 +1,10 @@
-
+import sys
+import os
 import unittest
+
+addon_dir = os.path.dirname(os.path.realpath(__file__))
+external_dir = os.path.join(addon_dir, 'external')
+sys.path.insert(0, external_dir)
 
 import errors
 import testing_utils
@@ -184,7 +189,7 @@ yoyo
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
 
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         source = config_models.BatchSourceSimple('Chinese')
         target = config_models.BatchTarget('Sound', False, True)
         text_processing = config_models.TextProcessing()
@@ -193,8 +198,10 @@ yoyo
         batch_config.set_target(target)
         batch_config.set_voice_selection(voice_selection)
         batch_config.set_text_processing(text_processing)
+        batch_config.name = 'test_preset_1'
 
         # save the preset
+        # note: this function is deprecated, we may not need to process bridge commands after change is done
         hypertts_instance.save_batch_config('test_preset_1', batch_config)
 
 
