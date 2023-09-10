@@ -52,7 +52,7 @@ class MockBatchStatusListener():
         self.current_time = current_time
 
 class AudioRulesTests(unittest.TestCase):
-    def test_editor_process_single_rules(self):
+    def test_editor_process_single_rule(self):
         # initialize hypertts instance
         # ============================
         config_gen = testing_utils.TestConfigGenerator()
@@ -101,7 +101,7 @@ class AudioRulesTests(unittest.TestCase):
         # process rules
         # =============
 
-        hypertts_instance.editor_note_process_rule(rule_1, mock_editor, mock_editor.note, False, None)
+        hypertts_instance.editor_note_process_rule(rule_1, mock_editor, None)
 
 
         # verify audio was added
@@ -149,13 +149,13 @@ class AudioRulesTests(unittest.TestCase):
         preset_id_1 = batch_config.uuid
 
         # preset 2
-        voice_b_1 = [x for x in voice_list if x.name == 'jane'][0]
+        voice_b_1 = [x for x in voice_list if x.name == 'voice_a_2'][0]
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_b_1, {}))
 
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         source = config_models.BatchSourceSimple('English')
-        target = config_models.BatchTarget('Pinyin', False, True)
+        target = config_models.BatchTarget('Sound English', False, True)
         text_processing = config_models.TextProcessing()
 
         batch_config.set_source(source)
@@ -199,18 +199,26 @@ class AudioRulesTests(unittest.TestCase):
         # process rules
         # =============
 
-        hypertts_instance.editor_note_process_rules(preset_mapping_rules, mock_editor, mock_editor.note, False, None)
+        hypertts_instance.editor_note_process_rules(preset_mapping_rules, mock_editor, False, None)
 
 
         # verify audio was added
         # ======================
 
         note_1 = mock_editor.note
+        # check preset 1
         assert 'Sound' in note_1.set_values 
-
         sound_tag = note_1.set_values['Sound']
         audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
         audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
-
         assert audio_data['source_text'] == '老人家'
+
+        # check preset 2
+        assert 'Sound English' in note_1.set_values
+
+        sound_tag = note_1.set_values['Sound English']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        assert audio_data['source_text'] == 'old people'        
+        
 

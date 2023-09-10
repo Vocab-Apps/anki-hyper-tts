@@ -432,6 +432,7 @@ class TestConfigGenerator():
         self.field_chinese = 'Chinese'
         self.field_english = 'English'
         self.field_sound = 'Sound'
+        self.field_sound_english = 'Sound English'
         self.field_pinyin = 'Pinyin'
         self.field_german_article = 'Article'
         self.field_german_word = 'Word'
@@ -446,7 +447,7 @@ class TestConfigGenerator():
         self.note_id_german_1 = 51001
         self.note_id_german_2 = 51002
 
-        self.all_fields = [self.field_chinese, self.field_english, self.field_sound, self.field_pinyin]
+        self.all_fields = [self.field_chinese, self.field_english, self.field_sound, self.field_pinyin, self.field_sound_english]
         self.all_fields_german = [self.field_german_article, self.field_german_word, self.field_english, self.field_sound]
 
         self.model_chinese = {
@@ -472,30 +473,35 @@ class TestConfigGenerator():
                 self.field_chinese: '老人家',
                 self.field_english: 'old people',
                 self.field_sound: '',
+                self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
             self.note_id_2: MockNote(self.note_id_2, self.model_id, {
                 self.field_chinese: '你好',
                 self.field_english: 'hello',
                 self.field_sound: '',
+                self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
             self.note_id_3: MockNote(self.note_id_3, self.model_id, {
                 self.field_chinese: '',
                 self.field_english: 'empty',
                 self.field_sound: '',
+                self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
             self.note_id_4: MockNote(self.note_id_4, self.model_id, {
                 self.field_chinese: '赚钱',
                 self.field_english: 'To earn money',
                 self.field_sound: '[sound:blabla.mp3]',
+                self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
             self.note_id_5: MockNote(self.note_id_5, self.model_id, {
                 self.field_chinese: '大使馆',
                 self.field_english: 'embassy',
                 self.field_sound: 'some content in sound field',
+                self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),            
             # german notes
