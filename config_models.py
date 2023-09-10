@@ -75,6 +75,10 @@ class BatchConfig(ConfigModelBase):
         }
 
     def validate(self):
+        if self.name == None or len(self.name) == 0:
+            raise errors.PresetNameNotSet()
+        if self.uuid == None or len(self.uuid) == 0:
+            raise RuntimeError('uuid not set')
         self.source.validate(),
         self.target.validate(),
         self.voice_selection.validate(),

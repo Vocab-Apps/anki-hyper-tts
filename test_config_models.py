@@ -288,7 +288,8 @@ class ConfigModelsTests(unittest.TestCase):
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
 
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
+        batch_config.name = 'preset_1'
         source = config_models.BatchSourceSimple('Chinese')
         target = config_models.BatchTarget('Sound', False, False)
         text_processing = config_models.TextProcessing()
@@ -303,6 +304,8 @@ class ConfigModelsTests(unittest.TestCase):
         batch_config.text_processing = text_processing
 
         expected_output = {
+            'name': 'preset_1',
+            'uuid': 'uuid_0',
             'source': {
                 'mode': 'simple',            
                 'source_field': 'Chinese'
@@ -361,7 +364,7 @@ class ConfigModelsTests(unittest.TestCase):
         voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         source = config_models.BatchSourceSimple('Chinese')
         text_processing = config_models.TextProcessing()
         batch_config.set_source(source)
@@ -527,7 +530,8 @@ class ConfigModelsTests(unittest.TestCase):
 
         source_template = """result = 'yoyo'"""
 
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
+        batch_config.name = 'preset_2'
         source = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, 
             source_template, constants.TemplateFormatVersion.v1)
         target = config_models.BatchTarget('Audio', False, False)
@@ -543,6 +547,8 @@ class ConfigModelsTests(unittest.TestCase):
         batch_config.text_processing = text_processing
 
         expected_output = {
+            'name': 'preset_2',
+            'uuid': 'uuid_0',
             'source': {
                 'mode': 'advanced_template',
                 'template_format_version': 'v1',
@@ -603,7 +609,8 @@ class ConfigModelsTests(unittest.TestCase):
         # missing source field
         # ====================
 
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
+        batch_config.name = 'preset_3'
         source = config_models.BatchSourceSimple('')
         target = config_models.BatchTarget('Sound', False, False)
         text_processing = config_models.TextProcessing()
