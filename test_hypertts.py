@@ -1,6 +1,7 @@
 import sys
 import os
 import unittest
+import pytest
 
 addon_dir = os.path.dirname(os.path.realpath(__file__))
 external_dir = os.path.join(addon_dir, 'external')
@@ -174,6 +175,7 @@ yoyo
         self.assertRaises(errors.SourceTextEmpty, hypertts_instance.play_sound, source_text, None, None)
 
 
+    @pytest.mark.skip(reason="previews will not be done with bridge commands anymore")
     def test_process_bridge_cmd(self):
         # initialize hypertts instance
         # ============================
