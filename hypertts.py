@@ -180,12 +180,10 @@ class HyperTTS():
 
     def editor_note_process_rules(self, rules: config_models.PresetMappingRules, editor, automated: bool, selected_text: str):
         """process all rules that apply"""
-        deck_note_type = self.get_editor_deck_note_type(editor)
-        for rule in rules.rules:
-            logger.info(f'evaluating rule {rule} with deck_note_type {deck_note_type}')
-            if rule.rule_applies(deck_note_type, automated):
-                logger.info(f'applying rule {rule}')
-                self.editor_note_process_rule(rule, editor, selected_text)
+        deck_note_type: config_models.DeckNoteType = self.get_editor_deck_note_type(editor)
+        for rule in rules.iterate_applicable_rules(deck_note_type, automated):
+            logger.info(f'applying rule {rule}')
+            self.editor_note_process_rule(rule, editor, selected_text)
 
     def editor_note_process_rule(self, rule: config_models.MappingRule, editor, selected_text):
         """process a single rule, unconditionally"""

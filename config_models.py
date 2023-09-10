@@ -580,6 +580,13 @@ class MappingRule:
 class PresetMappingRules:
     rules: list[MappingRule] = field(default_factory=list)
 
+    def iterate_applicable_rules(self, deck_note_type: DeckNoteType, automated: bool):
+        for rule in self.rules:
+            logger.info(f'evaluating rule {rule} with deck_note_type {deck_note_type}')
+            if rule.rule_applies(deck_note_type, automated):
+                logger.info(f'rule applies: {rule} on deck_note_type {deck_note_type}')
+                yield rule
+
 
 def serialize_preset_mapping_rules(preset_mapping_rules):
     return databind.json.dump(preset_mapping_rules, PresetMappingRules)
