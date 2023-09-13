@@ -798,7 +798,7 @@ def test_batch_preview(qtbot):
     voice_selection = config_models.VoiceSelectionSingle()
     voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
 
-    batch_config = config_models.BatchConfig()
+    batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -818,7 +818,7 @@ def test_batch_preview(qtbot):
     # return 
 
 
-def test_batch_dialog(qtbot):
+def test_batch_dialog_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 

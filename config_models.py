@@ -550,6 +550,11 @@ def deserialize_preferences(preferences_config):
     return databind.json.load(preferences_config, Preferences)
 
 @dataclass
+class PresetInfo:
+    uuid: str
+    name: str
+
+@dataclass
 class DeckNoteType:
     model_id: int
     deck_id: int

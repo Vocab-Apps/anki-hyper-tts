@@ -1,6 +1,8 @@
 import sys
 import aqt.qt
 
+from typing import List, Optional
+
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 component_source = __import__('component_source', globals(), locals(), [], sys._addon_import_level_base)
 component_target = __import__('component_target', globals(), locals(), [], sys._addon_import_level_base)
@@ -23,7 +25,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def __init__(self, hypertts, dialog):
         self.hypertts = hypertts
         self.dialog = dialog
-        self.batch_model = config_models.BatchConfig()
+        self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
         self.note = None
 
         # create certain widgets upfront
@@ -140,9 +142,10 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview_sound_button.setText('Preview Sound')
 
     def refresh_profile_combobox(self):
-        profile_name_list = [self.hypertts.get_next_batch_name()] + self.hypertts.get_batch_config_list()
+        preset_list: List[config_models.PresetInfo] = self.hypertts.get_preset_list()
         self.profile_name_combobox.clear()
-        self.profile_name_combobox.addItems(profile_name_list)
+        for preset_info in preset_list:
+            self.profile_name_combobox.addItem(preset_info.name, userData=preset_info)
 
     def draw(self, layout):
         self.vlayout = aqt.qt.QVBoxLayout()

@@ -629,6 +629,15 @@ class HyperTTS():
         return batch_name
 
     # presets
+    
+    def get_preset_list(self) -> List[config_models.PresetInfo]:
+        if constants.CONFIG_PRESETS not in self.config:
+            return []
+        preset_list = []
+        for preset_id, preset_data in self.config[constants.CONFIG_PRESETS].items():
+            preset_list.append(config_models.PresetInfo(id=preset_id, name=preset_data['name']))
+        return preset_list
+
     def save_preset(self, preset: config_models.BatchConfig):
         preset.validate()
         if constants.CONFIG_PRESETS not in self.config:
