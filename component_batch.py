@@ -36,6 +36,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.cancel_button = aqt.qt.QPushButton('Cancel')
         self.profile_load_button = aqt.qt.QPushButton('Load')
         self.profile_save_button = aqt.qt.QPushButton('Save')
+        self.profile_rename_button = aqt.qt.QPushButton('Rename')
 
     def configure_browser(self, note_id_list):
         self.note_id_list = note_id_list
@@ -172,6 +173,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.disable_save_profile_button('Save')
         hlayout.addWidget(self.profile_save_button)
 
+        hlayout.addWidget(self.profile_rename_button)
+
         self.profile_delete_button = aqt.qt.QPushButton('Delete')
         hlayout.addWidget(self.profile_delete_button)
 
@@ -183,6 +186,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.profile_load_button.pressed.connect(self.load_profile_button_pressed)
         self.profile_save_button.pressed.connect(self.save_profile_button_pressed)
         self.profile_delete_button.pressed.connect(self.delete_profile_button_pressed)
+        self.profile_rename_button.pressed.connect(self.rename_profile_button_pressed)
 
         # preset settings tabs
         # ====================
@@ -278,6 +282,19 @@ class ComponentBatch(component_common.ConfigComponentBase):
             self.hypertts.save_batch_config(profile_name, self.get_model())
             self.disable_save_profile_button('Preset Saved')
             self.disable_load_profile_button('Load')
+
+    def rename_profile_button_pressed(self):
+        current_profile_name = self.batch_model.name
+        new_profile_name, result = self.hypertts.anki_utils.ask_user_get_text(
+            'Enter new preset name', self.dialog, current_profile_name, 'Rename Preset')
+        if result == 1:
+            # user pressed ok, rename profile
+            self.batch_model.name = new_profile_name
+            # reflect new name
+            self.profile_name_label.setText(new_profile_name)
+            # enable save button
+            self.enable_save_profile_button()
+
 
     def delete_profile_button_pressed(self):
         profile_name = self.profile_name_combobox.currentText()

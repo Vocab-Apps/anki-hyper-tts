@@ -168,6 +168,9 @@ class AnkiUtils():
         result = aqt.utils.askUser(message, parent=parent)
         return result
 
+    def ask_user_get_text(self, message, parent, default, title):
+        return aqt.utils.getText(message, parent, default=default, title=f'{constants.TITLE_PREFIX}{title}')
+
     def play_sound(self, filename):
         aqt.sound.av_player.play_file(filename)
 
