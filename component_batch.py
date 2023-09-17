@@ -29,10 +29,13 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.note = None
 
         # create certain widgets upfront
+        self.profile_name_label = aqt.qt.QLabel()
         self.show_settings_button = aqt.qt.QPushButton('Hide Settings')
         self.preview_sound_button = aqt.qt.QPushButton('Preview Sound')
         self.apply_button = aqt.qt.QPushButton('Apply to Notes')
         self.cancel_button = aqt.qt.QPushButton('Cancel')
+        self.profile_load_button = aqt.qt.QPushButton('Load')
+        self.profile_save_button = aqt.qt.QPushButton('Save')
 
     def configure_browser(self, note_id_list):
         self.note_id_list = note_id_list
@@ -60,10 +63,17 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview = component_label_preview.LabelPreview(self.hypertts, note)
         self.editor_mode = True
 
-    def load_batch(self, batch_name):
-        batch = self.hypertts.load_batch_config(batch_name)
-        self.load_model(batch)
-        self.profile_name_combobox.setCurrentText(batch_name)
+    def new_preset(self, preset_name):
+        """start with a new preset"""
+        self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
+        self.batch_model.name = preset_name
+        self.profile_name_label.setText(preset_name)
+        self.disable_load_profile_button('Load')
+        self.enable_save_profile_button()
+
+    def load_preset(self, preset_id):
+        model = self.hypertts.load_preset(preset_id)
+        self.load_model(model)
         # disable load/save buttons
         self.disable_load_profile_button('Loaded')
         self.disable_save_profile_button('Save')
@@ -72,6 +82,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         logger.info('load_model')
         self.batch_model = model
         # disseminate to all components
+        self.profile_name_label.setText(model.name)
         self.source.load_model(model.source)
         self.target.load_model(model.target)
         self.voice_selection.load_model(model.voice_selection)
@@ -141,12 +152,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview_sound_button.setEnabled(True)
         self.preview_sound_button.setText('Preview Sound')
 
-    def refresh_profile_combobox(self):
-        preset_list: List[config_models.PresetInfo] = self.hypertts.get_preset_list()
-        self.profile_name_combobox.clear()
-        for preset_info in preset_list:
-            self.profile_name_combobox.addItem(preset_info.name, userData=preset_info)
-
     def draw(self, layout):
         self.vlayout = aqt.qt.QVBoxLayout()
 
@@ -156,16 +161,14 @@ class ComponentBatch(component_common.ConfigComponentBase):
         hlayout = aqt.qt.QHBoxLayout()
         hlayout.addWidget(aqt.qt.QLabel('Preset:'))
 
-        self.profile_name_combobox = aqt.qt.QComboBox()
-        self.profile_name_combobox.setEditable(True)
-        # populate with existing profile names
-        self.refresh_profile_combobox()
+        font = aqt.qt.QFont()
+        font.setBold(True)
+        self.profile_name_label.setFont(font)
 
-        hlayout.addWidget(self.profile_name_combobox)
-        self.profile_load_button = aqt.qt.QPushButton('Load')
+        hlayout.addWidget(self.profile_name_label)
+
         self.disable_load_profile_button('Load')
         hlayout.addWidget(self.profile_load_button)
-        self.profile_save_button = aqt.qt.QPushButton('Save')
         self.disable_save_profile_button('Save')
         hlayout.addWidget(self.profile_save_button)
 
@@ -239,9 +242,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
         self.cancel_button.setFocus()
 
-        self.profile_name_combobox.currentIndexChanged.connect(self.profile_selected)
-        self.profile_name_combobox.currentTextChanged.connect(self.profile_selected)
-
         layout.addLayout(self.vlayout)
 
     def get_min_size(self):
@@ -264,9 +264,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT * 2, self.get_min_size())
         self.show_settings = True
         self.show_settings_button.setText('Hide Settings')
-
-    def profile_selected(self, index):
-        self.enable_load_profile_button()
 
     def load_profile_button_pressed(self):
         with self.hypertts.error_manager.get_single_action_context('Loading Preset'):

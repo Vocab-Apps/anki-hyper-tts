@@ -1147,6 +1147,7 @@ def test_batch_dialog_manual(qtbot):
 
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_browser(note_id_list)
+    batch.new_preset('My New Preset 1')
     batch.draw(dialog.getLayout())
 
     if os.environ.get('HYPERTTS_BATCH_DIALOG_DEBUG', 'no') == 'yes':

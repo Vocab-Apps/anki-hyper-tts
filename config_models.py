@@ -551,7 +551,7 @@ def deserialize_preferences(preferences_config):
 
 @dataclass
 class PresetInfo:
-    uuid: str
+    id: str
     name: str
 
 @dataclass

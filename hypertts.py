@@ -652,6 +652,20 @@ class HyperTTS():
             raise errors.PresetNotFound(preset_id)
         return self.deserialize_batch_config(self.config[constants.CONFIG_PRESETS][preset_id])
 
+    def get_next_preset_name(self) -> str:
+        """returns the next available preset name which doesn't collide with others"""
+        preset_list: List[config_models.PresetInfo] = self.get_preset_list()
+        preset_name_dict = {}
+        for preset_info in preset_list:
+            preset_name_dict[preset_info.name] = True
+        i = 1
+        new_preset_name = f'Preset {i}'
+        while new_preset_name in preset_name_dict:
+            i += 1
+            new_preset_name = f'Preset {i}'
+        return new_preset_name
+
+
     # realtime config
 
     def save_realtime_config(self, realtime_model, settings_key):

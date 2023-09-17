@@ -75,15 +75,18 @@ class BatchDialog(DialogBase):
         self.main_layout = aqt.qt.QVBoxLayout(self)
         self.batch_component.draw(self.main_layout)
 
-    def configure_browser(self, note_id_list, batch_name=None):
+    def configure_browser_existing_preset(self, note_id_list, preset_id: str):
         self.batch_component.configure_browser(note_id_list)
         self.setupUi()
-        if batch_name != None:
-            self.batch_component.load_batch(batch_name)
-            # collapse splitter
-            self.batch_component.collapse_settings()
-        else:
-            self.batch_component.display_settings()
+        self.batch_component.load_preset(preset_id)
+        # collapse splitter
+        self.batch_component.collapse_settings()
+
+    def configure_browser_new_preset(self, note_id_list, new_preset_name: str):
+        self.batch_component.configure_browser(note_id_list)
+        self.setupUi()
+        self.batch_component.display_settings()
+        self.batch_component.new_preset(new_preset_name)
 
     def configure_editor(self, note, editor, add_mode):
         self.batch_component.configure_editor(note, editor, add_mode)
@@ -126,15 +129,26 @@ def launch_preferences_dialog(hypertts):
         dialog.setupUi()
         dialog.exec()        
 
-def launch_batch_dialog_browser(hypertts, browser, note_id_list, batch_name):
+def launch_batch_dialog_browser_new_preset(hypertts, browser, note_id_list):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Browser'):
-        logger.info('launch_batch_dialog_browser')
+        logger.info('launch_batch_dialog_browser_new_preset')
         if len(note_id_list) == 0:
             raise errors.NoNotesSelected()
         dialog = BatchDialog(hypertts)
-        dialog.configure_browser(note_id_list, batch_name=batch_name)
+        new_preset_name = hypertts.get_next_preset_name()
+        dialog.configure_browser_new_preset(note_id_list, new_preset_name)
         dialog.exec()
         browser.model.reset()
+
+def launch_batch_dialog_browser_existing_preset(hypertts, browser, note_id_list, preset_id: str):
+    with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Browser'):
+        logger.info('launch_batch_dialog_browser_new_preset')
+        if len(note_id_list) == 0:
+            raise errors.NoNotesSelected()
+        dialog = BatchDialog(hypertts)
+        dialog.configure_browser_existing_preset(note_id_list, preset_id)
+        dialog.exec()
+        browser.model.reset()        
 
 def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Editor'):
@@ -209,11 +223,16 @@ def init(hypertts):
     aqt.mw.addonManager.setWebExports(__name__, r".*(css|js)")
 
     def browerMenusInit(browser: aqt.browser.Browser):
-
-        def get_launch_dialog_browser_fn(hypertts, browser, batch_name):
+        
+        def get_launch_dialog_browser_new_fn(hypertts, browser):
             def launch():
-                launch_batch_dialog_browser(hypertts, browser, browser.selectedNotes(), batch_name)
+                launch_batch_dialog_browser_new_preset(hypertts, browser, browser.selectedNotes())
             return launch
+
+        def get_launch_dialog_browser_existing_fn(hypertts, browser, preset_id: str):
+            def launch():
+                launch_batch_dialog_browser_existing_preset(hypertts, browser, browser.selectedNotes(), preset_id)
+            return launch            
 
         def get_launch_realtime_dialog_browser_fn(hypertts, browser):
             def launch():
@@ -229,13 +248,13 @@ def init(hypertts):
         browser.form.menubar.addMenu(menu)
 
         action = aqt.qt.QAction(f'Add Audio (Collection)...', browser)
-        action.triggered.connect(get_launch_dialog_browser_fn(hypertts, browser, None))
+        action.triggered.connect(get_launch_dialog_browser_new_fn(hypertts, browser))
         menu.addAction(action)
 
         # add a menu entry for each preset
-        for batch_name in hypertts.get_batch_config_list():
-            action = aqt.qt.QAction(f'Add Audio (Collection): {batch_name}...', browser)
-            action.triggered.connect(get_launch_dialog_browser_fn(hypertts, browser, batch_name))
+        for preset_info in hypertts.get_preset_list():
+            action = aqt.qt.QAction(f'Add Audio (Collection): {preset_info.name}...', browser)
+            action.triggered.connect(get_launch_dialog_browser_existing_fn(hypertts, browser, preset_info.id))
             menu.addAction(action)
 
         menu.addSeparator()
