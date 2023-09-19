@@ -652,6 +652,12 @@ class HyperTTS():
             raise errors.PresetNotFound(preset_id)
         return self.deserialize_batch_config(self.config[constants.CONFIG_PRESETS][preset_id])
 
+    def delete_preset(self, preset_id: str):
+        if preset_id not in self.config[constants.CONFIG_PRESETS]:
+            raise errors.PresetNotFound(preset_id)
+        del self.config[constants.CONFIG_PRESETS][preset_id]
+        self.anki_utils.write_config(self.config)        
+
     def get_next_preset_name(self) -> str:
         """returns the next available preset name which doesn't collide with others"""
         preset_list: List[config_models.PresetInfo] = self.get_preset_list()

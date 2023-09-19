@@ -93,6 +93,8 @@ class MockAnkiUtils():
 
         # responses for dialogs
         self.ask_user_get_text_response = None
+        self.ask_user_choose_from_list_response = None
+        self.ask_user_choose_from_list_response_string = None
 
         # time
         self.current_time = datetime.datetime.now()
@@ -227,6 +229,13 @@ class MockAnkiUtils():
 
     def ask_user_get_text(self, message, parent, default, title):
         return self.ask_user_get_text_response, 1
+
+    def ask_user_choose_from_list(self, parent, prompt: str, choices: list[str], startrow: int = 0) -> int:
+        if self.ask_user_choose_from_list_response_string != None:
+            # we need to look for the index of that string inside choices
+            chosen_row = choices.index(self.ask_user_choose_from_list_response_string)
+            return chosen_row, 1
+        return self.ask_user_choose_from_list_response, 1
 
     def checkpoint(self, action_str):
         self.checkpoint_name = action_str

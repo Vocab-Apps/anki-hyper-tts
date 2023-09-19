@@ -832,7 +832,7 @@ def test_batch_dialog_1(qtbot):
 
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_browser(note_id_list)
-    batch.new_preset('my preset 1')
+    batch.new_preset()
     batch.draw(dialog.getLayout())
 
     # select a source field and target field
@@ -871,30 +871,24 @@ def test_batch_dialog_1(qtbot):
     dialog.setupUi()
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_browser(note_id_list)
-    batch.new_preset('my preset 3')
+    batch.new_preset()
     batch.draw(dialog.getLayout())    
 
     # dialog.exec()
 
     # we should be able to open a profile
     assert batch.profile_open_button.isEnabled() == True
-    # select preset
-    batch.profile_name_combobox.setCurrentText('batch profile 1')
-    # should be enabled now
-    assert batch.profile_load_button.isEnabled() == True
-    assert batch.profile_load_button.text() == 'Load'
-
-    # open
-    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.MouseButton.LeftButton)
-
-    # button should go back to disabled
-    assert batch.profile_load_button.isEnabled() == False
+    hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'my preset 2'
+    # click the open profile button
+    qtbot.mouseClick(batch.profile_open_button, aqt.qt.Qt.MouseButton.LeftButton)
+    # now, the preset should be loaded
+    # save button should be disabled, we didn't make any changes
     assert batch.profile_save_button.isEnabled() == False
-    assert batch.profile_load_button.text() == 'Preset Loaded'
 
     # assertions on GUI
     assert batch.source.source_field_combobox.currentText() == 'English'
     assert batch.target.target_field_combobox.currentText() == 'Sound'
+    assert batch.profile_name_label.text() == 'my preset 2'
     
     # dialog.exec()
 
@@ -906,7 +900,7 @@ def test_batch_dialog_1(qtbot):
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_browser(note_id_list)
     batch.draw(dialog.getLayout())
-    batch.load_batch('batch profile 1')
+    batch.load_preset('uuid_1')
 
     # assertions on GUI
     assert batch.source.source_field_combobox.currentText() == 'English'
@@ -914,7 +908,6 @@ def test_batch_dialog_1(qtbot):
 
     # dialog.exec()
 
-    assert batch.profile_load_button.isEnabled() == False
     assert batch.profile_save_button.isEnabled() == False    
 
     # play sound preview
@@ -974,16 +967,15 @@ def test_batch_dialog_1(qtbot):
     # delete profile
     # ==============
 
-    assert batch.profile_name_combobox.count() == 2
-    assert batch.profile_name_combobox.currentText() == 'batch profile 1'
+    assert batch.profile_name_label.text() == 'my preset 2'
+    assert batch.profile_delete_button.isEnabled() == True
     qtbot.mouseClick(batch.profile_delete_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # make sure the profile was deleted
-    assert 'batch profile 1' not in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]    
+    assert 'uuid_1' not in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
-    # make sure the combobox was updated
-    assert batch.profile_name_combobox.count() == 1
-    assert batch.profile_name_combobox.currentText() == 'Preset 1'
+    # we should have a new preset
+    assert batch.profile_name_label.text() == 'Preset 1'
 
     # dialog.exec()
 

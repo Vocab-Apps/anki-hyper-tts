@@ -67,11 +67,12 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview = component_label_preview.LabelPreview(self.hypertts, note)
         self.editor_mode = True
 
-    def new_preset(self, preset_name):
+    def new_preset(self):
         """start with a new preset"""
+        new_preset_name = self.hypertts.get_next_preset_name()
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
-        self.batch_model.name = preset_name
-        self.profile_name_label.setText(preset_name)
+        self.batch_model.name = new_preset_name
+        self.profile_name_label.setText(new_preset_name)
 
     def load_preset(self, preset_id):
         model = self.hypertts.load_preset(preset_id)
@@ -87,6 +88,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.voice_selection.load_model(model.voice_selection)
         self.text_processing.load_model(model.text_processing)
         self.preview.load_model(self.batch_model)
+
+        self.disable_save_profile_button('No Changes')
 
     def get_model(self):
         return self.batch_model
@@ -284,14 +287,14 @@ class ComponentBatch(component_common.ConfigComponentBase):
             # enable save button
             self.enable_save_profile_button()
 
-
     def delete_profile_button_pressed(self):
-        profile_name = self.profile_name_combobox.currentText()
+        profile_name = self.batch_model.name
+        preset_id = self.batch_model.uuid
         proceed = self.hypertts.anki_utils.ask_user(f'Delete Preset {profile_name} ?', self.dialog)
         if proceed == True:
             with self.hypertts.error_manager.get_single_action_context('Deleting Preset'):
-                self.hypertts.delete_batch_config(profile_name)
-                self.refresh_profile_combobox()
+                self.hypertts.delete_preset(preset_id)
+                self.new_preset()
 
     def show_settings_button_pressed(self):
         if self.show_settings:
