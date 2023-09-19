@@ -171,6 +171,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         hlayout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
         self.vlayout.addLayout(hlayout)
 
+        self.profile_open_button.pressed.connect(self.open_profile_button_pressed)
         self.profile_save_button.pressed.connect(self.save_profile_button_pressed)
         self.profile_delete_button.pressed.connect(self.delete_profile_button_pressed)
         self.profile_rename_button.pressed.connect(self.rename_profile_button_pressed)
@@ -255,6 +256,16 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.dialog.setMinimumSize(self.MIN_WIDTH_COMPONENT * 2, self.get_min_size())
         self.show_settings = True
         self.show_settings_button.setText('Hide Settings')
+
+    def open_profile_button_pressed(self):
+        with self.hypertts.error_manager.get_single_action_context('Opening Profile'):
+            preset_list = self.hypertts.get_preset_list()
+            preset_name_list = [preset.name for preset in preset_list]
+            chosen_preset_row, retvalue = self.hypertts.anki_utils.ask_user_choose_from_list(self.dialog, 'Choose a preset', preset_name_list)
+            logger.info(f'chosen preset row: {chosen_preset_row}, retvalue: {retvalue}')
+            if retvalue == 1:
+                preset_id = preset_list[chosen_preset_row].id
+                self.load_preset(preset_id)
 
     def save_profile_button_pressed(self):
         with self.hypertts.error_manager.get_single_action_context('Saving Preset'):

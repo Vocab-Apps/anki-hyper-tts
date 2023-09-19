@@ -171,6 +171,26 @@ class AnkiUtils():
     def ask_user_get_text(self, message, parent, default, title):
         return aqt.utils.getText(message, parent, default=default, title=f'{constants.TITLE_PREFIX}{title}')
 
+    def ask_user_choose_from_list(self, parent, prompt: str, choices: list[str], startrow: int = 0) -> int:
+        d = aqt.qt.QDialog(parent)
+        d.setWindowModality(aqt.qt.Qt.WindowModality.WindowModal)
+        l = aqt.qt.QVBoxLayout()
+        d.setLayout(l)
+        t = aqt.qt.QLabel(prompt)
+        l.addWidget(t)
+        c = aqt.qt.QListWidget()
+        c.addItems(choices)
+        c.setCurrentRow(startrow)
+        l.addWidget(c)
+        bb = aqt.qt.QDialogButtonBox(aqt.qt.QDialogButtonBox.StandardButton.Ok|aqt.qt.QDialogButtonBox.StandardButton.Cancel)
+        bb.accepted.connect(d.accept)
+        bb.rejected.connect(d.reject)
+        l.addWidget(bb)
+        retvalue = d.exec() # 1 for OK, 0 for canceled
+        current_row = c.currentRow()
+        logger.debug(f'returning current row: {current_row}, retvalue: {retvalue}')
+        return current_row, retvalue
+
     def play_sound(self, filename):
         aqt.sound.av_player.play_file(filename)
 
