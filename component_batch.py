@@ -34,9 +34,13 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview_sound_button = aqt.qt.QPushButton('Preview Sound')
         self.apply_button = aqt.qt.QPushButton('Apply to Notes')
         self.cancel_button = aqt.qt.QPushButton('Cancel')
+        self.profile_open_button = aqt.qt.QPushButton('Open')
+        self.profile_open_button.setToolTip('Open a different preset')
         self.profile_load_button = aqt.qt.QPushButton('Load')
         self.profile_save_button = aqt.qt.QPushButton('Save')
+        self.profile_save_button.setToolTip('Save current preset')
         self.profile_rename_button = aqt.qt.QPushButton('Rename')
+        self.profile_rename_button.setToolTip('Rename the current preset')
 
     def configure_browser(self, note_id_list):
         self.note_id_list = note_id_list
@@ -168,15 +172,18 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
         hlayout.addWidget(self.profile_name_label)
 
-        self.disable_load_profile_button('Load')
-        hlayout.addWidget(self.profile_load_button)
         self.disable_save_profile_button('Save')
         hlayout.addWidget(self.profile_save_button)
+
+        self.disable_load_profile_button('Load')
+        hlayout.addWidget(self.profile_load_button)
 
         hlayout.addWidget(self.profile_rename_button)
 
         self.profile_delete_button = aqt.qt.QPushButton('Delete')
         hlayout.addWidget(self.profile_delete_button)
+
+        hlayout.addWidget(self.profile_open_button)
 
         hlayout.addStretch()
         # logo header
@@ -278,8 +285,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
     def save_profile_button_pressed(self):
         with self.hypertts.error_manager.get_single_action_context('Saving Preset'):
-            profile_name = self.profile_name_combobox.currentText()
-            self.hypertts.save_batch_config(profile_name, self.get_model())
+            self.hypertts.save_preset(self.get_model())
             self.disable_save_profile_button('Preset Saved')
             self.disable_load_profile_button('Load')
 

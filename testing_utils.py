@@ -91,6 +91,9 @@ class MockAnkiUtils():
         # uuid generation
         self.uuid_current_num = 0
 
+        # responses for dialogs
+        self.ask_user_get_text_response = None
+
         # time
         self.current_time = datetime.datetime.now()
 
@@ -221,6 +224,9 @@ class MockAnkiUtils():
 
     def ask_user(self, message, parent):
         return True
+
+    def ask_user_get_text(self, message, parent, default, title):
+        return self.ask_user_get_text_response, 1
 
     def checkpoint(self, action_str):
         self.checkpoint_name = action_str

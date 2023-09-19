@@ -839,7 +839,11 @@ def test_batch_dialog_1(qtbot):
     batch.target.target_field_combobox.setCurrentText('Sound')
 
     # set profile name
-    batch.profile_name_combobox.setCurrentText('batch profile 1')
+    # click rename button
+    preset_name = 'batch profile 1'
+    hypertts_instance.anki_utils.ask_user_get_text_response = preset_name
+    qtbot.mouseClick(batch.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
+    # batch.profile_name_combobox.setCurrentText('batch profile 1')
 
     # save button should be enabled
     assert batch.profile_save_button.isEnabled() == True
@@ -851,10 +855,11 @@ def test_batch_dialog_1(qtbot):
     assert batch.profile_save_button.text() == 'Preset Saved'
 
     print(hypertts_instance.anki_utils.written_config)
-    assert 'batch profile 1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]
+    assert 'uuid_0' in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
     # try to deserialize that config, it should have the English field selected
-    deserialized_model = hypertts_instance.load_batch_config('batch profile 1')
+    deserialized_model = hypertts_instance.load_preset('uuid_0')
+    assert deserialized_model.name == preset_name
     assert deserialized_model.source.source_field == 'English'
     assert deserialized_model.target.target_field == 'Sound'
 
