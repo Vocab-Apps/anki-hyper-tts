@@ -36,7 +36,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.cancel_button = aqt.qt.QPushButton('Cancel')
         self.profile_open_button = aqt.qt.QPushButton('Open')
         self.profile_open_button.setToolTip('Open a different preset')
-        self.profile_load_button = aqt.qt.QPushButton('Load')
         self.profile_save_button = aqt.qt.QPushButton('Save')
         self.profile_save_button.setToolTip('Save current preset')
         self.profile_rename_button = aqt.qt.QPushButton('Rename')
@@ -73,15 +72,10 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
         self.batch_model.name = preset_name
         self.profile_name_label.setText(preset_name)
-        self.disable_load_profile_button('Load')
-        self.enable_save_profile_button()
 
     def load_preset(self, preset_id):
         model = self.hypertts.load_preset(preset_id)
         self.load_model(model)
-        # disable load/save buttons
-        self.disable_load_profile_button('Loaded')
-        self.disable_save_profile_button('Save')
 
     def load_model(self, model):
         logger.info('load_model')
@@ -141,16 +135,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.profile_save_button.setStyleSheet(None)
         self.profile_save_button.setText(text)
 
-    def enable_load_profile_button(self):
-        self.profile_load_button.setEnabled(True)
-        self.profile_load_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
-        self.profile_load_button.setText('Load')
-
-    def disable_load_profile_button(self, text):
-        self.profile_load_button.setEnabled(False)
-        self.profile_load_button.setStyleSheet(None)
-        self.profile_load_button.setText(text)
-
     def sample_selected(self, note_id, text):
         self.voice_selection.sample_text_selected(text)
         self.note = self.hypertts.anki_utils.get_note_by_id(note_id)
@@ -175,9 +159,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.disable_save_profile_button('Save')
         hlayout.addWidget(self.profile_save_button)
 
-        self.disable_load_profile_button('Load')
-        hlayout.addWidget(self.profile_load_button)
-
         hlayout.addWidget(self.profile_rename_button)
 
         self.profile_delete_button = aqt.qt.QPushButton('Delete')
@@ -190,7 +171,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
         hlayout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
         self.vlayout.addLayout(hlayout)
 
-        self.profile_load_button.pressed.connect(self.load_profile_button_pressed)
         self.profile_save_button.pressed.connect(self.save_profile_button_pressed)
         self.profile_delete_button.pressed.connect(self.delete_profile_button_pressed)
         self.profile_rename_button.pressed.connect(self.rename_profile_button_pressed)
@@ -276,18 +256,10 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.show_settings = True
         self.show_settings_button.setText('Hide Settings')
 
-    def load_profile_button_pressed(self):
-        with self.hypertts.error_manager.get_single_action_context('Loading Preset'):
-            profile_name = self.profile_name_combobox.currentText()
-            self.load_model(self.hypertts.load_batch_config(profile_name))
-            self.disable_load_profile_button('Preset Loaded')
-            self.disable_save_profile_button('Save')
-
     def save_profile_button_pressed(self):
         with self.hypertts.error_manager.get_single_action_context('Saving Preset'):
             self.hypertts.save_preset(self.get_model())
             self.disable_save_profile_button('Preset Saved')
-            self.disable_load_profile_button('Load')
 
     def rename_profile_button_pressed(self):
         current_profile_name = self.batch_model.name

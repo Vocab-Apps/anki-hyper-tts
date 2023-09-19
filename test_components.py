@@ -832,6 +832,7 @@ def test_batch_dialog_1(qtbot):
 
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_browser(note_id_list)
+    batch.new_preset('my preset 1')
     batch.draw(dialog.getLayout())
 
     # select a source field and target field
@@ -840,7 +841,7 @@ def test_batch_dialog_1(qtbot):
 
     # set profile name
     # click rename button
-    preset_name = 'batch profile 1'
+    preset_name = 'my preset 2'
     hypertts_instance.anki_utils.ask_user_get_text_response = preset_name
     qtbot.mouseClick(batch.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
     # batch.profile_name_combobox.setCurrentText('batch profile 1')
@@ -851,14 +852,14 @@ def test_batch_dialog_1(qtbot):
     qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
     # should be disabled after saving
     assert batch.profile_save_button.isEnabled() == False
-    assert batch.profile_load_button.isEnabled() == False
     assert batch.profile_save_button.text() == 'Preset Saved'
 
     print(hypertts_instance.anki_utils.written_config)
-    assert 'uuid_0' in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
+    expected_uuid = 'uuid_1'
+    assert expected_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
     # try to deserialize that config, it should have the English field selected
-    deserialized_model = hypertts_instance.load_preset('uuid_0')
+    deserialized_model = hypertts_instance.load_preset(expected_uuid)
     assert deserialized_model.name == preset_name
     assert deserialized_model.source.source_field == 'English'
     assert deserialized_model.target.target_field == 'Sound'
@@ -870,11 +871,13 @@ def test_batch_dialog_1(qtbot):
     dialog.setupUi()
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_browser(note_id_list)
+    batch.new_preset('my preset 3')
     batch.draw(dialog.getLayout())    
 
     # dialog.exec()
 
-    assert batch.profile_load_button.isEnabled() == False
+    # we should be able to open a profile
+    assert batch.profile_open_button.isEnabled() == True
     # select preset
     batch.profile_name_combobox.setCurrentText('batch profile 1')
     # should be enabled now

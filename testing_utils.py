@@ -273,6 +273,7 @@ class MockAnkiUtils():
 
     def get_uuid(self):
         result = f'uuid_{self.uuid_current_num}'
+        logger.debug(f'generating uuid: {result}')
         self.uuid_current_num += 1
         return result
 
