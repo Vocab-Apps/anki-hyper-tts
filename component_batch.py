@@ -67,9 +67,12 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview = component_label_preview.LabelPreview(self.hypertts, note)
         self.editor_mode = True
 
-    def new_preset(self):
+    def new_preset(self, preset_name = None):
         """start with a new preset"""
-        new_preset_name = self.hypertts.get_next_preset_name()
+        if preset_name == None:
+            new_preset_name = self.hypertts.get_next_preset_name()
+        else:
+            new_preset_name = preset_name
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
         self.batch_model.name = new_preset_name
         self.profile_name_label.setText(new_preset_name)
