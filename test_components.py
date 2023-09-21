@@ -993,6 +993,7 @@ def test_batch_dialog_sound_preview_error(qtbot):
 
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_browser(note_id_list)
+    batch.new_preset()
     batch.draw(dialog.getLayout())
 
     # select English source
