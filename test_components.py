@@ -1172,6 +1172,7 @@ def test_batch_dialog_editor(qtbot):
 
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_editor(note, mock_editor, False)
+    batch.new_preset()
     batch.draw(dialog.getLayout())
 
     batch.voice_selection.voices_combobox.setCurrentIndex(1)
@@ -1230,6 +1231,7 @@ def test_batch_dialog_editor_sound_sample(qtbot):
 
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_editor(note, mock_editor, False)
+    batch.new_preset()
     batch.draw(dialog.getLayout())
 
     batch.source.source_field_combobox.setCurrentText('English')
