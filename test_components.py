@@ -1909,6 +1909,7 @@ def test_batch_dialog_load_random(qtbot):
 
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_browser(note_id_list)
+    batch.new_preset()
     batch.draw(dialog.getLayout())
 
     # select a source field and target field
@@ -1925,10 +1926,13 @@ def test_batch_dialog_load_random(qtbot):
     qtbot.mouseClick(batch.voice_selection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # set profile name
-    batch.profile_name_combobox.setCurrentText('batch random 1')
+    preset_name = 'batch random 1'
+    hypertts_instance.anki_utils.ask_user_get_text_response = preset_name
+    qtbot.mouseClick(batch.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
+    # save
     qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    assert 'batch random 1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]
+    assert 'uuid_1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
     # test loading of config
     # ======================
@@ -1940,13 +1944,10 @@ def test_batch_dialog_load_random(qtbot):
     batch.draw(dialog.getLayout())    
 
     # dialog.exec()
-
-    assert batch.profile_load_button.isEnabled() == False
-    # select preset
-    batch.profile_name_combobox.setCurrentText('batch random 1')
-
-    # open
-    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert batch.profile_open_button.isEnabled() == True
+    hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'batch random 1'
+    # click the open profile button
+    qtbot.mouseClick(batch.profile_open_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # check that the voice selection mode is random
     assert batch.get_model().voice_selection.selection_mode == constants.VoiceSelectionMode.random
