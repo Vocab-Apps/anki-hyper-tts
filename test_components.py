@@ -1101,8 +1101,9 @@ def test_batch_dialog_load_missing_field(qtbot):
     batch.source.source_field_combobox.setCurrentText('English')
     batch.target.target_field_combobox.setCurrentText('Chinese')
 
-    # set profile name
-    batch.profile_name_combobox.setCurrentText('batch profile 1')
+    # rename profile
+    hypertts_instance.anki_utils.ask_user_get_text_response = 'batch profile 1'
+    qtbot.mouseClick(batch.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # click save button
     qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
@@ -1117,12 +1118,14 @@ def test_batch_dialog_load_missing_field(qtbot):
     dialog.setupUi()
     batch = component_batch.ComponentBatch(hypertts_instance, dialog)
     batch.configure_browser(note_id_list)
+    batch.new_preset()
     batch.draw(dialog.getLayout())    
 
-    # select preset
-    batch.profile_name_combobox.setCurrentText('batch profile 1')
-    # load preset
-    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.MouseButton.LeftButton)    
+    # open "batch profile 1"
+    assert batch.profile_open_button.isEnabled() == True
+    hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'batch profile 1'
+    # click the open profile button
+    qtbot.mouseClick(batch.profile_open_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # check the target field on the model
     # ===================================
