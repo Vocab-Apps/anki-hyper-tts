@@ -852,7 +852,7 @@ def test_batch_dialog_1(qtbot):
     qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
     # should be disabled after saving
     assert batch.profile_save_button.isEnabled() == False
-    assert batch.profile_save_button.text() == 'Preset Saved'
+    assert batch.profile_save_button.text() == 'Save'
 
     print(hypertts_instance.anki_utils.written_config)
     expected_uuid = 'uuid_1'

@@ -26,6 +26,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.hypertts = hypertts
         self.dialog = dialog
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
+        self.model_changed = False
         self.note = None
 
         # create certain widgets upfront
@@ -76,6 +77,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
         self.batch_model.name = new_preset_name
         self.profile_name_label.setText(new_preset_name)
+        self.model_changed = True
 
     def load_preset(self, preset_id):
         model = self.hypertts.load_preset(preset_id)
@@ -92,7 +94,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.text_processing.load_model(model.text_processing)
         self.preview.load_model(self.batch_model)
 
-        self.disable_save_profile_button('No Changes')
+        self.model_changed = False
+        self.update_save_profile_button_state()
 
     def get_model(self):
         return self.batch_model
@@ -119,6 +122,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
     def model_part_updated_common(self):
         self.preview.load_model(self.batch_model)
+        self.model_changed = True
         # are we in editor mode ? if so, set the sample text on the voice component
         if self.note != None:
             if self.batch_model.source != None and self.batch_model.text_processing != None:
@@ -127,19 +131,23 @@ class ComponentBatch(component_common.ConfigComponentBase):
                     self.voice_selection.sample_text_selected(processed_text)
                 except Exception as e:
                     logger.warning(f'could not set sample text: {e}')
-        self.enable_save_profile_button()
+        self.update_save_profile_button_state()
+
+    def update_save_profile_button_state(self):
+        if self.model_changed:
+            self.enable_save_profile_button()
+        else:
+            self.disable_save_profile_button()
 
     def enable_save_profile_button(self):
         logger.info('enable_save_profile_button')
         self.profile_save_button.setEnabled(True)
         self.profile_save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
-        self.profile_save_button.setText('Save')
 
-    def disable_save_profile_button(self, text):
+    def disable_save_profile_button(self):
         logger.info('disable_save_profile_button')
         self.profile_save_button.setEnabled(False)
         self.profile_save_button.setStyleSheet(None)
-        self.profile_save_button.setText(text)
 
     def sample_selected(self, note_id, text):
         self.voice_selection.sample_text_selected(text)
@@ -162,7 +170,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
         hlayout.addWidget(self.profile_name_label)
 
-        self.disable_save_profile_button('Save')
         hlayout.addWidget(self.profile_save_button)
 
         hlayout.addWidget(self.profile_rename_button)
@@ -276,7 +283,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def save_profile_button_pressed(self):
         with self.hypertts.error_manager.get_single_action_context('Saving Preset'):
             self.hypertts.save_preset(self.get_model())
-            self.disable_save_profile_button('Preset Saved')
+            self.model_changed = False
+            self.update_save_profile_button_state()
 
     def rename_profile_button_pressed(self):
         current_profile_name = self.batch_model.name
@@ -288,7 +296,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
             # reflect new name
             self.profile_name_label.setText(new_profile_name)
             # enable save button
-            self.enable_save_profile_button()
+            self.model_changed = True
+            self.update_save_profile_button_state()
 
     def delete_profile_button_pressed(self):
         profile_name = self.batch_model.name

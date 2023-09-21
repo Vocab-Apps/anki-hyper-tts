@@ -225,6 +225,7 @@ class MockAnkiUtils():
         self.hide_loading_indicator_called = True
 
     def ask_user(self, message, parent):
+        # assume true
         return True
 
     def ask_user_get_text(self, message, parent, default, title):
