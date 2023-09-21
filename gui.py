@@ -77,16 +77,18 @@ class BatchDialog(DialogBase):
 
     def configure_browser_existing_preset(self, note_id_list, preset_id: str):
         self.batch_component.configure_browser(note_id_list)
-        self.setupUi()
+        # note: preset needs to be loaded first
         self.batch_component.load_preset(preset_id)
+        self.setupUi()
         # collapse splitter
         self.batch_component.collapse_settings()
 
     def configure_browser_new_preset(self, note_id_list, new_preset_name: str):
         self.batch_component.configure_browser(note_id_list)
+        # note: call new_preset before drawing
+        self.batch_component.new_preset(new_preset_name)
         self.setupUi()
         self.batch_component.display_settings()
-        self.batch_component.new_preset(new_preset_name)
 
     def configure_editor(self, note, editor, add_mode):
         self.batch_component.configure_editor(note, editor, add_mode)
