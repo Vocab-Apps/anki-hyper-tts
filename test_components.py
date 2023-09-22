@@ -1193,18 +1193,14 @@ def test_batch_dialog_editor_sound_sample(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
 
     mock_editor = testing_utils.MockEditor()
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_editor(note, mock_editor, False)
-    batch.new_preset()
-    batch.draw(dialog.getLayout())
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_editor_new_preset(
+        hypertts_instance, dialog, note, mock_editor, False, 'preset 1')
 
     batch.source.source_field_combobox.setCurrentText('English')
 
@@ -1234,17 +1230,14 @@ def test_batch_dialog_editor_template_error(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
 
     mock_editor = testing_utils.MockEditor()
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_editor(note, mock_editor, False)
-    batch.draw(dialog.getLayout())
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_editor_new_preset(
+        hypertts_instance, dialog, note, mock_editor, False, 'preset 1')
 
     # select template mode and enter incorrect advanced template
     batch.source.batch_mode_combobox.setCurrentText('advanced_template')
@@ -1871,18 +1864,14 @@ def test_batch_dialog_load_random(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
     # test saving of config
     # =====================
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.new_preset()
-    batch.draw(dialog.getLayout())
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_browser_new_preset(
+        hypertts_instance, dialog, note_id_list, 'my preset 1')
 
     # select a source field and target field
     batch.source.source_field_combobox.setCurrentText('English')
@@ -1909,11 +1898,9 @@ def test_batch_dialog_load_random(qtbot):
     # test loading of config
     # ======================
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())    
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_browser_new_preset(
+        hypertts_instance, dialog, note_id_list, 'my preset 1')
 
     # dialog.exec()
     assert batch.profile_open_button.isEnabled() == True
