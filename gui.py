@@ -68,27 +68,32 @@ class DialogBase(aqt.qt.QDialog):
 class BatchDialog(DialogBase):
     def __init__(self, hypertts):
         super(DialogBase, self).__init__()
-        self.batch_component = component_batch.ComponentBatch(hypertts, self)
-
-    def setupUi(self):
+        self.hypertts = hypertts
         self.setWindowTitle(constants.GUI_COLLECTION_DIALOG_TITLE)
-        self.main_layout = aqt.qt.QVBoxLayout(self)
-        self.batch_component.draw(self.main_layout)
+        self.main_layout = aqt.qt.QVBoxLayout(self)        
+
+    # def configure_browser_existing_preset_OLD(self, note_id_list, preset_id: str):
+    #     self.batch_component.configure_browser(note_id_list)
+    #     # note: preset needs to be loaded first
+    #     self.batch_component.load_preset(preset_id)
+    #     self.setupUi()
+    #     # collapse splitter
+    #     self.batch_component.collapse_settings()
+
+    # def configure_browser_new_preset_OLD(self, note_id_list, new_preset_name: str):
+    #     self.batch_component.configure_browser(note_id_list)
+    #     # note: call new_preset before drawing
+    #     self.batch_component.new_preset(new_preset_name)
+    #     self.setupUi()
+    #     self.batch_component.display_settings()
 
     def configure_browser_existing_preset(self, note_id_list, preset_id: str):
-        self.batch_component.configure_browser(note_id_list)
-        # note: preset needs to be loaded first
-        self.batch_component.load_preset(preset_id)
-        self.setupUi()
-        # collapse splitter
-        self.batch_component.collapse_settings()
+        self.batch_component = component_batch.create_component_batch_existing_preset(
+            self.hypertts, self, note_id_list, preset_id)
 
     def configure_browser_new_preset(self, note_id_list, new_preset_name: str):
-        self.batch_component.configure_browser(note_id_list)
-        # note: call new_preset before drawing
-        self.batch_component.new_preset(new_preset_name)
-        self.setupUi()
-        self.batch_component.display_settings()
+        self.batch_component = component_batch.create_component_batch_new_preset(
+            self.hypertts, self, note_id_list, new_preset_name)
 
     def configure_editor(self, note, editor, add_mode):
         self.batch_component.configure_editor(note, editor, add_mode)

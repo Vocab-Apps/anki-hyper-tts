@@ -18,6 +18,7 @@ logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_
 logger = logging_utils.get_child_logger(__name__)
 
 
+
 class ComponentBatch(component_common.ConfigComponentBase):
     MIN_WIDTH_COMPONENT = 600
     MIN_HEIGHT = 250
@@ -397,3 +398,25 @@ class ComponentBatch(component_common.ConfigComponentBase):
             self.hypertts.anki_utils.run_on_main(self.batch_interrupted_button_setup)
 
         
+
+# factory and setup functions for ComponentBatch: only use those to create a ComponentBatch
+# =========================================================================================
+
+def create_component_batch_browser_existing_preset(hypertts, parent_dialog, note_id_list, preset_id: str) -> ComponentBatch:
+    batch_component = ComponentBatch(hypertts, parent_dialog)
+    batch_component.configure_browser(note_id_list)
+    batch_component.draw(parent_dialog.main_layout)
+    batch_component.load_preset(preset_id)
+    batch_component.collapse_settings()    
+    return batch_component
+
+def create_component_batch_browser_new_preset(hypertts, parent_dialog, note_id_list, new_preset_name: str) -> ComponentBatch:
+    batch_component = ComponentBatch(hypertts, parent_dialog)
+    batch_component.configure_browser(note_id_list)
+    batch_component.new_preset(new_preset_name)
+    batch_component.draw(parent_dialog.main_layout)
+    batch_component.display_settings()
+    return batch_component
+
+
+

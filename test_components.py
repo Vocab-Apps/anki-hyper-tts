@@ -59,6 +59,11 @@ class EmptyDialog(aqt.qt.QDialog):
         self.closed = True
 
 
+def build_empty_dialog() -> EmptyDialog:
+    dialog = EmptyDialog()
+    dialog.setupUi()
+    return dialog
+
 class MockModelChangeCallback():
     def __init__(self):
         self.model = None
@@ -822,18 +827,14 @@ def test_batch_dialog_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
     # test saving of config
     # =====================
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.new_preset()
-    batch.draw(dialog.getLayout())
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_browser_new_preset(
+        hypertts_instance, dialog, note_id_list, 'my preset 1')
 
     # select a source field and target field
     batch.source.source_field_combobox.setCurrentText('English')
@@ -867,13 +868,9 @@ def test_batch_dialog_1(qtbot):
     # test loading of config
     # ======================
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.new_preset()
-    batch.draw(dialog.getLayout())    
-
+    dialog = dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_browser_new_preset(
+            hypertts_instance, dialog, note_id_list, 'my preset 1')    
     # dialog.exec()
 
     # we should be able to open a profile
@@ -895,12 +892,9 @@ def test_batch_dialog_1(qtbot):
     # test launching with a particular preset
     # =======================================
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())
-    batch.load_preset('uuid_1')
+    dialog = dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_browser_existing_preset(
+            hypertts_instance, dialog, note_id_list, 'uuid_1')
 
     # assertions on GUI
     assert batch.source.source_field_combobox.currentText() == 'English'
