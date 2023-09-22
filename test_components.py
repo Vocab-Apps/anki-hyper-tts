@@ -977,18 +977,13 @@ def test_batch_dialog_sound_preview_error(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
     # test saving of config
     # =====================
-
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.new_preset()
-    batch.draw(dialog.getLayout())
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_browser_new_preset(
+        hypertts_instance, dialog, note_id_list, 'my preset 1')
 
     # select English source
     batch.source.source_field_combobox.setCurrentText('English')
@@ -1015,15 +1010,12 @@ def test_batch_dialog_voice_selection_sample(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_browser_new_preset(
+        hypertts_instance, dialog, note_id_list, 'my preset 1')
 
     # select English source
     batch.source.source_field_combobox.setCurrentText('English')
@@ -1078,17 +1070,14 @@ def test_batch_dialog_load_missing_field(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
     # test saving of config
     # =====================
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_browser_new_preset(
+        hypertts_instance, dialog, note_id_list, 'my preset 1')
 
     # select a source field and target field
     # target field will be Chinese
@@ -1108,12 +1097,9 @@ def test_batch_dialog_load_missing_field(qtbot):
     # use the german note type, which doesn't have the Chinese field
     note_id_list = [config_gen.note_id_german_1]
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.new_preset()
-    batch.draw(dialog.getLayout())    
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_browser_new_preset(
+        hypertts_instance, dialog, note_id_list, 'my preset 1')
 
     # open "batch profile 1"
     assert batch.profile_open_button.isEnabled() == True
@@ -1135,19 +1121,15 @@ def test_batch_dialog_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
     # test saving of config
     # =====================
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.new_preset('My New Preset 1')
-    batch.draw(dialog.getLayout())
-
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_browser_new_preset(
+        hypertts_instance, dialog, note_id_list, 'My New Preset 1')
+    
     if os.environ.get('HYPERTTS_BATCH_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec()
 
