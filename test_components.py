@@ -1138,18 +1138,14 @@ def test_batch_dialog_editor(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
 
     mock_editor = testing_utils.MockEditor()
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_editor(note, mock_editor, False)
-    batch.new_preset()
-    batch.draw(dialog.getLayout())
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_editor_new_preset(
+        hypertts_instance, dialog, note, mock_editor, False, 'preset 1')
 
     batch.voice_selection.voices_combobox.setCurrentIndex(1)
 

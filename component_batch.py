@@ -418,5 +418,18 @@ def create_component_batch_browser_new_preset(hypertts, parent_dialog, note_id_l
     batch_component.display_settings()
     return batch_component
 
+def create_component_batch_editor_existing_preset(hypertts, parent_dialog, note, editor, add_mode, preset_id: str) -> ComponentBatch:
+    batch_component = ComponentBatch(hypertts, parent_dialog)
+    batch_component.configure_editor(note, editor, add_mode)
+    batch_component.draw(parent_dialog.main_layout)
+    batch_component.load_preset(preset_id)
+    batch_component.no_settings_editor()
+    return batch_component
 
-
+def create_component_batch_editor_new_preset(hypertts, parent_dialog, note, editor, add_mode, new_preset_name: str) -> ComponentBatch:
+    batch_component = ComponentBatch(hypertts, parent_dialog)
+    batch_component.configure_editor(note, editor, add_mode)
+    batch_component.new_preset(new_preset_name)
+    batch_component.draw(parent_dialog.main_layout)
+    batch_component.no_settings_editor()
+    return batch_component    
