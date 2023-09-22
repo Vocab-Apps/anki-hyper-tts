@@ -42,6 +42,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.profile_save_button.setToolTip('Save current preset')
         self.profile_rename_button = aqt.qt.QPushButton('Rename')
         self.profile_rename_button.setToolTip('Rename the current preset')
+        self.profile_delete_button = aqt.qt.QPushButton('Delete')
+        self.profile_delete_button.setToolTip('Delete the current preset')
 
     def configure_browser(self, note_id_list):
         self.note_id_list = note_id_list
@@ -80,10 +82,12 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.profile_name_label.setText(new_preset_name)
         self.model_changed = True
         self.update_save_profile_button_state()
+        self.disable_delete_profile_button()
 
     def load_preset(self, preset_id):
         model = self.hypertts.load_preset(preset_id)
         self.load_model(model)
+        self.enable_delete_profile_button()
 
     def load_model(self, model):
         logger.info('load_model')
@@ -151,6 +155,12 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.profile_save_button.setEnabled(False)
         self.profile_save_button.setStyleSheet(None)
 
+    def enable_delete_profile_button(self):
+        self.profile_delete_button.setEnabled(True)
+
+    def disable_delete_profile_button(self):
+        self.profile_delete_button.setEnabled(False)
+
     def sample_selected(self, note_id, text):
         self.voice_selection.sample_text_selected(text)
         self.note = self.hypertts.anki_utils.get_note_by_id(note_id)
@@ -176,7 +186,6 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
         hlayout.addWidget(self.profile_rename_button)
 
-        self.profile_delete_button = aqt.qt.QPushButton('Delete')
         hlayout.addWidget(self.profile_delete_button)
 
         hlayout.addWidget(self.profile_open_button)
@@ -287,6 +296,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
             self.hypertts.save_preset(self.get_model())
             self.model_changed = False
             self.update_save_profile_button_state()
+            self.enable_delete_profile_button()
 
     def save_profile_if_changed(self):
         if self.model_changed:

@@ -995,11 +995,15 @@ def test_batch_dialog_new_preset_save_enabled(qtbot):
 
     # save button should be enabled
     assert batch.profile_save_button.isEnabled() == True
+    # delete button should be disabled, profile was never saved
+    assert batch.profile_delete_button.isEnabled() == False
 
     # save the preset
     qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
     # save button should now be disabled
     assert batch.profile_save_button.isEnabled() == False
+    # delete button should now be enabled
+    assert batch.profile_delete_button.isEnabled() == True
 
     # delete the preset
     qtbot.mouseClick(batch.profile_delete_button, aqt.qt.Qt.MouseButton.LeftButton)
@@ -1008,6 +1012,11 @@ def test_batch_dialog_new_preset_save_enabled(qtbot):
     assert batch.profile_name_label.text() == 'Preset 1'
     # save button should be enabled
     assert batch.profile_save_button.isEnabled() == True
+    # delete button should be enabled, because we have a new profile
+
+    # now save the profile, it should work
+    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert 'uuid_1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
 
 def test_batch_dialog_sound_preview_error(qtbot):
