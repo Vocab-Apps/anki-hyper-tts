@@ -165,7 +165,7 @@ class AnkiUtils():
         aqt.utils.tooltip(message)
 
     def ask_user(self, message, parent):
-        result = aqt.utils.askUser(message, parent=parent)
+        result = aqt.utils.askUser(message, parent=parent, title=constants.ADDON_NAME)
         return result
 
     def ask_user_get_text(self, message, parent, default, title):

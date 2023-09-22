@@ -961,6 +961,7 @@ def test_batch_dialog_1(qtbot):
     # delete profile
     # ==============
 
+
     assert batch.profile_name_label.text() == 'my preset 2'
     assert batch.profile_delete_button.isEnabled() == True
     qtbot.mouseClick(batch.profile_delete_button, aqt.qt.Qt.MouseButton.LeftButton)
@@ -972,6 +973,42 @@ def test_batch_dialog_1(qtbot):
     assert batch.profile_name_label.text() == 'Preset 1'
 
     # dialog.exec()
+
+def test_batch_dialog_new_preset_save_enabled(qtbot):
+    # create a preset
+    # save it
+    # delete it
+    # new preset gets created
+    # the save button should be enabled
+
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+
+    # test saving of config
+    # =====================
+
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_browser_new_preset(
+        hypertts_instance, dialog, note_id_list, 'my preset 5')
+
+    # save button should be enabled
+    assert batch.profile_save_button.isEnabled() == True
+
+    # save the preset
+    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+    # save button should now be disabled
+    assert batch.profile_save_button.isEnabled() == False
+
+    # delete the preset
+    qtbot.mouseClick(batch.profile_delete_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    # we should be on a new preset
+    assert batch.profile_name_label.text() == 'Preset 1'
+    # save button should be enabled
+    assert batch.profile_save_button.isEnabled() == True
+
 
 def test_batch_dialog_sound_preview_error(qtbot):
     config_gen = testing_utils.TestConfigGenerator()

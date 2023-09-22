@@ -79,6 +79,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.batch_model.name = new_preset_name
         self.profile_name_label.setText(new_preset_name)
         self.model_changed = True
+        self.update_save_profile_button_state()
 
     def load_preset(self, preset_id):
         model = self.hypertts.load_preset(preset_id)
@@ -281,11 +282,21 @@ class ComponentBatch(component_common.ConfigComponentBase):
                 preset_id = preset_list[chosen_preset_row].id
                 self.load_preset(preset_id)
 
-    def save_profile_button_pressed(self):
+    def save_profile(self):
         with self.hypertts.error_manager.get_single_action_context('Saving Preset'):
             self.hypertts.save_preset(self.get_model())
             self.model_changed = False
             self.update_save_profile_button_state()
+
+    def save_profile_if_changed(self):
+        if self.model_changed:
+            # does the user want to save the profile ?
+            proceed = self.hypertts.anki_utils.ask_user('Save changes to current preset ?', self.dialog)
+            if proceed:
+                self.save_profile()
+
+    def save_profile_button_pressed(self):
+        self.save_profile()
 
     def rename_profile_button_pressed(self):
         current_profile_name = self.batch_model.name

@@ -85,8 +85,15 @@ class BatchDialog(DialogBase):
         self.setupUi()
         self.batch_component.no_settings_editor()
 
+    def verify_profile_saved(self):
+        self.batch_component.save_profile_if_changed()
+
+    def closeEvent(self, evnt):
+        self.verify_profile_saved()
+        super(DialogBase, self).closeEvent(evnt)
 
     def close(self):
+        self.verify_profile_saved()
         self.accept()
 
 class RealtimeDialog(DialogBase):
