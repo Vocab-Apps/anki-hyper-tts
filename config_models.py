@@ -33,6 +33,9 @@ class BatchConfig(ConfigModelBase):
         self.uuid = anki_utils.get_uuid()
         self.name = None
 
+    def reset_uuid(self, anki_utils):
+        self.uuid = anki_utils.get_uuid()
+
     def get_source(self):
         return self._source
     def set_source(self, source):

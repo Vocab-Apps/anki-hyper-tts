@@ -1016,7 +1016,7 @@ def test_batch_dialog_new_preset_save_enabled(qtbot):
 
     # now save the profile, it should work
     qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
-    assert 'uuid_1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
+    assert 'uuid_2' in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
 
 def test_batch_dialog_sound_preview_error(qtbot):

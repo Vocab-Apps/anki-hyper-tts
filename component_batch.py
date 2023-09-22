@@ -84,6 +84,17 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.update_save_profile_button_state()
         self.disable_delete_profile_button()
 
+    def new_preset_after_delete(self):
+        """new preset after user deleted the existing one"""
+        # note: don't create new model, just reset the uuid, otherwise members of BatchConfig won't be initialized
+        new_preset_name = self.hypertts.get_next_preset_name()
+        self.batch_model.reset_uuid(self.hypertts.anki_utils)
+        self.batch_model.name = new_preset_name
+        self.profile_name_label.setText(new_preset_name)
+        self.model_changed = True
+        self.update_save_profile_button_state()
+        self.disable_delete_profile_button()
+
     def load_preset(self, preset_id):
         model = self.hypertts.load_preset(preset_id)
         self.load_model(model)
@@ -328,7 +339,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         if proceed == True:
             with self.hypertts.error_manager.get_single_action_context('Deleting Preset'):
                 self.hypertts.delete_preset(preset_id)
-                self.new_preset()
+                self.new_preset_after_delete()
 
     def show_settings_button_pressed(self):
         if self.show_settings:
