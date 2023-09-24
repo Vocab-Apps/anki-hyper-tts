@@ -72,9 +72,15 @@ class AnkiUtils():
         ensure_anki_collection_open()
         return aqt.mw.col.models.get(model_id)
 
+    def get_note_type_name(self, model_id: int) -> str:
+        return self.get_model(model_id)['name']
+
     def get_deck(self, deck_id):
         ensure_anki_collection_open()
         return aqt.mw.col.decks.get(deck_id)
+
+    def get_deck_name(self, deck_id: int) -> str:
+        return self.get_deck(deck_id)['name']
 
     def get_model_id(self, model_name):
         ensure_anki_collection_open()

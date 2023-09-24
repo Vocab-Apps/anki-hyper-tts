@@ -302,8 +302,8 @@ def init(hypertts):
             shortcut_entry = (shortcut, lambda editor=editor: send_preview_audio_command(editor), True)
             shortcuts.append(shortcut_entry)
 
-    def run_hypertts_settings():
-        logger.info('clicked hypertts settings')
+    def run_hypertts_settings(editor):
+        logger.info(f'clicked hypertts settings, editor: {editor}')
 
     def setup_editor_buttons(buttons, editor):
         new_button = editor.addButton(gui_utils.get_graphics_path('icon_speaker.png'),

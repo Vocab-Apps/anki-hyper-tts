@@ -134,8 +134,14 @@ class MockAnkiUtils():
         # should return a dict which has flds
         return self.models[model_id]
 
+    def get_note_type_name(self, model_id: int) -> str:
+        return self.get_model(model_id)['name']
+
     def get_deck(self, deck_id):
         return self.decks[deck_id]
+
+    def get_deck_name(self, deck_id: int) -> str:
+        return self.get_deck(deck_id)['name']
 
     def get_model_id(self, model_name):
         return self.model_by_name[model_name]
@@ -440,11 +446,11 @@ class MockNote():
 class TestConfigGenerator():
     def __init__(self):
         self.deck_id = 42001
-        self.model_id = 43001
+        self.model_id_chinese = 43001
 
         self.model_id_german = 50001
 
-        self.model_name = 'note-type'
+        self.model_name_chinese = 'Chinese Words'
         self.deck_name = 'deck 1'
         self.field_chinese = 'Chinese'
         self.field_english = 'English'
@@ -468,6 +474,7 @@ class TestConfigGenerator():
         self.all_fields_german = [self.field_german_article, self.field_german_word, self.field_english, self.field_sound]
 
         self.model_chinese = {
+            'name': self.model_name_chinese,
             'tmpls': [
                 {
                     'qfmt': '{{English}}',
@@ -486,35 +493,35 @@ class TestConfigGenerator():
         }        
 
         self.notes_by_id = {
-            self.note_id_1: MockNote(self.note_id_1, self.model_id,{
+            self.note_id_1: MockNote(self.note_id_1, self.model_id_chinese,{
                 self.field_chinese: '老人家',
                 self.field_english: 'old people',
                 self.field_sound: '',
                 self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
-            self.note_id_2: MockNote(self.note_id_2, self.model_id, {
+            self.note_id_2: MockNote(self.note_id_2, self.model_id_chinese, {
                 self.field_chinese: '你好',
                 self.field_english: 'hello',
                 self.field_sound: '',
                 self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
-            self.note_id_3: MockNote(self.note_id_3, self.model_id, {
+            self.note_id_3: MockNote(self.note_id_3, self.model_id_chinese, {
                 self.field_chinese: '',
                 self.field_english: 'empty',
                 self.field_sound: '',
                 self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
-            self.note_id_4: MockNote(self.note_id_4, self.model_id, {
+            self.note_id_4: MockNote(self.note_id_4, self.model_id_chinese, {
                 self.field_chinese: '赚钱',
                 self.field_english: 'To earn money',
                 self.field_sound: '[sound:blabla.mp3]',
                 self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
-            self.note_id_5: MockNote(self.note_id_5, self.model_id, {
+            self.note_id_5: MockNote(self.note_id_5, self.model_id_chinese, {
                 self.field_chinese: '大使馆',
                 self.field_english: 'embassy',
                 self.field_sound: 'some content in sound field',
@@ -578,8 +585,8 @@ class TestConfigGenerator():
 
     def get_model_map(self):
         return {
-            self.model_id: {
-                'name': self.model_name,
+            self.model_id_chinese: {
+                'name': self.model_name_chinese,
                 'flds': [
                     {'name': self.field_chinese},
                     {'name': self.field_english},
@@ -603,12 +610,12 @@ class TestConfigGenerator():
 
     def get_model_by_name(self):
         return {
-            self.model_name: self.model_id
+            self.model_name_chinese: self.model_id_chinese
         }
 
     def get_deckid_modelid_pairs(self):
         return [
-            [self.deck_id, self.model_id]
+            [self.deck_id, self.model_id_chinese]
         ]        
 
     def get_note_id_list(self):
@@ -618,7 +625,7 @@ class TestConfigGenerator():
     def get_notes(self):
         notes = {
             self.deck_id: {
-                self.model_id: self.notes_by_id
+                self.model_id_chinese: self.notes_by_id
             }
         }
         return self.notes_by_id, notes
@@ -629,11 +636,12 @@ class TestConfigGenerator():
         field_array = []
         notes_by_id, notes = self.get_notes()
         note_data = notes_by_id[note_id]        
-        model = self.get_model_map()[self.model_id]
+        model_id = note_data.mid
+        model = self.get_model_map()[model_id]
         for field_entry in model['flds']:
             field_name = field_entry['name']
             field_array.append(note_data[field_name])
-        editor.note = MockNote(note_id, self.model_id, note_data, field_array, model)
+        editor.note = MockNote(note_id, model_id, note_data, field_array, model)
         editor.card = MockCard(deck_id, editor.note, 0, model, '')
 
         if add_mode:

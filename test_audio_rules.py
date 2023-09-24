@@ -87,7 +87,7 @@ class AudioRulesTests(unittest.TestCase):
 
         rule_1 = config_models.MappingRule(preset_id=batch_config.uuid,
                                            rule_type = constants.MappingRuleType.DeckNoteType,
-                                           model_id = config_gen.model_id,
+                                           model_id = config_gen.model_id_chinese,
                                            enabled = True,
                                            automatic = False,
                                            deck_id = config_gen.deck_id)
@@ -177,7 +177,7 @@ class AudioRulesTests(unittest.TestCase):
 
         rule_1 = config_models.MappingRule(preset_id=preset_id_1,
                                            rule_type = constants.MappingRuleType.DeckNoteType,
-                                           model_id = config_gen.model_id,
+                                           model_id = config_gen.model_id_chinese,
                                            enabled = True,
                                            automatic = False,
                                            deck_id = config_gen.deck_id)
@@ -185,7 +185,7 @@ class AudioRulesTests(unittest.TestCase):
 
         rule_2 = config_models.MappingRule(preset_id=preset_id_2,
                                              rule_type = constants.MappingRuleType.NoteType,
-                                             model_id = config_gen.model_id,
+                                             model_id = config_gen.model_id_chinese,
                                              enabled = True,
                                              automatic = False)
         preset_mapping_rules.rules.append(rule_2)

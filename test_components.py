@@ -31,6 +31,7 @@ import component_hyperttspro
 import component_shortcuts
 import component_errorhandling
 import component_preferences
+import component_mappingrules
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
@@ -2526,4 +2527,23 @@ def test_preferences_load(qtbot):
 
     assert preferences.shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+H'
     assert preferences.shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Alt+P'
+
+
+def test_component_mapping_rules_1(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    
+    dialog = build_empty_dialog()
+    # chinese deck
+    deck_note_type: config_models.DeckNoteType = config_models.DeckNoteType(
+        model_id=config_gen.model_id_chinese,
+        deck_id=config_gen.deck_id)
+    
+    mapping_rules = component_mappingrules.ComponentMappingRules(hypertts_instance, dialog, deck_note_type)
+    mapping_rules.draw(dialog.getLayout())
+
+    assert mapping_rules.note_type_label.text() == 'Chinese Words'
+    assert mapping_rules.deck_name_label.text() == 'deck 1'
+
+
 
