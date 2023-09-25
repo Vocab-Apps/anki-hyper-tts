@@ -12,17 +12,23 @@ logger = logging_utils.get_child_logger(__name__)
 
 class ComponentMappingRule(component_common.ConfigComponentBase):
 
-    def __init__(self, hypertts, dialog, deck_note_type: config_models.DeckNoteType, model: config_models.PresetMappingRule):
+    def __init__(self, hypertts, dialog):
         self.hypertts = hypertts
         self.dialog = dialog
-        self.rule_model = model
-        self.deck_note_type = deck_note_type
+        self.model = None
 
     def load_model(self, model):
         logger.info('load_model')
+        self.model = model
+        if self.model.rule_type == constants.MappingRuleType.NoteType:
+            self.rule_type_note_type.setChecked(True)
+        elif self.model.rule_type == constants.MappingRuleType.DeckNoteType:
+            self.rule_type_deck_note_type.setChecked(True)
+
+        self.enabled_checkbox.setChecked(self.model.enabled)
 
     def get_model(self):
-        return self.rule_model
+        return self.model
 
     def draw(self, layout):
         self.vlayout = aqt.qt.QVBoxLayout()
@@ -34,10 +40,14 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.rule_type_deck_note_type = aqt.qt.QRadioButton('Deck and Note Type')
         self.rule_type_group.addButton(self.rule_type_note_type)
         self.rule_type_group.addButton(self.rule_type_deck_note_type)
-        hlayout.addWidget(self.rule_type_group)
+
+        hlayout.addWidget(self.rule_type_note_type)
+        hlayout.addWidget(self.rule_type_deck_note_type)
+        # hlayout.addWidget(self.rule_type_group)
 
         self.enabled_checkbox = aqt.qt.QCheckBox(f'Enabled')
         hlayout.addWidget(self.enabled_checkbox)
 
         self.vlayout.addLayout(hlayout)
+
 

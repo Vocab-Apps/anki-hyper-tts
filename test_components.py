@@ -32,6 +32,7 @@ import component_shortcuts
 import component_errorhandling
 import component_preferences
 import component_presetmappingrules
+import component_mappingrule
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
@@ -2549,10 +2550,22 @@ def test_component_mapping_rule_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     
-    dialog = build_empty_dialog()
-
     model_id=config_gen.model_id_chinese
     deck_id=config_gen.deck_id
+    deck_note_type: config_models.DeckNoteType = config_models.DeckNoteType(
+        model_id=model_id,
+        deck_id=deck_id)
     mapping_rule = config_models.MappingRule(
         preset_id='uuid_0', rule_type=constants.MappingRuleType.NoteType, enabled=True,
         automatic=False, model_id=model_id, deck_id=deck_id)
+
+    dialog = build_empty_dialog()
+
+    component_rule = component_mappingrule.ComponentMappingRule(hypertts_instance, dialog)
+    component_rule.draw(dialog.getLayout())
+    component_rule.load_model(mapping_rule)
+
+    assert component_rule.rule_type_note_type.isChecked() == True
+    assert component_rule.enabled_checkbox.isChecked() == True
+
+    
