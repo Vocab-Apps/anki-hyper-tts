@@ -2576,4 +2576,8 @@ def test_component_mapping_rule_1(qtbot):
     component_rule.rule_type_note_type.setChecked(True)
     assert component_rule.get_model().rule_type == constants.MappingRuleType.NoteType
 
-    
+    # try to modify the enabled checkbox
+    component_rule.enabled_checkbox.setChecked(False)
+    assert component_rule.get_model().enabled == False
+    component_rule.enabled_checkbox.setChecked(True)
+    assert component_rule.get_model().enabled == True

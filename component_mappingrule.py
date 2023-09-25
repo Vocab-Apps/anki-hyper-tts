@@ -52,10 +52,10 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
 
         # wire events
         self.rule_type_note_type.toggled.connect(self.rule_type_toggled)
+        self.enabled_checkbox.toggled.connect(self.enabled_toggled)
 
     def rule_type_toggled(self, checked):
         logger.debug(f'rule_type_toggled: {checked}')
-        # if checked:
         if self.rule_type_note_type.isChecked():
             logger.debug(f'rule_type_note_type is checked')
             self.model.rule_type = constants.MappingRuleType.NoteType
@@ -65,4 +65,6 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         else:
             raise RuntimeError(f'Unknown rule_type: {self.model.rule_type}')
 
-
+    def enabled_toggled(self, checked):
+        logger.debug(f'enabled_toggled: {checked}')
+        self.model.enabled = checked
