@@ -31,7 +31,7 @@ import component_hyperttspro
 import component_shortcuts
 import component_errorhandling
 import component_preferences
-import component_mappingrules
+import component_presetmappingrules
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
@@ -2529,7 +2529,7 @@ def test_preferences_load(qtbot):
     assert preferences.shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Alt+P'
 
 
-def test_component_mapping_rules_1(qtbot):
+def test_component_preset_mapping_rules_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     
@@ -2539,11 +2539,20 @@ def test_component_mapping_rules_1(qtbot):
         model_id=config_gen.model_id_chinese,
         deck_id=config_gen.deck_id)
     
-    mapping_rules = component_mappingrules.ComponentMappingRules(hypertts_instance, dialog, deck_note_type)
+    mapping_rules = component_presetmappingrules.ComponentMappingRules(hypertts_instance, dialog, deck_note_type)
     mapping_rules.draw(dialog.getLayout())
 
     assert mapping_rules.note_type_label.text() == 'Chinese Words'
     assert mapping_rules.deck_name_label.text() == 'deck 1'
 
+def test_component_mapping_rule_1(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    
+    dialog = build_empty_dialog()
 
-
+    model_id=config_gen.model_id_chinese
+    deck_id=config_gen.deck_id
+    mapping_rule = config_models.MappingRule(
+        preset_id='uuid_0', rule_type=constants.MappingRuleType.NoteType, enabled=True,
+        automatic=False, model_id=model_id, deck_id=deck_id)
