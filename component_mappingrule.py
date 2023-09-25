@@ -50,4 +50,19 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
 
         self.vlayout.addLayout(hlayout)
 
+        # wire events
+        self.rule_type_note_type.toggled.connect(self.rule_type_toggled)
+
+    def rule_type_toggled(self, checked):
+        logger.debug(f'rule_type_toggled: {checked}')
+        # if checked:
+        if self.rule_type_note_type.isChecked():
+            logger.debug(f'rule_type_note_type is checked')
+            self.model.rule_type = constants.MappingRuleType.NoteType
+        elif self.rule_type_deck_note_type.isChecked():
+            logger.debug(f'rule_type_deck_note_type is checked')
+            self.model.rule_type = constants.MappingRuleType.DeckNoteType
+        else:
+            raise RuntimeError(f'Unknown rule_type: {self.model.rule_type}')
+
 

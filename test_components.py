@@ -2568,4 +2568,12 @@ def test_component_mapping_rule_1(qtbot):
     assert component_rule.rule_type_note_type.isChecked() == True
     assert component_rule.enabled_checkbox.isChecked() == True
 
+    # try modifying the rule type radio button
+    logger.debug(f'clicking deck_note_type')
+    component_rule.rule_type_deck_note_type.setChecked(True)
+    assert component_rule.get_model().rule_type == constants.MappingRuleType.DeckNoteType
+    logger.debug(f'clicking note_type')
+    component_rule.rule_type_note_type.setChecked(True)
+    assert component_rule.get_model().rule_type == constants.MappingRuleType.NoteType
+
     
