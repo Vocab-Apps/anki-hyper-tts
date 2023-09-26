@@ -2561,7 +2561,9 @@ def test_component_mapping_rule_1(qtbot):
 
     dialog = build_empty_dialog()
 
-    component_rule = component_mappingrule.ComponentMappingRule(hypertts_instance, dialog)
+    model_change_callback = MockModelChangeCallback()
+
+    component_rule = component_mappingrule.ComponentMappingRule(hypertts_instance, dialog, model_change_callback.model_updated)
     component_rule.draw(dialog.getLayout())
     component_rule.load_model(mapping_rule)
 
@@ -2571,13 +2573,13 @@ def test_component_mapping_rule_1(qtbot):
     # try modifying the rule type radio button
     logger.debug(f'clicking deck_note_type')
     component_rule.rule_type_deck_note_type.setChecked(True)
-    assert component_rule.get_model().rule_type == constants.MappingRuleType.DeckNoteType
+    assert model_change_callback.model.rule_type == constants.MappingRuleType.DeckNoteType
     logger.debug(f'clicking note_type')
     component_rule.rule_type_note_type.setChecked(True)
-    assert component_rule.get_model().rule_type == constants.MappingRuleType.NoteType
+    assert model_change_callback.model.rule_type == constants.MappingRuleType.NoteType
 
     # try to modify the enabled checkbox
     component_rule.enabled_checkbox.setChecked(False)
-    assert component_rule.get_model().enabled == False
+    assert model_change_callback.model.enabled == False
     component_rule.enabled_checkbox.setChecked(True)
-    assert component_rule.get_model().enabled == True
+    assert model_change_callback.model.enabled == True

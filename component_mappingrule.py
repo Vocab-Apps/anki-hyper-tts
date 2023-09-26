@@ -12,10 +12,11 @@ logger = logging_utils.get_child_logger(__name__)
 
 class ComponentMappingRule(component_common.ConfigComponentBase):
 
-    def __init__(self, hypertts, dialog):
+    def __init__(self, hypertts, dialog, model_change_callback):
         self.hypertts = hypertts
         self.dialog = dialog
         self.model = None
+        self.model_change_callback = model_change_callback
 
     def load_model(self, model):
         logger.info('load_model')
@@ -54,6 +55,9 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.rule_type_note_type.toggled.connect(self.rule_type_toggled)
         self.enabled_checkbox.toggled.connect(self.enabled_toggled)
 
+    def notify_model_update(self):
+        self.model_change_callback(self.model)
+
     def rule_type_toggled(self, checked):
         logger.debug(f'rule_type_toggled: {checked}')
         if self.rule_type_note_type.isChecked():
@@ -64,7 +68,9 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
             self.model.rule_type = constants.MappingRuleType.DeckNoteType
         else:
             raise RuntimeError(f'Unknown rule_type: {self.model.rule_type}')
+        self.notify_model_update()
 
     def enabled_toggled(self, checked):
         logger.debug(f'enabled_toggled: {checked}')
         self.model.enabled = checked
+        self.notify_model_update()
