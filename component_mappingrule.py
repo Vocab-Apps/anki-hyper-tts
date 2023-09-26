@@ -37,6 +37,9 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
 
         hlayout = aqt.qt.QHBoxLayout()
 
+        preset_description_label = aqt.qt.QLabel('Preset:')
+        hlayout.addWidget(preset_description_label)
+
         self.preset_name_label = aqt.qt.QLabel()
         hlayout.addWidget(self.preset_name_label)
 
