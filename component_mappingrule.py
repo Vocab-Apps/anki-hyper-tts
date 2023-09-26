@@ -21,6 +21,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     def load_model(self, model):
         logger.info('load_model')
         self.model = model
+        self.preset_name_label.setText(self.hypertts.get_preset_name(self.model.preset_id))
         if self.model.rule_type == constants.MappingRuleType.NoteType:
             self.rule_type_note_type.setChecked(True)
         elif self.model.rule_type == constants.MappingRuleType.DeckNoteType:
@@ -35,6 +36,9 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.vlayout = aqt.qt.QVBoxLayout()
 
         hlayout = aqt.qt.QHBoxLayout()
+
+        self.preset_name_label = aqt.qt.QLabel()
+        hlayout.addWidget(self.preset_name_label)
 
         self.rule_type_group = aqt.qt.QButtonGroup()
         self.rule_type_note_type = aqt.qt.QRadioButton('Note Type')

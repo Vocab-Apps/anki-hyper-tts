@@ -2549,7 +2549,10 @@ def test_component_preset_mapping_rules_1(qtbot):
 def test_component_mapping_rule_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-    
+
+    # add fake preset
+    hypertts_instance.anki_utils.config['presets'] = {'uuid_0': {'name': 'preset 1'} }
+
     model_id=config_gen.model_id_chinese
     deck_id=config_gen.deck_id
     deck_note_type: config_models.DeckNoteType = config_models.DeckNoteType(
@@ -2566,6 +2569,8 @@ def test_component_mapping_rule_1(qtbot):
     component_rule = component_mappingrule.ComponentMappingRule(hypertts_instance, dialog, model_change_callback.model_updated)
     component_rule.draw(dialog.getLayout())
     component_rule.load_model(mapping_rule)
+
+    assert component_rule.preset_name_label.text() == 'preset 1'
 
     assert component_rule.rule_type_note_type.isChecked() == True
     assert component_rule.enabled_checkbox.isChecked() == True

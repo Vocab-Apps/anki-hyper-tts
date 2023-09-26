@@ -652,6 +652,9 @@ class HyperTTS():
             raise errors.PresetNotFound(preset_id)
         return self.deserialize_batch_config(self.config[constants.CONFIG_PRESETS][preset_id])
 
+    def get_preset_name(self, preset_id: str) -> str:
+        return self.config[constants.CONFIG_PRESETS][preset_id]['name']
+
     def delete_preset(self, preset_id: str):
         if preset_id not in self.config[constants.CONFIG_PRESETS]:
             raise errors.PresetNotFound(preset_id)
