@@ -2550,8 +2550,25 @@ def test_component_mapping_rule_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    # add fake preset
-    hypertts_instance.anki_utils.config['presets'] = {'uuid_0': {'name': 'preset 1'} }
+    # add preset
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
+
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget('Sound', False, True)
+    text_processing = config_models.TextProcessing()
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(single)
+    batch.set_text_processing(text_processing)
+    batch.name = 'my preset 1'
+    hypertts_instance.save_preset(batch)
+        
+    # hypertts_instance.anki_utils.config['presets'] = {'uuid_0': {'name': 'preset 1'} }
 
     model_id=config_gen.model_id_chinese
     deck_id=config_gen.deck_id
@@ -2566,11 +2583,14 @@ def test_component_mapping_rule_1(qtbot):
 
     model_change_callback = MockModelChangeCallback()
 
-    component_rule = component_mappingrule.ComponentMappingRule(hypertts_instance, dialog, model_change_callback.model_updated)
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+
+    component_rule = component_mappingrule.ComponentMappingRule(hypertts_instance, 
+        dialog, note_1, model_change_callback.model_updated)
     component_rule.draw(dialog.getLayout())
     component_rule.load_model(mapping_rule)
 
-    assert component_rule.preset_name_label.text() == 'preset 1'
+    assert component_rule.preset_name_label.text() == 'my preset 1'
 
     assert component_rule.rule_type_note_type.isChecked() == True
     assert component_rule.enabled_checkbox.isChecked() == True
@@ -2588,3 +2608,19 @@ def test_component_mapping_rule_1(qtbot):
     assert model_change_callback.model.enabled == False
     component_rule.enabled_checkbox.setChecked(True)
     assert model_change_callback.model.enabled == True
+
+    # click preview button
+    qtbot.mouseClick(component_rule.preview_button, aqt.qt.Qt.MouseButton.LeftButton)
+    # check that the audio played is correct
+
+    assert hypertts_instance.anki_utils.played_sound == {
+        'source_text': '老人家',
+        'voice': {
+            'gender': 'Male', 
+            'language': 'fr_FR', 
+            'name': 'voice_a_1', 
+            'service': 'ServiceA',
+            'voice_key': {'name': 'voice_1'}
+        },
+        'options': {}
+    }        

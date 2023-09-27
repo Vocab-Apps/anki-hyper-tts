@@ -12,10 +12,11 @@ logger = logging_utils.get_child_logger(__name__)
 
 class ComponentMappingRule(component_common.ConfigComponentBase):
 
-    def __init__(self, hypertts, dialog, model_change_callback):
+    def __init__(self, hypertts, dialog, note, model_change_callback):
         self.hypertts = hypertts
         self.dialog = dialog
         self.model = None
+        self.note = note
         self.model_change_callback = model_change_callback
 
     def load_model(self, model):
@@ -36,6 +37,16 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.vlayout = aqt.qt.QVBoxLayout()
 
         hlayout = aqt.qt.QHBoxLayout()
+
+        # todo:
+        # add preview button
+        # add run button
+
+        self.preview_button = aqt.qt.QPushButton('Preview')
+        self.run_button = aqt.qt.QPushButton('Run')
+        
+        hlayout.addWidget(self.preview_button)
+        hlayout.addWidget(self.run_button)
 
         preset_description_label = aqt.qt.QLabel('Preset:')
         hlayout.addWidget(preset_description_label)
@@ -59,6 +70,8 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.vlayout.addLayout(hlayout)
 
         # wire events
+        self.preview_button.clicked.connect(self.preview_button_clicked)
+        self.run_button.clicked.connect(self.run_button_clicked)
         self.rule_type_note_type.toggled.connect(self.rule_type_toggled)
         self.enabled_checkbox.toggled.connect(self.enabled_toggled)
 
@@ -81,3 +94,25 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         logger.debug(f'enabled_toggled: {checked}')
         self.model.enabled = checked
         self.notify_model_update()
+
+    def preview_button_clicked(self):
+        self.preview_button.setText('Playing...')
+        self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
+
+    def sound_preview_task(self):
+        if self.note == None:
+            raise errors.NoNotesSelectedPreview()
+        preset = self.hypertts.load_preset(self.model.preset_id)
+        self.hypertts.preview_note_audio(preset, self.note, None)
+        return True
+
+    def sound_preview_task_done(self, result):
+        with self.hypertts.error_manager.get_single_action_context('Playing Sound Preview'):
+            result = result.result()
+        self.hypertts.anki_utils.run_on_main(self.finish_sound_preview)
+    
+    def finish_sound_preview(self):
+        self.preview_button.setText('Preview')
+
+    def run_button_clicked(self):
+        pass
