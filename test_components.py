@@ -2583,10 +2583,12 @@ def test_component_mapping_rule_1(qtbot):
 
     model_change_callback = MockModelChangeCallback()
 
+    mock_editor = testing_utils.MockEditor()
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    mock_editor.note = note_1
 
     component_rule = component_mappingrule.ComponentMappingRule(hypertts_instance, 
-        dialog, note_1, model_change_callback.model_updated)
+        dialog, mock_editor, note_1, False, model_change_callback.model_updated)
     component_rule.draw(dialog.getLayout())
     component_rule.load_model(mapping_rule)
 
@@ -2624,3 +2626,15 @@ def test_component_mapping_rule_1(qtbot):
         },
         'options': {}
     }        
+
+    # click run button
+    qtbot.mouseClick(component_rule.run_button, aqt.qt.Qt.MouseButton.LeftButton)
+    # check that the audio was added correctly
+    assert 'Sound' in note_1.set_values
+    sound_tag = note_1.set_values['Sound']
+    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+    assert audio_data['source_text'] == '老人家'
+    assert audio_data['voice']['voice_key'] == {'name': 'voice_1'}
+    assert note_1.flush_called == True
