@@ -40,10 +40,6 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
 
         hlayout = aqt.qt.QHBoxLayout()
 
-        # todo:
-        # add preview button
-        # add run button
-
         self.preview_button = aqt.qt.QPushButton('Preview')
         self.run_button = aqt.qt.QPushButton('Run')
         
