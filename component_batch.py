@@ -29,6 +29,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
         self.model_changed = False
         self.note = None
+        self.last_saved_preset_id = None
 
         # create certain widgets upfront
         self.profile_name_label = aqt.qt.QLabel()
@@ -333,6 +334,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         with self.hypertts.error_manager.get_single_action_context('Saving Preset'):
             self.hypertts.save_preset(self.get_model())
             self.model_changed = False
+            self.last_saved_preset_id = self.get_model().uuid
             self.update_save_profile_button_state()
             self.enable_delete_profile_button()
 
