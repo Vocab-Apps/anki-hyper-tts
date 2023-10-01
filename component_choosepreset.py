@@ -37,10 +37,13 @@ class ComponentChoosePreset(component_common.ComponentBase):
         existing_presets_available = len(self.preset_list) > 0
         self.existing_preset_radio_button.setEnabled(existing_presets_available)
         self.preset_combo_box.setEnabled(existing_presets_available)
+        if existing_presets_available:
+            self.preset_id = self.preset_list[0].id
 
         # wire events
         self.new_preset_radio_button.toggled.connect(self.new_preset_radio_button_checked)
         self.existing_preset_radio_button.toggled.connect(self.existing_preset_radio_button_checked)
+        self.preset_combo_box.currentIndexChanged.connect(self.preset_combo_box_changed)
 
         layout.addLayout(self.vlayout)
 
@@ -52,4 +55,8 @@ class ComponentChoosePreset(component_common.ComponentBase):
         self.update_controls_state()
 
     def existing_preset_radio_button_checked(self):
+        self.update_controls_state()
+
+    def preset_combo_box_changed(self, index):
+        self.preset_id = self.preset_combo_box.itemData(index).id
         self.update_controls_state()

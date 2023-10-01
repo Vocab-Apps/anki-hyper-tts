@@ -48,4 +48,21 @@ def test_choose_preset_existing_presets(qtbot):
     # presets are available, so the other controls should be enabled
     assert choosepreset.existing_preset_radio_button.isEnabled() == True
     assert choosepreset.preset_combo_box.isEnabled() == True
+    # preset_combo_box should have two entries
+    assert choosepreset.preset_combo_box.count() == 2
+    # check the entries
+    assert choosepreset.preset_combo_box.itemText(0) == 'my preset 4'
+    assert choosepreset.preset_combo_box.itemText(1) == 'my preset 5'
+
+    # the first preset should be selected
+    assert choosepreset.preset_id == 'uuid_0'
+
+    # choose second item in combox box
+    choosepreset.preset_combo_box.setCurrentIndex(1)
+    # check the preset_id
+    assert choosepreset.preset_id == 'uuid_1'
+    # choose first item in combox box
+    choosepreset.preset_combo_box.setCurrentIndex(0)
+    # check the preset_id
+    assert choosepreset.preset_id == 'uuid_0'
 
