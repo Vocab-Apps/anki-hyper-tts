@@ -1182,7 +1182,10 @@ def test_batch_dialog_browser_manual(qtbot):
         dialog.exec()
 
 def test_batch_dialog_editor_manual(qtbot):
-    # HYPERTTS_BATCH_DIALOG_DEBUG=yes pytest test_components.py -k test_batch_dialog_editor_manual -s -rPP
+    # HYPERTTS_BATCH_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG test_components.py -k test_batch_dialog_editor_manual -s -rPP
+
+    logger.info('test_batch_dialog_editor_manual')
+
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
@@ -1199,7 +1202,7 @@ def test_batch_dialog_editor_manual(qtbot):
         hypertts_instance, dialog, note, mock_editor, False, 'preset 1')
     
     if os.environ.get('HYPERTTS_BATCH_DIALOG_DEBUG', 'no') == 'yes':
-        dialog.exec()        
+        dialog.exec()
 
 
 def test_batch_dialog_editor(qtbot):
