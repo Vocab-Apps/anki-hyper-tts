@@ -8,13 +8,13 @@ addon_dir = os.path.dirname(os.path.realpath(__file__))
 external_dir = os.path.join(addon_dir, 'external')
 sys.path.insert(0, external_dir)
 
-import copy
 import pprint
 import component_batch_preview
 import component_configuration
 import config_models
 import servicemanager
 import testing_utils
+import gui_testing_utils
 import hypertts
 import constants
 import languages
@@ -37,73 +37,14 @@ import component_mappingrule
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
 
-class EmptyDialog(aqt.qt.QDialog):
-    def __init__(self):
-        super(aqt.qt.QDialog, self).__init__()
-        self.closed = None
-
-    def setupUi(self):
-        self.main_layout = aqt.qt.QVBoxLayout(self)
-
-    def getLayout(self):
-        return self.main_layout
-
-    def setLayout(self, layout):
-        self.main_layout = layout
-
-    def addChildLayout(self, layout):
-        self.main_layout.addLayout(layout)
-
-    def addChildWidget(self, widget):
-        self.main_layout.addWidget(widget)
-    
-    def close(self):
-        self.closed = True
-
-
-def build_empty_dialog() -> EmptyDialog:
-    dialog = EmptyDialog()
-    dialog.setupUi()
-    return dialog
-
-class MockModelChangeCallback():
-    def __init__(self):
-        self.model = None
-
-    def model_updated(self, model):
-        logger.info('MockModelChangeCallback.model_updated')
-        self.model = copy.deepcopy(model)
-
-class MockBatchPreviewCallback():
-    def __init__(self):
-        self.sample_text = None
-        self.batch_start_called = None
-        self.batch_end_called = None
-
-    def sample_selected(self, note_id, text):
-        self.note_id = note_id
-        self.sample_text = text
-
-    def batch_start(self):
-        self.batch_start_called = True
-
-    def batch_end(self, completed):
-        self.batch_end_called = True
-
-
-def get_hypertts_instance():
-    # return hypertts_instance    
-    config_gen = testing_utils.TestConfigGenerator()
-    return config_gen.build_hypertts_instance_test_servicemanager('default')
-
 
 def test_voice_selection_defaults_single(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -130,12 +71,12 @@ def test_voice_selection_defaults_single(qtbot):
     
 def test_voice_selection_manual(qtbot):
     # HYPERTTS_VOICE_SELECTION_DIALOG_DEBUG=yes pytest test_components.py -k test_voice_selection_manual -s -rPP
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -143,12 +84,12 @@ def test_voice_selection_manual(qtbot):
         dialog.exec()
 
 def test_voice_selection_single_1(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -194,12 +135,12 @@ def test_voice_selection_single_1(qtbot):
     assert voiceselection.serialize() == expected_output        
 
 def test_voice_selection_format_ogg(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -231,12 +172,12 @@ def test_voice_selection_format_ogg(qtbot):
     assert voiceselection.serialize() == expected_output        
 
 def test_voice_selection_random_1(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -286,12 +227,12 @@ def test_voice_selection_random_1(qtbot):
     assert voiceselection.serialize() == expected_output    
 
 def test_voice_selection_random_to_single(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -321,12 +262,12 @@ def test_voice_selection_random_to_single(qtbot):
 
 
 def test_voice_selection_random_remove_voices(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -358,12 +299,12 @@ def test_voice_selection_random_remove_voices(qtbot):
 
 
 def test_voice_selection_random_2(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -392,12 +333,12 @@ def test_voice_selection_random_2(qtbot):
 
 
 def test_voice_selection_priority_1(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -436,10 +377,10 @@ def test_voice_selection_filters(qtbot):
 
     hypertts_instance = hypertts.HyperTTS(anki_utils, manager)
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -499,12 +440,12 @@ def test_voice_selection_filters(qtbot):
     # dialog.exec()
 
 def test_voice_selection_samples(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -530,12 +471,12 @@ def test_voice_selection_samples(qtbot):
     # dialog.exec()
 
 def test_voice_selection_load_model(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -629,12 +570,12 @@ def test_batch_source_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
     batch_source = component_source.BatchSource(hypertts_instance, field_list, model_change_callback.model_updated)
     dialog.addChildWidget(batch_source.draw())
@@ -706,12 +647,12 @@ def test_target(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
     batch_target = component_target.BatchTarget(hypertts_instance, field_list, model_change_callback.model_updated)
     dialog.addChildWidget(batch_target.draw())
@@ -794,7 +735,7 @@ def test_batch_preview(qtbot):
     # configure delay on service A
     # hypertts_instance.service_manager.get_service('ServiceA').configure({'delay': 1.0})
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
@@ -813,7 +754,7 @@ def test_batch_preview(qtbot):
     batch_config.set_target(target)
     batch_config.set_voice_selection(voice_selection)    
 
-    batch_preview_callback = MockBatchPreviewCallback()
+    batch_preview_callback = gui_testing_utils.MockBatchPreviewCallback()
     batch_preview = component_batch_preview.BatchPreview(hypertts_instance, note_id_list, 
         batch_preview_callback.sample_selected,
         batch_preview_callback.batch_start,
@@ -834,7 +775,7 @@ def test_batch_dialog_1(qtbot):
     # test saving of config
     # =====================
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_browser_new_preset(
         hypertts_instance, dialog, note_id_list, 'my preset 1')
 
@@ -870,7 +811,7 @@ def test_batch_dialog_1(qtbot):
     # test loading of config
     # ======================
 
-    dialog = dialog = build_empty_dialog()
+    dialog = dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_browser_new_preset(
             hypertts_instance, dialog, note_id_list, 'my preset 1')    
     # dialog.exec()
@@ -894,7 +835,7 @@ def test_batch_dialog_1(qtbot):
     # test loading with empty preset, then duplicating
     # ================================================
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_browser_new_preset(
         hypertts_instance, dialog, note_id_list, 'my preset 1')
 
@@ -939,7 +880,7 @@ def test_batch_dialog_1(qtbot):
     # test launching with a particular preset
     # =======================================
 
-    dialog = dialog = build_empty_dialog()
+    dialog = dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_browser_existing_preset(
             hypertts_instance, dialog, note_id_list, 'uuid_1')
 
@@ -1037,7 +978,7 @@ def test_batch_dialog_new_preset_save_enabled(qtbot):
     # test saving of config
     # =====================
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_browser_new_preset(
         hypertts_instance, dialog, note_id_list, 'my preset 5')
 
@@ -1075,7 +1016,7 @@ def test_batch_dialog_sound_preview_error(qtbot):
 
     # test saving of config
     # =====================
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_browser_new_preset(
         hypertts_instance, dialog, note_id_list, 'my preset 1')
 
@@ -1107,7 +1048,7 @@ def test_batch_dialog_voice_selection_sample(qtbot):
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_browser_new_preset(
         hypertts_instance, dialog, note_id_list, 'my preset 1')
 
@@ -1169,7 +1110,7 @@ def test_batch_dialog_load_missing_field(qtbot):
     # test saving of config
     # =====================
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_browser_new_preset(
         hypertts_instance, dialog, note_id_list, 'my preset 1')
 
@@ -1191,7 +1132,7 @@ def test_batch_dialog_load_missing_field(qtbot):
     # use the german note type, which doesn't have the Chinese field
     note_id_list = [config_gen.note_id_german_1]
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_browser_new_preset(
         hypertts_instance, dialog, note_id_list, 'my preset 1')
 
@@ -1220,7 +1161,7 @@ def test_batch_dialog_browser_manual(qtbot):
     # test saving of config
     # =====================
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_browser_new_preset(
         hypertts_instance, dialog, note_id_list, 'My New Preset 1')
     
@@ -1240,10 +1181,10 @@ def test_batch_dialog_editor_manual(qtbot):
     # test saving of config
     # =====================
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     mock_editor = testing_utils.MockEditor()
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_editor_new_preset(
         hypertts_instance, dialog, note, mock_editor, False, 'preset 1')
     
@@ -1260,7 +1201,7 @@ def test_batch_dialog_editor(qtbot):
 
     mock_editor = testing_utils.MockEditor()
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_editor_new_preset(
         hypertts_instance, dialog, note, mock_editor, False, 'preset 1')
 
@@ -1316,7 +1257,7 @@ def test_batch_dialog_editor_create_then_load(qtbot):
 
     mock_editor = testing_utils.MockEditor()
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_editor_new_preset(
         hypertts_instance, dialog, note, mock_editor, False, 'preset 1')
 
@@ -1339,7 +1280,7 @@ def test_batch_dialog_editor_create_then_load(qtbot):
     assert preset_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
     # now, open the dialog, with the existing preset
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_editor_existing_preset(
         hypertts_instance, dialog, note, mock_editor, False, preset_uuid)
 
@@ -1391,7 +1332,7 @@ def test_batch_dialog_editor_sound_sample(qtbot):
 
     mock_editor = testing_utils.MockEditor()
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_editor_new_preset(
         hypertts_instance, dialog, note, mock_editor, False, 'preset 1')
 
@@ -1428,7 +1369,7 @@ def test_batch_dialog_editor_template_error(qtbot):
 
     mock_editor = testing_utils.MockEditor()
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_editor_new_preset(
         hypertts_instance, dialog, note, mock_editor, False, 'preset 1')
 
@@ -1450,10 +1391,10 @@ def test_text_processing(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     text_processing = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildWidget(text_processing.draw())
 
@@ -1570,10 +1511,10 @@ def test_text_processing(qtbot):
     text_processing.ssml_convert_characters = True
     text_processing.run_replace_rules_after = False
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     text_processing_component = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildWidget(text_processing_component.draw())
     text_processing_component.load_model(text_processing)
@@ -1614,10 +1555,10 @@ def test_text_processing_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     text_processing = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildWidget(text_processing.draw())
 
@@ -1631,10 +1572,10 @@ def test_configuration(qtbot):
     hypertts_instance.service_manager.get_service('ServiceA').enabled = False
     hypertts_instance.service_manager.get_service('ServiceB').enabled = False
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    # model_change_callback = MockModelChangeCallback()
+    # model_change_callback = gui_testing_utils.MockModelChangeCallback()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
 
@@ -1709,7 +1650,7 @@ def test_configuration(qtbot):
     # enter valid API key
     # ===================
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
@@ -1757,7 +1698,7 @@ def test_configuration(qtbot):
     hypertts_instance.service_manager.get_service('ServiceB').enabled = False
     hypertts_instance.service_manager.configure(configuration_model)
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.load_model(configuration_model)
@@ -1797,7 +1738,7 @@ def test_configuration(qtbot):
     configuration_model = config_models.Configuration()
     configuration_model.set_hypertts_pro_api_key('valid_key')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.load_model(configuration_model)
@@ -1822,10 +1763,10 @@ def test_configuration_pro_key_exception(qtbot):
     hypertts_instance.service_manager.get_service('ServiceA').enabled = False
     hypertts_instance.service_manager.get_service('ServiceB').enabled = False
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    # model_change_callback = MockModelChangeCallback()
+    # model_change_callback = gui_testing_utils.MockModelChangeCallback()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
 
@@ -1852,10 +1793,10 @@ def test_configuration_enable_disable_services(qtbot):
     hypertts_instance.service_manager.get_service('ServiceA').enabled = False
     hypertts_instance.service_manager.get_service('ServiceB').enabled = False
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    # model_change_callback = MockModelChangeCallback()
+    # model_change_callback = gui_testing_utils.MockModelChangeCallback()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
 
@@ -1893,10 +1834,10 @@ def test_configuration_manual(qtbot):
     hypertts_instance.service_manager.get_service('ServiceA').enabled = False
     hypertts_instance.service_manager.get_service('ServiceB').enabled = False
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    # model_change_callback = MockModelChangeCallback()
+    # model_change_callback = gui_testing_utils.MockModelChangeCallback()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())    
 
@@ -1908,9 +1849,9 @@ def test_hyperttspro_test_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.draw(dialog.getLayout())
@@ -1958,7 +1899,7 @@ def test_hyperttspro_test_1(qtbot):
     # load_model with a valid API key
     # ===============================
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.load_model('valid_key')    
@@ -1971,7 +1912,7 @@ def test_hyperttspro_test_1(qtbot):
     # load with an invalid API key
     # ============================
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.load_model('invalid_key')
@@ -1986,7 +1927,7 @@ def test_hyperttspro_test_1(qtbot):
     # request trial key by email
     # ==========================
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.draw(dialog.getLayout())    
@@ -2014,7 +1955,7 @@ def test_hyperttspro_test_1(qtbot):
     # enter invalid key, then delete it
     # =================================
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.draw(dialog.getLayout())
@@ -2043,9 +1984,9 @@ def test_hyperttspro_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.draw(dialog.getLayout())
@@ -2062,7 +2003,7 @@ def test_batch_dialog_load_random(qtbot):
     # test saving of config
     # =====================
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_browser_new_preset(
         hypertts_instance, dialog, note_id_list, 'my preset 1')
 
@@ -2091,7 +2032,7 @@ def test_batch_dialog_load_random(qtbot):
     # test loading of config
     # ======================
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     batch = component_batch.create_component_batch_browser_new_preset(
         hypertts_instance, dialog, note_id_list, 'my preset 1')
 
@@ -2121,12 +2062,12 @@ def test_realtime_source(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     note_id_list = [config_gen.note_id_1]
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
     source = component_realtime_source.RealtimeSource(hypertts_instance, field_list, model_change_callback.model_updated)
     dialog.addChildWidget(source.draw())
@@ -2165,7 +2106,7 @@ def test_realtime_side_component(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
 
@@ -2177,7 +2118,7 @@ def test_realtime_side_component(qtbot):
 
     note_id = config_gen.note_id_1
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     realtime_side = component_realtime_side.ComponentRealtimeSide(hypertts_instance, dialog,
         constants.AnkiCardSide.Front, 0, model_change_callback.model_updated, existing_preset_fn)
     realtime_side.configure_note(note_1)
@@ -2248,7 +2189,7 @@ def test_realtime_component(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
@@ -2327,7 +2268,7 @@ def test_realtime_component(qtbot):
     pprint.pprint(note_1.note_type())
 
     # launch dialog
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     realtime = component_realtime.ComponentRealtime(hypertts_instance, dialog, 0)
     realtime.configure_note(note_1)
@@ -2367,7 +2308,7 @@ def test_realtime_component_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
@@ -2387,13 +2328,13 @@ def test_shortcuts_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
     # ==================
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(shortcuts.draw())
 
@@ -2405,13 +2346,13 @@ def test_shortcuts_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
     # ==================
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(shortcuts.draw())
 
@@ -2440,13 +2381,13 @@ def test_shortcuts_load_model(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
     # ==================
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(shortcuts.draw())
 
@@ -2478,13 +2419,13 @@ def test_error_handling(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
     # ==================
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     error_handling = component_errorhandling.ErrorHandling(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(error_handling.draw())
 
@@ -2510,7 +2451,7 @@ def test_preferences_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
@@ -2529,7 +2470,7 @@ def test_preferences_save(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
@@ -2575,7 +2516,7 @@ def test_preferences_load(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
@@ -2603,7 +2544,7 @@ def test_component_preset_mapping_rules_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
     # chinese deck
     deck_note_type: config_models.DeckNoteType = config_models.DeckNoteType(
         model_id=config_gen.model_id_chinese,
@@ -2648,9 +2589,9 @@ def test_component_mapping_rule_1(qtbot):
         preset_id='uuid_0', rule_type=constants.MappingRuleType.NoteType, enabled=True,
         automatic=False, model_id=model_id, deck_id=deck_id)
 
-    dialog = build_empty_dialog()
+    dialog = gui_testing_utils.build_empty_dialog()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
 
     mock_editor = testing_utils.MockEditor()
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
