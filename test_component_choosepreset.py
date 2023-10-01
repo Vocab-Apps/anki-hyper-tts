@@ -66,3 +66,14 @@ def test_choose_preset_existing_presets(qtbot):
     # check the preset_id
     assert choosepreset.preset_id == 'uuid_0'
 
+def test_choose_preset_manual(qtbot):
+    # HYPERTTS_DIALOG_DEBUG=yes pytest test_component_choosepreset.py -k test_choose_preset_manual -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    dialog = gui_testing_utils.build_empty_dialog()
+
+    choosepreset = component_choosepreset.ComponentChoosePreset(hypertts_instance, dialog)
+    choosepreset.draw(dialog.layout())
+
+    if os.environ.get('HYPERTTS_DIALOG_DEBUG', 'no') == 'yes':
+        dialog.exec()

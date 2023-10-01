@@ -45,6 +45,17 @@ class ComponentChoosePreset(component_common.ComponentBase):
         self.existing_preset_radio_button.toggled.connect(self.existing_preset_radio_button_checked)
         self.preset_combo_box.currentIndexChanged.connect(self.preset_combo_box_changed)
 
+        # add buttons at the bottom
+        hlayout = aqt.qt.QHBoxLayout()
+        hlayout.addStretch()
+        self.dialog_button_box = aqt.qt.QDialogButtonBox(aqt.qt.QDialogButtonBox.StandardButton.Ok|aqt.qt.QDialogButtonBox.StandardButton.Cancel)
+        self.dialog_button_box.accepted.connect(self.dialog.accept)
+        self.dialog_button_box.rejected.connect(self.dialog.reject)
+        hlayout.addWidget(self.dialog_button_box)
+
+        self.vlayout.addStretch()
+        self.vlayout.addLayout(hlayout)
+
         layout.addLayout(self.vlayout)
 
     def update_controls_state(self):
