@@ -47,6 +47,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.profile_rename_button.setToolTip('Rename the current preset')
         self.profile_delete_button = aqt.qt.QPushButton('Delete')
         self.profile_delete_button.setToolTip('Delete the current preset')
+        self.profile_save_and_close_button = aqt.qt.QPushButton('Save and Close')
+        self.profile_save_and_close_button.setToolTip('Save current preset and close dialog')
 
     def configure_browser(self, note_id_list):
         self.note_id_list = note_id_list
@@ -162,7 +164,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def enable_save_profile_button(self):
         logger.info('enable_save_profile_button')
         self.profile_save_button.setEnabled(True)
-        self.profile_save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        if self.editor_mode == False:
+            self.profile_save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
 
     def disable_save_profile_button(self):
         logger.info('disable_save_profile_button')
@@ -195,14 +198,12 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.profile_name_label.setFont(font)
 
         hlayout.addWidget(self.profile_name_label)
-
         hlayout.addWidget(self.profile_save_button)
-
         hlayout.addWidget(self.profile_rename_button)
-
         hlayout.addWidget(self.profile_delete_button)
-
         hlayout.addWidget(self.profile_open_button)
+        hlayout.addWidget(self.profile_duplicate_button)
+
 
         hlayout.addStretch()
         # logo header
@@ -259,8 +260,13 @@ class ComponentBatch(component_common.ConfigComponentBase):
         if self.editor_mode:
             apply_label_text = 'Apply To Note'
         self.apply_button.setText(apply_label_text)
-        self.apply_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        if self.editor_mode == False:
+            self.apply_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         hlayout.addWidget(self.apply_button)
+        # save and close
+        if self.editor_mode == True:
+            hlayout.addWidget(self.profile_save_and_close_button)
+            self.profile_save_and_close_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         # cancel button
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
         hlayout.addWidget(self.cancel_button)
@@ -270,6 +276,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.preview_sound_button.pressed.connect(self.sound_preview_button_pressed)
         self.apply_button.pressed.connect(self.apply_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
+        self.profile_save_and_close_button.pressed.connect(self.profile_save_and_close_button_pressed)
 
         self.cancel_button.setFocus()
 
@@ -380,6 +387,10 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.disable_bottom_buttons()
         self.preview_sound_button.setText('Playing Preview...')
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
+
+    def profile_save_and_close_button_pressed(self):
+        self.save_profile()
+        self.dialog.close()
 
     def apply_button_pressed(self):
         with self.hypertts.error_manager.get_single_action_context('Applying Audio to Notes'):

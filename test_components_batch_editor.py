@@ -120,6 +120,35 @@ def test_batch_dialog_editor_last_saved(qtbot):
 
     assert batch.last_saved_preset_id == 'uuid_1'
 
+def test_batch_dialog_editor_save_and_close(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+    note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+
+    mock_editor = testing_utils.MockEditor()
+
+    dialog = gui_testing_utils.build_empty_dialog()
+    batch = component_batch.create_component_batch_editor_new_preset(
+        hypertts_instance, dialog, note, mock_editor, False, 'preset 1')
+
+    # select second voice
+    batch.voice_selection.voices_combobox.setCurrentIndex(1)
+
+    # set preset name and save
+    # set profile name
+    preset_name = 'new editor preset 1'
+    hypertts_instance.anki_utils.ask_user_get_text_response = preset_name
+    qtbot.mouseClick(batch.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    # click save and close button
+    qtbot.mouseClick(batch.profile_save_and_close_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    assert batch.last_saved_preset_id == 'uuid_1'    
+
+    assert dialog.closed == True
+
 
 
 def test_batch_dialog_editor_create_then_load(qtbot):
