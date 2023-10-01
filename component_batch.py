@@ -38,6 +38,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.cancel_button = aqt.qt.QPushButton('Cancel')
         self.profile_open_button = aqt.qt.QPushButton('Open')
         self.profile_open_button.setToolTip('Open a different preset')
+        self.profile_duplicate_button = aqt.qt.QPushButton('Duplicate')
+        self.profile_duplicate_button.setToolTip('Duplicate an existing preset')
         self.profile_save_button = aqt.qt.QPushButton('Save')
         self.profile_save_button.setToolTip('Save current preset')
         self.profile_rename_button = aqt.qt.QPushButton('Rename')
@@ -210,6 +212,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.profile_save_button.pressed.connect(self.save_profile_button_pressed)
         self.profile_delete_button.pressed.connect(self.delete_profile_button_pressed)
         self.profile_rename_button.pressed.connect(self.rename_profile_button_pressed)
+        self.profile_duplicate_button.pressed.connect(self.duplicate_profile_button_pressed)
 
         # preset settings tabs
         # ====================
@@ -292,15 +295,39 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.show_settings = True
         self.show_settings_button.setText('Hide Settings')
 
+    def choose_existing_preset(self, title):
+        # returns preset_id if user chose a preset, None otherwise
+        preset_list = self.hypertts.get_preset_list()
+        preset_name_list = [preset.name for preset in preset_list]
+        chosen_preset_row, retvalue = self.hypertts.anki_utils.ask_user_choose_from_list(self.dialog, title, preset_name_list)
+        logger.info(f'chosen preset row: {chosen_preset_row}, retvalue: {retvalue}')
+        if retvalue == 1:
+            preset_id = preset_list[chosen_preset_row].id
+            return preset_id
+        return None
+
     def open_profile_button_pressed(self):
         with self.hypertts.error_manager.get_single_action_context('Opening Profile'):
-            preset_list = self.hypertts.get_preset_list()
-            preset_name_list = [preset.name for preset in preset_list]
-            chosen_preset_row, retvalue = self.hypertts.anki_utils.ask_user_choose_from_list(self.dialog, 'Choose a preset', preset_name_list)
-            logger.info(f'chosen preset row: {chosen_preset_row}, retvalue: {retvalue}')
-            if retvalue == 1:
-                preset_id = preset_list[chosen_preset_row].id
+            preset_id = self.choose_existing_preset('Choose a preset to open')
+            if preset_id != None:
                 self.load_preset(preset_id)
+
+    def duplicate_profile_button_pressed(self):
+        with self.hypertts.error_manager.get_single_action_context('Duplicating Profile'):
+            preset_id = self.choose_existing_preset('Choose a preset to duplicate')
+            if preset_id != None:
+                # load preset, and change uuid
+                self.load_preset(preset_id)
+                self.batch_model.reset_uuid(self.hypertts.anki_utils)
+                # rename the preset
+                new_profile_name = self.batch_model.name + ' (copy)'
+                self.batch_model.name = new_profile_name
+                # reflect new name
+                self.profile_name_label.setText(new_profile_name)
+                # indicate the model has changed
+                self.model_changed = True
+                self.update_save_profile_button_state()
+
 
     def save_profile(self):
         with self.hypertts.error_manager.get_single_action_context('Saving Preset'):

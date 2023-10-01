@@ -891,6 +891,51 @@ def test_batch_dialog_1(qtbot):
     
     # dialog.exec()
 
+    # test loading with empty preset, then duplicating
+    # ================================================
+
+    dialog = build_empty_dialog()
+    batch = component_batch.create_component_batch_browser_new_preset(
+        hypertts_instance, dialog, note_id_list, 'my preset 1')
+
+    # we just created a new profile, source field is not english
+    assert batch.source.source_field_combobox.currentText() != 'English'
+
+    # wo we'll duplicate the profile 'my preset 2'
+    assert batch.profile_duplicate_button.isEnabled() == True
+    hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'my preset 2'
+
+    # reset the uuid counter to be more predictable
+    hypertts_instance.anki_utils.uuid_current_num = 10
+    expected_uuid = f'uuid_{hypertts_instance.anki_utils.uuid_current_num + 1}'
+    # press the duplicate button
+    qtbot.mouseClick(batch.profile_duplicate_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    # profile name should have changed
+    assert batch.profile_name_label.text() == 'my preset 2 (copy)'
+    # the source field should be english, just like for 'my preset 2'
+    assert batch.source.source_field_combobox.currentText() == 'English'
+
+    # assert save button is enabled
+    assert batch.profile_save_button.isEnabled() == True
+    # save the preset
+    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    # make sure the preset was saved
+    pprint.pprint(hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS])
+    assert expected_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
+    # ensure the name of the preset that was saved is correct
+    assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][expected_uuid]['name'] == 'my preset 2 (copy)'
+
+    # rename the preset, and save it 
+    hypertts_instance.anki_utils.ask_user_get_text_response = 'my preset 3'
+    qtbot.mouseClick(batch.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
+    # save
+    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+    # make sure the name is correct
+    assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][expected_uuid]['name'] == 'my preset 3'
+
+
     # test launching with a particular preset
     # =======================================
 
@@ -973,6 +1018,7 @@ def test_batch_dialog_1(qtbot):
 
     # we should have a new preset
     assert batch.profile_name_label.text() == 'Preset 1'
+
 
     # dialog.exec()
 
