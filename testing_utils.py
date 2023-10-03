@@ -9,6 +9,7 @@ import constants
 import hypertts
 import errors
 import servicemanager
+import config_models
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
@@ -18,6 +19,28 @@ def get_test_services_dir():
     current_script_dir = os.path.dirname(current_script_path)    
     return os.path.join(current_script_dir, 'test_services')
 
+def create_simple_batch(hypertts_instance, name='my preset 1', save_preset=True):
+    """create simple batch config and optionally save"""
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
+
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget('Sound', False, True)
+    text_processing = config_models.TextProcessing()
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(single)
+    batch.set_text_processing(text_processing)
+    batch.name = name
+
+    if save_preset:
+        hypertts_instance.save_preset(batch)
+
+    return batch    
 
 
 class MockFuture():
