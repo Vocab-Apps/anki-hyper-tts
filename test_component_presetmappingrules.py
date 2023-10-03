@@ -21,8 +21,8 @@ def test_component_preset_mapping_rules_1(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
     # create simple preset
-    preset_id = 'my preset 1'
-    testing_utils.create_simple_batch(hypertts_instance, preset_id)
+    preset_id = 'uuid_0'
+    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id)
     
     dialog = gui_testing_utils.build_empty_dialog()
     # chinese deck

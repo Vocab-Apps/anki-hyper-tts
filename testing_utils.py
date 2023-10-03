@@ -19,7 +19,7 @@ def get_test_services_dir():
     current_script_dir = os.path.dirname(current_script_path)    
     return os.path.join(current_script_dir, 'test_services')
 
-def create_simple_batch(hypertts_instance, name='my preset 1', save_preset=True):
+def create_simple_batch(hypertts_instance, preset_id='uuid_0', name='my preset 1', save_preset=True):
     """create simple batch config and optionally save"""
     voice_list = hypertts_instance.service_manager.full_voice_list()
     voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
@@ -36,6 +36,7 @@ def create_simple_batch(hypertts_instance, name='my preset 1', save_preset=True)
     batch.set_voice_selection(single)
     batch.set_text_processing(text_processing)
     batch.name = name
+    batch.uuid = preset_id
 
     if save_preset:
         hypertts_instance.save_preset(batch)
