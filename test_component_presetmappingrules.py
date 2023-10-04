@@ -46,7 +46,7 @@ def test_component_mapping_rule_1(qtbot):
     mock_editor.note = note_1
 
     component_rule = component_mappingrule.ComponentMappingRule(hypertts_instance, 
-        mock_editor, note_1, False, model_change_callback.model_updated)
+        mock_editor, note_1, False, 0, model_change_callback.model_updated)
     component_rule.draw(dialog.getLayout(), 0)
     component_rule.load_model(mapping_rule)
 
@@ -103,7 +103,8 @@ def test_component_preset_mapping_rules_1(qtbot):
 
     # create simple preset
     preset_id = 'uuid_0'
-    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id)
+    preset_name = 'my preset 42'
+    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id, name=preset_name)
     
     dialog = gui_testing_utils.build_empty_dialog()
     # chinese deck
@@ -111,7 +112,12 @@ def test_component_preset_mapping_rules_1(qtbot):
         model_id=config_gen.model_id_chinese,
         deck_id=config_gen.deck_id)
     
-    mapping_rules = component_presetmappingrules.ComponentPresetMappingRules(hypertts_instance, dialog, deck_note_type)
+    mock_editor = testing_utils.MockEditor()
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    mock_editor.note = note_1
+
+    mapping_rules = component_presetmappingrules.ComponentPresetMappingRules(hypertts_instance, 
+        dialog, deck_note_type, mock_editor, note_1, False)
     mapping_rules.draw(dialog.getLayout())
 
     assert mapping_rules.note_type_label.text() == 'Chinese Words'
@@ -130,3 +136,6 @@ def test_component_preset_mapping_rules_1(qtbot):
     assert mapping_rules.get_model().rules[0].preset_id == preset_id
 
     # make sure that the rule is displayed
+    # find all labels inside 
+    preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
+    assert preset_name_label_0.text() == preset_name

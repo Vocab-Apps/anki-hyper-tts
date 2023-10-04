@@ -12,12 +12,13 @@ logger = logging_utils.get_child_logger(__name__)
 
 class ComponentMappingRule(component_common.ConfigComponentBase):
 
-    def __init__(self, hypertts, editor, note, add_mode: bool, model_change_callback):
+    def __init__(self, hypertts, editor, note, add_mode: bool, index, model_change_callback):
         self.hypertts = hypertts
         self.model = None
         self.editor = editor
         self.note = note
         self.add_mode = add_mode
+        self.index = index
         self.model_change_callback = model_change_callback
 
     def load_model(self, model):
@@ -48,6 +49,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         gridlayout.addWidget(preset_description_label)
 
         self.preset_name_label = aqt.qt.QLabel()
+        self.preset_name_label.setObjectName(f'preset_name_label_{self.index}')
         gridlayout.addWidget(self.preset_name_label, gridlayout_index, column_index + 2)
 
         self.rule_type_group = aqt.qt.QButtonGroup()

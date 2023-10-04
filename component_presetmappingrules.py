@@ -2,6 +2,7 @@ import sys
 import aqt.qt
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
+component_mappingrule = __import__('component_mappingrule', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
@@ -12,11 +13,15 @@ logger = logging_utils.get_child_logger(__name__)
 
 class ComponentPresetMappingRules(component_common.ConfigComponentBase):
 
-    def __init__(self, hypertts, dialog, deck_note_type: config_models.DeckNoteType):
+    def __init__(self, hypertts, dialog, deck_note_type: config_models.DeckNoteType, editor, note, add_mode):
         self.hypertts = hypertts
         self.dialog = dialog
         self.model = config_models.PresetMappingRules()
         self.deck_note_type = deck_note_type
+        self.editor = editor
+        self.note = note
+        self.add_mode = add_mode
+        self.rules_components = []
 
     def load_model(self, model):
         logger.info('load_model')
@@ -44,7 +49,6 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.mapping_rules_gridlayout = aqt.qt.QGridLayout()
         self.vlayout.addLayout(self.mapping_rules_gridlayout)
 
-        
         self.add_rule_button = aqt.qt.QPushButton('Add Rule')
         self.add_rule_button.setToolTip('Add a new rule which maps a preset to this deck and note type')
         self.vlayout.addWidget(self.add_rule_button)
@@ -52,13 +56,27 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         # connect events
         self.add_rule_button.clicked.connect(self.add_rule_button_pressed)
 
+        layout.addLayout(self.vlayout)
+
     def clear_mapping_rules_gridlayout(self):
+        self.rules_components = []
         for i in reversed(range(self.mapping_rules_gridlayout.count())): 
             self.mapping_rules_gridlayout.itemAt(i).widget().setParent(None)
 
+    def get_mapping_rule_updated_fn(self, index):
+        def mapping_rule_updated_fn(model):
+            self.mapping_rule_updated(index, model)
+        return mapping_rule_updated_fn
+
+    def mapping_rule_updated(self, index, model):
+        self.model.rules[index] = model
+
     def draw_mapping_rules(self):
-        for rule in self.get_model().rules:
-            pass
+        for i, rule in enumerate(self.get_model().rules):
+            self.rules_components.append(component_mappingrule.ComponentMappingRule(self.hypertts, 
+                self.editor, self.note, self.add_mode, i, self.get_mapping_rule_updated_fn(i)))
+            self.rules_components[i].draw(self.mapping_rules_gridlayout, i)
+            self.rules_components[i].load_model(rule)
 
     def refresh_mapping_rules_gridlayout(self):
         self.clear_mapping_rules_gridlayout()
