@@ -29,9 +29,37 @@ class EmptyDialog(aqt.qt.QDialog):
     def close(self):
         self.closed = True
 
+class EmptyGridLayoutDialog(aqt.qt.QDialog):
+    def __init__(self):
+        super(aqt.qt.QDialog, self).__init__()
+        self.closed = None
+
+    def setupUi(self):
+        self.grid_layout = aqt.qt.QGridLayout(self)
+
+    def getLayout(self):
+        return self.grid_layout
+
+    def setLayout(self, layout):
+        self.grid_layout = layout
+
+    def addChildLayout(self, layout):
+        self.grid_layout.addLayout(layout)
+
+    def addChildWidget(self, widget):
+        self.grid_layout.addWidget(widget)
+    
+    def close(self):
+        self.closed = True        
+
 
 def build_empty_dialog() -> EmptyDialog:
     dialog = EmptyDialog()
+    dialog.setupUi()
+    return dialog
+
+def build_empty_gridlayout_dialog() -> EmptyDialog:
+    dialog = EmptyGridLayoutDialog()
     dialog.setupUi()
     return dialog
 

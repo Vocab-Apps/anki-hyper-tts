@@ -39,6 +39,11 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         hlayout.addWidget(self.deck_name_label)
 
         self.vlayout.addLayout(hlayout) 
+
+        # display the mapping rules
+        self.mapping_rules_gridlayout = aqt.qt.QGridLayout()
+        self.vlayout.addLayout(self.mapping_rules_gridlayout)
+
         
         self.add_rule_button = aqt.qt.QPushButton('Add Rule')
         self.add_rule_button.setToolTip('Add a new rule which maps a preset to this deck and note type')
@@ -46,6 +51,18 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
 
         # connect events
         self.add_rule_button.clicked.connect(self.add_rule_button_pressed)
+
+    def clear_mapping_rules_gridlayout(self):
+        for i in reversed(range(self.mapping_rules_gridlayout.count())): 
+            self.mapping_rules_gridlayout.itemAt(i).widget().setParent(None)
+
+    def draw_mapping_rules(self):
+        for rule in self.get_model().rules:
+            pass
+
+    def refresh_mapping_rules_gridlayout(self):
+        self.clear_mapping_rules_gridlayout()
+        self.draw_mapping_rules()
 
     def choose_preset(self) -> str:
         pass
@@ -59,3 +76,4 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
             automatic=True,
             deck_id=self.deck_note_type.deck_id)
         self.model.rules.append(new_rule)
+        self.refresh_mapping_rules_gridlayout()

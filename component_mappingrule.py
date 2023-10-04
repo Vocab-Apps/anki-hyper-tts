@@ -12,9 +12,8 @@ logger = logging_utils.get_child_logger(__name__)
 
 class ComponentMappingRule(component_common.ConfigComponentBase):
 
-    def __init__(self, hypertts, dialog, editor, note, add_mode: bool, model_change_callback):
+    def __init__(self, hypertts, editor, note, add_mode: bool, model_change_callback):
         self.hypertts = hypertts
-        self.dialog = dialog
         self.model = None
         self.editor = editor
         self.note = note
@@ -35,22 +34,21 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     def get_model(self):
         return self.model
 
-    def draw(self, layout):
-        self.vlayout = aqt.qt.QVBoxLayout()
-
-        hlayout = aqt.qt.QHBoxLayout()
+    def draw(self, gridlayout, gridlayout_index):
+        # todo: needs to draw itself into a gridlayout
 
         self.preview_button = aqt.qt.QPushButton('Preview')
         self.run_button = aqt.qt.QPushButton('Run')
         
-        hlayout.addWidget(self.preview_button)
-        hlayout.addWidget(self.run_button)
+        column_index = 0
+        gridlayout.addWidget(self.preview_button, gridlayout_index, column_index)
+        gridlayout.addWidget(self.run_button, gridlayout_index, column_index + 1)
 
         preset_description_label = aqt.qt.QLabel('Preset:')
-        hlayout.addWidget(preset_description_label)
+        gridlayout.addWidget(preset_description_label)
 
         self.preset_name_label = aqt.qt.QLabel()
-        hlayout.addWidget(self.preset_name_label)
+        gridlayout.addWidget(self.preset_name_label, gridlayout_index, column_index + 2)
 
         self.rule_type_group = aqt.qt.QButtonGroup()
         self.rule_type_note_type = aqt.qt.QRadioButton('Note Type')
@@ -58,14 +56,12 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.rule_type_group.addButton(self.rule_type_note_type)
         self.rule_type_group.addButton(self.rule_type_deck_note_type)
 
-        hlayout.addWidget(self.rule_type_note_type)
-        hlayout.addWidget(self.rule_type_deck_note_type)
+        gridlayout.addWidget(self.rule_type_note_type, gridlayout_index, column_index + 3)
+        gridlayout.addWidget(self.rule_type_deck_note_type, gridlayout_index, column_index + 4)
         # hlayout.addWidget(self.rule_type_group)
 
         self.enabled_checkbox = aqt.qt.QCheckBox(f'Enabled')
-        hlayout.addWidget(self.enabled_checkbox)
-
-        self.vlayout.addLayout(hlayout)
+        gridlayout.addWidget(self.enabled_checkbox, gridlayout_index, column_index + 5)
 
         # wire events
         self.preview_button.clicked.connect(self.preview_button_clicked)
