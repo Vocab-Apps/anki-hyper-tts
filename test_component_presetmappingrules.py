@@ -127,6 +127,9 @@ def test_component_preset_mapping_rules_1(qtbot):
     # initially, the save button is disabled
     assert mapping_rules.save_button.isEnabled() == False
 
+    # we shouldn't have any rules
+    assert len(mapping_rules.get_model().rules) == 0
+
     # patch the "choose_preset" function
     def mock_choose_preset():
         return preset_id
@@ -160,3 +163,16 @@ def test_component_preset_mapping_rules_1(qtbot):
     mapping_rules = hypertts_instance.load_mapping_rules()
 
     assert len(mapping_rules.rules) == 1
+
+    # save button should have closed the dialog
+    assert dialog.closed == True
+
+    # re-open the dialog
+    dialog = gui_testing_utils.build_empty_dialog()
+    mapping_rules = component_presetmappingrules.create_component(
+        hypertts_instance, dialog, deck_note_type, mock_editor, note_1, False)
+    # we should have one rule now
+    assert len(mapping_rules.get_model().rules) == 1
+    # the preset name should be displayed
+    preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
+    assert preset_name_label_0.text() == preset_name    
