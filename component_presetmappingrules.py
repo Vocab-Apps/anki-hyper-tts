@@ -146,4 +146,15 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
 
     def disable_save_button(self):
         self.save_button.setEnabled(False)
-        self.save_button.setStyleSheet(None)            
+        self.save_button.setStyleSheet(None)
+
+
+# factory and setup functions for ComponentPresetMappingRules
+# ===========================================================
+
+def create_component(hypertts, parent_dialog, deck_note_type: config_models.DeckNoteType, editor, note, add_mode) -> ComponentPresetMappingRules:
+    mapping_rules = ComponentPresetMappingRules(hypertts, 
+        parent_dialog, deck_note_type, editor, note, add_mode)
+    mapping_rules.draw(parent_dialog.getLayout())
+    mapping_rules.load_model(hypertts.load_mapping_rules())
+    return mapping_rules

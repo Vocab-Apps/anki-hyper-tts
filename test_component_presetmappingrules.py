@@ -118,9 +118,8 @@ def test_component_preset_mapping_rules_1(qtbot):
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     mock_editor.note = note_1
 
-    mapping_rules = component_presetmappingrules.ComponentPresetMappingRules(hypertts_instance, 
-        dialog, deck_note_type, mock_editor, note_1, False)
-    mapping_rules.draw(dialog.getLayout())
+    mapping_rules = component_presetmappingrules.create_component(
+        hypertts_instance, dialog, deck_note_type, mock_editor, note_1, False)
 
     assert mapping_rules.note_type_label.text() == 'Chinese Words'
     assert mapping_rules.deck_name_label.text() == 'deck 1'
