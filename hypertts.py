@@ -181,7 +181,7 @@ class HyperTTS():
     def editor_note_process_rules(self, rules: config_models.PresetMappingRules, editor, automated: bool, selected_text: str):
         """process all rules that apply"""
         deck_note_type: config_models.DeckNoteType = self.get_editor_deck_note_type(editor)
-        for rule in rules.iterate_applicable_rules(deck_note_type, automated):
+        for absolute_index, subset_index, rule in rules.iterate_applicable_rules(deck_note_type, automated):
             logger.info(f'applying rule {rule}')
             self.editor_note_process_rule(rule, editor, selected_text)
 

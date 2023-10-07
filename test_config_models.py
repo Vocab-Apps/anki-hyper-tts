@@ -972,3 +972,39 @@ class ConfigModelsTests(unittest.TestCase):
 
         # however when we do a manual run, apply the rule
         self.assertTrue(rule.rule_applies(deck_note_type, False))
+
+    def test_iterate_applicable_rules(self):
+        mapping_rules = config_models.PresetMappingRules()
+
+        rule_1 = config_models.MappingRule(preset_id='preset_1', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            model_id=42,
+            deck_id=52,
+            enabled=True, 
+            automatic=True)
+        mapping_rules.rules.append(rule_1)
+
+        rule_4 = config_models.MappingRule(preset_id='preset_4', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            model_id=1042,
+            deck_id=1053,
+            enabled=True, 
+            automatic=True)
+        mapping_rules.rules.append(rule_4)
+
+        rule_2 = config_models.MappingRule(preset_id='preset_2', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            model_id=42,
+            deck_id=52,
+            enabled=True, 
+            automatic=True)
+        mapping_rules.rules.append(rule_2)
+
+        deck_note_type = config_models.DeckNoteType(model_id=42, deck_id=52)
+
+        applicable_rules = list(mapping_rules.iterate_applicable_rules(deck_note_type, True))
+        pprint.pprint(applicable_rules)
+        self.assertEqual(len(applicable_rules), 2)
+
+        assert applicable_rules[0] == (0, 0, rule_1)
+        assert applicable_rules[1] == (2, 1, rule_2)
