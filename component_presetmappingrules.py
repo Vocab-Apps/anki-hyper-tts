@@ -22,12 +22,13 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.note = note
         self.add_mode = add_mode
         self.rules_components = []
+        self.model_changed = False
 
-    def load_model(self, model):
+    def load_model(self, model: config_models.PresetMappingRules):
         logger.info('load_model')
         self.model = model
 
-    def get_model(self):
+    def get_model(self) -> config_models.PresetMappingRules:
         return self.model
 
     def draw(self, layout):
@@ -53,8 +54,21 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.add_rule_button.setToolTip('Add a new rule which maps a preset to this deck and note type')
         self.vlayout.addWidget(self.add_rule_button)
 
+        # add buttons at the bottom
+        hlayout = aqt.qt.QHBoxLayout()
+        hlayout.addStretch()
+        self.save_button = aqt.qt.QPushButton('Save and Close')
+        self.cancel_button = aqt.qt.QPushButton('Cancel')
+        hlayout.addWidget(self.save_button)
+        hlayout.addWidget(self.cancel_button)
+        hlayout.addLayout(hlayout)
+        self.vlayout.addStretch()
+        self.vlayout.addLayout(hlayout)
+        self.update_save_button_state()
+
         # connect events
         self.add_rule_button.clicked.connect(self.add_rule_button_pressed)
+        self.save_button.pressed.connect(self.save_button_pressed)
 
         layout.addLayout(self.vlayout)
 
@@ -95,3 +109,41 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
             deck_id=self.deck_note_type.deck_id)
         self.model.rules.append(new_rule)
         self.refresh_mapping_rules_gridlayout()
+        self.model_changed = True
+        self.update_save_button_state()        
+
+    def save_button_pressed(self):
+        self.save()
+        self.dialog.close()
+
+    def cancel_button_pressed(self):
+        self.save_if_changed()
+        self.dialog.close()
+
+    def save(self):
+        with self.hypertts.error_manager.get_single_action_context('Saving Rules'):
+            logger.info('saving mapping rules')
+            self.hypertts.save_mapping_rules(self.get_model())
+            self.model_changed = False
+            self.update_save_button_state()
+
+    def save_if_changed(self):
+        if self.model_changed:
+            # does the user want to save the profile ?
+            proceed = self.hypertts.anki_utils.ask_user('Save changes to mapping rules ?', self.dialog)
+            if proceed:
+                self.save()
+
+    def update_save_button_state(self):
+        if self.model_changed:
+            self.enable_save_button()
+        else:
+            self.disable_save_button()            
+
+    def enable_save_button(self):
+        self.save_button.setEnabled(True)
+        self.save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+
+    def disable_save_button(self):
+        self.save_button.setEnabled(False)
+        self.save_button.setStyleSheet(None)            

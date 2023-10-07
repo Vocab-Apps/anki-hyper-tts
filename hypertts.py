@@ -674,7 +674,17 @@ class HyperTTS():
             new_preset_name = f'Preset {i}'
         return new_preset_name
 
+    # mapping rules
+    def save_mapping_rules(self, mapping_rules: config_models.PresetMappingRules):
+        self.config[constants.CONFIG_MAPPING_RULES] = config_models.serialize_preset_mapping_rules(mapping_rules)
+        self.anki_utils.write_config(self.config)
+        logger.info('saved mapping rules')
 
+    def load_mapping_rules(self) -> config_models.PresetMappingRules:
+        if constants.CONFIG_MAPPING_RULES not in self.config:
+            return config_models.PresetMappingRules()
+        return config_models.deserialize_preset_mapping_rules(self.config[constants.CONFIG_MAPPING_RULES])
+    
     # realtime config
 
     def save_realtime_config(self, realtime_model, settings_key):

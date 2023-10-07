@@ -39,7 +39,9 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         # todo: needs to draw itself into a gridlayout
 
         self.preview_button = aqt.qt.QPushButton('Preview')
+        self.preview_button.setObjectName(f'preview_button_{self.index}')
         self.run_button = aqt.qt.QPushButton('Run')
+        self.run_button.setObjectName(f'run_button_{self.index}')
         
         column_index = 0
         gridlayout.addWidget(self.preview_button, gridlayout_index, column_index)

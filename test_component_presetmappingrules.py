@@ -1,6 +1,7 @@
 import sys
 import os
 import logging
+import pprint
 import aqt.qt
 
 addon_dir = os.path.dirname(os.path.realpath(__file__))
@@ -98,6 +99,7 @@ def test_component_mapping_rule_1(qtbot):
     assert note_1.flush_called == True
 
 def test_component_preset_mapping_rules_1(qtbot):
+    # pytest --log-cli-level=DEBUG test_component_presetmappingrules.py -k test_component_preset_mapping_rules_1
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
@@ -122,6 +124,9 @@ def test_component_preset_mapping_rules_1(qtbot):
 
     assert mapping_rules.note_type_label.text() == 'Chinese Words'
     assert mapping_rules.deck_name_label.text() == 'deck 1'
+    
+    # initially, the save button is disabled
+    assert mapping_rules.save_button.isEnabled() == False
 
     # patch the "choose_preset" function
     def mock_choose_preset():
@@ -139,3 +144,20 @@ def test_component_preset_mapping_rules_1(qtbot):
     # find all labels inside 
     preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
     assert preset_name_label_0.text() == preset_name
+
+    # ensure save button is enabled
+    assert mapping_rules.save_button.isEnabled() == True
+
+    # click the save button
+    logger.info('clicking the save button')
+    qtbot.mouseClick(mapping_rules.save_button, aqt.qt.Qt.LeftButton)
+
+    pprint.pprint(hypertts_instance.anki_utils.written_config)
+
+    # make sure the preset mapping rules got saved
+    assert constants.CONFIG_MAPPING_RULES in hypertts_instance.anki_utils.written_config
+    
+    # load the rules and do some checks
+    mapping_rules = hypertts_instance.load_mapping_rules()
+
+    assert len(mapping_rules.rules) == 1
