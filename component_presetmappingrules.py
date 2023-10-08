@@ -79,20 +79,20 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         for i in reversed(range(self.mapping_rules_gridlayout.count())): 
             self.mapping_rules_gridlayout.itemAt(i).widget().setParent(None)
 
-    def get_mapping_rule_updated_fn(self, index):
+    def get_mapping_rule_updated_fn(self, absolute_index):
         def mapping_rule_updated_fn(model):
-            self.mapping_rule_updated(index, model)
+            self.mapping_rule_updated(absolute_index, model)
         return mapping_rule_updated_fn
 
-    def mapping_rule_updated(self, index, model):
-        self.model.rules[index] = model
+    def mapping_rule_updated(self, absolute_index, model):
+        self.model.rules[absolute_index] = model
 
     def draw_mapping_rules(self):
-        for i, rule in enumerate(self.get_model().rules):
+        for absolute_index, subset_index, rule in self.get_model().iterate_applicable_rules(self.deck_note_type, False):
             self.rules_components.append(component_mappingrule.ComponentMappingRule(self.hypertts, 
-                self.editor, self.note, self.add_mode, i, self.get_mapping_rule_updated_fn(i)))
-            self.rules_components[i].draw(self.mapping_rules_gridlayout, i)
-            self.rules_components[i].load_model(rule)
+                self.editor, self.note, self.add_mode, subset_index, self.get_mapping_rule_updated_fn(absolute_index)))
+            self.rules_components[subset_index].draw(self.mapping_rules_gridlayout, subset_index)
+            self.rules_components[subset_index].load_model(rule)
 
     def refresh_mapping_rules_gridlayout(self):
         self.clear_mapping_rules_gridlayout()
