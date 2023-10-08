@@ -27,6 +27,8 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
     def load_model(self, model: config_models.PresetMappingRules):
         logger.info('load_model')
         self.model = model
+        # draw the presets
+        self.refresh_mapping_rules_gridlayout()
 
     def get_model(self) -> config_models.PresetMappingRules:
         return self.model

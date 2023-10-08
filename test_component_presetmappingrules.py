@@ -175,4 +175,4 @@ def test_component_preset_mapping_rules_1(qtbot):
     assert len(mapping_rules.get_model().rules) == 1
     # the preset name should be displayed
     preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
-    assert preset_name_label_0.text() == preset_name    
+    assert preset_name_label_0.text() == preset_name
