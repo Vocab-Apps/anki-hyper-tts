@@ -12,7 +12,7 @@ logger = logging_utils.get_child_logger(__name__)
 
 class ComponentMappingRule(component_common.ConfigComponentBase):
 
-    def __init__(self, hypertts, editor, note, add_mode: bool, index, model_change_callback):
+    def __init__(self, hypertts, editor, note, add_mode: bool, index, model_change_callback, model_delete_callback):
         self.hypertts = hypertts
         self.model = None
         self.editor = editor
@@ -20,6 +20,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.add_mode = add_mode
         self.index = index
         self.model_change_callback = model_change_callback
+        self.model_delete_callback = model_delete_callback
 
     def load_model(self, model):
         logger.info('load_model')
@@ -67,11 +68,16 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.enabled_checkbox = aqt.qt.QCheckBox(f'Enabled')
         gridlayout.addWidget(self.enabled_checkbox, gridlayout_index, column_index + 5)
 
+        self.delete_rule_button = aqt.qt.QPushButton('Delete')
+        self.delete_rule_button.setObjectName(f'delete_rule_button_{self.index}')
+        gridlayout.addWidget(self.delete_rule_button, gridlayout_index, column_index + 6)
+
         # wire events
         self.preview_button.clicked.connect(self.preview_button_clicked)
         self.run_button.clicked.connect(self.run_button_clicked)
         self.rule_type_note_type.toggled.connect(self.rule_type_toggled)
         self.enabled_checkbox.toggled.connect(self.enabled_toggled)
+        self.delete_rule_button.clicked.connect(self.delete_button_clicked)
 
     def notify_model_update(self):
         self.model_change_callback(self.model)
@@ -96,6 +102,10 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     def preview_button_clicked(self):
         self.preview_button.setText('Playing...')
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
+
+    def delete_button_clicked(self):
+        # self.hypertts.anki_utils.run_on_main(self.model_delete_callback)
+        self.model_delete_callback()
 
     # preview functions
     # =================

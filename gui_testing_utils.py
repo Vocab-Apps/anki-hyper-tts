@@ -71,6 +71,13 @@ class MockModelChangeCallback():
         logger.info('MockModelChangeCallback.model_updated')
         self.model = copy.deepcopy(model)
 
+class MockModelDeleteCallback():
+    def __init__(self):
+        pass
+
+    def model_delete(self):
+        logger.info('MockModelDeleteCallback.model_delete')
+
 class MockBatchPreviewCallback():
     def __init__(self):
         self.sample_text = None

@@ -84,13 +84,25 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
             self.mapping_rule_updated(absolute_index, model)
         return mapping_rule_updated_fn
 
+    def get_mapping_rule_deleted_fn(self, absolute_index):
+        def mapping_rule_delete_fn():
+            self.mapping_rule_deleted(absolute_index)
+        return mapping_rule_delete_fn
+
     def mapping_rule_updated(self, absolute_index, model):
         self.model.rules[absolute_index] = model
+
+    def mapping_rule_deleted(self, absolute_index):
+        del self.model.rules[absolute_index]
+        self.refresh_mapping_rules_gridlayout()
+        self.model_changed = True
+        self.update_save_button_state() 
 
     def draw_mapping_rules(self):
         for absolute_index, subset_index, rule in self.get_model().iterate_applicable_rules(self.deck_note_type, False):
             self.rules_components.append(component_mappingrule.ComponentMappingRule(self.hypertts, 
-                self.editor, self.note, self.add_mode, subset_index, self.get_mapping_rule_updated_fn(absolute_index)))
+                self.editor, self.note, self.add_mode, subset_index, self.get_mapping_rule_updated_fn(absolute_index),
+                self.get_mapping_rule_deleted_fn(absolute_index)))
             self.rules_components[subset_index].draw(self.mapping_rules_gridlayout, subset_index)
             self.rules_components[subset_index].load_model(rule)
 

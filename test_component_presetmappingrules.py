@@ -41,13 +41,14 @@ def test_component_mapping_rule_1(qtbot):
     dialog = gui_testing_utils.build_empty_gridlayout_dialog()
 
     model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    model_delete_callback = gui_testing_utils.MockModelDeleteCallback()
 
     mock_editor = testing_utils.MockEditor()
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     mock_editor.note = note_1
 
     component_rule = component_mappingrule.ComponentMappingRule(hypertts_instance, 
-        mock_editor, note_1, False, 0, model_change_callback.model_updated)
+        mock_editor, note_1, False, 0, model_change_callback.model_updated, model_delete_callback.model_delete)
     component_rule.draw(dialog.getLayout(), 0)
     component_rule.load_model(mapping_rule)
 
@@ -176,3 +177,14 @@ def test_component_preset_mapping_rules_1(qtbot):
     # the preset name should be displayed
     preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
     assert preset_name_label_0.text() == preset_name
+    # the save button should be disabled, we didn't change anything
+    assert mapping_rules.save_button.isEnabled() == False
+
+    # delete the rule
+    delete_button = dialog.findChild(aqt.qt.QPushButton, 'delete_rule_button_0')
+    assert delete_button != None
+    qtbot.mouseClick(delete_button, aqt.qt.Qt.LeftButton)
+    # we shouldn't have any rules
+    assert len(mapping_rules.get_model().rules) == 0
+    # save button should be enabled
+    assert mapping_rules.save_button.isEnabled() == True
