@@ -62,7 +62,6 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.cancel_button = aqt.qt.QPushButton('Cancel')
         hlayout.addWidget(self.save_button)
         hlayout.addWidget(self.cancel_button)
-        hlayout.addLayout(hlayout)
         self.vlayout.addStretch()
         self.vlayout.addLayout(hlayout)
         self.update_save_button_state()
