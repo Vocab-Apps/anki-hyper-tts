@@ -97,105 +97,101 @@ def test_component_preset_mapping_rules_1(qtbot):
     preset_name = 'my preset 42'
     testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id, name=preset_name)
     
-    dialog = gui_testing_utils.build_empty_dialog()
-    # chinese deck
-   
-    mapping_rules = component_presetmappingrules.create_component(
-        hypertts_instance, dialog, deck_note_type, editor_context)
+    def dialog_input_sequence(dialog):
+        assert dialog.mapping_rules.note_type_label.text() == 'Chinese Words'
+        assert dialog.mapping_rules.deck_name_label.text() == 'deck 1'
+        
+        # initially, the save button is disabled
+        assert dialog.mapping_rules.save_button.isEnabled() == False
 
-    assert mapping_rules.note_type_label.text() == 'Chinese Words'
-    assert mapping_rules.deck_name_label.text() == 'deck 1'
-    
-    # initially, the save button is disabled
-    assert mapping_rules.save_button.isEnabled() == False
+        # we shouldn't have any rules
+        assert len(dialog.mapping_rules.get_model().rules) == 0
 
-    # we shouldn't have any rules
-    assert len(mapping_rules.get_model().rules) == 0
+        # patch the "choose_preset" function
+        def mock_choose_preset():
+            return preset_id
+        dialog.mapping_rules.choose_preset = mock_choose_preset
 
-    # patch the "choose_preset" function
-    def mock_choose_preset():
-        return preset_id
-    mapping_rules.choose_preset = mock_choose_preset
+        # press the "add rule" button
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
 
-    # press the "add rule" button
-    qtbot.mouseClick(mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
+        # check that model got updated
+        assert len(dialog.mapping_rules.get_model().rules) == 1
+        assert dialog.mapping_rules.get_model().rules[0].preset_id == preset_id
 
-    # check that model got updated
-    assert len(mapping_rules.get_model().rules) == 1
-    assert mapping_rules.get_model().rules[0].preset_id == preset_id
+        # make sure that the rule is displayed
+        # find all labels inside 
+        preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
+        assert preset_name_label_0.text() == preset_name
 
-    # make sure that the rule is displayed
-    # find all labels inside 
-    preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
-    assert preset_name_label_0.text() == preset_name
+        # ensure save button is enabled
+        assert dialog.mapping_rules.save_button.isEnabled() == True
 
-    # ensure save button is enabled
-    assert mapping_rules.save_button.isEnabled() == True
+        # click the save button
+        logger.info('clicking the save button')
+        qtbot.mouseClick(dialog.mapping_rules.save_button, aqt.qt.Qt.LeftButton)
 
-    # click the save button
-    logger.info('clicking the save button')
-    qtbot.mouseClick(mapping_rules.save_button, aqt.qt.Qt.LeftButton)
+        pprint.pprint(hypertts_instance.anki_utils.written_config)
 
-    pprint.pprint(hypertts_instance.anki_utils.written_config)
+        # make sure the preset mapping rules got saved
+        assert constants.CONFIG_MAPPING_RULES in hypertts_instance.anki_utils.written_config
+        
+        # load the rules and do some checks
+        mapping_rules = hypertts_instance.load_mapping_rules()
 
-    # make sure the preset mapping rules got saved
-    assert constants.CONFIG_MAPPING_RULES in hypertts_instance.anki_utils.written_config
-    
-    # load the rules and do some checks
-    mapping_rules = hypertts_instance.load_mapping_rules()
+        assert len(mapping_rules.rules) == 1
 
-    assert len(mapping_rules.rules) == 1
-
-    # save button should have closed the dialog
-    assert dialog.closed == True
+        # save button should have closed the dialog
+        assert dialog.closed == True
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence    
+    component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
 
     # re-open the dialog
-    dialog = gui_testing_utils.build_empty_dialog()
-    mapping_rules = component_presetmappingrules.create_component(
-        hypertts_instance, dialog, deck_note_type, editor_context)
-    # we should have one rule now
-    assert len(mapping_rules.get_model().rules) == 1
-    # the preset name should be displayed
-    preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
-    assert preset_name_label_0.text() == preset_name
-    # the save button should be disabled, we didn't change anything
-    assert mapping_rules.save_button.isEnabled() == False
+    def dialog_input_sequence_2(dialog):
+        # we should have one rule now
+        assert len(dialog.mapping_rules.get_model().rules) == 1
+        # the preset name should be displayed
+        preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
+        assert preset_name_label_0.text() == preset_name
+        # the save button should be disabled, we didn't change anything
+        assert dialog.mapping_rules.save_button.isEnabled() == False
 
-    # delete the rule
-    delete_button = dialog.findChild(aqt.qt.QPushButton, 'delete_rule_button_0')
-    assert delete_button != None
-    qtbot.mouseClick(delete_button, aqt.qt.Qt.LeftButton)
-    # we shouldn't have any rules
-    assert len(mapping_rules.get_model().rules) == 0
-    # save button should be enabled
-    assert mapping_rules.save_button.isEnabled() == True
+        # delete the rule
+        delete_button = dialog.findChild(aqt.qt.QPushButton, 'delete_rule_button_0')
+        assert delete_button != None
+        qtbot.mouseClick(delete_button, aqt.qt.Qt.LeftButton)
+        # we shouldn't have any rules
+        assert len(dialog.mapping_rules.get_model().rules) == 0
+        # save button should be enabled
+        assert dialog.mapping_rules.save_button.isEnabled() == True
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence_2
+    component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)        
 
 def test_component_preset_mapping_rules_cancel_2(qtbot):
     # pytest --log-cli-level=DEBUG test_component_presetmappingrules.py -k test_component_preset_mapping_rules_1
     hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
 
-    dialog = gui_testing_utils.build_empty_dialog()
-    
-    mapping_rules = component_presetmappingrules.create_component(
-        hypertts_instance, dialog, deck_note_type, editor_context)
+    def dialog_input_sequence(dialog):
+        assert dialog.mapping_rules.note_type_label.text() == 'Chinese Words'
+        assert dialog.mapping_rules.deck_name_label.text() == 'deck 1'
+        
+        # initially, the save button is disabled
+        assert dialog.mapping_rules.save_button.isEnabled() == False
 
-    assert mapping_rules.note_type_label.text() == 'Chinese Words'
-    assert mapping_rules.deck_name_label.text() == 'deck 1'
-    
-    # initially, the save button is disabled
-    assert mapping_rules.save_button.isEnabled() == False
+        # we shouldn't have any rules
+        assert len(dialog.mapping_rules.get_model().rules) == 0
 
-    # we shouldn't have any rules
-    assert len(mapping_rules.get_model().rules) == 0
+        # patch the "choose_preset" function
+        def mock_choose_preset():
+            return None
+        dialog.mapping_rules.choose_preset = mock_choose_preset
 
-    # patch the "choose_preset" function
-    def mock_choose_preset():
-        return None
-    mapping_rules.choose_preset = mock_choose_preset
+        # press the "add rule" button
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
 
-    # press the "add rule" button
-    qtbot.mouseClick(mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
+        # we still shouldn't have any rules
+        assert len(dialog.mapping_rules.get_model().rules) == 0    
+        assert dialog.mapping_rules.save_button.isEnabled() == False
 
-    # we still shouldn't have any rules
-    assert len(mapping_rules.get_model().rules) == 0    
-    assert mapping_rules.save_button.isEnabled() == False
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence
+    component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)                

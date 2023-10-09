@@ -169,9 +169,23 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
 # factory and setup functions for ComponentPresetMappingRules
 # ===========================================================
 
-def create_component(hypertts, parent_dialog, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext) -> ComponentPresetMappingRules:
-    mapping_rules = ComponentPresetMappingRules(hypertts, 
-        parent_dialog, deck_note_type, editor_context)
-    mapping_rules.draw(parent_dialog.getLayout())
-    mapping_rules.load_model(hypertts.load_mapping_rules())
-    return mapping_rules
+class PresetMappingRulesDialog(aqt.qt.QDialog):
+    def __init__(self, hypertts, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
+        super(aqt.qt.QDialog, self).__init__()
+        self.setupUi()
+        self.mapping_rules = ComponentPresetMappingRules(hypertts, 
+            self, deck_note_type, editor_context)
+        self.mapping_rules.draw(self.main_layout)
+        self.mapping_rules.load_model(hypertts.load_mapping_rules())        
+    
+    def setupUi(self):
+        self.setWindowTitle(constants.GUI_PRESET_MAPPING_RULES_DIALOG_TITLE)
+        self.main_layout = aqt.qt.QVBoxLayout(self)
+
+    def close(self):
+        self.closed = True
+        self.accept()
+
+def create_dialog(hypertts, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext) -> ComponentPresetMappingRules:
+    dialog = PresetMappingRulesDialog(hypertts, deck_note_type, editor_context)
+    hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_PRESET_MAPPING_RULES) 
