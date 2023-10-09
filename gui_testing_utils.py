@@ -3,8 +3,28 @@ import logging
 import copy
 
 import testing_utils
+import config_models
 
 logger = logging.getLogger(__name__)
+
+def get_editor_context():
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    mock_editor = testing_utils.MockEditor()
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    mock_editor.note = note_1
+
+    model_id=config_gen.model_id_chinese
+    deck_id=config_gen.deck_id
+    deck_note_type: config_models.DeckNoteType = config_models.DeckNoteType(
+        model_id=model_id,
+        deck_id=deck_id)
+
+    editor_context = config_models.EditorContext(
+        editor=mock_editor, note=note_1, add_mode=False)
+
+    return hypertts_instance, deck_note_type, editor_context
 
 class EmptyDialog(aqt.qt.QDialog):
     def __init__(self):

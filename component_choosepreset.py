@@ -105,7 +105,7 @@ def get_preset_id(hypertts, editor_context: config_models.EditorContext) -> Opti
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_CHOOSE_PRESET)
     if dialog.choose_preset.selected_ok:
         if dialog.choose_preset.new_preset:
-            return component_batch.get_new_preset_id(hypertts, editor_context)
+            return component_batch.create_dialog_editor_new_preset(hypertts, editor_context)
         else:
             return dialog.choose_preset.preset_id
     else:

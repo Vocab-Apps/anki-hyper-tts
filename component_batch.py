@@ -514,6 +514,7 @@ class BatchDialog(aqt.qt.QDialog):
 
     def close(self):
         self.verify_profile_saved()
+        self.closed = True
         self.accept()
 
 def create_component_batch_browser_existing_preset(hypertts, parent_dialog, note_id_list, preset_id: str) -> ComponentBatch:
@@ -548,8 +549,9 @@ def create_component_batch_editor_existing_preset(hypertts, parent_dialog, note,
 #     batch_component.no_settings_editor()
 #     return batch_component    
 
-def get_new_preset_id(hypertts, editor_context: config_models.EditorContext):
-    """get a new preset_id from the editor"""
+
+def create_dialog_editor_new_preset(hypertts, editor_context: config_models.EditorContext):
+    """get a new preset_id from the editor, and return the new preset_id"""
     dialog = BatchDialog(hypertts)
     dialog.configure_editor_new_preset(editor_context)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_BATCH)

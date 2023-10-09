@@ -18,27 +18,27 @@ import config_models
 logger = logging.getLogger(__name__)
 
 
-def get_context():
-    config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+# def get_context():
+#     config_gen = testing_utils.TestConfigGenerator()
+#     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    mock_editor = testing_utils.MockEditor()
-    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    mock_editor.note = note_1
+#     mock_editor = testing_utils.MockEditor()
+#     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+#     mock_editor.note = note_1
 
-    model_id=config_gen.model_id_chinese
-    deck_id=config_gen.deck_id
-    deck_note_type: config_models.DeckNoteType = config_models.DeckNoteType(
-        model_id=model_id,
-        deck_id=deck_id)
+#     model_id=config_gen.model_id_chinese
+#     deck_id=config_gen.deck_id
+#     deck_note_type: config_models.DeckNoteType = config_models.DeckNoteType(
+#         model_id=model_id,
+#         deck_id=deck_id)
 
-    editor_context = config_models.EditorContext(
-        editor=mock_editor, note=note_1, add_mode=False)
+#     editor_context = config_models.EditorContext(
+#         editor=mock_editor, note=note_1, add_mode=False)
 
-    return hypertts_instance, deck_note_type, editor_context
+#     return hypertts_instance, deck_note_type, editor_context
 
 def test_component_mapping_rule_1(qtbot):
-    hypertts_instance, deck_note_type, editor_context = get_context()
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
 
     # create simple preset
     preset_id = 'uuid_0'
@@ -109,7 +109,7 @@ def test_component_mapping_rule_1(qtbot):
 def test_component_preset_mapping_rules_1(qtbot):
     # pytest --log-cli-level=DEBUG test_component_presetmappingrules.py -k test_component_preset_mapping_rules_1
 
-    hypertts_instance, deck_note_type, editor_context = get_context()
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
 
     # create simple preset
     preset_id = 'uuid_0'
@@ -191,7 +191,7 @@ def test_component_preset_mapping_rules_1(qtbot):
 
 def test_component_preset_mapping_rules_cancel_2(qtbot):
     # pytest --log-cli-level=DEBUG test_component_presetmappingrules.py -k test_component_preset_mapping_rules_1
-    hypertts_instance, deck_note_type, editor_context = get_context()
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
 
     dialog = gui_testing_utils.build_empty_dialog()
     
