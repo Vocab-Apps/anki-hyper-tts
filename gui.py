@@ -17,9 +17,11 @@ from typing import List, Tuple
 
 # addon imports
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
 component_realtime = __import__('component_realtime', globals(), locals(), [], sys._addon_import_level_base)
+component_presetmappingrules = __import__('component_presetmappingrules', globals(), locals(), [], sys._addon_import_level_base)
 component_configuration = __import__('component_configuration', globals(), locals(), [], sys._addon_import_level_base)
 component_preferences = __import__('component_preferences', globals(), locals(), [], sys._addon_import_level_base)
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
@@ -237,6 +239,7 @@ def init(hypertts):
 
 
     def on_webview_will_set_content(web_content: aqt.webview.WebContent, context):
+        return
         if not isinstance(context, aqt.editor.Editor):
             return
         addon_package = aqt.mw.addonManager.addonFromModule(__name__)
@@ -250,7 +253,8 @@ def init(hypertts):
         web_content.css.extend(css_path)
 
     def loadNote(editor: aqt.editor.Editor):
-        update_editor_batch_list(hypertts, editor)
+        # update_editor_batch_list(hypertts, editor)
+        pass
 
     def onBridge(handled, str, editor):
         # return handled # don't do anything for now
@@ -273,6 +277,9 @@ def init(hypertts):
 
     def run_hypertts_settings(editor):
         logger.info(f'clicked hypertts settings, editor: {editor}')
+        editor_context = hypertts.get_editor_context(editor)
+        deck_note_type = hypertts.get_editor_deck_note_type(editor)
+        component_presetmappingrules.create_dialog(hypertts, deck_note_type, editor_context)
 
     def setup_editor_buttons(buttons, editor):
         new_button = editor.addButton(gui_utils.get_graphics_path('icon_speaker.png'),
