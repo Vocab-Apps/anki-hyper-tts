@@ -82,6 +82,7 @@ class ComponentChoosePreset(component_common.ComponentBase):
 
     def ok_button_pressed(self):
         self.selected_ok = True
+        self.dialog.close()
 
     def cancel_button_pressed(self):
         self.selected_ok = False
