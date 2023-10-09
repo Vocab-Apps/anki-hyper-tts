@@ -505,6 +505,14 @@ class BatchDialog(aqt.qt.QDialog):
         batch_component.no_settings_editor()
         self.batch_component = batch_component
 
+    def configure_editor_existing_preset(self, editor_context: config_models.EditorContext, preset_id: str):
+        batch_component = ComponentBatch(self.hypertts, self)
+        batch_component.configure_editor(editor_context.note, editor_context.editor, editor_context.add_mode)
+        batch_component.draw(self.main_layout)
+        batch_component.load_preset(preset_id)
+        batch_component.no_settings_editor()
+        self.batch_component = batch_component        
+
     def verify_profile_saved(self):
         self.batch_component.save_profile_if_changed()
 
@@ -533,13 +541,13 @@ def create_component_batch_browser_new_preset(hypertts, parent_dialog, note_id_l
     batch_component.display_settings()
     return batch_component
 
-def create_component_batch_editor_existing_preset(hypertts, parent_dialog, note, editor, add_mode, preset_id: str) -> ComponentBatch:
-    batch_component = ComponentBatch(hypertts, parent_dialog)
-    batch_component.configure_editor(note, editor, add_mode)
-    batch_component.draw(parent_dialog.main_layout)
-    batch_component.load_preset(preset_id)
-    batch_component.no_settings_editor()
-    return batch_component
+# def create_component_batch_editor_existing_preset(hypertts, parent_dialog, note, editor, add_mode, preset_id: str) -> ComponentBatch:
+#     batch_component = ComponentBatch(hypertts, parent_dialog)
+#     batch_component.configure_editor(note, editor, add_mode)
+#     batch_component.draw(parent_dialog.main_layout)
+#     batch_component.load_preset(preset_id)
+#     batch_component.no_settings_editor()
+#     return batch_component
 
 # def create_component_batch_editor_new_preset(hypertts, parent_dialog, note, editor, add_mode, new_preset_name: str) -> ComponentBatch:
 #     batch_component = ComponentBatch(hypertts, parent_dialog)
@@ -549,6 +557,10 @@ def create_component_batch_editor_existing_preset(hypertts, parent_dialog, note,
 #     batch_component.no_settings_editor()
 #     return batch_component    
 
+def create_dialog_editor_existing_preset(hypertts, editor_context: config_models.EditorContext, preset_id: str):
+    dialog = BatchDialog(hypertts)
+    dialog.configure_editor_existing_preset(editor_context, preset_id)
+    hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_BATCH)    
 
 def create_dialog_editor_new_preset(hypertts, editor_context: config_models.EditorContext):
     """get a new preset_id from the editor, and return the new preset_id"""
