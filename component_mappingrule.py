@@ -98,6 +98,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
 
     def preview_button_clicked(self):
         self.preview_button.setText('Playing...')
+        self.preview_button.setEnabled(False)
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
     def delete_button_clicked(self):
@@ -121,12 +122,14 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     
     def finish_sound_preview(self):
         self.preview_button.setText('Preview')
+        self.preview_button.setEnabled(True)
 
     # add audio functions
     # ===================
 
     def run_button_clicked(self):
         self.run_button.setText('Running...')
+        self.run_button.setEnabled(False)
         self.hypertts.anki_utils.run_in_background(self.apply_note_editor_task, self.apply_note_editor_task_done)
 
     def apply_note_editor_task(self):
@@ -144,3 +147,4 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     
     def finish_apply_note_editor(self):
         self.run_button.setText('Run')
+        self.run_button.setEnabled(True)
