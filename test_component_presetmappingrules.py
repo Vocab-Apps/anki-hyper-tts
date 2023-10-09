@@ -108,8 +108,8 @@ def test_component_mapping_rule_1(qtbot):
 
 def test_component_preset_mapping_rules_1(qtbot):
     # pytest --log-cli-level=DEBUG test_component_presetmappingrules.py -k test_component_preset_mapping_rules_1
-    config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    hypertts_instance, deck_note_type, editor_context = get_context()
 
     # create simple preset
     preset_id = 'uuid_0'
@@ -118,16 +118,9 @@ def test_component_preset_mapping_rules_1(qtbot):
     
     dialog = gui_testing_utils.build_empty_dialog()
     # chinese deck
-    deck_note_type: config_models.DeckNoteType = config_models.DeckNoteType(
-        model_id=config_gen.model_id_chinese,
-        deck_id=config_gen.deck_id)
-    
-    mock_editor = testing_utils.MockEditor()
-    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    mock_editor.note = note_1
-
+   
     mapping_rules = component_presetmappingrules.create_component(
-        hypertts_instance, dialog, deck_note_type, mock_editor, note_1, False)
+        hypertts_instance, dialog, deck_note_type, editor_context)
 
     assert mapping_rules.note_type_label.text() == 'Chinese Words'
     assert mapping_rules.deck_name_label.text() == 'deck 1'
@@ -178,7 +171,7 @@ def test_component_preset_mapping_rules_1(qtbot):
     # re-open the dialog
     dialog = gui_testing_utils.build_empty_dialog()
     mapping_rules = component_presetmappingrules.create_component(
-        hypertts_instance, dialog, deck_note_type, mock_editor, note_1, False)
+        hypertts_instance, dialog, deck_note_type, editor_context)
     # we should have one rule now
     assert len(mapping_rules.get_model().rules) == 1
     # the preset name should be displayed
@@ -198,21 +191,12 @@ def test_component_preset_mapping_rules_1(qtbot):
 
 def test_component_preset_mapping_rules_cancel_2(qtbot):
     # pytest --log-cli-level=DEBUG test_component_presetmappingrules.py -k test_component_preset_mapping_rules_1
-    config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    hypertts_instance, deck_note_type, editor_context = get_context()
 
     dialog = gui_testing_utils.build_empty_dialog()
-    # chinese deck
-    deck_note_type: config_models.DeckNoteType = config_models.DeckNoteType(
-        model_id=config_gen.model_id_chinese,
-        deck_id=config_gen.deck_id)
     
-    mock_editor = testing_utils.MockEditor()
-    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    mock_editor.note = note_1
-
     mapping_rules = component_presetmappingrules.create_component(
-        hypertts_instance, dialog, deck_note_type, mock_editor, note_1, False)
+        hypertts_instance, dialog, deck_note_type, editor_context)
 
     assert mapping_rules.note_type_label.text() == 'Chinese Words'
     assert mapping_rules.deck_name_label.text() == 'deck 1'
