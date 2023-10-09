@@ -6,6 +6,7 @@ from typing import List, Optional
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class ComponentChoosePreset(component_common.ComponentBase):
@@ -99,12 +100,12 @@ class ChoosePresetDialog(aqt.qt.QDialog):
     def close(self):
         self.accept()
 
-def get_preset_id(hypertts) -> Optional[str]:
+def get_preset_id(hypertts, editor_context: config_models.EditorContext) -> Optional[str]:
     dialog = ChoosePresetDialog(hypertts)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_CHOOSE_PRESET)
     if dialog.choose_preset.selected_ok:
         if dialog.choose_preset.new_preset:
-            pass
+            return component_batch.get_new_preset_id(hypertts, editor_context)
         else:
             return dialog.choose_preset.preset_id
     else:

@@ -11,6 +11,7 @@ import constants
 import testing_utils
 import gui_testing_utils
 import component_choosepreset
+import config_models
 
 logger = logging.getLogger(__name__)
 
@@ -89,13 +90,16 @@ def test_get_preset_id_full_workflow_1(qtbot):
         'uuid_2': {'name': 'my preset 6'},
         'uuid_3': {'name': 'my preset 7'}
     }
+    note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    mock_editor = testing_utils.MockEditor()
+    editor_context = config_models.EditorContext(note, mock_editor, False)
 
     # user cancels
     def dialog_input_sequence(dialog):
         # press cancel button
         qtbot.mouseClick(dialog.choose_preset.cancel_button, aqt.qt.Qt.LeftButton)
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHOOSE_PRESET] = dialog_input_sequence
-    preset_id = component_choosepreset.get_preset_id(hypertts_instance)
+    preset_id = component_choosepreset.get_preset_id(hypertts_instance, editor_context)
     assert preset_id == None
 
     # user selects second preset
@@ -107,7 +111,7 @@ def test_get_preset_id_full_workflow_1(qtbot):
         # press OK button
         qtbot.mouseClick(dialog.choose_preset.ok_button, aqt.qt.Qt.LeftButton)
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHOOSE_PRESET] = dialog_input_sequence
-    preset_id = component_choosepreset.get_preset_id(hypertts_instance)
+    preset_id = component_choosepreset.get_preset_id(hypertts_instance, editor_context)
     assert preset_id == 'uuid_1'
 
     # user selects second preset but cancels
@@ -119,5 +123,24 @@ def test_get_preset_id_full_workflow_1(qtbot):
         # press cancel button
         qtbot.mouseClick(dialog.choose_preset.cancel_button, aqt.qt.Qt.LeftButton)
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHOOSE_PRESET] = dialog_input_sequence
-    preset_id = component_choosepreset.get_preset_id(hypertts_instance)
+    preset_id = component_choosepreset.get_preset_id(hypertts_instance, editor_context)
     assert preset_id == None
+
+    # user selects new preset, then populates the new preset
+    def choosepreset_dialog_input_sequence(dialog):
+        # select new preset
+        dialog.choose_preset.new_preset_radio_button.setChecked(True)
+        # press OK button
+        qtbot.mouseClick(dialog.choose_preset.ok_button, aqt.qt.Qt.LeftButton)
+    # user selections English source field then saves
+    def batch_dialog_input_sequence(dialog):
+        dialog.batch_component.source.source_field_combobox.setCurrentText('English')
+        # user presses cancel button
+        qtbot.mouseClick(dialog.batch_component.profile_save_and_close_button, aqt.qt.Qt.LeftButton)        
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHOOSE_PRESET] = choosepreset_dialog_input_sequence
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = batch_dialog_input_sequence
+    preset_id = component_choosepreset.get_preset_id(hypertts_instance, editor_context)
+    assert preset_id != None
+    # load the preset, make sure source field is English
+    preset = hypertts_instance.load_preset(preset_id)
+    assert preset.source.source_field == 'English'    
