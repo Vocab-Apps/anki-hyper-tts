@@ -18,37 +18,44 @@ import config_models
 logger = logging.getLogger(__name__)
 
 
-def test_component_mapping_rule_1(qtbot):
+def get_context():
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    # create simple preset
-    preset_id = 'uuid_0'
-    name = 'my preset 1'
-    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id, name=name)
-
-    # hypertts_instance.anki_utils.config['presets'] = {'uuid_0': {'name': 'preset 1'} }
+    mock_editor = testing_utils.MockEditor()
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    mock_editor.note = note_1
 
     model_id=config_gen.model_id_chinese
     deck_id=config_gen.deck_id
     deck_note_type: config_models.DeckNoteType = config_models.DeckNoteType(
         model_id=model_id,
         deck_id=deck_id)
+
+    editor_context = config_models.EditorContext(
+        editor=mock_editor, note=note_1, add_mode=False)
+
+    return hypertts_instance, deck_note_type, editor_context
+
+def test_component_mapping_rule_1(qtbot):
+    hypertts_instance, deck_note_type, editor_context = get_context()
+
+    # create simple preset
+    preset_id = 'uuid_0'
+    name = 'my preset 1'
+    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id, name=name)
+
     mapping_rule = config_models.MappingRule(
         preset_id='uuid_0', rule_type=constants.MappingRuleType.NoteType, enabled=True,
-        automatic=False, model_id=model_id, deck_id=deck_id)
+        automatic=False, model_id=deck_note_type.model_id, deck_id=deck_note_type.deck_id)
 
     dialog = gui_testing_utils.build_empty_gridlayout_dialog()
 
     model_change_callback = gui_testing_utils.MockModelChangeCallback()
     model_delete_callback = gui_testing_utils.MockModelDeleteCallback()
 
-    mock_editor = testing_utils.MockEditor()
-    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    mock_editor.note = note_1
-
     component_rule = component_mappingrule.ComponentMappingRule(hypertts_instance, 
-        mock_editor, note_1, False, 0, model_change_callback.model_updated, model_delete_callback.model_delete)
+        editor_context, model_change_callback.model_updated, model_delete_callback.model_delete)
     component_rule.draw(dialog.getLayout(), 0)
     component_rule.load_model(mapping_rule)
 
@@ -90,14 +97,14 @@ def test_component_mapping_rule_1(qtbot):
     # click run button
     qtbot.mouseClick(component_rule.run_button, aqt.qt.Qt.MouseButton.LeftButton)
     # check that the audio was added correctly
-    assert 'Sound' in note_1.set_values
-    sound_tag = note_1.set_values['Sound']
+    assert 'Sound' in editor_context.note.set_values
+    sound_tag = editor_context.note.set_values['Sound']
     audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
     audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
     assert audio_data['source_text'] == '老人家'
     assert audio_data['voice']['voice_key'] == {'name': 'voice_1'}
-    assert note_1.flush_called == True
+    assert editor_context.note.flush_called == True
 
 def test_component_preset_mapping_rules_1(qtbot):
     # pytest --log-cli-level=DEBUG test_component_presetmappingrules.py -k test_component_preset_mapping_rules_1

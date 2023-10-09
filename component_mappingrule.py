@@ -12,13 +12,10 @@ logger = logging_utils.get_child_logger(__name__)
 
 class ComponentMappingRule(component_common.ConfigComponentBase):
 
-    def __init__(self, hypertts, editor, note, add_mode: bool, index, model_change_callback, model_delete_callback):
+    def __init__(self, hypertts, editor_context: config_models.EditorContext, model_change_callback, model_delete_callback):
         self.hypertts = hypertts
         self.model = None
-        self.editor = editor
-        self.note = note
-        self.add_mode = add_mode
-        self.index = index
+        self.editor_context = editor_context
         self.model_change_callback = model_change_callback
         self.model_delete_callback = model_delete_callback
 
@@ -40,9 +37,9 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         # todo: needs to draw itself into a gridlayout
 
         self.preview_button = aqt.qt.QPushButton('Preview')
-        self.preview_button.setObjectName(f'preview_button_{self.index}')
+        self.preview_button.setObjectName(f'preview_button_{gridlayout_index}')
         self.run_button = aqt.qt.QPushButton('Run')
-        self.run_button.setObjectName(f'run_button_{self.index}')
+        self.run_button.setObjectName(f'run_button_{gridlayout_index}')
         
         column_index = 0
         gridlayout.addWidget(self.preview_button, gridlayout_index, column_index)
@@ -52,7 +49,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         gridlayout.addWidget(preset_description_label)
 
         self.preset_name_label = aqt.qt.QLabel()
-        self.preset_name_label.setObjectName(f'preset_name_label_{self.index}')
+        self.preset_name_label.setObjectName(f'preset_name_label_{gridlayout_index}')
         gridlayout.addWidget(self.preset_name_label, gridlayout_index, column_index + 2)
 
         self.rule_type_group = aqt.qt.QButtonGroup()
@@ -69,7 +66,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         gridlayout.addWidget(self.enabled_checkbox, gridlayout_index, column_index + 5)
 
         self.delete_rule_button = aqt.qt.QPushButton('Delete')
-        self.delete_rule_button.setObjectName(f'delete_rule_button_{self.index}')
+        self.delete_rule_button.setObjectName(f'delete_rule_button_{gridlayout_index}')
         gridlayout.addWidget(self.delete_rule_button, gridlayout_index, column_index + 6)
 
         # wire events
@@ -111,10 +108,10 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     # =================
 
     def sound_preview_task(self):
-        if self.note == None:
+        if self.editor_context.note == None:
             raise errors.NoNotesSelectedPreview()
         preset = self.hypertts.load_preset(self.model.preset_id)
-        self.hypertts.preview_note_audio(preset, self.note, None)
+        self.hypertts.preview_note_audio(preset, self.editor_context.note, None)
         return True
 
     def sound_preview_task_done(self, result):
@@ -135,7 +132,8 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     def apply_note_editor_task(self):
         logger.debug('apply_note_editor_task')
         preset = self.hypertts.load_preset(self.model.preset_id)
-        self.hypertts.editor_note_add_audio(preset, self.editor, self.note, self.add_mode, None)
+        self.hypertts.editor_note_add_audio(preset, 
+            self.editor_context.editor, self.editor_context.note, self.editor_context.add_mode, None)
         return True
 
     def apply_note_editor_task_done(self, result):

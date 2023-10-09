@@ -3,6 +3,7 @@ import aqt.qt
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 component_mappingrule = __import__('component_mappingrule', globals(), locals(), [], sys._addon_import_level_base)
+component_choosepreset = __import__('component_choosepreset', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
@@ -13,14 +14,12 @@ logger = logging_utils.get_child_logger(__name__)
 
 class ComponentPresetMappingRules(component_common.ConfigComponentBase):
 
-    def __init__(self, hypertts, dialog, deck_note_type: config_models.DeckNoteType, editor, note, add_mode):
+    def __init__(self, hypertts, dialog, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
         self.hypertts = hypertts
         self.dialog = dialog
         self.model = config_models.PresetMappingRules()
         self.deck_note_type = deck_note_type
-        self.editor = editor
-        self.note = note
-        self.add_mode = add_mode
+        self.editor_context = editor_context
         self.rules_components = []
         self.model_changed = False
 
@@ -112,7 +111,7 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
 
     def choose_preset(self) -> str:
         """returns the preset id of the chosen preset, or None if user cancels"""
-        pass
+        return component_choosepreset.get_preset_id(self.hypertts, self.editor_context)
 
     def add_rule_button_pressed(self):
         preset_id = self.choose_preset()
@@ -168,9 +167,9 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
 # factory and setup functions for ComponentPresetMappingRules
 # ===========================================================
 
-def create_component(hypertts, parent_dialog, deck_note_type: config_models.DeckNoteType, editor, note, add_mode) -> ComponentPresetMappingRules:
+def create_component(hypertts, parent_dialog, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext) -> ComponentPresetMappingRules:
     mapping_rules = ComponentPresetMappingRules(hypertts, 
-        parent_dialog, deck_note_type, editor, note, add_mode)
+        parent_dialog, deck_note_type, editor_context)
     mapping_rules.draw(parent_dialog.getLayout())
     mapping_rules.load_model(hypertts.load_mapping_rules())
     return mapping_rules
