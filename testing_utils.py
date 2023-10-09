@@ -123,6 +123,9 @@ class MockAnkiUtils():
         # time
         self.current_time = datetime.datetime.now()
 
+        # dialogs
+        self.dialog_input_fn_map = {}
+
     def get_config(self):
         return self.config
 
@@ -316,6 +319,9 @@ class MockAnkiUtils():
         logger.debug(f'generating uuid: {result}')
         self.uuid_current_num += 1
         return result
+
+    def wait_for_dialog_input(self, dialog, dialog_id):
+        self.dialog_input_fn_map[dialog_id](dialog)
 
 class MockServiceManager():
     def __init__(self):

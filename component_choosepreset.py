@@ -5,6 +5,7 @@ from typing import List, Optional
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
+constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 
 
 class ComponentChoosePreset(component_common.ComponentBase):
@@ -13,6 +14,7 @@ class ComponentChoosePreset(component_common.ComponentBase):
         self.dialog = dialog
         self.new_preset = True
         self.preset_id = None
+        self.selected_ok = False
 
     def draw(self, layout):
         self.vlayout = aqt.qt.QVBoxLayout()
@@ -48,10 +50,13 @@ class ComponentChoosePreset(component_common.ComponentBase):
         # add buttons at the bottom
         hlayout = aqt.qt.QHBoxLayout()
         hlayout.addStretch()
-        self.dialog_button_box = aqt.qt.QDialogButtonBox(aqt.qt.QDialogButtonBox.StandardButton.Ok|aqt.qt.QDialogButtonBox.StandardButton.Cancel)
-        self.dialog_button_box.accepted.connect(self.dialog.accept)
-        self.dialog_button_box.rejected.connect(self.dialog.reject)
-        hlayout.addWidget(self.dialog_button_box)
+        self.ok_button = aqt.qt.QPushButton('Ok')
+        self.cancel_button = aqt.qt.QPushButton('Cancel')
+        hlayout.addWidget(self.ok_button)
+        hlayout.addWidget(self.cancel_button)
+
+        self.ok_button.pressed.connect(self.ok_button_pressed)
+        self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
         self.vlayout.addStretch()
         self.vlayout.addLayout(hlayout)
@@ -71,3 +76,33 @@ class ComponentChoosePreset(component_common.ComponentBase):
     def preset_combo_box_changed(self, index):
         self.preset_id = self.preset_combo_box.itemData(index).id
         self.update_controls_state()
+
+    def ok_button_pressed(self):
+        self.selected_ok = True
+
+    def cancel_button_pressed(self):
+        self.selected_ok = False
+
+# factory methods
+
+class ChoosePresetDialog(aqt.qt.QDialog):
+    def __init__(self, hypertts):
+        super(aqt.qt.QDialog, self).__init__()
+        self.setupUi()
+        self.choose_preset = ComponentChoosePreset(hypertts, self)
+        self.choose_preset.draw(self.main_layout)
+    
+    def setupUi(self):
+        self.setWindowTitle(constants.GUI_CHOOSE_PRESET_DIALOG_TITLE)        
+        self.main_layout = aqt.qt.QVBoxLayout(self)
+
+    def close(self):
+        self.accept()
+
+def get_preset_id(hypertts) -> Optional[str]:
+    dialog = ChoosePresetDialog(hypertts)
+    hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_CHOOSE_PRESET)
+    if dialog.choose_preset.selected_ok:
+        return dialog.choose_preset.preset_id
+    else:
+        return None

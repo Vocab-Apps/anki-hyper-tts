@@ -60,6 +60,7 @@ class PreferencesDialog(aqt.qt.QDialog):
     def close(self):
         self.accept()
 
+
 class DialogBase(aqt.qt.QDialog):
     def __init__(self):
         super(aqt.qt.QDialog, self).__init__()

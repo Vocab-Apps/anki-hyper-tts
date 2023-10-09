@@ -258,3 +258,7 @@ class AnkiUtils():
 
     def get_uuid(self):
         return str(uuid.uuid4())
+
+    def wait_for_dialog_input(self, dialog, dialog_id):
+        logger.info(f'waiting for dialog input: {dialog_id}')
+        dialog.exec()

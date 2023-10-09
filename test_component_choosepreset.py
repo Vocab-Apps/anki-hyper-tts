@@ -77,3 +77,23 @@ def test_choose_preset_manual(qtbot):
 
     if os.environ.get('HYPERTTS_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec()
+
+
+def test_get_preset_id_full_workflow_1(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
+    # create some dummy presets
+    hypertts_instance.anki_utils.config[constants.CONFIG_PRESETS] = {
+        'uuid_0': {'name': 'my preset 4'},
+        'uuid_1': {'name': 'my preset 5'},
+        'uuid_2': {'name': 'my preset 6'},
+        'uuid_3': {'name': 'my preset 7'}
+    }
+
+    # user cancels
+    def dialog_input_sequence(dialog):
+        # press cancel button
+        qtbot.mouseClick(dialog.choose_preset.cancel_button, aqt.qt.Qt.LeftButton)
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHOOSE_PRESET] = dialog_input_sequence
+    preset_id = component_choosepreset.get_preset_id(hypertts_instance)
+    assert preset_id == None
