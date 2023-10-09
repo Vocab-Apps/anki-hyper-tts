@@ -103,6 +103,9 @@ def get_preset_id(hypertts) -> Optional[str]:
     dialog = ChoosePresetDialog(hypertts)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_CHOOSE_PRESET)
     if dialog.choose_preset.selected_ok:
-        return dialog.choose_preset.preset_id
+        if dialog.choose_preset.new_preset:
+            pass
+        else:
+            return dialog.choose_preset.preset_id
     else:
         return None

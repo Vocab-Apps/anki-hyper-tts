@@ -97,3 +97,27 @@ def test_get_preset_id_full_workflow_1(qtbot):
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHOOSE_PRESET] = dialog_input_sequence
     preset_id = component_choosepreset.get_preset_id(hypertts_instance)
     assert preset_id == None
+
+    # user selects second preset
+    def dialog_input_sequence(dialog):
+        # select existing preset
+        dialog.choose_preset.existing_preset_radio_button.setChecked(True)
+        # select second preset
+        dialog.choose_preset.preset_combo_box.setCurrentIndex(1)
+        # press OK button
+        qtbot.mouseClick(dialog.choose_preset.ok_button, aqt.qt.Qt.LeftButton)
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHOOSE_PRESET] = dialog_input_sequence
+    preset_id = component_choosepreset.get_preset_id(hypertts_instance)
+    assert preset_id == 'uuid_1'
+
+    # user selects second preset but cancels
+    def dialog_input_sequence(dialog):
+        # select existing preset
+        dialog.choose_preset.existing_preset_radio_button.setChecked(True)
+        # select second preset
+        dialog.choose_preset.preset_combo_box.setCurrentIndex(1)
+        # press cancel button
+        qtbot.mouseClick(dialog.choose_preset.cancel_button, aqt.qt.Qt.LeftButton)
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHOOSE_PRESET] = dialog_input_sequence
+    preset_id = component_choosepreset.get_preset_id(hypertts_instance)
+    assert preset_id == None

@@ -60,41 +60,10 @@ class PreferencesDialog(aqt.qt.QDialog):
     def close(self):
         self.accept()
 
-
 class DialogBase(aqt.qt.QDialog):
     def __init__(self):
         super(aqt.qt.QDialog, self).__init__()
 
-class BatchDialog(DialogBase):
-    def __init__(self, hypertts):
-        super(DialogBase, self).__init__()
-        self.hypertts = hypertts
-        self.setWindowTitle(constants.GUI_COLLECTION_DIALOG_TITLE)
-        self.main_layout = aqt.qt.QVBoxLayout(self)        
-
-    def configure_browser_existing_preset(self, note_id_list, preset_id: str):
-        self.batch_component = component_batch.create_component_batch_browser_existing_preset(
-            self.hypertts, self, note_id_list, preset_id)
-
-    def configure_browser_new_preset(self, note_id_list, new_preset_name: str):
-        self.batch_component = component_batch.create_component_batch_browser_new_preset(
-            self.hypertts, self, note_id_list, new_preset_name)
-
-    def configure_editor(self, note, editor, add_mode):
-        self.batch_component.configure_editor(note, editor, add_mode)
-        self.setupUi()
-        self.batch_component.no_settings_editor()
-
-    def verify_profile_saved(self):
-        self.batch_component.save_profile_if_changed()
-
-    def closeEvent(self, evnt):
-        self.verify_profile_saved()
-        super(DialogBase, self).closeEvent(evnt)
-
-    def close(self):
-        self.verify_profile_saved()
-        self.accept()
 
 class RealtimeDialog(DialogBase):
     def __init__(self, hypertts, card_ord):

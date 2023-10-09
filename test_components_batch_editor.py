@@ -11,6 +11,7 @@ import constants
 import testing_utils
 import gui_testing_utils
 import component_batch
+import config_models
 
 logger = logging.getLogger(__name__)
 
@@ -288,3 +289,18 @@ def test_batch_dialog_editor_template_error(qtbot):
     assert label_error_text == expected_label_text
 
     # dialog.exec()
+
+def test_editor_get_new_preset_id_1(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    mock_editor = testing_utils.MockEditor()
+    editor_context = config_models.EditorContext(note, mock_editor, False)
+
+    # user cancels
+    def dialog_input_sequence(dialog):
+        # user presses cancel button
+        qtbot.mouseClick(dialog.batch_component.cancel_button, aqt.qt.Qt.LeftButton)
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    preset_id = component_batch.get_new_preset_id(hypertts_instance, editor_context)
+    assert preset_id == None

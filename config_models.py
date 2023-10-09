@@ -563,6 +563,12 @@ class DeckNoteType:
     deck_id: int
 
 @dataclass
+class EditorContext:
+    note: any
+    editor: any
+    add_mode: bool
+
+@dataclass
 class MappingRule:
     preset_id: str
     rule_type: constants.MappingRuleType
