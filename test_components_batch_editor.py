@@ -318,3 +318,14 @@ def test_editor_get_new_preset_id_1(qtbot):
     # load the preset, make sure source field is English
     preset = hypertts_instance.load_preset(preset_id)
     assert preset.source.source_field == 'English'
+
+    # user selections English source field then saves, but ultimately cancels
+    def dialog_input_sequence(dialog):
+        dialog.batch_component.source.source_field_combobox.setCurrentText('English')
+        # click save button
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.LeftButton)
+        # user presses cancel button
+        qtbot.mouseClick(dialog.batch_component.cancel_button, aqt.qt.Qt.LeftButton)
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    preset_id = component_batch.get_new_preset_id(hypertts_instance, editor_context)
+    assert preset_id == None

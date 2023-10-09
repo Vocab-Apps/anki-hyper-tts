@@ -30,6 +30,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.model_changed = False
         self.note = None
         self.last_saved_preset_id = None
+        self.editor_new_preset_id = None
 
         # create certain widgets upfront
         self.profile_name_label = aqt.qt.QLabel()
@@ -390,6 +391,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
     def profile_save_and_close_button_pressed(self):
         self.save_profile()
+        self.editor_new_preset_id = self.last_saved_preset_id
         self.dialog.close()
 
     def apply_button_pressed(self):
@@ -551,4 +553,4 @@ def get_new_preset_id(hypertts, editor_context: config_models.EditorContext):
     dialog = BatchDialog(hypertts)
     dialog.configure_editor_new_preset(editor_context)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_BATCH)
-    return dialog.batch_component.last_saved_preset_id
+    return dialog.batch_component.editor_new_preset_id
