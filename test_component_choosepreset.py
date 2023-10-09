@@ -31,9 +31,7 @@ def test_choose_preset_no_presets(qtbot):
 
 
 def test_choose_preset_existing_presets(qtbot):
-    config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-    dialog = gui_testing_utils.build_empty_dialog()
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
 
     # create some dummy presets
     hypertts_instance.anki_utils.config[constants.CONFIG_PRESETS] = {
@@ -41,31 +39,42 @@ def test_choose_preset_existing_presets(qtbot):
         'uuid_1': {'name': 'my preset 5'}
     }
 
-    choosepreset = component_choosepreset.ComponentChoosePreset(hypertts_instance, dialog)
-    choosepreset.draw(dialog.layout())
-    # check the defaults
-    assert choosepreset.new_preset_radio_button.isChecked()
-    assert choosepreset.new_preset == True
-    # presets are available, so the other controls should be enabled
-    assert choosepreset.existing_preset_radio_button.isEnabled() == True
-    assert choosepreset.preset_combo_box.isEnabled() == True
-    # preset_combo_box should have two entries
-    assert choosepreset.preset_combo_box.count() == 2
-    # check the entries
-    assert choosepreset.preset_combo_box.itemText(0) == 'my preset 4'
-    assert choosepreset.preset_combo_box.itemText(1) == 'my preset 5'
+    def dialog_input_sequence(dialog):
+        # check the defaults
+        assert dialog.choose_preset.new_preset_radio_button.isChecked()
+        assert dialog.choose_preset.new_preset == True
+        # presets are available, so the other controls should be enabled
+        assert dialog.choose_preset.existing_preset_radio_button.isEnabled() == True
+        assert dialog.choose_preset.preset_combo_box.isEnabled() == False
+        # preset_combo_box should have two entries
+        assert dialog.choose_preset.preset_combo_box.count() == 2
+        # check the entries
+        assert dialog.choose_preset.preset_combo_box.itemText(0) == 'my preset 4'
+        assert dialog.choose_preset.preset_combo_box.itemText(1) == 'my preset 5'
 
-    # the first preset should be selected
-    assert choosepreset.preset_id == 'uuid_0'
+        # check the existing preset radio button
+        dialog.choose_preset.existing_preset_radio_button.setChecked(True)
+        # combo box should now be enabled
+        assert dialog.choose_preset.preset_combo_box.isEnabled() == True
 
-    # choose second item in combox box
-    choosepreset.preset_combo_box.setCurrentIndex(1)
+        # the first preset should be selected
+        assert dialog.choose_preset.preset_id == 'uuid_0'
+
+        # choose second item in combox box
+        dialog.choose_preset.preset_combo_box.setCurrentIndex(1)
+        # check the preset_id
+        assert dialog.choose_preset.preset_id == 'uuid_1'
+        # choose first item in combox box
+        dialog.choose_preset.preset_combo_box.setCurrentIndex(0)
+
+        # click OK button
+        qtbot.mouseClick(dialog.choose_preset.ok_button, aqt.qt.Qt.LeftButton)
+    
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHOOSE_PRESET] = dialog_input_sequence
+    preset_id = component_choosepreset.get_preset_id(hypertts_instance, editor_context)
+
     # check the preset_id
-    assert choosepreset.preset_id == 'uuid_1'
-    # choose first item in combox box
-    choosepreset.preset_combo_box.setCurrentIndex(0)
-    # check the preset_id
-    assert choosepreset.preset_id == 'uuid_0'
+    assert preset_id == 'uuid_0'
 
 def test_choose_preset_manual(qtbot):
     # HYPERTTS_DIALOG_DEBUG=yes pytest test_component_choosepreset.py -k test_choose_preset_manual -s -rPP

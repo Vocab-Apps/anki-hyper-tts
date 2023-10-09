@@ -64,6 +64,8 @@ class ComponentChoosePreset(component_common.ComponentBase):
 
         layout.addLayout(self.vlayout)
 
+        self.update_controls_state()
+
     def update_controls_state(self):
         self.new_preset = self.new_preset_radio_button.isChecked()
         self.preset_combo_box.setEnabled(not self.new_preset)
