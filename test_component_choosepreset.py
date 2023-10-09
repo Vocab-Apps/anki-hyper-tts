@@ -98,6 +98,8 @@ def test_get_preset_id_full_workflow_1(qtbot):
     def dialog_input_sequence(dialog):
         # press cancel button
         qtbot.mouseClick(dialog.choose_preset.cancel_button, aqt.qt.Qt.LeftButton)
+        # dialog should be closed
+        assert dialog.closed == True
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHOOSE_PRESET] = dialog_input_sequence
     preset_id = component_choosepreset.get_preset_id(hypertts_instance, editor_context)
     assert preset_id == None
@@ -143,4 +145,4 @@ def test_get_preset_id_full_workflow_1(qtbot):
     assert preset_id != None
     # load the preset, make sure source field is English
     preset = hypertts_instance.load_preset(preset_id)
-    assert preset.source.source_field == 'English'    
+    assert preset.source.source_field == 'English'

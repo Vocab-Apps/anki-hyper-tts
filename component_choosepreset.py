@@ -83,6 +83,7 @@ class ComponentChoosePreset(component_common.ComponentBase):
 
     def cancel_button_pressed(self):
         self.selected_ok = False
+        self.dialog.close()
 
 # factory methods
 
@@ -98,6 +99,7 @@ class ChoosePresetDialog(aqt.qt.QDialog):
         self.main_layout = aqt.qt.QVBoxLayout(self)
 
     def close(self):
+        self.closed = True
         self.accept()
 
 def get_preset_id(hypertts, editor_context: config_models.EditorContext) -> Optional[str]:
