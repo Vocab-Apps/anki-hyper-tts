@@ -116,6 +116,7 @@ class MockAnkiUtils():
         self.uuid_current_num = 0
 
         # responses for dialogs
+        self.ask_user_bool_response = True
         self.ask_user_get_text_response = None
         self.ask_user_choose_from_list_response = None
         self.ask_user_choose_from_list_response_string = None
@@ -259,7 +260,7 @@ class MockAnkiUtils():
 
     def ask_user(self, message, parent):
         # assume true
-        return True
+        return self.ask_user_bool_response
 
     def ask_user_get_text(self, message, parent, default, title):
         return self.ask_user_get_text_response, 1

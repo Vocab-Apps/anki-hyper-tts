@@ -551,4 +551,4 @@ def get_new_preset_id(hypertts, editor_context: config_models.EditorContext):
     dialog = BatchDialog(hypertts)
     dialog.configure_editor_new_preset(editor_context)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_BATCH)
-    return None
+    return dialog.batch_component.last_saved_preset_id
