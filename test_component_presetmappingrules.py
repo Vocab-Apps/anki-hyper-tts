@@ -195,3 +195,27 @@ def test_component_preset_mapping_rules_cancel_2(qtbot):
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence
     component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)                
+
+    
+def test_component_preset_mapping_rules_cancel_button_3(qtbot):
+    # pytest --log-cli-level=DEBUG test_component_presetmappingrules.py -k test_component_preset_mapping_rules_1
+
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+
+    # create simple preset
+    preset_id = 'uuid_0'
+    preset_name = 'my preset 42'
+    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id, name=preset_name)
+    
+    def dialog_input_sequence(dialog):
+        assert dialog.mapping_rules.note_type_label.text() == 'Chinese Words'
+        assert dialog.mapping_rules.deck_name_label.text() == 'deck 1'
+        
+        # press the cancel button
+        qtbot.mouseClick(dialog.mapping_rules.cancel_button, aqt.qt.Qt.LeftButton)
+
+        # dialog should be closed
+        assert dialog.closed == True
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence    
+    component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)

@@ -70,6 +70,7 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         # connect events
         self.add_rule_button.clicked.connect(self.add_rule_button_pressed)
         self.save_button.pressed.connect(self.save_button_pressed)
+        self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
         layout.addLayout(self.vlayout)
 
