@@ -146,8 +146,30 @@ def test_component_preset_mapping_rules_1(qtbot):
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence    
     component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
 
-    # re-open the dialog
+    # re-open the dialog, and disable the rule
     def dialog_input_sequence_2(dialog):
+        # we should have one rule now
+        assert len(dialog.mapping_rules.get_model().rules) == 1
+        # the preset name should be displayed
+        preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
+        assert preset_name_label_0.text() == preset_name
+        # the save button should be disabled, we didn't change anything
+        assert dialog.mapping_rules.save_button.isEnabled() == False
+
+        # uncheck the "enabled" checkbox
+        logger.info('marking enabled checkbox as disabled')
+        enabled_checkbox_0 = dialog.findChild(aqt.qt.QCheckBox, 'enabled_checkbox_0')
+        enabled_checkbox_0.setChecked(False)
+
+        # save button should be enabled now
+        assert dialog.mapping_rules.save_button.isEnabled() == True
+
+    logger.debug('re-opening dialog')
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence_2
+    component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)        
+
+    # re-open the dialog and delete the rule
+    def dialog_input_sequence_3(dialog):
         # we should have one rule now
         assert len(dialog.mapping_rules.get_model().rules) == 1
         # the preset name should be displayed
@@ -164,7 +186,7 @@ def test_component_preset_mapping_rules_1(qtbot):
         assert len(dialog.mapping_rules.get_model().rules) == 0
         # save button should be enabled
         assert dialog.mapping_rules.save_button.isEnabled() == True
-    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence_2
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence_3
     component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)        
 
 def test_component_preset_mapping_rules_cancel_2(qtbot):

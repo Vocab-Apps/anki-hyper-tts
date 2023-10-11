@@ -28,6 +28,8 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.model = model
         # draw the presets
         self.refresh_mapping_rules_gridlayout()
+        self.model_changed = False
+        self.update_save_button_state() 
 
     def get_model(self) -> config_models.PresetMappingRules:
         return self.model
@@ -90,6 +92,8 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
 
     def mapping_rule_updated(self, absolute_index, model):
         self.model.rules[absolute_index] = model
+        self.model_changed = True
+        self.update_save_button_state() 
 
     def mapping_rule_deleted(self, absolute_index):
         del self.model.rules[absolute_index]

@@ -29,12 +29,14 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
             self.rule_type_deck_note_type.setChecked(True)
 
         self.enabled_checkbox.setChecked(self.model.enabled)
+        logger.debug(f'enabled_checkbox.isChecked(): {self.enabled_checkbox.isChecked()}')
+
 
     def get_model(self):
         return self.model
 
     def draw(self, gridlayout, gridlayout_index):
-        # todo: needs to draw itself into a gridlayout
+        logger.debug('draw')
 
         self.preview_button = aqt.qt.QPushButton('Preview')
         self.preview_button.setObjectName(f'preview_button_{gridlayout_index}')
@@ -63,6 +65,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         # hlayout.addWidget(self.rule_type_group)
 
         self.enabled_checkbox = aqt.qt.QCheckBox(f'Enabled')
+        self.enabled_checkbox.setObjectName(f'enabled_checkbox_{gridlayout_index}')
         gridlayout.addWidget(self.enabled_checkbox, gridlayout_index, column_index + 5)
 
         self.delete_rule_button = aqt.qt.QPushButton('Delete')
