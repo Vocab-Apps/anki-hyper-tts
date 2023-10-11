@@ -276,10 +276,11 @@ def init(hypertts):
             shortcuts.append(shortcut_entry)
 
     def run_hypertts_settings(editor):
-        logger.info(f'clicked hypertts settings, editor: {editor}')
-        editor_context = hypertts.get_editor_context(editor)
-        deck_note_type = hypertts.get_editor_deck_note_type(editor)
-        component_presetmappingrules.create_dialog(hypertts, deck_note_type, editor_context)
+        with hypertts.error_manager.get_single_action_context('Opening Preset Mapping Rules'):
+            logger.info(f'clicked hypertts settings, editor: {editor}')
+            editor_context = hypertts.get_editor_context(editor)
+            deck_note_type = hypertts.get_editor_deck_note_type(editor)
+            component_presetmappingrules.create_dialog(hypertts, deck_note_type, editor_context)
 
     def setup_editor_buttons(buttons, editor):
         new_button = editor.addButton(gui_utils.get_graphics_path('icon_speaker.png'),
