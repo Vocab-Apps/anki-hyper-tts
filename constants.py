@@ -125,6 +125,8 @@ LABEL_FILTER_ALL = 'All'
 
 BATCH_CONFIG_NEW = 'New Preset'
 
+GUI_TEXT_UNKNOWN_PRESET = 'Unknown Preset'
+
 GUI_TEXT_SOURCE_MODE = """Choose a source mode:
 <b>Simple:</b> your text comes from a single field. In most cases, choose this option.
 <b>Template:</b> text from different fields can be combined together.

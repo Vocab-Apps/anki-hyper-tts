@@ -22,7 +22,10 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     def load_model(self, model):
         logger.info('load_model')
         self.model = model
-        self.preset_name_label.setText(self.hypertts.get_preset_name(self.model.preset_id))
+        try:
+            self.preset_name_label.setText(self.hypertts.get_preset_name(self.model.preset_id))
+        except errors.PresetNotFound as e:
+            self.preset_name_label.setText(constants.GUI_TEXT_UNKNOWN_PRESET)
         if self.model.rule_type == constants.MappingRuleType.NoteType:
             self.rule_type_note_type.setChecked(True)
         elif self.model.rule_type == constants.MappingRuleType.DeckNoteType:
