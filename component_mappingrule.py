@@ -48,14 +48,18 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         
         column_index = 0
         gridlayout.addWidget(self.preview_button, gridlayout_index, column_index)
-        gridlayout.addWidget(self.run_button, gridlayout_index, column_index + 1)
+        column_index += 1
+        gridlayout.addWidget(self.run_button, gridlayout_index, column_index)
+        column_index += 1
 
         preset_description_label = aqt.qt.QLabel('Preset:')
-        gridlayout.addWidget(preset_description_label)
+        gridlayout.addWidget(preset_description_label, gridlayout_index, column_index)
+        column_index += 1
 
         self.preset_name_label = aqt.qt.QLabel()
         self.preset_name_label.setObjectName(f'preset_name_label_{gridlayout_index}')
-        gridlayout.addWidget(self.preset_name_label, gridlayout_index, column_index + 2)
+        gridlayout.addWidget(self.preset_name_label, gridlayout_index, column_index)
+        column_index += 1
 
         self.rule_type_group = aqt.qt.QButtonGroup()
         self.rule_type_note_type = aqt.qt.QRadioButton('Note Type')
@@ -63,17 +67,21 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.rule_type_group.addButton(self.rule_type_note_type)
         self.rule_type_group.addButton(self.rule_type_deck_note_type)
 
-        gridlayout.addWidget(self.rule_type_note_type, gridlayout_index, column_index + 3)
-        gridlayout.addWidget(self.rule_type_deck_note_type, gridlayout_index, column_index + 4)
+        gridlayout.addWidget(self.rule_type_note_type, gridlayout_index, column_index)
+        column_index += 1
+        gridlayout.addWidget(self.rule_type_deck_note_type, gridlayout_index, column_index)
+        column_index += 1
         # hlayout.addWidget(self.rule_type_group)
 
         self.enabled_checkbox = aqt.qt.QCheckBox(f'Enabled')
         self.enabled_checkbox.setObjectName(f'enabled_checkbox_{gridlayout_index}')
-        gridlayout.addWidget(self.enabled_checkbox, gridlayout_index, column_index + 5)
+        gridlayout.addWidget(self.enabled_checkbox, gridlayout_index, column_index)
+        column_index += 1
 
         self.delete_rule_button = aqt.qt.QPushButton('Delete')
         self.delete_rule_button.setObjectName(f'delete_rule_button_{gridlayout_index}')
-        gridlayout.addWidget(self.delete_rule_button, gridlayout_index, column_index + 6)
+        gridlayout.addWidget(self.delete_rule_button, gridlayout_index, column_index)
+        column_index += 1
 
         # wire events
         self.preview_button.clicked.connect(self.preview_button_clicked)

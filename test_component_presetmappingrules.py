@@ -257,6 +257,10 @@ def test_component_preset_mapping_rules_manual_4(qtbot):
     preset_id_2 = 'uuid_1'
     preset_name = 'my preset 43'
     testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id_2, name=preset_name)    
+
+    preset_id_3 = 'uuid_2'
+    preset_name = 'my preset 44'
+    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id_3, name=preset_name)
     
     def dialog_input_sequence(dialog):
         # patch the "choose_preset" function
@@ -271,7 +275,13 @@ def test_component_preset_mapping_rules_manual_4(qtbot):
         def mock_choose_preset():
             return preset_id_2
         dialog.mapping_rules.choose_preset = mock_choose_preset
-        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)        
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
+
+        # add preset 3
+        def mock_choose_preset():
+            return preset_id_3
+        dialog.mapping_rules.choose_preset = mock_choose_preset
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)                
 
         # display dialog
         if os.environ.get('HYPERTTS_DIALOG_DEBUG', 'no') == 'yes':
