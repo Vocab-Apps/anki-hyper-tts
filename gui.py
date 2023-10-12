@@ -201,7 +201,7 @@ def init(hypertts):
 
         def get_launch_dialog_browser_existing_fn(hypertts, browser, preset_id: str):
             def launch():
-                launch_batch_dialog_browser_existing_preset(hypertts, browser, browser.selectedNotes(), preset_id)
+                component_batch.create_component_batch_browser_existing_preset(hypertts, browser.selectedNotes(), preset_id)
             return launch            
 
         def get_launch_realtime_dialog_browser_fn(hypertts, browser):
