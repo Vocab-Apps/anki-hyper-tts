@@ -99,34 +99,6 @@ def launch_preferences_dialog(hypertts):
         dialog.setupUi()
         dialog.exec()        
 
-def launch_batch_dialog_browser_new_preset(hypertts, browser, note_id_list):
-    with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Browser'):
-        logger.info('launch_batch_dialog_browser_new_preset')
-        if len(note_id_list) == 0:
-            raise errors.NoNotesSelected()
-        dialog = BatchDialog(hypertts)
-        new_preset_name = hypertts.get_next_preset_name()
-        dialog.configure_browser_new_preset(note_id_list, new_preset_name)
-        dialog.exec()
-        browser.model.reset()
-
-def launch_batch_dialog_browser_existing_preset(hypertts, browser, note_id_list, preset_id: str):
-    with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Browser'):
-        logger.info('launch_batch_dialog_browser_new_preset')
-        if len(note_id_list) == 0:
-            raise errors.NoNotesSelected()
-        dialog = BatchDialog(hypertts)
-        dialog.configure_browser_existing_preset(note_id_list, preset_id)
-        dialog.exec()
-        browser.model.reset()        
-
-def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
-    with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Editor'):
-        logger.info('launch_batch_dialog_editor')
-        dialog = BatchDialog(hypertts)
-        dialog.configure_editor(note, editor, add_mode)
-        dialog.exec()
-
 def launch_realtime_dialog_browser(hypertts, note_id_list):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Realtime Dialog from Browser'):
         if len(note_id_list) != 1:
