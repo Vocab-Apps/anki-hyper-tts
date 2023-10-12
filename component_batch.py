@@ -532,11 +532,15 @@ class BatchDialog(aqt.qt.QDialog):
         self.accept()
 
 def create_component_batch_browser_existing_preset(hypertts, note_id_list, preset_id: str) -> ComponentBatch:
+    if len(note_id_list) == 0:
+        raise errors.NoNotesSelected()
     dialog = BatchDialog(hypertts)
     dialog.configure_browser_existing_preset(note_id_list, preset_id)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_BATCH)
 
 def create_component_batch_browser_new_preset(hypertts, note_id_list, new_preset_name: str) -> ComponentBatch:
+    if len(note_id_list) == 0:
+        raise errors.NoNotesSelected()    
     dialog = BatchDialog(hypertts)
     dialog.configure_browser_new_preset(note_id_list, new_preset_name)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_BATCH)
