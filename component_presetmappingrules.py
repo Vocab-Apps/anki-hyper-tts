@@ -37,17 +37,32 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
     def draw(self, layout):
         self.vlayout = aqt.qt.QVBoxLayout()
 
+        bold_font = aqt.qt.QFont()
+        bold_font.setBold(True)
+
+        # deck and note type
+        # ==================
+
         hlayout = aqt.qt.QHBoxLayout()
         note_type_description_label = aqt.qt.QLabel('Note Type:')
+        note_type_description_label.setFont(bold_font)
         self.note_type_label = aqt.qt.QLabel(self.hypertts.anki_utils.get_note_type_name(self.deck_note_type.model_id))
         deck_description_label = aqt.qt.QLabel('Deck:')
+        deck_description_label.setFont(bold_font)
         self.deck_name_label = aqt.qt.QLabel(self.hypertts.anki_utils.get_deck_name(self.deck_note_type.deck_id))
         hlayout.addWidget(note_type_description_label)
         hlayout.addWidget(self.note_type_label)
         hlayout.addWidget(deck_description_label)
         hlayout.addWidget(self.deck_name_label)
-
+        hlayout.addStretch()
         self.vlayout.addLayout(hlayout) 
+
+        # instructions
+        # ============
+        instructions_label = aqt.qt.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_MAPPING_RULES))
+        instructions_label.setWordWrap(True)
+        self.vlayout.addWidget(instructions_label)
+
 
         # display the mapping rules
         self.mapping_rules_gridlayout = aqt.qt.QGridLayout()

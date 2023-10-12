@@ -127,6 +127,12 @@ BATCH_CONFIG_NEW = 'New Preset'
 
 GUI_TEXT_UNKNOWN_PRESET = 'Unknown Preset'
 
+GUI_TEXT_MAPPING_RULES = """Configure presets for this deck or note type. You can either associate the rule with:
+<b>Note Type:</b> This preset will apply to all notes of this type, regardless of the deck.
+<b>Deck and Note Type:</b> This preset will apply to all notes of this type, in this deck only.
+After configuring rules, you will be able use the Add Audio and Preview buttons in the editor."""
+
+
 GUI_TEXT_SOURCE_MODE = """Choose a source mode:
 <b>Simple:</b> your text comes from a single field. In most cases, choose this option.
 <b>Template:</b> text from different fields can be combined together.
