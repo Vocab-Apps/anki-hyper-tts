@@ -775,193 +775,189 @@ def test_batch_dialog_1(qtbot):
     # test saving of config
     # =====================
 
-    dialog = gui_testing_utils.build_empty_dialog()
-    batch = component_batch.create_component_batch_browser_new_preset(
-        hypertts_instance, dialog, note_id_list, 'my preset 1')
+    def dialog_input_sequence(dialog):
+        # select a source field and target field
+        dialog.batch_component.source.source_field_combobox.setCurrentText('English')
+        dialog.batch_component.target.target_field_combobox.setCurrentText('Sound')
 
-    # select a source field and target field
-    batch.source.source_field_combobox.setCurrentText('English')
-    batch.target.target_field_combobox.setCurrentText('Sound')
+        # set profile name
+        # click rename button
+        preset_name = 'my preset 2'
+        hypertts_instance.anki_utils.ask_user_get_text_response = preset_name
+        qtbot.mouseClick(dialog.batch_component.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # batch.profile_name_combobox.setCurrentText('batch profile 1')
 
-    # set profile name
-    # click rename button
-    preset_name = 'my preset 2'
-    hypertts_instance.anki_utils.ask_user_get_text_response = preset_name
-    qtbot.mouseClick(batch.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
-    # batch.profile_name_combobox.setCurrentText('batch profile 1')
+        # save button should be enabled
+        assert dialog.batch_component.profile_save_button.isEnabled() == True
+        # save
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # should be disabled after saving
+        assert dialog.batch_component.profile_save_button.isEnabled() == False
+        assert dialog.batch_component.profile_save_button.text() == 'Save'
 
-    # save button should be enabled
-    assert batch.profile_save_button.isEnabled() == True
-    # save
-    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
-    # should be disabled after saving
-    assert batch.profile_save_button.isEnabled() == False
-    assert batch.profile_save_button.text() == 'Save'
+        print(hypertts_instance.anki_utils.written_config)
+        expected_uuid = 'uuid_1'
+        assert expected_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
-    print(hypertts_instance.anki_utils.written_config)
-    expected_uuid = 'uuid_1'
-    assert expected_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
+        # try to deserialize that config, it should have the English field selected
+        deserialized_model = hypertts_instance.load_preset(expected_uuid)
+        assert deserialized_model.name == preset_name
+        assert deserialized_model.source.source_field == 'English'
+        assert deserialized_model.target.target_field == 'Sound'
 
-    # try to deserialize that config, it should have the English field selected
-    deserialized_model = hypertts_instance.load_preset(expected_uuid)
-    assert deserialized_model.name == preset_name
-    assert deserialized_model.source.source_field == 'English'
-    assert deserialized_model.target.target_field == 'Sound'
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
 
     # test loading of config
     # ======================
 
-    dialog = dialog = gui_testing_utils.build_empty_dialog()
-    batch = component_batch.create_component_batch_browser_new_preset(
-            hypertts_instance, dialog, note_id_list, 'my preset 1')    
-    # dialog.exec()
+    def dialog_input_sequence(dialog):
+        # we should be able to open a profile
+        assert dialog.batch_component.profile_open_button.isEnabled() == True
+        hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'my preset 2'
+        # click the open profile button
+        qtbot.mouseClick(dialog.batch_component.profile_open_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # now, the preset should be loaded
+        # save button should be disabled, we didn't make any changes
+        assert dialog.batch_component.profile_save_button.isEnabled() == False
 
-    # we should be able to open a profile
-    assert batch.profile_open_button.isEnabled() == True
-    hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'my preset 2'
-    # click the open profile button
-    qtbot.mouseClick(batch.profile_open_button, aqt.qt.Qt.MouseButton.LeftButton)
-    # now, the preset should be loaded
-    # save button should be disabled, we didn't make any changes
-    assert batch.profile_save_button.isEnabled() == False
-
-    # assertions on GUI
-    assert batch.source.source_field_combobox.currentText() == 'English'
-    assert batch.target.target_field_combobox.currentText() == 'Sound'
-    assert batch.profile_name_label.text() == 'my preset 2'
+        # assertions on GUI
+        assert dialog.batch_component.source.source_field_combobox.currentText() == 'English'
+        assert dialog.batch_component.target.target_field_combobox.currentText() == 'Sound'
+        assert dialog.batch_component.profile_name_label.text() == 'my preset 2'
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')        
     
     # dialog.exec()
 
     # test loading with empty preset, then duplicating
     # ================================================
 
-    dialog = gui_testing_utils.build_empty_dialog()
-    batch = component_batch.create_component_batch_browser_new_preset(
-        hypertts_instance, dialog, note_id_list, 'my preset 1')
+    def dialog_input_sequence(dialog):
+        # we just created a new profile, source field is not english
+        assert dialog.batch_component.source.source_field_combobox.currentText() != 'English'
 
-    # we just created a new profile, source field is not english
-    assert batch.source.source_field_combobox.currentText() != 'English'
+        # wo we'll duplicate the profile 'my preset 2'
+        assert dialog.batch_component.profile_duplicate_button.isEnabled() == True
+        hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'my preset 2'
 
-    # wo we'll duplicate the profile 'my preset 2'
-    assert batch.profile_duplicate_button.isEnabled() == True
-    hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'my preset 2'
+        # reset the uuid counter to be more predictable
+        hypertts_instance.anki_utils.uuid_current_num = 10
+        expected_uuid = f'uuid_{hypertts_instance.anki_utils.uuid_current_num + 1}'
+        # press the duplicate button
+        qtbot.mouseClick(dialog.batch_component.profile_duplicate_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # reset the uuid counter to be more predictable
-    hypertts_instance.anki_utils.uuid_current_num = 10
-    expected_uuid = f'uuid_{hypertts_instance.anki_utils.uuid_current_num + 1}'
-    # press the duplicate button
-    qtbot.mouseClick(batch.profile_duplicate_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # profile name should have changed
+        assert dialog.batch_component.profile_name_label.text() == 'my preset 2 (copy)'
+        # the source field should be english, just like for 'my preset 2'
+        assert dialog.batch_component.source.source_field_combobox.currentText() == 'English'
 
-    # profile name should have changed
-    assert batch.profile_name_label.text() == 'my preset 2 (copy)'
-    # the source field should be english, just like for 'my preset 2'
-    assert batch.source.source_field_combobox.currentText() == 'English'
+        # assert save button is enabled
+        assert dialog.batch_component.profile_save_button.isEnabled() == True
+        # save the preset
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # assert save button is enabled
-    assert batch.profile_save_button.isEnabled() == True
-    # save the preset
-    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # make sure the preset was saved
+        pprint.pprint(hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS])
+        assert expected_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
+        # ensure the name of the preset that was saved is correct
+        assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][expected_uuid]['name'] == 'my preset 2 (copy)'
 
-    # make sure the preset was saved
-    pprint.pprint(hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS])
-    assert expected_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
-    # ensure the name of the preset that was saved is correct
-    assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][expected_uuid]['name'] == 'my preset 2 (copy)'
+        # rename the preset, and save it 
+        hypertts_instance.anki_utils.ask_user_get_text_response = 'my preset 3'
+        qtbot.mouseClick(dialog.batch_component.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # save
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # make sure the name is correct
+        assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][expected_uuid]['name'] == 'my preset 3'
 
-    # rename the preset, and save it 
-    hypertts_instance.anki_utils.ask_user_get_text_response = 'my preset 3'
-    qtbot.mouseClick(batch.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
-    # save
-    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
-    # make sure the name is correct
-    assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][expected_uuid]['name'] == 'my preset 3'
-
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
 
     # test launching with a particular preset
     # =======================================
 
-    dialog = dialog = gui_testing_utils.build_empty_dialog()
-    batch = component_batch.create_component_batch_browser_existing_preset(
-            hypertts_instance, dialog, note_id_list, 'uuid_1')
+    def dialog_input_sequence(dialog):
 
-    # assertions on GUI
-    assert batch.source.source_field_combobox.currentText() == 'English'
-    assert batch.target.target_field_combobox.currentText() == 'Sound'
+        # assertions on GUI
+        assert dialog.batch_component.source.source_field_combobox.currentText() == 'English'
+        assert dialog.batch_component.target.target_field_combobox.currentText() == 'Sound'
 
-    # dialog.exec()
+        # dialog.exec()
 
-    assert batch.profile_save_button.isEnabled() == False    
+        assert dialog.batch_component.profile_save_button.isEnabled() == False    
 
-    # play sound preview
-    # ==================
+        # play sound preview
+        # ==================
 
-    # select second row
-    index_second_row = batch.preview.batch_preview_table_model.createIndex(1, 0)
-    batch.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)
-    # select voice
-    batch.voice_selection.voices_combobox.setCurrentIndex(1)
-    # press preview button
-    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
-    # dialog.exec()
+        # select second row
+        index_second_row = dialog.batch_component.preview.batch_preview_table_model.createIndex(1, 0)
+        dialog.batch_component.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)
+        # select voice
+        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(1)
+        # press preview button
+        qtbot.mouseClick(dialog.batch_component.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # dialog.exec()
 
-    assert hypertts_instance.anki_utils.played_sound == {
-        'source_text': 'hello',
-        'voice': {
-            'gender': 'Male', 
-            'language': 'fr_FR', 
-            'name': 'voice_a_1', 
-            'service': 'ServiceA',
-            'voice_key': {'name': 'voice_1'}
-        },
-        'options': {}
-    }    
+        assert hypertts_instance.anki_utils.played_sound == {
+            'source_text': 'hello',
+            'voice': {
+                'gender': 'Male', 
+                'language': 'fr_FR', 
+                'name': 'voice_a_1', 
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_1'}
+            },
+            'options': {}
+        }    
 
-    # load audio
-    # ==========
+        # load audio
+        # ==========
 
-    batch.source.source_field_combobox.setCurrentText('Chinese')
-    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
+        dialog.batch_component.source.source_field_combobox.setCurrentText('Chinese')
+        qtbot.mouseClick(dialog.batch_component.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # make sure notes were updated
-    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    assert 'Sound' in note_1.set_values 
+        # make sure notes were updated
+        note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+        assert 'Sound' in note_1.set_values 
 
-    sound_tag = note_1.set_values['Sound']
-    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
-    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        sound_tag = note_1.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
-    assert audio_data['source_text'] == '老人家'
+        assert audio_data['source_text'] == '老人家'
 
-    note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
-    assert 'Sound' in note_2.set_values 
+        note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
+        assert 'Sound' in note_2.set_values 
 
-    sound_tag = note_2.set_values['Sound']
-    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
-    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        sound_tag = note_2.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
-    assert audio_data['source_text'] == '你好'
+        assert audio_data['source_text'] == '你好'
 
-    # button state
-    assert batch.apply_button.isEnabled() == False
-    assert batch.cancel_button.isEnabled() == True
-    assert batch.cancel_button.text() == 'Close'
+        # button state
+        assert dialog.batch_component.apply_button.isEnabled() == False
+        assert dialog.batch_component.cancel_button.isEnabled() == True
+        assert dialog.batch_component.cancel_button.text() == 'Close'
 
-    # delete profile
-    # ==============
+        # delete profile
+        # ==============
 
 
-    assert batch.profile_name_label.text() == 'my preset 2'
-    assert batch.profile_delete_button.isEnabled() == True
-    qtbot.mouseClick(batch.profile_delete_button, aqt.qt.Qt.MouseButton.LeftButton)
+        assert dialog.batch_component.profile_name_label.text() == 'my preset 2'
+        assert dialog.batch_component.profile_delete_button.isEnabled() == True
+        qtbot.mouseClick(dialog.batch_component.profile_delete_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # make sure the profile was deleted
-    assert 'uuid_1' not in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
+        # make sure the profile was deleted
+        assert 'uuid_1' not in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
-    # we should have a new preset
-    assert batch.profile_name_label.text() == 'Preset 1'
+        # we should have a new preset
+        assert dialog.batch_component.profile_name_label.text() == 'Preset 1'
+    
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_existing_preset(hypertts_instance, note_id_list, 'uuid_1')
 
-
-    # dialog.exec()
 
 def test_batch_dialog_new_preset_save_enabled(qtbot):
     # create a preset
