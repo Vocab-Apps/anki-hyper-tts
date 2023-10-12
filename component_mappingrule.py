@@ -59,7 +59,9 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.preset_name_label = aqt.qt.QLabel()
         self.preset_name_label.setObjectName(f'preset_name_label_{gridlayout_index}')
         gridlayout.addWidget(self.preset_name_label, gridlayout_index, column_index)
+        gridlayout.setColumnStretch(column_index, 1)
         column_index += 1
+
 
         self.rule_type_group = aqt.qt.QButtonGroup()
         self.rule_type_note_type = aqt.qt.QRadioButton('Note Type')
