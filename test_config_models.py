@@ -941,6 +941,12 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['name'], 'preset_1')
         self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['uuid'], expected_preset_1_uuid)
 
+        # try to run migration again, nothing should happen
+        updated_config = config_models.migrate_configuration(anki_utils, updated_config)
+        self.assertIn(expected_preset_1_uuid, updated_config['presets'])
+        self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['name'], 'preset_1')
+        self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['uuid'], expected_preset_1_uuid)        
+
 
     def test_rule_applies(self):
         rule = config_models.MappingRule(preset_id='preset_1', 

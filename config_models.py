@@ -615,7 +615,7 @@ def deserialize_preset_mapping_rules(preset_mapping_rules_config):
     return databind.json.load(preset_mapping_rules_config, PresetMappingRules)
 
 def migrate_configuration(anki_utils, config):
-    current_config_schema_version = config.get(constants.CONFIG_SCHEMA_VERSION, 0)
+    current_config_schema_version = config.get(constants.CONFIG_SCHEMA, 0)
     if current_config_schema_version < 2:
         config[constants.CONFIG_PRESETS] = {}
         # need to convert presets to the uuid format

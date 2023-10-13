@@ -2,6 +2,7 @@ import sys
 import aqt.qt
 
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
+component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
@@ -62,6 +63,10 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         gridlayout.setColumnStretch(column_index, 1)
         column_index += 1
 
+        self.edit_button = aqt.qt.QPushButton('Edit')
+        self.edit_button.setObjectName(f'edit_button_{gridlayout_index}')
+        gridlayout.addWidget(self.edit_button, gridlayout_index, column_index)
+        column_index += 1        
 
         self.rule_type_group = aqt.qt.QButtonGroup()
         self.rule_type_note_type = aqt.qt.QRadioButton('Note Type')
@@ -91,6 +96,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.rule_type_note_type.toggled.connect(self.rule_type_toggled)
         self.enabled_checkbox.toggled.connect(self.enabled_toggled)
         self.delete_rule_button.clicked.connect(self.delete_button_clicked)
+        self.edit_button.clicked.connect(self.edit_button_clicked)
 
     def notify_model_update(self):
         self.model_change_callback(self.model)
@@ -116,6 +122,9 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.preview_button.setText('Playing...')
         self.preview_button.setEnabled(False)
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
+
+    def edit_button_clicked(self):
+        component_batch.create_dialog_editor_existing_preset(self.hypertts, self.editor_context, self.model.preset_id)
 
     def delete_button_clicked(self):
         # self.hypertts.anki_utils.run_on_main(self.model_delete_callback)
