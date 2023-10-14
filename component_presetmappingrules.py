@@ -201,7 +201,15 @@ class PresetMappingRulesDialog(aqt.qt.QDialog):
         self.setWindowTitle(constants.GUI_PRESET_MAPPING_RULES_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
 
+    def verify_rules_saved(self):
+        self.mapping_rules.save_if_changed()
+
+    def closeEvent(self, evnt):
+        self.verify_rules_saved()
+        super(aqt.qt.QDialog, self).closeEvent(evnt)
+
     def close(self):
+        self.verify_rules_saved()
         self.closed = True
         self.accept()
 
