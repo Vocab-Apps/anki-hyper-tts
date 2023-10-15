@@ -235,18 +235,6 @@ def init(hypertts):
 
         return hypertts.process_bridge_cmd(str, editor, handled)
 
-    def setup_editor_shortcuts(shortcuts: List[Tuple], editor: aqt.editor.Editor):
-        preferences = hypertts.get_preferences()
-        if preferences.keyboard_shortcuts.shortcut_editor_add_audio != None:
-            shortcut = preferences.keyboard_shortcuts.shortcut_editor_add_audio
-            logger.info(f'keyboard shortcut for editor_add_audio: {shortcut}')
-            shortcut_entry = (shortcut, lambda editor=editor: send_add_audio_command(editor), True)
-            shortcuts.append(shortcut_entry)
-        if preferences.keyboard_shortcuts.shortcut_editor_preview_audio != None:            
-            shortcut = preferences.keyboard_shortcuts.shortcut_editor_preview_audio
-            shortcut_entry = (shortcut, lambda editor=editor: send_preview_audio_command(editor), True)
-            shortcuts.append(shortcut_entry)
-
     def run_hypertts_settings(editor):
         with hypertts.error_manager.get_single_action_context('Opening Preset Mapping Rules'):
             logger.info(f'clicked hypertts settings, editor: {editor}')
@@ -265,16 +253,20 @@ def init(hypertts):
             hypertts.apply_all_mapping_rules(editor_context)
 
     def setup_editor_buttons(buttons, editor):
+        preferences = hypertts.get_preferences()
+
         new_button = editor.addButton(gui_utils.get_graphics_path('icon_speaker.png'),
             'hypertts_add_audio',
             run_hypertts_apply,
-            tip = 'HyperTTS: Add Audio')
+            tip = 'HyperTTS: Add Audio',
+            keys = preferences.keyboard_shortcuts.shortcut_editor_add_audio)
         buttons.append(new_button)
 
         new_button = editor.addButton(gui_utils.get_graphics_path('icon_play.png'),
             'hypertts_preview_audio',
             run_hypertts_preview,
-            tip = 'HyperTTS: Preview Audio')
+            tip = 'HyperTTS: Preview Audio',
+            keys = preferences.keyboard_shortcuts.shortcut_editor_preview_audio)
         buttons.append(new_button)
 
         new_button = editor.addButton(gui_utils.get_graphics_path('icon_settings.png'),
@@ -301,9 +293,6 @@ def init(hypertts):
     aqt.gui_hooks.editor_did_load_note.append(loadNote)
     aqt.gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
     aqt.gui_hooks.webview_did_receive_js_message.append(onBridge)
-
-    # editor shortcuts
-    aqt.gui_hooks.editor_did_init_shortcuts.append(setup_editor_shortcuts)
 
     # editor buttons
     aqt.gui_hooks.editor_did_init_buttons.append(setup_editor_buttons)
