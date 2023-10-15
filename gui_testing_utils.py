@@ -14,10 +14,8 @@ def get_editor_context():
     model_id=config_gen.model_id_chinese
     deck_id=config_gen.deck_id
 
-    # mock_editor = testing_utils.MockEditor()
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     mock_editor = config_gen.get_mock_editor_with_note(note_1.id, deck_id, False)
-    # mock_editor.note = note_1
 
     deck_note_type: config_models.DeckNoteType = config_models.DeckNoteType(
         model_id=model_id,
