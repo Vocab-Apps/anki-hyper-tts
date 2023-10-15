@@ -19,7 +19,12 @@ def get_test_services_dir():
     current_script_dir = os.path.dirname(current_script_path)    
     return os.path.join(current_script_dir, 'test_services')
 
-def create_simple_batch(hypertts_instance, preset_id='uuid_0', name='my preset 1', save_preset=True, voice_name='voice_a_1'):
+def create_simple_batch(hypertts_instance, 
+        preset_id='uuid_0', 
+        name='my preset 1', 
+        save_preset=True, 
+        voice_name='voice_a_1',
+        target_field='Sound'):
     """create simple batch config and optionally save"""
     voice_list = hypertts_instance.service_manager.full_voice_list()
     selected_voice = [x for x in voice_list if x.name == voice_name][0]
@@ -28,7 +33,7 @@ def create_simple_batch(hypertts_instance, preset_id='uuid_0', name='my preset 1
 
     batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
-    target = config_models.BatchTarget('Sound', False, True)
+    target = config_models.BatchTarget(target_field, False, True)
     text_processing = config_models.TextProcessing()
 
     batch.set_source(source)
@@ -98,6 +103,7 @@ class MockAnkiUtils():
         self.added_media_file = None
         self.show_loading_indicator_called = None
         self.hide_loading_indicator_called = None
+        self.tooltip_messages = []
 
         # sounds
         self.all_played_sounds = []
@@ -238,7 +244,7 @@ class MockAnkiUtils():
         self.critical_message_received = message
 
     def tooltip_message(self, message):
-        pass
+        self.tooltip_messages.append(message)
 
     def play_sound(self, filename):
         logger.info('play_sound')

@@ -222,6 +222,67 @@ yoyo
         self.assertEqual(audio_result_dict['source_text'], '老人家')
         self.assertEqual(audio_result_dict['voice']['name'], voice_name_2)  
 
+    def test_apply_all_mapping_rules_1(self):
+        hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+
+        # create simple preset
+        preset_id_1 = 'uuid_0'
+        name = 'my preset 1'
+        voice_name_1 = 'voice_a_1'
+        testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id_1, name=name, voice_name=voice_name_1)
+        preset_id_2 = 'uuid_1'
+        name = 'my preset 2'
+        voice_name_2 = 'voice_a_2'
+        testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id_2, name=name, voice_name=voice_name_2,
+                target_field = 'Sound English')
+
+        # add the preset rules
+        preset_mapping_rules = config_models.PresetMappingRules()
+        rule_1 = config_models.MappingRule(preset_id=preset_id_1,
+                                           rule_type = constants.MappingRuleType.DeckNoteType,
+                                           model_id = deck_note_type.model_id,
+                                           enabled = True,
+                                           automatic = False,
+                                           deck_id = deck_note_type.deck_id)
+        preset_mapping_rules.rules.append(rule_1)
+
+        rule_2 = config_models.MappingRule(preset_id=preset_id_2,
+                                             rule_type = constants.MappingRuleType.NoteType,
+                                             model_id = deck_note_type.model_id,
+                                             enabled = True,
+                                             automatic = False)
+        preset_mapping_rules.rules.append(rule_2)
+
+        hypertts_instance.apply_all_mapping_rules(editor_context, preset_mapping_rules)
+
+        # look at the sound field
+        sound_tag = editor_context.note.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        assert audio_data['source_text'] == '老人家'
+        assert audio_data['voice']['name'] == voice_name_1
+
+        sound_tag = editor_context.note.set_values['Sound English']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        assert audio_data['source_text'] == '老人家'
+        assert audio_data['voice']['name'] == voice_name_2
+
+
+        # we should have played audio for the two rules
+        self.assertEqual(len(hypertts_instance.anki_utils.all_played_sounds), 2)
+
+        # look at the first one
+        audio_result_dict = hypertts_instance.anki_utils.all_played_sounds[0]
+        self.assertEqual(audio_result_dict['source_text'], '老人家')
+        self.assertEqual(audio_result_dict['voice']['name'], voice_name_1)
+
+        # second one
+        audio_result_dict = hypertts_instance.anki_utils.all_played_sounds[1]
+        self.assertEqual(audio_result_dict['source_text'], '老人家')
+        self.assertEqual(audio_result_dict['voice']['name'], voice_name_2)  
+
+
 
     @pytest.mark.skip(reason="previews will not be done with bridge commands anymore")
     def test_process_bridge_cmd(self):
