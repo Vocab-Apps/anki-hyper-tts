@@ -331,16 +331,29 @@ class HyperTTS():
         full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options, context.AudioRequestContext(constants.AudioRequestReason.preview))
         self.anki_utils.play_sound(full_filename)
 
+    def get_preview_all_rules_task(self, deck_note_type: config_models.DeckNoteType,editor_context: config_models.EditorContext, preset_mapping_rules: config_models.PresetMappingRules):
+        def preview_fn():
+            for absolute_index, subset_index, rule in preset_mapping_rules.iterate_applicable_rules(deck_note_type, False):
+                logger.debug(f'previewing audio for rule {rule}')
+                preset = self.load_preset(rule.preset_id)
+                # self.anki_utils.tooltip_message(f'Previewing audio for rule {preset.name}')
+                self.anki_utils.run_on_main(lambda: self.anki_utils.tooltip_message(f'Previewing audio for rule {preset.name}'))
+                self.preview_note_audio(preset, editor_context.note, None)
+        return preview_fn
+
+    def get_preview_all_rules_done(self):
+        def done_fn(result):
+            result = result.result()
+        return done_fn
+
     def preview_all_mapping_rules(self, editor_context: config_models.EditorContext, preset_mapping_rules: config_models.PresetMappingRules = None):
         if preset_mapping_rules == None:
             # load the saved rules
             preset_mapping_rules = self.load_mapping_rules()
-
         deck_note_type = self.get_editor_deck_note_type(editor_context.editor)
-        for absolute_index, subset_index, rule in preset_mapping_rules.iterate_applicable_rules(deck_note_type, False):
-            logger.debug(f'previewing audio for rule {rule}')
-            preset = self.load_preset(rule.preset_id)
-            self.preview_note_audio(preset, editor_context.note, None)
+        # we want audio generation to happen in the background, but the tooltips will be generated in foreground to display immediately
+        self.anki_utils.run_in_background(self.get_preview_all_rules_task(deck_note_type, editor_context, preset_mapping_rules), self.get_preview_all_rules_done())
+
 
     # processing of sound tags / collection stuff
     # ===========================================

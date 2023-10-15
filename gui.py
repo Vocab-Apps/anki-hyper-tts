@@ -254,6 +254,11 @@ def init(hypertts):
             deck_note_type = hypertts.get_editor_deck_note_type(editor)
             component_presetmappingrules.create_dialog(hypertts, deck_note_type, editor_context)
 
+    def run_hypertts_preview(editor):
+        with hypertts.error_manager.get_single_action_context('Previewing Audio'):
+            editor_context = hypertts.get_editor_context(editor)
+            hypertts.preview_all_mapping_rules(editor_context)
+
     def setup_editor_buttons(buttons, editor):
         new_button = editor.addButton(gui_utils.get_graphics_path('icon_speaker.png'),
             'hypertts_add_audio',
@@ -263,7 +268,7 @@ def init(hypertts):
 
         new_button = editor.addButton(gui_utils.get_graphics_path('icon_play.png'),
             'hypertts_preview_audio',
-            run_hypertts_settings,
+            run_hypertts_preview,
             tip = 'HyperTTS: Preview Audio')
         buttons.append(new_button)
 
