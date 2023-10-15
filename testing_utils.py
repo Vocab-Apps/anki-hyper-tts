@@ -19,12 +19,12 @@ def get_test_services_dir():
     current_script_dir = os.path.dirname(current_script_path)    
     return os.path.join(current_script_dir, 'test_services')
 
-def create_simple_batch(hypertts_instance, preset_id='uuid_0', name='my preset 1', save_preset=True):
+def create_simple_batch(hypertts_instance, preset_id='uuid_0', name='my preset 1', save_preset=True, voice_name='voice_a_1'):
     """create simple batch config and optionally save"""
     voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    selected_voice = [x for x in voice_list if x.name == voice_name][0]
     single = config_models.VoiceSelectionSingle()
-    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
+    single.set_voice(config_models.VoiceWithOptions(selected_voice, {}))
 
     batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
@@ -98,6 +98,9 @@ class MockAnkiUtils():
         self.added_media_file = None
         self.show_loading_indicator_called = None
         self.hide_loading_indicator_called = None
+
+        # sounds
+        self.all_played_sounds = []
 
         # undo handling
         self.undo_started = False
@@ -239,6 +242,8 @@ class MockAnkiUtils():
         # load the json inside the file
         with open(filename) as json_file:
             self.played_sound = json.load(json_file)
+            # keep records of all sounds played
+            self.all_played_sounds.append(self.played_sound)
 
     def show_progress_bar(self, message):
         self.show_progress_bar_called = True

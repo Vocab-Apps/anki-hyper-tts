@@ -212,7 +212,6 @@ class HyperTTS():
             return config_models.DeckNoteType(model_id=note.mid, deck_id=editor.card.did)
 
 
-
     # editor pycmd commands processing 
     # ================================
 
@@ -331,6 +330,17 @@ class HyperTTS():
             raise errors.SourceTextEmpty()        
         full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options, context.AudioRequestContext(constants.AudioRequestReason.preview))
         self.anki_utils.play_sound(full_filename)
+
+    def preview_all_mapping_rules(self, editor_context: config_models.EditorContext, preset_mapping_rules: config_models.PresetMappingRules = None):
+        if preset_mapping_rules == None:
+            # load the saved rules
+            preset_mapping_rules = self.load_mapping_rules()
+
+        deck_note_type = self.get_editor_deck_note_type(editor_context.editor)
+        for absolute_index, subset_index, rule in preset_mapping_rules.iterate_applicable_rules(deck_note_type, False):
+            logger.debug(f'previewing audio for rule {rule}')
+            preset = self.load_preset(rule.preset_id)
+            self.preview_note_audio(preset, editor_context.note, None)
 
     # processing of sound tags / collection stuff
     # ===========================================
