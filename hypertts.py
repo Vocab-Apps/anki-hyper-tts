@@ -337,7 +337,7 @@ class HyperTTS():
                 logger.debug(f'previewing audio for rule {rule}')
                 preset = self.load_preset(rule.preset_id)
                 # self.anki_utils.tooltip_message(f'Previewing audio for rule {preset.name}')
-                self.anki_utils.run_on_main(lambda: self.anki_utils.tooltip_message(f'Previewing audio for rule {preset.name}'))
+                self.anki_utils.run_on_main(lambda: self.anki_utils.tooltip_message(f'Previewing audio for {preset.name}'))
                 self.preview_note_audio(preset, editor_context.note, None)
         return preview_fn
 
@@ -360,7 +360,7 @@ class HyperTTS():
                 logger.debug(f'previewing audio for rule {rule}')
                 preset = self.load_preset(rule.preset_id)
                 # self.anki_utils.tooltip_message(f'Previewing audio for rule {preset.name}')
-                self.anki_utils.run_on_main(lambda: self.anki_utils.tooltip_message(f'Generating audio for rule {preset.name}'))
+                self.anki_utils.run_on_main(lambda: self.anki_utils.tooltip_message(f'Generating audio for {preset.name}'))
                 self.editor_note_add_audio(preset, editor_context.editor, editor_context.note, editor_context.add_mode, None)
         return apply_fn
 

@@ -259,10 +259,15 @@ def init(hypertts):
             editor_context = hypertts.get_editor_context(editor)
             hypertts.preview_all_mapping_rules(editor_context)
 
+    def run_hypertts_apply(editor):
+        with hypertts.error_manager.get_single_action_context('Generating Audio'):
+            editor_context = hypertts.get_editor_context(editor)
+            hypertts.apply_all_mapping_rules(editor_context)
+
     def setup_editor_buttons(buttons, editor):
         new_button = editor.addButton(gui_utils.get_graphics_path('icon_speaker.png'),
             'hypertts_add_audio',
-            run_hypertts_settings,
+            run_hypertts_apply,
             tip = 'HyperTTS: Add Audio')
         buttons.append(new_button)
 
