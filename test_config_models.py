@@ -1043,11 +1043,29 @@ class ConfigModelsTests(unittest.TestCase):
             automatic=True)
         mapping_rules.rules.append(rule_2)
 
+        rule_5 = config_models.MappingRule(preset_id='preset_5', 
+            rule_type=constants.MappingRuleType.NoteType,
+            model_id=42,
+            deck_id=152,
+            enabled=False, 
+            automatic=True)
+        mapping_rules.rules.append(rule_5)
+
+        # this rule shouldn't be included, because it's DeckNoteType, for another deck
+        rule_6 = config_models.MappingRule(preset_id='preset_6', 
+            rule_type=constants.MappingRuleType.DeckNoteType,
+            model_id=42,
+            deck_id=252,
+            enabled=False, 
+            automatic=True)
+        mapping_rules.rules.append(rule_6)
+
         deck_note_type = config_models.DeckNoteType(model_id=42, deck_id=52)
 
         applicable_rules = list(mapping_rules.iterate_related_rules(deck_note_type))
         pprint.pprint(applicable_rules)
-        self.assertEqual(len(applicable_rules), 2)
+        self.assertEqual(len(applicable_rules), 3)
 
         assert applicable_rules[0] == (0, 0, rule_1)
-        assert applicable_rules[1] == (2, 1, rule_2)        
+        assert applicable_rules[1] == (2, 1, rule_2)
+        assert applicable_rules[2] == (3, 2, rule_5)

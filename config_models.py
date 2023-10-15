@@ -579,6 +579,9 @@ class MappingRule:
 
     def rule_related(self, deck_note_type: DeckNoteType):
         """used to determine whether we should display a rule in the mapping rule editor"""
+        if self.rule_type == constants.MappingRuleType.DeckNoteType:
+            return self.model_id == deck_note_type.model_id and self.deck_id == deck_note_type.deck_id
+        # for note-type rules, just match on model_id
         return self.model_id == deck_note_type.model_id
 
     def rule_applies(self, deck_note_type: DeckNoteType, automated: bool) -> bool:
