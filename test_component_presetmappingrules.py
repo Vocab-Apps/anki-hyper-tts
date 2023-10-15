@@ -289,3 +289,66 @@ def test_component_preset_mapping_rules_manual_4(qtbot):
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence    
     component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
+
+
+def test_component_preset_mapping_rules_add_then_disable_1(qtbot):
+    # pytest --log-cli-level=DEBUG test_component_presetmappingrules.py -k test_component_preset_mapping_rules_add_then_disable_1
+
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+
+    # create two presets
+    preset_id_1 = 'uuid_0'
+    preset_name_1 = 'my preset 42'
+    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id_1, name=preset_name_1)
+    preset_id_2 = 'uuid_1'
+    preset_name_2 = 'my preset 43'
+    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id_2, name=preset_name_2)
+    
+    def dialog_input_sequence(dialog):
+        assert dialog.mapping_rules.note_type_label.text() == 'Chinese Words'
+        assert dialog.mapping_rules.deck_name_label.text() == 'deck 1'
+        
+        # add two presets
+
+        def mock_choose_preset_1():
+            return preset_id_1
+        dialog.mapping_rules.choose_preset = mock_choose_preset_1
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
+
+        def mock_choose_preset_2():
+            return preset_id_2
+        dialog.mapping_rules.choose_preset = mock_choose_preset_2
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)        
+
+        # make sure that the rule is displayed
+        # find all labels inside 
+        preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
+        assert preset_name_label_0.text() == preset_name_1
+        preset_name_label_1 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_1')
+        assert preset_name_label_1.text() == preset_name_2
+
+        # disable the second rule
+        enabled_checkbox_1 = dialog.findChild(aqt.qt.QCheckBox, 'enabled_checkbox_1')
+        enabled_checkbox_1.setChecked(False)
+
+        # click the save button
+        logger.info('clicking the save button')
+        qtbot.mouseClick(dialog.mapping_rules.save_button, aqt.qt.Qt.LeftButton)
+
+        # save button should have closed the dialog
+        assert dialog.closed == True
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence    
+    component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
+
+    # re-open the dialog, and disable the rule
+    def dialog_input_sequence_2(dialog):
+        # we should see two rules
+
+        preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
+        assert preset_name_label_0.text() == preset_name_1
+        preset_name_label_1 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_1')
+        assert preset_name_label_1.text() == preset_name_2
+
+    logger.debug('re-opening dialog')
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence_2
+    component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)        

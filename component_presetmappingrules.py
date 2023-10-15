@@ -117,7 +117,7 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.update_save_button_state() 
 
     def draw_mapping_rules(self):
-        for absolute_index, subset_index, rule in self.get_model().iterate_applicable_rules(self.deck_note_type, False):
+        for absolute_index, subset_index, rule in self.get_model().iterate_related_rules(self.deck_note_type):
             self.rules_components.append(component_mappingrule.ComponentMappingRule(
                 self.hypertts, 
                 self.editor_context, 

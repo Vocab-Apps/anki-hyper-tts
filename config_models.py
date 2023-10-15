@@ -577,6 +577,10 @@ class MappingRule:
     automatic: bool
     deck_id: Optional[int] = None
 
+    def rule_related(self, deck_note_type: DeckNoteType):
+        """used to determine whether we should display a rule in the mapping rule editor"""
+        return self.model_id == deck_note_type.model_id
+
     def rule_applies(self, deck_note_type: DeckNoteType, automated: bool) -> bool:
         if self.enabled == False:
             # rule is disabled
@@ -604,6 +608,14 @@ class PresetMappingRules:
             logger.info(f'evaluating rule {rule} with deck_note_type {deck_note_type}')
             if rule.rule_applies(deck_note_type, automated):
                 logger.info(f'rule applies: {rule} on deck_note_type {deck_note_type}')
+                yield absolute_index, subset_index, rule
+                subset_index += 1
+
+    def iterate_related_rules(self, deck_note_type: DeckNoteType):
+        """get list of rules to display in the GUI"""
+        subset_index = 0
+        for absolute_index, rule in enumerate(self.rules):
+            if rule.rule_related(deck_note_type):
                 yield absolute_index, subset_index, rule
                 subset_index += 1
 
