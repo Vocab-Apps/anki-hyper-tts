@@ -343,7 +343,8 @@ class HyperTTS():
 
     def get_preview_all_rules_done(self):
         def done_fn(result):
-            result = result.result()
+            with self.error_manager.get_single_action_context('Previewing Audio'):
+                result = result.result()
         return done_fn
 
     def preview_all_mapping_rules(self, editor_context: config_models.EditorContext, preset_mapping_rules: config_models.PresetMappingRules = None):
