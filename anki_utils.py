@@ -198,7 +198,8 @@ class AnkiUtils():
         return current_row, retvalue
 
     def play_sound(self, filename):
-        aqt.sound.av_player.play_file(filename)
+        # play files one after another
+        aqt.sound.av_player.insert_file(filename)
 
     def show_progress_bar(self, message):
         aqt.mw.progress.start(immediate=True, label=f'{constants.MENU_PREFIX} {message}')
