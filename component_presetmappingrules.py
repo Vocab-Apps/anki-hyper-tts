@@ -102,6 +102,8 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.add_rule_button.clicked.connect(self.add_rule_button_pressed)
         self.save_button.pressed.connect(self.save_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
+        self.preview_all_button.pressed.connect(self.preview_all_button_pressed)
+        self.run_all_button.pressed.connect(self.run_all_button_pressed)
 
         layout.addLayout(self.vlayout)
 
@@ -199,6 +201,11 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.save_button.setEnabled(False)
         self.save_button.setStyleSheet(None)
 
+    def preview_all_button_pressed(self):
+        self.hypertts.preview_all_mapping_rules(self.editor_context, self.get_model())
+
+    def run_all_button_pressed(self):
+        self.hypertts.apply_all_mapping_rules(self.editor_context, self.get_model())
 
 # factory and setup functions for ComponentPresetMappingRules
 # ===========================================================

@@ -365,7 +365,8 @@ def test_component_preset_mapping_rules_preview_run(qtbot):
 
     preset_id_2 = 'uuid_1'
     preset_name_2 = 'my preset 43'
-    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id_2, name=preset_name_2)
+    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id_2, name=preset_name_2,
+        target_field='Sound English')
     
     def dialog_input_sequence(dialog):
 
@@ -378,10 +379,42 @@ def test_component_preset_mapping_rules_preview_run(qtbot):
         def mock_choose_preset():
             return preset_id_2
         dialog.mapping_rules.choose_preset = mock_choose_preset
-        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)        
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
 
-        # check that model got updated
-        assert len(dialog.mapping_rules.get_model().rules) == 2
+        # click preview button
+        qtbot.mouseClick(dialog.mapping_rules.preview_all_button, aqt.qt.Qt.LeftButton)
+        expected_sound_played = {
+            'source_text': '老人家',
+            'voice': {
+                'gender': 'Male', 
+                'language': 'fr_FR', 
+                'name': 'voice_a_1', 
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_1'}
+            },
+            'options': {}
+        }
+        assert hypertts_instance.anki_utils.all_played_sounds[0] == expected_sound_played
+        assert hypertts_instance.anki_utils.all_played_sounds[1] == expected_sound_played
+
+        # click the run all button
+        qtbot.mouseClick(dialog.mapping_rules.run_all_button, aqt.qt.Qt.LeftButton)
+        
+        # check that sound was applied to note
+        assert 'Sound' in editor_context.note.set_values
+        sound_tag = editor_context.note.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        assert audio_data['source_text'] == '老人家'
+
+
+        assert 'Sound English' in editor_context.note.set_values
+        sound_tag = editor_context.note.set_values['Sound English']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        assert audio_data['source_text'] == '老人家'
+
+
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence    
     component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
