@@ -68,9 +68,24 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.mapping_rules_gridlayout = aqt.qt.QGridLayout()
         self.vlayout.addLayout(self.mapping_rules_gridlayout)
 
+
+        hlayout = aqt.qt.QHBoxLayout()
+        hlayout.addStretch()
+
+        self.preview_all_button = aqt.qt.QPushButton('Preview All')
+        self.preview_all_button.setToolTip('Preview all Presets')
+        hlayout.addWidget(self.preview_all_button)
+
+        self.run_all_button = aqt.qt.QPushButton('Run All')
+        self.run_all_button.setToolTip('Run all Presets')
+        hlayout.addWidget(self.run_all_button)
+
         self.add_rule_button = aqt.qt.QPushButton('Add Rule')
         self.add_rule_button.setToolTip('Add a new rule which maps a preset to this deck and note type')
-        self.vlayout.addWidget(self.add_rule_button)
+        hlayout.addWidget(self.add_rule_button)
+        hlayout.addStretch()
+
+        self.vlayout.addLayout(hlayout)
 
         # add buttons at the bottom
         hlayout = aqt.qt.QHBoxLayout()
