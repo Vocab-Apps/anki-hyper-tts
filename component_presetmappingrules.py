@@ -66,7 +66,8 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
 
         # display the mapping rules
         self.mapping_rules_gridlayout = aqt.qt.QGridLayout()
-        self.vlayout.addLayout(self.mapping_rules_gridlayout)
+        vlayout = aqt.qt.QVBoxLayout()
+        vlayout.addLayout(self.mapping_rules_gridlayout)
 
 
         hlayout = aqt.qt.QHBoxLayout()
@@ -85,8 +86,14 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         hlayout.addWidget(self.add_rule_button)
         hlayout.addStretch()
 
-        self.vlayout.addLayout(hlayout)
+        vlayout.addLayout(hlayout)
 
+        self.mapping_rules_groupbox = aqt.qt.QGroupBox('Preset Rules')
+        self.mapping_rules_groupbox.setLayout(vlayout)
+        # self.vlayout.addLayout(self.mapping_rules_gridlayout)
+        self.vlayout.addWidget(self.mapping_rules_groupbox)
+
+        
         # add buttons at the bottom
         hlayout = aqt.qt.QHBoxLayout()
         hlayout.addStretch()
