@@ -29,7 +29,7 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         # draw the presets
         self.refresh_mapping_rules_gridlayout()
         self.model_changed = False
-        self.update_save_button_state() 
+        self.update_button_states() 
 
     def get_model(self) -> config_models.PresetMappingRules:
         return self.model
@@ -99,11 +99,12 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         hlayout.addStretch()
         self.save_button = aqt.qt.QPushButton('Save and Close')
         self.cancel_button = aqt.qt.QPushButton('Cancel')
+        self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
         hlayout.addWidget(self.save_button)
         hlayout.addWidget(self.cancel_button)
         self.vlayout.addStretch()
         self.vlayout.addLayout(hlayout)
-        self.update_save_button_state()
+        self.update_button_states()
 
         # connect events
         self.add_rule_button.clicked.connect(self.add_rule_button_pressed)
@@ -132,13 +133,13 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
     def mapping_rule_updated(self, absolute_index, model):
         self.model.rules[absolute_index] = model
         self.model_changed = True
-        self.update_save_button_state() 
+        self.update_button_states() 
 
     def mapping_rule_deleted(self, absolute_index):
         del self.model.rules[absolute_index]
         self.refresh_mapping_rules_gridlayout()
         self.model_changed = True
-        self.update_save_button_state() 
+        self.update_button_states() 
 
     def draw_mapping_rules(self):
         for absolute_index, subset_index, rule in self.get_model().iterate_related_rules(self.deck_note_type):
@@ -170,7 +171,7 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
             self.model.rules.append(new_rule)
             self.refresh_mapping_rules_gridlayout()
             self.model_changed = True
-            self.update_save_button_state()
+            self.update_button_states()
 
     def save_button_pressed(self):
         self.save()
@@ -185,7 +186,7 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
             logger.info('saving mapping rules')
             self.hypertts.save_mapping_rules(self.get_model())
             self.model_changed = False
-            self.update_save_button_state()
+            self.update_button_states()
 
     def save_if_changed(self):
         if self.model_changed:
@@ -194,11 +195,24 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
             if proceed:
                 self.save()
 
-    def update_save_button_state(self):
+    def update_button_states(self):
         if self.model_changed:
             self.enable_save_button()
         else:
-            self.disable_save_button()            
+            self.disable_save_button()
+        
+        # preview all / run all buttons
+
+        at_least_one_rule = len(list(self.get_model().iterate_related_rules(self.deck_note_type))) > 0
+        self.preview_all_button.setEnabled(at_least_one_rule)
+        self.run_all_button.setEnabled(at_least_one_rule)
+
+        # if there are no rules, set the green stylesheet on the add rule button
+        if at_least_one_rule:
+            self.add_rule_button.setStyleSheet(None)
+        else:
+            self.add_rule_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        
 
     def enable_save_button(self):
         self.save_button.setEnabled(True)
