@@ -141,28 +141,7 @@ def remove_realtime_tts_tag(hypertts, browser, note_id_list):
         hypertts.anki_utils.info_message(constants.GUI_TEXT_REALTIME_REMOVED_TAG, browser)
 
 
-def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
-    batch_name_list = hypertts.get_batch_config_list_editor()
-    configure_editor(editor, 
-        batch_name_list, hypertts.get_editor_default_batch_name(), hypertts.get_editor_use_selection())
-
-def configure_editor(editor: aqt.editor.Editor, batch_name_list, editor_default_batch_name, use_selection):
-    logger.info(f'configure_editor, batch_name_list: {batch_name_list} editor_default_batch_name: {editor_default_batch_name}')
-    js_command = f"configureEditorHyperTTS({json.dumps(batch_name_list)}, '{editor_default_batch_name}', {str(use_selection).lower()})"
-    print(js_command)
-    editor.web.eval(js_command)    
-
-def send_add_audio_command(editor: aqt.editor.Editor):
-    logger.info('send_add_audio_command')
-    js_command = f"hyperTTSAddAudio()"
-    editor.web.eval(js_command)        
-
-def send_preview_audio_command(editor: aqt.editor.Editor):
-    js_command = f"hyperTTSPreviewAudio()"
-    editor.web.eval(js_command)            
-
 def init(hypertts):
-    aqt.mw.addonManager.setWebExports(__name__, r".*(css|js)")
 
     def browerMenusInit(browser: aqt.browser.Browser):
         
@@ -208,32 +187,6 @@ def init(hypertts):
         action = aqt.qt.QAction(f'Remove Audio (Realtime) / TTS Tag...', browser)
         action.triggered.connect(get_remove_realtime_tts_tag_fn(hypertts, browser))
         menu.addAction(action)
-
-
-    def on_webview_will_set_content(web_content: aqt.webview.WebContent, context):
-        return
-        if not isinstance(context, aqt.editor.Editor):
-            return
-        addon_package = aqt.mw.addonManager.addonFromModule(__name__)
-        javascript_path = [
-            f"/_addons/{addon_package}/hypertts.js",
-        ]
-        css_path =  [
-            f"/_addons/{addon_package}/hypertts.css",
-        ]
-        web_content.js.extend(javascript_path)
-        web_content.css.extend(css_path)
-
-    def loadNote(editor: aqt.editor.Editor):
-        # update_editor_batch_list(hypertts, editor)
-        pass
-
-    def onBridge(handled, str, editor):
-        # return handled # don't do anything for now
-        if not isinstance(editor, aqt.editor.Editor):
-            return handled
-
-        return hypertts.process_bridge_cmd(str, editor, handled)
 
     def run_hypertts_settings(editor):
         with hypertts.error_manager.get_single_action_context('Opening Preset Mapping Rules'):
@@ -288,11 +241,6 @@ def init(hypertts):
 
     # browser menus
     aqt.gui_hooks.browser_menus_did_init.append(browerMenusInit)
-
-    # editor setup
-    aqt.gui_hooks.editor_did_load_note.append(loadNote)
-    aqt.gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
-    aqt.gui_hooks.webview_did_receive_js_message.append(onBridge)
 
     # editor buttons
     aqt.gui_hooks.editor_did_init_buttons.append(setup_editor_buttons)

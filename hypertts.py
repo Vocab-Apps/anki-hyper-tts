@@ -212,54 +212,6 @@ class HyperTTS():
             return config_models.DeckNoteType(model_id=note.mid, deck_id=editor.card.did)
 
 
-    # editor pycmd commands processing 
-    # ================================
-
-    def decode_preview_add_message(self, msg):
-        components = msg.split(':')
-        command = components[1]
-        enable_selection_str = components[2]
-        enable_selection = enable_selection_str == 'true'
-        final_components = components[3:]
-        batch_name = ':'.join(final_components)
-        return command, batch_name, enable_selection
-
-    def process_bridge_cmd(self, str, editor, handled):
-        if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX) or str.startswith(constants.PYCMD_PREVIEW_AUDIO_PREFIX):
-            command, batch_name, enable_selection = self.decode_preview_add_message(str)
-            text_override = None
-            if enable_selection:
-                if len(editor.web.selectedText()) > 0:
-                    text_override = editor.web.selectedText()
-
-            self.set_editor_use_selection(enable_selection)
-
-            if command == constants.PYCMD_ADD_AUDIO:
-                logger.info(f'processing pycmd bridge command: {str}')
-                if batch_name == constants.BATCH_CONFIG_NEW:
-                    self.clear_latest_saved_batch_name()
-                    gui.launch_batch_dialog_editor(self, editor.note, editor, editor.addMode)
-                    gui.update_editor_batch_list(self, editor)
-                else:
-                    with self.error_manager.get_single_action_context('Adding Audio to Note'):
-                        logger.info(f'received message: {str}')
-                        # logger.debug(f'editor.web.selectedText(): {type(editor.web)} {editor.web.selectedText()}')
-
-                        batch = self.load_batch_config(batch_name)
-                        self.set_editor_last_used_batch_name(batch_name)
-                        self.editor_note_add_audio(batch, editor, editor.note, editor.addMode, text_override)
-                return True, None
-
-            if command == constants.PYCMD_PREVIEW_AUDIO:
-                with self.error_manager.get_single_action_context('Previewing Audio'):
-                    logger.info(f'received message: {str}')
-                    batch = self.load_batch_config(batch_name)
-                    self.set_editor_last_used_batch_name(batch_name)
-                    self.preview_note_audio(batch, editor.note, text_override)
-                return True, None        
-
-        return handled            
-
     # text processing
     # ===============
 
