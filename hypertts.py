@@ -588,49 +588,6 @@ class HyperTTS():
     # functions related to addon config
     # =================================
 
-    # batch config
-
-    def save_batch_config_DEPRECATED(self, batch_name, batch):
-        batch.validate()
-        if constants.CONFIG_BATCH_CONFIG not in self.config:
-            self.config[constants.CONFIG_BATCH_CONFIG] = {}
-        self.config[constants.CONFIG_BATCH_CONFIG][batch_name] = batch.serialize()
-        self.anki_utils.write_config(self.config)
-        self.set_latest_saved_batch_name(batch_name)
-        logger.info(f'saved batch config [{batch_name}]')
-
-    def load_batch_config_DEPRECATED(self, batch_name):
-        logger.info(f'loading batch config [{batch_name}]')
-        if batch_name not in self.config[constants.CONFIG_BATCH_CONFIG]:
-            raise errors.PresetNotFound(batch_name)
-        return self.deserialize_batch_config(self.config[constants.CONFIG_BATCH_CONFIG][batch_name])
-
-    def delete_batch_config_DEPRECATED(self, batch_name):
-        logger.info(f'deleting batch config [{batch_name}]')
-        if batch_name not in self.config[constants.CONFIG_BATCH_CONFIG]:
-            raise errors.PresetNotFound(batch_name)
-        del self.config[constants.CONFIG_BATCH_CONFIG][batch_name]
-        self.anki_utils.write_config(self.config)
-
-    def get_batch_config_list_DEPRECATED(self):
-        if constants.CONFIG_BATCH_CONFIG not in self.config:
-            return []
-        batch_config_list = list(self.config[constants.CONFIG_BATCH_CONFIG].keys())
-        batch_config_list.sort()
-        return batch_config_list
-
-    def get_batch_config_list_editor_DEPRECATED(self):
-        return [constants.BATCH_CONFIG_NEW] + self.get_batch_config_list()
-
-    def get_next_batch_name(self):
-        existing_batch_names = self.get_batch_config_list()
-        i = 1
-        batch_name = f'Preset {i}'
-        while batch_name in existing_batch_names:
-            i += 1
-            batch_name = f'Preset {i}'
-        return batch_name
-
     # presets
     
     def get_preset_list(self) -> List[config_models.PresetInfo]:
@@ -733,25 +690,6 @@ class HyperTTS():
 
     def hypertts_pro_enabled(self):
         return self.get_configuration().hypertts_pro_api_key_set()
-
-    def clear_latest_saved_batch_name(self):
-        self.latest_saved_batch_name = None
-
-    def set_latest_saved_batch_name(self, batch_name):
-        self.latest_saved_batch_name = batch_name
-
-    def set_editor_last_used_batch_name(self, batch_name):
-        self.latest_saved_batch_name = None
-        self.config[constants.CONFIG_LAST_USED_BATCH] = batch_name
-        self.anki_utils.write_config(self.config)
-
-    def get_editor_default_batch_name(self):
-        if self.latest_saved_batch_name != None:
-            return self.latest_saved_batch_name
-        latest_used_editor_batch_name = self.config.get(constants.CONFIG_LAST_USED_BATCH, None)
-        if latest_used_editor_batch_name != None:
-            return latest_used_editor_batch_name
-        return constants.BATCH_CONFIG_NEW
 
     def set_editor_use_selection(self, use_selection):
         self.config[constants.CONFIG_USE_SELECTION] = use_selection
