@@ -70,7 +70,17 @@ class AnkiCardSide(enum.Enum):
     Front = enum.auto()
     Back = enum.auto()
 
+class MappingRuleType(enum.Enum):
+    NoteType = enum.auto()
+    DeckNoteType = enum.auto()
+
+CONFIG_SCHEMA = 'config_schema'
+CONFIG_SCHEMA_VERSION = 2
+# deprecated, use CONFIG_PRESETS
 CONFIG_BATCH_CONFIG = 'batch_config'
+# this is the new config category, contains dict of uuids
+CONFIG_PRESETS = 'presets'
+CONFIG_MAPPING_RULES = 'mapping_rules'
 CONFIG_REALTIME_CONFIG = 'realtime_config'
 CONFIG_CONFIGURATION = 'configuration'
 CONFIG_PREFERENCES = 'preferences'
@@ -86,6 +96,12 @@ GUI_COLLECTION_DIALOG_TITLE = TITLE_PREFIX + 'Add Audio (Collection)'
 GUI_REALTIME_DIALOG_TITLE = TITLE_PREFIX + 'Add Audio (Realtime)'
 GUI_CONFIGURATION_DIALOG_TITLE = TITLE_PREFIX + 'Configuration'
 GUI_PREFERENCES_DIALOG_TITLE = TITLE_PREFIX + 'Preferences'
+GUI_CHOOSE_PRESET_DIALOG_TITLE = TITLE_PREFIX + 'Choose Preset'
+GUI_PRESET_MAPPING_RULES_DIALOG_TITLE = TITLE_PREFIX + 'Preset Rules'
+
+DIALOG_ID_CHOOSE_PRESET = 'choose_preset'
+DIALOG_ID_BATCH = 'batch'
+DIALOG_ID_PRESET_MAPPING_RULES = 'preset_mapping_rules'
 
 TTS_TAG_VOICE = 'HyperTTS'
 TTS_TAG_HYPERTTS_PRESET = 'hypertts_preset'
@@ -108,6 +124,14 @@ RED_STYLESHEET_NIGHTMODE = 'background-color: #B71C1C;'
 LABEL_FILTER_ALL = 'All'
 
 BATCH_CONFIG_NEW = 'New Preset'
+
+GUI_TEXT_UNKNOWN_PRESET = 'Unknown Preset'
+
+GUI_TEXT_MAPPING_RULES = """Configure presets for this deck or note type. You can either associate the rule with:
+<b>Note Type:</b> This preset will apply to all notes of this type, regardless of the deck.
+<b>Deck and Note Type:</b> This preset will apply to all notes of this type, in this deck only.
+After configuring rules, you will be able use the Add Audio and Preview buttons in the editor."""
+
 
 GUI_TEXT_SOURCE_MODE = """Choose a source mode:
 <b>Simple:</b> your text comes from a single field. In most cases, choose this option.

@@ -8,13 +8,13 @@ addon_dir = os.path.dirname(os.path.realpath(__file__))
 external_dir = os.path.join(addon_dir, 'external')
 sys.path.insert(0, external_dir)
 
-import copy
 import pprint
 import component_batch_preview
 import component_configuration
 import config_models
 import servicemanager
 import testing_utils
+import gui_testing_utils
 import hypertts
 import constants
 import languages
@@ -31,72 +31,20 @@ import component_hyperttspro
 import component_shortcuts
 import component_errorhandling
 import component_preferences
+import component_presetmappingrules
+import component_mappingrule
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
 
-class EmptyDialog(aqt.qt.QDialog):
-    def __init__(self):
-        super(aqt.qt.QDialog, self).__init__()
-        self.closed = None
-
-    def setupUi(self):
-        self.main_layout = aqt.qt.QVBoxLayout(self)
-
-    def getLayout(self):
-        return self.main_layout
-
-    def setLayout(self, layout):
-        self.main_layout = layout
-
-    def addChildLayout(self, layout):
-        self.main_layout.addLayout(layout)
-
-    def addChildWidget(self, widget):
-        self.main_layout.addWidget(widget)
-    
-    def close(self):
-        self.closed = True
-
-
-class MockModelChangeCallback():
-    def __init__(self):
-        self.model = None
-
-    def model_updated(self, model):
-        logger.info('MockModelChangeCallback.model_updated')
-        self.model = copy.deepcopy(model)
-
-class MockBatchPreviewCallback():
-    def __init__(self):
-        self.sample_text = None
-        self.batch_start_called = None
-        self.batch_end_called = None
-
-    def sample_selected(self, note_id, text):
-        self.note_id = note_id
-        self.sample_text = text
-
-    def batch_start(self):
-        self.batch_start_called = True
-
-    def batch_end(self, completed):
-        self.batch_end_called = True
-
-
-def get_hypertts_instance():
-    # return hypertts_instance    
-    config_gen = testing_utils.TestConfigGenerator()
-    return config_gen.build_hypertts_instance_test_servicemanager('default')
-
 
 def test_voice_selection_defaults_single(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -123,12 +71,12 @@ def test_voice_selection_defaults_single(qtbot):
     
 def test_voice_selection_manual(qtbot):
     # HYPERTTS_VOICE_SELECTION_DIALOG_DEBUG=yes pytest test_components.py -k test_voice_selection_manual -s -rPP
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -136,12 +84,12 @@ def test_voice_selection_manual(qtbot):
         dialog.exec()
 
 def test_voice_selection_single_1(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -187,12 +135,12 @@ def test_voice_selection_single_1(qtbot):
     assert voiceselection.serialize() == expected_output        
 
 def test_voice_selection_format_ogg(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -224,12 +172,12 @@ def test_voice_selection_format_ogg(qtbot):
     assert voiceselection.serialize() == expected_output        
 
 def test_voice_selection_random_1(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -279,12 +227,12 @@ def test_voice_selection_random_1(qtbot):
     assert voiceselection.serialize() == expected_output    
 
 def test_voice_selection_random_to_single(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -314,12 +262,12 @@ def test_voice_selection_random_to_single(qtbot):
 
 
 def test_voice_selection_random_remove_voices(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -351,12 +299,12 @@ def test_voice_selection_random_remove_voices(qtbot):
 
 
 def test_voice_selection_random_2(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -385,12 +333,12 @@ def test_voice_selection_random_2(qtbot):
 
 
 def test_voice_selection_priority_1(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -429,10 +377,10 @@ def test_voice_selection_filters(qtbot):
 
     hypertts_instance = hypertts.HyperTTS(anki_utils, manager)
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -492,12 +440,12 @@ def test_voice_selection_filters(qtbot):
     # dialog.exec()
 
 def test_voice_selection_samples(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -523,12 +471,12 @@ def test_voice_selection_samples(qtbot):
     # dialog.exec()
 
 def test_voice_selection_load_model(qtbot):
-    hypertts_instance = get_hypertts_instance()
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
@@ -622,12 +570,12 @@ def test_batch_source_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
     batch_source = component_source.BatchSource(hypertts_instance, field_list, model_change_callback.model_updated)
     dialog.addChildWidget(batch_source.draw())
@@ -699,12 +647,12 @@ def test_target(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
     batch_target = component_target.BatchTarget(hypertts_instance, field_list, model_change_callback.model_updated)
     dialog.addChildWidget(batch_target.draw())
@@ -787,7 +735,7 @@ def test_batch_preview(qtbot):
     # configure delay on service A
     # hypertts_instance.service_manager.get_service('ServiceA').configure({'delay': 1.0})
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
@@ -798,7 +746,7 @@ def test_batch_preview(qtbot):
     voice_selection = config_models.VoiceSelectionSingle()
     voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
 
-    batch_config = config_models.BatchConfig()
+    batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -806,7 +754,7 @@ def test_batch_preview(qtbot):
     batch_config.set_target(target)
     batch_config.set_voice_selection(voice_selection)    
 
-    batch_preview_callback = MockBatchPreviewCallback()
+    batch_preview_callback = gui_testing_utils.MockBatchPreviewCallback()
     batch_preview = component_batch_preview.BatchPreview(hypertts_instance, note_id_list, 
         batch_preview_callback.sample_selected,
         batch_preview_callback.batch_start,
@@ -818,262 +766,333 @@ def test_batch_preview(qtbot):
     # return 
 
 
-def test_batch_dialog(qtbot):
+def test_batch_dialog_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-
-    dialog = EmptyDialog()
-    dialog.setupUi()
 
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
     # test saving of config
     # =====================
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())
+    def dialog_input_sequence(dialog):
+        # select a source field and target field
+        dialog.batch_component.source.source_field_combobox.setCurrentText('English')
+        dialog.batch_component.target.target_field_combobox.setCurrentText('Sound')
 
-    # select a source field and target field
-    batch.source.source_field_combobox.setCurrentText('English')
-    batch.target.target_field_combobox.setCurrentText('Sound')
+        # set profile name
+        # click rename button
+        preset_name = 'my preset 2'
+        hypertts_instance.anki_utils.ask_user_get_text_response = preset_name
+        qtbot.mouseClick(dialog.batch_component.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # batch.profile_name_combobox.setCurrentText('batch profile 1')
 
-    # set profile name
-    batch.profile_name_combobox.setCurrentText('batch profile 1')
+        # save button should be enabled
+        assert dialog.batch_component.profile_save_button.isEnabled() == True
+        # save
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # should be disabled after saving
+        assert dialog.batch_component.profile_save_button.isEnabled() == False
+        assert dialog.batch_component.profile_save_button.text() == 'Save'
 
-    # save button should be enabled
-    assert batch.profile_save_button.isEnabled() == True
-    # save
-    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
-    # should be disabled after saving
-    assert batch.profile_save_button.isEnabled() == False
-    assert batch.profile_load_button.isEnabled() == False
-    assert batch.profile_save_button.text() == 'Preset Saved'
+        print(hypertts_instance.anki_utils.written_config)
+        expected_uuid = 'uuid_1'
+        assert expected_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
-    print(hypertts_instance.anki_utils.written_config)
-    assert 'batch profile 1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]
+        # try to deserialize that config, it should have the English field selected
+        deserialized_model = hypertts_instance.load_preset(expected_uuid)
+        assert deserialized_model.name == preset_name
+        assert deserialized_model.source.source_field == 'English'
+        assert deserialized_model.target.target_field == 'Sound'
 
-    # try to deserialize that config, it should have the English field selected
-    deserialized_model = hypertts_instance.load_batch_config('batch profile 1')
-    assert deserialized_model.source.source_field == 'English'
-    assert deserialized_model.target.target_field == 'Sound'
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
 
     # test loading of config
     # ======================
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())    
+    def dialog_input_sequence(dialog):
+        # we should be able to open a profile
+        assert dialog.batch_component.profile_open_button.isEnabled() == True
+        hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'my preset 2'
+        # click the open profile button
+        qtbot.mouseClick(dialog.batch_component.profile_open_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # now, the preset should be loaded
+        # save button should be disabled, we didn't make any changes
+        assert dialog.batch_component.profile_save_button.isEnabled() == False
 
-    # dialog.exec()
-
-    assert batch.profile_load_button.isEnabled() == False
-    # select preset
-    batch.profile_name_combobox.setCurrentText('batch profile 1')
-    # should be enabled now
-    assert batch.profile_load_button.isEnabled() == True
-    assert batch.profile_load_button.text() == 'Load'
-
-    # open
-    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.MouseButton.LeftButton)
-
-    # button should go back to disabled
-    assert batch.profile_load_button.isEnabled() == False
-    assert batch.profile_save_button.isEnabled() == False
-    assert batch.profile_load_button.text() == 'Preset Loaded'
-
-    # assertions on GUI
-    assert batch.source.source_field_combobox.currentText() == 'English'
-    assert batch.target.target_field_combobox.currentText() == 'Sound'
+        # assertions on GUI
+        assert dialog.batch_component.source.source_field_combobox.currentText() == 'English'
+        assert dialog.batch_component.target.target_field_combobox.currentText() == 'Sound'
+        assert dialog.batch_component.profile_name_label.text() == 'my preset 2'
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')        
     
     # dialog.exec()
+
+    # test loading with empty preset, then duplicating
+    # ================================================
+
+    def dialog_input_sequence(dialog):
+        # we just created a new profile, source field is not english
+        assert dialog.batch_component.source.source_field_combobox.currentText() != 'English'
+
+        # wo we'll duplicate the profile 'my preset 2'
+        assert dialog.batch_component.profile_duplicate_button.isEnabled() == True
+        hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'my preset 2'
+
+        # reset the uuid counter to be more predictable
+        hypertts_instance.anki_utils.uuid_current_num = 10
+        expected_uuid = f'uuid_{hypertts_instance.anki_utils.uuid_current_num + 1}'
+        # press the duplicate button
+        qtbot.mouseClick(dialog.batch_component.profile_duplicate_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+        # profile name should have changed
+        assert dialog.batch_component.profile_name_label.text() == 'my preset 2 (copy)'
+        # the source field should be english, just like for 'my preset 2'
+        assert dialog.batch_component.source.source_field_combobox.currentText() == 'English'
+
+        # assert save button is enabled
+        assert dialog.batch_component.profile_save_button.isEnabled() == True
+        # save the preset
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+        # make sure the preset was saved
+        pprint.pprint(hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS])
+        assert expected_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
+        # ensure the name of the preset that was saved is correct
+        assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][expected_uuid]['name'] == 'my preset 2 (copy)'
+
+        # rename the preset, and save it 
+        hypertts_instance.anki_utils.ask_user_get_text_response = 'my preset 3'
+        qtbot.mouseClick(dialog.batch_component.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # save
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # make sure the name is correct
+        assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][expected_uuid]['name'] == 'my preset 3'
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
 
     # test launching with a particular preset
     # =======================================
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())
-    batch.load_batch('batch profile 1')
+    def dialog_input_sequence(dialog):
 
-    # assertions on GUI
-    assert batch.source.source_field_combobox.currentText() == 'English'
-    assert batch.target.target_field_combobox.currentText() == 'Sound'
+        # assertions on GUI
+        assert dialog.batch_component.source.source_field_combobox.currentText() == 'English'
+        assert dialog.batch_component.target.target_field_combobox.currentText() == 'Sound'
 
-    # dialog.exec()
+        # dialog.exec()
 
-    assert batch.profile_load_button.isEnabled() == False
-    assert batch.profile_save_button.isEnabled() == False    
+        assert dialog.batch_component.profile_save_button.isEnabled() == False    
 
-    # play sound preview
-    # ==================
+        # play sound preview
+        # ==================
 
-    # select second row
-    index_second_row = batch.preview.batch_preview_table_model.createIndex(1, 0)
-    batch.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)
-    # select voice
-    batch.voice_selection.voices_combobox.setCurrentIndex(1)
-    # press preview button
-    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
-    # dialog.exec()
+        # select second row
+        index_second_row = dialog.batch_component.preview.batch_preview_table_model.createIndex(1, 0)
+        dialog.batch_component.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)
+        # select voice
+        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(1)
+        # press preview button
+        qtbot.mouseClick(dialog.batch_component.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # dialog.exec()
 
-    assert hypertts_instance.anki_utils.played_sound == {
-        'source_text': 'hello',
-        'voice': {
-            'gender': 'Male', 
-            'language': 'fr_FR', 
-            'name': 'voice_a_1', 
-            'service': 'ServiceA',
-            'voice_key': {'name': 'voice_1'}
-        },
-        'options': {}
-    }    
+        assert hypertts_instance.anki_utils.played_sound == {
+            'source_text': 'hello',
+            'voice': {
+                'gender': 'Male', 
+                'language': 'fr_FR', 
+                'name': 'voice_a_1', 
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_1'}
+            },
+            'options': {}
+        }    
 
-    # load audio
-    # ==========
+        # load audio
+        # ==========
 
-    batch.source.source_field_combobox.setCurrentText('Chinese')
-    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
+        dialog.batch_component.source.source_field_combobox.setCurrentText('Chinese')
+        qtbot.mouseClick(dialog.batch_component.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # make sure notes were updated
-    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    assert 'Sound' in note_1.set_values 
+        # make sure notes were updated
+        note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+        assert 'Sound' in note_1.set_values 
 
-    sound_tag = note_1.set_values['Sound']
-    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
-    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        sound_tag = note_1.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
-    assert audio_data['source_text'] == '老人家'
+        assert audio_data['source_text'] == '老人家'
 
-    note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
-    assert 'Sound' in note_2.set_values 
+        note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
+        assert 'Sound' in note_2.set_values 
 
-    sound_tag = note_2.set_values['Sound']
-    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
-    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        sound_tag = note_2.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
-    assert audio_data['source_text'] == '你好'
+        assert audio_data['source_text'] == '你好'
 
-    # button state
-    assert batch.apply_button.isEnabled() == False
-    assert batch.cancel_button.isEnabled() == True
-    assert batch.cancel_button.text() == 'Close'
+        # button state
+        assert dialog.batch_component.apply_button.isEnabled() == False
+        assert dialog.batch_component.cancel_button.isEnabled() == True
+        assert dialog.batch_component.cancel_button.text() == 'Close'
 
-    # delete profile
-    # ==============
+        # delete profile
+        # ==============
 
-    assert batch.profile_name_combobox.count() == 2
-    assert batch.profile_name_combobox.currentText() == 'batch profile 1'
-    qtbot.mouseClick(batch.profile_delete_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # make sure the profile was deleted
-    assert 'batch profile 1' not in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]    
+        assert dialog.batch_component.profile_name_label.text() == 'my preset 2'
+        assert dialog.batch_component.profile_delete_button.isEnabled() == True
+        qtbot.mouseClick(dialog.batch_component.profile_delete_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # make sure the combobox was updated
-    assert batch.profile_name_combobox.count() == 1
-    assert batch.profile_name_combobox.currentText() == 'Preset 1'
+        # make sure the profile was deleted
+        assert 'uuid_1' not in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
-    # dialog.exec()
+        # we should have a new preset
+        assert dialog.batch_component.profile_name_label.text() == 'Preset 1'
+    
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_existing_preset(hypertts_instance, note_id_list, 'uuid_1')
+
+
+def test_batch_dialog_new_preset_save_enabled(qtbot):
+    # create a preset
+    # save it
+    # delete it
+    # new preset gets created
+    # the save button should be enabled
+
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+
+    # test saving of config
+    # =====================
+
+    def dialog_input_sequence(dialog):
+        # save button should be enabled
+        assert dialog.batch_component.profile_save_button.isEnabled() == True
+        # delete button should be disabled, profile was never saved
+        assert dialog.batch_component.profile_delete_button.isEnabled() == False
+
+        # save the preset
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # save button should now be disabled
+        assert dialog.batch_component.profile_save_button.isEnabled() == False
+        # delete button should now be enabled
+        assert dialog.batch_component.profile_delete_button.isEnabled() == True
+
+        # delete the preset
+        qtbot.mouseClick(dialog.batch_component.profile_delete_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+        # we should be on a new preset
+        assert dialog.batch_component.profile_name_label.text() == 'Preset 1'
+        # save button should be enabled
+        assert dialog.batch_component.profile_save_button.isEnabled() == True
+        # delete button should be enabled, because we have a new profile
+
+        # now save the profile, it should work
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+        assert 'uuid_2' in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 5')
+
 
 def test_batch_dialog_sound_preview_error(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
     # test saving of config
     # =====================
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())
+    def dialog_input_sequence(dialog):
 
-    # select English source
-    batch.source.source_field_combobox.setCurrentText('English')
-    
-    # play sound preview with error voice
-    # ===================================
-    # dialog.exec()
+        # select English source
+        dialog.batch_component.source.source_field_combobox.setCurrentText('English')
+        
+        # play sound preview with error voice
+        # ===================================
+        # dialog.exec()
 
-    # select error voice
-    batch.voice_selection.voices_combobox.setCurrentIndex(5)
+        # select error voice
+        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(5)
 
-    # select second row
-    index_second_row = batch.preview.batch_preview_table_model.createIndex(1, 0)
-    batch.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)
+        # select second row
+        index_second_row = dialog.batch_component.preview.batch_preview_table_model.createIndex(1, 0)
+        dialog.batch_component.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)
 
-    # dialog.exec()
+        # dialog.exec()
 
-    # press preview button
-    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # press preview button
+        qtbot.mouseClick(dialog.batch_component.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    assert str(hypertts_instance.anki_utils.last_exception) == 'Audio not found for [hello] (voice: Japanese, Male, notfound, ServiceB)'
+        assert str(hypertts_instance.anki_utils.last_exception) == 'Audio not found for [hello] (voice: Japanese, Male, notfound, ServiceB)'
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')        
 
 def test_batch_dialog_voice_selection_sample(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
+    def dialog_input_sequence(dialog):
+        # select English source
+        dialog.batch_component.source.source_field_combobox.setCurrentText('English')
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())
+        # play sample button should be disabled
+        assert dialog.batch_component.voice_selection.play_sample_button.isEnabled() == False
 
-    # select English source
-    batch.source.source_field_combobox.setCurrentText('English')
+        # now select the first row
+        index_first_row = dialog.batch_component.preview.batch_preview_table_model.createIndex(0, 0)
+        dialog.batch_component.preview.table_view.selectionModel().select(index_first_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)    
 
-    # play sample button should be disabled
-    assert batch.voice_selection.play_sample_button.isEnabled() == False
+        # button should be enabled
+        assert dialog.batch_component.voice_selection.play_sample_button.isEnabled() == True
 
-    # now select the first row
-    index_first_row = batch.preview.batch_preview_table_model.createIndex(0, 0)
-    batch.preview.table_view.selectionModel().select(index_first_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)    
+        # press button
+        qtbot.mouseClick(dialog.batch_component.voice_selection.play_sample_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # button should be enabled
-    assert batch.voice_selection.play_sample_button.isEnabled() == True
+        assert hypertts_instance.anki_utils.played_sound == {
+            'source_text': 'old people',
+            'voice': {
+                'gender': 'Female', 
+                'language': 'en_US', 
+                'name': 'voice_a_2', 
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_2'}
+            },
+            'options': {}
+        }    
 
-    # press button
-    qtbot.mouseClick(batch.voice_selection.play_sample_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # now change to Chinese field
+        dialog.batch_component.source.source_field_combobox.setCurrentText('Chinese')
 
-    assert hypertts_instance.anki_utils.played_sound == {
-        'source_text': 'old people',
-        'voice': {
-            'gender': 'Female', 
-            'language': 'en_US', 
-            'name': 'voice_a_2', 
-            'service': 'ServiceA',
-            'voice_key': {'name': 'voice_2'}
-        },
-        'options': {}
-    }    
+        # press play sample button again
+        qtbot.mouseClick(dialog.batch_component.voice_selection.play_sample_button, aqt.qt.Qt.MouseButton.LeftButton)
+        assert hypertts_instance.anki_utils.played_sound == {
+            'source_text': '老人家',
+            'voice': {
+                'gender': 'Female', 
+                'language': 'en_US', 
+                'name': 'voice_a_2', 
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_2'}
+            },
+            'options': {}
+        }        
 
-    # now change to Chinese field
-    batch.source.source_field_combobox.setCurrentText('Chinese')
-
-    # press play sample button again
-    qtbot.mouseClick(batch.voice_selection.play_sample_button, aqt.qt.Qt.MouseButton.LeftButton)
-    assert hypertts_instance.anki_utils.played_sound == {
-        'source_text': '老人家',
-        'voice': {
-            'gender': 'Female', 
-            'language': 'en_US', 
-            'name': 'voice_a_2', 
-            'service': 'ServiceA',
-            'voice_key': {'name': 'voice_2'}
-        },
-        'options': {}
-    }        
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
 
 
     # dialog.exec()
@@ -1083,212 +1102,80 @@ def test_batch_dialog_load_missing_field(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
     # test saving of config
     # =====================
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())
+    def dialog_input_sequence(dialog):
 
-    # select a source field and target field
-    # target field will be Chinese
-    batch.source.source_field_combobox.setCurrentText('English')
-    batch.target.target_field_combobox.setCurrentText('Chinese')
+        # select a source field and target field
+        # target field will be Chinese
+        dialog.batch_component.source.source_field_combobox.setCurrentText('English')
+        dialog.batch_component.target.target_field_combobox.setCurrentText('Chinese')
 
-    # set profile name
-    batch.profile_name_combobox.setCurrentText('batch profile 1')
+        # rename profile
+        hypertts_instance.anki_utils.ask_user_get_text_response = 'batch profile 1'
+        qtbot.mouseClick(dialog.batch_component.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # click save button
-    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # click save button
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
 
     # test loading of config
     # ======================
-
     # use the german note type, which doesn't have the Chinese field
     note_id_list = [config_gen.note_id_german_1]
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())    
+    def dialog_input_sequence(dialog):
 
-    # select preset
-    batch.profile_name_combobox.setCurrentText('batch profile 1')
-    # load preset
-    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.MouseButton.LeftButton)    
+        # open "batch profile 1"
+        assert dialog.batch_component.profile_open_button.isEnabled() == True
+        hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'batch profile 1'
+        # click the open profile button
+        qtbot.mouseClick(dialog.batch_component.profile_open_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # check the target field on the model
-    # ===================================
+        # check the target field on the model
+        # ===================================
 
-    target_field_selected = batch.target.target_field_combobox.currentText()
-    assert batch.get_model().target.target_field == target_field_selected
+        target_field_selected = dialog.batch_component.target.target_field_combobox.currentText()
+        assert dialog.batch_component.get_model().target.target_field == target_field_selected
 
-    # dialog.exec()
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
 
 
-def test_batch_dialog_manual(qtbot):
-    # HYPERTTS_BATCH_DIALOG_DEBUG=yes pytest test_components.py -k test_batch_dialog_manual -s -rPP
+
+def test_batch_dialog_browser_manual(qtbot):
+    # HYPERTTS_BATCH_DIALOG_DEBUG=yes pytest test_components.py -k test_batch_dialog_browser_manual -s -rPP
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-
-    dialog = EmptyDialog()
-    dialog.setupUi()
 
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
     # test saving of config
     # =====================
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())
+    def dialog_input_sequence(dialog):    
+        if os.environ.get('HYPERTTS_BATCH_DIALOG_DEBUG', 'no') == 'yes':
+            dialog.exec()
 
-    if os.environ.get('HYPERTTS_BATCH_DIALOG_DEBUG', 'no') == 'yes':
-        dialog.exec()
-
-
-def test_batch_dialog_editor(qtbot):
-    config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
-    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
-    note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-
-    mock_editor = testing_utils.MockEditor()
-
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_editor(note, mock_editor, False)
-    batch.draw(dialog.getLayout())
-
-    batch.voice_selection.voices_combobox.setCurrentIndex(1)
-
-    # test sound preview
-    # ==================
-    # dialog.exec()
-    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
-    assert hypertts_instance.anki_utils.played_sound == {
-        'source_text': '老人家',
-        'voice': {
-            'gender': 'Male', 
-            'language': 'fr_FR', 
-            'name': 'voice_a_1', 
-            'service': 'ServiceA',
-            'voice_key': {'name': 'voice_1'}
-        },
-        'options': {}
-    }    
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
 
 
-    # test apply to note
-    # ==================
-    # dialog.exec()
-    
-    # set target field
-    batch.target.target_field_combobox.setCurrentText('Sound')
-
-    # apply not note
-    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
-
-    sound_tag = note.set_values['Sound']
-    audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
-    audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
-
-    assert audio_data['source_text'] == '老人家'
-
-    assert mock_editor.set_note_called == True
-
-    assert hypertts_instance.anki_utils.undo_started == True
-    assert hypertts_instance.anki_utils.undo_finished == True
-
-    assert dialog.closed == True
-
-def test_batch_dialog_editor_sound_sample(qtbot):
-    config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
-    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
-    note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-
-    mock_editor = testing_utils.MockEditor()
-
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_editor(note, mock_editor, False)
-    batch.draw(dialog.getLayout())
-
-    batch.source.source_field_combobox.setCurrentText('English')
-
-    batch.voice_selection.voices_combobox.setCurrentIndex(1)
-
-    # test sound preview for the voice
-    # ================================
-
-    assert batch.voice_selection.play_sample_button.isEnabled() == True
-
-    qtbot.mouseClick(batch.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
-    assert hypertts_instance.anki_utils.played_sound == {
-        'source_text': 'old people',
-        'voice': {
-            'gender': 'Male', 
-            'language': 'fr_FR', 
-            'name': 'voice_a_1', 
-            'service': 'ServiceA',
-            'voice_key': {'name': 'voice_1'}
-        },
-        'options': {}
-    }    
-
-
-
-def test_batch_dialog_editor_template_error(qtbot):
-    config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
-    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
-    note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-
-    mock_editor = testing_utils.MockEditor()
-
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_editor(note, mock_editor, False)
-    batch.draw(dialog.getLayout())
-
-    # select template mode and enter incorrect advanced template
-    batch.source.batch_mode_combobox.setCurrentText('advanced_template')
-    # enter template format
-    # qtbot.keyClicks(batch.source.advanced_template_input, """field_1 = 'yoyo'""")
-    batch.source.advanced_template_input.setPlainText("""field_1 = 'yoyo'""")
-
-    # ensure the preview label is showing an error
-    label_error_text = batch.preview.source_preview_label.text()
-    expected_label_text = """<b>Encountered Error:</b> No "result" variable found. You must assign the final template output to a result variable."""
-    assert label_error_text == expected_label_text
-
-    # dialog.exec()
 
 
 def test_text_processing(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     text_processing = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildWidget(text_processing.draw())
 
@@ -1405,10 +1292,10 @@ def test_text_processing(qtbot):
     text_processing.ssml_convert_characters = True
     text_processing.run_replace_rules_after = False
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     text_processing_component = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildWidget(text_processing_component.draw())
     text_processing_component.load_model(text_processing)
@@ -1449,10 +1336,10 @@ def test_text_processing_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     text_processing = component_text_processing.TextProcessing(hypertts_instance, model_change_callback.model_updated)
     dialog.addChildWidget(text_processing.draw())
 
@@ -1466,10 +1353,10 @@ def test_configuration(qtbot):
     hypertts_instance.service_manager.get_service('ServiceA').enabled = False
     hypertts_instance.service_manager.get_service('ServiceB').enabled = False
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    # model_change_callback = MockModelChangeCallback()
+    # model_change_callback = gui_testing_utils.MockModelChangeCallback()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
 
@@ -1544,7 +1431,7 @@ def test_configuration(qtbot):
     # enter valid API key
     # ===================
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
@@ -1592,7 +1479,7 @@ def test_configuration(qtbot):
     hypertts_instance.service_manager.get_service('ServiceB').enabled = False
     hypertts_instance.service_manager.configure(configuration_model)
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.load_model(configuration_model)
@@ -1632,7 +1519,7 @@ def test_configuration(qtbot):
     configuration_model = config_models.Configuration()
     configuration_model.set_hypertts_pro_api_key('valid_key')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.load_model(configuration_model)
@@ -1657,10 +1544,10 @@ def test_configuration_pro_key_exception(qtbot):
     hypertts_instance.service_manager.get_service('ServiceA').enabled = False
     hypertts_instance.service_manager.get_service('ServiceB').enabled = False
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    # model_change_callback = MockModelChangeCallback()
+    # model_change_callback = gui_testing_utils.MockModelChangeCallback()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
 
@@ -1687,10 +1574,10 @@ def test_configuration_enable_disable_services(qtbot):
     hypertts_instance.service_manager.get_service('ServiceA').enabled = False
     hypertts_instance.service_manager.get_service('ServiceB').enabled = False
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    # model_change_callback = MockModelChangeCallback()
+    # model_change_callback = gui_testing_utils.MockModelChangeCallback()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())
 
@@ -1728,10 +1615,10 @@ def test_configuration_manual(qtbot):
     hypertts_instance.service_manager.get_service('ServiceA').enabled = False
     hypertts_instance.service_manager.get_service('ServiceB').enabled = False
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    # model_change_callback = MockModelChangeCallback()
+    # model_change_callback = gui_testing_utils.MockModelChangeCallback()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
     configuration.draw(dialog.getLayout())    
 
@@ -1743,9 +1630,9 @@ def test_hyperttspro_test_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.draw(dialog.getLayout())
@@ -1793,7 +1680,7 @@ def test_hyperttspro_test_1(qtbot):
     # load_model with a valid API key
     # ===============================
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.load_model('valid_key')    
@@ -1806,7 +1693,7 @@ def test_hyperttspro_test_1(qtbot):
     # load with an invalid API key
     # ============================
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.load_model('invalid_key')
@@ -1821,7 +1708,7 @@ def test_hyperttspro_test_1(qtbot):
     # request trial key by email
     # ==========================
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.draw(dialog.getLayout())    
@@ -1849,7 +1736,7 @@ def test_hyperttspro_test_1(qtbot):
     # enter invalid key, then delete it
     # =================================
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.draw(dialog.getLayout())
@@ -1878,9 +1765,9 @@ def test_hyperttspro_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
     hyperttspro.draw(dialog.getLayout())
@@ -1892,68 +1779,64 @@ def test_batch_dialog_load_random(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-
     note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
 
     # test saving of config
     # =====================
 
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())
+    def dialog_input_sequence(dialog):
+        # select a source field and target field
+        dialog.batch_component.source.source_field_combobox.setCurrentText('English')
+        dialog.batch_component.target.target_field_combobox.setCurrentText('Sound')
+        
+        # select random voice selection mode with two voices
+        dialog.batch_component.voice_selection.radio_button_random.setChecked(True)
+        # pick second voice and add it
+        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(1) # pick second voice
+        qtbot.mouseClick(dialog.batch_component.voice_selection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # pick third voice and add it
+        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(2) # pick second voice
+        qtbot.mouseClick(dialog.batch_component.voice_selection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # select a source field and target field
-    batch.source.source_field_combobox.setCurrentText('English')
-    batch.target.target_field_combobox.setCurrentText('Sound')
-    
-    # select random voice selection mode with two voices
-    batch.voice_selection.radio_button_random.setChecked(True)
-    # pick second voice and add it
-    batch.voice_selection.voices_combobox.setCurrentIndex(1) # pick second voice
-    qtbot.mouseClick(batch.voice_selection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
-    # pick third voice and add it
-    batch.voice_selection.voices_combobox.setCurrentIndex(2) # pick second voice
-    qtbot.mouseClick(batch.voice_selection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # set profile name
+        preset_name = 'batch random 1'
+        hypertts_instance.anki_utils.ask_user_get_text_response = preset_name
+        qtbot.mouseClick(dialog.batch_component.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # save
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # set profile name
-    batch.profile_name_combobox.setCurrentText('batch random 1')
-    qtbot.mouseClick(batch.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+        assert 'uuid_1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
-    assert 'batch random 1' in hypertts_instance.anki_utils.written_config[constants.CONFIG_BATCH_CONFIG]
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
+
 
     # test loading of config
     # ======================
 
-    dialog = EmptyDialog()
-    dialog.setupUi()
-    batch = component_batch.ComponentBatch(hypertts_instance, dialog)
-    batch.configure_browser(note_id_list)
-    batch.draw(dialog.getLayout())    
+    def dialog_input_sequence(dialog):
+        # dialog.exec()
+        assert dialog.batch_component.profile_open_button.isEnabled() == True
+        hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'batch random 1'
+        # click the open profile button
+        qtbot.mouseClick(dialog.batch_component.profile_open_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # dialog.exec()
+        # check that the voice selection mode is random
+        assert dialog.batch_component.get_model().voice_selection.selection_mode == constants.VoiceSelectionMode.random
+        assert len(dialog.batch_component.get_model().voice_selection.get_voice_list()) == 2
 
-    assert batch.profile_load_button.isEnabled() == False
-    # select preset
-    batch.profile_name_combobox.setCurrentText('batch random 1')
+        # apply to notes
+        qtbot.mouseClick(dialog.batch_component.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    # open
-    qtbot.mouseClick(batch.profile_load_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # ensure audio was applied to 2 notes
+        # make sure notes were updated
+        note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+        assert 'Sound' in note_1.set_values 
+        note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
+        assert 'Sound' in note_2.set_values     
 
-    # check that the voice selection mode is random
-    assert batch.get_model().voice_selection.selection_mode == constants.VoiceSelectionMode.random
-    assert len(batch.get_model().voice_selection.get_voice_list()) == 2
-
-    # apply to notes
-    qtbot.mouseClick(batch.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
-
-    # ensure audio was applied to 2 notes
-    # make sure notes were updated
-    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    assert 'Sound' in note_1.set_values 
-    note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
-    assert 'Sound' in note_2.set_values     
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')        
 
     # dialog.exec()
 
@@ -1961,12 +1844,12 @@ def test_realtime_source(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     note_id_list = [config_gen.note_id_1]
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
     source = component_realtime_source.RealtimeSource(hypertts_instance, field_list, model_change_callback.model_updated)
     dialog.addChildWidget(source.draw())
@@ -2005,7 +1888,7 @@ def test_realtime_side_component(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
 
@@ -2017,7 +1900,7 @@ def test_realtime_side_component(qtbot):
 
     note_id = config_gen.note_id_1
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     realtime_side = component_realtime_side.ComponentRealtimeSide(hypertts_instance, dialog,
         constants.AnkiCardSide.Front, 0, model_change_callback.model_updated, existing_preset_fn)
     realtime_side.configure_note(note_1)
@@ -2088,7 +1971,7 @@ def test_realtime_component(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
@@ -2167,7 +2050,7 @@ def test_realtime_component(qtbot):
     pprint.pprint(note_1.note_type())
 
     # launch dialog
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     realtime = component_realtime.ComponentRealtime(hypertts_instance, dialog, 0)
     realtime.configure_note(note_1)
@@ -2207,7 +2090,7 @@ def test_realtime_component_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
@@ -2227,13 +2110,13 @@ def test_shortcuts_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
     # ==================
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(shortcuts.draw())
 
@@ -2245,13 +2128,13 @@ def test_shortcuts_1(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
     # ==================
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(shortcuts.draw())
 
@@ -2280,13 +2163,13 @@ def test_shortcuts_load_model(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
     # ==================
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     shortcuts = component_shortcuts.Shortcuts(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(shortcuts.draw())
 
@@ -2318,13 +2201,13 @@ def test_error_handling(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
     # ==================
 
-    model_change_callback = MockModelChangeCallback()
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
     error_handling = component_errorhandling.ErrorHandling(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(error_handling.draw())
 
@@ -2350,7 +2233,7 @@ def test_preferences_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
@@ -2369,7 +2252,7 @@ def test_preferences_save(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
@@ -2415,7 +2298,7 @@ def test_preferences_load(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    dialog = EmptyDialog()
+    dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
     # instantiate dialog
@@ -2437,4 +2320,5 @@ def test_preferences_load(qtbot):
 
     assert preferences.shortcuts.editor_add_audio_key_sequence.keySequence().toString() == 'Ctrl+H'
     assert preferences.shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Alt+P'
+
 

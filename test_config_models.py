@@ -1,4 +1,5 @@
 import sys
+import sys
 import os
 import pprint
 import unittest
@@ -287,7 +288,8 @@ class ConfigModelsTests(unittest.TestCase):
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
 
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
+        batch_config.name = 'preset_1'
         source = config_models.BatchSourceSimple('Chinese')
         target = config_models.BatchTarget('Sound', False, False)
         text_processing = config_models.TextProcessing()
@@ -302,6 +304,8 @@ class ConfigModelsTests(unittest.TestCase):
         batch_config.text_processing = text_processing
 
         expected_output = {
+            'name': 'preset_1',
+            'uuid': 'uuid_0',
             'source': {
                 'mode': 'simple',            
                 'source_field': 'Chinese'
@@ -360,7 +364,7 @@ class ConfigModelsTests(unittest.TestCase):
         voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         source = config_models.BatchSourceSimple('Chinese')
         text_processing = config_models.TextProcessing()
         batch_config.set_source(source)
@@ -526,7 +530,8 @@ class ConfigModelsTests(unittest.TestCase):
 
         source_template = """result = 'yoyo'"""
 
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
+        batch_config.name = 'preset_2'
         source = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, 
             source_template, constants.TemplateFormatVersion.v1)
         target = config_models.BatchTarget('Audio', False, False)
@@ -542,6 +547,8 @@ class ConfigModelsTests(unittest.TestCase):
         batch_config.text_processing = text_processing
 
         expected_output = {
+            'name': 'preset_2',
+            'uuid': 'uuid_0',
             'source': {
                 'mode': 'advanced_template',
                 'template_format_version': 'v1',
@@ -602,7 +609,8 @@ class ConfigModelsTests(unittest.TestCase):
         # missing source field
         # ====================
 
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
+        batch_config.name = 'preset_3'
         source = config_models.BatchSourceSimple('')
         target = config_models.BatchTarget('Sound', False, False)
         text_processing = config_models.TextProcessing()
@@ -791,3 +799,273 @@ class ConfigModelsTests(unittest.TestCase):
             }                           
         })        
 
+    def test_preset_mapping_rules(self):
+        # pytest test_config_models.py -k test_preset_mapping_rules
+        hypertts_instance = get_hypertts_instance()
+
+        # serialization test
+        # ==================
+
+        mapping_rules = config_models.PresetMappingRules()
+        rule_1 = config_models.MappingRule(preset_id='preset_1', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            model_id=42,
+            deck_id=52,
+            enabled=True, 
+            automatic=False)
+        mapping_rules.rules.append(rule_1)
+
+        expected_output = {
+            'rules': [
+                {
+                    'preset_id': 'preset_1',
+                    'rule_type': 'DeckNoteType',
+                    'model_id': 42,
+                    'deck_id': 52,
+                    'enabled': True,
+                    'automatic': False
+                }
+            ]
+        }
+        self.assertEqual(config_models.serialize_preset_mapping_rules(mapping_rules), expected_output)
+
+
+        # deserialization test
+        # ==================
+
+        preset_mapping_rule_data = {
+            'rules': [
+                {
+                    'preset_id': 'preset_2',
+                    'rule_type': 'NoteType',
+                    'model_id': 43,
+                    'deck_id': 53,
+                    'enabled': False,
+                    'automatic': False
+                }
+            ]
+        }
+
+        mapping_rules = config_models.deserialize_preset_mapping_rules(preset_mapping_rule_data)
+
+        self.assertEqual(mapping_rules.rules[0].preset_id, 'preset_2')
+        self.assertEqual(mapping_rules.rules[0].rule_type, constants.MappingRuleType.NoteType)
+        self.assertEqual(mapping_rules.rules[0].model_id, 43)
+        self.assertEqual(mapping_rules.rules[0].deck_id, 53)
+        self.assertEqual(mapping_rules.rules[0].enabled, False)
+        self.assertEqual(mapping_rules.rules[0].automatic, False)
+
+        preset_mapping_rule_data = {
+            'rules': [
+                {
+                    'preset_id': 'preset_2',
+                    'rule_type': 'NoteType',
+                    'model_id': 42,
+                    'deck_id': None,
+                    'enabled': False,
+                    'automatic': False
+                }
+            ]
+        }
+
+        mapping_rules = config_models.deserialize_preset_mapping_rules(preset_mapping_rule_data)
+
+        self.assertEqual(mapping_rules.rules[0].preset_id, 'preset_2')
+        self.assertEqual(mapping_rules.rules[0].rule_type, constants.MappingRuleType.NoteType)
+        self.assertEqual(mapping_rules.rules[0].model_id, 42)
+        self.assertEqual(mapping_rules.rules[0].deck_id, None)
+        self.assertEqual(mapping_rules.rules[0].enabled, False)
+        self.assertEqual(mapping_rules.rules[0].automatic, False)        
+
+
+    def test_migration_0_to_2_empty(self):
+        anki_utils = testing_utils.MockAnkiUtils({})
+        # config revision 0
+        config = {}
+        updated_config = config_models.migrate_configuration(anki_utils, config)
+        self.assertEqual(updated_config['config_schema'], 2)
+
+
+    def test_migration_0_to_2(self):
+        anki_utils = testing_utils.MockAnkiUtils({})
+        # config revision 0
+        config = {
+            'batch_config': {
+                'preset_1': {
+                    'source': {
+                        'mode': 'simple',            
+                        'source_field': 'Chinese'
+                    },
+                    'target': {
+                        'target_field': 'Sound',
+                        'text_and_sound_tag': False,
+                        'remove_sound_tag': False
+                    },
+                    'voice_selection': {
+                        'voice_selection_mode': 'single',
+                        'voice': 
+                            {
+                                'voice': {
+                                    'gender': 'Male', 
+                                    'language': 'fr_FR', 
+                                    'name': 'voice_a_1', 
+                                    'service': 'ServiceA',
+                                    'voice_key': {'name': 'voice_1'}
+                                },
+                                'options': {
+                                    'speed': 43
+                                },
+                            },        
+                    },
+                    'text_processing': {
+                        'html_to_text_line': True,
+                        'strip_brackets': False,
+                        'run_replace_rules_after': True,
+                        'ssml_convert_characters': True,
+                        'ignore_case': False,
+                        'text_replacement_rules': [
+                            {
+                                'rule_type': 'Simple',
+                                'source': 'a',
+                                'target': 'b'
+                            }]
+                    }
+                }
+            }
+        }
+
+        updated_config = config_models.migrate_configuration(anki_utils, config)
+        self.assertEqual(updated_config['config_schema'], 2)
+        expected_preset_1_uuid = 'uuid_0'
+        self.assertIn(expected_preset_1_uuid, updated_config['presets'])
+        self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['name'], 'preset_1')
+        self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['uuid'], expected_preset_1_uuid)
+
+        # try to run migration again, nothing should happen
+        updated_config = config_models.migrate_configuration(anki_utils, updated_config)
+        self.assertIn(expected_preset_1_uuid, updated_config['presets'])
+        self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['name'], 'preset_1')
+        self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['uuid'], expected_preset_1_uuid)        
+
+
+    def test_rule_applies(self):
+        rule = config_models.MappingRule(preset_id='preset_1', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            model_id=42,
+            deck_id=52,
+            enabled=True, 
+            automatic=True)
+        # different note
+        deck_note_type = config_models.DeckNoteType(model_id=142, deck_id=52)
+        self.assertFalse(rule.rule_applies(deck_note_type, True))
+
+        # different deck
+        deck_note_type = config_models.DeckNoteType(model_id=42, deck_id=53)
+        self.assertFalse(rule.rule_applies(deck_note_type, True))
+
+        # same deck, same note
+        deck_note_type = config_models.DeckNoteType(model_id=42, deck_id=52)
+        self.assertTrue(rule.rule_applies(deck_note_type, True))
+
+        # rule is not enabled
+        rule.enabled = False
+        self.assertFalse(rule.rule_applies(deck_note_type, True))
+
+        # rule is not automatic
+        rule.enabled = True
+        rule.automatic = False
+        self.assertFalse(rule.rule_applies(deck_note_type, True))
+
+        # however when we do a manual run, apply the rule
+        self.assertTrue(rule.rule_applies(deck_note_type, False))
+
+    def test_iterate_applicable_rules(self):
+        mapping_rules = config_models.PresetMappingRules()
+
+        rule_1 = config_models.MappingRule(preset_id='preset_1', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            model_id=42,
+            deck_id=52,
+            enabled=True, 
+            automatic=True)
+        mapping_rules.rules.append(rule_1)
+
+        rule_4 = config_models.MappingRule(preset_id='preset_4', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            model_id=1042,
+            deck_id=1053,
+            enabled=True, 
+            automatic=True)
+        mapping_rules.rules.append(rule_4)
+
+        rule_2 = config_models.MappingRule(preset_id='preset_2', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            model_id=42,
+            deck_id=52,
+            enabled=True, 
+            automatic=True)
+        mapping_rules.rules.append(rule_2)
+
+        deck_note_type = config_models.DeckNoteType(model_id=42, deck_id=52)
+
+        applicable_rules = list(mapping_rules.iterate_applicable_rules(deck_note_type, True))
+        pprint.pprint(applicable_rules)
+        self.assertEqual(len(applicable_rules), 2)
+
+        assert applicable_rules[0] == (0, 0, rule_1)
+        assert applicable_rules[1] == (2, 1, rule_2)
+
+
+    def test_iterate_related_rules(self):
+        mapping_rules = config_models.PresetMappingRules()
+
+        rule_1 = config_models.MappingRule(preset_id='preset_1', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            model_id=42,
+            deck_id=52,
+            enabled=False, 
+            automatic=True)
+        mapping_rules.rules.append(rule_1)
+
+        rule_4 = config_models.MappingRule(preset_id='preset_4', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            model_id=1042,
+            deck_id=1053,
+            enabled=True, 
+            automatic=True)
+        mapping_rules.rules.append(rule_4)
+
+        rule_2 = config_models.MappingRule(preset_id='preset_2', 
+            rule_type=constants.MappingRuleType.DeckNoteType, 
+            model_id=42,
+            deck_id=52,
+            enabled=False, 
+            automatic=True)
+        mapping_rules.rules.append(rule_2)
+
+        rule_5 = config_models.MappingRule(preset_id='preset_5', 
+            rule_type=constants.MappingRuleType.NoteType,
+            model_id=42,
+            deck_id=152,
+            enabled=False, 
+            automatic=True)
+        mapping_rules.rules.append(rule_5)
+
+        # this rule shouldn't be included, because it's DeckNoteType, for another deck
+        rule_6 = config_models.MappingRule(preset_id='preset_6', 
+            rule_type=constants.MappingRuleType.DeckNoteType,
+            model_id=42,
+            deck_id=252,
+            enabled=False, 
+            automatic=True)
+        mapping_rules.rules.append(rule_6)
+
+        deck_note_type = config_models.DeckNoteType(model_id=42, deck_id=52)
+
+        applicable_rules = list(mapping_rules.iterate_related_rules(deck_note_type))
+        pprint.pprint(applicable_rules)
+        self.assertEqual(len(applicable_rules), 3)
+
+        assert applicable_rules[0] == (0, 0, rule_1)
+        assert applicable_rules[1] == (2, 1, rule_2)
+        assert applicable_rules[2] == (3, 2, rule_5)

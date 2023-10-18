@@ -44,6 +44,9 @@ class HyperTTS():
         self.config = self.anki_utils.get_config()
         self.latest_saved_batch_name = None
 
+        # do maintenance on the configuration
+        self.perform_config_migration()
+
 
     def process_batch_audio(self, note_id_list, batch, batch_status):
         # for each note, generate audio
@@ -65,7 +68,7 @@ class HyperTTS():
                     break
             self.anki_utils.undo_end(undo_id)
 
-    def process_note_audio(self, batch, note, add_mode, audio_request_context, text_override):
+    def process_note_audio(self, batch: config_models.BatchConfig, note, add_mode, audio_request_context, text_override):
         target_field = batch.target.target_field
 
         if target_field not in note:
@@ -155,7 +158,7 @@ class HyperTTS():
             voice = voice_list.pop(0)
             return voice
 
-    def editor_note_add_audio(self, batch, editor, note, add_mode, text_override):
+    def editor_note_add_audio(self, batch: config_models.BatchConfig, editor, note, add_mode, text_override):
         logger.debug('editor_note_add_audio')
         undo_id = self.anki_utils.undo_start()
         audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_browser)
@@ -175,53 +178,39 @@ class HyperTTS():
         self.anki_utils.undo_end(undo_id)
         self.anki_utils.play_sound(full_filename)
 
-    # editor pycmd commands processing 
-    # ================================
+    def editor_note_process_rules(self, rules: config_models.PresetMappingRules, editor, automated: bool, selected_text: str):
+        """process all rules that apply"""
+        deck_note_type: config_models.DeckNoteType = self.get_editor_deck_note_type(editor)
+        for absolute_index, subset_index, rule in rules.iterate_applicable_rules(deck_note_type, automated):
+            logger.info(f'applying rule {rule}')
+            self.editor_note_process_rule(rule, editor, selected_text)
 
-    def decode_preview_add_message(self, msg):
-        components = msg.split(':')
-        command = components[1]
-        enable_selection_str = components[2]
-        enable_selection = enable_selection_str == 'true'
-        final_components = components[3:]
-        batch_name = ':'.join(final_components)
-        return command, batch_name, enable_selection
+    def editor_note_process_rule(self, rule: config_models.MappingRule, editor, selected_text):
+        """process a single rule, unconditionally"""
+        preset = self.load_preset(rule.preset_id)
+        self.editor_note_add_audio(preset, editor, editor.note, editor.addMode, selected_text)
 
-    def process_bridge_cmd(self, str, editor, handled):
-        if str.startswith(constants.PYCMD_ADD_AUDIO_PREFIX) or str.startswith(constants.PYCMD_PREVIEW_AUDIO_PREFIX):
-            command, batch_name, enable_selection = self.decode_preview_add_message(str)
-            text_override = None
-            if enable_selection:
-                if len(editor.web.selectedText()) > 0:
-                    text_override = editor.web.selectedText()
 
-            self.set_editor_use_selection(enable_selection)
+    # editor related functions
+    # ========================
 
-            if command == constants.PYCMD_ADD_AUDIO:
-                logger.info(f'processing pycmd bridge command: {str}')
-                if batch_name == constants.BATCH_CONFIG_NEW:
-                    self.clear_latest_saved_batch_name()
-                    gui.launch_batch_dialog_editor(self, editor.note, editor, editor.addMode)
-                    gui.update_editor_batch_list(self, editor)
-                else:
-                    with self.error_manager.get_single_action_context('Adding Audio to Note'):
-                        logger.info(f'received message: {str}')
-                        # logger.debug(f'editor.web.selectedText(): {type(editor.web)} {editor.web.selectedText()}')
+    def get_editor_context(self, editor) -> config_models.EditorContext:
+        editor_context = config_models.EditorContext(note=editor.note, editor=editor, add_mode=editor.addMode)
+        return editor_context
 
-                        batch = self.load_batch_config(batch_name)
-                        self.set_editor_last_used_batch_name(batch_name)
-                        self.editor_note_add_audio(batch, editor, editor.note, editor.addMode, text_override)
-                return True, None
+    def get_editor_deck_note_type(self, editor) -> config_models.DeckNoteType:
+        note = editor.note
+        if note == None:
+            raise RuntimeError(f'editor.note not found')
 
-            if command == constants.PYCMD_PREVIEW_AUDIO:
-                with self.error_manager.get_single_action_context('Previewing Audio'):
-                    logger.info(f'received message: {str}')
-                    batch = self.load_batch_config(batch_name)
-                    self.set_editor_last_used_batch_name(batch_name)
-                    self.preview_note_audio(batch, editor.note, text_override)
-                return True, None        
+        if editor.addMode:
+            add_cards: aqt.addcards.AddCards = editor.parentWindow
+            return config_models.DeckNoteType(model_id=note.mid, deck_id=add_cards.deckChooser.selectedId())
+        else:
+            if editor.card == None:
+                raise RuntimeError(f'editor.card not found')
+            return config_models.DeckNoteType(model_id=note.mid, deck_id=editor.card.did)
 
-        return handled            
 
     # text processing
     # ===============
@@ -293,6 +282,54 @@ class HyperTTS():
             raise errors.SourceTextEmpty()        
         full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options, context.AudioRequestContext(constants.AudioRequestReason.preview))
         self.anki_utils.play_sound(full_filename)
+
+    def get_preview_all_rules_task(self, deck_note_type: config_models.DeckNoteType,editor_context: config_models.EditorContext, preset_mapping_rules: config_models.PresetMappingRules):
+        def preview_fn():
+            for absolute_index, subset_index, rule in preset_mapping_rules.iterate_applicable_rules(deck_note_type, False):
+                logger.debug(f'previewing audio for rule {rule}')
+                preset = self.load_preset(rule.preset_id)
+                # self.anki_utils.tooltip_message(f'Previewing audio for rule {preset.name}')
+                self.anki_utils.run_on_main(lambda: self.anki_utils.tooltip_message(f'Previewing audio for {preset.name}'))
+                self.preview_note_audio(preset, editor_context.note, None)
+        return preview_fn
+
+    def get_preview_all_rules_done(self):
+        def done_fn(result):
+            with self.error_manager.get_single_action_context('Previewing Audio'):
+                result = result.result()
+        return done_fn
+
+    def preview_all_mapping_rules(self, editor_context: config_models.EditorContext, preset_mapping_rules: config_models.PresetMappingRules = None):
+        if preset_mapping_rules == None:
+            # load the saved rules
+            preset_mapping_rules = self.load_mapping_rules()
+        deck_note_type = self.get_editor_deck_note_type(editor_context.editor)
+        # we want audio generation to happen in the background, but the tooltips will be generated in foreground to display immediately
+        self.anki_utils.run_in_background(self.get_preview_all_rules_task(deck_note_type, editor_context, preset_mapping_rules), self.get_preview_all_rules_done())
+
+    def get_apply_all_rules_task(self, deck_note_type: config_models.DeckNoteType,editor_context: config_models.EditorContext, preset_mapping_rules: config_models.PresetMappingRules):
+        def apply_fn():
+            for absolute_index, subset_index, rule in preset_mapping_rules.iterate_applicable_rules(deck_note_type, False):
+                logger.debug(f'previewing audio for rule {rule}')
+                preset = self.load_preset(rule.preset_id)
+                # self.anki_utils.tooltip_message(f'Previewing audio for rule {preset.name}')
+                self.anki_utils.run_on_main(lambda: self.anki_utils.tooltip_message(f'Generating audio for {preset.name}'))
+                self.editor_note_add_audio(preset, editor_context.editor, editor_context.note, editor_context.add_mode, None)
+        return apply_fn
+
+    def get_apply_all_rules_done(self):
+        def done_fn(result):
+            result = result.result()
+        return done_fn
+
+    def apply_all_mapping_rules(self, editor_context: config_models.EditorContext, preset_mapping_rules: config_models.PresetMappingRules = None):
+        if preset_mapping_rules == None:
+            # load the saved rules
+            preset_mapping_rules = self.load_mapping_rules()
+        deck_note_type = self.get_editor_deck_note_type(editor_context.editor)
+        # we want audio generation to happen in the background, but the tooltips will be generated in foreground to display immediately
+        self.anki_utils.run_in_background(self.get_apply_all_rules_task(deck_note_type, editor_context, preset_mapping_rules), self.get_apply_all_rules_done())
+
 
     # processing of sound tags / collection stuff
     # ===========================================
@@ -551,49 +588,65 @@ class HyperTTS():
     # functions related to addon config
     # =================================
 
-    # batch config
-
-    def save_batch_config(self, batch_name, batch):
-        batch.validate()
-        if constants.CONFIG_BATCH_CONFIG not in self.config:
-            self.config[constants.CONFIG_BATCH_CONFIG] = {}
-        self.config[constants.CONFIG_BATCH_CONFIG][batch_name] = batch.serialize()
-        self.anki_utils.write_config(self.config)
-        self.set_latest_saved_batch_name(batch_name)
-        logger.info(f'saved batch config [{batch_name}]')
-
-    def load_batch_config(self, batch_name):
-        logger.info(f'loading batch config [{batch_name}]')
-        if batch_name not in self.config[constants.CONFIG_BATCH_CONFIG]:
-            raise errors.PresetNotFound(batch_name)
-        return self.deserialize_batch_config(self.config[constants.CONFIG_BATCH_CONFIG][batch_name])
-
-    def delete_batch_config(self, batch_name):
-        logger.info(f'deleting batch config [{batch_name}]')
-        if batch_name not in self.config[constants.CONFIG_BATCH_CONFIG]:
-            raise errors.PresetNotFound(batch_name)
-        del self.config[constants.CONFIG_BATCH_CONFIG][batch_name]
-        self.anki_utils.write_config(self.config)
-
-    def get_batch_config_list(self):
-        if constants.CONFIG_BATCH_CONFIG not in self.config:
+    # presets
+    
+    def get_preset_list(self) -> List[config_models.PresetInfo]:
+        if constants.CONFIG_PRESETS not in self.config:
             return []
-        batch_config_list = list(self.config[constants.CONFIG_BATCH_CONFIG].keys())
-        batch_config_list.sort()
-        return batch_config_list
+        preset_list = []
+        for preset_id, preset_data in self.config[constants.CONFIG_PRESETS].items():
+            preset_list.append(config_models.PresetInfo(id=preset_id, name=preset_data['name']))
+        return preset_list
 
-    def get_batch_config_list_editor(self):
-        return [constants.BATCH_CONFIG_NEW] + self.get_batch_config_list()
+    def save_preset(self, preset: config_models.BatchConfig):
+        preset.validate()
+        if constants.CONFIG_PRESETS not in self.config:
+            self.config[constants.CONFIG_PRESETS] = {}
+        self.config[constants.CONFIG_PRESETS][preset.uuid] = preset.serialize()
+        self.anki_utils.write_config(self.config)
+        logger.info(f'saved preset [{preset.name}]')
 
-    def get_next_batch_name(self):
-        existing_batch_names = self.get_batch_config_list()
+    def load_preset(self, preset_id: str) -> config_models.BatchConfig:
+        logger.info(f'loading preset [{preset_id}]')
+        if preset_id not in self.config[constants.CONFIG_PRESETS]:
+            raise errors.PresetNotFound(preset_id)
+        return self.deserialize_batch_config(self.config[constants.CONFIG_PRESETS][preset_id])
+
+    def get_preset_name(self, preset_id: str) -> str:
+        if preset_id not in self.config[constants.CONFIG_PRESETS]:
+            raise errors.PresetNotFound(preset_id)        
+        return self.config[constants.CONFIG_PRESETS][preset_id]['name']
+
+    def delete_preset(self, preset_id: str):
+        if preset_id not in self.config[constants.CONFIG_PRESETS]:
+            raise errors.PresetNotFound(preset_id)
+        del self.config[constants.CONFIG_PRESETS][preset_id]
+        self.anki_utils.write_config(self.config)        
+
+    def get_next_preset_name(self) -> str:
+        """returns the next available preset name which doesn't collide with others"""
+        preset_list: List[config_models.PresetInfo] = self.get_preset_list()
+        preset_name_dict = {}
+        for preset_info in preset_list:
+            preset_name_dict[preset_info.name] = True
         i = 1
-        batch_name = f'Preset {i}'
-        while batch_name in existing_batch_names:
+        new_preset_name = f'Preset {i}'
+        while new_preset_name in preset_name_dict:
             i += 1
-            batch_name = f'Preset {i}'
-        return batch_name
+            new_preset_name = f'Preset {i}'
+        return new_preset_name
 
+    # mapping rules
+    def save_mapping_rules(self, mapping_rules: config_models.PresetMappingRules):
+        self.config[constants.CONFIG_MAPPING_RULES] = config_models.serialize_preset_mapping_rules(mapping_rules)
+        self.anki_utils.write_config(self.config)
+        logger.info('saved mapping rules')
+
+    def load_mapping_rules(self) -> config_models.PresetMappingRules:
+        if constants.CONFIG_MAPPING_RULES not in self.config:
+            return config_models.PresetMappingRules()
+        return config_models.deserialize_preset_mapping_rules(self.config[constants.CONFIG_MAPPING_RULES])
+    
     # realtime config
 
     def save_realtime_config(self, realtime_model, settings_key):
@@ -638,25 +691,6 @@ class HyperTTS():
     def hypertts_pro_enabled(self):
         return self.get_configuration().hypertts_pro_api_key_set()
 
-    def clear_latest_saved_batch_name(self):
-        self.latest_saved_batch_name = None
-
-    def set_latest_saved_batch_name(self, batch_name):
-        self.latest_saved_batch_name = batch_name
-
-    def set_editor_last_used_batch_name(self, batch_name):
-        self.latest_saved_batch_name = None
-        self.config[constants.CONFIG_LAST_USED_BATCH] = batch_name
-        self.anki_utils.write_config(self.config)
-
-    def get_editor_default_batch_name(self):
-        if self.latest_saved_batch_name != None:
-            return self.latest_saved_batch_name
-        latest_used_editor_batch_name = self.config.get(constants.CONFIG_LAST_USED_BATCH, None)
-        if latest_used_editor_batch_name != None:
-            return latest_used_editor_batch_name
-        return constants.BATCH_CONFIG_NEW
-
     def set_editor_use_selection(self, use_selection):
         self.config[constants.CONFIG_USE_SELECTION] = use_selection
         self.anki_utils.write_config(self.config)
@@ -675,8 +709,12 @@ class HyperTTS():
     # deserialization routines for loading from config
     # ================================================
 
+    def perform_config_migration(self):
+        self.config = config_models.migrate_configuration(self.anki_utils, self.config)
+        self.anki_utils.write_config(self.config)
+
     def deserialize_batch_config(self, batch_config):
-        batch = config_models.BatchConfig()
+        batch = config_models.BatchConfig(self.anki_utils)
         batch_mode = constants.BatchMode[batch_config['source']['mode']]
         if batch_mode == constants.BatchMode.simple:
             source = config_models.BatchSourceSimple(batch_config['source']['source_field'])
@@ -694,6 +732,8 @@ class HyperTTS():
         batch.set_target(target)
         batch.set_voice_selection(voice_selection)
         batch.text_processing = text_processing
+        batch.uuid = batch_config['uuid']
+        batch.name = batch_config['name']
         
         return batch
 

@@ -142,6 +142,10 @@ class ModelValidationError(HyperTTSError):
     def __init__(self, message):
         super().__init__(message)    
 
+class PresetNameNotSet(ModelValidationError):
+    def __init__(self):
+        super().__init__('Name of preset is not set')
+
 class SourceFieldNotSet(ModelValidationError):
     def __init__(self):
         super().__init__('Source Field is not set')

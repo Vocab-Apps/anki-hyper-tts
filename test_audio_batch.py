@@ -63,7 +63,7 @@ def test_simple_1(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
     text_processing = config_models.TextProcessing()
@@ -149,7 +149,7 @@ def test_simple_text_processing(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('English')
     target = config_models.BatchTarget('Sound', False, True)
     text_processing = config_models.TextProcessing()
@@ -198,7 +198,7 @@ def test_simple_error_handling(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -241,7 +241,7 @@ def test_simple_error_handling_nonexistent_target_field(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Audio', False, True)
 
@@ -282,7 +282,7 @@ def test_simple_error_handling_nonexistent_source_field(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('French')
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -323,7 +323,7 @@ def test_simple_error_handling_not_found(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_b_notfound, {}))
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -365,7 +365,7 @@ def test_simple_append(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Chinese', True, True)
 
@@ -422,7 +422,7 @@ def test_sound_tag_only_keep_other_sound_tags(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', 
         False,  # sound tag only
@@ -477,7 +477,7 @@ def test_clear_sound_field_previous_content(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', 
         False,  # sound tag only
@@ -529,7 +529,7 @@ def test_simple_same_field_source_target(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Chinese', True, True)
 
@@ -584,7 +584,7 @@ def test_simple_sound_only_append(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', True, False)
 
@@ -629,7 +629,7 @@ def test_random_voices(qtbot):
     random.add_voice(config_models.VoiceWithOptionsRandom(voice_a_2, {}))
     random.add_voice(config_models.VoiceWithOptionsRandom(voice_a_3, {}))
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -670,7 +670,7 @@ def test_simple_template(qtbot):
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceTemplate(constants.BatchMode.template, """{Article} {Word}""", constants.TemplateFormatVersion.v1)
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -720,7 +720,7 @@ result = f"{article} {word}"
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, source_template, constants.TemplateFormatVersion.v1)
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -772,7 +772,7 @@ result = f"{article} {word}"
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, source_template, constants.TemplateFormatVersion.v1)
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -815,7 +815,7 @@ def test_priority_voices_success(qtbot):
     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_1, {}))
     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_2, {}))
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 
@@ -857,7 +857,7 @@ def test_priority_voices_not_found(qtbot):
     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_1, {}))
     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_1, {}))
 
-    batch = config_models.BatchConfig()
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSourceSimple('Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 

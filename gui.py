@@ -17,14 +17,17 @@ from typing import List, Tuple
 
 # addon imports
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
 component_realtime = __import__('component_realtime', globals(), locals(), [], sys._addon_import_level_base)
+component_presetmappingrules = __import__('component_presetmappingrules', globals(), locals(), [], sys._addon_import_level_base)
 component_configuration = __import__('component_configuration', globals(), locals(), [], sys._addon_import_level_base)
 component_preferences = __import__('component_preferences', globals(), locals(), [], sys._addon_import_level_base)
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 ttsplayer = __import__('ttsplayer', globals(), locals(), [], sys._addon_import_level_base)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_child_logger(__name__)
 
 
@@ -59,39 +62,10 @@ class PreferencesDialog(aqt.qt.QDialog):
     def close(self):
         self.accept()
 
-
 class DialogBase(aqt.qt.QDialog):
     def __init__(self):
         super(aqt.qt.QDialog, self).__init__()
 
-class BatchDialog(DialogBase):
-    def __init__(self, hypertts):
-        super(DialogBase, self).__init__()
-        self.batch_component = component_batch.ComponentBatch(hypertts, self)
-
-    def setupUi(self):
-        self.setWindowTitle(constants.GUI_COLLECTION_DIALOG_TITLE)
-        self.main_layout = aqt.qt.QVBoxLayout(self)
-        self.batch_component.draw(self.main_layout)
-
-    def configure_browser(self, note_id_list, batch_name=None):
-        self.batch_component.configure_browser(note_id_list)
-        self.setupUi()
-        if batch_name != None:
-            self.batch_component.load_batch(batch_name)
-            # collapse splitter
-            self.batch_component.collapse_settings()
-        else:
-            self.batch_component.display_settings()
-
-    def configure_editor(self, note, editor, add_mode):
-        self.batch_component.configure_editor(note, editor, add_mode)
-        self.setupUi()
-        self.batch_component.no_settings_editor()
-
-
-    def close(self):
-        self.accept()
 
 class RealtimeDialog(DialogBase):
     def __init__(self, hypertts, card_ord):
@@ -124,23 +98,6 @@ def launch_preferences_dialog(hypertts):
         dialog = PreferencesDialog(hypertts)
         dialog.setupUi()
         dialog.exec()        
-
-def launch_batch_dialog_browser(hypertts, browser, note_id_list, batch_name):
-    with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Browser'):
-        logger.info('launch_batch_dialog_browser')
-        if len(note_id_list) == 0:
-            raise errors.NoNotesSelected()
-        dialog = BatchDialog(hypertts)
-        dialog.configure_browser(note_id_list, batch_name=batch_name)
-        dialog.exec()
-        browser.model.reset()
-
-def launch_batch_dialog_editor(hypertts, note, editor, add_mode):
-    with hypertts.error_manager.get_single_action_context('Launching HyperTTS Batch Dialog from Editor'):
-        logger.info('launch_batch_dialog_editor')
-        dialog = BatchDialog(hypertts)
-        dialog.configure_editor(note, editor, add_mode)
-        dialog.exec()
 
 def launch_realtime_dialog_browser(hypertts, note_id_list):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Realtime Dialog from Browser'):
@@ -184,35 +141,19 @@ def remove_realtime_tts_tag(hypertts, browser, note_id_list):
         hypertts.anki_utils.info_message(constants.GUI_TEXT_REALTIME_REMOVED_TAG, browser)
 
 
-def update_editor_batch_list(hypertts, editor: aqt.editor.Editor):
-    batch_name_list = hypertts.get_batch_config_list_editor()
-    configure_editor(editor, 
-        batch_name_list, hypertts.get_editor_default_batch_name(), hypertts.get_editor_use_selection())
-
-def configure_editor(editor: aqt.editor.Editor, batch_name_list, editor_default_batch_name, use_selection):
-    logger.info(f'configure_editor, batch_name_list: {batch_name_list} editor_default_batch_name: {editor_default_batch_name}')
-    js_command = f"configureEditorHyperTTS({json.dumps(batch_name_list)}, '{editor_default_batch_name}', {str(use_selection).lower()})"
-    print(js_command)
-    editor.web.eval(js_command)    
-
-def send_add_audio_command(editor: aqt.editor.Editor):
-    logger.info('send_add_audio_command')
-    js_command = f"hyperTTSAddAudio()"
-    editor.web.eval(js_command)        
-
-def send_preview_audio_command(editor: aqt.editor.Editor):
-    js_command = f"hyperTTSPreviewAudio()"
-    editor.web.eval(js_command)            
-
 def init(hypertts):
-    aqt.mw.addonManager.setWebExports(__name__, r".*(css|js)")
 
     def browerMenusInit(browser: aqt.browser.Browser):
-
-        def get_launch_dialog_browser_fn(hypertts, browser, batch_name):
+        
+        def get_launch_dialog_browser_new_fn(hypertts, browser):
             def launch():
-                launch_batch_dialog_browser(hypertts, browser, browser.selectedNotes(), batch_name)
+                component_batch.create_component_batch_browser_new_preset(hypertts, browser.selectedNotes(), hypertts.get_next_preset_name())
             return launch
+
+        def get_launch_dialog_browser_existing_fn(hypertts, browser, preset_id: str):
+            def launch():
+                component_batch.create_component_batch_browser_existing_preset(hypertts, browser.selectedNotes(), preset_id)
+            return launch            
 
         def get_launch_realtime_dialog_browser_fn(hypertts, browser):
             def launch():
@@ -228,13 +169,13 @@ def init(hypertts):
         browser.form.menubar.addMenu(menu)
 
         action = aqt.qt.QAction(f'Add Audio (Collection)...', browser)
-        action.triggered.connect(get_launch_dialog_browser_fn(hypertts, browser, None))
+        action.triggered.connect(get_launch_dialog_browser_new_fn(hypertts, browser))
         menu.addAction(action)
 
         # add a menu entry for each preset
-        for batch_name in hypertts.get_batch_config_list():
-            action = aqt.qt.QAction(f'Add Audio (Collection): {batch_name}...', browser)
-            action.triggered.connect(get_launch_dialog_browser_fn(hypertts, browser, batch_name))
+        for preset_info in hypertts.get_preset_list():
+            action = aqt.qt.QAction(f'Add Audio (Collection): {preset_info.name}...', browser)
+            action.triggered.connect(get_launch_dialog_browser_existing_fn(hypertts, browser, preset_info.id))
             menu.addAction(action)
 
         menu.addSeparator()
@@ -247,41 +188,47 @@ def init(hypertts):
         action.triggered.connect(get_remove_realtime_tts_tag_fn(hypertts, browser))
         menu.addAction(action)
 
+    def run_hypertts_settings(editor):
+        with hypertts.error_manager.get_single_action_context('Opening Preset Mapping Rules'):
+            logger.info(f'clicked hypertts settings, editor: {editor}')
+            editor_context = hypertts.get_editor_context(editor)
+            deck_note_type = hypertts.get_editor_deck_note_type(editor)
+            component_presetmappingrules.create_dialog(hypertts, deck_note_type, editor_context)
 
-    def on_webview_will_set_content(web_content: aqt.webview.WebContent, context):
-        if not isinstance(context, aqt.editor.Editor):
-            return
-        addon_package = aqt.mw.addonManager.addonFromModule(__name__)
-        javascript_path = [
-            f"/_addons/{addon_package}/hypertts.js",
-        ]
-        css_path =  [
-            f"/_addons/{addon_package}/hypertts.css",
-        ]
-        web_content.js.extend(javascript_path)
-        web_content.css.extend(css_path)
+    def run_hypertts_preview(editor):
+        with hypertts.error_manager.get_single_action_context('Previewing Audio'):
+            editor_context = hypertts.get_editor_context(editor)
+            hypertts.preview_all_mapping_rules(editor_context)
 
-    def loadNote(editor: aqt.editor.Editor):
-        update_editor_batch_list(hypertts, editor)
+    def run_hypertts_apply(editor):
+        with hypertts.error_manager.get_single_action_context('Generating Audio'):
+            editor_context = hypertts.get_editor_context(editor)
+            hypertts.apply_all_mapping_rules(editor_context)
 
-    def onBridge(handled, str, editor):
-        # return handled # don't do anything for now
-        if not isinstance(editor, aqt.editor.Editor):
-            return handled
-
-        return hypertts.process_bridge_cmd(str, editor, handled)
-
-    def setup_editor_shortcuts(shortcuts: List[Tuple], editor: aqt.editor.Editor):
+    def setup_editor_buttons(buttons, editor):
         preferences = hypertts.get_preferences()
-        if preferences.keyboard_shortcuts.shortcut_editor_add_audio != None:
-            shortcut = preferences.keyboard_shortcuts.shortcut_editor_add_audio
-            logger.info(f'keyboard shortcut for editor_add_audio: {shortcut}')
-            shortcut_entry = (shortcut, lambda editor=editor: send_add_audio_command(editor), True)
-            shortcuts.append(shortcut_entry)
-        if preferences.keyboard_shortcuts.shortcut_editor_preview_audio != None:            
-            shortcut = preferences.keyboard_shortcuts.shortcut_editor_preview_audio
-            shortcut_entry = (shortcut, lambda editor=editor: send_preview_audio_command(editor), True)
-            shortcuts.append(shortcut_entry)
+
+        new_button = editor.addButton(gui_utils.get_graphics_path('icon_speaker.png'),
+            'hypertts_add_audio',
+            run_hypertts_apply,
+            tip = 'HyperTTS: Add Audio',
+            keys = preferences.keyboard_shortcuts.shortcut_editor_add_audio)
+        buttons.append(new_button)
+
+        new_button = editor.addButton(gui_utils.get_graphics_path('icon_play.png'),
+            'hypertts_preview_audio',
+            run_hypertts_preview,
+            tip = 'HyperTTS: Preview Audio',
+            keys = preferences.keyboard_shortcuts.shortcut_editor_preview_audio)
+        buttons.append(new_button)
+
+        new_button = editor.addButton(gui_utils.get_graphics_path('icon_settings.png'),
+            'hypertts_settings',
+            run_hypertts_settings,
+            tip = 'HyperTTS: Settings')
+        buttons.append(new_button)        
+
+        return buttons
 
     # anki tools menu
     action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Services Configuration', aqt.mw)
@@ -295,13 +242,8 @@ def init(hypertts):
     # browser menus
     aqt.gui_hooks.browser_menus_did_init.append(browerMenusInit)
 
-    # editor setup
-    aqt.gui_hooks.editor_did_load_note.append(loadNote)
-    aqt.gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
-    aqt.gui_hooks.webview_did_receive_js_message.append(onBridge)
-
-    # editor shortcuts
-    aqt.gui_hooks.editor_did_init_shortcuts.append(setup_editor_shortcuts)
+    # editor buttons
+    aqt.gui_hooks.editor_did_init_buttons.append(setup_editor_buttons)
 
     # register TTS player
     aqt.sound.av_player.players.append(ttsplayer.AnkiHyperTTSPlayer(aqt.mw.taskman, hypertts))

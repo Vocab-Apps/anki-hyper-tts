@@ -9,6 +9,7 @@ import constants
 import hypertts
 import errors
 import servicemanager
+import config_models
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
@@ -18,6 +19,34 @@ def get_test_services_dir():
     current_script_dir = os.path.dirname(current_script_path)    
     return os.path.join(current_script_dir, 'test_services')
 
+def create_simple_batch(hypertts_instance, 
+        preset_id='uuid_0', 
+        name='my preset 1', 
+        save_preset=True, 
+        voice_name='voice_a_1',
+        target_field='Sound'):
+    """create simple batch config and optionally save"""
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    selected_voice = [x for x in voice_list if x.name == voice_name][0]
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(selected_voice, {}))
+
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
+    source = config_models.BatchSourceSimple('Chinese')
+    target = config_models.BatchTarget(target_field, False, True)
+    text_processing = config_models.TextProcessing()
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(single)
+    batch.set_text_processing(text_processing)
+    batch.name = name
+    batch.uuid = preset_id
+
+    if save_preset:
+        hypertts_instance.save_preset(batch)
+
+    return batch    
 
 
 class MockFuture():
@@ -42,11 +71,24 @@ class MockWebView():
     def selectedText(self):
         return self.selected_text
 
+
+class MockDeckChooser():
+    def __init__(self):
+        self.deck_id = None
+
+    def selectedId(self):
+        return self.deck_id
+
+class MockAddCards():
+    def __init__(self):
+        self.deckChooser = MockDeckChooser()
+
 class MockEditor():
     def __init__(self):
         self.set_note_called = None
         self.addMode = False
         self.web = MockWebView()
+        self.parentWindow = MockAddCards()
 
     def set_note(self, note):
         self.set_note_called = True
@@ -61,6 +103,10 @@ class MockAnkiUtils():
         self.added_media_file = None
         self.show_loading_indicator_called = None
         self.hide_loading_indicator_called = None
+        self.tooltip_messages = []
+
+        # sounds
+        self.all_played_sounds = []
 
         # undo handling
         self.undo_started = False
@@ -75,8 +121,20 @@ class MockAnkiUtils():
         self.last_exception = None
         self.last_action = None
 
+        # uuid generation
+        self.uuid_current_num = 0
+
+        # responses for dialogs
+        self.ask_user_bool_response = True
+        self.ask_user_get_text_response = None
+        self.ask_user_choose_from_list_response = None
+        self.ask_user_choose_from_list_response_string = None
+
         # time
         self.current_time = datetime.datetime.now()
+
+        # dialogs
+        self.dialog_input_fn_map = {}
 
     def get_config(self):
         return self.config
@@ -113,8 +171,14 @@ class MockAnkiUtils():
         # should return a dict which has flds
         return self.models[model_id]
 
+    def get_note_type_name(self, model_id: int) -> str:
+        return self.get_model(model_id)['name']
+
     def get_deck(self, deck_id):
         return self.decks[deck_id]
+
+    def get_deck_name(self, deck_id: int) -> str:
+        return self.get_deck(deck_id)['name']
 
     def get_model_id(self, model_name):
         return self.model_by_name[model_name]
@@ -179,11 +243,16 @@ class MockAnkiUtils():
         logger.info(f'critical error message: {message}')
         self.critical_message_received = message
 
+    def tooltip_message(self, message):
+        self.tooltip_messages.append(message)
+
     def play_sound(self, filename):
         logger.info('play_sound')
         # load the json inside the file
         with open(filename) as json_file:
             self.played_sound = json.load(json_file)
+            # keep records of all sounds played
+            self.all_played_sounds.append(self.played_sound)
 
     def show_progress_bar(self, message):
         self.show_progress_bar_called = True
@@ -204,7 +273,18 @@ class MockAnkiUtils():
         self.hide_loading_indicator_called = True
 
     def ask_user(self, message, parent):
-        return True
+        # assume true
+        return self.ask_user_bool_response
+
+    def ask_user_get_text(self, message, parent, default, title):
+        return self.ask_user_get_text_response, 1
+
+    def ask_user_choose_from_list(self, parent, prompt: str, choices: list[str], startrow: int = 0) -> int:
+        if self.ask_user_choose_from_list_response_string != None:
+            # we need to look for the index of that string inside choices
+            chosen_row = choices.index(self.ask_user_choose_from_list_response_string)
+            return chosen_row, 1
+        return self.ask_user_choose_from_list_response, 1
 
     def checkpoint(self, action_str):
         self.checkpoint_name = action_str
@@ -248,6 +328,15 @@ class MockAnkiUtils():
 
     def tick_time(self):
         self.current_time = self.current_time + datetime.timedelta(seconds=1)
+
+    def get_uuid(self):
+        result = f'uuid_{self.uuid_current_num}'
+        logger.debug(f'generating uuid: {result}')
+        self.uuid_current_num += 1
+        return result
+
+    def wait_for_dialog_input(self, dialog, dialog_id):
+        self.dialog_input_fn_map[dialog_id](dialog)
 
 class MockServiceManager():
     def __init__(self):
@@ -402,15 +491,16 @@ class MockNote():
 class TestConfigGenerator():
     def __init__(self):
         self.deck_id = 42001
-        self.model_id = 43001
+        self.model_id_chinese = 43001
 
         self.model_id_german = 50001
 
-        self.model_name = 'note-type'
+        self.model_name_chinese = 'Chinese Words'
         self.deck_name = 'deck 1'
         self.field_chinese = 'Chinese'
         self.field_english = 'English'
         self.field_sound = 'Sound'
+        self.field_sound_english = 'Sound English'
         self.field_pinyin = 'Pinyin'
         self.field_german_article = 'Article'
         self.field_german_word = 'Word'
@@ -425,10 +515,11 @@ class TestConfigGenerator():
         self.note_id_german_1 = 51001
         self.note_id_german_2 = 51002
 
-        self.all_fields = [self.field_chinese, self.field_english, self.field_sound, self.field_pinyin]
+        self.all_fields = [self.field_chinese, self.field_english, self.field_sound, self.field_pinyin, self.field_sound_english]
         self.all_fields_german = [self.field_german_article, self.field_german_word, self.field_english, self.field_sound]
 
         self.model_chinese = {
+            'name': self.model_name_chinese,
             'tmpls': [
                 {
                     'qfmt': '{{English}}',
@@ -447,34 +538,39 @@ class TestConfigGenerator():
         }        
 
         self.notes_by_id = {
-            self.note_id_1: MockNote(self.note_id_1, self.model_id,{
+            self.note_id_1: MockNote(self.note_id_1, self.model_id_chinese,{
                 self.field_chinese: '老人家',
                 self.field_english: 'old people',
                 self.field_sound: '',
+                self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
-            self.note_id_2: MockNote(self.note_id_2, self.model_id, {
+            self.note_id_2: MockNote(self.note_id_2, self.model_id_chinese, {
                 self.field_chinese: '你好',
                 self.field_english: 'hello',
                 self.field_sound: '',
+                self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
-            self.note_id_3: MockNote(self.note_id_3, self.model_id, {
+            self.note_id_3: MockNote(self.note_id_3, self.model_id_chinese, {
                 self.field_chinese: '',
                 self.field_english: 'empty',
                 self.field_sound: '',
+                self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
-            self.note_id_4: MockNote(self.note_id_4, self.model_id, {
+            self.note_id_4: MockNote(self.note_id_4, self.model_id_chinese, {
                 self.field_chinese: '赚钱',
                 self.field_english: 'To earn money',
                 self.field_sound: '[sound:blabla.mp3]',
+                self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),
-            self.note_id_5: MockNote(self.note_id_5, self.model_id, {
+            self.note_id_5: MockNote(self.note_id_5, self.model_id_chinese, {
                 self.field_chinese: '大使馆',
                 self.field_english: 'embassy',
                 self.field_sound: 'some content in sound field',
+                self.field_sound_english: '',
                 self.field_pinyin: ''
             }, self.all_fields, self.model_chinese),            
             # german notes
@@ -534,8 +630,8 @@ class TestConfigGenerator():
 
     def get_model_map(self):
         return {
-            self.model_id: {
-                'name': self.model_name,
+            self.model_id_chinese: {
+                'name': self.model_name_chinese,
                 'flds': [
                     {'name': self.field_chinese},
                     {'name': self.field_english},
@@ -559,12 +655,12 @@ class TestConfigGenerator():
 
     def get_model_by_name(self):
         return {
-            self.model_name: self.model_id
+            self.model_name_chinese: self.model_id_chinese
         }
 
     def get_deckid_modelid_pairs(self):
         return [
-            [self.deck_id, self.model_id]
+            [self.deck_id, self.model_id_chinese]
         ]        
 
     def get_note_id_list(self):
@@ -574,23 +670,28 @@ class TestConfigGenerator():
     def get_notes(self):
         notes = {
             self.deck_id: {
-                self.model_id: self.notes_by_id
+                self.model_id_chinese: self.notes_by_id
             }
         }
         return self.notes_by_id, notes
 
-    def get_mock_editor_with_note(self, note_id):
+    def get_mock_editor_with_note(self, note_id: int, deck_id: int, add_mode: bool = False):
         editor = MockEditor()
 
         field_array = []
         notes_by_id, notes = self.get_notes()
         note_data = notes_by_id[note_id]        
-        model = self.get_model_map()[self.model_id]
+        model_id = note_data.mid
+        model = self.get_model_map()[model_id]
         for field_entry in model['flds']:
             field_name = field_entry['name']
             field_array.append(note_data[field_name])
-        editor.note = MockNote(note_id, self.model_id, note_data, field_array, model)
-        editor.card = MockCard(self.deck_id, editor.note, 0, model, '')
+        editor.note = MockNote(note_id, model_id, note_data, field_array, model)
+        editor.card = MockCard(deck_id, editor.note, 0, model, '')
+
+        if add_mode:
+            editor.addMode = True
+            editor.parentWindow.deckChooser.deck_id = deck_id
 
         return editor
 

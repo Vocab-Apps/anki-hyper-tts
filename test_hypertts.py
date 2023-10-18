@@ -1,10 +1,18 @@
-
+import sys
+import os
 import unittest
+import pytest
+import json
+
+addon_dir = os.path.dirname(os.path.realpath(__file__))
+external_dir = os.path.join(addon_dir, 'external')
+sys.path.insert(0, external_dir)
 
 import errors
 import testing_utils
 import config_models
 import constants
+import gui_testing_utils
 
 class HyperTTSTests(unittest.TestCase):
 
@@ -108,29 +116,6 @@ yoyo
         output = hypertts_instance.keep_only_sound_tags(field_value)
         self.assertEqual(output, '[sound:yoyo1.mp3] [sound:test2.mp3]')
 
-    def test_get_editor_default_batch_name(self):
-        config_gen = testing_utils.TestConfigGenerator()
-        hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-
-        # by default, it's none
-        self.assertEqual(hypertts_instance.get_editor_default_batch_name(), constants.BATCH_CONFIG_NEW)
-
-        # save a batch config
-        hypertts_instance.latest_saved_batch_name = 'new_batch_1'
-        self.assertEqual(hypertts_instance.get_editor_default_batch_name(), 'new_batch_1')
-
-        # now, use a batch config from the editor
-        hypertts_instance.set_editor_last_used_batch_name('used_batch_2')
-        self.assertEqual(hypertts_instance.get_editor_default_batch_name(), 'used_batch_2')
-
-        # save a batch config
-        hypertts_instance.latest_saved_batch_name = 'new_batch_3'
-        self.assertEqual(hypertts_instance.get_editor_default_batch_name(), 'new_batch_3')
-
-        # now, use a batch config from the editor
-        hypertts_instance.set_editor_last_used_batch_name('used_batch_4')
-        self.assertEqual(hypertts_instance.get_editor_default_batch_name(), 'used_batch_4')        
-
     def test_save_configuration(self):
         config_gen = testing_utils.TestConfigGenerator()
         hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
@@ -169,6 +154,114 @@ yoyo
         self.assertRaises(errors.SourceTextEmpty, hypertts_instance.play_sound, source_text, None, None)
 
 
+    def test_preview_all_mapping_rules_1(self):
+        hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+
+        # create simple preset
+        preset_id_1 = 'uuid_0'
+        name = 'my preset 1'
+        voice_name_1 = 'voice_a_1'
+        testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id_1, name=name, voice_name=voice_name_1)
+        preset_id_2 = 'uuid_1'
+        name = 'my preset 2'
+        voice_name_2 = 'voice_a_2'
+        testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id_2, name=name, voice_name=voice_name_2)
+
+        # add the preset rules
+        preset_mapping_rules = config_models.PresetMappingRules()
+        rule_1 = config_models.MappingRule(preset_id=preset_id_1,
+                                           rule_type = constants.MappingRuleType.DeckNoteType,
+                                           model_id = deck_note_type.model_id,
+                                           enabled = True,
+                                           automatic = False,
+                                           deck_id = deck_note_type.deck_id)
+        preset_mapping_rules.rules.append(rule_1)
+
+        rule_2 = config_models.MappingRule(preset_id=preset_id_2,
+                                             rule_type = constants.MappingRuleType.NoteType,
+                                             model_id = deck_note_type.model_id,
+                                             enabled = True,
+                                             automatic = False)
+        preset_mapping_rules.rules.append(rule_2)
+
+        hypertts_instance.preview_all_mapping_rules(editor_context, preset_mapping_rules)
+
+        # we should have played audio for the two rules
+        self.assertEqual(len(hypertts_instance.anki_utils.all_played_sounds), 2)
+
+        # look at the first one
+        audio_result_dict = hypertts_instance.anki_utils.all_played_sounds[0]
+        self.assertEqual(audio_result_dict['source_text'], '老人家')
+        self.assertEqual(audio_result_dict['voice']['name'], voice_name_1)
+
+        # second one
+        audio_result_dict = hypertts_instance.anki_utils.all_played_sounds[1]
+        self.assertEqual(audio_result_dict['source_text'], '老人家')
+        self.assertEqual(audio_result_dict['voice']['name'], voice_name_2)  
+
+    def test_apply_all_mapping_rules_1(self):
+        hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+
+        # create simple preset
+        preset_id_1 = 'uuid_0'
+        name = 'my preset 1'
+        voice_name_1 = 'voice_a_1'
+        testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id_1, name=name, voice_name=voice_name_1)
+        preset_id_2 = 'uuid_1'
+        name = 'my preset 2'
+        voice_name_2 = 'voice_a_2'
+        testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id_2, name=name, voice_name=voice_name_2,
+                target_field = 'Sound English')
+
+        # add the preset rules
+        preset_mapping_rules = config_models.PresetMappingRules()
+        rule_1 = config_models.MappingRule(preset_id=preset_id_1,
+                                           rule_type = constants.MappingRuleType.DeckNoteType,
+                                           model_id = deck_note_type.model_id,
+                                           enabled = True,
+                                           automatic = False,
+                                           deck_id = deck_note_type.deck_id)
+        preset_mapping_rules.rules.append(rule_1)
+
+        rule_2 = config_models.MappingRule(preset_id=preset_id_2,
+                                             rule_type = constants.MappingRuleType.NoteType,
+                                             model_id = deck_note_type.model_id,
+                                             enabled = True,
+                                             automatic = False)
+        preset_mapping_rules.rules.append(rule_2)
+
+        hypertts_instance.apply_all_mapping_rules(editor_context, preset_mapping_rules)
+
+        # look at the sound field
+        sound_tag = editor_context.note.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        assert audio_data['source_text'] == '老人家'
+        assert audio_data['voice']['name'] == voice_name_1
+
+        sound_tag = editor_context.note.set_values['Sound English']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        assert audio_data['source_text'] == '老人家'
+        assert audio_data['voice']['name'] == voice_name_2
+
+
+        # we should have played audio for the two rules
+        self.assertEqual(len(hypertts_instance.anki_utils.all_played_sounds), 2)
+
+        # look at the first one
+        audio_result_dict = hypertts_instance.anki_utils.all_played_sounds[0]
+        self.assertEqual(audio_result_dict['source_text'], '老人家')
+        self.assertEqual(audio_result_dict['voice']['name'], voice_name_1)
+
+        # second one
+        audio_result_dict = hypertts_instance.anki_utils.all_played_sounds[1]
+        self.assertEqual(audio_result_dict['source_text'], '老人家')
+        self.assertEqual(audio_result_dict['voice']['name'], voice_name_2)  
+
+
+
+    @pytest.mark.skip(reason="previews will not be done with bridge commands anymore")
     def test_process_bridge_cmd(self):
         # initialize hypertts instance
         # ============================
@@ -184,7 +277,7 @@ yoyo
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
 
-        batch_config = config_models.BatchConfig()
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         source = config_models.BatchSourceSimple('Chinese')
         target = config_models.BatchTarget('Sound', False, True)
         text_processing = config_models.TextProcessing()
@@ -193,8 +286,10 @@ yoyo
         batch_config.set_target(target)
         batch_config.set_voice_selection(voice_selection)
         batch_config.set_text_processing(text_processing)
+        batch_config.name = 'test_preset_1'
 
         # save the preset
+        # note: this function is deprecated, we may not need to process bridge commands after change is done
         hypertts_instance.save_batch_config('test_preset_1', batch_config)
 
 

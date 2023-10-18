@@ -25,11 +25,16 @@ class ConfigModelBase(abc.ABC):
         pass    
 
 class BatchConfig(ConfigModelBase):
-    def __init__(self):
+    def __init__(self, anki_utils):
         self._source = None
         self._target = None
         self._voice_selection = None
         self._text_processing = None
+        self.uuid = anki_utils.get_uuid()
+        self.name = None
+
+    def reset_uuid(self, anki_utils):
+        self.uuid = anki_utils.get_uuid()
 
     def get_source(self):
         return self._source
@@ -64,6 +69,8 @@ class BatchConfig(ConfigModelBase):
 
     def serialize(self):
         return {
+            'uuid': self.uuid,
+            'name': self.name,
             'source': self.source.serialize(),
             'target': self.target.serialize(),
             'voice_selection': self.voice_selection.serialize(),
@@ -71,6 +78,10 @@ class BatchConfig(ConfigModelBase):
         }
 
     def validate(self):
+        if self.name == None or len(self.name) == 0:
+            raise errors.PresetNameNotSet()
+        if self.uuid == None or len(self.uuid) == 0:
+            raise RuntimeError('uuid not set')
         self.source.validate(),
         self.target.validate(),
         self.voice_selection.validate(),
@@ -540,3 +551,99 @@ def serialize_preferences(preferences):
         
 def deserialize_preferences(preferences_config):
     return databind.json.load(preferences_config, Preferences)
+
+@dataclass
+class PresetInfo:
+    id: str
+    name: str
+
+@dataclass
+class DeckNoteType:
+    model_id: int
+    deck_id: int
+
+@dataclass
+class EditorContext:
+    note: any
+    editor: any
+    add_mode: bool
+
+@dataclass
+class MappingRule:
+    preset_id: str
+    rule_type: constants.MappingRuleType
+    model_id: int
+    enabled: bool
+    automatic: bool
+    deck_id: Optional[int] = None
+
+    def rule_related(self, deck_note_type: DeckNoteType):
+        """used to determine whether we should display a rule in the mapping rule editor"""
+        if self.rule_type == constants.MappingRuleType.DeckNoteType:
+            return self.model_id == deck_note_type.model_id and self.deck_id == deck_note_type.deck_id
+        # for note-type rules, just match on model_id
+        return self.model_id == deck_note_type.model_id
+
+    def rule_applies(self, deck_note_type: DeckNoteType, automated: bool) -> bool:
+        if self.enabled == False:
+            # rule is disabled
+            return False
+        if self.model_id != deck_note_type.model_id:
+            # note type doesn't match
+            return False
+        if self.rule_type == constants.MappingRuleType.DeckNoteType:
+            if self.deck_id != deck_note_type.deck_id:
+                # deck doesn't match
+                return False
+        if automated == True:
+            if self.automatic == False:
+                # rule is not automatic
+                return False
+        return True
+
+@dataclass
+class PresetMappingRules:
+    rules: list[MappingRule] = field(default_factory=list)
+
+    def iterate_applicable_rules(self, deck_note_type: DeckNoteType, automated: bool):
+        subset_index = 0
+        for absolute_index, rule in enumerate(self.rules):
+            logger.info(f'evaluating rule {rule} with deck_note_type {deck_note_type}')
+            if rule.rule_applies(deck_note_type, automated):
+                logger.info(f'rule applies: {rule} on deck_note_type {deck_note_type}')
+                yield absolute_index, subset_index, rule
+                subset_index += 1
+
+    def iterate_related_rules(self, deck_note_type: DeckNoteType):
+        """get list of rules to display in the GUI"""
+        subset_index = 0
+        for absolute_index, rule in enumerate(self.rules):
+            if rule.rule_related(deck_note_type):
+                yield absolute_index, subset_index, rule
+                subset_index += 1
+
+
+def serialize_preset_mapping_rules(preset_mapping_rules):
+    return databind.json.dump(preset_mapping_rules, PresetMappingRules)
+
+def deserialize_preset_mapping_rules(preset_mapping_rules_config):
+    return databind.json.load(preset_mapping_rules_config, PresetMappingRules)
+
+def migrate_configuration(anki_utils, config):
+    current_config_schema_version = config.get(constants.CONFIG_SCHEMA, 0)
+    if current_config_schema_version < 2:
+        config[constants.CONFIG_PRESETS] = {}
+        # need to convert presets to the uuid format
+        if constants.CONFIG_BATCH_CONFIG in config:
+            for key, value in config[constants.CONFIG_BATCH_CONFIG].items():
+                batch_name = key
+                batch = value
+                batch_uuid = anki_utils.get_uuid()
+                batch['uuid'] = batch_uuid
+                batch['name'] = batch_name
+                config[constants.CONFIG_PRESETS][batch_uuid] = batch
+    # write current config
+    config[constants.CONFIG_SCHEMA] = constants.CONFIG_SCHEMA_VERSION
+
+    return config
+    

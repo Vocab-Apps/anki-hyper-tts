@@ -1,6 +1,7 @@
 import sys
 import os
 import datetime
+import uuid
 import aqt
 import anki.template
 import anki.sound
@@ -71,9 +72,15 @@ class AnkiUtils():
         ensure_anki_collection_open()
         return aqt.mw.col.models.get(model_id)
 
+    def get_note_type_name(self, model_id: int) -> str:
+        return self.get_model(model_id)['name']
+
     def get_deck(self, deck_id):
         ensure_anki_collection_open()
         return aqt.mw.col.decks.get(deck_id)
+
+    def get_deck_name(self, deck_id: int) -> str:
+        return self.get_deck(deck_id)['name']
 
     def get_model_id(self, model_name):
         ensure_anki_collection_open()
@@ -164,11 +171,35 @@ class AnkiUtils():
         aqt.utils.tooltip(message)
 
     def ask_user(self, message, parent):
-        result = aqt.utils.askUser(message, parent=parent)
+        result = aqt.utils.askUser(message, parent=parent, title=constants.ADDON_NAME)
         return result
 
+    def ask_user_get_text(self, message, parent, default, title):
+        return aqt.utils.getText(message, parent, default=default, title=f'{constants.TITLE_PREFIX}{title}')
+
+    def ask_user_choose_from_list(self, parent, prompt: str, choices: list[str], startrow: int = 0) -> int:
+        d = aqt.qt.QDialog(parent)
+        d.setWindowModality(aqt.qt.Qt.WindowModality.WindowModal)
+        l = aqt.qt.QVBoxLayout()
+        d.setLayout(l)
+        t = aqt.qt.QLabel(prompt)
+        l.addWidget(t)
+        c = aqt.qt.QListWidget()
+        c.addItems(choices)
+        c.setCurrentRow(startrow)
+        l.addWidget(c)
+        bb = aqt.qt.QDialogButtonBox(aqt.qt.QDialogButtonBox.StandardButton.Ok|aqt.qt.QDialogButtonBox.StandardButton.Cancel)
+        bb.accepted.connect(d.accept)
+        bb.rejected.connect(d.reject)
+        l.addWidget(bb)
+        retvalue = d.exec() # 1 for OK, 0 for canceled
+        current_row = c.currentRow()
+        logger.debug(f'returning current row: {current_row}, retvalue: {retvalue}')
+        return current_row, retvalue
+
     def play_sound(self, filename):
-        aqt.sound.av_player.play_file(filename)
+        # play files one after another
+        aqt.sound.av_player.insert_file(filename)
 
     def show_progress_bar(self, message):
         aqt.mw.progress.start(immediate=True, label=f'{constants.MENU_PREFIX} {message}')
@@ -225,3 +256,10 @@ class AnkiUtils():
             sentry_sdk.capture_exception(exception)
         else:
             logger.critical(exception, exc_info=True)
+
+    def get_uuid(self):
+        return str(uuid.uuid4())
+
+    def wait_for_dialog_input(self, dialog, dialog_id):
+        logger.info(f'waiting for dialog input: {dialog_id}')
+        dialog.exec()
