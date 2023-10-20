@@ -147,22 +147,26 @@ def init(hypertts):
         
         def get_launch_dialog_browser_new_fn(hypertts, browser):
             def launch():
-                component_batch.create_component_batch_browser_new_preset(hypertts, browser.selectedNotes(), hypertts.get_next_preset_name())
+                with hypertts.error_manager.get_single_action_context('Opening HyperTTS Dialog from Browser'):
+                    component_batch.create_component_batch_browser_new_preset(hypertts, browser.selectedNotes(), hypertts.get_next_preset_name())
             return launch
 
         def get_launch_dialog_browser_existing_fn(hypertts, browser, preset_id: str):
             def launch():
-                component_batch.create_component_batch_browser_existing_preset(hypertts, browser.selectedNotes(), preset_id)
+                with hypertts.error_manager.get_single_action_context('Opening HyperTTS Dialog from Browser'):
+                    component_batch.create_component_batch_browser_existing_preset(hypertts, browser.selectedNotes(), preset_id)
             return launch            
 
         def get_launch_realtime_dialog_browser_fn(hypertts, browser):
             def launch():
-                launch_realtime_dialog_browser(hypertts, browser.selectedNotes())
+                with hypertts.error_manager.get_single_action_context('Adding Realtime TTS'):
+                    launch_realtime_dialog_browser(hypertts, browser.selectedNotes())
             return launch
 
         def get_remove_realtime_tts_tag_fn(hypertts, browser):
             def launch():
-                remove_realtime_tts_tag(hypertts, browser, browser.selectedNotes())
+                with hypertts.error_manager.get_single_action_context('Removing Realtime TTS'):
+                    remove_realtime_tts_tag(hypertts, browser, browser.selectedNotes())
             return launch
 
         menu = aqt.qt.QMenu(constants.ADDON_NAME, browser.form.menubar)

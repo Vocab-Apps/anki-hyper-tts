@@ -160,18 +160,19 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         return component_choosepreset.get_preset_id(self.hypertts, self.editor_context)
 
     def add_rule_button_pressed(self):
-        preset_id = self.choose_preset()
-        if preset_id != None:
-            new_rule = config_models.MappingRule(preset_id=preset_id, 
-                rule_type=constants.MappingRuleType.DeckNoteType,
-                model_id=self.deck_note_type.model_id,
-                enabled=True,
-                automatic=True,
-                deck_id=self.deck_note_type.deck_id)
-            self.model.rules.append(new_rule)
-            self.refresh_mapping_rules_gridlayout()
-            self.model_changed = True
-            self.update_button_states()
+        with self.hypertts.error_manager.get_single_action_context('Adding Preset Rule'):
+            preset_id = self.choose_preset()
+            if preset_id != None:
+                new_rule = config_models.MappingRule(preset_id=preset_id, 
+                    rule_type=constants.MappingRuleType.DeckNoteType,
+                    model_id=self.deck_note_type.model_id,
+                    enabled=True,
+                    automatic=True,
+                    deck_id=self.deck_note_type.deck_id)
+                self.model.rules.append(new_rule)
+                self.refresh_mapping_rules_gridlayout()
+                self.model_changed = True
+                self.update_button_states()
 
     def save_button_pressed(self):
         self.save()
