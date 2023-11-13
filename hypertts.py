@@ -69,6 +69,7 @@ class HyperTTS():
             self.anki_utils.undo_end(undo_id)
 
     def process_note_audio(self, batch: config_models.BatchConfig, note, add_mode, audio_request_context, text_override):
+        logger.debug('step1')
         target_field = batch.target.target_field
 
         if target_field not in note:
@@ -80,12 +81,16 @@ class HyperTTS():
         full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)
         sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)
 
+        logger.debug('step2')
+
         target_field_content = note[target_field]
         
         # do we need to remove existing sound tags ?
         if batch.target.remove_sound_tag == True:
             target_field_content = self.strip_sound_tag(target_field_content)
         
+        logger.debug('step3')
+
         if batch.target.text_and_sound_tag == True:
             # user wants text and sound tag together, append the sound tag
             target_field_content = f'{target_field_content} {sound_tag}'
@@ -94,11 +99,15 @@ class HyperTTS():
             target_field_content = self.keep_only_sound_tags(target_field_content)
             target_field_content = f'{target_field_content} {sound_tag}'
 
+        logger.debug('step4')
+
         target_field_content = target_field_content.strip()
 
         note[target_field] = target_field_content
         if not add_mode:
             self.anki_utils.update_note(note)
+
+        logger.debug('step5')
 
         return source_text, processed_text, sound_file, full_filename
 
