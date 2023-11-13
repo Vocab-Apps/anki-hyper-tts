@@ -217,6 +217,7 @@ class BatchPreview(component_common.ComponentBase):
     def load_audio_task(self):
         logger.info('load_audio_task')
         self.hypertts.process_batch_audio(self.note_id_list, self.batch_model, self.batch_status)
+        logger.info('load_audio_task finish')
 
     def load_audio_task_done(self, result):
         logger.info('load_audio_task_done')

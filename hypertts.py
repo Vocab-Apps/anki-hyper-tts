@@ -49,24 +49,34 @@ class HyperTTS():
 
 
     def process_batch_audio(self, note_id_list, batch, batch_status):
+        logger.debug('process_batch_audio 1')
         # for each note, generate audio
         with batch_status.get_batch_running_action_context():
+            logger.debug('process_batch_audio 2')
             undo_id = self.anki_utils.undo_start()
             for note_id in note_id_list:
                 with batch_status.get_note_action_context(note_id, False) as note_action_context:
+                    logger.debug('process_batch_audio 3')
                     note = self.anki_utils.get_note_by_id(note_id)
                     # process note
                     source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, False,
                         context.AudioRequestContext(constants.AudioRequestReason.batch), None)
+                    logger.debug('process_batch_audio 4')
                     # update note action context
                     note_action_context.set_source_text(source_text)
+                    logger.debug('process_batch_audio 5')
                     note_action_context.set_processed_text(processed_text)
+                    logger.debug('process_batch_audio 6')
                     note_action_context.set_sound(sound_file)
+                    logger.debug('process_batch_audio 7')
                     note_action_context.set_status(constants.BatchNoteStatus.Done)                    
+                    logger.debug('process_batch_audio 8')
                 if batch_status.must_continue == False:
                     logger.info('batch_status execution interrupted')
                     break
+            logger.debug('process_batch_audio 9')
             self.anki_utils.undo_end(undo_id)
+            logger.debug('process_batch_audio 10')
 
     def process_note_audio(self, batch: config_models.BatchConfig, note, add_mode, audio_request_context, text_override):
         logger.debug('step1')
