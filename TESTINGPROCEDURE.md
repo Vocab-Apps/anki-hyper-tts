@@ -50,3 +50,9 @@ execute ~/secrets/hypertts/hypertts_windows.bat
 cd C:\dev\python\anki-hyper-tts
 ## then
 pytest test_tts_services.py  -k test_windows
+
+# Testing on MacOSX
+## Required changes on XcodeClub
+https://docs.ankiweb.net/platform/mac/display-issues.html
+`echo software > ~/Library/Application\ Support/Anki2/gldriver6`
+
