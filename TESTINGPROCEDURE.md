@@ -56,3 +56,9 @@ pytest test_tts_services.py  -k test_windows
 https://docs.ankiweb.net/platform/mac/display-issues.html
 `echo software > ~/Library/Application\ Support/Anki2/gldriver6`
 
+## Running on terminal with file logging
+```
+export HYPER_TTS_DEBUG_LOGGING=file
+export HYPER_TTS_DEBUG_LOGFILE=`pwd`/hypertts.log
+open /Applications/Utilities/Anki.app
+```
