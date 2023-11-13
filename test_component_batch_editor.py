@@ -236,7 +236,7 @@ def test_editor_get_new_preset_id_1(qtbot):
     # user cancels
     def dialog_input_sequence(dialog):
         # user presses cancel button
-        qtbot.mouseClick(dialog.batch_component.cancel_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.batch_component.cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
     # don't automatically save
     hypertts_instance.anki_utils.ask_user_bool_response = False
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
@@ -247,7 +247,7 @@ def test_editor_get_new_preset_id_1(qtbot):
     def dialog_input_sequence(dialog):
         dialog.batch_component.source.source_field_combobox.setCurrentText('English')
         # user presses cancel button
-        qtbot.mouseClick(dialog.batch_component.profile_save_and_close_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.batch_component.profile_save_and_close_button, aqt.qt.Qt.MouseButton.LeftButton)
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
     preset_id = component_batch.create_dialog_editor_new_preset(hypertts_instance, editor_context)
     assert preset_id != None
@@ -259,9 +259,9 @@ def test_editor_get_new_preset_id_1(qtbot):
     def dialog_input_sequence(dialog):
         dialog.batch_component.source.source_field_combobox.setCurrentText('English')
         # click save button
-        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
         # user presses cancel button
-        qtbot.mouseClick(dialog.batch_component.cancel_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.batch_component.cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
     preset_id = component_batch.create_dialog_editor_new_preset(hypertts_instance, editor_context)
     assert preset_id == None

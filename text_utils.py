@@ -2,6 +2,7 @@ import sys
 import aqt
 import anki.utils
 import re
+import html
 
 if hasattr(sys, '_pytest_mode'):
     import constants
@@ -46,6 +47,17 @@ def process_text_replacement(text, text_processing_model):
         text = process_text_replacement_rule(text, text_replacement_rule, text_processing_model)
     return text
 
+def strip_html(text):
+    """Remove html tags from a string and decode HTML entities"""
+    # Remove HTML tags
+    clean = re.compile('<.*?>')
+    text = re.sub(clean, '', text)
+
+    # Decode HTML entities
+    text = html.unescape(text)
+
+    return text
+
 def strip_brackets(text):
     text = re.sub(r'\([^\)]*\)', '', text)
     text = re.sub(r'\[[^\]]*\]', '', text)
@@ -55,7 +67,7 @@ def strip_brackets(text):
 
 def process_text_rules(text, text_processing_model):
     if text_processing_model.html_to_text_line:
-        text = anki.utils.html_to_text_line(text)
+        text = strip_html(text)
     if text_processing_model.strip_brackets:
         text = strip_brackets(text)
     if text_processing_model.ssml_convert_characters:

@@ -113,7 +113,7 @@ def test_component_preset_mapping_rules_1(qtbot):
         dialog.mapping_rules.choose_preset = mock_choose_preset
 
         # press the "add rule" button
-        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.MouseButton.LeftButton)
 
         # check that model got updated
         assert len(dialog.mapping_rules.get_model().rules) == 1
@@ -129,7 +129,7 @@ def test_component_preset_mapping_rules_1(qtbot):
 
         # click the save button
         logger.info('clicking the save button')
-        qtbot.mouseClick(dialog.mapping_rules.save_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.mapping_rules.save_button, aqt.qt.Qt.MouseButton.LeftButton)
 
         pprint.pprint(hypertts_instance.anki_utils.written_config)
 
@@ -181,7 +181,7 @@ def test_component_preset_mapping_rules_1(qtbot):
         # delete the rule
         delete_button = dialog.findChild(aqt.qt.QPushButton, 'delete_rule_button_0')
         assert delete_button != None
-        qtbot.mouseClick(delete_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(delete_button, aqt.qt.Qt.MouseButton.LeftButton)
         # we shouldn't have any rules
         assert len(dialog.mapping_rules.get_model().rules) == 0
         # save button should be enabled
@@ -209,7 +209,7 @@ def test_component_preset_mapping_rules_cancel_2(qtbot):
         dialog.mapping_rules.choose_preset = mock_choose_preset
 
         # press the "add rule" button
-        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.MouseButton.LeftButton)
 
         # we still shouldn't have any rules
         assert len(dialog.mapping_rules.get_model().rules) == 0    
@@ -234,7 +234,7 @@ def test_component_preset_mapping_rules_cancel_button_3(qtbot):
         assert dialog.mapping_rules.deck_name_label.text() == 'deck 1'
         
         # press the cancel button
-        qtbot.mouseClick(dialog.mapping_rules.cancel_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.mapping_rules.cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
 
         # dialog should be closed
         assert dialog.closed == True
@@ -269,19 +269,19 @@ def test_component_preset_mapping_rules_manual_4(qtbot):
         def mock_choose_preset():
             return preset_id_1
         dialog.mapping_rules.choose_preset = mock_choose_preset
-        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.MouseButton.LeftButton)
 
         # add preset 2
         def mock_choose_preset():
             return preset_id_2
         dialog.mapping_rules.choose_preset = mock_choose_preset
-        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.MouseButton.LeftButton)
 
         # add preset 3
         def mock_choose_preset():
             return preset_id_3
         dialog.mapping_rules.choose_preset = mock_choose_preset
-        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)                
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.MouseButton.LeftButton)                
 
         # display dialog
         if os.environ.get('HYPERTTS_DIALOG_DEBUG', 'no') == 'yes':
@@ -313,12 +313,12 @@ def test_component_preset_mapping_rules_add_then_disable_1(qtbot):
         def mock_choose_preset_1():
             return preset_id_1
         dialog.mapping_rules.choose_preset = mock_choose_preset_1
-        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.MouseButton.LeftButton)
 
         def mock_choose_preset_2():
             return preset_id_2
         dialog.mapping_rules.choose_preset = mock_choose_preset_2
-        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)        
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.MouseButton.LeftButton)        
 
         # make sure that the rule is displayed
         # find all labels inside 
@@ -333,7 +333,7 @@ def test_component_preset_mapping_rules_add_then_disable_1(qtbot):
 
         # click the save button
         logger.info('clicking the save button')
-        qtbot.mouseClick(dialog.mapping_rules.save_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.mapping_rules.save_button, aqt.qt.Qt.MouseButton.LeftButton)
 
         # save button should have closed the dialog
         assert dialog.closed == True
@@ -374,15 +374,15 @@ def test_component_preset_mapping_rules_preview_run(qtbot):
         def mock_choose_preset():
             return preset_id_1
         dialog.mapping_rules.choose_preset = mock_choose_preset
-        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.MouseButton.LeftButton)
 
         def mock_choose_preset():
             return preset_id_2
         dialog.mapping_rules.choose_preset = mock_choose_preset
-        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.MouseButton.LeftButton)
 
         # click preview button
-        qtbot.mouseClick(dialog.mapping_rules.preview_all_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.mapping_rules.preview_all_button, aqt.qt.Qt.MouseButton.LeftButton)
         expected_sound_played = {
             'source_text': '老人家',
             'voice': {
@@ -398,7 +398,7 @@ def test_component_preset_mapping_rules_preview_run(qtbot):
         assert hypertts_instance.anki_utils.all_played_sounds[1] == expected_sound_played
 
         # click the run all button
-        qtbot.mouseClick(dialog.mapping_rules.run_all_button, aqt.qt.Qt.LeftButton)
+        qtbot.mouseClick(dialog.mapping_rules.run_all_button, aqt.qt.Qt.MouseButton.LeftButton)
         
         # check that sound was applied to note
         assert 'Sound' in editor_context.note.set_values
