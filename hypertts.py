@@ -75,10 +75,7 @@ class HyperTTS():
                     logger.info('batch_status execution interrupted')
                     break
             logger.debug('process_batch_audio 9')
-            def undo_end_fn():
-                self.anki_utils.undo_end(undo_id)
-            # self.anki_utils.undo_end(undo_id)
-            self.anki_utils.run_on_main(undo_end_fn)
+            self.anki_utils.undo_end(undo_id)
             logger.debug('process_batch_audio 10')
 
     def process_note_audio(self, batch: config_models.BatchConfig, note, add_mode, audio_request_context, text_override):

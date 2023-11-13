@@ -104,10 +104,12 @@ class AnkiUtils():
         return aqt.mw.col.add_custom_undo_entry(constants.UNDO_ENTRY_ADD_TTS_TAG)    
 
     def undo_end(self, undo_id):
-        ensure_anki_collection_open()
-        aqt.mw.col.merge_undo_entries(undo_id)
-        aqt.mw.update_undo_actions()
-        aqt.mw.autosave()
+        def undo_end_fn():
+            ensure_anki_collection_open()
+            aqt.mw.col.merge_undo_entries(undo_id)
+            aqt.mw.update_undo_actions()
+            aqt.mw.autosave()
+        self.run_on_main(undo_end_fn)
 
     def update_note(self, note):
         ensure_anki_collection_open()
