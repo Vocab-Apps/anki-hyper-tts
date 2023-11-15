@@ -2,7 +2,6 @@ import sys
 import os
 import requests
 import json
-import time
 
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
@@ -26,9 +25,6 @@ class CloudLanguageTools():
             sentry_sdk.set_context("user", {
                 "api_key": self.api_key,
             })
-
-        # TESTING ONLY ! don't commit
-        time.sleep(3)
 
         # query cloud language tools API
         url_path = '/audio_v2'

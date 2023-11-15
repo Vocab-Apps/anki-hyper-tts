@@ -133,10 +133,14 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
     def preview_started_fn(self):
         for rules_component in self.rules_components:
             rules_component.disable_preview_run()
+        self.preview_all_button.setEnabled(False)
+        self.run_all_button.setEnabled(False)
 
     def preview_finished_fn(self):
         for rules_component in self.rules_components:
             rules_component.enable_preview_run()
+        self.preview_all_button.setEnabled(True)
+        self.run_all_button.setEnabled(True)
 
     def mapping_rule_updated(self, absolute_index, model):
         self.model.rules[absolute_index] = model
