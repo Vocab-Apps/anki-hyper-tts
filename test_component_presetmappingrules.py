@@ -34,9 +34,12 @@ def test_component_mapping_rule_1(qtbot):
 
     model_change_callback = gui_testing_utils.MockModelChangeCallback()
     model_delete_callback = gui_testing_utils.MockModelDeleteCallback()
+    requested_started_callback = gui_testing_utils.MockRequestStartedCallback()
+    requested_finished_callback = gui_testing_utils.MockRequestFinishedCallback()
 
     component_rule = component_mappingrule.ComponentMappingRule(hypertts_instance, 
-        editor_context, model_change_callback.model_updated, model_delete_callback.model_delete)
+        editor_context, model_change_callback.model_updated, model_delete_callback.model_delete,
+        requested_started_callback.request_started, requested_finished_callback.request_finished)
     component_rule.draw(dialog.getLayout(), 0)
     component_rule.load_model(mapping_rule)
 

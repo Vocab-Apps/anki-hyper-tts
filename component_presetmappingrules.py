@@ -130,6 +130,12 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
             self.mapping_rule_deleted(absolute_index)
         return mapping_rule_delete_fn
 
+    def preview_started_fn(self):
+        pass
+
+    def preview_finished_fn(self):
+        pass
+
     def mapping_rule_updated(self, absolute_index, model):
         self.model.rules[absolute_index] = model
         self.model_changed = True
@@ -147,7 +153,9 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
                 self.hypertts, 
                 self.editor_context, 
                 self.get_mapping_rule_updated_fn(absolute_index),
-                self.get_mapping_rule_deleted_fn(absolute_index)))
+                self.get_mapping_rule_deleted_fn(absolute_index),
+                self.preview_started_fn,
+                self.preview_finished_fn))
             self.rules_components[subset_index].draw(self.mapping_rules_gridlayout, subset_index)
             self.rules_components[subset_index].load_model(rule)
 

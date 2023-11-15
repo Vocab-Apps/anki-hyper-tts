@@ -98,6 +98,20 @@ class MockModelDeleteCallback():
     def model_delete(self):
         logger.info('MockModelDeleteCallback.model_delete')
 
+class MockRequestStartedCallback():
+    def __init__(self):
+        pass
+
+    def request_started(self):
+        logger.info('MockRequestStartedCallback.model_delete')        
+
+class MockRequestFinishedCallback():
+    def __init__(self):
+        pass
+
+    def request_finished(self):
+        logger.info('MockRequestFinishedCallback.request_finished')
+
 class MockBatchPreviewCallback():
     def __init__(self):
         self.sample_text = None

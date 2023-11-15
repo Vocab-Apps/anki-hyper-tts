@@ -13,12 +13,18 @@ logger = logging_utils.get_child_logger(__name__)
 
 class ComponentMappingRule(component_common.ConfigComponentBase):
 
-    def __init__(self, hypertts, editor_context: config_models.EditorContext, model_change_callback, model_delete_callback):
+    def __init__(self, hypertts, editor_context: config_models.EditorContext, 
+            model_change_callback, 
+            model_delete_callback,
+            request_started_callback,
+            request_finished_callback):
         self.hypertts = hypertts
         self.model = None
         self.editor_context = editor_context
         self.model_change_callback = model_change_callback
         self.model_delete_callback = model_delete_callback
+        self.request_started_callback = request_started_callback
+        self.request_finished_callback = request_finished_callback
 
     def load_model(self, model):
         logger.info('load_model')
