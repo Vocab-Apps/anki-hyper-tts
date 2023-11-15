@@ -94,6 +94,9 @@ class Azure(service.ServiceBase):
         subscription_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
         throttle_seconds = self.get_configuration_value_optional(self.CONFIG_THROTTLE_SECONDS, 0)
 
+        # TESTING only
+        # throttle_seconds = 3
+
         if throttle_seconds > 0:
             time.sleep(throttle_seconds)
         

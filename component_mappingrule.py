@@ -119,8 +119,8 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.notify_model_update()
 
     def preview_button_clicked(self):
-        self.preview_button.setText('Playing...')
-        self.preview_button.setEnabled(False)
+        logger.debug('preview_button_clicked')
+        self.disable_preview_run()
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
     def edit_button_clicked(self):
@@ -129,6 +129,16 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     def delete_button_clicked(self):
         # self.hypertts.anki_utils.run_on_main(self.model_delete_callback)
         self.model_delete_callback()
+
+    def disable_preview_run(self):
+        """disable preview and run buttons, a preview or run is already in progress"""
+        self.preview_button.setEnabled(False)
+        self.run_button.setEnabled(False)
+    
+    def enable_preview_run(self):
+        """done previewing/running, re-enable buttons"""
+        self.preview_button.setEnabled(True)
+        self.run_button.setEnabled(True)
 
     # preview functions
     # =================
@@ -146,15 +156,14 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.hypertts.anki_utils.run_on_main(self.finish_sound_preview)
     
     def finish_sound_preview(self):
-        self.preview_button.setText('Preview')
-        self.preview_button.setEnabled(True)
+        self.enable_preview_run()
 
     # add audio functions
     # ===================
 
     def run_button_clicked(self):
-        self.run_button.setText('Running...')
-        self.run_button.setEnabled(False)
+        logger.debug('run_button_clicked')
+        self.disable_preview_run()
         self.hypertts.anki_utils.run_in_background(self.apply_note_editor_task, self.apply_note_editor_task_done)
 
     def apply_note_editor_task(self):
@@ -171,5 +180,4 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.hypertts.anki_utils.run_on_main(self.finish_apply_note_editor)
     
     def finish_apply_note_editor(self):
-        self.run_button.setText('Run')
-        self.run_button.setEnabled(True)
+        self.enable_preview_run()
