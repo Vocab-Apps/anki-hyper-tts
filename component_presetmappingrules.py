@@ -131,10 +131,12 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         return mapping_rule_delete_fn
 
     def preview_started_fn(self):
-        pass
+        for rules_component in self.rules_components:
+            rules_component.disable_preview_run()
 
     def preview_finished_fn(self):
-        pass
+        for rules_component in self.rules_components:
+            rules_component.enable_preview_run()
 
     def mapping_rule_updated(self, absolute_index, model):
         self.model.rules[absolute_index] = model
@@ -232,9 +234,11 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.save_button.setStyleSheet(None)
 
     def preview_all_button_pressed(self):
+        logger.debug('preview_all_button_pressed')
         self.hypertts.preview_all_mapping_rules(self.editor_context, self.get_model())
 
     def run_all_button_pressed(self):
+        logger.debug('run_all_button_pressed')
         self.hypertts.apply_all_mapping_rules(self.editor_context, self.get_model())
 
 # factory and setup functions for ComponentPresetMappingRules

@@ -127,6 +127,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     def preview_button_clicked(self):
         logger.debug('preview_button_clicked')
         self.disable_preview_run()
+        self.request_started_callback()
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
     def edit_button_clicked(self):
@@ -145,7 +146,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         """done previewing/running, re-enable buttons"""
         self.preview_button.setEnabled(True)
         self.run_button.setEnabled(True)
-
+        
     # preview functions
     # =================
 
@@ -163,6 +164,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     
     def finish_sound_preview(self):
         self.enable_preview_run()
+        self.request_finished_callback()
 
     # add audio functions
     # ===================
@@ -170,6 +172,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     def run_button_clicked(self):
         logger.debug('run_button_clicked')
         self.disable_preview_run()
+        self.request_started_callback()
         self.hypertts.anki_utils.run_in_background(self.apply_note_editor_task, self.apply_note_editor_task_done)
 
     def apply_note_editor_task(self):
@@ -187,3 +190,4 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     
     def finish_apply_note_editor(self):
         self.enable_preview_run()
+        self.request_finished_callback()
