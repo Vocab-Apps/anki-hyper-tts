@@ -66,8 +66,9 @@ def test_batch_dialog_editor_preview_apply(qtbot):
 
         assert editor_context.editor.set_note_called == True
 
-        assert hypertts_instance.anki_utils.undo_started == True
-        assert hypertts_instance.anki_utils.undo_finished == True
+        # undo is disabled in this workflow, just use the undo from update_note call
+        # assert hypertts_instance.anki_utils.undo_started == True
+        # assert hypertts_instance.anki_utils.undo_finished == True
 
         assert dialog.closed == True
 
@@ -175,8 +176,9 @@ def test_batch_dialog_editor_create_then_load(qtbot):
 
         assert editor_context.editor.set_note_called == True
 
-        assert hypertts_instance.anki_utils.undo_started == True
-        assert hypertts_instance.anki_utils.undo_finished == True
+        # undo is disabled in this workflow
+        # assert hypertts_instance.anki_utils.undo_started == True
+        # assert hypertts_instance.anki_utils.undo_finished == True
 
         assert dialog.closed == True    
 

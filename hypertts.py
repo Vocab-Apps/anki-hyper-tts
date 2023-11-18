@@ -160,7 +160,8 @@ class HyperTTS():
 
     def editor_note_add_audio(self, batch: config_models.BatchConfig, editor, note, add_mode, text_override):
         logger.debug('editor_note_add_audio')
-        undo_id = self.anki_utils.undo_start()
+        # don't perform undo, it doesn't actually work, because of the way we call update_note
+        # undo_id = self.anki_utils.undo_start()
         audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_browser)
         if add_mode:
             audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_add)
@@ -175,7 +176,7 @@ class HyperTTS():
             return editor_set_note
         self.anki_utils.run_on_main(get_set_note_lambda(editor, note))
         logger.debug('after set_note')
-        self.anki_utils.undo_end(undo_id)
+        # self.anki_utils.undo_end(undo_id)
         self.anki_utils.play_sound(full_filename)
 
     def editor_note_process_rules(self, rules: config_models.PresetMappingRules, editor, automated: bool, selected_text: str):
