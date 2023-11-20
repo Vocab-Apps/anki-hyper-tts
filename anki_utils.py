@@ -97,18 +97,26 @@ class AnkiUtils():
 
     def undo_start(self):
         ensure_anki_collection_open()
-        return aqt.mw.col.add_custom_undo_entry(constants.UNDO_ENTRY_NAME)
+        undo_id = aqt.mw.col.add_custom_undo_entry(constants.UNDO_ENTRY_NAME)
+        logger.debug(f'undo_start, undo_id: {undo_id}')
+        return undo_id
 
     def undo_tts_tag_start(self):
         ensure_anki_collection_open()
-        return aqt.mw.col.add_custom_undo_entry(constants.UNDO_ENTRY_ADD_TTS_TAG)    
+        undo_id = aqt.mw.col.add_custom_undo_entry(constants.UNDO_ENTRY_ADD_TTS_TAG)
+        logger.debug(f'undo_tts_tag_start, undo_id: {undo_id}')
+        return undo_id
 
     def undo_end(self, undo_id):
         def undo_end_fn():
-            ensure_anki_collection_open()
-            aqt.mw.col.merge_undo_entries(undo_id)
-            aqt.mw.update_undo_actions()
-            aqt.mw.autosave()
+            logger.debug(f'unfo_end_fn, undo_id: {undo_id}')
+            try:
+                ensure_anki_collection_open()
+                aqt.mw.col.merge_undo_entries(undo_id)
+                aqt.mw.update_undo_actions()
+                aqt.mw.autosave()
+            except Exception as e:
+                logger.error(f'exception in undo_end_fn: {str(e)}, undo_id: {undo_id}')
         self.run_on_main(undo_end_fn)
 
     def update_note(self, note):
