@@ -1,5 +1,8 @@
 from sentry_sdk._types import TYPE_CHECKING
 
+# up top to prevent circular import due to integration import
+DEFAULT_MAX_VALUE_LENGTH = 1024
+
 if TYPE_CHECKING:
     import sentry_sdk
 
@@ -36,14 +39,22 @@ if TYPE_CHECKING:
             # TODO: Remove these 2 profiling related experiments
             "profiles_sample_rate": Optional[float],
             "profiler_mode": Optional[ProfilerMode],
+            "otel_powered_performance": Optional[bool],
         },
         total=False,
     )
 
 DEFAULT_QUEUE_SIZE = 100
 DEFAULT_MAX_BREADCRUMBS = 100
-
 MATCH_ALL = r".*"
+
+FALSE_VALUES = [
+    "false",
+    "no",
+    "off",
+    "n",
+    "0",
+]
 
 
 class INSTRUMENTER:
@@ -55,6 +66,12 @@ class SPANDATA:
     """
     Additional information describing the type of the span.
     See: https://develop.sentry.dev/sdk/performance/span-data-conventions/
+    """
+
+    DB_NAME = "db.name"
+    """
+    The name of the database being accessed. For commands that switch the database, this should be set to the target database (even if the command fails).
+    Example: myDatabase
     """
 
     DB_OPERATION = "db.operation"
@@ -99,6 +116,37 @@ class SPANDATA:
     """
     The HTTP method used.
     Example: GET
+    """
+
+    HTTP_STATUS_CODE = "http.response.status_code"
+    """
+    The HTTP status code as an integer.
+    Example: 418
+    """
+
+    SERVER_ADDRESS = "server.address"
+    """
+    Name of the database host.
+    Example: example.com
+    """
+
+    SERVER_PORT = "server.port"
+    """
+    Logical server port number
+    Example: 80; 8080; 443
+    """
+
+    SERVER_SOCKET_ADDRESS = "server.socket.address"
+    """
+    Physical server IP address or Unix socket address.
+    Example: 10.5.3.2
+    """
+
+    SERVER_SOCKET_PORT = "server.socket.port"
+    """
+    Physical server port.
+    Recommended: If different than server.port.
+    Example: 16456
     """
 
 
@@ -163,7 +211,7 @@ class ClientConstructor(object):
         http_proxy=None,  # type: Optional[str]
         https_proxy=None,  # type: Optional[str]
         ignore_errors=[],  # type: Sequence[Union[type, str]]  # noqa: B006
-        request_bodies="medium",  # type: str
+        max_request_body_size="medium",  # type: str
         before_send=None,  # type: Optional[EventProcessor]
         before_breadcrumb=None,  # type: Optional[BreadcrumbProcessor]
         debug=False,  # type: bool
@@ -191,6 +239,8 @@ class ClientConstructor(object):
         ],  # type: Optional[Sequence[str]]
         functions_to_trace=[],  # type: Sequence[Dict[str, str]]  # noqa: B006
         event_scrubber=None,  # type: Optional[sentry_sdk.scrubber.EventScrubber]
+        max_value_length=DEFAULT_MAX_VALUE_LENGTH,  # type: int
+        enable_backpressure_handling=True,  # type: bool
     ):
         # type: (...) -> None
         pass
@@ -214,4 +264,4 @@ DEFAULT_OPTIONS = _get_default_options()
 del _get_default_options
 
 
-VERSION = "1.25.0"
+VERSION = "1.30.0"
