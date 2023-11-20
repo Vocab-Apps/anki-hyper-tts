@@ -54,7 +54,7 @@ class SentryLogger():
             integration._handle_record(record)
 
     def debug(self, msg, *args, **kwargs):
-        self.send_event(logging.DEBUG, msg)
+        self.send_event(logging.INFO, '[debug] ' + msg)
 
     def info(self, msg, *args, **kwargs):
         self.send_event(logging.INFO, msg)
