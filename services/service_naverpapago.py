@@ -22,7 +22,7 @@ class NaverPapago(service.ServiceBase):
 
     TRANSLATE_ENDPOINT = 'https://papago.naver.com/apis/tts/'
     TRANSLATE_MKID = TRANSLATE_ENDPOINT + 'makeID'    
-    HMAC_KEY = 'v1.7.6_fa52a4d6c8'
+    HMAC_KEY = 'v1.7.9_ee61e6111a'
     UUID = str(uuid.uuid4())
 
     def __init__(self):
