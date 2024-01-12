@@ -37,6 +37,19 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
     def draw(self, layout):
         self.vlayout = aqt.qt.QVBoxLayout()
 
+        # dialog header 
+        # =============
+
+        # logo should appear on the right
+        hlayout = aqt.qt.QHBoxLayout()
+        hlayout.addStretch()
+        # logo header
+        hlayout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
+        self.vlayout.addLayout(hlayout)
+
+        # font setup
+        # ==========
+
         bold_font = aqt.qt.QFont()
         bold_font.setBold(True)
 
