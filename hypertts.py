@@ -304,6 +304,10 @@ class HyperTTS():
         if preset_mapping_rules == None:
             # load the saved rules
             preset_mapping_rules = self.load_mapping_rules()
+
+        if len(preset_mapping_rules.rules) == 0:
+            raise errors.NoPresetMappingRulesDefined()
+
         deck_note_type = self.get_editor_deck_note_type(editor_context.editor)
         # we want audio generation to happen in the background, but the tooltips will be generated in foreground to display immediately
         self.anki_utils.run_in_background(self.get_preview_all_rules_task(deck_note_type, editor_context, preset_mapping_rules), self.get_preview_all_rules_done())
@@ -328,6 +332,10 @@ class HyperTTS():
         if preset_mapping_rules == None:
             # load the saved rules
             preset_mapping_rules = self.load_mapping_rules()
+
+        if len(preset_mapping_rules.rules) == 0:
+            raise errors.NoPresetMappingRulesDefined()
+
         deck_note_type = self.get_editor_deck_note_type(editor_context.editor)
         # we want audio generation to happen in the background, but the tooltips will be generated in foreground to display immediately
         self.anki_utils.run_in_background(self.get_apply_all_rules_task(deck_note_type, editor_context, preset_mapping_rules), self.get_apply_all_rules_done())

@@ -116,6 +116,11 @@ class NoNotesSelectedPreview(HyperTTSError):
         message = f'No notes have been selected. Select one note to preview sound.'
         super().__init__(message)        
 
+class NoPresetMappingRulesDefined(HyperTTSError):
+    def __init__(self):
+        message = ('You have not configured any preset mapping rules, '
+        'please click the gear icon in the editor to add some, then you will be able to add / preview audio')
+        super().__init__(message)        
 
 
 # template expansion errors

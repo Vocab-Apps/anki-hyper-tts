@@ -199,6 +199,15 @@ yoyo
         self.assertEqual(audio_result_dict['source_text'], '老人家')
         self.assertEqual(audio_result_dict['voice']['name'], voice_name_2)  
 
+    def test_preview_apply_all_mapping_rules_empty(self):
+        hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+
+        # empty rules
+        preset_mapping_rules = config_models.PresetMappingRules()
+
+        self.assertRaises(errors.NoPresetMappingRulesDefined, hypertts_instance.preview_all_mapping_rules, editor_context, preset_mapping_rules)
+        self.assertRaises(errors.NoPresetMappingRulesDefined, hypertts_instance.apply_all_mapping_rules, editor_context, preset_mapping_rules)
+
     def test_apply_all_mapping_rules_1(self):
         hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
 
