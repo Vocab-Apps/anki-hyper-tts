@@ -62,6 +62,7 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         deck_label = aqt.qt.QLabel(f'<b>Deck:</b> {self.hypertts.anki_utils.get_deck_name(self.deck_note_type.deck_id)}')
         deck_note_type_vlayout.addWidget(note_type_label)
         deck_note_type_vlayout.addWidget(deck_label)
+        deck_note_type_vlayout.addStretch()
 
         self.note_info_groupbox = aqt.qt.QGroupBox('Note Info')
         self.note_info_groupbox.setLayout(deck_note_type_vlayout)
@@ -72,8 +73,12 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         # ============
         instructions_label = aqt.qt.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_MAPPING_RULES))
         instructions_label.setWordWrap(True)
+        instructions_groubox = aqt.qt.QGroupBox('Need Help ?')
+        instructions_layout = aqt.qt.QVBoxLayout()
+        instructions_layout.addWidget(instructions_label)
+        instructions_groubox.setLayout(instructions_layout)
         # self.vlayout.addWidget(instructions_label)
-        top_hlayout.addWidget(instructions_label, 1)
+        top_hlayout.addWidget(instructions_groubox, 1)
         # ============
 
         self.vlayout.addLayout(top_hlayout)
