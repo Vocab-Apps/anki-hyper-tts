@@ -239,9 +239,6 @@ class AnkiUtils():
         if editor != None and editor.web != None:
             editor.web.eval(js_command)
 
-    def checkpoint(self, action_str):
-        aqt.mw.checkpoint(action_str)
-
     def display_dialog(self, dialog):
         return dialog.exec()
 

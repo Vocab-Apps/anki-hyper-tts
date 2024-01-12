@@ -287,9 +287,6 @@ class MockAnkiUtils():
             return chosen_row, 1
         return self.ask_user_choose_from_list_response, 1
 
-    def checkpoint(self, action_str):
-        self.checkpoint_name = action_str
-
     def reset_exceptions(self):
         self.last_exception = None
         self.last_action = None
