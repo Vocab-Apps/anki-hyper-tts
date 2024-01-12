@@ -111,7 +111,7 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.mapping_rules_groupbox = aqt.qt.QGroupBox('Preset Rules')
         self.mapping_rules_groupbox.setLayout(vlayout)
         # self.vlayout.addLayout(self.mapping_rules_gridlayout)
-        self.vlayout.addWidget(self.mapping_rules_groupbox)
+        self.vlayout.addWidget(self.mapping_rules_groupbox, 1)
 
         
         # add buttons at the bottom
