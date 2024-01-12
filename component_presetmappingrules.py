@@ -53,6 +53,13 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         bold_font = aqt.qt.QFont()
         bold_font.setBold(True)
 
+        # instructions
+        # ============
+        instructions_label = aqt.qt.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_MAPPING_RULES))
+        instructions_label.setWordWrap(True)
+        self.vlayout.addWidget(instructions_label)
+
+
         # deck and note type
         # ==================
 
@@ -68,13 +75,12 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         hlayout.addWidget(deck_description_label)
         hlayout.addWidget(self.deck_name_label)
         hlayout.addStretch()
-        self.vlayout.addLayout(hlayout) 
 
-        # instructions
-        # ============
-        instructions_label = aqt.qt.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_MAPPING_RULES))
-        instructions_label.setWordWrap(True)
-        self.vlayout.addWidget(instructions_label)
+        self.note_info_groupbox = aqt.qt.QGroupBox('Note Info')
+        self.note_info_groupbox.setLayout(hlayout)
+        self.vlayout.addWidget(self.note_info_groupbox)
+
+        # self.vlayout.addLayout(hlayout) 
 
 
         # display the mapping rules
@@ -87,11 +93,11 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         hlayout.addStretch()
 
         self.preview_all_button = aqt.qt.QPushButton('Preview All')
-        self.preview_all_button.setToolTip('Preview all Presets')
+        self.preview_all_button.setToolTip('Preview all Presets (Hear all the audio)')
         hlayout.addWidget(self.preview_all_button)
 
         self.run_all_button = aqt.qt.QPushButton('Run All')
-        self.run_all_button.setToolTip('Run all Presets')
+        self.run_all_button.setToolTip('Run all Presets (Add all audio to your note)')
         hlayout.addWidget(self.run_all_button)
 
         self.add_rule_button = aqt.qt.QPushButton('Add Rule')

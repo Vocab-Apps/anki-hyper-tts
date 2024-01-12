@@ -127,11 +127,11 @@ BATCH_CONFIG_NEW = 'New Preset'
 
 GUI_TEXT_UNKNOWN_PRESET = 'Unknown Preset'
 
-GUI_TEXT_MAPPING_RULES = """Configure presets for this deck or note type. You can either associate the rule with:
-<b>Note Type:</b> This preset will apply to all notes of this type, regardless of the deck.
-<b>Deck and Note Type:</b> This preset will apply to all notes of this type, in this deck only.
-After configuring rules, you will be able use the Add Audio and Preview buttons in the editor."""
-
+GUI_TEXT_MAPPING_RULES = ("""<i>Here you can configure presets specific to this note or deck."""
+""" You will be able to preview or add audio with a single click of the play/preview buttons on the Anki note editor."""
+""" You can associate a preset with the Note Type (the preset applies to all notes of that type)"""
+""" or with the Deck And Note Type (the preset only applies to this note type + deck combination)"""
+)
 
 GUI_TEXT_SOURCE_MODE = """Choose a source mode:
 <b>Simple:</b> your text comes from a single field. In most cases, choose this option.
