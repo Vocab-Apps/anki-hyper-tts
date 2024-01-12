@@ -49,8 +49,10 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         logger.debug('draw')
 
         self.preview_button = aqt.qt.QPushButton('Preview')
+        self.preview_button.setToolTip('Hear audio for this preset')
         self.preview_button.setObjectName(f'preview_button_{gridlayout_index}')
         self.run_button = aqt.qt.QPushButton('Run')
+        self.run_button.setToolTip('Add audio to the note for this preset')
         self.run_button.setObjectName(f'run_button_{gridlayout_index}')
         
         column_index = 0
@@ -70,6 +72,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         column_index += 1
 
         self.edit_button = aqt.qt.QPushButton('Edit')
+        self.edit_button.setToolTip('Edit this preset (to change voice or other settings)')
         self.edit_button.setObjectName(f'edit_button_{gridlayout_index}')
         gridlayout.addWidget(self.edit_button, gridlayout_index, column_index)
         column_index += 1        
