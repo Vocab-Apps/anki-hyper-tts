@@ -563,7 +563,9 @@ class TTSTests(unittest.TestCase):
         self.verify_audio_output(selected_voice, 'สวัสดีค่ะ')
 
 
+    @pytest.mark.skip(reason="stopped working, getting 403 / enable javascript and cookies")
     def test_collins(self):
+        # pytest --log-cli-level=DEBUG test_tts_services.py  -k 'TTSTests and test_collins'
         service_name = 'Collins'
         if self.manager.get_service(service_name).enabled == False:
             logger.warning(f'service {service_name} not enabled, skipping')
