@@ -58,10 +58,23 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         # deck and note type
         # ==================
         deck_note_type_vlayout = aqt.qt.QVBoxLayout()
-        note_type_label = aqt.qt.QLabel(f'<b>Note Type:</b> {self.hypertts.anki_utils.get_note_type_name(self.deck_note_type.model_id)}')
-        deck_label = aqt.qt.QLabel(f'<b>Deck:</b> {self.hypertts.anki_utils.get_deck_name(self.deck_note_type.deck_id)}')
-        deck_note_type_vlayout.addWidget(note_type_label)
-        deck_note_type_vlayout.addWidget(deck_label)
+
+        # note type
+        hlayout = aqt.qt.QHBoxLayout()
+        hlayout.addWidget(aqt.qt.QLabel(f'<b>Note Type:</b>'))
+        self.note_type_label = aqt.qt.QLabel(self.hypertts.anki_utils.get_note_type_name(self.deck_note_type.model_id))
+        hlayout.addWidget(self.note_type_label)
+        hlayout.addStretch()
+        deck_note_type_vlayout.addLayout(hlayout)
+
+        # deck info
+        hlayout = aqt.qt.QHBoxLayout()
+        hlayout.addWidget(aqt.qt.QLabel(f'<b>Deck:</b>'))
+        self.deck_name_label = aqt.qt.QLabel(self.hypertts.anki_utils.get_deck_name(self.deck_note_type.deck_id))
+        hlayout.addWidget(self.deck_name_label)
+        hlayout.addStretch()
+        deck_note_type_vlayout.addLayout(hlayout)
+
         deck_note_type_vlayout.addStretch()
 
         self.note_info_groupbox = aqt.qt.QGroupBox('Note Info')
