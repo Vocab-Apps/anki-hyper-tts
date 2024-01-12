@@ -53,34 +53,30 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         bold_font = aqt.qt.QFont()
         bold_font.setBold(True)
 
+        top_hlayout = aqt.qt.QHBoxLayout()
+
+        # deck and note type
+        # ==================
+        deck_note_type_vlayout = aqt.qt.QVBoxLayout()
+        note_type_label = aqt.qt.QLabel(f'<b>Note Type:</b> {self.hypertts.anki_utils.get_note_type_name(self.deck_note_type.model_id)}')
+        deck_label = aqt.qt.QLabel(f'<b>Deck:</b> {self.hypertts.anki_utils.get_deck_name(self.deck_note_type.deck_id)}')
+        deck_note_type_vlayout.addWidget(note_type_label)
+        deck_note_type_vlayout.addWidget(deck_label)
+
+        self.note_info_groupbox = aqt.qt.QGroupBox('Note Info')
+        self.note_info_groupbox.setLayout(deck_note_type_vlayout)
+        top_hlayout.addWidget(self.note_info_groupbox)
+        # ==================
+
         # instructions
         # ============
         instructions_label = aqt.qt.QLabel(gui_utils.process_label_text(constants.GUI_TEXT_MAPPING_RULES))
         instructions_label.setWordWrap(True)
-        self.vlayout.addWidget(instructions_label)
+        # self.vlayout.addWidget(instructions_label)
+        top_hlayout.addWidget(instructions_label, 1)
+        # ============
 
-
-        # deck and note type
-        # ==================
-
-        hlayout = aqt.qt.QHBoxLayout()
-        note_type_description_label = aqt.qt.QLabel('Note Type:')
-        note_type_description_label.setFont(bold_font)
-        self.note_type_label = aqt.qt.QLabel(self.hypertts.anki_utils.get_note_type_name(self.deck_note_type.model_id))
-        deck_description_label = aqt.qt.QLabel('Deck:')
-        deck_description_label.setFont(bold_font)
-        self.deck_name_label = aqt.qt.QLabel(self.hypertts.anki_utils.get_deck_name(self.deck_note_type.deck_id))
-        hlayout.addWidget(note_type_description_label)
-        hlayout.addWidget(self.note_type_label)
-        hlayout.addWidget(deck_description_label)
-        hlayout.addWidget(self.deck_name_label)
-        hlayout.addStretch()
-
-        self.note_info_groupbox = aqt.qt.QGroupBox('Note Info')
-        self.note_info_groupbox.setLayout(hlayout)
-        self.vlayout.addWidget(self.note_info_groupbox)
-
-        # self.vlayout.addLayout(hlayout) 
+        self.vlayout.addLayout(top_hlayout)
 
 
         # display the mapping rules
