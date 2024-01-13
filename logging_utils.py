@@ -83,6 +83,7 @@ def configure_console_logging():
     SILENT_LOGGING_MODE = False
     root_logger = logging.getLogger(constants.LOGGER_NAME)
     root_logger.handlers.clear()
+    root_logger.propagate = False
     root_logger.setLevel(logging.DEBUG)
     root_logger.addHandler(get_stream_handler())
 
@@ -90,6 +91,8 @@ def configure_file_logging(filename):
     global SILENT_LOGGING_MODE
     SILENT_LOGGING_MODE = False
     root_logger = logging.getLogger(constants.LOGGER_NAME)
+    root_logger.handlers.clear()
+    root_logger.propagate = False
     root_logger.setLevel(logging.DEBUG)    
     root_logger.addHandler(get_file_handler(filename))
 
