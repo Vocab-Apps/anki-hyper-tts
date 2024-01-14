@@ -567,6 +567,7 @@ class EditorContext:
     note: any
     editor: any
     add_mode: bool
+    selected_text: str
 
 @dataclass
 class MappingRule:

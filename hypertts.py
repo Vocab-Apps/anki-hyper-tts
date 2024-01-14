@@ -196,7 +196,11 @@ class HyperTTS():
     # ========================
 
     def get_editor_context(self, editor) -> config_models.EditorContext:
-        editor_context = config_models.EditorContext(note=editor.note, editor=editor, add_mode=editor.addMode)
+        editor_context = config_models.EditorContext(note=editor.note, 
+            editor=editor, 
+            add_mode=editor.addMode,
+            selected_text=editor.web.selectedText())
+        logger.debug(f'editor_context: {editor_context}')
         return editor_context
 
     def get_editor_deck_note_type(self, editor) -> config_models.DeckNoteType:
