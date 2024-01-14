@@ -196,10 +196,23 @@ class HyperTTS():
     # ========================
 
     def get_editor_context(self, editor) -> config_models.EditorContext:
+        selected_text = None
+        selected_text_fieldname = None
+        
+        if len(editor.web.selectedText()) > 0:
+            # need to get the field name for selected text
+            deck_note_type = self.get_editor_deck_note_type(editor)
+            current_field_num = editor.currentField
+            if current_field_num != None:
+                model = aqt.mw.col.models.get(deck_note_type.model_id)
+                selected_text_fieldname = model['flds'][current_field_num]['name']
+                selected_text = editor.web.selectedText()
+
         editor_context = config_models.EditorContext(note=editor.note, 
             editor=editor, 
             add_mode=editor.addMode,
-            selected_text=editor.web.selectedText())
+            selected_text=selected_text,
+            selected_text_fieldname=selected_text_fieldname)
         logger.debug(f'editor_context: {editor_context}')
         return editor_context
 
