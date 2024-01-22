@@ -87,7 +87,12 @@ class TTSTests(unittest.TestCase):
         self.manager.get_service('ElevenLabsCustom').enabled = True
         self.manager.get_service('ElevenLabsCustom').configure({
             'api_key': os.environ['ELEVENLABS_API_KEY']
-        })                                        
+        })                                
+        # openai
+        self.manager.get_service('OpenAI').enabled = True
+        self.manager.get_service('OpenAI').configure({
+            'api_key': os.environ['OPENAI_API_KEY']
+        })                                                
         # forvo
         self.manager.get_service('Forvo').enabled = True
         self.manager.get_service('Forvo').configure({
@@ -416,6 +421,18 @@ class TTSTests(unittest.TestCase):
         # pick a random en_US voice
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, 'This is the first sentence')
+
+    def test_openai_english(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_openai_english'
+        service_name = 'OpenAI'
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        assert len(service_voices) > 5
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'This is the first sentence')        
 
     def test_fptai(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_fptai'
