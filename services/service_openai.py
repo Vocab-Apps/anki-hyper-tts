@@ -49,10 +49,22 @@ class OpenAI(service.ServiceBase):
             "Authorization": f"Bearer {api_key}"
         }
 
+        # get voice options
+        speed = voice_options.get('speed', voice.options['speed']['default'])
+        audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
+        audio_format = options.AudioFormat[audio_format_str]
+        audio_format_map = {
+            options.AudioFormat.mp3: 'mp3',
+            options.AudioFormat.ogg_opus: 'opus'
+        }
+        response_format = audio_format_map[audio_format]
+
         data = {
             "model": "tts-1",
             "input": source_text,
-            "voice": voice.voice_key['name']
+            "voice": voice.voice_key['name'],
+            'response_format': response_format,
+            'speed': speed
         }
 
         response = requests.post(url, json=data, headers=headers)
