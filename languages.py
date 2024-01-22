@@ -20,10 +20,12 @@ class Language(enum.Enum):
     bn = ("Bangla")
     bs = ("Bosnian")
     bg = ("Bulgarian")
+    brx = ("Bodo")
     ca = ("Catalan")
     ceb = ("Cebuano")
     ckb = ("Kurdish (Sorani)")
     doi = ("Dogri")
+    dsb = ("Lower Sorbian")
     ny = ("Chichewa")
     co = ("Corsican")
     hr = ("Croatian")
@@ -75,6 +77,7 @@ class Language(enum.Enum):
     lus = ("Mizo")
     rw = ("Kinyarwanda")
     ko = ("Korean")
+    ks = ("Kashmiri")
     ku = ("Kurdish (Central)")
     ky = ("Kyrgyz")
     lo = ("Lao")
@@ -172,6 +175,59 @@ class Language(enum.Enum):
     def __init__(self, lang_name):
         self.lang_name = lang_name        
 
+# maintain a smaller subset of commonly used languages
+# for chatbot purposes, trimming to the common list of languages saves tokens
+class CommonLanguage(enum.Enum):
+    af = ("Afrikaans")
+    ar = ("Arabic")
+    eu = ("Basque")
+    bg = ("Bulgarian")
+    ca = ("Catalan")
+    hr = ("Croatian")
+    cs = ("Czech")
+    da = ("Danish")
+    nl = ("Dutch")
+    en = ("English")
+    eo = ("Esperanto")
+    et = ("Estonian")
+    tl = ("Filipino")
+    fi = ("Finnish")
+    fr = ("French")
+    de = ("German")
+    el = ("Greek")
+    iw = ("Hebrew")
+    hi = ("Hindi")
+    hu = ("Hungarian")
+    is_ = ("Icelandic")
+    id_ = ("Indonesian")
+    ga = ("Irish")
+    it = ("Italian")
+    ja = ("Japanese")
+    ko = ("Korean")
+    lt = ("Lithuanian")
+    ne = ("Nepali")
+    no = ("Norwegian")
+    pl = ("Polish")
+    ro = ("Romanian")
+    ru = ("Russian")
+    sk = ("Slovak")
+    sl = ("Slovenian")
+    es = ("Spanish")
+    sv = ("Swedish")
+    th = ("Thai")
+    tr = ("Turkish")
+    uk = ("Ukrainian")
+    vi = ("Vietnamese")
+    cy = ("Welsh")
+    he = ("Hebrew")
+    fil = ("Filipino")
+    pt_pt = ("Portuguese")
+    yue = ("Cantonese")
+    zh_cn = ("Chinese")
+
+    def __init__(self, lang_name):
+        self.lang_name = lang_name        
+
 class AudioLanguage(enum.Enum):
     af_ZA = (Language.af, "Afrikaans (South Africa)")
     am_ET = (Language.am, "Amharic (Ethiopia)")
@@ -199,14 +255,15 @@ class AudioLanguage(enum.Enum):
     az_AZ = (Language.az, "Azerbaijani (Azerbaijan)")
     ba_RU = (Language.ba, "Bashkir (Russia)")
 
-    bg_BG = (Language.bg, "Bulgarian")
+    be_BY = (Language.be, "Belarusian (Belarus)")
+    bg_BG = (Language.bg, "Bulgarian (Bulgaria)")
     bn_BD = (Language.bn, "Bangla (Bangladesh)")
     bn_IN = (Language.bn, "Bengali (India)")
     bs_BA = (Language.bs, "Bosnian (Bosnia and Herzegovina)")
     ca_ES = (Language.ca, "Catalan")
     cs_CZ = (Language.cs, "Czech")
     cy_GB = (Language.cy, "Welsh")
-    da_DK = (Language.da, "Danish")
+    da_DK = (Language.da, "Danish (Denmark)")
     fo_FO = (Language.fo, "Faroese (Faroe Islands)")
     de_AT = (Language.de, "German (Austria)")
     de_CH = (Language.de, "German (Switzerland)")
@@ -254,7 +311,7 @@ class AudioLanguage(enum.Enum):
     es_UY = (Language.es, "Spanish (Uruguay)")
     es_VE = (Language.es, "Spanish (Venezuela)")
 
-    et_EE = (Language.et, "Estonian")
+    et_EE = (Language.et, "Estonian (Estonia)")
     eu_ES = (Language.eu, "Basque (Basque Country)")
     fi_FI = (Language.fi, "Finnish")
     fil_PH = (Language.tl, "Filipino (Philippines)")
@@ -292,10 +349,10 @@ class AudioLanguage(enum.Enum):
     ms_MY = (Language.ms, "Malay")
     mt_MT = (Language.mt, "Maltese (Malta)")
     my_MM = (Language.my, "Burmese (Myanmar [Burma])")
-    nb_NO = (Language.nb, "Norwegian")
+    nb_NO = (Language.nb, "Norwegian (Norway)")
     ne_NP = (Language.ne, "Nepali (Nepal)")
     nl_BE = (Language.nl, "Dutch (Belgium)")
-    nl_NL = (Language.nl, "Dutch")
+    nl_NL = (Language.nl, "Dutch (Netherlands)")
     pa_IN = (Language.pa, "Punjabi (India)")
     pl_PL = (Language.pl, "Polish")
     ps_AF = (Language.ps, "Pashto (Afghanistan)")
@@ -338,6 +395,7 @@ class AudioLanguage(enum.Enum):
     zh_CN_shaanxi = (Language.zh_cn, 'Chinese (Zhongyuan Mandarin Shaanxi, Simplified)')
     zh_CN_shandong = (Language.zh_cn, 'Chinese (Jilu Mandarin, Simplified)')
     zh_CN_sichuan = (Language.zh_cn, 'Chinese (Southwestern Mandarin, Simplified)')
+    zh_CN_guangxi = (Language.zh_cn, 'Chinese (Guangxi Accent Mandarin, Simplified)')
 
     fa_IR = (Language.fa, "Persian (Iran)")
     zu_ZA = (Language.zu, "Zulu (South Africa)")
@@ -358,7 +416,8 @@ AudioLanguageDefaults = {
     Language.sw: AudioLanguage.sw_TZ,
     Language.ta: AudioLanguage.ta_IN,
     Language.ur: AudioLanguage.ur_PK,
-    Language.zh_cn: AudioLanguage.zh_CN
+    Language.zh_cn: AudioLanguage.zh_CN,
+    Language.yue: AudioLanguage.zh_HK,
 }
 
 # if only one locale is available, make that the default
