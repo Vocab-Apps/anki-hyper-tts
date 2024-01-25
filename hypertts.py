@@ -742,12 +742,7 @@ class HyperTTS():
 
     def deserialize_batch_config(self, batch_config):
         batch = config_models.BatchConfig(self.anki_utils)
-        batch_mode = constants.BatchMode[batch_config['source']['mode']]
-        if batch_mode == constants.BatchMode.simple:
-            source = config_models.BatchSourceSimple(batch_config['source']['source_field'])
-        else:
-            source = config_models.BatchSourceTemplate(batch_mode, batch_config['source']['source_template'],
-                constants.TemplateFormatVersion[batch_config['source']['template_format_version']])
+        source = config_models.deserialize_batchsource(batch_config['source'])
         batch_target_config = batch_config['target']
         target = config_models.BatchTarget(batch_target_config['target_field'], batch_target_config['text_and_sound_tag'], batch_target_config['remove_sound_tag'])
         voice_selection = self.deserialize_voice_selection(batch_config['voice_selection'])

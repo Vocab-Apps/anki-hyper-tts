@@ -71,7 +71,7 @@ class BatchConfig(ConfigModelBase):
         return {
             'uuid': self.uuid,
             'name': self.name,
-            'source': self.source.serialize(),
+            'source': serialize_batchsource(self.source),
             'target': self.target.serialize(),
             'voice_selection': self.voice_selection.serialize(),
             'text_processing': self.text_processing.serialize()
@@ -109,41 +109,6 @@ def serialize_batchsource(batch_source):
 def deserialize_batchsource(batch_source_config):
     return databind.json.load(batch_source_config, BatchSource)
 
-
-@dataclass
-class BatchSourceSimple(ConfigModelBase):
-    mode: constants.BatchMode = constants.BatchMode.simple
-    source_field: str = None
-
-    def serialize(self):
-        return databind.json.dump(self, BatchSourceSimple)
-
-    def validate(self):
-        if self.source_field == None or len(self.source_field) == 0:
-            raise errors.SourceFieldNotSet()
-
-    def __str__(self):
-        return f'{self.source_field}'
-
-class BatchSourceTemplate(ConfigModelBase):
-    def __init__(self, mode, source_template: str, template_format_version: constants.TemplateFormatVersion):
-        self.mode = mode
-        self.source_template = source_template
-        self.template_format_version = template_format_version
-
-    def serialize(self):
-        return {
-            'mode': self.mode.name,
-            'template_format_version': self.template_format_version.name,
-            'source_template': self.source_template
-        }
-
-    def validate(self):
-        if self.source_template == None or len(self.source_template) == 0:
-            raise errors.SourceTemplateNotSet()
-
-    def __str__(self):
-        return f'template'
 
 class BatchTarget(ConfigModelBase):
     def __init__(self, target_field, text_and_sound_tag, remove_sound_tag):

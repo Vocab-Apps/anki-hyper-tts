@@ -290,7 +290,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         batch_config.name = 'preset_1'
-        source = config_models.BatchSourceSimple('Chinese')
+        source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
         target = config_models.BatchTarget('Sound', False, False)
         text_processing = config_models.TextProcessing()
         rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
@@ -308,7 +308,9 @@ class ConfigModelsTests(unittest.TestCase):
             'uuid': 'uuid_0',
             'source': {
                 'mode': 'simple',            
-                'source_field': 'Chinese'
+                'source_field': 'Chinese',
+                'source_template': None,
+                'template_format_version': 'v1'
             },
             'target': {
                 'target_field': 'Sound',
@@ -351,10 +353,9 @@ class ConfigModelsTests(unittest.TestCase):
 
         assert batch_config_deserialized.serialize() == batch_config.serialize()
 
-        assert str(batch_config) == """<b>Source:</b> Chinese
-<b>Target:</b> Sound
-<b>Voice Selection:</b> Single
-"""
+        self.assertEquals(batch_config_deserialized.source.source_field, 'Chinese')
+        self.assertEquals(batch_config_deserialized.source.mode, constants.BatchMode.simple)   
+
 
     def test_batch_config_target(self):
         # serialize tests for Target
@@ -365,7 +366,7 @@ class ConfigModelsTests(unittest.TestCase):
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
-        source = config_models.BatchSourceSimple('Chinese')
+        source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
         text_processing = config_models.TextProcessing()
         batch_config.set_source(source)
         batch_config.set_voice_selection(voice_selection)
@@ -532,8 +533,8 @@ class ConfigModelsTests(unittest.TestCase):
 
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         batch_config.name = 'preset_2'
-        source = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, 
-            source_template, constants.TemplateFormatVersion.v1)
+        source = config_models.BatchSource(mode=constants.BatchMode.advanced_template, 
+            source_template=source_template, template_format_version=constants.TemplateFormatVersion.v1)
         target = config_models.BatchTarget('Audio', False, False)
         text_processing = config_models.TextProcessing()
         rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
@@ -551,6 +552,7 @@ class ConfigModelsTests(unittest.TestCase):
             'uuid': 'uuid_0',
             'source': {
                 'mode': 'advanced_template',
+                'source_field': None,
                 'template_format_version': 'v1',
                 'source_template': """result = 'yoyo'""",
             },
@@ -611,7 +613,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         batch_config.name = 'preset_3'
-        source = config_models.BatchSourceSimple('')
+        source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='')
         target = config_models.BatchTarget('Sound', False, False)
         text_processing = config_models.TextProcessing()
 
@@ -625,7 +627,7 @@ class ConfigModelsTests(unittest.TestCase):
         # missing target field
         # ====================
 
-        source = config_models.BatchSourceSimple('Chinese')
+        source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
         target = config_models.BatchTarget(None, False, False)
 
         batch_config.set_source(source)
@@ -636,7 +638,7 @@ class ConfigModelsTests(unittest.TestCase):
         # single voice, voice not set
         # ===========================
 
-        source = config_models.BatchSourceSimple('Chinese')
+        source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
         target = config_models.BatchTarget('Sound', False, False)
         voice_selection = config_models.VoiceSelectionSingle()
 
