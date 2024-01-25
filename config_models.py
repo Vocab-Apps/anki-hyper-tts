@@ -95,6 +95,14 @@ class BatchSource():
     source_template: Optional[str] = None
     template_format_version: constants.TemplateFormatVersion = constants.TemplateFormatVersion.v1
 
+    def validate(self):
+        if self.mode == constants.BatchMode.simple:
+            if self.source_field == None or len(self.source_field) == 0:
+                raise errors.SourceFieldNotSet()
+        if self.mode == constants.BatchMode.template:
+            if self.source_template == None or len(self.source_template) == 0:
+                raise errors.SourceTemplateNotSet()
+
 def serialize_batchsource(batch_source):
     return databind.json.dump(batch_source, BatchSource)
         

@@ -1111,3 +1111,15 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(source.mode, constants.BatchMode.template)
         self.assertEqual(source.source_template, '{Field1}')
         self.assertEqual(source.template_format_version, constants.TemplateFormatVersion.v1)
+
+        # validation
+        # ==========
+        source = config_models.BatchSource(
+            mode=constants.BatchMode.simple,
+            source_field='')
+        self.assertRaises(errors.SourceFieldNotSet, source.validate)
+
+        source = config_models.BatchSource(
+            mode=constants.BatchMode.template,
+            source_template='')
+        self.assertRaises(errors.SourceTemplateNotSet, source.validate)
