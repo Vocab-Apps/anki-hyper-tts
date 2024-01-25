@@ -88,16 +88,27 @@ class BatchConfig(ConfigModelBase):
         self.text_processing.validate()
 
 
+@dataclass
+class BatchSource():
+    mode: constants.BatchMode
+    source_field: Optional[str] = None
+    source_template: Optional[str] = None
+    template_format_version: constants.TemplateFormatVersion = constants.TemplateFormatVersion.v1
+
+def serialize_batchsource(batch_source):
+    return databind.json.dump(batch_source, BatchSource)
+        
+def deserialize_batchsource(batch_source_config):
+    return databind.json.load(batch_source_config, BatchSource)
+
+
+@dataclass
 class BatchSourceSimple(ConfigModelBase):
-    def __init__(self, source_field):
-        self.mode = constants.BatchMode.simple
-        self.source_field = source_field
+    mode: constants.BatchMode = constants.BatchMode.simple
+    source_field: str = None
 
     def serialize(self):
-        return {
-            'mode': self.mode.name,
-            'source_field': self.source_field
-        }
+        return databind.json.dump(self, BatchSourceSimple)
 
     def validate(self):
         if self.source_field == None or len(self.source_field) == 0:

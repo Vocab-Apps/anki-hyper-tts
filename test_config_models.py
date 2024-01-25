@@ -1069,3 +1069,45 @@ class ConfigModelsTests(unittest.TestCase):
         assert applicable_rules[0] == (0, 0, rule_1)
         assert applicable_rules[1] == (2, 1, rule_2)
         assert applicable_rules[2] == (3, 2, rule_5)
+
+    def test_batch_source(self):
+        # serialization tests
+        # ===================
+
+        source = config_models.BatchSource(
+            mode=constants.BatchMode.simple,
+            source_field='Chinese')
+        self.assertEqual(config_models.serialize_batchsource(source), {
+            'mode': 'simple',
+            'source_field': 'Chinese',
+            'source_template': None,
+            'template_format_version': 'v1'
+        })
+
+        source = config_models.BatchSource(
+            mode=constants.BatchMode.template,
+            source_template='{Field1}')
+        self.assertEqual(config_models.serialize_batchsource(source), {
+            'mode': 'template',
+            'source_field': None,
+            'source_template': '{Field1}',
+            'template_format_version': 'v1'
+        })
+
+        # deserialization tests
+        # =====================
+
+        source = config_models.deserialize_batchsource({
+            'mode': 'simple',
+            'source_field': 'Chinese',
+        })
+        self.assertEqual(source.mode, constants.BatchMode.simple)
+        self.assertEqual(source.source_field, 'Chinese')
+
+        source = config_models.deserialize_batchsource({
+            'mode': 'template',
+            'source_template': '{Field1}',
+        })
+        self.assertEqual(source.mode, constants.BatchMode.template)
+        self.assertEqual(source.source_template, '{Field1}')
+        self.assertEqual(source.template_format_version, constants.TemplateFormatVersion.v1)
