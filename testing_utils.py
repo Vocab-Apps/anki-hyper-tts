@@ -32,7 +32,7 @@ def create_simple_batch(hypertts_instance,
     single.set_voice(config_models.VoiceWithOptions(selected_voice, {}))
 
     batch = config_models.BatchConfig(hypertts_instance.anki_utils)
-    source = config_models.BatchSourceSimple('Chinese')
+    source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
     target = config_models.BatchTarget(target_field, False, True)
     text_processing = config_models.TextProcessing()
 

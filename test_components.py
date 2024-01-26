@@ -581,18 +581,18 @@ def test_batch_source_1(qtbot):
     dialog.addChildWidget(batch_source.draw())
 
     # the field selected should be "Chinese"
-    expected_source_model = config_models.BatchSourceSimple('Chinese')
+    expected_source_model = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
 
     # the simple stack item should be selected
     assert batch_source.source_config_stack.currentIndex() == batch_source.SOURCE_CONFIG_STACK_SIMPLE
 
-    assert batch_source.batch_source_model.serialize() == expected_source_model.serialize()
+    assert batch_source.batch_source_model == expected_source_model
 
     # select another field, 'English'
     batch_source.source_field_combobox.setCurrentText('English')
     expected_source_model.source_field = 'English'
 
-    assert batch_source.batch_source_model.serialize() == expected_source_model.serialize()
+    assert batch_source.batch_source_model == expected_source_model
 
     # select template mode
     batch_source.batch_mode_combobox.setCurrentText('template')
@@ -601,15 +601,15 @@ def test_batch_source_1(qtbot):
     # enter template format
     qtbot.keyClicks(batch_source.simple_template_input, '{Chinese}')
 
-    expected_source_model = config_models.BatchSourceTemplate(constants.BatchMode.template, 
-        '{Chinese}', constants.TemplateFormatVersion.v1)
+    expected_source_model = config_models.BatchSource(mode=constants.BatchMode.template, 
+        source_template='{Chinese}')
 
-    assert batch_source.batch_source_model.serialize() == expected_source_model.serialize()
+    assert batch_source.batch_source_model == expected_source_model
 
     # load model tests
     # ================
     # the field selected should be "English"
-    model = config_models.BatchSourceSimple('English')
+    model = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='English')
 
     batch_source.load_model(model)
 
@@ -747,7 +747,7 @@ def test_batch_preview(qtbot):
     voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
 
     batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
-    source = config_models.BatchSourceSimple('Chinese')
+    source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
     target = config_models.BatchTarget('Sound', False, True)
 
     batch_config.set_source(source)

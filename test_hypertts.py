@@ -287,7 +287,7 @@ yoyo
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
 
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
-        source = config_models.BatchSourceSimple('Chinese')
+        source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
         target = config_models.BatchTarget('Sound', False, True)
         text_processing = config_models.TextProcessing()
 

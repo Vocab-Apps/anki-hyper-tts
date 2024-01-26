@@ -70,7 +70,7 @@ class AudioRulesTests(unittest.TestCase):
 
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         batch_config.name = 'preset_1'
-        source = config_models.BatchSourceSimple('Chinese')
+        source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
         target = config_models.BatchTarget('Sound', False, True)
         text_processing = config_models.TextProcessing()
 
@@ -137,7 +137,7 @@ class AudioRulesTests(unittest.TestCase):
 
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         batch_config.name = 'preset_1'
-        source = config_models.BatchSourceSimple('Chinese')
+        source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
         target = config_models.BatchTarget('Sound', False, True)
         text_processing = config_models.TextProcessing()
 
@@ -157,7 +157,7 @@ class AudioRulesTests(unittest.TestCase):
 
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         batch_config.name = 'preset_2'
-        source = config_models.BatchSourceSimple('English')
+        source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='English')
         target = config_models.BatchTarget('Sound English', False, True)
         text_processing = config_models.TextProcessing()
 

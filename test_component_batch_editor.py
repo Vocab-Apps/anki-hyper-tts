@@ -233,7 +233,7 @@ def test_editor_get_new_preset_id_1(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     mock_editor = testing_utils.MockEditor()
-    editor_context = config_models.EditorContext(note, mock_editor, False)
+    editor_context = config_models.EditorContext(note, mock_editor, False, None, None)
 
     # user cancels
     def dialog_input_sequence(dialog):

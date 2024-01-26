@@ -147,17 +147,17 @@ class BatchSource(component_common.ConfigComponentBase):
             error_message = f'current_index for source_field_combobox is {current_index}, field_list: {self.field_list}'
             raise Exception(error_message)
         field_name = self.field_list[current_index]
-        self.batch_source_model = config_models.BatchSourceSimple(field_name)
+        self.batch_source_model = config_models.BatchSource(mode=constants.BatchMode.simple, source_field=field_name)
         self.notify_model_update()
 
     def simple_template_change(self):
         simple_template_text = self.simple_template_input.text()
-        self.batch_source_model = config_models.BatchSourceTemplate(constants.BatchMode.template, simple_template_text, constants.TemplateFormatVersion.v1)
+        self.batch_source_model = config_models.BatchSource(mode=constants.BatchMode.template, source_template=simple_template_text)
         self.notify_model_update()
 
     def advanced_template_change(self):
         template_text = self.advanced_template_input.toPlainText()
-        self.batch_source_model = config_models.BatchSourceTemplate(constants.BatchMode.advanced_template, template_text, constants.TemplateFormatVersion.v1)
+        self.batch_source_model = config_models.BatchSource(mode=constants.BatchMode.advanced_template, source_template=template_text)
         self.notify_model_update()
 
     def notify_model_update(self):
