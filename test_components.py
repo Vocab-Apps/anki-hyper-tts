@@ -593,6 +593,16 @@ def test_batch_source_1(qtbot):
     expected_source_model.source_field = 'English'
 
     assert batch_source.batch_source_model == expected_source_model
+    
+    # enable "use selection"
+    batch_source.use_selection_checkbox.setChecked(True)
+    expected_source_model.use_selection = True
+    assert batch_source.batch_source_model == expected_source_model
+
+    # disable "use selection"
+    batch_source.use_selection_checkbox.setChecked(False)
+    expected_source_model.use_selection = False
+    assert batch_source.batch_source_model == expected_source_model
 
     # select template mode
     batch_source.batch_mode_combobox.setCurrentText('template')

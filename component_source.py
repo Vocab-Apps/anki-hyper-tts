@@ -50,6 +50,7 @@ class BatchSource(component_common.ConfigComponentBase):
         # wire events
         self.batch_mode_combobox.currentIndexChanged.connect(self.batch_mode_change)
         self.source_field_combobox.currentIndexChanged.connect(self.source_field_change)
+        self.use_selection_checkbox.stateChanged.connect(self.use_selection_checkbox_change)
         self.hypertts.anki_utils.wire_typing_timer(self.simple_template_input, self.simple_template_change)
         self.hypertts.anki_utils.wire_typing_timer(self.advanced_template_input, self.advanced_template_change)
 
@@ -90,6 +91,9 @@ class BatchSource(component_common.ConfigComponentBase):
         self.source_field_combobox.addItems(self.field_list)
         stack_vlayout.addWidget(self.source_field_label)
         stack_vlayout.addWidget(self.source_field_combobox)
+        self.use_selection_checkbox = aqt.qt.QCheckBox(constants.GUI_TEXT_SOURCE_USE_SELECTION)
+        stack_vlayout.addWidget(aqt.qt.QLabel('Additional Settings:'))
+        stack_vlayout.addWidget(self.use_selection_checkbox)
         stack_vlayout.addStretch()
         simple_stack.setLayout(stack_vlayout)
 
@@ -148,6 +152,11 @@ class BatchSource(component_common.ConfigComponentBase):
             raise Exception(error_message)
         field_name = self.field_list[current_index]
         self.batch_source_model = config_models.BatchSource(mode=constants.BatchMode.simple, source_field=field_name)
+        self.notify_model_update()
+
+    def use_selection_checkbox_change(self):
+        use_selection = self.use_selection_checkbox.isChecked()
+        self.batch_source_model.use_selection = use_selection
         self.notify_model_update()
 
     def simple_template_change(self):

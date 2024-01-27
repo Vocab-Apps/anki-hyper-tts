@@ -94,6 +94,7 @@ class BatchSource():
     source_field: Optional[str] = None
     source_template: Optional[str] = None
     template_format_version: constants.TemplateFormatVersion = constants.TemplateFormatVersion.v1
+    use_selection: Optional[bool] = False
 
     def validate(self):
         if self.mode == constants.BatchMode.simple:

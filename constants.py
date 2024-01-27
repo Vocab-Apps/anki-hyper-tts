@@ -139,6 +139,7 @@ GUI_TEXT_SOURCE_MODE = """Choose a source mode:
 <b>Advanced Template:</b> fields can be combined in complex ways using Python."""
 
 GUI_TEXT_SOURCE_FIELD_NAME = """Source Field:"""
+GUI_TEXT_SOURCE_USE_SELECTION = """If text is selected, use selection instead of the full field."""
 GUI_TEXT_SOURCE_SIMPLE_TEMPLATE = """Enter template using syntax {Field1} {Field2}:"""
 GUI_TEXT_SOURCE_ADVANCED_TEMPLATE = """Enter template using Python syntax (advanced users only):
 a simple example:
