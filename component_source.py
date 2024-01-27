@@ -29,6 +29,7 @@ class BatchSource(component_common.ConfigComponentBase):
         self.batch_mode_combobox.setCurrentText(batch_mode.name)
         if batch_mode == constants.BatchMode.simple:
             self.source_field_combobox.setCurrentText(model.source_field)
+            self.use_selection_checkbox.setChecked(model.use_selection)
         elif batch_mode == constants.BatchMode.template:
             self.simple_template_input.setText(model.source_template)
         elif batch_mode == constants.BatchMode.advanced_template:

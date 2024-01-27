@@ -641,6 +641,16 @@ def test_batch_source_1(qtbot):
 
     assert batch_source.batch_mode_combobox.currentText() == 'template'
     assert batch_source.simple_template_input.text() == '{English}'
+    assert batch_source.use_selection_checkbox.isChecked() == False
+
+    # load simple model, but with use_selection = True
+    # =================================================
+    model = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='English', use_selection=True)
+    batch_source.load_model(model)
+
+    assert batch_source.batch_mode_combobox.currentText() == 'simple'
+    assert batch_source.source_field_combobox.currentText() == 'English'
+    assert batch_source.use_selection_checkbox.isChecked() == True    
 
     # load advanced template
     model.mode = constants.BatchMode.advanced_template
