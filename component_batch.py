@@ -65,16 +65,17 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.editor_mode = False
         self.show_settings = True
 
-    def configure_editor(self, note, editor, add_mode):
-        self.note = note
-        self.editor = editor
-        self.add_mode = add_mode
+    def configure_editor(self, editor_context: config_models.EditorContext):
+        self.editor_context = editor_context
+        self.note = editor_context.note
+        self.editor = editor_context.editor
+        self.add_mode = editor_context.add_mode
         field_list = list(self.note.keys())
         self.source = component_source.BatchSource(self.hypertts, field_list, self.source_model_updated)
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.dialog, self.voice_selection_model_updated)
         self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
-        self.preview = component_label_preview.LabelPreview(self.hypertts, note)
+        self.preview = component_label_preview.LabelPreview(self.hypertts, self.note)
         self.editor_mode = True
 
     def new_preset(self, preset_name = None):
@@ -412,7 +413,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
     def apply_note_editor_task(self):
         logger.debug('apply_note_editor_task')
-        self.hypertts.editor_note_add_audio(self.batch_model, self.editor, self.note, self.add_mode, None)
+        self.hypertts.editor_note_add_audio(self.batch_model, self.editor_context)
         return True
 
     def apply_note_editor_task_done(self, result):
@@ -497,14 +498,9 @@ class BatchDialog(aqt.qt.QDialog):
         self.batch_component.draw(self.main_layout)
         self.batch_component.display_settings()
 
-    def configure_editor(self, note, editor, add_mode):
-        self.batch_component.configure_editor(note, editor, add_mode)
-        self.setupUi()
-        self.batch_component.no_settings_editor()
-
     def configure_editor_new_preset(self, editor_context: config_models.EditorContext):
         batch_component = ComponentBatch(self.hypertts, self)
-        batch_component.configure_editor(editor_context.note, editor_context.editor, editor_context.add_mode)
+        batch_component.configure_editor(editor_context)
         new_preset_name = self.hypertts.get_next_preset_name()
         batch_component.new_preset(new_preset_name)
         batch_component.draw(self.main_layout)
@@ -513,7 +509,7 @@ class BatchDialog(aqt.qt.QDialog):
 
     def configure_editor_existing_preset(self, editor_context: config_models.EditorContext, preset_id: str):
         batch_component = ComponentBatch(self.hypertts, self)
-        batch_component.configure_editor(editor_context.note, editor_context.editor, editor_context.add_mode)
+        batch_component.configure_editor(editor_context)
         batch_component.draw(self.main_layout)
         batch_component.load_preset(preset_id)
         batch_component.no_settings_editor()

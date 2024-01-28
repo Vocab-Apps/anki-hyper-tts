@@ -158,31 +158,32 @@ class HyperTTS():
             voice = voice_list.pop(0)
             return voice
 
-    def editor_note_add_audio(self, batch: config_models.BatchConfig, editor, note, add_mode, text_override):
+    def editor_note_add_audio(self, batch: config_models.BatchConfig, editor_context: config_models.EditorContext):
         logger.debug('editor_note_add_audio')
+        # editor, note, add_mode, text_override
         # don't perform undo, it doesn't actually work, because of the way we call update_note
         # undo_id = self.anki_utils.undo_start()
         audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_browser)
-        if add_mode:
+        if editor_context.add_mode:
             audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_add)
         logger.debug('before process_note_audio')
-        source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, add_mode,
-            audio_request_context, text_override)
+        source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, editor_context.note, editor_context.add_mode,
+            audio_request_context, None)
         logger.debug('after process_note_audio')
-        logger.debug(f'about to call editor.set_note: {note}')
+        logger.debug(f'about to call editor.set_note: {editor_context.note}')
         def get_set_note_lambda(editor, note):
             def editor_set_note():
                 editor.set_note(note)
             return editor_set_note
-        self.anki_utils.run_on_main(get_set_note_lambda(editor, note))
+        self.anki_utils.run_on_main(get_set_note_lambda(editor_context.editor, editor_context.note))
         logger.debug('after set_note')
         # self.anki_utils.undo_end(undo_id)
         self.anki_utils.play_sound(full_filename)
 
-    def editor_note_process_rule(self, rule: config_models.MappingRule, editor, selected_text):
+    def editor_note_process_rule(self, rule: config_models.MappingRule, editor_context: config_models.EditorContext):
         """process a single rule, unconditionally"""
         preset = self.load_preset(rule.preset_id)
-        self.editor_note_add_audio(preset, editor, editor.note, editor.addMode, selected_text)
+        self.editor_note_add_audio(preset, editor_context)
 
 
     # editor related functions
@@ -329,7 +330,7 @@ class HyperTTS():
                 preset = self.load_preset(rule.preset_id)
                 # self.anki_utils.tooltip_message(f'Previewing audio for rule {preset.name}')
                 self.anki_utils.run_on_main(lambda: self.anki_utils.tooltip_message(f'Generating audio for {preset.name}'))
-                self.editor_note_add_audio(preset, editor_context.editor, editor_context.note, editor_context.add_mode, None)
+                self.editor_note_add_audio(preset, editor_context)
         return apply_fn
 
     def get_apply_all_rules_done(self):

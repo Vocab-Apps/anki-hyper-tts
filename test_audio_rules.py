@@ -58,6 +58,7 @@ class AudioRulesTests(unittest.TestCase):
         # ============================
         config_gen = testing_utils.TestConfigGenerator()
         hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
 
         # configure two presets
         # =====================
@@ -96,20 +97,16 @@ class AudioRulesTests(unittest.TestCase):
         # this is the target note
         target_note_id = config_gen.note_id_1
 
-        # configure mock editor
-        # =====================
-        mock_editor = config_gen.get_mock_editor_with_note(target_note_id, config_gen.deck_id)
-
         # process rules
         # =============
 
-        hypertts_instance.editor_note_process_rule(rule_1, mock_editor, None)
+        hypertts_instance.editor_note_process_rule(rule_1, editor_context)
 
 
         # verify audio was added
         # ======================
 
-        note_1 = mock_editor.note
+        note_1 = editor_context.note
         assert 'Sound' in note_1.set_values 
 
         sound_tag = note_1.set_values['Sound']

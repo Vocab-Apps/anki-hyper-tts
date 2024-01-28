@@ -181,8 +181,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
     def apply_note_editor_task(self):
         logger.debug('apply_note_editor_task')
         preset = self.hypertts.load_preset(self.model.preset_id)
-        self.hypertts.editor_note_add_audio(preset, 
-            self.editor_context.editor, self.editor_context.note, self.editor_context.add_mode, None)
+        self.hypertts.editor_note_add_audio(preset, self.editor_context)
         return True
 
     def apply_note_editor_task_done(self, result):
