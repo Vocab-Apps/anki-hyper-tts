@@ -310,7 +310,8 @@ class ConfigModelsTests(unittest.TestCase):
                 'mode': 'simple',            
                 'source_field': 'Chinese',
                 'source_template': None,
-                'template_format_version': 'v1'
+                'template_format_version': 'v1',
+                'use_selection': False
             },
             'target': {
                 'target_field': 'Sound',
@@ -555,6 +556,7 @@ class ConfigModelsTests(unittest.TestCase):
                 'source_field': None,
                 'template_format_version': 'v1',
                 'source_template': """result = 'yoyo'""",
+                'use_selection': False
             },
             'target': {
                 'target_field': 'Audio',
@@ -1083,7 +1085,8 @@ class ConfigModelsTests(unittest.TestCase):
             'mode': 'simple',
             'source_field': 'Chinese',
             'source_template': None,
-            'template_format_version': 'v1'
+            'template_format_version': 'v1',
+            'use_selection': False
         })
 
         source = config_models.BatchSource(
@@ -1093,7 +1096,8 @@ class ConfigModelsTests(unittest.TestCase):
             'mode': 'template',
             'source_field': None,
             'source_template': '{Field1}',
-            'template_format_version': 'v1'
+            'template_format_version': 'v1',
+            'use_selection': False
         })
 
         # deserialization tests

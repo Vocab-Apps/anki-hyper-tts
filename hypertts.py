@@ -179,13 +179,6 @@ class HyperTTS():
         # self.anki_utils.undo_end(undo_id)
         self.anki_utils.play_sound(full_filename)
 
-    def editor_note_process_rules(self, rules: config_models.PresetMappingRules, editor, automated: bool, selected_text: str):
-        """process all rules that apply"""
-        deck_note_type: config_models.DeckNoteType = self.get_editor_deck_note_type(editor)
-        for absolute_index, subset_index, rule in rules.iterate_applicable_rules(deck_note_type, automated):
-            logger.info(f'applying rule {rule}')
-            self.editor_note_process_rule(rule, editor, selected_text)
-
     def editor_note_process_rule(self, rule: config_models.MappingRule, editor, selected_text):
         """process a single rule, unconditionally"""
         preset = self.load_preset(rule.preset_id)
