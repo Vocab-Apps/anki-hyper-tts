@@ -104,6 +104,13 @@ class BatchSource():
             if self.source_template == None or len(self.source_template) == 0:
                 raise errors.SourceTemplateNotSet()
 
+    def __str__(self):
+        if self.mode == constants.BatchMode.simple:
+            return f'{self.source_field}'
+        if self.mode in [constants.BatchMode.template, constants.BatchMode.advanced_template]:
+            return f'template'
+        return None
+
 def serialize_batchsource(batch_source):
     return databind.json.dump(batch_source, BatchSource)
         
