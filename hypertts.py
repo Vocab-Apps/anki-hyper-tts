@@ -282,6 +282,13 @@ class HyperTTS():
     # sound generation
     # ================
 
+    def preview_note_audio_editor(self, batch, editor_context: config_models.EditorContext):
+        text_override = None
+        if batch.source.use_selection:
+            if editor_context.selected_text != None:
+                text_override = editor_context.selected_text
+        self.preview_note_audio(batch, editor_context.note, text_override)
+
     def preview_note_audio(self, batch, note, text_override):
         batch.validate()
         full_filename, audio_filename = self.get_note_audio(batch, 
@@ -306,7 +313,7 @@ class HyperTTS():
                 preset = self.load_preset(rule.preset_id)
                 # self.anki_utils.tooltip_message(f'Previewing audio for rule {preset.name}')
                 self.anki_utils.run_on_main(lambda: self.anki_utils.tooltip_message(f'Previewing audio for {preset.name}'))
-                self.preview_note_audio(preset, editor_context.note, None)
+                self.preview_note_audio_editor(preset, editor_context)
         return preview_fn
 
     def get_preview_all_rules_done(self):

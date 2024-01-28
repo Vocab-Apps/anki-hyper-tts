@@ -157,7 +157,7 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         if self.editor_context.note == None:
             raise errors.NoNotesSelectedPreview()
         preset = self.hypertts.load_preset(self.model.preset_id)
-        self.hypertts.preview_note_audio(preset, self.editor_context.note, None)
+        self.hypertts.preview_note_audio_editor(preset, self.editor_context)
         return True
 
     def sound_preview_task_done(self, result):

@@ -90,6 +90,58 @@ def test_component_mapping_rule_1(qtbot):
     assert audio_data['voice']['voice_key'] == {'name': 'voice_1'}
     assert editor_context.note.flush_called == True
 
+def test_component_mapping_rule_use_selection_2(qtbot):
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+
+    # create simple preset
+    preset_id = 'uuid_0'
+    name = 'my preset 1'
+    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id, name=name, use_selection=True)
+
+    mapping_rule = config_models.MappingRule(
+        preset_id='uuid_0', rule_type=constants.MappingRuleType.NoteType, enabled=True,
+        automatic=False, model_id=deck_note_type.model_id, deck_id=deck_note_type.deck_id)
+
+    dialog = gui_testing_utils.build_empty_gridlayout_dialog()
+
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    model_delete_callback = gui_testing_utils.MockModelDeleteCallback()
+    requested_started_callback = gui_testing_utils.MockRequestStartedCallback()
+    requested_finished_callback = gui_testing_utils.MockRequestFinishedCallback()
+
+    component_rule = component_mappingrule.ComponentMappingRule(hypertts_instance, 
+        editor_context, model_change_callback.model_updated, model_delete_callback.model_delete,
+        requested_started_callback.request_started, requested_finished_callback.request_finished)
+    component_rule.draw(dialog.getLayout(), 0)
+    component_rule.load_model(mapping_rule)
+
+    assert component_rule.preset_name_label.text() == 'my preset 1'
+
+    assert component_rule.rule_type_note_type.isChecked() == True
+    assert component_rule.enabled_checkbox.isChecked() == True
+
+
+    # set selection
+    editor_context.selected_text = '老'
+
+    # click preview button
+    qtbot.mouseClick(component_rule.preview_button, aqt.qt.Qt.MouseButton.LeftButton)
+    # check that the audio played is correct
+
+    assert hypertts_instance.anki_utils.played_sound == {
+        'source_text': '老',
+        'voice': {
+            'gender': 'Male', 
+            'language': 'fr_FR', 
+            'name': 'voice_a_1', 
+            'service': 'ServiceA',
+            'voice_key': {'name': 'voice_1'}
+        },
+        'options': {}
+    }        
+
+
+
 def test_component_preset_mapping_rules_1(qtbot):
     # pytest --log-cli-level=DEBUG test_component_presetmappingrules.py -k test_component_preset_mapping_rules_1
 

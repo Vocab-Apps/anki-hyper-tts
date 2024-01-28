@@ -24,7 +24,8 @@ def create_simple_batch(hypertts_instance,
         name='my preset 1', 
         save_preset=True, 
         voice_name='voice_a_1',
-        target_field='Sound'):
+        target_field='Sound',
+        use_selection=False):
     """create simple batch config and optionally save"""
     voice_list = hypertts_instance.service_manager.full_voice_list()
     selected_voice = [x for x in voice_list if x.name == voice_name][0]
@@ -32,7 +33,7 @@ def create_simple_batch(hypertts_instance,
     single.set_voice(config_models.VoiceWithOptions(selected_voice, {}))
 
     batch = config_models.BatchConfig(hypertts_instance.anki_utils)
-    source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
+    source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese', use_selection=use_selection)
     target = config_models.BatchTarget(target_field, False, True)
     text_processing = config_models.TextProcessing()
 
