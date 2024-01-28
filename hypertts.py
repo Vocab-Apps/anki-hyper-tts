@@ -159,16 +159,20 @@ class HyperTTS():
             return voice
 
     def editor_note_add_audio(self, batch: config_models.BatchConfig, editor_context: config_models.EditorContext):
-        logger.debug('editor_note_add_audio')
+        logger.debug(f'editor_note_add_audio, editor_context: {editor_context}')
         # editor, note, add_mode, text_override
         # don't perform undo, it doesn't actually work, because of the way we call update_note
         # undo_id = self.anki_utils.undo_start()
         audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_browser)
         if editor_context.add_mode:
             audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_add)
-        logger.debug('before process_note_audio')
+        text_override = None
+        if batch.source.use_selection:
+            if editor_context.selected_text != None:
+                text_override = editor_context.selected_text
+        logger.debug(f'text_override: {text_override}')
         source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, editor_context.note, editor_context.add_mode,
-            audio_request_context, None)
+            audio_request_context, text_override)
         logger.debug('after process_note_audio')
         logger.debug(f'about to call editor.set_note: {editor_context.note}')
         def get_set_note_lambda(editor, note):

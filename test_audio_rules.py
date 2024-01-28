@@ -54,6 +54,8 @@ class MockBatchStatusListener():
 
 class AudioRulesTests(unittest.TestCase):
     def test_editor_process_single_rule(self):
+        # pytest --log-cli-level=DEBUG  test_audio_rules.py -k test_editor_process_single_rule
+
         # initialize hypertts instance
         # ============================
         config_gen = testing_utils.TestConfigGenerator()
@@ -114,6 +116,26 @@ class AudioRulesTests(unittest.TestCase):
         audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
         assert audio_data['source_text'] == '老人家'
+
+        # very generation with "use_selected"
+        # ===================================
+
+        batch_config.source.use_selection = True
+        hypertts_instance.save_preset(batch_config)
+
+        # set selection in the editor context
+        editor_context.selected_text = '老'
+
+        # regenerate audio
+        logger.debug(editor_context)
+        hypertts_instance.editor_note_process_rule(rule_1, editor_context)
+
+        # verify that audio got generated for '老'
+        assert 'Sound' in note_1.set_values
+        sound_tag = note_1.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        assert audio_data['source_text'] == '老'
 
 
 
