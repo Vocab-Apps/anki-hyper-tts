@@ -16,6 +16,7 @@ import aqt.progress
 import aqt.addcards
 import anki.notes
 import anki.cards
+import aqt.operations
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 options = __import__('options', globals(), locals(), [], sys._addon_import_level_base)
@@ -48,27 +49,30 @@ class HyperTTS():
         self.perform_config_migration()
 
 
-    def process_batch_audio(self, note_id_list, batch, batch_status):
+    def process_batch_audio(self, note_id_list, batch, batch_status, anki_collection):
         # for each note, generate audio
         with batch_status.get_batch_running_action_context():
-            undo_id = self.anki_utils.undo_start()
+
+            modified_notes = []
+
             for note_id in note_id_list:
                 with batch_status.get_note_action_context(note_id, False) as note_action_context:
                     note = self.anki_utils.get_note_by_id(note_id)
                     # process note
                     source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, False,
-                        context.AudioRequestContext(constants.AudioRequestReason.batch), None)
+                        context.AudioRequestContext(constants.AudioRequestReason.batch), None, anki_collection)
                     # update note action context
                     note_action_context.set_source_text(source_text)
                     note_action_context.set_processed_text(processed_text)
                     note_action_context.set_sound(sound_file)
                     note_action_context.set_status(constants.BatchNoteStatus.Done)                    
+                    
+                    modified_notes.append(note)
                 if batch_status.must_continue == False:
                     logger.info('batch_status execution interrupted')
                     break
-            self.anki_utils.undo_end(undo_id)
 
-    def process_note_audio(self, batch: config_models.BatchConfig, note, add_mode, audio_request_context, text_override):
+    def process_note_audio(self, batch: config_models.BatchConfig, note, add_mode, audio_request_context, text_override, anki_collection):
         target_field = batch.target.target_field
 
         if target_field not in note:
@@ -98,7 +102,7 @@ class HyperTTS():
 
         note[target_field] = target_field_content
         if not add_mode:
-            self.anki_utils.update_note(note)
+            anki_collection.update_note(note)
 
         return source_text, processed_text, sound_file, full_filename
 

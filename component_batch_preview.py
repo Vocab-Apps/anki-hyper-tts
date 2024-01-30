@@ -2,6 +2,7 @@ import sys
 import aqt.qt
 import time
 import html
+import aqt.operations
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
@@ -76,8 +77,9 @@ class BatchPreviewTableModel(aqt.qt.QAbstractTableModel):
         return aqt.qt.QVariant()
 
 class BatchPreview(component_common.ComponentBase):
-    def __init__(self, hypertts, note_id_list, sample_selection_fn, batch_start_fn, batch_end_fn):
+    def __init__(self, hypertts, dialog, note_id_list, sample_selection_fn, batch_start_fn, batch_end_fn):
         self.hypertts = hypertts
+        self.dialog = dialog
         self.note_id_list = note_id_list
         self.sample_selection_fn = sample_selection_fn
         self.batch_start_fn = batch_start_fn
@@ -209,19 +211,23 @@ class BatchPreview(component_common.ComponentBase):
 
     def apply_audio_to_notes(self):
         self.apply_to_notes_batch_started = True
-        self.hypertts.anki_utils.run_in_background(self.load_audio_task, self.load_audio_task_done)
+        self.hypertts.anki_utils.run_in_background_collection_op(self.dialog, self.apply_audio_fn)
 
     def stop_button_pressed(self):
         self.batch_status.stop()
 
-    def load_audio_task(self):
-        logger.info('load_audio_task')
-        self.hypertts.process_batch_audio(self.note_id_list, self.batch_model, self.batch_status)
-        logger.info('load_audio_task finish')
+    def apply_audio_fn(self, anki_collection):
+        self.hypertts.process_batch_audio(self.note_id_list, self.batch_model, self.batch_status, anki_collection)
 
-    def load_audio_task_done(self, result):
-        logger.info('load_audio_task_done')
+    # def load_audio_task(self, col):
+    #     logger.info('load_audio_task')
+    #     return self.hypertts.process_batch_audio(self.note_id_list, self.batch_model, self.batch_status)
+    #     # logger.info('load_audio_task finish')
 
+    # def load_audio_task_done(self, result):
+    #     collection_op = result.result()
+    #     collection_op.run_in_background()
+    #     logger.info('load_audio_task_done')
 
     def batch_start(self):
         self.hypertts.anki_utils.run_on_main(self.show_running_stack)

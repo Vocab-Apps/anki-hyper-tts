@@ -60,7 +60,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.target = component_target.BatchTarget(self.hypertts, field_list, self.target_model_updated)
         self.voice_selection = component_voiceselection.VoiceSelection(self.hypertts, self.dialog, self.voice_selection_model_updated)
         self.text_processing = component_text_processing.TextProcessing(self.hypertts, self.text_processing_model_updated)
-        self.preview = component_batch_preview.BatchPreview(self.hypertts, self.note_id_list, 
+        self.preview = component_batch_preview.BatchPreview(self.hypertts, self.dialog, self.note_id_list, 
             self.sample_selected, self.apply_notes_batch_start, self.apply_notes_batch_end)
         self.editor_mode = False
         self.show_settings = True
