@@ -211,7 +211,7 @@ class BatchPreview(component_common.ComponentBase):
 
     def apply_audio_to_notes(self):
         self.apply_to_notes_batch_started = True
-        self.hypertts.anki_utils.run_in_background_collection_op(self.dialog, self.apply_audio_fn)
+        self.hypertts.anki_utils.run_in_background_collection_op(self.dialog, self.apply_audio_fn, self.finished_apply_audio_fn)
 
     def stop_button_pressed(self):
         self.batch_status.stop()
@@ -219,15 +219,8 @@ class BatchPreview(component_common.ComponentBase):
     def apply_audio_fn(self, anki_collection):
         self.hypertts.process_batch_audio(self.note_id_list, self.batch_model, self.batch_status, anki_collection)
 
-    # def load_audio_task(self, col):
-    #     logger.info('load_audio_task')
-    #     return self.hypertts.process_batch_audio(self.note_id_list, self.batch_model, self.batch_status)
-    #     # logger.info('load_audio_task finish')
-
-    # def load_audio_task_done(self, result):
-    #     collection_op = result.result()
-    #     collection_op.run_in_background()
-    #     logger.info('load_audio_task_done')
+    def finished_apply_audio_fn(self, result):
+        logger.debug(f'finished_apply_audio_fn, result: {result}')
 
     def batch_start(self):
         self.hypertts.anki_utils.run_on_main(self.show_running_stack)

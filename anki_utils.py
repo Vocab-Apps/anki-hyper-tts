@@ -139,7 +139,7 @@ class AnkiUtils():
         logger.info(f"""updating note type: {note_model['name']}""")
         aqt.mw.col.models.update_dict(note_model)
 
-    def run_in_background_collection_op(self, parent_widget, update_fn):
+    def run_in_background_collection_op(self, parent_widget, update_fn, success_fn):
         # update fn takes collection as a parameter
         def update_fn_with_undo(col):
             # start new undo entry
@@ -149,7 +149,7 @@ class AnkiUtils():
             # merge undo entries
             return aqt.mw.col.merge_undo_entries(undo_id)
 
-        collection_op = aqt.operations.CollectionOp(parent_widget, update_fn_with_undo)
+        collection_op = aqt.operations.QueryOp(parent=parent_widget, op=update_fn_with_undo, success=success_fn)
         collection_op.run_in_background()
 
     def run_in_background(self, task_fn, task_done_fn):
