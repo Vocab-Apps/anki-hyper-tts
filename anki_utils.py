@@ -152,6 +152,10 @@ class AnkiUtils():
         collection_op = aqt.operations.QueryOp(parent=parent_widget, op=update_fn_with_undo, success=success_fn)
         collection_op.run_in_background()
 
+    def get_anki_collection(self):
+        ensure_anki_collection_open()
+        return aqt.mw.col
+
     def run_in_background(self, task_fn, task_done_fn):
         aqt.mw.taskman.run_in_background(task_fn, task_done_fn)
 

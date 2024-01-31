@@ -165,7 +165,7 @@ def test_simple_text_processing(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
     assert 'Sound' in note_2.set_values 
@@ -209,7 +209,7 @@ def test_simple_error_handling(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)    
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     # check progress bar
     assert listener.current_row == 2
@@ -252,7 +252,7 @@ def test_simple_error_handling_nonexistent_target_field(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)    
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     # check progress bar
     assert listener.current_row == 0
@@ -293,7 +293,7 @@ def test_simple_error_handling_nonexistent_source_field(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)    
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     # check progress bar
     assert listener.current_row == 0
@@ -334,7 +334,7 @@ def test_simple_error_handling_not_found(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)    
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     # check progress bar
     assert listener.current_row == 1
@@ -377,7 +377,7 @@ def test_simple_append(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     # check progress bar
     assert listener.current_row == 1
@@ -399,7 +399,6 @@ def test_simple_append(qtbot):
 
     assert audio_data['source_text'] == '老人家'
     assert audio_data['voice']['name'] == 'voice_a_1'
-    assert note_1.flush_called == True
 
 def test_sound_tag_only_keep_other_sound_tags(qtbot):
     # sound tags only, but append, do not remove other sound tags
@@ -436,7 +435,7 @@ def test_sound_tag_only_keep_other_sound_tags(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     # check progress bar
     assert listener.current_row == 0
@@ -453,7 +452,6 @@ def test_sound_tag_only_keep_other_sound_tags(qtbot):
 
     two_audio_tags = note_4.set_values['Sound']
     assert '[sound:blabla.mp3] [sound:' in two_audio_tags
-    assert note_4.flush_called == True
 
 def test_clear_sound_field_previous_content(qtbot):
     # pytest test_audio_batch.py -k test_clear_sound_field_previous_content
@@ -490,7 +488,7 @@ def test_clear_sound_field_previous_content(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     # verify effect on notes
     # ======================
@@ -507,7 +505,6 @@ def test_clear_sound_field_previous_content(qtbot):
 
     assert audio_data['source_text'] == '大使馆'
     assert audio_data['voice']['name'] == 'voice_a_1'
-    assert note_5.flush_called == True
 
 
 def test_simple_same_field_source_target(qtbot):
@@ -541,7 +538,7 @@ def test_simple_same_field_source_target(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     # check progress bar
     assert listener.current_row == 1
@@ -563,7 +560,6 @@ def test_simple_same_field_source_target(qtbot):
 
     assert audio_data['source_text'] == '老人家'
     assert audio_data['voice']['name'] == 'voice_a_1'
-    assert note_1.flush_called == True
 
 def test_simple_sound_only_append(qtbot):
     # create batch configuration
@@ -596,7 +592,7 @@ def test_simple_sound_only_append(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     # check progress bar
     assert listener.current_row == 0
@@ -640,7 +636,7 @@ def test_random_voices(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     assert 'Sound' in note_1.set_values 
@@ -681,7 +677,7 @@ def test_simple_template(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_german_1)
     assert 'Sound' in note_1.set_values 
@@ -692,7 +688,6 @@ def test_simple_template(qtbot):
 
     assert audio_data['source_text'] == 'Das Hund'
     assert audio_data['voice']['name'] == 'voice_a_1'
-    assert note_1.flush_called == True    
 
 
 def test_advanced_template(qtbot):
@@ -731,7 +726,7 @@ result = f"{article} {word}"
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_german_1)
     assert 'Sound' in note_1.set_values 
@@ -742,7 +737,6 @@ result = f"{article} {word}"
 
     assert audio_data['source_text'] == 'Das Hund'
     assert audio_data['voice']['name'] == 'voice_a_1'
-    assert note_1.flush_called == True    
 
 
 def test_advanced_template_imports(qtbot):
@@ -783,7 +777,7 @@ result = f"{article} {word}"
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_german_1)
     assert 'Sound' in note_1.set_values 
@@ -794,7 +788,6 @@ result = f"{article} {word}"
 
     assert audio_data['source_text'] == 'das Hund' # lowercase d
     assert audio_data['voice']['name'] == 'voice_a_1'
-    assert note_1.flush_called == True        
 
 
 def test_priority_voices_success(qtbot):
@@ -826,7 +819,7 @@ def test_priority_voices_success(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     assert 'Sound' in note_1.set_values 
@@ -868,7 +861,7 @@ def test_priority_voices_not_found(qtbot):
     # =================================
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, testing_utils.MockCollection())
 
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     assert 'Sound' not in note_1.set_values 

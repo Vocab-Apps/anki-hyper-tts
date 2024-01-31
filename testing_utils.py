@@ -111,6 +111,7 @@ class MockAnkiUtils():
         self.show_loading_indicator_called = None
         self.hide_loading_indicator_called = None
         self.tooltip_messages = []
+        self.mock_collection = MockCollection()
 
         # sounds
         self.all_played_sounds = []
@@ -226,6 +227,9 @@ class MockAnkiUtils():
         update_fn(None)
         self.undo_finished = True
         success_fn(True)
+
+    def get_anki_collection(self):
+        return self.mock_collection
 
     def run_in_background(self, task_fn, task_done_fn):
         # just run the two tasks immediately
