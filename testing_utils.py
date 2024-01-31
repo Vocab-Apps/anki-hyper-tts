@@ -94,6 +94,12 @@ class MockEditor():
     def set_note(self, note):
         self.set_note_called = True
 
+class MockCollection():
+    def __init__(self):
+        pass
+
+    def update_note(self, note):
+        pass
 
 class MockAnkiUtils():
     def __init__(self, config):
@@ -213,6 +219,13 @@ class MockAnkiUtils():
     def save_note_type_update(self, note_model):
         logger.info('save_note_type_update')
         self.updated_note_model = note_model
+
+    def run_in_background_collection_op(self, parent_widget, update_fn, success_fn):
+        # just run update_fn
+        self.undo_started = True
+        update_fn(None)
+        self.undo_finished = True
+        success_fn(True)
 
     def run_in_background(self, task_fn, task_done_fn):
         # just run the two tasks immediately

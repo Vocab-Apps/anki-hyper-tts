@@ -56,6 +56,7 @@ def test_simple_1(qtbot):
 
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    mock_collection = testing_utils.MockCollection()
         
     # build voice selection model
     voice_list = hypertts_instance.service_manager.full_voice_list()
@@ -86,7 +87,7 @@ def test_simple_1(qtbot):
 
     listener = MockBatchStatusListener(hypertts_instance.anki_utils)
     batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
-    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj)
+    hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, mock_collection)
 
     assert listener.current_row == 1
     assert listener.callbacks_received[config_gen.note_id_1] == True
@@ -96,11 +97,6 @@ def test_simple_1(qtbot):
     assert listener.start_time == start_time
     assert listener.current_time == completion_time
     assert listener.total_count == 2
-
-    # undo handling
-    # =============
-    assert hypertts_instance.anki_utils.undo_started == True
-    assert hypertts_instance.anki_utils.undo_finished == True
 
     # verify effect on notes
     # ======================
@@ -119,7 +115,6 @@ def test_simple_1(qtbot):
     assert audio_data['source_text'] == '老人家'
     # pprint.pprint(audio_data)
     assert audio_data['voice']['voice_key'] == {'name': 'voice_1'}
-    assert note_1.flush_called == True
 
     note_2 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_2)
     assert 'Sound' in note_2.set_values 
@@ -130,7 +125,6 @@ def test_simple_1(qtbot):
 
     assert audio_data['source_text'] == '你好'
     assert audio_data['voice']['voice_key'] == {'name': 'voice_1'}
-    assert note_2.flush_called == True    
 
     # verify batch error manager stats
     assert batch_status_obj[0].sound_file != None
