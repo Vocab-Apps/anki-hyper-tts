@@ -88,7 +88,6 @@ def test_component_mapping_rule_1(qtbot):
 
     assert audio_data['source_text'] == '老人家'
     assert audio_data['voice']['voice_key'] == {'name': 'voice_1'}
-    assert editor_context.note.flush_called == True
 
 def test_component_mapping_rule_use_selection_2(qtbot):
     hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()

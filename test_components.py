@@ -775,7 +775,7 @@ def test_batch_preview(qtbot):
     batch_config.set_voice_selection(voice_selection)    
 
     batch_preview_callback = gui_testing_utils.MockBatchPreviewCallback()
-    batch_preview = component_batch_preview.BatchPreview(hypertts_instance, note_id_list, 
+    batch_preview = component_batch_preview.BatchPreview(hypertts_instance, dialog, note_id_list, 
         batch_preview_callback.sample_selected,
         batch_preview_callback.batch_start,
         batch_preview_callback.batch_end)
