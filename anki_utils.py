@@ -147,7 +147,11 @@ class AnkiUtils():
             # run actual operation
             update_fn(col)
             # merge undo entries
-            return aqt.mw.col.merge_undo_entries(undo_id)
+            try:
+                return aqt.mw.col.merge_undo_entries(undo_id)
+            except Exception as e:
+                logger.error(f'exception in undo_end_fn: {str(e)}, undo_id: {undo_id}')
+                return False
 
         collection_op = aqt.operations.QueryOp(parent=parent_widget, op=update_fn_with_undo, success=success_fn)
         collection_op.run_in_background()
