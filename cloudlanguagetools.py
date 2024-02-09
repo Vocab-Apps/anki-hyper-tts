@@ -15,9 +15,22 @@ if hasattr(sys, '_sentry_crash_reporting'):
 class CloudLanguageTools():
     def __init__(self):
         self.base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_BASE_URL', 'https://cloudlanguagetools-api.vocab.ai')
+        self.use_vocabai_api = os.environ.get('ANKI_LANGUAGE_TOOLS_VOCABAI_API', 'false').lower() == 'true'
 
     def configure(self, api_key):
         self.api_key = api_key
+
+    def get_request_headers(self):
+        if self.use_vocabai_api:
+            return {
+                'Authorization': f'Api-Key {self.api_key}',
+                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'}
+        else:
+            return {
+                'api_key': self.api_key, 
+                'client': 'hypertts', 
+                'client_version': version.ANKI_HYPER_TTS_VERSION,
+                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'}
 
     def get_tts_audio(self, source_text, voice, options, audio_request_context):
         if hasattr(sys, '_sentry_crash_reporting'):
@@ -27,7 +40,10 @@ class CloudLanguageTools():
             })
 
         # query cloud language tools API
-        url_path = '/audio_v2'
+        if self.use_vocabai_api:
+            url_path = '/audio'
+        else:
+            url_path = '/audio_v2'
         full_url = self.base_url + url_path
         data = {
             'text': source_text,
@@ -38,11 +54,7 @@ class CloudLanguageTools():
             'options': options
         }
         logger.info(f'request url: {full_url}, data: {data}')
-        response = requests.post(full_url, json=data, headers={
-            'api_key': self.api_key, 
-            'client': 'hypertts', 
-            'client_version': version.ANKI_HYPER_TTS_VERSION,
-            'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'},
+        response = requests.post(full_url, json=data, headers=self.get_request_headers(),
             timeout=constants.RequestTimeout)
 
         if response.status_code == 200:
