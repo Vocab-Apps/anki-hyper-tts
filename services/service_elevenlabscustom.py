@@ -102,6 +102,9 @@ class ElevenLabsCustom(service.ServiceBase):
         response = requests.get(url, headers=self.get_headers(), timeout=constants.RequestTimeout)
         response.raise_for_status()
         model_data = response.json()      
+        
+        # only retain models which can do text to speech
+        model_data = [model for model in model_data if model['can_do_text_to_speech']]
 
         url = "https://api.elevenlabs.io/v1/voices"
 
@@ -113,7 +116,7 @@ class ElevenLabsCustom(service.ServiceBase):
         for model in model_data:
             model_id = model['model_id']
             model_name = model['name']
-            model_short_name = model_name.replace('Eleven ', '').replace('v1', '').strip()        
+            model_short_name = model_name.replace('Eleven ', '').strip()
             for voice_entry in voice_data:
                 voice_name = voice_entry['name']
                 voice_id = voice_entry['voice_id']
@@ -156,6 +159,10 @@ class ElevenLabsCustom(service.ServiceBase):
         }
 
         response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)
+        if response.status_code != 200:
+            error_message = f'{self.name}: error processing TTS request: {response.status_code} {response.text}'
+            logger.error(error_message)
+            raise errors.RequestError(error_message)        
         response.raise_for_status()
         
         return response.content

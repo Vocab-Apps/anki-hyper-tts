@@ -61,6 +61,11 @@ class ElevenLabs(service.ServiceBase):
         }
 
         response = requests.post(url, json=data, headers=headers)
+        if response.status_code != 200:
+            error_message = f'{self.name}: error processing TTS request: {response.status_code} {response.text}'
+            logger.error(error_message)
+            raise errors.RequestError(error_message)
+
         response.raise_for_status()
         
         return response.content
