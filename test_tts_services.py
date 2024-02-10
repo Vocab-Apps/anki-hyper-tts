@@ -390,6 +390,19 @@ class TTSTests(unittest.TestCase):
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, 'This is the first sentence')        
 
+    def test_elevenlabs_english_all_voices_charlotte(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_elevenlabs_english_all_voices_charlotte'
+        service_name = 'ElevenLabs'
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name and voice.language == languages.AudioLanguage.en_US]
+        charlotte_voices = [voice for voice in service_voices if 'Charlotte' in voice.name]
+        # basically we are testing that all the ElevenLabs models are working, there should be 4 or them
+        self.assertGreaterEqual(len(charlotte_voices), 4)
+        self.assertLessEqual(len(charlotte_voices), 10)
+        for voice in charlotte_voices:
+            self.verify_audio_output(voice, 'This is the first sentence')
+
     def test_elevenlabs_french(self):
         service_name = 'ElevenLabs'
         voice_list = self.manager.full_voice_list()
