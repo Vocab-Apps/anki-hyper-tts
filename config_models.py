@@ -3,7 +3,7 @@ import abc
 import copy
 from dataclasses import dataclass, field
 import databind.json
-from typing import List, Optional, Mapping
+from typing import List, Optional, Mapping, Any
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
@@ -379,7 +379,7 @@ class TextProcessing(ConfigModelBase):
 @dataclass
 class Configuration:
     service_enabled: Mapping[str, bool] = field(default_factory=dict)
-    service_config: Mapping[str, Mapping[str, str]] = field(default_factory=dict)
+    service_config: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
     hypertts_pro_api_key: Optional[str] = None
 
     # pro api key

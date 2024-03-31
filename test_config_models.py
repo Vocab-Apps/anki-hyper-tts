@@ -521,6 +521,30 @@ class ConfigModelsTests(unittest.TestCase):
 
         assert deserialized_configuration.get_service_configuration_key('ServiceA', 'region') == None
 
+        # try to serialize float
+        configuration = config_models.Configuration()
+        configuration.hypertts_pro_api_key = '123456'
+        configuration.set_service_enabled('ServiceA', True)
+        configuration.set_service_configuration_key('ServiceA', 'speed', 1.42)
+
+        expected_output = {
+            'hypertts_pro_api_key': '123456',
+            'service_enabled': {
+                'ServiceA': True,
+            },
+            'service_config': {
+                'ServiceA': {
+                    'speed': 1.42
+                },
+            }
+        }
+        assert config_models.serialize_configuration(configuration) == expected_output
+
+        # now try to deserialize float
+        deserialized_configuration = config_models.deserialize_configuration(expected_output)
+        self.assertEqual(type(deserialized_configuration.service_config['ServiceA']['speed']), float)
+        self.assertEqual(deserialized_configuration.get_service_configuration_key('ServiceA', 'speed'), 1.42)
+
 
     def test_batch_config_advanced_template(self):
         hypertts_instance = get_hypertts_instance()
