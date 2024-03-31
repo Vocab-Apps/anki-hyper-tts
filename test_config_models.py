@@ -486,14 +486,14 @@ class ConfigModelsTests(unittest.TestCase):
             }
         }
 
-        assert configuration.serialize() == expected_output
+        assert config_models.serialize_configuration(configuration) == expected_output
 
-        deserialized_configuration = hypertts_instance.deserialize_configuration(configuration.serialize())
+        deserialized_configuration = hypertts_instance.deserialize_configuration(config_models.serialize_configuration(configuration))
         assert deserialized_configuration.get_service_configuration_key('ServiceA', 'region') == 'europe'
         assert deserialized_configuration.get_service_enabled('ServiceA') == True
         assert deserialized_configuration.get_service_enabled('ServiceB') == False
 
-        assert configuration.serialize() == deserialized_configuration.serialize()
+        assert config_models.serialize_configuration(configuration) == config_models.serialize_configuration(deserialized_configuration)
 
         # hypertts pro key
         configuration = config_models.Configuration()
@@ -514,7 +514,7 @@ class ConfigModelsTests(unittest.TestCase):
         assert configuration.get_service_enabled('ServiceA') == True
         assert configuration.get_service_enabled('ServiceB') == None
 
-        deserialized_configuration = hypertts_instance.deserialize_configuration(configuration.serialize())
+        deserialized_configuration = hypertts_instance.deserialize_configuration(config_models.serialize_configuration(configuration))
 
         assert deserialized_configuration.get_service_enabled('ServiceA') == True
         assert deserialized_configuration.get_service_enabled('ServiceB') == None

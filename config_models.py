@@ -3,7 +3,7 @@ import abc
 import copy
 from dataclasses import dataclass, field
 import databind.json
-from typing import List, Optional
+from typing import List, Optional, Mapping
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
@@ -376,71 +376,69 @@ class TextProcessing(ConfigModelBase):
 # service configuration
 # =====================
 
-class Configuration(ConfigModelBase):
-    def __init__(self):
-        self._service_enabled = {}
-        self._service_config = {}
-        self._hypertts_pro_api_key = None
+@dataclass
+class Configuration:
+    service_enabled: Mapping[str, bool] = field(default_factory=dict)
+    service_config: Mapping[str, Mapping[str, str]] = field(default_factory=dict)
+    hypertts_pro_api_key: Optional[str] = None
 
     # pro api key
     # ===========
 
     def get_hypertts_pro_api_key(self):
-        return self._hypertts_pro_api_key
+        return self.hypertts_pro_api_key
 
     def set_hypertts_pro_api_key(self, api_key):
-        self._hypertts_pro_api_key = api_key
+        self.hypertts_pro_api_key = api_key
 
     def hypertts_pro_api_key_set(self):
         return self.hypertts_pro_api_key != None and len(self.hypertts_pro_api_key) > 0
 
-    hypertts_pro_api_key = property(get_hypertts_pro_api_key, set_hypertts_pro_api_key)
-
     def check_service_config_key(self, service_name):
-        if service_name not in self._service_config:
-            self._service_config[service_name] = {}
+        if service_name not in self.service_config:
+            self.service_config[service_name] = {}
 
     # service enabled / disabled
     # ==========================
 
     def get_service_enabled(self, service_name):
-        return self._service_enabled.get(service_name, None)
+        return self.service_enabled.get(service_name, None)
 
     def set_service_enabled(self, service_name, enabled):
-        self._service_enabled[service_name] = enabled
+        self.service_enabled[service_name] = enabled
 
     def get_service_enabled_map(self):
-        return self._service_enabled
+        return self.service_enabled
 
     def set_service_enabled_map(self, service_enabled):
-        self._service_enabled = service_enabled
+        self.service_enabled = service_enabled
 
     # service configuration 
     # =====================
 
     def set_service_configuration_key(self, service_name, key, value):
         self.check_service_config_key(service_name)
-        self._service_config[service_name][key] = value
+        self.service_config[service_name][key] = value
 
     def get_service_configuration_key(self, service_name, key):
-        service_config = self._service_config.get(service_name, {})
+        service_config = self.service_config.get(service_name, {})
         return service_config.get(key, None) 
 
     def set_service_config(self, service_config):
-        self._service_config = service_config
+        self.service_config = service_config
 
     def get_service_config(self):
-        return self._service_config
-
-    def serialize(self):
-        return {
-            'hypertts_pro_api_key': self.hypertts_pro_api_key,
-            'service_enabled': self._service_enabled,
-            'service_config': self._service_config
-        }
+        return self.service_config
 
     def validate(self):
         pass
+
+
+def serialize_configuration(service_config):
+    return databind.json.dump(service_config, Configuration)
+
+def deserialize_configuration(service_config):
+    return databind.json.load(service_config, Configuration)
 
 # realtime config models
 # ======================

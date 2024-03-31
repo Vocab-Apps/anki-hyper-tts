@@ -720,7 +720,7 @@ class HyperTTS():
     def save_configuration(self, configuration_model):
         configuration_model = self.service_manager.remove_non_existent_services(configuration_model)
         configuration_model.validate()
-        self.config[constants.CONFIG_CONFIGURATION] = configuration_model.serialize()
+        self.config[constants.CONFIG_CONFIGURATION] = config_models.serialize_configuration(configuration_model)
         self.anki_utils.write_config(self.config)
 
     def get_configuration(self):
@@ -835,11 +835,7 @@ class HyperTTS():
         return text_processing
 
     def deserialize_configuration(self, configuration_config):
-        configuration = config_models.Configuration()
-        configuration.hypertts_pro_api_key = configuration_config.get('hypertts_pro_api_key', None)
-        configuration.set_service_enabled_map(configuration_config.get('service_enabled', {}))
-        configuration.set_service_config(configuration_config.get('service_config', {}))
-        return configuration
+        return config_models.deserialize_configuration(configuration_config)
 
     def deserialize_preferences(self, preferences_config):
         return config_models.deserialize_preferences(preferences_config)
