@@ -13,6 +13,11 @@ import magic
 import azure.cognitiveservices.speech
 import azure.cognitiveservices.speech.audio
 
+# add external modules to sys.path
+addon_dir = os.path.dirname(os.path.realpath(__file__))
+external_dir = os.path.join(addon_dir, 'external')
+sys.path.insert(0, external_dir)
+
 import constants
 import context
 import voice
@@ -22,6 +27,7 @@ import languages
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 options = __import__('options', globals(), locals(), [], sys._addon_import_level_base)
+config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
 
 def services_dir():
@@ -863,7 +869,11 @@ class TTSTestsCloudLanguageTools(TTSTests):
         # configure using cloud language tools
         self.manager = servicemanager.ServiceManager(services_dir(), 'services', False)
         self.manager.init_services()
-        self.manager.configure_cloudlanguagetools(os.environ['ANKI_LANGUAGE_TOOLS_API_KEY'])
+        services_configuration = config_models.Configuration(
+            hypertts_pro_api_key = os.environ['ANKI_LANGUAGE_TOOLS_API_KEY'],
+            use_vocabai_api = os.environ.get('ANKI_LANGUAGE_TOOLS_VOCABAI_API', 'false').lower() == 'true'
+        )
+        self.manager.configure_cloudlanguagetools(services_configuration)
 
     # pytest test_tts_services.py  -k 'TTSTestsCloudLanguageTools and test_google'
     # pytest test_tts_services.py  -k 'TTSTestsCloudLanguageTools and test_all_services_mandarin'

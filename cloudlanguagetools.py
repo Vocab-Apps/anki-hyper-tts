@@ -6,6 +6,7 @@ import json
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_child_logger(__name__)
 
@@ -14,23 +15,31 @@ if hasattr(sys, '_sentry_crash_reporting'):
 
 class CloudLanguageTools():
     def __init__(self):
-        self.base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_BASE_URL', 'https://cloudlanguagetools-api.vocab.ai')
-        self.use_vocabai_api = os.environ.get('ANKI_LANGUAGE_TOOLS_VOCABAI_API', 'false').lower() == 'true'
+        self.clt_api_base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_BASE_URL', constants.CLOUDLANGUAGETOOLS_API_BASE_URL)
+        self.vocabai_api_base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_VOCABAI_BASE_URL', constants.VOCABAI_API_BASE_URL)
 
-    def configure(self, api_key):
-        self.api_key = api_key
+    def configure(self, config: config_models.Configuration):
+        self.config = config
 
     def get_request_headers(self):
-        if self.use_vocabai_api:
+        if self.config.use_vocabai_api:
             return {
-                'Authorization': f'Api-Key {self.api_key}',
+                'Authorization': f'Api-Key {self.config.hypertts_pro_api_key}',
                 'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'}
         else:
             return {
-                'api_key': self.api_key, 
+                'api_key': self.config.hypertts_pro_api_key, 
                 'client': 'hypertts', 
                 'client_version': version.ANKI_HYPER_TTS_VERSION,
                 'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'}
+
+    def get_base_url(self):
+        if self.config.use_vocabai_api:
+            if self.config.vocabai_api_url_override != None:
+                return self.config.vocabai_api_url_override
+            return self.vocabai_api_base_url
+        else:
+            return self.clt_api_base_url
 
     def get_tts_audio(self, source_text, voice, options, audio_request_context):
         if hasattr(sys, '_sentry_crash_reporting'):
@@ -40,11 +49,11 @@ class CloudLanguageTools():
             })
 
         # query cloud language tools API
-        if self.use_vocabai_api:
+        if self.config.use_vocabai_api:
             url_path = '/audio'
         else:
             url_path = '/audio_v2'
-        full_url = self.base_url + url_path
+        full_url = self.get_base_url() + url_path
         data = {
             'text': source_text,
             'service': voice.service.name,
@@ -66,7 +75,7 @@ class CloudLanguageTools():
             raise errors.RequestError(source_text, voice, error_message)    
 
     def account_info(self, api_key):
-        response = requests.get(self.base_url + '/account', headers={'api_key': api_key})
+        response = requests.get(self.get_base_url() + '/account', headers={'api_key': api_key})
         data = json.loads(response.content)
         return data
 

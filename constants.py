@@ -10,6 +10,9 @@ LOGGER_NAME_TEST = 'test_anki_hyper_tts'
 # requests related constants
 RequestTimeout = 20 # 20 seconds max
 
+CLOUDLANGUAGETOOLS_API_BASE_URL = 'https://cloudlanguagetools-api.vocab.ai'
+VOCABAI_API_BASE_URL = 'https://app.vocabai.app/languagetools-api/v2'
+
 class ServiceType(enum.Enum):
     dictionary = ("Dictionary, contains recordings of words.")
     tts = ("Text To Speech, can generate audio for full sentences.")

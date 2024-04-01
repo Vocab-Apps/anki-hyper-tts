@@ -381,6 +381,8 @@ class Configuration:
     service_enabled: Mapping[str, bool] = field(default_factory=dict)
     service_config: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
     hypertts_pro_api_key: Optional[str] = None
+    # use vocabai API url and conventions
+    use_vocabai_api: Optional[bool] = False
     # allow overriding vocab.ai api url during testing
     vocabai_api_url_override: Optional[str] = None
 

@@ -11,6 +11,7 @@ service = __import__('service', globals(), locals(), [], sys._addon_import_level
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 cloudlanguagetools_module = __import__('cloudlanguagetools', globals(), locals(), [], sys._addon_import_level_base)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_child_logger(__name__)
@@ -47,7 +48,7 @@ class ServiceManager():
                     service.configure(service_config)
         # if we enable cloudlanguagetools, it may force some services to enabled
         if hypertts_pro_mode:
-            self.configure_cloudlanguagetools(configuration_model.hypertts_pro_api_key)
+            self.configure_cloudlanguagetools(configuration_model)
         else:
             self.cloudlanguagetools_enabled = False
 
@@ -116,9 +117,9 @@ class ServiceManager():
     # service configuration
     # =====================
 
-    def configure_cloudlanguagetools(self, api_key):
+    def configure_cloudlanguagetools(self, configuration: config_models.Configuration):
         logger.info('configure_cloudlanguagetools')
-        self.cloudlanguagetools.configure(api_key)
+        self.cloudlanguagetools.configure(configuration)
         self.cloudlanguagetools_enabled = True
         # enable all services which are supported by cloud language tools
         for service in self.get_all_services():
