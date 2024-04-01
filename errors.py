@@ -97,7 +97,7 @@ class NoVoiceSelected(HyperTTSError):
 class NoVoicesAvailable(HyperTTSError):
     def __init__(self):
         message = f'No voices available. You may need to configure some services in the HyperTTS Configuration. ' \
-            '<a href="https://languagetools.anki.study/tutorials/hypertts-getting-started">Please follow this tutorial: getting started with HyperTTS</a>.'
+            '<a href="https://www.vocab.ai/tutorials/hypertts-getting-started">Please follow this tutorial: getting started with HyperTTS</a>.'
         super().__init__(message)
 
 

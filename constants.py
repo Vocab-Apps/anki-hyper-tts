@@ -182,7 +182,7 @@ GUI_TEXT_BUTTON_TRIAL = """Free Trial"""
 GUI_TEXT_BUTTON_API_KEY = """Enter API Key"""
 GUI_TEXT_BUTTON_BUY = """Sign Up"""
 
-BUY_PLAN_URL = """https://languagetools.anki.study/hypertts-pro?utm_campaign=hypertts_config&utm_source=hypertts&utm_medium=addon"""
+BUY_PLAN_URL = """https://www.vocab.ai/hypertts-pro?utm_campaign=hypertts_config&utm_source=hypertts&utm_medium=addon"""
 
 GUI_TEXT_HYPERTTS_PRO_TRIAL = """Free Trial access instantly, just enter your email."""
 GUI_TEXT_HYPERTTS_PRO_BUY_PLAN = """Subscribe to HyperTTS Pro. Get access in 5mn."""

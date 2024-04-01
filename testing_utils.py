@@ -405,8 +405,8 @@ class MockCloudLanguageTools():
             return {
                 'type': '250 chars',
                 'email': 'no@spam.com',
-                'update_url': 'https://languagetools.anki.study/awesometts-plus',
-                'cancel_url': 'https://languagetools.anki.study/awesometts-plus'
+                'update_url': 'https://www.vocab.ai/awesometts-plus',
+                'cancel_url': 'https://www.vocab.ai/awesometts-plus'
             }
 
         if api_key == 'trial_key':
