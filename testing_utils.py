@@ -379,8 +379,8 @@ class MockCloudLanguageTools():
 
         self.account_info_called = False
 
-    def configure(self, api_key):
-        self.api_key = api_key
+    def configure(self, config):
+        self.config = config
 
 
     def api_key_validate_query(self, api_key):

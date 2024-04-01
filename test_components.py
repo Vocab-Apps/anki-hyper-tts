@@ -1431,6 +1431,8 @@ def test_configuration(qtbot):
     assert 'configuration' in hypertts_instance.anki_utils.written_config
     expected_output = {
         'hypertts_pro_api_key': None,
+        'use_vocabai_api': False, 
+        'vocabai_api_url_override': None,
         'service_enabled': {
             'ServiceA': False,
         },

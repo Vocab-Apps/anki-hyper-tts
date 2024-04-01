@@ -1,7 +1,13 @@
-
+import sys
 import os
 import json
 import unittest
+
+# add external modules to sys.path
+addon_dir = os.path.dirname(os.path.realpath(__file__))
+external_dir = os.path.join(addon_dir, 'external')
+if sys.path[0] != external_dir:
+    sys.path.insert(0, external_dir)
 
 import config_models
 import constants
@@ -64,7 +70,7 @@ class ServiceManagerTests(unittest.TestCase):
 
         assert self.manager.get_service('ServiceA').enabled == False
         assert self.manager.get_service('ServiceB').enabled == True # enabled by default for clt
-        assert self.manager.cloudlanguagetools.api_key == '123456'
+        assert self.manager.cloudlanguagetools.config.hypertts_pro_api_key == '123456'
         assert self.manager.cloudlanguagetools_enabled == True
 
         # remove pro api key

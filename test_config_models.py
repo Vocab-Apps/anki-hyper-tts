@@ -475,6 +475,8 @@ class ConfigModelsTests(unittest.TestCase):
 
         expected_output = {
             'hypertts_pro_api_key': '123456',
+            'use_vocabai_api': False, 
+            'vocabai_api_url_override': None,
             'service_enabled': {
                 'ServiceA': True,
                 'ServiceB': False
@@ -529,6 +531,8 @@ class ConfigModelsTests(unittest.TestCase):
 
         expected_output = {
             'hypertts_pro_api_key': '123456',
+            'use_vocabai_api': False, 
+            'vocabai_api_url_override': None,
             'service_enabled': {
                 'ServiceA': True,
             },

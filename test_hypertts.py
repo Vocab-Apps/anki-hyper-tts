@@ -133,6 +133,8 @@ yoyo
 
         expected_saved_config = {
             'hypertts_pro_api_key': None,
+            'use_vocabai_api': False, 
+            'vocabai_api_url_override': None,            
             'service_config': {
                 'ServiceA': {'api_key': 'mykey'}
             },
