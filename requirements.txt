@@ -12,3 +12,4 @@ azure-cognitiveservices-speech
 pydub
 python-magic
 urllib3<2
+bump2version

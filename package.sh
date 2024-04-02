@@ -1,13 +1,26 @@
-#!/bin/sh
+#!/bin/bash
 
-VERSION_NUMBER=$1 # for example 0.1
-GIT_TAG=v${VERSION_NUMBER}
+set -eoux pipefail
 
-echo "ANKI_HYPER_TTS_VERSION='${VERSION_NUMBER}'" > version.py
-git commit -a -m "upgraded version to ${VERSION_NUMBER}"
+# exit if argument is not passed in
+if [ -z "$1" ]; then
+  echo "Please pass major, minor or patch"
+  exit 1
+fi
+
+BUMP_TYPE=$1 # major, minor or patch
+# check that the bump type is valid
+if [ "$BUMP_TYPE" != "major" ] && [ "$BUMP_TYPE" != "minor" ] && [ "$BUMP_TYPE" != "patch" ]; then
+  echo "Please pass major, minor or patch"
+  exit 1
+fi
+
+NEW_VERSION=`bump2version --list ${BUMP_TYPE} | grep new_version | sed -r s,"^.*=",,`
+# push to upstream
 git push
-git tag -a ${GIT_TAG} -m "version ${GIT_TAG}"
-git push origin ${GIT_TAG}
+git push --tags
+
+VERSION_NUMBER=${NEW_VERSION}
 
 # create .addon file
 # remove meta.json, which contains private key
