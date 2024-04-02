@@ -149,12 +149,16 @@ def init(hypertts):
             def launch():
                 with hypertts.error_manager.get_single_action_context('Opening HyperTTS Dialog from Browser'):
                     component_batch.create_component_batch_browser_new_preset(hypertts, browser.selectedNotes(), hypertts.get_next_preset_name())
+                    # required to make sound tags appear
+                    browser.model.reset()
             return launch
 
         def get_launch_dialog_browser_existing_fn(hypertts, browser, preset_id: str):
             def launch():
                 with hypertts.error_manager.get_single_action_context('Opening HyperTTS Dialog from Browser'):
                     component_batch.create_component_batch_browser_existing_preset(hypertts, browser.selectedNotes(), preset_id)
+                    # required to make sound tags appear
+                    browser.model.reset()
             return launch            
 
         def get_launch_realtime_dialog_browser_fn(hypertts, browser):
