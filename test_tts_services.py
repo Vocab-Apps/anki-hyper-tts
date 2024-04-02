@@ -874,7 +874,7 @@ class TTSTestsCloudLanguageTools(TTSTests):
             hypertts_pro_api_key = os.environ['ANKI_LANGUAGE_TOOLS_API_KEY'],
             use_vocabai_api = os.environ.get('ANKI_LANGUAGE_TOOLS_VOCABAI_API', 'false').lower() == 'true'
         )
-        self.manager.configure_cloudlanguagetools(services_configuration)
+        self.manager.configure(services_configuration)
 
     # pytest test_tts_services.py  -k 'TTSTestsCloudLanguageTools and test_google'
     # pytest test_tts_services.py  -k 'TTSTestsCloudLanguageTools and test_all_services_mandarin'
