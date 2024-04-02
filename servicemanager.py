@@ -47,6 +47,7 @@ class ServiceManager():
                     service_config = configuration_model.get_service_config()[service_name]
                     service.configure(service_config)
         # if we enable cloudlanguagetools, it may force some services to enabled
+        self.cloudlanguagetools.configure(configuration_model)
         if hypertts_pro_mode:
             self.configure_cloudlanguagetools(configuration_model)
         else:
@@ -119,7 +120,6 @@ class ServiceManager():
 
     def configure_cloudlanguagetools(self, configuration: config_models.Configuration):
         logger.info('configure_cloudlanguagetools')
-        self.cloudlanguagetools.configure(configuration)
         self.cloudlanguagetools_enabled = True
         # enable all services which are supported by cloud language tools
         for service in self.get_all_services():
