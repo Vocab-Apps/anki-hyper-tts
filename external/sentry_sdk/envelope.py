@@ -260,6 +260,10 @@ class Item(object):
             return "internal"
         elif ty == "profile":
             return "profile"
+        elif ty == "statsd":
+            return "statsd"
+        elif ty == "check_in":
+            return "monitor"
         else:
             return "default"
 

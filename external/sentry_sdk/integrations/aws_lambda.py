@@ -1,6 +1,6 @@
 import sys
 from copy import deepcopy
-from datetime import datetime, timedelta
+from datetime import timedelta
 from os import environ
 
 from sentry_sdk.api import continue_trace
@@ -16,10 +16,11 @@ from sentry_sdk.utils import (
 )
 from sentry_sdk.integrations import Integration
 from sentry_sdk.integrations._wsgi_common import _filter_headers
-from sentry_sdk._compat import reraise
+from sentry_sdk._compat import datetime_utcnow, reraise
 from sentry_sdk._types import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from datetime import datetime
     from typing import Any
     from typing import TypeVar
     from typing import Callable
@@ -80,7 +81,7 @@ def _wrap_handler(handler):
         # will be the same for all events in the list, since they're all hitting
         # the lambda in the same request.)
 
-        if isinstance(aws_event, list):
+        if isinstance(aws_event, list) and len(aws_event) >= 1:
             request_data = aws_event[0]
             batch_size = len(aws_event)
         else:
@@ -136,9 +137,10 @@ def _wrap_handler(handler):
                     # Starting the thread to raise timeout warning exception
                     timeout_thread.start()
 
-            headers = request_data.get("headers")
-            # AWS Service may set an explicit `{headers: None}`, we can't rely on `.get()`'s default.
-            if headers is None:
+            headers = request_data.get("headers", {})
+            # Some AWS Services (ie. EventBridge) set headers as a list
+            # or None, so we must ensure it is a dict
+            if not isinstance(headers, dict):
                 headers = {}
 
             transaction = continue_trace(
@@ -323,7 +325,7 @@ def get_lambda_bootstrap():
 
 def _make_request_event_processor(aws_event, aws_context, configured_timeout):
     # type: (Any, Any, Any) -> EventProcessor
-    start_time = datetime.utcnow()
+    start_time = datetime_utcnow()
 
     def event_processor(sentry_event, hint, start_time=start_time):
         # type: (Event, Hint, datetime) -> Optional[Event]
@@ -428,7 +430,7 @@ def _get_cloudwatch_logs_url(aws_context, start_time):
         log_group=aws_context.log_group_name,
         log_stream=aws_context.log_stream_name,
         start_time=(start_time - timedelta(seconds=1)).strftime(formatstring),
-        end_time=(datetime.utcnow() + timedelta(seconds=2)).strftime(formatstring),
+        end_time=(datetime_utcnow() + timedelta(seconds=2)).strftime(formatstring),
     )
 
     return url

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import inspect
 import sys
 import threading
 import weakref
@@ -9,11 +10,12 @@ from importlib import import_module
 from sentry_sdk._compat import string_types, text_type
 from sentry_sdk._types import TYPE_CHECKING
 from sentry_sdk.consts import OP, SPANDATA
+from sentry_sdk.db.explain_plan.django import attach_explain_plan_to_span
 from sentry_sdk.hub import Hub, _should_send_default_pii
 from sentry_sdk.scope import add_global_event_processor
 from sentry_sdk.serializer import add_global_repr_processor
 from sentry_sdk.tracing import SOURCE_FOR_STYLE, TRANSACTION_SOURCE_URL
-from sentry_sdk.tracing_utils import record_sql_queries
+from sentry_sdk.tracing_utils import add_query_source, record_sql_queries
 from sentry_sdk.utils import (
     AnnotatedValue,
     HAS_REAL_CONTEXTVARS,
@@ -45,6 +47,13 @@ try:
         from django.urls import Resolver404
     except ImportError:
         from django.core.urlresolvers import Resolver404
+
+    # Only available in Django 3.0+
+    try:
+        from django.core.handlers.asgi import ASGIRequest
+    except Exception:
+        ASGIRequest = None
+
 except ImportError:
     raise DidNotEnable("Django not installed")
 
@@ -408,7 +417,7 @@ def _before_get_response(request):
         _set_transaction_name_and_source(scope, integration.transaction_style, request)
 
         scope.add_event_processor(
-            _make_event_processor(weakref.ref(request), integration)
+            _make_wsgi_request_event_processor(weakref.ref(request), integration)
         )
 
 
@@ -460,15 +469,20 @@ def _patch_get_response():
         patch_get_response_async(BaseHandler, _before_get_response)
 
 
-def _make_event_processor(weak_request, integration):
+def _make_wsgi_request_event_processor(weak_request, integration):
     # type: (Callable[[], WSGIRequest], DjangoIntegration) -> EventProcessor
-    def event_processor(event, hint):
-        # type: (Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
+    def wsgi_request_event_processor(event, hint):
+        # type: (Event, dict[str, Any]) -> Event
         # if the request is gone we are fine not logging the data from
         # it.  This might happen if the processor is pushed away to
         # another thread.
         request = weak_request()
         if request is None:
+            return event
+
+        django_3 = ASGIRequest is not None
+        if django_3 and type(request) == ASGIRequest:
+            # We have a `asgi_request_event_processor` for this.
             return event
 
         try:
@@ -487,7 +501,7 @@ def _make_event_processor(weak_request, integration):
 
         return event
 
-    return event_processor
+    return wsgi_request_event_processor
 
 
 def _got_request_exception(request=None, **kwargs):
@@ -556,7 +570,7 @@ class DjangoRequestExtractor(RequestExtractor):
 
 
 def _set_user_info(request, event):
-    # type: (WSGIRequest, Dict[str, Any]) -> None
+    # type: (WSGIRequest, Event) -> None
     user_info = event.setdefault("user", {})
 
     user = getattr(request, "user", None)
@@ -613,7 +627,23 @@ def install_sql_hook():
             hub, self.cursor, sql, params, paramstyle="format", executemany=False
         ) as span:
             _set_db_data(span, self)
-            return real_execute(self, sql, params)
+            if hub.client:
+                options = hub.client.options["_experiments"].get("attach_explain_plans")
+                if options is not None:
+                    attach_explain_plan_to_span(
+                        span,
+                        self.cursor.connection,
+                        sql,
+                        params,
+                        self.mogrify,
+                        options,
+                    )
+            result = real_execute(self, sql, params)
+
+        with capture_internal_exceptions():
+            add_query_source(hub, span)
+
+        return result
 
     def executemany(self, sql, param_list):
         # type: (CursorWrapper, Any, List[Any]) -> Any
@@ -625,7 +655,13 @@ def install_sql_hook():
             hub, self.cursor, sql, param_list, paramstyle="format", executemany=True
         ) as span:
             _set_db_data(span, self)
-            return real_executemany(self, sql, param_list)
+
+            result = real_executemany(self, sql, param_list)
+
+        with capture_internal_exceptions():
+            add_query_source(hub, span)
+
+        return result
 
     def connect(self):
         # type: (BaseDatabaseWrapper) -> None
@@ -653,12 +689,30 @@ def _set_db_data(span, cursor_or_db):
     vendor = db.vendor
     span.set_data(SPANDATA.DB_SYSTEM, vendor)
 
-    connection_params = (
-        cursor_or_db.connection.get_dsn_parameters()
-        if hasattr(cursor_or_db, "connection")
+    # Some custom backends override `__getattr__`, making it look like `cursor_or_db`
+    # actually has a `connection` and the `connection` has a `get_dsn_parameters`
+    # attribute, only to throw an error once you actually want to call it.
+    # Hence the `inspect` check whether `get_dsn_parameters` is an actual callable
+    # function.
+    is_psycopg2 = (
+        hasattr(cursor_or_db, "connection")
         and hasattr(cursor_or_db.connection, "get_dsn_parameters")
-        else db.get_connection_params()
+        and inspect.isroutine(cursor_or_db.connection.get_dsn_parameters)
     )
+    if is_psycopg2:
+        connection_params = cursor_or_db.connection.get_dsn_parameters()
+    else:
+        is_psycopg3 = (
+            hasattr(cursor_or_db, "connection")
+            and hasattr(cursor_or_db.connection, "info")
+            and hasattr(cursor_or_db.connection.info, "get_parameters")
+            and inspect.isroutine(cursor_or_db.connection.info.get_parameters)
+        )
+        if is_psycopg3:
+            connection_params = cursor_or_db.connection.info.get_parameters()
+        else:
+            connection_params = db.get_connection_params()
+
     db_name = connection_params.get("dbname") or connection_params.get("database")
     if db_name is not None:
         span.set_data(SPANDATA.DB_NAME, db_name)

@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import asyncio
 import inspect
 import threading
 
@@ -19,10 +20,9 @@ from sentry_sdk._types import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from typing import Any
-    from typing import Dict
     from typing import Union
 
-    from sentry_sdk._types import EventProcessor
+    from sentry_sdk._types import Event, EventProcessor
 
 try:
     import quart_auth  # type: ignore
@@ -38,7 +38,6 @@ try:
         request,
         websocket,
     )
-    from quart.scaffold import Scaffold  # type: ignore
     from quart.signals import (  # type: ignore
         got_background_exception,
         got_request_exception,
@@ -46,9 +45,14 @@ try:
         request_started,
         websocket_started,
     )
-    from quart.utils import is_coroutine_function  # type: ignore
 except ImportError:
     raise DidNotEnable("Quart is not installed")
+else:
+    # Quart 0.19 is based on Flask and hence no longer has a Scaffold
+    try:
+        from quart.scaffold import Scaffold  # type: ignore
+    except ImportError:
+        from flask.sansio.scaffold import Scaffold  # type: ignore
 
 TRANSACTION_STYLE_VALUES = ("endpoint", "url")
 
@@ -108,7 +112,9 @@ def patch_scaffold_route():
         def decorator(old_func):
             # type: (Any) -> Any
 
-            if inspect.isfunction(old_func) and not is_coroutine_function(old_func):
+            if inspect.isfunction(old_func) and not asyncio.iscoroutinefunction(
+                old_func
+            ):
 
                 @wraps(old_func)
                 def _sentry_func(*args, **kwargs):
@@ -179,7 +185,7 @@ async def _request_websocket_started(app, **kwargs):
 def _make_request_event_processor(app, request, integration):
     # type: (Quart, Request, QuartIntegration) -> EventProcessor
     def inner(event, hint):
-        # type: (Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
+        # type: (Event, dict[str, Any]) -> Event
         # if the request is gone we are fine not logging the data from
         # it.  This might happen if the processor is pushed away to
         # another thread.
@@ -224,7 +230,7 @@ async def _capture_exception(sender, exception, **kwargs):
 
 
 def _add_user_to_event(event):
-    # type: (Dict[str, Any]) -> None
+    # type: (Event) -> None
     if quart_auth is None:
         return
 

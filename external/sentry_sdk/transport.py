@@ -1,25 +1,28 @@
 from __future__ import print_function
 
 import io
+import gzip
+import socket
+import time
+from datetime import timedelta
+from collections import defaultdict
+
 import urllib3
 import certifi
-import gzip
-import time
-
-from datetime import datetime, timedelta
-from collections import defaultdict
 
 from sentry_sdk.utils import Dsn, logger, capture_internal_exceptions, json_dumps
 from sentry_sdk.worker import BackgroundWorker
 from sentry_sdk.envelope import Envelope, Item, PayloadRef
-
+from sentry_sdk._compat import datetime_utcnow
 from sentry_sdk._types import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from datetime import datetime
     from typing import Any
     from typing import Callable
     from typing import Dict
     from typing import Iterable
+    from typing import List
     from typing import Optional
     from typing import Tuple
     from typing import Type
@@ -37,6 +40,21 @@ try:
     from urllib.request import getproxies
 except ImportError:
     from urllib import getproxies  # type: ignore
+
+
+KEEP_ALIVE_SOCKET_OPTIONS = []
+for option in [
+    (socket.SOL_SOCKET, lambda: getattr(socket, "SO_KEEPALIVE"), 1),  # noqa: B009
+    (socket.SOL_TCP, lambda: getattr(socket, "TCP_KEEPIDLE"), 45),  # noqa: B009
+    (socket.SOL_TCP, lambda: getattr(socket, "TCP_KEEPINTVL"), 10),  # noqa: B009
+    (socket.SOL_TCP, lambda: getattr(socket, "TCP_KEEPCNT"), 6),  # noqa: B009
+]:
+    try:
+        KEEP_ALIVE_SOCKET_OPTIONS.append((option[0], option[1](), option[2]))
+    except AttributeError:
+        # a specific option might not be available on specific systems,
+        # e.g. TCP_KEEPIDLE doesn't exist on macOS
+        pass
 
 
 class Transport(object):
@@ -122,7 +140,7 @@ class Transport(object):
 def _parse_rate_limits(header, now=None):
     # type: (Any, Optional[datetime]) -> Iterable[Tuple[DataCategory, datetime]]
     if now is None:
-        now = datetime.utcnow()
+        now = datetime_utcnow()
 
     for limit in header.split(","):
         try:
@@ -154,6 +172,14 @@ class HttpTransport(Transport):
             int
         )  # type: DefaultDict[Tuple[str, str], int]
         self._last_client_report_sent = time.time()
+
+        compresslevel = options.get("_experiments", {}).get(
+            "transport_zlib_compression_level"
+        )
+        self._compresslevel = 9 if compresslevel is None else int(compresslevel)
+
+        num_pools = options.get("_experiments", {}).get("transport_num_pools")
+        self._num_pools = 2 if num_pools is None else int(num_pools)
 
         self._pool = self._make_pool(
             self.parsed_dsn,
@@ -204,7 +230,7 @@ class HttpTransport(Transport):
         # sentries if a proxy in front wants to globally slow things down.
         elif response.status == 429:
             logger.warning("Rate-limited via 429")
-            self._disabled_until[None] = datetime.utcnow() + timedelta(
+            self._disabled_until[None] = datetime_utcnow() + timedelta(
                 seconds=self._retry.get_retry_after(response) or 60
             )
 
@@ -311,13 +337,13 @@ class HttpTransport(Transport):
         def _disabled(bucket):
             # type: (Any) -> bool
             ts = self._disabled_until.get(bucket)
-            return ts is not None and ts > datetime.utcnow()
+            return ts is not None and ts > datetime_utcnow()
 
         return _disabled(category) or _disabled(None)
 
     def _is_rate_limited(self):
         # type: () -> bool
-        return any(ts > datetime.utcnow() for ts in self._disabled_until.values())
+        return any(ts > datetime_utcnow() for ts in self._disabled_until.values())
 
     def _is_worker_full(self):
         # type: () -> bool
@@ -338,8 +364,13 @@ class HttpTransport(Transport):
             return None
 
         body = io.BytesIO()
-        with gzip.GzipFile(fileobj=body, mode="w") as f:
-            f.write(json_dumps(event))
+        if self._compresslevel == 0:
+            body.write(json_dumps(event))
+        else:
+            with gzip.GzipFile(
+                fileobj=body, mode="w", compresslevel=self._compresslevel
+            ) as f:
+                f.write(json_dumps(event))
 
         assert self.parsed_dsn is not None
         logger.debug(
@@ -352,10 +383,14 @@ class HttpTransport(Transport):
                 self.parsed_dsn.host,
             )
         )
-        self._send_request(
-            body.getvalue(),
-            headers={"Content-Type": "application/json", "Content-Encoding": "gzip"},
-        )
+
+        headers = {
+            "Content-Type": "application/json",
+        }
+        if self._compresslevel > 0:
+            headers["Content-Encoding"] = "gzip"
+
+        self._send_request(body.getvalue(), headers=headers)
         return None
 
     def _send_envelope(
@@ -390,8 +425,13 @@ class HttpTransport(Transport):
             envelope.items.append(client_report_item)
 
         body = io.BytesIO()
-        with gzip.GzipFile(fileobj=body, mode="w") as f:
-            envelope.serialize_into(f)
+        if self._compresslevel == 0:
+            envelope.serialize_into(body)
+        else:
+            with gzip.GzipFile(
+                fileobj=body, mode="w", compresslevel=self._compresslevel
+            ) as f:
+                envelope.serialize_into(f)
 
         assert self.parsed_dsn is not None
         logger.debug(
@@ -401,12 +441,15 @@ class HttpTransport(Transport):
             self.parsed_dsn.host,
         )
 
+        headers = {
+            "Content-Type": "application/x-sentry-envelope",
+        }
+        if self._compresslevel > 0:
+            headers["Content-Encoding"] = "gzip"
+
         self._send_request(
             body.getvalue(),
-            headers={
-                "Content-Type": "application/x-sentry-envelope",
-                "Content-Encoding": "gzip",
-            },
+            headers=headers,
             endpoint_type="envelope",
             envelope=envelope,
         )
@@ -414,11 +457,30 @@ class HttpTransport(Transport):
 
     def _get_pool_options(self, ca_certs):
         # type: (Optional[Any]) -> Dict[str, Any]
-        return {
-            "num_pools": 2,
+        options = {
+            "num_pools": self._num_pools,
             "cert_reqs": "CERT_REQUIRED",
             "ca_certs": ca_certs or certifi.where(),
         }
+
+        socket_options = None  # type: Optional[List[Tuple[int, int, int | bytes]]]
+
+        if self.options["socket_options"] is not None:
+            socket_options = self.options["socket_options"]
+
+        if self.options["keep_alive"]:
+            if socket_options is None:
+                socket_options = []
+
+            used_options = {(o[0], o[1]) for o in socket_options}
+            for default_option in KEEP_ALIVE_SOCKET_OPTIONS:
+                if (default_option[0], default_option[1]) not in used_options:
+                    socket_options.append(default_option)
+
+        if socket_options is not None:
+            options["socket_options"] = socket_options
+
+        return options
 
     def _in_no_proxy(self, parsed_dsn):
         # type: (Dsn) -> bool
@@ -559,7 +621,7 @@ def make_transport(options):
     elif isinstance(ref_transport, type) and issubclass(ref_transport, Transport):
         transport_cls = ref_transport
     elif callable(ref_transport):
-        return _FunctionTransport(ref_transport)  # type: ignore
+        return _FunctionTransport(ref_transport)
 
     # if a transport class is given only instantiate it if the dsn is not
     # empty or None

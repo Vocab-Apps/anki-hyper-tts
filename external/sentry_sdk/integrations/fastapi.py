@@ -1,15 +1,17 @@
 import asyncio
 from copy import deepcopy
 
+from sentry_sdk._functools import wraps
 from sentry_sdk._types import TYPE_CHECKING
 from sentry_sdk.hub import Hub, _should_send_default_pii
 from sentry_sdk.integrations import DidNotEnable
 from sentry_sdk.tracing import SOURCE_FOR_STYLE, TRANSACTION_SOURCE_ROUTE
-from sentry_sdk.utils import transaction_from_function
+from sentry_sdk.utils import transaction_from_function, logger
 
 if TYPE_CHECKING:
     from typing import Any, Callable, Dict
     from sentry_sdk.scope import Scope
+    from sentry_sdk._types import Event
 
 try:
     from sentry_sdk.integrations.starlette import (
@@ -60,6 +62,9 @@ def _set_transaction_name_and_source(scope, transaction_style, request):
         source = SOURCE_FOR_STYLE[transaction_style]
 
     scope.set_transaction_name(name, source=source)
+    logger.debug(
+        "[FastAPI] Set transaction name and source on scope: %s / %s", name, source
+    )
 
 
 def patch_get_request_handler():
@@ -76,6 +81,7 @@ def patch_get_request_handler():
         ):
             old_call = dependant.call
 
+            @wraps(old_call)
             def _sentry_call(*args, **kwargs):
                 # type: (*Any, **Any) -> Any
                 hub = Hub.current
@@ -106,9 +112,9 @@ def patch_get_request_handler():
                 info = await extractor.extract_request_info()
 
                 def _make_request_event_processor(req, integration):
-                    # type: (Any, Any) -> Callable[[Dict[str, Any], Dict[str, Any]], Dict[str, Any]]
+                    # type: (Any, Any) -> Callable[[Event, Dict[str, Any]], Event]
                     def event_processor(event, hint):
-                        # type: (Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
+                        # type: (Event, Dict[str, Any]) -> Event
 
                         # Extract information from request
                         request_info = event.get("request", {})

@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
 import logging
-import datetime
 from fnmatch import fnmatch
 
 from sentry_sdk.hub import Hub
@@ -12,11 +11,12 @@ from sentry_sdk.utils import (
     capture_internal_exceptions,
 )
 from sentry_sdk.integrations import Integration
-from sentry_sdk._compat import iteritems
+from sentry_sdk._compat import iteritems, utc_from_timestamp
 
 from sentry_sdk._types import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from collections.abc import MutableMapping
     from logging import LogRecord
     from typing import Any
     from typing import Dict
@@ -92,6 +92,10 @@ class LoggingIntegration(Integration):
 
         def sentry_patched_callhandlers(self, record):
             # type: (Any, LogRecord) -> Any
+            # keeping a local reference because the
+            # global might be discarded on shutdown
+            ignored_loggers = _IGNORED_LOGGERS
+
             try:
                 return old_callhandlers(self, record)
             finally:
@@ -99,7 +103,7 @@ class LoggingIntegration(Integration):
                 # the integration.  Otherwise we have a high chance of getting
                 # into a recursion error when the integration is resolved
                 # (this also is slower).
-                if record.name not in _IGNORED_LOGGERS:
+                if ignored_loggers is not None and record.name not in ignored_loggers:
                     integration = Hub.current.get_integration(LoggingIntegration)
                     if integration is not None:
                         integration._handle_record(record)
@@ -131,6 +135,7 @@ class _BaseHandler(logging.Handler, object):
             "relativeCreated",
             "stack",
             "tags",
+            "taskName",
             "thread",
             "threadName",
             "stack_info",
@@ -152,7 +157,7 @@ class _BaseHandler(logging.Handler, object):
         )
 
     def _extra_from_record(self, record):
-        # type: (LogRecord) -> Dict[str, None]
+        # type: (LogRecord) -> MutableMapping[str, object]
         return {
             k: v
             for k, v in iteritems(vars(record))
@@ -221,7 +226,9 @@ class EventHandler(_BaseHandler):
 
         hint["log_record"] = record
 
-        event["level"] = self._logging_to_event_level(record)
+        level = self._logging_to_event_level(record)
+        if level in {"debug", "info", "warning", "error", "critical", "fatal"}:
+            event["level"] = level  # type: ignore[typeddict-item]
         event["logger"] = record.name
 
         # Log records from `warnings` module as separate issues
@@ -282,6 +289,6 @@ class BreadcrumbHandler(_BaseHandler):
             "level": self._logging_to_event_level(record),
             "category": record.name,
             "message": record.message,
-            "timestamp": datetime.datetime.utcfromtimestamp(record.created),
+            "timestamp": utc_from_timestamp(record.created),
             "data": self._extra_from_record(record),
         }

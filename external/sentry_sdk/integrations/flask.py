@@ -10,13 +10,13 @@ from sentry_sdk.tracing import SOURCE_FOR_STYLE
 from sentry_sdk.utils import (
     capture_internal_exceptions,
     event_from_exception,
-    parse_version,
+    package_version,
 )
 
 if TYPE_CHECKING:
     from typing import Any, Callable, Dict, Union
 
-    from sentry_sdk._types import EventProcessor
+    from sentry_sdk._types import Event, EventProcessor
     from sentry_sdk.integrations.wsgi import _ScopedResponse
     from werkzeug.datastructures import FileStorage, ImmutableMultiDict
 
@@ -28,7 +28,6 @@ except ImportError:
 
 try:
     from flask import Flask, Request  # type: ignore
-    from flask import __version__ as FLASK_VERSION
     from flask import request as flask_request
     from flask.signals import (
         before_render_template,
@@ -64,11 +63,10 @@ class FlaskIntegration(Integration):
     @staticmethod
     def setup_once():
         # type: () -> None
-
-        version = parse_version(FLASK_VERSION)
+        version = package_version("flask")
 
         if version is None:
-            raise DidNotEnable("Unparsable Flask version: {}".format(FLASK_VERSION))
+            raise DidNotEnable("Unparsable Flask version.")
 
         if version < (0, 10):
             raise DidNotEnable("Flask 0.10 or newer is required.")
@@ -174,7 +172,7 @@ def _make_request_event_processor(app, request, integration):
     # type: (Flask, Callable[[], Request], FlaskIntegration) -> EventProcessor
 
     def inner(event, hint):
-        # type: (Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
+        # type: (Event, dict[str, Any]) -> Event
 
         # if the request is gone we are fine not logging the data from
         # it.  This might happen if the processor is pushed away to
@@ -213,7 +211,7 @@ def _capture_exception(sender, exception, **kwargs):
 
 
 def _add_user_to_event(event):
-    # type: (Dict[str, Any]) -> None
+    # type: (Event) -> None
     if flask_login is None:
         return
 

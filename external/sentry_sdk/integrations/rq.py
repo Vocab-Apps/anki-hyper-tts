@@ -20,15 +20,16 @@ try:
     from rq.timeouts import JobTimeoutException
     from rq.version import VERSION as RQ_VERSION
     from rq.worker import Worker
+    from rq.job import JobStatus
 except ImportError:
     raise DidNotEnable("RQ not installed")
 
 from sentry_sdk._types import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from typing import Any, Callable, Dict
+    from typing import Any, Callable
 
-    from sentry_sdk._types import EventProcessor
+    from sentry_sdk._types import Event, EventProcessor
     from sentry_sdk.utils import ExcInfo
 
     from rq.job import Job
@@ -95,8 +96,10 @@ class RqIntegration(Integration):
 
         def sentry_patched_handle_exception(self, job, *exc_info, **kwargs):
             # type: (Worker, Any, *Any, **Any) -> Any
-            if job.is_failed:
-                _capture_exception(exc_info)  # type: ignore
+            # Note, the order of the `or` here is important,
+            # because calling `job.is_failed` will change `_status`.
+            if job._status == JobStatus.FAILED or job.is_failed:
+                _capture_exception(exc_info)
 
             return old_handle_exception(self, job, *exc_info, **kwargs)
 
@@ -123,12 +126,12 @@ class RqIntegration(Integration):
 def _make_event_processor(weak_job):
     # type: (Callable[[], Job]) -> EventProcessor
     def event_processor(event, hint):
-        # type: (Dict[str, Any], Dict[str, Any]) -> Dict[str, Any]
+        # type: (Event, dict[str, Any]) -> Event
         job = weak_job()
         if job is not None:
             with capture_internal_exceptions():
                 extra = event.setdefault("extra", {})
-                extra["rq-job"] = {
+                rq_job = {
                     "job_id": job.id,
                     "func": job.func_name,
                     "args": job.args,
@@ -137,9 +140,11 @@ def _make_event_processor(weak_job):
                 }
 
                 if job.enqueued_at:
-                    extra["rq-job"]["enqueued_at"] = format_timestamp(job.enqueued_at)
+                    rq_job["enqueued_at"] = format_timestamp(job.enqueued_at)
                 if job.started_at:
-                    extra["rq-job"]["started_at"] = format_timestamp(job.started_at)
+                    rq_job["started_at"] = format_timestamp(job.started_at)
+
+                extra["rq-job"] = rq_job
 
         if "exc_info" in hint:
             with capture_internal_exceptions():
