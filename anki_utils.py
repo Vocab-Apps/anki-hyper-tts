@@ -150,7 +150,10 @@ class AnkiUtils():
             try:
                 return aqt.mw.col.merge_undo_entries(undo_id)
             except Exception as e:
-                logger.error(f'exception in undo_end_fn: {str(e)}, undo_id: {undo_id}')
+                # this tends to happen after a large number of updates, and when the collection has been accessed in the middle
+                # to avoid this , I need to rework how updates are batched together. most likely we need to do one single
+                # collection update at the end of all operations
+                logger.warning(f'exception in undo_end_fn: {str(e)}, undo_id: {undo_id}')
                 return False
 
         collection_op = aqt.operations.QueryOp(parent=parent_widget, op=update_fn_with_undo, success=success_fn)
