@@ -382,7 +382,7 @@ class MockCloudLanguageTools():
     def configure(self, config):
         self.config = config
 
-    def account_info(self, api_key) -> config_models.HyperTTSProAccountResult:
+    def account_info(self, api_key) -> config_models.HyperTTSProAccountConfig:
         logger.debug(f'account_info called with api_key: {api_key}')
         
         self.account_info_called = True
@@ -393,7 +393,7 @@ class MockCloudLanguageTools():
 
 
         if api_key == 'valid_key':
-            return config_models.HyperTTSProAccountResult(
+            return config_models.HyperTTSProAccountConfig(
                 api_key = api_key,
                 api_key_valid = True,
                 use_vocabai_api = False,
@@ -405,7 +405,7 @@ class MockCloudLanguageTools():
             })
 
         if api_key == 'trial_key':
-            return config_models.HyperTTSProAccountResult(
+            return config_models.HyperTTSProAccountConfig(
                 api_key = api_key,
                 api_key_valid = True,
                 use_vocabai_api = False,
@@ -414,7 +414,7 @@ class MockCloudLanguageTools():
                 'email': 'no@spam.com'
             })            
 
-        return config_models.HyperTTSProAccountResult(
+        return config_models.HyperTTSProAccountConfig(
             api_key = api_key,
             api_key_valid = False,
             use_vocabai_api = False,
