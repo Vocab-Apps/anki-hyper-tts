@@ -245,7 +245,7 @@ class HyperTTSPro(component_common.ConfigComponentBase):
                 self.model.api_key= api_key.strip()
                 self.verify_api_key()
             else:
-                self.update_gui_state_api_key_not_valid('please enter API key')
+                self.api_key_validation_label.setText(f'<b>error</b>: please enter API key')
 
     def verify_api_key(self):
         logger.info(f'verifying api_key [{self.model.api_key}]')

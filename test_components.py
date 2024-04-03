@@ -1650,6 +1650,7 @@ def test_configuration_manual(qtbot):
 
 def test_hyperttspro_test_1(qtbot):
     # pytest test_components.py -k test_hyperttspro_test_1
+    # pytest test_components.py -k test_hyperttspro_test_1 -o log_cli_level=DEBUG -o capture=no
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
@@ -1775,6 +1776,8 @@ def test_hyperttspro_test_1(qtbot):
     qtbot.mouseClick(hyperttspro.trial_button, aqt.qt.Qt.MouseButton.LeftButton)
     
     # enter incorrect email
+    logger.info('entering incorrect email for trial signup')
+    model_change_callback.model = None
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_TRIAL
     qtbot.keyClicks(hyperttspro.trial_email_input, 'spam@spam.com')    
     qtbot.mouseClick(hyperttspro.enter_trial_email_ok_button, aqt.qt.Qt.MouseButton.LeftButton)
@@ -1787,7 +1790,14 @@ def test_hyperttspro_test_1(qtbot):
     qtbot.keyClicks(hyperttspro.trial_email_input, 'valid@email.com')    
     qtbot.mouseClick(hyperttspro.enter_trial_email_ok_button, aqt.qt.Qt.MouseButton.LeftButton)    
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_ENABLED
-    assert model_change_callback.model == 'trial_key'
+    assert model_change_callback.model == config_models.HyperTTSProAccountConfig(
+        api_key='trial_key',
+        api_key_valid=True, 
+        use_vocabai_api=False, 
+        api_key_error=None, 
+        account_info={'type': 'trial', 'email': 'no@spam.com'}
+    )
+    model_change_callback.model = None
 
     # dialog.exec()
 
@@ -1808,7 +1818,11 @@ def test_hyperttspro_test_1(qtbot):
     qtbot.keyClicks(hyperttspro.hypertts_pro_api_key, 'invalid_key')
     assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
-    assert model_change_callback.model == None    
+    assert model_change_callback.model == config_models.HyperTTSProAccountConfig(
+        api_key_valid=False,
+        api_key_error='Key invalid'
+    )    
+    model_change_callback.model = None
 
     # now remove this incorrect API key
     hyperttspro.hypertts_pro_api_key.setText('')
