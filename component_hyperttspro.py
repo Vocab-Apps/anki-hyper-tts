@@ -224,6 +224,7 @@ class HyperTTSPro(component_common.ConfigComponentBase):
     def trial_email_signup_task_done(self, result):
         with self.hypertts.error_manager.get_single_action_context('Signing up for trial'):
             trial_signup_result = result.result()
+            logger.debug(f'trial_signup_result: {trial_signup_result}')
             self.hypertts.anki_utils.run_on_main(lambda: self.trial_email_signup_update(trial_signup_result))
 
     def trial_email_signup_update(self, trial_signup_result):

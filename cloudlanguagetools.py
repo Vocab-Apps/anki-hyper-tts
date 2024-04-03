@@ -75,9 +75,49 @@ class CloudLanguageTools():
             raise errors.RequestError(source_text, voice, error_message)    
 
     def account_info(self, api_key):
-        response = requests.get(self.get_base_url() + '/account', headers={'api_key': api_key})
-        data = json.loads(response.content)
-        return data
+        # try to get account data on vocabai first
+        logger.debug(f'verifying API key on vocabai API')
+        response = requests.get(self.vocabai_api_base_url + '/account', headers={
+                'Authorization': f'Api-Key {api_key}',
+                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'}
+        )
+        logger.debug(f'vocabai API result: {response.json()}')
+        if response.status_code == 200:
+            # API key is valid on vocab API
+            return config_models.HyperTTSProAccountConfig(
+                api_key=api_key,
+                api_key_valid=True,
+                use_vocabai_api=True,
+                account_info=response.json()
+            )
+
+        # now try to get account data on CLT API
+        logger.debug(f'verifying API key on CLT API')
+        response = requests.get(self.clt_api_base_url + '/account', headers={'api_key': api_key})
+        logger.debug(f'CLT API result: {response.json()}')
+        if response.status_code == 200:
+            # API key is valid on CLT API
+            # check if there are errors
+            if 'error' in response.json():
+                return config_models.HyperTTSProAccountConfig(
+                    api_key=api_key,
+                    api_key_valid=False,
+                    api_key_error=response.json()['error'])
+
+            # otherwise, it's considered valid
+            return config_models.HyperTTSProAccountConfig(
+                api_key=api_key,
+                api_key_valid=True,
+                use_vocabai_api=False,
+                account_info=response.json()
+            )
+
+        # default case, API key is not valid
+        return config_models.HyperTTSProAccountConfig(
+            api_key=api_key,
+            api_key_valid=False,
+            api_key_error='API key not found')
+
 
     def request_trial_key(self, email):
         logger.info(f'requesting trial key for email {email}')
