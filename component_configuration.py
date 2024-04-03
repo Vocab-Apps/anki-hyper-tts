@@ -31,22 +31,19 @@ class Configuration(component_common.ConfigComponentBase):
         self.clt_stack_map = {}
         self.enable_model_change = False
         self.api_key_valid = False
-        self.hyperttspro = component_hyperttspro.HyperTTSPro(self.hypertts, self.hyperttspro_api_key_change)
+        self.hyperttspro = component_hyperttspro.HyperTTSPro(self.hypertts, self.hyperttspro_account_config_change)
 
     def get_model(self):
         return self.model
 
     def load_model(self, model):
         self.model = model
-        self.hyperttspro.load_model(self.model.get_hypertts_pro_api_key())
+        self.hyperttspro.load_model(self.model.get_hypertts_pro_config())
 
-    def hyperttspro_api_key_change(self, api_key):
-        if api_key != None:
-            self.api_key_valid = True
-        else:
-            self.api_key_valid = False
-        is_change = self.model.get_hypertts_pro_api_key() != api_key
-        self.model.set_hypertts_pro_api_key(api_key)
+    def hyperttspro_account_config_change(self, account_config: config_models.HyperTTSProAccountConfig):
+        self.api_key_valid = account_config.api_key_valid
+        is_change = self.model.get_hypertts_pro_api_key() != account_config.api_key
+        self.model.update_hypertts_pro_config(account_config)
         self.set_cloud_language_tools_enabled()
         if is_change:
             self.model_change()

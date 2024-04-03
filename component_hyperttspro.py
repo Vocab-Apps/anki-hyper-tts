@@ -18,13 +18,13 @@ class HyperTTSPro(component_common.ConfigComponentBase):
     def __init__(self, hypertts, model_change_callback):
         self.hypertts = hypertts
         self.model_change_callback = model_change_callback
-        self.api_key = None # the model is simply the api key
+        self.model = config_models.HyperTTSProAccountConfig()
 
     def get_model(self):
-        return self.api_key
+        return self.model
 
-    def load_model(self, model):
-        self.api_key = model
+    def load_model(self, model: config_models.HyperTTSProAccountConfig):
+        self.model = model
 
     def report_model_change(self):
         self.model_change_callback(self.get_model())
@@ -186,8 +186,8 @@ class HyperTTSPro(component_common.ConfigComponentBase):
 
         self.hypertts.anki_utils.wire_typing_timer(self.hypertts_pro_api_key, self.pro_api_key_entered)
 
-        if self.api_key != None:
-            self.hypertts_pro_api_key.setText(self.api_key)
+        if self.model.api_key != None:
+            self.hypertts_pro_api_key.setText(self.model.api_key)
             self.verify_api_key()
 
         global_vlayout.addWidget(groupbox)
@@ -208,7 +208,7 @@ class HyperTTSPro(component_common.ConfigComponentBase):
         self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_BUTTONS)
 
     def remove_api_key_button_pressed(self):
-        self.api_key = None
+        self.model.clear_api_key()
         self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_BUTTONS)
         self.hypertts_pro_api_key.setText('')
         self.report_model_change()
@@ -231,7 +231,7 @@ class HyperTTSPro(component_common.ConfigComponentBase):
         if 'error' in trial_signup_result:
             self.trial_email_validation_label.setText(trial_signup_result['error'])
         elif 'api_key' in trial_signup_result:
-            self.api_key = trial_signup_result['api_key']
+            self.model.api_key= trial_signup_result['api_key']
             self.verify_api_key()
         else:
             raise Exception('could not find api_key')
@@ -242,39 +242,47 @@ class HyperTTSPro(component_common.ConfigComponentBase):
             # get data for the API key in the background
             api_key = self.hypertts_pro_api_key.text()
             if len(api_key) > 0:
-                self.api_key = api_key.strip()
+                self.model.api_key= api_key.strip()
                 self.verify_api_key()
             else:
                 self.update_gui_state_api_key_not_valid('please enter API key')
 
     def verify_api_key(self):
-        logger.info(f'verifying api_key [{self.api_key}]')
+        logger.info(f'verifying api_key [{self.model.api_key}]')
         self.api_key_validation_label.setText('Verifying...')
         # self.account_info_label.setText('Verifying...')
         self.hypertts.anki_utils.run_in_background(self.get_account_data_task, self.get_account_data_task_done)
 
     def get_account_data_task(self):
-        return self.hypertts.service_manager.cloudlanguagetools.account_info(self.api_key)
+        return self.hypertts.service_manager.cloudlanguagetools.account_info(self.model.api_key)
 
     def get_account_data_task_done(self, result):
         with self.hypertts.error_manager.get_single_action_context('Getting Account Data'):
-            self.account_info_result = result.result()
-            self.hypertts.anki_utils.run_on_main(self.update_pro_status)
+            account_info_result = result.result()
+            def update_pro_status_lambda():
+                self.update_pro_status(account_info_result)
+            self.hypertts.anki_utils.run_on_main(update_pro_status_lambda)
 
-    def update_pro_status(self):
-        logger.info(f'update_pro_status {self.account_info_result}')
+    def update_pro_status(self, account_info_result):
+        logger.info(f'update_pro_status {account_info_result}')
 
         # update account info label
         self.account_update_button.setVisible(False)
         self.account_cancel_button.setVisible(False)
 
-        if self.account_info_result.api_key_valid == False:
-            self.update_gui_state_api_key_not_valid(self.account_info_result.api_key_error)
-            self.account_info_label.setText('<b>error</b>: Key invalid')
+        if account_info_result.api_key_valid == False:
+            # API key invalid
+            self.api_key_validation_label.setText(f'<b>error</b>: {account_info_result.api_key_error}')
+            self.account_info_label.setText('')
+            self.account_update_button.setVisible(False)
+            self.account_cancel_button.setVisible(False)
+            self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_API_KEY)       
+            # clear API key, it's not valid
+            account_info_result.api_key = None     
         else:
-            self.update_gui_state_api_key_valid(self.account_info_result.api_key)
+            # API key valid
             lines = []
-            for key, value in self.account_info_result.account_info.items():
+            for key, value in account_info_result.account_info.items():
                 if key == 'update_url':
                     self.account_update_button.setVisible(True)
                     self.account_update_url = value
@@ -287,17 +295,9 @@ class HyperTTSPro(component_common.ConfigComponentBase):
                     lines.append(f'<b>{key}</b>: {value}')
             self.account_info_label.setText('<br/>'.join(lines))
 
-    def update_gui_state_api_key_not_valid(self, text):
-        self.api_key = None
-        self.api_key_validation_label.setText(f'<b>error</b>: {text}')
-        self.account_info_label.setText('')
-        self.account_update_button.setVisible(False)
-        self.account_cancel_button.setVisible(False)
-        self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_API_KEY)
-        self.report_model_change()
+            self.api_key_validation_label.setText('')
+            self.api_key_label.setText(f'<b>API Key:</b> {account_info_result.api_key}')
+            self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_ENABLED)            
 
-    def update_gui_state_api_key_valid(self, api_key):
-        self.api_key = api_key
-        self.api_key_label.setText(f'<b>API Key:</b> {self.api_key}')
-        self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_ENABLED)
+        self.model = account_info_result
         self.report_model_change()

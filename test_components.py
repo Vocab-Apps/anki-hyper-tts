@@ -1481,7 +1481,7 @@ def test_configuration(qtbot):
     assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
-    assert configuration.hyperttspro.account_info_label.text() == '<b>error</b>: Key invalid'
+    assert configuration.hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
 
     # dialog.exec()
 
@@ -1679,12 +1679,29 @@ def test_hyperttspro_test_1(qtbot):
     # should now be in the enabled screen
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_ENABLED
     assert hyperttspro.api_key_label.text() == '<b>API Key:</b> valid_key'
-    assert model_change_callback.model == 'valid_key'
+    assert model_change_callback.model == config_models.HyperTTSProAccountConfig(
+        api_key='valid_key',
+        api_key_valid=True,
+        use_vocabai_api=False,
+        api_key_error=None,
+        account_info={
+                'type': '250 chars',
+                'email': 'no@spam.com',
+                'update_url': 'https://www.vocab.ai/awesometts-plus',
+                'cancel_url': 'https://www.vocab.ai/awesometts-plus'
+            }
+    )
 
     # now remove the API key
     qtbot.mouseClick(hyperttspro.remove_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_BUTTONS
-    assert model_change_callback.model == None
+    assert model_change_callback.model == config_models.HyperTTSProAccountConfig(
+        api_key=None,
+        api_key_valid=False,
+        use_vocabai_api=False,
+        api_key_error=None,
+        account_info=None
+    )
 
     # go back to enter API key screen
     qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
@@ -1695,10 +1712,15 @@ def test_hyperttspro_test_1(qtbot):
     qtbot.keyClicks(hyperttspro.hypertts_pro_api_key, 'invalid_key')
     assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
-    assert model_change_callback.model == None
+    assert model_change_callback.model == config_models.HyperTTSProAccountConfig(
+        api_key_error='Key invalid',
+    )
+
     # cancel
     qtbot.mouseClick(hyperttspro.enter_api_key_cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
-    assert model_change_callback.model == None
+    assert model_change_callback.model == config_models.HyperTTSProAccountConfig(
+        api_key_error='Key invalid',
+    )
 
     # load_model with a valid API key
     # ===============================
@@ -1706,12 +1728,22 @@ def test_hyperttspro_test_1(qtbot):
     dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
-    hyperttspro.load_model('valid_key')    
+    model = config_models.HyperTTSProAccountConfig(
+        api_key='valid_key')
+    hyperttspro.load_model(model)
     hyperttspro.draw(dialog.getLayout())
 
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_ENABLED
     assert hyperttspro.api_key_label.text() == '<b>API Key:</b> valid_key'
-    assert model_change_callback.model == 'valid_key'    
+    assert model_change_callback.model == config_models.HyperTTSProAccountConfig(
+        api_key='valid_key',
+        api_key_valid=True,
+        account_info={
+                'type': '250 chars',
+                'email': 'no@spam.com',
+                'update_url': 'https://www.vocab.ai/awesometts-plus',
+                'cancel_url': 'https://www.vocab.ai/awesometts-plus'
+            }        )
 
     # load with an invalid API key
     # ============================
@@ -1719,13 +1751,17 @@ def test_hyperttspro_test_1(qtbot):
     dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
     hyperttspro = component_hyperttspro.HyperTTSPro(hypertts_instance, model_change_callback.model_updated)
-    hyperttspro.load_model('invalid_key')
+    model = config_models.HyperTTSProAccountConfig(
+        api_key='invalid_key')    
+    hyperttspro.load_model(model)
     hyperttspro.draw(dialog.getLayout())
 
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
     assert hyperttspro.hypertts_pro_api_key.text() == 'invalid_key'
     assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
-    assert model_change_callback.model == None
+    assert model_change_callback.model == config_models.HyperTTSProAccountConfig(
+        api_key_error='Key invalid',
+    )
     # dialog.exec()
 
     # request trial key by email

@@ -377,11 +377,17 @@ class TextProcessing(ConfigModelBase):
 # =====================
 @dataclass
 class HyperTTSProAccountConfig:
-    api_key: str
-    api_key_valid: bool
-    use_vocabai_api:bool
+    api_key: str = None
+    api_key_valid: bool = False
+    use_vocabai_api:bool = False
     api_key_error: Optional[str] = None
     account_info: Optional[Mapping[str, Any]] = None
+
+    def clear_api_key(self):
+        self.api_key = None
+        self.api_key_valid = False
+        self.api_key_error = None
+        self.account_info = None
 
 @dataclass
 class Configuration:
@@ -395,6 +401,16 @@ class Configuration:
 
     # pro api key
     # ===========
+
+    def update_hypertts_pro_config(self, config: HyperTTSProAccountConfig):
+        self.hypertts_pro_api_key = config.api_key
+        self.use_vocabai_api = config.use_vocabai_api
+
+    def get_hypertts_pro_config(self) -> HyperTTSProAccountConfig:
+        return HyperTTSProAccountConfig(
+            api_key=self.hypertts_pro_api_key,
+            use_vocabai_api=self.use_vocabai_api
+        )
 
     def get_hypertts_pro_api_key(self):
         return self.hypertts_pro_api_key
