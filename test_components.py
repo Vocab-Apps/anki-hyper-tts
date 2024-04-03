@@ -1367,6 +1367,7 @@ def test_text_processing_manual(qtbot):
         dialog.exec()        
 
 def test_configuration(qtbot):
+    # pytest test_components.py -k test_configuration -o log_cli_level=DEBUG -o capture=no
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     # start by disabling both services

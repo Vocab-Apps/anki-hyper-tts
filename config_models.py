@@ -375,6 +375,13 @@ class TextProcessing(ConfigModelBase):
 
 # service configuration
 # =====================
+@dataclass
+class HyperTTSProAccountResult:
+    api_key: str
+    api_key_valid: bool
+    use_vocabai_api:bool
+    api_key_error: Optional[str] = None
+    account_info: Optional[Mapping[str, Any]] = None
 
 @dataclass
 class Configuration:

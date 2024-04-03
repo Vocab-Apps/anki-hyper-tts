@@ -382,18 +382,9 @@ class MockCloudLanguageTools():
     def configure(self, config):
         self.config = config
 
-
-    def api_key_validate_query(self, api_key):
-
-        self.verify_api_key_called = True
-        self.verify_api_key_input = api_key
-
-        return {
-            'key_valid': self.verify_api_key_is_valid,
-            'msg': f'api key: {self.verify_api_key_is_valid}'
-        }     
-
-    def account_info(self, api_key):
+    def account_info(self, api_key) -> config_models.HyperTTSProAccountResult:
+        logger.debug(f'account_info called with api_key: {api_key}')
+        
         self.account_info_called = True
         self.account_info_api_key = api_key
 
@@ -402,22 +393,32 @@ class MockCloudLanguageTools():
 
 
         if api_key == 'valid_key':
-            return {
+            return config_models.HyperTTSProAccountResult(
+                api_key = api_key,
+                api_key_valid = True,
+                use_vocabai_api = False,
+                account_info = {
                 'type': '250 chars',
                 'email': 'no@spam.com',
                 'update_url': 'https://www.vocab.ai/awesometts-plus',
                 'cancel_url': 'https://www.vocab.ai/awesometts-plus'
-            }
+            })
 
         if api_key == 'trial_key':
-            return {
+            return config_models.HyperTTSProAccountResult(
+                api_key = api_key,
+                api_key_valid = True,
+                use_vocabai_api = False,
+                account_info = {
                 'type': 'trial',
                 'email': 'no@spam.com'
-            }            
+            })            
 
-        return {
-            'error': 'Key invalid'
-        }
+        return config_models.HyperTTSProAccountResult(
+            api_key = api_key,
+            api_key_valid = False,
+            use_vocabai_api = False,
+            api_key_error = 'Key invalid')
 
 
     def request_trial_key(self, email):

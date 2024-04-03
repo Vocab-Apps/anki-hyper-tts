@@ -6,6 +6,7 @@ component_common = __import__('component_common', globals(), locals(), [], sys._
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
+config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_child_logger(__name__)
 
 class HyperTTSPro(component_common.ConfigComponentBase):
@@ -257,31 +258,34 @@ class HyperTTSPro(component_common.ConfigComponentBase):
 
     def get_account_data_task_done(self, result):
         with self.hypertts.error_manager.get_single_action_context('Getting Account Data'):
-            self.account_info = result.result()
+            self.account_info_result = result.result()
             self.hypertts.anki_utils.run_on_main(self.update_pro_status)
 
     def update_pro_status(self):
-        logger.info('update_pro_status')
-        if 'error' in self.account_info:
-            self.update_gui_state_api_key_not_valid(self.account_info['error'])
-        else:
-            self.update_gui_state_api_key_valid(self.api_key)
+        logger.info(f'update_pro_status {self.account_info_result}')
+
         # update account info label
         self.account_update_button.setVisible(False)
         self.account_cancel_button.setVisible(False)
-        lines = []
-        for key, value in self.account_info.items():
-            if key == 'update_url':
-                self.account_update_button.setVisible(True)
-                self.account_update_url = value
-                self.account_update_button.pressed.connect(lambda: webbrowser.open(self.account_update_url))
-            elif key == 'cancel_url':
-                self.account_cancel_button.setVisible(True)
-                self.account_cancel_url = value
-                self.account_cancel_button.pressed.connect(lambda: webbrowser.open(self.account_cancel_url))
-            else:
-                lines.append(f'<b>{key}</b>: {value}')
-        self.account_info_label.setText('<br/>'.join(lines))
+
+        if self.account_info_result.api_key_valid == False:
+            self.update_gui_state_api_key_not_valid(self.account_info_result.api_key_error)
+            self.account_info_label.setText('<b>error</b>: Key invalid')
+        else:
+            self.update_gui_state_api_key_valid(self.account_info_result.api_key)
+            lines = []
+            for key, value in self.account_info_result.account_info.items():
+                if key == 'update_url':
+                    self.account_update_button.setVisible(True)
+                    self.account_update_url = value
+                    self.account_update_button.pressed.connect(lambda: webbrowser.open(self.account_update_url))
+                elif key == 'cancel_url':
+                    self.account_cancel_button.setVisible(True)
+                    self.account_cancel_url = value
+                    self.account_cancel_button.pressed.connect(lambda: webbrowser.open(self.account_cancel_url))
+                else:
+                    lines.append(f'<b>{key}</b>: {value}')
+            self.account_info_label.setText('<br/>'.join(lines))
 
     def update_gui_state_api_key_not_valid(self, text):
         self.api_key = None
