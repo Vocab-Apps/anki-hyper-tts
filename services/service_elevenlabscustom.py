@@ -162,7 +162,7 @@ class ElevenLabsCustom(service.ServiceBase):
         if response.status_code != 200:
             error_message = f'{self.name}: error processing TTS request: {response.status_code} {response.text}'
             logger.error(error_message)
-            raise errors.RequestError(error_message)        
+            raise errors.RequestError(source_text, voice, error_message)
         response.raise_for_status()
         
         return response.content
