@@ -120,12 +120,14 @@ class ElevenLabsCustom(service.ServiceBase):
             for voice_entry in voice_data:
                 voice_name = voice_entry['name']
                 voice_id = voice_entry['voice_id']
+                voice_description = voice_entry.get('description', '')
                 voice_key = {
                     'voice_id': voice_id,
                     'model_id': model_id
                 }
                 for language_record in model['languages']:
                     try:
+                        logger.debug(f'processing voice: name: {voice_name} id: {voice_id} description: {voice_description} model_id: {model_id} language_record: {language_record}')
                         language_id = language_record['language_id']
                         audio_language_enum = self.get_audio_language(language_id)
                         gender = GENDER_MAP[voice_entry['labels']['gender']]
