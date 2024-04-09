@@ -116,7 +116,7 @@ class AnkiUtils():
                 aqt.mw.update_undo_actions()
                 aqt.mw.autosave()
             except Exception as e:
-                logger.error(f'exception in undo_end_fn: {str(e)}, undo_id: {undo_id}')
+                logger.warning(f'exception in undo_end_fn: {str(e)}, undo_id: {undo_id}')
         self.run_on_main(undo_end_fn)
 
     def update_note(self, note):
