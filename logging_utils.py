@@ -36,6 +36,9 @@ class SentryLogger():
         self.name = name
     
     def send_event(self, level, msg):
+        if msg == None:
+            return
+
         log_location = {}
         if level >= logging.ERROR:
             # extract data from stack
@@ -54,6 +57,8 @@ class SentryLogger():
             integration._handle_record(record)
 
     def debug(self, msg, *args, **kwargs):
+        if msg == None:
+            return
         self.send_event(logging.INFO, '[debug] ' + msg)
 
     def info(self, msg, *args, **kwargs):
