@@ -46,13 +46,14 @@ class DigitalesWorterbuchDeutschenSprache(service.ServiceBase):
         soup = bs4.BeautifulSoup(response.content, 'html.parser')
 
         source_tag = soup.find('source', {'type': 'audio/mpeg'})
-        logger.debug(source_tag)
 
         if source_tag != None:
             sound_url = source_tag['src']
             logger.info(f'downloading url {sound_url}')
             response = requests.get(sound_url, headers=headers)
             return response.content
+        else:
+            logger.warning(f'could not find audio for {source_text} (source tag not found)')
         
         # if we couldn't locate the source tag, raise notfound
         raise errors.AudioNotFoundError(source_text, voice)

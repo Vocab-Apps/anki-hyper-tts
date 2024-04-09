@@ -46,13 +46,14 @@ class Duden(service.ServiceBase):
         soup = bs4.BeautifulSoup(response.content, 'html.parser')
 
         sound_a_tag = soup.find('a', {'class': 'pronunciation-guide__sound'})
-        logger.debug(sound_a_tag)
 
         if sound_a_tag != None:
             sound_url = sound_a_tag['href']
             logger.info(f'downloading url {sound_url}')
             response = requests.get(sound_url, headers=headers)
             return response.content
+        else:
+            logger.warning(f'could not find audio for {source_text} (source tag not found)')        
         
         # if we couldn't locate the source tag, raise notfound
         raise errors.AudioNotFoundError(source_text, voice)
