@@ -83,7 +83,7 @@ class Google(service.ServiceBase):
         if response.status_code != 200:
             data = response.json()
             error_message = data.get('error', {}).get('message', str(data))
-            logger.error(error_message)
+            logger.warning(error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
         data = response.json()
