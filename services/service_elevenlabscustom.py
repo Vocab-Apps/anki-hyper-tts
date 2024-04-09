@@ -161,7 +161,11 @@ class ElevenLabsCustom(service.ServiceBase):
         response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)
         if response.status_code != 200:
             error_message = f'{self.name}: error processing TTS request: {response.status_code} {response.text}'
-            logger.error(error_message)
+            if response.status_code in [401]:
+                # API key issue, or quota exceeded
+                logger.warning(error_message)
+            else:
+                logger.error(error_message)
             raise errors.RequestError(source_text, voice, error_message)
         response.raise_for_status()
         
