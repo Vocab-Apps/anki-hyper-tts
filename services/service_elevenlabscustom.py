@@ -132,7 +132,7 @@ class ElevenLabsCustom(service.ServiceBase):
                         name = f'{voice_name} ({model_short_name})'
                         result.append(voice.Voice(name, gender, audio_language_enum, self, voice_key, VOICE_OPTIONS))
                     except Exception as e:
-                        logger.error(f'ElevenLabsCustom: error processing voice language_record: {language_record} voice_entry: {voice_entry}: {e}')
+                        logger.error(f'ElevenLabsCustom: error processing voice: {e} language_record: {language_record} voice_entry: {voice_entry}')
 
         # logger.debug(pprint.pformat(result))
         return result
