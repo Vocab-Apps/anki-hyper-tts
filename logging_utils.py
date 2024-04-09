@@ -114,7 +114,7 @@ def get_child_logger(name):
     child_logger_name = name.split('.')[-1]
     if SILENT_LOGGING_MODE:
         if hasattr(sys, '_sentry_crash_reporting'):
-            return SentryLogger('hypertts.' + child_logger_name)
+            return SentryLogger(constants.LOGGER_NAME + '.' + child_logger_name)
         else:
             return NullLogger()
     else:
