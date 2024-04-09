@@ -80,12 +80,12 @@ class SentryLogger():
 
 def get_stream_handler():
     handler = logging.StreamHandler(stream=sys.stdout)
-    handler.setFormatter(logging.Formatter(fmt='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s', datefmt='%H:%M:%S'))
+    handler.setFormatter(logging.Formatter(fmt='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(name)s: %(message)s', datefmt='%H:%M:%S'))
     return handler
 
 def get_file_handler(filename):
     handler = logging.FileHandler(filename)
-    handler.setFormatter(logging.Formatter(fmt='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s', datefmt='%H:%M:%S'))
+    handler.setFormatter(logging.Formatter(fmt='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(name)s: %(message)s', datefmt='%H:%M:%S'))
     return handler    
 
 def configure_console_logging():
@@ -111,14 +111,15 @@ def configure_silent():
     SILENT_LOGGING_MODE = True
 
 def get_child_logger(name):
+    child_logger_name = name.split('.')[-1]
     if SILENT_LOGGING_MODE:
         if hasattr(sys, '_sentry_crash_reporting'):
-            return SentryLogger(name)
+            return SentryLogger('hypertts.' + child_logger_name)
         else:
             return NullLogger()
     else:
         root_logger = logging.getLogger(constants.LOGGER_NAME)
-        return root_logger.getChild(name)
+        return root_logger.getChild(child_logger_name)
 
 
 def get_test_child_logger(name):
