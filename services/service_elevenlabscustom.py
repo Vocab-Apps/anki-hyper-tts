@@ -130,7 +130,9 @@ class ElevenLabsCustom(service.ServiceBase):
                         logger.debug(f'processing voice: name: {voice_name} id: {voice_id} description: {voice_description} model_id: {model_id} language_record: {language_record}')
                         language_id = language_record['language_id']
                         audio_language_enum = self.get_audio_language(language_id)
-                        gender = GENDER_MAP[voice_entry['labels']['gender']]
+                        # sometimes gender is not present, default to male
+                        gender_str = voice_entry['labels'].get('gender', 'male')
+                        gender = GENDER_MAP[gender_str]
                         name = f'{voice_name} ({model_short_name})'
                         result.append(voice.Voice(name, gender, audio_language_enum, self, voice_key, VOICE_OPTIONS))
                     except Exception as e:
