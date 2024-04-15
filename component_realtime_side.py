@@ -122,7 +122,11 @@ class ComponentRealtimeSide(component_common.ConfigComponentBase):
         tts_tag = tts_tags[0]
         try:
             processed_text = text_utils.process_text(tts_tag.field_text, self.get_model().text_processing)
-            self.text_preview_label.setText(processed_text)            
+            self.text_preview_label.setText(processed_text)
+        except errors.HyperTTSError as e:
+            warning_message = f'could not process text: {str(e)}'
+            logger.warning(warning_message)
+            self.text_preview_label.setText(warning_message)
         except Exception as e:
             error_message = f'could not process text: {str(e)}'
             logger.error(error_message)
