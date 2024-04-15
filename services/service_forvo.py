@@ -3,6 +3,7 @@ import requests
 import datetime
 import time
 import urllib
+import json
 
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
@@ -86,7 +87,11 @@ class Forvo(service.ServiceBase):
 
         response = requests.get(url, headers=headers, timeout=constants.RequestTimeout)
         if response.status_code == 200:
-            data = response.json()
+            try:
+                data = response.json()
+            except json.JSONDecodeError:
+                logger.error(f'Forvo: could not decode JSON for url {url}: {response.content}')
+                raise errors.RequestError(source_text, voice, 'Could not retrieve audio from Forvo')
             items = data['items']
             if len(items) == 0:
                 raise errors.AudioNotFoundError(source_text, voice)
