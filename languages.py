@@ -233,7 +233,6 @@ class AudioLanguage(enum.Enum):
     am_ET = (Language.am, "Amharic (Ethiopia)")
     an_ES = (Language.an, "Aragonese (Spain)")
     # arabic
-    ar_001 = (Language.ar, "Arabic (World)")
     ar_AE  = (Language.ar, "Arabic (United Arab Emirates)")
     ar_BH  = (Language.ar, "Arabic (Bahrain)")
     ar_DZ  = (Language.ar, "Arabic (Algeria)")
