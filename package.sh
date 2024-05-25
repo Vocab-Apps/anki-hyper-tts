@@ -8,6 +8,11 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+if [ -z "$2" ]; then
+  echo "Need release notes"
+  exit 1
+fi
+
 BUMP_TYPE=$1 # major, minor or patch
 # check that the bump type is valid
 if [ "$BUMP_TYPE" != "major" ] && [ "$BUMP_TYPE" != "minor" ] && [ "$BUMP_TYPE" != "patch" ]; then
@@ -34,6 +39,10 @@ zip --exclude "*node_modules*" "*__pycache__*" "test_*.py" "*test_services*" "*.
 
 # sync 
 rclone sync ~/anki-addons-releases/ dropbox:Anki/anki-addons-releases/
+
+# create github release
+RELEASE_NOTES=$2
+gh release create v${VERSION_NUMBER} ${ADDON_FILENAME} --title "HyperTTS v${VERSION_NUMBER}" --notes "${RELEASE_NOTES}"
 
 # if you need to undo a release:
 # git tag -d v0.2
