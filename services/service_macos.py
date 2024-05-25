@@ -1,7 +1,11 @@
 import sys
 import os
+import re
 import subprocess
 import hashlib
+import platform
+import tempfile
+import aqt.sound
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
@@ -15,10 +19,8 @@ class MacOS(service.ServiceBase):
     DEFAULT_SPEECH_RATE=175
 
     def __init__(self):
-        super().__init__()
-        import platform
-        if platform.system() == "Darwin":
-            super()._set_enabled(True)
+        # don't enable service by default, let the user choose
+        service.ServiceBase.__init__(self)        
 
     @property
     def service_type(self) -> constants.ServiceType:
@@ -29,6 +31,10 @@ class MacOS(service.ServiceBase):
         return constants.ServiceFee.Free
 
     def voice_list(self):
+        if platform.system() != "Darwin":
+            logger.info(f'running on os {os.name}, disabling {self.name} service')
+            return []
+        
         try:
             raw_say_output=subprocess.check_output(["say", "-v", "?"])
             voice_list_from_say = raw_say_output.decode('utf-8')
@@ -54,7 +60,6 @@ class MacOS(service.ServiceBase):
         # sounding. The following generator expression filters them out intentionally.
 
 
-        import re
         regex = re.compile(r'^([\w ]+)\s\(*([\w() ]+)\)*\s(\w\w_\w+)')
         return [
             # Possible enhancement: add gender inference from names
@@ -70,24 +75,21 @@ class MacOS(service.ServiceBase):
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
         logger.info(f'getting audio with voice {voice}')
 
-        import tempfile
-        with tempfile.TemporaryDirectory() as temp_dir:
-            rate = options.get('rate', self.DEFAULT_SPEECH_RATE)
-            file_hash = hashlib.sha224(
-                    str(voice.name + str(rate) + source_text).encode('utf-8')
-                ).hexdigest()
-            audio_file_name = f'hypertts-{file_hash}.aiff'
-            audio_file_path = os.path.join(temp_dir, audio_file_name)
-            arg_list = ['say', '-v', voice.name, '-r', str(rate), '-o', audio_file_path, '--', source_text]
-            logger.debug(f"calling 'say' with {arg_list}")
-            try:
-                subprocess.check_call(arg_list)
-            except subprocess.CalledProcessError as cpe:
-                logger.error(f'could not generate audio: {cpe}', exc_info=True)
-                raise
-            else:
-                logger.debug(f'opening {audio_file_path} to read in contents')
-                with open(audio_file_path, 'rb') as audio_file:
-                    audio = audio_file.read()
+        rate = options.get('rate', self.DEFAULT_SPEECH_RATE)
 
+        try:
+            temp_audio_file = tempfile.NamedTemporaryFile(suffix='.aiff', prefix='hypertts_macos', delete=False)
+            arg_list = ['say', '-v', voice.name, '-r', str(rate), '-o', temp_audio_file.name, '--', source_text]
+            logger.debug(f"calling 'say' with {arg_list}")
+            subprocess.check_call(arg_list)
+
+            mp3_temp_audio_file = tempfile.NamedTemporaryFile(suffix='.aiff', prefix='hypertts_macos')
+            aqt.sound._encode_mp3(temp_audio_file.name, mp3_temp_audio_file.name)
+
+            logger.debug(f'opening {mp3_temp_audio_file.name} to read in contents')
+            with open(mp3_temp_audio_file.name, 'rb') as audio_file:
+                audio = audio_file.read()
                 return audio
+        except:
+            logger.exception(f'could not generate audio with service {self.name}')
+            raise

@@ -9,6 +9,7 @@ import pytest
 import pprint
 import unittest
 import pydub
+import platform
 import magic
 import azure.cognitiveservices.speech
 import azure.cognitiveservices.speech.audio
@@ -139,7 +140,10 @@ class TTSTests(unittest.TestCase):
             self.manager.get_service('Windows').enabled = True
         if sys.platform == 'linux':
             logger.info('running on Linux, enabling espeakng service')
-            self.manager.get_service('ESpeakNg').enabled = True            
+            self.manager.get_service('ESpeakNg').enabled = True
+        if platform.system() == "Darwin":
+            logger.info('running on MacOS, enabling MacOS service')
+            self.manager.get_service('MacOS').enabled = True
 
 
     def sanitize_recognized_text(self, recognized_text):
