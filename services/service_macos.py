@@ -49,8 +49,13 @@ class MacOS(service.ServiceBase):
 
         return result
 
+    def get_audio_language(self, lang_id: str) -> languages.AudioLanguage:
+        return languages.AudioLanguage[lang_id]
 
-    def parse_voices(self, voice_list):
+    def get_gender_from_name(self, name):
+         return constants.Gender.Male
+
+    def parse_voices(self, voice_list_lines):
         # Voices come in these forms:
         #   name       language_code   # example sentence
         #   name with spaces      language_code       # example sentence
@@ -67,16 +72,18 @@ class MacOS(service.ServiceBase):
         }
 
         regex = re.compile(r'^([\w ]+)\s\(*([\w() ]+)\)*\s(\w\w_\w+)')
-        return [
-            # Possible enhancement: add gender inference from names
-            voice.Voice(name, constants.Gender.Any, languages.AudioLanguage[lang_id], self, name, options)
-            for name, lang_id in sorted(
-                (match.group(1).strip(), match.group(3))
-                for match in [regex.match(line)
-                    for line in voice_list.split('\n')]
-                if match and match.group(2) == " "
-            )
-        ]
+        result = []
+
+        for line in voice_list_lines.split('\n'):
+            m = regex.match(line)
+            if m != None:
+                name = m.group(1).strip()
+                lang_id = m.group(3)
+                audio_language = self.get_audio_language(lang_id)
+                gender = self.get_gender_from_name(name)
+                result.append(voice.Voice(name, gender, audio_language, self, name, options))
+
+        return result
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
         logger.info(f'getting audio with voice {voice}')
