@@ -97,7 +97,7 @@ class MacOS(service.ServiceBase):
 
     def __init__(self):
         # don't enable service by default, let the user choose
-        service.ServiceBase.__init__(self)        
+        service.ServiceBase.__init__(self)
 
     @property
     def service_type(self) -> constants.ServiceType:
@@ -111,7 +111,7 @@ class MacOS(service.ServiceBase):
         if platform.system() != "Darwin":
             logger.info(f'running on os {os.name}, disabling {self.name} service')
             return []
-        
+
         try:
             raw_say_output=subprocess.check_output(["say", "-v", "?"])
             voice_list_from_say = raw_say_output.decode('utf-8')
