@@ -9,6 +9,7 @@ import pytest
 import pprint
 import unittest
 import pydub
+import platform
 import magic
 import azure.cognitiveservices.speech
 import azure.cognitiveservices.speech.audio
@@ -139,7 +140,10 @@ class TTSTests(unittest.TestCase):
             self.manager.get_service('Windows').enabled = True
         if sys.platform == 'linux':
             logger.info('running on Linux, enabling espeakng service')
-            self.manager.get_service('ESpeakNg').enabled = True            
+            self.manager.get_service('ESpeakNg').enabled = True
+        if platform.system() == "Darwin":
+            logger.info('running on MacOS, enabling MacOS service')
+            self.manager.get_service('MacOS').enabled = True
 
 
     def sanitize_recognized_text(self, recognized_text):
@@ -818,6 +822,28 @@ class TTSTests(unittest.TestCase):
                           selected_voice,
                           {},
                           context.AudioRequestContext(constants.AudioRequestReason.batch))
+
+    def test_macos(self):
+        # pytest test_tts_services.py -k test_macos
+        service_name = 'MacOS'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list(service_name)
+        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 64
+
+        # pick a random en_US voice
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'this is the first sentence')
+
+        # pick a random en_US voice with modified rate
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(selected_voice, 'this is the first sentence', voice_options={'rate': 170})
+
 
     def test_spanishdict(self):
         service_name = 'SpanishDict'
