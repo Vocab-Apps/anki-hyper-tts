@@ -52,6 +52,15 @@ cd C:\dev\python\anki-hyper-tts
 pytest test_tts_services.py  -k test_windows
 
 # Testing on MacOSX
+## SSH Access (Scaleway)
+* check python3 version, should be 3.9
+* create virtual env: `mkdir python-env`
+* `python3 -m venv anki-hyper-tts`
+* `mkdir -p ~/python`
+* sync hypertts files: `rsync -rv ~/python/anki-hyper-tts/ anki-dev-mac:~/python/anki-hyper-tts/`
+
+
+
 ## Required changes on XcodeClub
 https://docs.ankiweb.net/platform/mac/display-issues.html
 `echo software > ~/Library/Application\ Support/Anki2/gldriver6`
