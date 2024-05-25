@@ -20,6 +20,80 @@ class MacOS(service.ServiceBase):
     DEFAULT_SPEECH_RATE=175
     MAX_SPEECH_RATE=220
 
+    GENDER_MAP = {
+        "Albert": constants.Gender.Male,
+        "Alice": constants.Gender.Female,
+        "Alva": constants.Gender.Female,
+        "Amélie": constants.Gender.Female,
+        "Amira": constants.Gender.Female,
+        "Anna": constants.Gender.Female,
+        "Bad News": constants.Gender.Male,
+        "Bahh": constants.Gender.Male,
+        "Bells": constants.Gender.Female,
+        "Boing": constants.Gender.Male,
+        "Bubbles": constants.Gender.Female,
+        "Carmit": constants.Gender.Female,
+        "Cellos": constants.Gender.Male,
+        "Damayanti": constants.Gender.Female,
+        "Daniel": constants.Gender.Male,
+        "Daria": constants.Gender.Female,
+        "Wobble": constants.Gender.Male,
+        "Eddy": constants.Gender.Male,  # Multiple languages, assumed all male based on name
+        "Ellen": constants.Gender.Female,
+        "Flo": constants.Gender.Female,  # Multiple languages, assumed all female based on name
+        "Fred": constants.Gender.Male,
+        "Good News": constants.Gender.Male,
+        "Grandma": constants.Gender.Female,  # Multiple languages, all female
+        "Grandpa": constants.Gender.Male,  # Multiple languages, all male
+        "Jester": constants.Gender.Male,
+        "Ioana": constants.Gender.Female,
+        "Jacques": constants.Gender.Male,
+        "Joana": constants.Gender.Female,
+        "Junior": constants.Gender.Male,
+        "Kanya": constants.Gender.Female,
+        "Karen": constants.Gender.Female,
+        "Kathy": constants.Gender.Female,
+        "Kyoko": constants.Gender.Female,
+        "Lana": constants.Gender.Female,
+        "Laura": constants.Gender.Female,
+        "Lekha": constants.Gender.Female,
+        "Lesya": constants.Gender.Female,
+        "Linh": constants.Gender.Female,
+        "Luciana": constants.Gender.Female,
+        "Majed": constants.Gender.Male,
+        "Tünde": constants.Gender.Female,
+        "Meijia": constants.Gender.Female,
+        "Melina": constants.Gender.Female,
+        "Milena": constants.Gender.Female,
+        "Moira": constants.Gender.Female,
+        "Mónica": constants.Gender.Female,
+        "Montse": constants.Gender.Female,
+        "Nora": constants.Gender.Female,
+        "Organ": constants.Gender.Male,
+        "Paulina": constants.Gender.Female,
+        "Superstar": constants.Gender.Male,
+        "Ralph": constants.Gender.Male,
+        "Reed": constants.Gender.Male,  # Multiple languages, assumed all male based on name
+        "Rishi": constants.Gender.Male,
+        "Rocko": constants.Gender.Male,  # Multiple languages, all male
+        "Samantha": constants.Gender.Female,
+        "Sandy": constants.Gender.Female,  # Multiple languages, all female
+        "Sara": constants.Gender.Female,
+        "Satu": constants.Gender.Female,
+        "Shelley": constants.Gender.Female,  # Multiple languages, all female
+        "Sinji": constants.Gender.Female,
+        "Tessa": constants.Gender.Female,
+        "Thomas": constants.Gender.Male,
+        "Tingting": constants.Gender.Female,
+        "Trinoids": constants.Gender.Male,
+        "Whisper": constants.Gender.Male,
+        "Xander": constants.Gender.Male,
+        "Yelda": constants.Gender.Female,
+        "Yuna": constants.Gender.Female,
+        "Zarvox": constants.Gender.Male,
+        "Zosia": constants.Gender.Female,
+        "Zuzana": constants.Gender.Female
+    }
 
     def __init__(self):
         # don't enable service by default, let the user choose
@@ -53,7 +127,8 @@ class MacOS(service.ServiceBase):
         return languages.AudioLanguage[lang_id]
 
     def get_gender_from_name(self, name):
-         return constants.Gender.Male
+        #  return constants.Gender.Male
+        return self.GENDER_MAP[name]
 
     def parse_voices(self, voice_list_lines):
         # Voices come in these forms:
