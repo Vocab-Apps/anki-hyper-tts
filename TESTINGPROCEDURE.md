@@ -56,6 +56,7 @@ pytest test_tts_services.py  -k test_windows
 * check python3 version, should be 3.9
 * install homebrew `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`, then follow the other steps
 * `brew install libmagic`
+* `brew install ffmpeg`
 * create virtual env: `mkdir python-env`
 * `python3 -m venv anki-hyper-tts`
 * `mkdir -p ~/python`
