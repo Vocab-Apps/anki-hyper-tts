@@ -16,7 +16,10 @@ logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_
 logger = logging_utils.get_child_logger(__name__)
 
 class MacOS(service.ServiceBase):
+    MIN_SPEECH_RATE=150
     DEFAULT_SPEECH_RATE=175
+    MAX_SPEECH_RATE=220
+
 
     def __init__(self):
         # don't enable service by default, let the user choose
@@ -59,11 +62,14 @@ class MacOS(service.ServiceBase):
         # The voices with the parenthetical detail are less refined and less natural
         # sounding. The following generator expression filters them out intentionally.
 
+        options = {
+            'rate': {'default': self.DEFAULT_SPEECH_RATE, 'max': self.MAX_SPEECH_RATE, 'min': self.MIN_SPEECH_RATE, 'type': 'number_int'}
+        }
 
         regex = re.compile(r'^([\w ]+)\s\(*([\w() ]+)\)*\s(\w\w_\w+)')
         return [
             # Possible enhancement: add gender inference from names
-            voice.Voice(name, constants.Gender.Any, languages.AudioLanguage[lang_id], self, name, {})
+            voice.Voice(name, constants.Gender.Any, languages.AudioLanguage[lang_id], self, name, options)
             for name, lang_id in sorted(
                 (match.group(1).strip(), match.group(3))
                 for match in [regex.match(line)
@@ -83,7 +89,7 @@ class MacOS(service.ServiceBase):
             logger.debug(f"calling 'say' with {arg_list}")
             subprocess.check_call(arg_list)
 
-            mp3_temp_audio_file = tempfile.NamedTemporaryFile(suffix='.aiff', prefix='hypertts_macos')
+            mp3_temp_audio_file = tempfile.NamedTemporaryFile(suffix='.mp3', prefix='hypertts_macos')
             aqt.sound._encode_mp3(temp_audio_file.name, mp3_temp_audio_file.name)
 
             logger.debug(f'opening {mp3_temp_audio_file.name} to read in contents')
