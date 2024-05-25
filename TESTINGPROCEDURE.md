@@ -63,6 +63,7 @@ pytest test_tts_services.py  -k test_windows
 * `. python-env/anki-hyper-tts/bin/activate`
 * `pip install --upgrade pip`
 * `pip install -r requirements.txt`
+* copy `~/secrets/hypertts/clt_tts_prod.sh` and `hypertts_services_keys.sh`
 
 
 
