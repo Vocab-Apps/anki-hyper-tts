@@ -127,8 +127,8 @@ class MacOS(service.ServiceBase):
         return languages.AudioLanguage[lang_id]
 
     def get_gender_from_name(self, name):
-        #  return constants.Gender.Male
-        return self.GENDER_MAP[name]
+        # get gender from name, default to male for new voices
+        return self.GENDER_MAP.get(name, constants.Gender.Male)
 
     def parse_voices(self, voice_list_lines):
         # Voices come in these forms:
