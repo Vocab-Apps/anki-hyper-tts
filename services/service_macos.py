@@ -135,22 +135,25 @@ class MacOS(service.ServiceBase):
         return self.GENDER_MAP.get(name, constants.Gender.Male)
 
     def parse_voices(self, voice_list_lines):
-        # Voices come in these forms:
-        #   name       language_code   # example sentence
-        #   name with spaces      language_code       # example sentence
-        #   name (language name (country)) language_code   # example sentence
+        # Voice descriptions are output from `say` in these forms:
+        #   name       language_id    # example sentence
+        #   name with spaces      language_id    # example sentence
+        #   name (language name (country)) language_id    # example sentence
+        #   name (enhanced) language_id    # example sentence
         #
         # No current examples of this but, theoretically, there could items in this form:
-        #   name with spaces (language name (country)) language_code # example sentence
-        #
-        # The voices with the parenthetical detail are less refined and less natural
-        # sounding. The following generator expression filters them out intentionally.
+        #   name with spaces (language name (country)) language_id # example sentence
 
         options = {
             'rate': {'default': self.DEFAULT_SPEECH_RATE, 'max': self.MAX_SPEECH_RATE, 'min': self.MIN_SPEECH_RATE, 'type': 'number_int'}
         }
 
-        regex = re.compile(r'^([\w ]+)\s\(*([\w() ]+)\)*\s(\w\w_\w+)')
+        # this regex parses `say` output into four capture groups
+        # group 1 = name
+        # group 2 = description (may be empty)
+        # group 3 = language id
+        # group 4 = example sentence
+        regex = re.compile(r'^([\w ]+)\s\(?([\w( ]+\)?)\)?\s(\w\w_\w+)\s+# (.+)')
         result = []
 
         for line in voice_list_lines.split('\n'):
