@@ -6,6 +6,7 @@ import hashlib
 import platform
 import tempfile
 import aqt.sound
+from typing import List
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
@@ -95,6 +96,10 @@ class MacOS(service.ServiceBase):
         "Zuzana": constants.Gender.Female
     }
 
+    VOICE_OPTIONS = {
+            'rate': {'default': DEFAULT_SPEECH_RATE, 'max': MAX_SPEECH_RATE, 'min': MIN_SPEECH_RATE, 'type': 'number_int'}
+    }
+
     def __init__(self):
         # don't enable service by default, let the user choose
         service.ServiceBase.__init__(self)
@@ -134,36 +139,35 @@ class MacOS(service.ServiceBase):
         # get gender from name, default to male for new voices
         return self.GENDER_MAP.get(name, constants.Gender.Male)
 
-    def parse_voices(self, voice_list_lines):
-        # Voice descriptions are output from `say` in these forms:
-        #   name       language_id    # example sentence
-        #   name with spaces      language_id    # example sentence
-        #   name (language name (country)) language_id    # example sentence
-        #   name (enhanced) language_id    # example sentence
-        #
-        # No current examples of this but, theoretically, there could items in this form:
-        #   name with spaces (language name (country)) language_id # example sentence
-
-        options = {
-            'rate': {'default': self.DEFAULT_SPEECH_RATE, 'max': self.MAX_SPEECH_RATE, 'min': self.MIN_SPEECH_RATE, 'type': 'number_int'}
-        }
-
-        # this regex parses `say` output into four capture groups
-        # group 1 = name
-        # group 2 = description (may be empty)
-        # group 3 = language id
-        # group 4 = example sentence
-        regex = re.compile(r'^([\w ]+)\s\(?([\w( ]+\)?)\)?\s(\w\w_\w+)\s+# (.+)')
+    def parse_voices(self, voice_list_lines) -> List[voice.Voice]:
+        # see test_tts_services / test_macos_parse_voice_list for examples of the input
         result = []
 
         for line in voice_list_lines.split('\n'):
-            m = regex.match(line)
-            if m != None:
-                name = m.group(1).strip()
-                lang_id = m.group(3)
+            if line == '':
+                continue
+            try:
+                logger.debug(f'{self.name}: parsing line: [{line}]')
+
+                # Split the line on the hash symbol
+                name_and_lang, example_sentence = line.split('#', 1)
+                # remove whitespace
+                name_and_lang = name_and_lang.strip()
+
+                # Split the name and language on the last occurrence of two spaces
+                voice_name, lang_id = name_and_lang.rsplit(' ', 1)
+
+                # Now you can strip parentheses from the name and trim whitespace
+                voice_name = voice_name.strip()
+                lang_id = lang_id.strip()
+
                 audio_language = self.get_audio_language(lang_id)
-                gender = self.get_gender_from_name(name)
-                result.append(voice.Voice(name, gender, audio_language, self, name, options))
+                gender = self.get_gender_from_name(voice_name)
+                parsed_voice = voice.Voice(voice_name, gender, audio_language, self, voice_name, self.VOICE_OPTIONS)
+                logger.debug(f'parsed voice: {parsed_voice}')
+                result.append(parsed_voice)
+            except:
+                logger.error(f'could not parse line: [{line}]', exc_info=True)
 
         return result
 
