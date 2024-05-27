@@ -144,7 +144,7 @@ class MacOS(service.ServiceBase):
         result = []
 
         # build a map of all audio locales, we may want to remove those from short voice names
-        audio_locales_map = {audio_language.name for audio_language in languages.AudioLanguage}
+        audio_locales_map = {audio_language.audio_lang_name for audio_language in languages.AudioLanguage}
 
         for line in voice_list_lines.split('\n'):
             if line == '':
@@ -166,7 +166,9 @@ class MacOS(service.ServiceBase):
 
                 # is the second part an audio locale ? 
                 voice_name_parts = voice_name.split(' ')
-                if voice_name_parts[-1] in audio_locales_map:
+                last_part = ' '.join(voice_name_parts[1:])
+                without_parentheses = last_part[1:len(last_part)-1]
+                if without_parentheses in audio_locales_map:
                     short_voice_name = voice_name_parts[0]
                 else:
                     short_voice_name = voice_name
@@ -176,7 +178,7 @@ class MacOS(service.ServiceBase):
                 voice_key = {
                     'name': voice_name,
                 }
-                parsed_voice = voice.Voice(voice_name, gender, audio_language, self, voice_key, self.VOICE_OPTIONS)
+                parsed_voice = voice.Voice(short_voice_name, gender, audio_language, self, voice_key, self.VOICE_OPTIONS)
                 logger.debug(f'parsed voice: {parsed_voice}')
                 result.append(parsed_voice)
             except:
