@@ -65,7 +65,9 @@ pytest test_tts_services.py  -k test_windows
 * `pip install --upgrade pip`
 * `pip install -r requirements.txt`
 * copy `~/secrets/hypertts/clt_tts_prod.sh` and `hypertts_services_keys.sh`
-
+## VNC Access
+* install extra voices, in System settings under Accessibility there is an area for Spoken Content.
+When you click on System voice there is an option to Manage Voices and you can download more there.
 
 
 ## Required changes on XcodeClub

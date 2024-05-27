@@ -143,6 +143,9 @@ class MacOS(service.ServiceBase):
         # see test_tts_services / test_macos_parse_voice_list for examples of the input
         result = []
 
+        # build a map of all audio locales, we may want to remove those from short voice names
+        audio_locales_map = {audio_language.name for audio_language in languages.AudioLanguage}
+
         for line in voice_list_lines.split('\n'):
             if line == '':
                 continue
@@ -161,9 +164,19 @@ class MacOS(service.ServiceBase):
                 voice_name = voice_name.strip()
                 lang_id = lang_id.strip()
 
+                # is the second part an audio locale ? 
+                voice_name_parts = voice_name.split(' ')
+                if voice_name_parts[-1] in audio_locales_map:
+                    short_voice_name = voice_name_parts[0]
+                else:
+                    short_voice_name = voice_name
+
                 audio_language = self.get_audio_language(lang_id)
                 gender = self.get_gender_from_name(voice_name)
-                parsed_voice = voice.Voice(voice_name, gender, audio_language, self, voice_name, self.VOICE_OPTIONS)
+                voice_key = {
+                    'name': voice_name,
+                }
+                parsed_voice = voice.Voice(voice_name, gender, audio_language, self, voice_key, self.VOICE_OPTIONS)
                 logger.debug(f'parsed voice: {parsed_voice}')
                 result.append(parsed_voice)
             except:
@@ -177,8 +190,9 @@ class MacOS(service.ServiceBase):
         rate = options.get('rate', self.DEFAULT_SPEECH_RATE)
 
         try:
+            voice_name = voice.voice_key['name']
             temp_audio_file = tempfile.NamedTemporaryFile(suffix='.aiff', prefix='hypertts_macos', delete=False)
-            arg_list = ['say', '-v', voice.name, '-r', str(rate), '-o', temp_audio_file.name, '--', source_text]
+            arg_list = ['say', '-v', voice_name, '-r', str(rate), '-o', temp_audio_file.name, '--', source_text]
             logger.debug(f"calling 'say' with {arg_list}")
             subprocess.check_call(arg_list)
 

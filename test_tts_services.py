@@ -985,6 +985,23 @@ Zuzana              cs_CZ    # Hi my name is Zuzana
         audrey_voices = [voice for voice in voice_list if 'Audrey' in voice.name]
         self.assertTrue(len(audrey_voices) == 3)
 
+        audrey_1 = audrey_voices[0]
+        self.assertEquals(audrey_1.name, 'Audrey')
+        self.assertEquals(audrey_1.language, languages.AudioLanguage.fr_FR)
+        self.assertEquals(audrey_1.voice_key, {'name': 'Audrey'})
+        audrey_2 = audrey_voices[1]
+        self.assertEquals(audrey_2.name, 'Audrey (Enhanced)')
+        self.assertEquals(audrey_2.voice_key, {'name': 'Audrey (Enhanced)'})
+        self.assertEquals(audrey_2.language, languages.AudioLanguage.fr_FR)
+        audrey_3 = audrey_voices[2]
+        self.assertEquals(audrey_3.name, 'Audrey (Premium)')
+        self.assertEquals(audrey_3.voice_key, {'name': 'Audrey (Premium)'})
+        self.assertEquals(audrey_3.language, languages.AudioLanguage.fr_FR)
+
+        # check Eddy voice, its name should be Eddy, and should be available in fr_FR and fr_CA
+        eddy_voices = [voice for voice in voice_list if voice.name == 'Eddy']
+        # self.assertTrue(len(eddy_voices) == 1)
+
     def test_macos(self):
         # pytest test_tts_services.py -k test_macos
         service_name = 'MacOS'
