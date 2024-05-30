@@ -1258,6 +1258,7 @@ Zuzana (Premium)    cs_CZ    # Ahoj! Já jsem Zuzana.
         self.assertEquals(len(eddy_fr_fr), 1)
         eddy_french_france_voice = eddy_fr_fr[0]
         self.assertEquals(eddy_french_france_voice.name, 'Eddy')
+        self.assertEquals(eddy_french_france_voice.gender, constants.Gender.Male)
         self.assertEquals(eddy_french_france_voice.voice_key, {'name': 'Eddy (French (France))'})
         self.assertEquals(eddy_french_france_voice.language, languages.AudioLanguage.fr_FR)
 
@@ -1265,6 +1266,7 @@ Zuzana (Premium)    cs_CZ    # Ahoj! Já jsem Zuzana.
         self.assertEquals(len(eddy_fr_ca), 1)
         eddy_french_canada_voice = eddy_fr_ca[0]
         self.assertEquals(eddy_french_canada_voice.name, 'Eddy')
+        self.assertEquals(eddy_french_canada_voice.gender, constants.Gender.Male)
         self.assertEquals(eddy_french_canada_voice.voice_key, {'name': 'Eddy (French (Canada))'})
         self.assertEquals(eddy_french_canada_voice.language, languages.AudioLanguage.fr_CA)
 
