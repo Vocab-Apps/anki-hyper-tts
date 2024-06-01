@@ -25,7 +25,7 @@ class Naver(service.ServiceBase):
 
     @property
     def service_fee(self) -> constants.ServiceFee:
-        return constants.ServiceFee.Premium
+        return constants.ServiceFee.paid
 
     def configuration_options(self):
         return {

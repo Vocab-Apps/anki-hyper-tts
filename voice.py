@@ -1,5 +1,7 @@
 import sys
 import abc
+import dataclasses
+from typing import Dict, Any, List
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
@@ -89,3 +91,15 @@ class Voice(VoiceBase):
     service = property(fget=_get_service)
     voice_key = property(fget=_get_voice_key)
     options = property(fget=_get_options)
+
+# this class is used with API version 3
+# support for multilingual voices
+@dataclasses.dataclass
+class TtsVoice_v3:
+    name: str
+    voice_key: Dict[str, Any]
+    options: Dict[str, Dict[str, Any]]
+    service: str
+    gender: constants.Gender
+    audio_languages: List[languages.AudioLanguage]
+    service_fee: constants.ServiceFee

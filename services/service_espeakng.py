@@ -49,7 +49,7 @@ class ESpeakNg(service.ServiceBase):
 
     @property
     def service_fee(self) -> constants.ServiceFee:
-        return constants.ServiceFee.Free
+        return constants.ServiceFee.free
 
     def get_audio_language(self, espeakng_language):
         if espeakng_language in AUDIO_LANGUAGE_OVERRIDE_MAP:

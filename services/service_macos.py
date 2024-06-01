@@ -437,7 +437,7 @@ class MacOS(service.ServiceBase):
 
     @property
     def service_fee(self) -> constants.ServiceFee:
-        return constants.ServiceFee.Free
+        return constants.ServiceFee.free
 
     def voice_list(self):
         if platform.system() != "Darwin":

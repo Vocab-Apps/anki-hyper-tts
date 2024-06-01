@@ -1,5 +1,9 @@
 import sys
 import abc
+import json
+import os
+import functools
+import databind.json
 from posixpath import dirname
 import typing
 
@@ -9,11 +13,16 @@ else:
     # import running from within Anki
     from .services import voicelist
 
+
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
-services = __import__('services', globals(), locals(), [], sys._addon_import_level_base)
 languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
+services = __import__('services', globals(), locals(), [], sys._addon_import_level_base)
+logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+
+logger = logging_utils.get_child_logger(__name__)
+
 
 class ServiceBase(abc.ABC):
     def __init__(self):
@@ -60,23 +69,19 @@ class ServiceBase(abc.ABC):
         return False
 
     @abc.abstractmethod
-    def voice_list(self) -> typing.List[voice.VoiceBase]:
+    def voice_list(self) -> typing.List[voice.TtsVoice_v3]:
         pass
 
     @abc.abstractmethod
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
         pass
 
+
     # some helper functions
-    def basic_voice_list(self) -> typing.List[voice.VoiceBase]:
+    def basic_voice_list(self) -> typing.List[voice.TtsVoice_v3]:
         """basic processing for voice list which should work for most services which are represented in voicelist.py"""
-        service_voices_json = [voice for voice in services.voicelist.VOICE_LIST if voice['service'] == self.name]
-        service_voices = [voice.Voice(v['name'], 
-                            constants.Gender[v['gender']], 
-                            languages.AudioLanguage[v['language']], 
-                            self, 
-                            v['key'],
-                            v['options']) for v in service_voices_json]
+        voice_list = services.voicelist.VOICE_LIST
+        service_voices = [voice for voice in voice_list if voice.service == self.name]
         return service_voices
 
     # the following functions can be overriden if a service requires configuration

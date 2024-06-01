@@ -39,7 +39,7 @@ class NaverPapago(service.ServiceBase):
 
     @property
     def service_fee(self) -> constants.ServiceFee:
-        return constants.ServiceFee.Free
+        return constants.ServiceFee.free
 
     def build_voice(self, audio_language, gender, speaker_name):
         return voice.Voice(speaker_name, gender, audio_language, self, speaker_name, {})

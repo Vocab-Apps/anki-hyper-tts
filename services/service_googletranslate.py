@@ -46,7 +46,7 @@ class GoogleTranslate(service.ServiceBase):
 
     @property
     def service_fee(self) -> constants.ServiceFee:
-        return constants.ServiceFee.Free
+        return constants.ServiceFee.free
 
     def get_language(self, language_key):
         # check if we have this language in AudioLanguageDefaults

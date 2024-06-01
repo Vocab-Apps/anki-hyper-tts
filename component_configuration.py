@@ -128,7 +128,7 @@ class Configuration(component_common.ConfigComponentBase):
 
     def enable_all_free_services(self):
         for service in self.get_service_list():
-            if service.service_fee == constants.ServiceFee.Free:
+            if service.service_fee == constants.ServiceFee.free:
                 checkbox_name = self.get_service_enabled_widget_name(service)
                 # find the checkbox
                 checkbox = self.dialog.findChild(aqt.qt.QCheckBox, checkbox_name)

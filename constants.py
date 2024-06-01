@@ -20,8 +20,8 @@ class ServiceType(enum.Enum):
         self.description = description
 
 class ServiceFee(enum.Enum):
-    Free = enum.auto()
-    Premium = enum.auto()
+    free = enum.auto()
+    paid = enum.auto()
 
 class AudioRequestReason(enum.Enum):
     preview = enum.auto()

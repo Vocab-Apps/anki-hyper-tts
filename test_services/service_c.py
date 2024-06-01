@@ -36,7 +36,7 @@ class ServiceC(service.ServiceBase):
 
     @property
     def service_fee(self) -> constants.ServiceFee:
-        return constants.ServiceFee.Premium
+        return constants.ServiceFee.paid
 
     def voice_list(self):
         # no voices, this service is just to test configuration

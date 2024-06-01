@@ -23,7 +23,7 @@ class SpanishDict(service.ServiceBase):
 
     @property
     def service_fee(self) -> constants.ServiceFee:
-        return constants.ServiceFee.Free
+        return constants.ServiceFee.free
 
     def build_voice(self, audio_language, voice_key):
         return voice.Voice(audio_language.lang.lang_name, constants.Gender.Male, audio_language, self, voice_key, {})
