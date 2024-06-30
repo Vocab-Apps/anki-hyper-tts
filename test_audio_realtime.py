@@ -1,3 +1,10 @@
+import sys
+import os
+
+addon_dir = os.path.dirname(os.path.realpath(__file__))
+external_dir = os.path.join(addon_dir, 'external')
+sys.path.insert(0, external_dir)
+
 import testing_utils
 import re
 
