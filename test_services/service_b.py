@@ -57,11 +57,14 @@ class ServiceB(service.ServiceBase):
     def service_fee(self) -> constants.ServiceFee:
         return constants.ServiceFee.paid
 
+    def build_voice(self, voice_name):
+        return voice.build_voice_v3(voice_name, constants.Gender.Male, languages.AudioLanguage.ja_JP, self, {'voice_id': voice_name}, {})
+
     def voice_list(self):
         return [
-            VoiceB('alex', self),
-            VoiceB('jane', self),
-            VoiceB('notfound', self)
+            self.build_voice('alex'),
+            self.build_voice('jane'),
+            self.build_voice('notfound')
         ]
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):

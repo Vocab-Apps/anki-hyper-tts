@@ -1,6 +1,7 @@
 import sys
 import abc
 import dataclasses
+import databind.json
 from typing import Dict, Any, List
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
@@ -103,3 +104,18 @@ class TtsVoice_v3:
     gender: constants.Gender
     audio_languages: List[languages.AudioLanguage]
     service_fee: constants.ServiceFee
+
+def serialize_voice_v3(voice: TtsVoice_v3):
+    return databind.json.dump(voice, TtsVoice_v3)
+
+
+def build_voice_v3(name, gender, language, service, voice_key, options) -> TtsVoice_v3:
+    return TtsVoice_v3(
+        name=name,
+        voice_key=voice_key,
+        options=options,
+        service=service.name,
+        gender=gender,
+        audio_languages=[language],
+        service_fee=service.service_fee
+    )

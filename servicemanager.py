@@ -171,7 +171,8 @@ class ServiceManager():
         if self.use_cloud_language_tools(voice):
             return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)
         else:
-            return voice.service.get_tts_audio(source_text, voice, options)
+            service = self.services[voice.service]
+            return service.get_tts_audio(source_text, voice, options)
 
     def full_voice_list(self, single_service_name=None) -> typing.List[voice.VoiceBase]:
         full_list = []

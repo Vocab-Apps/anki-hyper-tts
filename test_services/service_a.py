@@ -51,12 +51,12 @@ class ServiceA(service.ServiceBase):
 
     def voice_list(self):
         return [
-            voice.Voice('voice_a_1', constants.Gender.Male, languages.AudioLanguage.fr_FR, self, {'name': 'voice_1'}, VOICE_OPTIONS),
-            voice.Voice('voice_a_2', constants.Gender.Female, languages.AudioLanguage.en_US, self, {'name': 'voice_2'}, VOICE_OPTIONS),
-            voice.Voice('voice_a_3', constants.Gender.Female, languages.AudioLanguage.ja_JP, self, {'name': 'voice_3'}, VOICE_OPTIONS),
+            voice.build_voice_v3('voice_a_1', constants.Gender.Male, languages.AudioLanguage.fr_FR, self, {'name': 'voice_1'}, VOICE_OPTIONS),
+            voice.build_voice_v3('voice_a_2', constants.Gender.Female, languages.AudioLanguage.en_US, self, {'name': 'voice_2'}, VOICE_OPTIONS),
+            voice.build_voice_v3('voice_a_3', constants.Gender.Female, languages.AudioLanguage.ja_JP, self, {'name': 'voice_3'}, VOICE_OPTIONS),
         ]
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice_arg: voice.VoiceBase, options):
         delay_s = self._config.get('delay', 0)
         if delay_s > 0:
             logger.info(f'sleeping for {delay_s}s')
@@ -64,7 +64,7 @@ class ServiceA(service.ServiceBase):
 
         self.requested_audio = {
             'source_text': source_text,
-            'voice': voice.serialize(),
+            'voice': voice.serialize_voice_v3(voice_arg),
             'options': options
         }
         encoded_dict = json.dumps(self.requested_audio, indent=2).encode('utf-8')
