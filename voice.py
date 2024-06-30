@@ -105,6 +105,9 @@ class TtsVoice_v3:
     audio_languages: List[languages.AudioLanguage]
     service_fee: constants.ServiceFee
 
+    def __str__(self):
+        return f"{self.name}, {self.gender.name}, {self.service}"
+
 def serialize_voice_v3(voice: TtsVoice_v3):
     return databind.json.dump(voice, TtsVoice_v3)
 

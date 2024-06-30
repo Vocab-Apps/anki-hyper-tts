@@ -342,7 +342,7 @@ def test_simple_error_handling_not_found(qtbot):
     # verify batch error manager stats
     # verify per-note status
     assert batch_status_obj[0].sound_file == None
-    assert str(batch_status_obj[0].error) == 'Audio not found for [老人家] (voice: Japanese, Male, notfound, ServiceB)'
+    assert str(batch_status_obj[0].error) == 'Audio not found for [老人家] (voice: notfound, Male, ServiceB)'
 
 
 
