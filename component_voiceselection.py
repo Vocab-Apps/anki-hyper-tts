@@ -92,9 +92,13 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 logger.info(f'setting value of {key} to {value}')
                 voice_option_widget = self.voice_options_widgets[widget_name]
                 setCurrentTextFn = getattr(voice_option_widget, 'setCurrentText', None)
+                setTextFn = getattr(voice_option_widget, 'setText', None)
                 if callable(setCurrentTextFn):
                     # qcombobox detected
                     voice_option_widget.setCurrentText(value)
+                elif callable(setTextFn):
+                    # qlineedit detected
+                    voice_option_widget.setText(value)
                 else:
                     # slider
                     self.voice_options_widgets[widget_name].setValue(value)
@@ -365,6 +369,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         for key, value in voice.options.items():
             widget_name = f'voice_option_{key}'
             option_type = options.ParameterType[value['type']]
+            
             if option_type == options.ParameterType.number or option_type == options.ParameterType.number_int:
                 # create a spinner
                 if option_type == options.ParameterType.number:
@@ -377,10 +382,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 widget.setValue(value['default'])
                 widget.valueChanged.connect(get_set_option_lambda(voice, key))
                 label_text = f"""{key} ({value['min']} to {value['max']})"""
-                label = aqt.qt.QLabel(label_text)
-                self.voice_options_layout.addWidget(label, row, 0, 1, 1)
-                self.voice_options_layout.addWidget(widget, row, 1, 1, 1)
-                self.voice_options_widgets[widget_name] = widget
+
             elif option_type == options.ParameterType.list:
                 # create a combobox
                 widget = aqt.qt.QComboBox()
@@ -389,12 +391,20 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 widget.setCurrentText(value['default'])
                 widget.currentTextChanged.connect(get_set_option_lambda(voice, key))
                 label_text = f"""{key}"""
-                label = aqt.qt.QLabel(label_text)
-                self.voice_options_layout.addWidget(label, row, 0, 1, 1)
-                self.voice_options_layout.addWidget(widget, row, 1, 1, 1)
-                self.voice_options_widgets[widget_name] = widget                
+                
+            elif option_type == options.ParameterType.text:
+                widget = aqt.qt.QLineEdit()
+                widget.setText(value['default'])
+                widget.textChanged.connect(get_set_option_lambda(voice, key))
+                label_text = f"""{key}"""
+                               
             else:
                 raise Exception(f"voice option type not supported: {value['type']}")
+            
+            label = aqt.qt.QLabel(label_text)
+            self.voice_options_layout.addWidget(label, row, 0, 1, 1)
+            self.voice_options_layout.addWidget(widget, row, 1, 1, 1)
+            self.voice_options_widgets[widget_name] = widget
             row += 1
 
         # if we are in the single voice mode, set the mode on the voice selection model
