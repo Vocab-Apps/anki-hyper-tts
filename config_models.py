@@ -142,13 +142,13 @@ class BatchTarget(ConfigModelBase):
 # ======================
 
 class VoiceWithOptions():
-    def __init__(self, voice: voice.VoiceBase, options):
-        self.voice = voice
+    def __init__(self, voice_id: voice.TtsVoiceId_v3, options):
+        self.voice_id = voice_id
         self.options = copy.copy(options)
 
     def serialize(self):
         return {
-            'voice': self.voice.serialize(),
+            'voice_id': voice.serialize_voiceid_v3(self.voice_id),
             'options': self.options
         }
 
@@ -166,13 +166,13 @@ class VoiceWithOptions():
         return f'{self.voice}{self.options_str()}'
 
 class VoiceWithOptionsRandom(VoiceWithOptions):
-    def __init__(self, voice: voice.VoiceBase, options, random_weight=1):
-        VoiceWithOptions.__init__(self, voice, options)
+    def __init__(self, voice_id: voice.TtsVoiceId_v3, options, random_weight=1):
+        VoiceWithOptions.__init__(self, voice_id, options)
         self._random_weight = random_weight
 
     def serialize(self):
         return {
-            'voice': self.voice.serialize(),
+            'voice_id': voice.serialize_voiceid_v3(self.voice_id),
             'options': self.options,
             'weight': self.random_weight
         }        
@@ -186,8 +186,8 @@ class VoiceWithOptionsRandom(VoiceWithOptions):
     random_weight = property(get_random_weight, set_random_weight)
 
 class VoiceWithOptionsPriority(VoiceWithOptions):
-    def __init__(self, voice: voice.VoiceBase, options):
-        VoiceWithOptions.__init__(self, voice, options)
+    def __init__(self, voice_id: voice.TtsVoiceId_v3, options):
+        VoiceWithOptions.__init__(self, voice_id, options)
 
 
 class VoiceSelectionBase(ConfigModelBase):

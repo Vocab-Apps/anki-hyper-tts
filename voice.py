@@ -96,6 +96,19 @@ class Voice(VoiceBase):
 # this class is used with API version 3
 # support for multilingual voices
 @dataclasses.dataclass
+class TtsVoiceId_v3:
+    voice_key: Dict[str, Any]
+    service: str
+
+    def __eq__(self, other):
+        if not isinstance(other, TtsVoiceId_v3):
+            return NotImplemented
+        return self.voice_key == other.voice_key and self.service == other.service
+
+    def __hash__(self):
+        return hash((self.voice_key['voice_id'], self.service))
+
+@dataclasses.dataclass
 class TtsVoice_v3:
     name: str
     voice_key: Dict[str, Any]
@@ -105,12 +118,20 @@ class TtsVoice_v3:
     audio_languages: List[languages.AudioLanguage]
     service_fee: constants.ServiceFee
 
+    def get_voice_id(self) -> TtsVoiceId_v3:
+        return TtsVoiceId_v3(voice_key=self.voice_key, service=self.service)
+
+    def serialize_voice_id(self):
+        return serialize_voiceid_v3(self.get_voice_id())
+
     def __str__(self):
         return f"{self.name}, {self.gender.name}, {self.service}"
 
-def serialize_voice_v3(voice: TtsVoice_v3):
-    return databind.json.dump(voice, TtsVoice_v3)
+def serialize_voiceid_v3(voice_id: TtsVoiceId_v3) -> str:
+    return databind.json.dump(voice_id, TtsVoiceId_v3)
 
+def deserialize_voice_id_v3(voice_id: str) -> TtsVoiceId_v3:
+    return databind.json.load(voice_id, TtsVoiceId_v3)
 
 def build_voice_v3(name, gender, language, service, voice_key, options) -> TtsVoice_v3:
     return TtsVoice_v3(

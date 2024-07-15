@@ -174,7 +174,7 @@ class ServiceManager():
             service = self.services[voice.service]
             return service.get_tts_audio(source_text, voice, options)
 
-    def full_voice_list(self, single_service_name=None) -> typing.List[voice.VoiceBase]:
+    def full_voice_list(self, single_service_name=None) -> typing.List[voice.TtsVoice_v3]:
         full_list = []
         for service_name, service_instance in self.services.items():
             if single_service_name != None:
@@ -188,11 +188,15 @@ class ServiceManager():
                 full_list.extend(voices)
         return full_list
 
-    def deserialize_voice(self, voice_data):
+    def deserialize_voice(self, voice_data) -> voice.TtsVoice_v3:
         # avoid loading voice list for services we don't need, this is particularly important for ElevenLabsCustom which does
         # an actual query to their API
-        voice_list = self.full_voice_list(single_service_name=voice_data['service'])
-        voice_subset = [voice for voice in voice_list if voice.voice_key == voice_data['voice_key'] and voice.service.name == voice_data['service']]
+
+        # convert voice_data to TtsVoiceId_v3
+        voice_id: voice.TttsVoiceId_v3 = voice.deserialize_voice_id_v3(voice_data)
+
+        voice_list = self.full_voice_list(single_service_name=voice_id.service)
+        voice_subset = [voice for voice in voice_list if voice.get_voice_id() == voice_id]
         if len(voice_subset) == 0:
             raise errors.VoiceNotFound(voice_data)
         return voice_subset[0]

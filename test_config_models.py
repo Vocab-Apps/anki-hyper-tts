@@ -15,6 +15,7 @@ import servicemanager
 import testing_utils
 import config_models
 import errors
+import voice
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
@@ -1157,3 +1158,10 @@ class ConfigModelsTests(unittest.TestCase):
             mode=constants.BatchMode.template,
             source_template='')
         self.assertRaises(errors.SourceTemplateNotSet, source.validate)
+
+    def test_voice_id(self):
+        voice_id_1 = voice.TtsVoiceId_v3(voice_key={'voice_id': 'a'}, service='ServiceA')
+        voice_id_2 = voice.TtsVoiceId_v3(voice_key={'voice_id': 'a'}, service='ServiceA')
+
+        self.assertEquals(voice_id_1, voice_id_2)
+        self.assertEquals(hash(voice_id_1), hash(voice_id_2))

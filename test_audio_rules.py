@@ -70,7 +70,7 @@ class AudioRulesTests(unittest.TestCase):
         #  preset 1
         voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
         voice_selection = config_models.VoiceSelectionSingle()
-        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
+        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1.get_voice_id(), {}))
 
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         batch_config.name = 'preset_1'
