@@ -508,8 +508,9 @@ class MacOS(service.ServiceBase):
                 parsed_voice = voice.Voice(short_voice_name, gender, audio_language, self, voice_key, self.VOICE_OPTIONS)
                 logger.debug(f'parsed voice: {parsed_voice}')
                 result.append(parsed_voice)
-            except:
-                logger.error(f'could not parse line: [{line}]', exc_info=True)
+            except Exception as e:
+                logger.error(f'{self.name}: could not parse voice line: [{line}]')
+                logger.error(e, exc_info=True)
 
         return result
 

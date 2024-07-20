@@ -22,7 +22,7 @@ class NaverPapago(service.ServiceBase):
 
     TRANSLATE_ENDPOINT = 'https://papago.naver.com/apis/tts/'
     TRANSLATE_MKID = TRANSLATE_ENDPOINT + 'makeID'    
-    HMAC_KEY = 'v1.7.9_ee61e6111a'
+    HMAC_KEY = 'v1.8.2_1f7be7900b'
     UUID = str(uuid.uuid4())
 
     def __init__(self):
@@ -62,6 +62,15 @@ class NaverPapago(service.ServiceBase):
     # https://papago.naver.com/main.87cbe57a9fc46d3db5c1.chunk.js
     # 2021/05/27 update:
     # HMAC_KEY has changed, and the timestamp is now in milliseconds
+    # use this tool: https://lelinhtinh.github.io/de4js/
+    #  var b = function (e, a) {
+    #     var t = Object(E.a)(),
+    #         n = (new Date).getTime() + a - d;
+    #     return {
+    #         Authorization: "PPG " + t + ":" + p.a.HmacMD5(t + "\n" + e.split("?")[0] + "\n" + n, "v1.8.1_b443f57e55").toString(p.a.enc.Base64),
+    #         Timestamp: n
+    #     }
+    # },
 
     def compute_token(self, timestamp, uuid_str):
         msg = uuid_str + '\n' + self.TRANSLATE_MKID + '\n' + timestamp
