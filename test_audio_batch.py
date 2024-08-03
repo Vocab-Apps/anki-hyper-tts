@@ -50,6 +50,10 @@ class MockBatchStatusListener():
         self.start_time = start_time
         self.current_time = current_time
 
+def get_default_voice_id(hypertts_instance):
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    return [x for x in voice_list if x.name == 'voice_a_1'][0].voice_id    
+
 def test_simple_1(qtbot):
     # create batch configuration
     # ==========================
@@ -59,8 +63,7 @@ def test_simple_1(qtbot):
     mock_collection = testing_utils.MockCollection()
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0].voice_id
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
@@ -138,8 +141,7 @@ def test_simple_text_processing(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
@@ -187,8 +189,7 @@ def test_simple_error_handling(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
@@ -230,8 +231,7 @@ def test_simple_error_handling_nonexistent_target_field(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
@@ -271,8 +271,7 @@ def test_simple_error_handling_nonexistent_source_field(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
@@ -313,7 +312,7 @@ def test_simple_error_handling_not_found(qtbot):
         
     # build voice selection model
     voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_b_notfound = [x for x in voice_list if x.name == 'notfound'][0]
+    voice_b_notfound = [x for x in voice_list if x.name == 'notfound'][0].voice_id
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_b_notfound, {}))
 
@@ -354,8 +353,7 @@ def test_simple_append(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
 
@@ -410,8 +408,7 @@ def test_sound_tag_only_keep_other_sound_tags(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
 
@@ -464,8 +461,7 @@ def test_clear_sound_field_previous_content(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
 
@@ -515,8 +511,7 @@ def test_simple_same_field_source_target(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
 
@@ -569,8 +564,7 @@ def test_simple_sound_only_append(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))    
 
@@ -611,9 +605,9 @@ def test_random_voices(qtbot):
         
     # build voice selection model
     voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
-    voice_a_2 = [x for x in voice_list if x.name == 'voice_a_2'][0]
-    voice_a_3 = [x for x in voice_list if x.name == 'voice_a_3'][0]
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0].voice_id
+    voice_a_2 = [x for x in voice_list if x.name == 'voice_a_2'][0].voice_id
+    voice_a_3 = [x for x in voice_list if x.name == 'voice_a_3'][0].voice_id
     random = config_models.VoiceSelectionRandom()
     random.add_voice(config_models.VoiceWithOptionsRandom(voice_a_1, {}))
     random.add_voice(config_models.VoiceWithOptionsRandom(voice_a_2, {}))
@@ -655,8 +649,7 @@ def test_simple_template(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
@@ -704,8 +697,7 @@ result = f"{article} {word}"
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
@@ -755,8 +747,7 @@ result = f"{article} {word}"
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
     # build voice selection model
-    voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = get_default_voice_id(hypertts_instance)
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 
@@ -796,8 +787,8 @@ def test_priority_voices_success(qtbot):
         
     # build voice selection model
     voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_1 = [x for x in voice_list if x.name == 'notfound'][0] # special voice in serviceB
-    voice_2 = [x for x in voice_list if x.name == 'voice_a_3'][0]
+    voice_1 = [x for x in voice_list if x.name == 'notfound'][0].voice_id # special voice in serviceB
+    voice_2 = [x for x in voice_list if x.name == 'voice_a_3'][0].voice_id
     priority = config_models.VoiceSelectionPriority()
     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_1, {}))
     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_2, {}))
@@ -839,7 +830,7 @@ def test_priority_voices_not_found(qtbot):
         
     # build voice selection model
     voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_1 = [x for x in voice_list if x.name == 'notfound'][0] # special voice in serviceB
+    voice_1 = [x for x in voice_list if x.name == 'notfound'][0].voice_id # special voice in serviceB
     priority = config_models.VoiceSelectionPriority()
     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_1, {}))
     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_1, {}))

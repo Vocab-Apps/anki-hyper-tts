@@ -5,6 +5,7 @@ import importlib
 import typing
 import requests
 import pprint
+import functools
 
 
 voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
@@ -177,6 +178,7 @@ class ServiceManager():
             service = self.services[voice.service]
             return service.get_tts_audio(source_text, voice, options)
 
+    @functools.cache
     def full_voice_list(self, single_service_name=None) -> typing.List[voice_module.TtsVoice_v3]:
         full_list = []
         for service_name, service_instance in self.services.items():
