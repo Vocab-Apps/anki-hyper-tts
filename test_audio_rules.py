@@ -68,9 +68,9 @@ class AudioRulesTests(unittest.TestCase):
         voice_list = hypertts_instance.service_manager.full_voice_list()
 
         #  preset 1
-        voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+        voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0].voice_id
         voice_selection = config_models.VoiceSelectionSingle()
-        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1.get_voice_id(), {}))
+        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
 
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         batch_config.name = 'preset_1'
@@ -153,7 +153,7 @@ class AudioRulesTests(unittest.TestCase):
         voice_list = hypertts_instance.service_manager.full_voice_list()
 
         #  preset 1
-        voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+        voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0].voice_id
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
 
@@ -173,7 +173,7 @@ class AudioRulesTests(unittest.TestCase):
         preset_id_1 = batch_config.uuid
 
         # preset 2
-        voice_b_1 = [x for x in voice_list if x.name == 'voice_a_2'][0]
+        voice_b_1 = [x for x in voice_list if x.name == 'voice_a_2'][0].voice_id
         voice_selection = config_models.VoiceSelectionSingle()
         voice_selection.set_voice(config_models.VoiceWithOptions(voice_b_1, {}))
 

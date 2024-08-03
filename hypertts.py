@@ -816,20 +816,21 @@ class HyperTTS():
         voice_selection_mode = constants.VoiceSelectionMode[voice_selection_config['voice_selection_mode']]
         if voice_selection_mode == constants.VoiceSelectionMode.single:
             single = config_models.VoiceSelectionSingle()
-            voice = self.service_manager.deserialize_voice(voice_selection_config['voice']['voice'])
-            single.set_voice(config_models.VoiceWithOptions(voice, voice_selection_config['voice']['options']))
+            voice_id = voice_module.deserialize_voice_id_v3(voice_selection_config['voice']['voice_id'])
+            voice_options = voice_selection_config['voice']['options']
+            single.set_voice(config_models.VoiceWithOptions(voice_id, voice_options))
             return single
         elif voice_selection_mode == constants.VoiceSelectionMode.random:
             random = config_models.VoiceSelectionRandom()
             for voice_data in voice_selection_config['voice_list']:
-                voice = self.service_manager.deserialize_voice(voice_data['voice'])
-                random.add_voice(config_models.VoiceWithOptionsRandom(voice, voice_data['options'], voice_data['weight']))
+                voice_id = voice_module.deserialize_voice_id_v3(voice_selection_config['voice']['voice_id'])
+                random.add_voice(config_models.VoiceWithOptionsRandom(voice_id, voice_data['options'], voice_data['weight']))
             return random
         elif voice_selection_mode == constants.VoiceSelectionMode.priority:
             priority = config_models.VoiceSelectionPriority()
             for voice_data in voice_selection_config['voice_list']:
-                voice = self.service_manager.deserialize_voice(voice_data['voice'])
-                priority.add_voice(config_models.VoiceWithOptionsPriority(voice, voice_data['options']))
+                voice_id = voice_module.deserialize_voice_id_v3(voice_selection_config['voice']['voice_id'])
+                priority.add_voice(config_models.VoiceWithOptionsPriority(voice_id, voice_data['options']))
             return priority
 
     def deserialize_text_processing(self, text_processing_config):
