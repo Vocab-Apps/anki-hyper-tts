@@ -84,7 +84,11 @@ class VoiceSelection(component_common.ConfigComponentBase):
             logger.info(f'options: {model.voice.options}')
             # single voice
             self.radio_button_single.setChecked(True)
-            voice_index = self.voice_list.index(model.voice.voice)
+            # here we need to select the correct voice, based on what the user has saved in their preset (single voice)
+            # we have access to the voice_id, but we need to locate the proper voice
+            voice_id = model.voice.voice_id
+            voice = self.hypertts.service_manager.locate_voice(voice_id)
+            voice_index = self.voice_list.index(voice)
             self.voices_combobox.setCurrentIndex(voice_index)
             # self.voice_options_layout
             #self.voice_options_widgets[widget_name]

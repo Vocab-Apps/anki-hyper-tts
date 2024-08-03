@@ -156,6 +156,7 @@ def test_batch_dialog_editor_create_then_load(qtbot):
                 'audio_languages': ['fr_FR'],
                 'name': 'voice_a_1', 
                 'service': 'ServiceA',
+                'service_fee': 'free',
                 'voice_key': {'name': 'voice_1'}
             },
             'options': {}
@@ -205,9 +206,10 @@ def test_batch_dialog_editor_sound_sample(qtbot):
             'source_text': 'old people',
             'voice': {
                 'gender': 'Male', 
-                'language': 'fr_FR', 
+                'audio_languages': ['fr_FR'],
                 'name': 'voice_a_1', 
                 'service': 'ServiceA',
+                'service_fee': 'free',
                 'voice_key': {'name': 'voice_1'}
             },
             'options': {}
