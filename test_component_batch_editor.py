@@ -15,6 +15,8 @@ import config_models
 
 logger = logging.getLogger(__name__)
 
+# sometimes the voices get re-ordered, but we want ServiceA, voice 1
+DEFAULT_VOICE_INDEX = 3
 
 def test_batch_dialog_editor_manual(qtbot):
     # HYPERTTS_BATCH_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG test_components.py -k test_batch_dialog_editor_manual -s -rPP
@@ -30,7 +32,7 @@ def test_batch_dialog_editor_preview_apply(qtbot):
 
     def batch_dialog_input_sequence(dialog):
         # select second voice
-        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(1)
+        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(DEFAULT_VOICE_INDEX)
 
         # test sound preview
         # ==================
@@ -40,9 +42,10 @@ def test_batch_dialog_editor_preview_apply(qtbot):
             'source_text': '老人家',
             'voice': {
                 'gender': 'Male', 
-                'language': 'fr_FR', 
+                'audio_languages': ['fr_FR'],
                 'name': 'voice_a_1', 
                 'service': 'ServiceA',
+                'service_fee': 'free',
                 'voice_key': {'name': 'voice_1'}
             },
             'options': {}
@@ -81,7 +84,7 @@ def test_batch_dialog_editor_last_saved(qtbot):
     hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
     def batch_dialog_input_sequence(dialog):
         # select second voice
-        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(1)
+        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(DEFAULT_VOICE_INDEX)
 
         # set preset name and save
         # set profile name
@@ -99,7 +102,7 @@ def test_batch_dialog_editor_save_and_close(qtbot):
     hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
     def batch_dialog_input_sequence(dialog):
         # select second voice
-        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(1)
+        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(DEFAULT_VOICE_INDEX)
 
         # set preset name and save
         # set profile name
@@ -122,7 +125,7 @@ def test_batch_dialog_editor_create_then_load(qtbot):
     preset_uuid = 'uuid_1'
     def batch_dialog_input_sequence(dialog):
         # select second voice
-        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(1)
+        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(DEFAULT_VOICE_INDEX)
 
         # set preset name and save
         # set profile name
@@ -150,7 +153,7 @@ def test_batch_dialog_editor_create_then_load(qtbot):
             'source_text': '老人家',
             'voice': {
                 'gender': 'Male', 
-                'language': 'fr_FR', 
+                'audio_languages': ['fr_FR'],
                 'name': 'voice_a_1', 
                 'service': 'ServiceA',
                 'voice_key': {'name': 'voice_1'}
@@ -190,7 +193,7 @@ def test_batch_dialog_editor_sound_sample(qtbot):
     hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
     def batch_dialog_input_sequence(dialog):
         dialog.batch_component.source.source_field_combobox.setCurrentText('English')
-        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(1)
+        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(DEFAULT_VOICE_INDEX)
 
         # test sound preview for the voice
         # ================================

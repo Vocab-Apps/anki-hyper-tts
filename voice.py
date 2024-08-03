@@ -128,8 +128,8 @@ class TtsVoice_v3:
     def get_voice_id(self) -> TtsVoiceId_v3:
         return TtsVoiceId_v3(voice_key=self.voice_key, service=self.service)
 
-    def serialize_voice_id(self):
-        return serialize_voiceid_v3(self.get_voice_id())
+    # def serialize_voice_id(self):
+    #     return serialize_voiceid_v3(self.get_voice_id())
 
     def __str__(self):
         return f"{self.name}, {self.gender.name}, {self.service}"

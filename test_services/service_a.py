@@ -63,9 +63,13 @@ class ServiceA(service.ServiceBase):
             logger.info(f'sleeping for {delay_s}s')
             time.sleep(delay_s)
 
+        serialized_voice = voice_module.serialize_voice_v3(voice)
+        # strip the options from the serialized voice, it makes it easier for testing assertions
+        del serialized_voice['options']
+
         self.requested_audio = {
             'source_text': source_text,
-            'voice': voice_module.serialize_voice_v3(voice),
+            'voice': serialized_voice,
             'options': options
         }
         encoded_dict = json.dumps(self.requested_audio, indent=2).encode('utf-8')
