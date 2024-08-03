@@ -143,6 +143,7 @@ class BatchTarget(ConfigModelBase):
 
 class VoiceWithOptions():
     def __init__(self, voice_id: voice.TtsVoiceId_v3, options):
+        assert isinstance(voice_id, voice.TtsVoiceId_v3), f"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}"
         self.voice_id = voice_id
         self.options = copy.copy(options)
 

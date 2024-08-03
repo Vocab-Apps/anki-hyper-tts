@@ -60,7 +60,7 @@ def test_simple_1(qtbot):
         
     # build voice selection model
     voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0].voice_id
     single = config_models.VoiceSelectionSingle()
     single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))    
 

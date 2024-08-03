@@ -4,9 +4,10 @@ import os
 import importlib
 import typing
 import requests
+import pprint
 
 
-voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
+voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
@@ -139,7 +140,9 @@ class ServiceManager():
                 return True
         return False
 
-    def get_tts_audio(self, source_text, voice, options, audio_request_context):
+    def get_tts_audio(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):
+        # assert the type of voice being passed in
+        assert isinstance(voice, voice_module.TtsVoice_v3), f"Expected voice to be TtsVoice_v3, got {type(voice).__name__}"
         if hasattr(sys, '_sentry_crash_reporting'):
             return self.get_tts_audio_instrumented(source_text, voice, options, audio_request_context)
         else:
@@ -167,14 +170,14 @@ class ServiceManager():
         if raise_exception != None:
             raise raise_exception
 
-    def get_tts_audio_implementation(self, source_text, voice, options, audio_request_context):
+    def get_tts_audio_implementation(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):
         if self.use_cloud_language_tools(voice):
             return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)
         else:
             service = self.services[voice.service]
             return service.get_tts_audio(source_text, voice, options)
 
-    def full_voice_list(self, single_service_name=None) -> typing.List[voice.TtsVoice_v3]:
+    def full_voice_list(self, single_service_name=None) -> typing.List[voice_module.TtsVoice_v3]:
         full_list = []
         for service_name, service_instance in self.services.items():
             if single_service_name != None:
@@ -188,7 +191,7 @@ class ServiceManager():
                 full_list.extend(voices)
         return full_list
 
-    def deserialize_voice(self, voice_data) -> voice.TtsVoice_v3:
+    def deserialize_voice(self, voice_data) -> voice_module.TtsVoice_v3:
         # avoid loading voice list for services we don't need, this is particularly important for ElevenLabsCustom which does
         # an actual query to their API
 
@@ -199,4 +202,15 @@ class ServiceManager():
         voice_subset = [voice for voice in voice_list if voice.get_voice_id() == voice_id]
         if len(voice_subset) == 0:
             raise errors.VoiceNotFound(voice_data)
+        return voice_subset[0]
+
+    def locate_voice(self, voice_id: voice_module.TtsVoiceId_v3) -> voice_module.TtsVoice_v3:
+        assert isinstance(voice_id, voice_module.TtsVoiceId_v3), f"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}"
+        # convert from voice_id to actual voice
+        voice_list = self.full_voice_list(single_service_name=voice_id.service)
+        logger.debug(pprint.pformat(voice_list))
+        voice_subset = [voice for voice in voice_list if voice.get_voice_id() == voice_id]
+        if len(voice_subset) == 0:
+            logger.error(f'could not locate voice for voice_id: {voice_id!r}')
+            raise errors.VoiceIdNotFound(voice_id)
         return voice_subset[0]

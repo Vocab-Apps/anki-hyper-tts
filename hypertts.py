@@ -20,6 +20,7 @@ import aqt.operations
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 options = __import__('options', globals(), locals(), [], sys._addon_import_level_base)
+voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
@@ -138,8 +139,12 @@ class HyperTTS():
             try:
                 voice_with_options = self.choose_voice(voice_selection, voice_list)
                 logger.debug(f'about to generate audio file and write to file for {processed_text}')
+                voice_id = voice_with_options.voice_id
+                assert isinstance(voice_id, voice_module.TtsVoiceId_v3), \
+                    f"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}, voice_with_options: {type(voice_with_options).__name__}"
+
                 full_filename, audio_filename = self.generate_audio_write_file(processed_text, 
-                    voice_with_options.voice, voice_with_options.options, audio_request_context)
+                    voice_with_options.voice_id, voice_with_options.options, audio_request_context)
                 logger.debug(f'finished generating audio file and write to file for {processed_text}')
                 return full_filename, audio_filename
             except errors.AudioNotFoundError as exc:
@@ -372,17 +377,23 @@ class HyperTTS():
     # processing of sound tags / collection stuff
     # ===========================================
 
-    def generate_audio_write_file(self, source_text, voice, voice_options, audio_request_context):
+    def generate_audio_write_file(self, source_text, voice_id: voice_module.TtsVoiceId_v3, voice_options, audio_request_context):
+        assert isinstance(voice_id, voice_module.TtsVoiceId_v3), f"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}"
         format = options.AudioFormat.mp3 # default to mp3
         if options.AUDIO_FORMAT_PARAMETER in voice_options:
             format = options.AudioFormat[voice_options[options.AUDIO_FORMAT_PARAMETER]]
 
         # write to user files directory
-        hash_str = self.get_hash_for_audio_request(source_text, voice, voice_options)
+        hash_str = self.get_hash_for_audio_request(source_text, voice_id, voice_options)
         audio_filename = self.get_audio_filename(hash_str, format)
         full_filename = self.get_full_audio_file_name(hash_str, format)
         logger.info(f'requesting audio for hash {hash_str}, full filename {full_filename}')
         if not os.path.exists(full_filename) or os.path.getsize(full_filename) == 0:
+
+            # get the voice which corresponds to the voice_id
+            voice = self.service_manager.locate_voice(voice_id)
+            logger.info(f'located voice: {voice}')
+
             audio_data = self.service_manager.get_tts_audio(source_text, voice, voice_options, audio_request_context)
             logger.info(f'not found in cache, requesting')
             logger.debug(f'opening {full_filename}')
@@ -418,10 +429,10 @@ class HyperTTS():
         filename = f'hypertts-{hash_str}.{extension}'
         return filename
 
-    def get_hash_for_audio_request(self, source_text, voice, options):
+    def get_hash_for_audio_request(self, source_text, voice_id: voice_module.TtsVoiceId_v3, options):
         combined_data = {
             'source_text': source_text,
-            'voice_key': voice.voice_key,
+            'voice_id': voice_id,
             'options': options
         }
         return hashlib.sha224(str(combined_data).encode('utf-8')).hexdigest()

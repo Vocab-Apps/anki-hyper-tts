@@ -64,6 +64,12 @@ class VoiceNotFound(HyperTTSError):
         super().__init__(message)
         self.voice_data = voice_data
 
+class VoiceIdNotFound(HyperTTSError):
+    def __init__(self, voice_id):
+        message = f'Voice not found: {voice_id}]'
+        super().__init__(message)
+        self.voice_id = voice_id
+
 class PresetNotFound(HyperTTSError):
     def __init__(self, preset_name):
         message = f'Preset not found: {preset_name}]'

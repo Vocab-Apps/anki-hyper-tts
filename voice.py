@@ -93,8 +93,10 @@ class Voice(VoiceBase):
     voice_key = property(fget=_get_voice_key)
     options = property(fget=_get_options)
 
-# this class is used with API version 3
+# these classes are used with API version 3
 # support for multilingual voices
+
+# voice identification only
 @dataclasses.dataclass
 class TtsVoiceId_v3:
     voice_key: Dict[str, Any]
@@ -108,6 +110,7 @@ class TtsVoiceId_v3:
     def __hash__(self):
         return hash((self.voice_key['voice_id'], self.service))
 
+# full voice information (to display in the GUI)
 @dataclasses.dataclass
 class TtsVoice_v3:
     name: str
@@ -118,6 +121,10 @@ class TtsVoice_v3:
     audio_languages: List[languages.AudioLanguage]
     service_fee: constants.ServiceFee
 
+    @property
+    def voice_id(self) -> TtsVoiceId_v3:
+        return self.get_voice_id()
+
     def get_voice_id(self) -> TtsVoiceId_v3:
         return TtsVoiceId_v3(voice_key=self.voice_key, service=self.service)
 
@@ -126,6 +133,17 @@ class TtsVoice_v3:
 
     def __str__(self):
         return f"{self.name}, {self.gender.name}, {self.service}"
+
+    def __repr__(self):
+            return (f"TtsVoice_v3(name={self.name!r}, voice_key={self.voice_key!r}, options={self.options!r}, "
+                    f"service={self.service!r}, gender={self.gender!r}, audio_languages={self.audio_languages!r}, "
+                    f"service_fee={self.service_fee!r}, voice_id={self.voice_id!r})")
+
+def serialize_voice_v3(voice: TtsVoice_v3) -> str:
+    return databind.json.dump(voice, TtsVoice_v3)
+
+def deserialize_voice_v3(voice: str) -> TtsVoice_v3:
+    return databind.json.load(voice, TtsVoice_v3)
 
 def serialize_voiceid_v3(voice_id: TtsVoiceId_v3) -> str:
     return databind.json.dump(voice_id, TtsVoiceId_v3)

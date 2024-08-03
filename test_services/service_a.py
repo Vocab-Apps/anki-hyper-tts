@@ -9,6 +9,7 @@ import time
 
 
 options = __import__('options', globals(), locals(), [], sys._addon_import_level_services)
+voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
 logger = logging_utils.get_child_logger(__name__)
 
@@ -56,7 +57,7 @@ class ServiceA(service.ServiceBase):
             voice.build_voice_v3('voice_a_3', constants.Gender.Female, languages.AudioLanguage.ja_JP, self, {'name': 'voice_3'}, VOICE_OPTIONS),
         ]
 
-    def get_tts_audio(self, source_text, voice_id: voice.TtsVoiceId_v3, options):
+    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
         delay_s = self._config.get('delay', 0)
         if delay_s > 0:
             logger.info(f'sleeping for {delay_s}s')
@@ -64,7 +65,7 @@ class ServiceA(service.ServiceBase):
 
         self.requested_audio = {
             'source_text': source_text,
-            'voice_id': voice.serialize_voiceid_v3(voice_id),
+            'voice': voice_module.serialize_voice_v3(voice),
             'options': options
         }
         encoded_dict = json.dumps(self.requested_audio, indent=2).encode('utf-8')
