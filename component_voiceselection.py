@@ -50,9 +50,11 @@ class VoiceSelection(component_common.ConfigComponentBase):
         genders = set()
 
         for voice in self.voice_list:
-            audio_languages.add(voice.language)
-            languages.add(voice.language.lang)
-            services.add(voice.service.name)
+            # with ttsvoice v3, voices can support multiple languages
+            for audio_language in voice.audio_languages:
+                audio_languages.add(audio_language)
+                languages.add(audio_language.lang)
+            services.add(voice.service)
             genders.add(voice.gender)
 
         def get_name(entry):
@@ -125,7 +127,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # pick first voice
         if len(self.voice_list) == 0:
             raise errors.NoVoicesAvailable()
-        self.voice_selection_model.set_voice(config_models.VoiceWithOptions(self.voice_list[0], {}))
+        voice_id = self.voice_list[0].voice_id
+        self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice_id, {}))
 
     def populate_combobox(self, combobox, items):
         combobox.addItem(constants.LABEL_FILTER_ALL)
@@ -356,7 +359,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 self.current_voice_options[key] = value
                 logger.info(f'set option {key} to {value}')
                 if self.voice_selection_model.selection_mode == constants.VoiceSelectionMode.single:
-                    self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice, self.current_voice_options))
+                    self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice.voice_id, self.current_voice_options))
                     self.notify_model_update()
             return set_value
 
@@ -399,7 +402,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         # if we are in the single voice mode, set the mode on the voice selection model
         if self.voice_selection_model.selection_mode == constants.VoiceSelectionMode.single:
-            self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice, {}))
+            self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice.voice_id, {}))
             self.notify_model_update()
 
     def filter_and_draw_voices(self, current_index):

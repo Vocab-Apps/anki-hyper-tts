@@ -49,14 +49,11 @@ def test_voice_selection_defaults_single(qtbot):
     dialog.addChildWidget(voiceselection.draw())
 
 
-    voiceselection.voices_combobox.setCurrentIndex(1) # pick second voice
+    voiceselection.voices_combobox.setCurrentIndex(3) # pick second voice
     expected_output = {
         'voice_selection_mode': 'single',
         'voice': {
-            'voice': {
-                'gender': 'Male', 
-                'language': 'fr_FR',
-                'name': 'voice_a_1', 
+            'voice_id': {
                 'service': 'ServiceA',
                 'voice_key': {'name': 'voice_1'}
             },
