@@ -35,6 +35,7 @@ import component_presetmappingrules
 import component_mappingrule
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+testing_utils = __import__('testing_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
 
 
@@ -81,6 +82,7 @@ def test_voice_selection_manual(qtbot):
         dialog.exec()
 
 def test_voice_selection_single_1(qtbot):
+    # pytest --log-cli-level=DEBUG test_components.py -k test_voice_selection_single_1 -vv
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
     dialog = gui_testing_utils.EmptyDialog()
@@ -90,17 +92,14 @@ def test_voice_selection_single_1(qtbot):
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
-    voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
+    testing_utils.voice_selection_voice_list_select('voice_a_2', 'ServiceA', voiceselection.voices_combobox)
 
     # dialog.exec()
 
     expected_output = {
         'voice_selection_mode': 'single',
         'voice': {
-            'voice': {
-                'gender': 'Female', 
-                'language': 'en_US',
-                'name': 'voice_a_2', 
+            'voice_id': {
                 'service': 'ServiceA',
                 'voice_key': {'name': 'voice_2'}
             },
@@ -117,10 +116,7 @@ def test_voice_selection_single_1(qtbot):
     expected_output = {
         'voice_selection_mode': 'single',
         'voice': {
-            'voice': {
-                'gender': 'Female', 
-                'language': 'en_US',
-                'name': 'voice_a_2', 
+            'voice_id': {
                 'service': 'ServiceA',
                 'voice_key': {'name': 'voice_2'}
             },
@@ -154,10 +150,7 @@ def test_voice_selection_format_ogg(qtbot):
     expected_output = {
         'voice_selection_mode': 'single',
         'voice': {
-            'voice': {
-                'gender': 'Female', 
-                'language': 'en_US',
-                'name': 'voice_a_2', 
+            'voice_id': {
                 'service': 'ServiceA',
                 'voice_key': {'name': 'voice_2'}
             },

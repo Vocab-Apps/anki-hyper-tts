@@ -49,6 +49,16 @@ def create_simple_batch(hypertts_instance,
 
     return batch    
 
+def voice_selection_voice_list_select(name: str, service: str, voices_combobox):
+    for i in range(voices_combobox.count()):
+        item_text = voices_combobox.itemText(i)
+        logger.debug(f'voice_combobox item: {item_text}')
+        if name in item_text and service in item_text:
+            voices_combobox.setCurrentIndex(i)
+            return
+
+    raise Exception(f'could not find voice {name} for service {service}')
+
 
 class MockFuture():
     def __init__(self, result_data):
