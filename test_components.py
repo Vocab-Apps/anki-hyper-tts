@@ -436,7 +436,8 @@ def test_voice_selection_samples(qtbot):
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
-    voiceselection.voices_combobox.setCurrentIndex(1)
+    testing_utils.voice_selection_voice_list_select('voice_a_1', 'ServiceA', voiceselection.voices_combobox)
+    # voiceselection.voices_combobox.setCurrentIndex(1)
 
     # simulate selection from the preview grid
     voiceselection.sample_text_selected('Bonjour')
@@ -447,10 +448,11 @@ def test_voice_selection_samples(qtbot):
         'source_text': 'Bonjour',
         'voice': {
             'gender': 'Male', 
-            'language': 'fr_FR', 
+            'audio_languages': ['fr_FR'],
             'name': 'voice_a_1', 
             'service': 'ServiceA',
-            'voice_key': {'name': 'voice_1'}
+            'voice_key': {'name': 'voice_1'},
+            'service_fee': 'free',
         },
         'options': {}
     }

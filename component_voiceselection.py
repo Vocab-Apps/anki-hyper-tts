@@ -323,7 +323,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
             # get options
             options = self.current_voice_options
             logger.debug(f'play_sample, sample_text: {self.sample_text}')
-            self.hypertts.play_sound(self.sample_text, selected_voice, options)
+            self.hypertts.play_sound(self.sample_text, selected_voice.voice_id, options)
 
     def add_voice(self):
         with self.hypertts.error_manager.get_single_action_context('Adding Voice'):

@@ -310,11 +310,11 @@ class HyperTTS():
         full_filename, audio_filename = self.get_realtime_audio(realtime_model, text)
         self.anki_utils.play_sound(full_filename)
 
-    def play_sound(self, source_text, voice, options):
+    def play_sound(self, source_text, voice_id, options):
         logger.info(f'playing audio for {source_text}')
         if source_text == None or len(source_text) == 0:
             raise errors.SourceTextEmpty()        
-        full_filename, audio_filename = self.generate_audio_write_file(source_text, voice, options, context.AudioRequestContext(constants.AudioRequestReason.preview))
+        full_filename, audio_filename = self.generate_audio_write_file(source_text, voice_id, options, context.AudioRequestContext(constants.AudioRequestReason.preview))
         self.anki_utils.play_sound(full_filename)
 
     def get_preview_all_rules_task(self, deck_note_type: config_models.DeckNoteType,editor_context: config_models.EditorContext, preset_mapping_rules: config_models.PresetMappingRules):
