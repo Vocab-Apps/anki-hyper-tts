@@ -384,7 +384,7 @@ def test_voice_selection_filters(qtbot):
     assert len(voiceselection.filtered_voice_list) < len(voiceselection.voice_list)
     assert len(voiceselection.filtered_voice_list) == voiceselection.voices_combobox.count()
     for voice in voiceselection.filtered_voice_list:
-        assert voice.language.lang == languages.Language.ja
+        assert languages.Language.ja in voice.languages
 
     # reset filters
     qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.MouseButton.LeftButton)
@@ -415,7 +415,7 @@ def test_voice_selection_filters(qtbot):
     assert len(voiceselection.filtered_voice_list) == voiceselection.voices_combobox.count()
     for voice in voiceselection.filtered_voice_list:
         assert voice.gender == constants.Gender.Female
-        assert voice.language.lang == languages.Language.ja
+        assert languages.Language.ja in voice.languages
 
     # reset filters again
     qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.MouseButton.LeftButton)    

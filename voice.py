@@ -2,6 +2,7 @@ import sys
 import abc
 import dataclasses
 import databind.json
+import functools
 from typing import Dict, Any, List
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
@@ -128,8 +129,14 @@ class TtsVoice_v3:
     def get_voice_id(self) -> TtsVoiceId_v3:
         return TtsVoiceId_v3(voice_key=self.voice_key, service=self.service)
 
-    # def serialize_voice_id(self):
-    #     return serialize_voiceid_v3(self.get_voice_id())
+    # languages that this voide provides
+    def get_languages(self) -> List[languages.Language]:
+        return list(set(audio_language.lang for audio_language in self.audio_languages))
+
+    @functools.cached_property
+    def languages(self) -> List[languages.Language]:
+        return self.get_languages()
+    
 
     def __str__(self):
         return f"{self.name}, {self.gender.name}, {self.service}"
