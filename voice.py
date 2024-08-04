@@ -182,4 +182,4 @@ def generate_voice_with_options_str(voice: TtsVoice_v3, options) -> str:
     if len(options_array) > 0:
         result += ' (' + ', '.join(options_array) + ')'
 
-    return
+    return result

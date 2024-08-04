@@ -477,7 +477,7 @@ def test_voice_selection_load_model(qtbot):
     # ============
 
     model = config_models.VoiceSelectionSingle()
-    model.voice = config_models.VoiceWithOptions(voice_a_2, {'speaking_rate': 3.5})
+    model.voice = config_models.VoiceWithOptions(voice_a_2.voice_id, {'speaking_rate': 3.5})
 
     voiceselection.load_model(model)
 
@@ -493,7 +493,7 @@ def test_voice_selection_load_model(qtbot):
     # ========================
 
     model = config_models.VoiceSelectionSingle()
-    model.voice = config_models.VoiceWithOptions(voice_a_2, {'format': 'ogg_opus'})
+    model.voice = config_models.VoiceWithOptions(voice_a_2.voice_id, {'format': 'ogg_opus'})
 
     voiceselection.load_model(model)
 
@@ -509,7 +509,7 @@ def test_voice_selection_load_model(qtbot):
     # ========================
 
     model = config_models.VoiceSelectionSingle()
-    model.voice = config_models.VoiceWithOptions(voice_a_2, {'format': 'mp3'})
+    model.voice = config_models.VoiceWithOptions(voice_a_2.voice_id, {'format': 'mp3'})
 
     voiceselection.load_model(model)
 
@@ -525,8 +525,8 @@ def test_voice_selection_load_model(qtbot):
     # =======
 
     model = config_models.VoiceSelectionRandom()
-    model.add_voice(config_models.VoiceWithOptionsRandom(voice_a_2, {'speaking_rate': 2.5}))
-    model.add_voice(config_models.VoiceWithOptionsRandom(voice_a_3, {}))
+    model.add_voice(config_models.VoiceWithOptionsRandom(voice_a_2.voice_id, {'speaking_rate': 2.5}))
+    model.add_voice(config_models.VoiceWithOptionsRandom(voice_a_3.voice_id, {}))
 
     voiceselection.load_model(model)
     
@@ -539,8 +539,8 @@ def test_voice_selection_load_model(qtbot):
     # ========
 
     model = config_models.VoiceSelectionPriority()
-    model.add_voice(config_models.VoiceWithOptionsPriority(voice_a_2, {'speaking_rate': 2.5}))
-    model.add_voice(config_models.VoiceWithOptionsPriority(voice_a_3, {}))
+    model.add_voice(config_models.VoiceWithOptionsPriority(voice_a_2.voice_id, {'speaking_rate': 2.5}))
+    model.add_voice(config_models.VoiceWithOptionsPriority(voice_a_3.voice_id, {}))
 
     voiceselection.load_model(model)
     
