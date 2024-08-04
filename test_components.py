@@ -178,21 +178,20 @@ def test_voice_selection_random_1(qtbot):
     voiceselection.radio_button_random.setChecked(True)
 
     # pick second voice and add it
-    voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
+    # voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
+    testing_utils.voice_selection_voice_list_select('voice_a_2', 'ServiceA', voiceselection.voices_combobox)
     qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # pick third voice and add it
-    voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
+    # voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
+    testing_utils.voice_selection_voice_list_select('voice_a_3', 'ServiceA', voiceselection.voices_combobox)
     qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)    
 
     expected_output = {
         'voice_selection_mode': 'random',
         'voice_list': [
             {
-                'voice': {
-                    'gender': 'Female', 
-                    'language': 'en_US',
-                    'name': 'voice_a_2', 
+                'voice_id': {
                     'service': 'ServiceA',
                     'voice_key': {'name': 'voice_2'}
                 },
@@ -201,10 +200,7 @@ def test_voice_selection_random_1(qtbot):
                 'weight': 1
             },
             {
-                'voice': {
-                    'gender': 'Female', 
-                    'language': 'ja_JP',
-                    'name': 'voice_a_3', 
+                'voice_id': {
                     'service': 'ServiceA',
                     'voice_key': {'name': 'voice_3'}
                 },

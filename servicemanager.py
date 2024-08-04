@@ -206,11 +206,12 @@ class ServiceManager():
             raise errors.VoiceNotFound(voice_data)
         return voice_subset[0]
 
+    @functools.cache
     def locate_voice(self, voice_id: voice_module.TtsVoiceId_v3) -> voice_module.TtsVoice_v3:
         assert isinstance(voice_id, voice_module.TtsVoiceId_v3), f"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}"
         # convert from voice_id to actual voice
         voice_list = self.full_voice_list(single_service_name=voice_id.service)
-        logger.debug(pprint.pformat(voice_list))
+        # logger.debug(pprint.pformat(voice_list))
         voice_subset = [voice for voice in voice_list if voice.get_voice_id() == voice_id]
         if len(voice_subset) == 0:
             logger.error(f'could not locate voice for voice_id: {voice_id!r}')

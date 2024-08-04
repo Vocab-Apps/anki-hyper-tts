@@ -108,7 +108,7 @@ class TtsVoiceId_v3:
         return self.voice_key == other.voice_key and self.service == other.service
 
     def __hash__(self):
-        return hash((self.voice_key['voice_id'], self.service))
+        return hash((frozenset(self.voice_key.items()), self.service))
 
 # full voice information (to display in the GUI)
 @dataclasses.dataclass

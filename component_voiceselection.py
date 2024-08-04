@@ -8,6 +8,7 @@ component_common = __import__('component_common', globals(), locals(), [], sys._
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
 gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
+voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_child_logger(__name__)
 
@@ -330,9 +331,9 @@ class VoiceSelection(component_common.ConfigComponentBase):
             options = copy.copy(self.current_voice_options)
 
             if self.radio_button_random.isChecked():
-                self.voice_selection_model.add_voice(config_models.VoiceWithOptionsRandom(selected_voice, options))
+                self.voice_selection_model.add_voice(config_models.VoiceWithOptionsRandom(selected_voice.voice_id, options))
             elif self.radio_button_priority.isChecked():
-                self.voice_selection_model.add_voice(config_models.VoiceWithOptionsPriority(selected_voice, options))
+                self.voice_selection_model.add_voice(config_models.VoiceWithOptionsPriority(selected_voice.voice_id, options))
 
             self.redraw_selected_voices()
             
@@ -476,7 +477,13 @@ class VoiceSelection(component_common.ConfigComponentBase):
         row = 0
         for voice_entry in self.voice_selection_model.voice_list:
             column_index = 0
-            self.voice_list_grid_layout.addWidget(aqt.qt.QLabel(str(voice_entry)), row, column_index, 1, 1)
+            # need to convert the voice with options entry to a string to show the user
+            voice_id = voice_entry.voice_id
+            assert isinstance(voice_id, voice_module.TtsVoiceId_v3), f"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}"
+            # need to locate the voice for this voice_id
+            voice = self.hypertts.service_manager.locate_voice(voice_id)
+            voice_with_options_str = f'{voice}{voice_entry.options_str()}'
+            self.voice_list_grid_layout.addWidget(aqt.qt.QLabel(voice_with_options_str), row, column_index, 1, 1)
             column_index += 1
             if isinstance(self.voice_selection_model, config_models.VoiceSelectionRandom):
                 # add weight widget
