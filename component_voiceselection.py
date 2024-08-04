@@ -482,7 +482,8 @@ class VoiceSelection(component_common.ConfigComponentBase):
             assert isinstance(voice_id, voice_module.TtsVoiceId_v3), f"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}"
             # need to locate the voice for this voice_id
             voice = self.hypertts.service_manager.locate_voice(voice_id)
-            voice_with_options_str = f'{voice}{voice_entry.options_str()}'
+            # generate the string representation
+            voice_with_options_str = voice_module.generate_voice_with_options_str(voice, voice_entry.options)
             self.voice_list_grid_layout.addWidget(aqt.qt.QLabel(voice_with_options_str), row, column_index, 1, 1)
             column_index += 1
             if isinstance(self.voice_selection_model, config_models.VoiceSelectionRandom):

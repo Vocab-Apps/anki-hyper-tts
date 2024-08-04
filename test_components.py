@@ -137,7 +137,8 @@ def test_voice_selection_format_ogg(qtbot):
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
-    voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
+    testing_utils.voice_selection_voice_list_select('voice_a_2', 'ServiceA', voiceselection.voices_combobox)
+    # voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
 
     # change options
     format_widget = dialog.findChild(aqt.qt.QComboBox, "voice_option_format")
@@ -298,7 +299,7 @@ def test_voice_selection_random_2(qtbot):
     voiceselection.radio_button_random.setChecked(True)
 
     # add the first voice twice, but with different options
-    voiceselection.voices_combobox.setCurrentIndex(1)
+    testing_utils.voice_selection_voice_list_select('voice_a_1', 'ServiceA', voiceselection.voices_combobox)
     qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # change options
@@ -310,10 +311,10 @@ def test_voice_selection_random_2(qtbot):
 
     # build expected voice selection model
     expected_model = config_models.VoiceSelectionRandom()
-    voice = [x for x in hypertts_instance.service_manager.full_voice_list() if x.service.name == 'ServiceA' and x.name == 'voice_a_1'][0]
+    voice = [x for x in hypertts_instance.service_manager.full_voice_list() if x.service == 'ServiceA' and x.name == 'voice_a_1'][0]
 
-    expected_model.add_voice(config_models.VoiceWithOptionsRandom(voice, {}))
-    expected_model.add_voice(config_models.VoiceWithOptionsRandom(voice, {'speaking_rate': 0.25}))    
+    expected_model.add_voice(config_models.VoiceWithOptionsRandom(voice.voice_id, {}))
+    expected_model.add_voice(config_models.VoiceWithOptionsRandom(voice.voice_id, {'speaking_rate': 0.25}))    
 
     assert voiceselection.voice_selection_model.serialize() == expected_model.serialize()
 

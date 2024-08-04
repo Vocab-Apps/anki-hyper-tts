@@ -161,3 +161,18 @@ def build_voice_v3(name, gender, language, service, voice_key, options) -> TtsVo
         audio_languages=[language],
         service_fee=service.service_fee
     )
+
+
+def generate_voice_with_options_str(voice: TtsVoice_v3, options) -> str:
+    result = ''
+
+    result += f"{voice}"
+
+    options_array = []
+    for key, value in options.items():
+        if value != voice.options[key]['default']:
+            options_array.append(f'{key}: {value}')
+    if len(options_array) > 0:
+        result += ' (' + ', '.join(options_array) + ')'
+
+    return
