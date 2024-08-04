@@ -336,19 +336,19 @@ def test_voice_selection_priority_1(qtbot):
     # dialog.exec()
 
     # pick second voice and add it
-    voiceselection.voices_combobox.setCurrentIndex(0) # pick second voice
+    testing_utils.voice_selection_voice_list_select('voice_a_2', 'ServiceA', voiceselection.voices_combobox)
     qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # pick third voice and add it
-    voiceselection.voices_combobox.setCurrentIndex(2) # pick second voice
+    testing_utils.voice_selection_voice_list_select('voice_a_3', 'ServiceA', voiceselection.voices_combobox)
     qtbot.mouseClick(voiceselection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)    
 
     expected_model = config_models.VoiceSelectionPriority()
-    voice_2 = [x for x in hypertts_instance.service_manager.full_voice_list() if x.service.name == 'ServiceA' and x.name == 'voice_a_2'][0]
-    voice_3 = [x for x in hypertts_instance.service_manager.full_voice_list() if x.service.name == 'ServiceA' and x.name == 'voice_a_3'][0]
+    voice_2 = [x for x in hypertts_instance.service_manager.full_voice_list() if x.service == 'ServiceA' and x.name == 'voice_a_2'][0]
+    voice_3 = [x for x in hypertts_instance.service_manager.full_voice_list() if x.service == 'ServiceA' and x.name == 'voice_a_3'][0]
 
-    expected_model.add_voice(config_models.VoiceWithOptionsPriority(voice_2, {}))
-    expected_model.add_voice(config_models.VoiceWithOptionsPriority(voice_3, {}))
+    expected_model.add_voice(config_models.VoiceWithOptionsPriority(voice_2.voice_id, {}))
+    expected_model.add_voice(config_models.VoiceWithOptionsPriority(voice_3.voice_id, {}))
 
     assert voiceselection.voice_selection_model.serialize() == expected_model.serialize()
 
