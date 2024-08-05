@@ -753,7 +753,7 @@ def test_batch_preview(qtbot):
 
     voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
     voice_selection = config_models.VoiceSelectionSingle()
-    voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
+    voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1.voice_id, {}))
 
     batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
