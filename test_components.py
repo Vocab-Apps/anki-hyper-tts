@@ -2067,7 +2067,7 @@ def test_realtime_component(qtbot):
     assert realtime.get_model().front.source.field_name == 'English'
     assert realtime.get_model().front.source.field_type == constants.AnkiTTSFieldType.Regular
 
-    realtime.front.voice_selection.voices_combobox.setCurrentIndex(1)
+    testing_utils.voice_selection_voice_list_select('voice_a_1', 'ServiceA', realtime.front.voice_selection.voices_combobox)
 
     # enable back side
     realtime.back.side_enabled_checkbox.setChecked(True)
@@ -2075,7 +2075,7 @@ def test_realtime_component(qtbot):
     assert realtime.get_model().back.side_enabled == True
     assert realtime.get_model().back.source.field_name == 'Chinese'
 
-    realtime.back.voice_selection.voices_combobox.setCurrentIndex(1)
+    testing_utils.voice_selection_voice_list_select('voice_a_1', 'ServiceA', realtime.back.voice_selection.voices_combobox)
 
     # click apply
     assert realtime.apply_button.isEnabled() == True
