@@ -1860,10 +1860,12 @@ def test_batch_dialog_load_random(qtbot):
         # select random voice selection mode with two voices
         dialog.batch_component.voice_selection.radio_button_random.setChecked(True)
         # pick second voice and add it
-        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(1) # pick second voice
+        testing_utils.voice_selection_voice_list_select('voice_a_1', 'ServiceA', dialog.batch_component.voice_selection.voices_combobox)
+        # dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(1) # pick second voice
         qtbot.mouseClick(dialog.batch_component.voice_selection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
         # pick third voice and add it
-        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(2) # pick second voice
+        # dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(2) # pick second voice
+        testing_utils.voice_selection_voice_list_select('voice_a_2', 'ServiceA', dialog.batch_component.voice_selection.voices_combobox)
         qtbot.mouseClick(dialog.batch_component.voice_selection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
 
         # set profile name

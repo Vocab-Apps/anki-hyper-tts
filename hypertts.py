@@ -823,13 +823,13 @@ class HyperTTS():
         elif voice_selection_mode == constants.VoiceSelectionMode.random:
             random = config_models.VoiceSelectionRandom()
             for voice_data in voice_selection_config['voice_list']:
-                voice_id = voice_module.deserialize_voice_id_v3(voice_selection_config['voice']['voice_id'])
+                voice_id = voice_module.deserialize_voice_id_v3(voice_data['voice_id'])
                 random.add_voice(config_models.VoiceWithOptionsRandom(voice_id, voice_data['options'], voice_data['weight']))
             return random
         elif voice_selection_mode == constants.VoiceSelectionMode.priority:
             priority = config_models.VoiceSelectionPriority()
             for voice_data in voice_selection_config['voice_list']:
-                voice_id = voice_module.deserialize_voice_id_v3(voice_selection_config['voice']['voice_id'])
+                voice_id = voice_module.deserialize_voice_id_v3(voice_data['voice_id'])
                 priority.add_voice(config_models.VoiceWithOptionsPriority(voice_id, voice_data['options']))
             return priority
 
