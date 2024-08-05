@@ -1062,6 +1062,9 @@ def test_batch_dialog_voice_selection_sample(qtbot):
         # play sample button should be disabled
         assert dialog.batch_component.voice_selection.play_sample_button.isEnabled() == False
 
+        # select voice
+        testing_utils.voice_selection_voice_list_select('voice_a_2', 'ServiceA', dialog.batch_component.voice_selection.voices_combobox)
+
         # now select the first row
         index_first_row = dialog.batch_component.preview.batch_preview_table_model.createIndex(0, 0)
         dialog.batch_component.preview.table_view.selectionModel().select(index_first_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)    
@@ -1076,10 +1079,11 @@ def test_batch_dialog_voice_selection_sample(qtbot):
             'source_text': 'old people',
             'voice': {
                 'gender': 'Female', 
-                'language': 'en_US', 
+                'audio_languages': ['en_US'],
                 'name': 'voice_a_2', 
                 'service': 'ServiceA',
-                'voice_key': {'name': 'voice_2'}
+                'voice_key': {'name': 'voice_2'},
+                'service_fee': 'free',
             },
             'options': {}
         }    
@@ -1093,10 +1097,11 @@ def test_batch_dialog_voice_selection_sample(qtbot):
             'source_text': '老人家',
             'voice': {
                 'gender': 'Female', 
-                'language': 'en_US', 
+                'audio_languages': ['en_US'],
                 'name': 'voice_a_2', 
                 'service': 'ServiceA',
-                'voice_key': {'name': 'voice_2'}
+                'voice_key': {'name': 'voice_2'},
+                'service_fee': 'free',
             },
             'options': {}
         }        
