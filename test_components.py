@@ -903,7 +903,7 @@ def test_batch_dialog_1(qtbot):
         index_second_row = dialog.batch_component.preview.batch_preview_table_model.createIndex(1, 0)
         dialog.batch_component.preview.table_view.selectionModel().select(index_second_row, aqt.qt.QItemSelectionModel.SelectionFlag.Select)
         # select voice
-        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(1)
+        testing_utils.voice_selection_voice_list_select('voice_a_1', 'ServiceA', dialog.batch_component.voice_selection.voices_combobox)
         # press preview button
         qtbot.mouseClick(dialog.batch_component.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
         # dialog.exec()
@@ -912,7 +912,8 @@ def test_batch_dialog_1(qtbot):
             'source_text': 'hello',
             'voice': {
                 'gender': 'Male', 
-                'language': 'fr_FR', 
+                'audio_languages': ['fr_FR'],
+                'service_fee': 'free',
                 'name': 'voice_a_1', 
                 'service': 'ServiceA',
                 'voice_key': {'name': 'voice_1'}
