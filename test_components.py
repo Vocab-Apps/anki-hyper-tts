@@ -1033,7 +1033,7 @@ def test_batch_dialog_sound_preview_error(qtbot):
         # dialog.exec()
 
         # select error voice
-        dialog.batch_component.voice_selection.voices_combobox.setCurrentIndex(5)
+        testing_utils.voice_selection_voice_list_select('notfound', 'ServiceB', dialog.batch_component.voice_selection.voices_combobox)
 
         # select second row
         index_second_row = dialog.batch_component.preview.batch_preview_table_model.createIndex(1, 0)
@@ -1044,7 +1044,7 @@ def test_batch_dialog_sound_preview_error(qtbot):
         # press preview button
         qtbot.mouseClick(dialog.batch_component.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-        assert str(hypertts_instance.anki_utils.last_exception) == 'Audio not found for [hello] (voice: Japanese, Male, notfound, ServiceB)'
+        assert str(hypertts_instance.anki_utils.last_exception) == 'Audio not found for [hello] (voice: notfound, Male, ServiceB)'
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
     component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')        
