@@ -459,13 +459,20 @@ class HyperTTS():
         logger.debug('build_realtime_tts_tag')
         if realtime_side_model.source.mode == constants.RealtimeSourceType.AnkiTTSTag:
             logger.debug(f'build_realtime_tts_tag, realtime_side_model: {realtime_side_model}')
+            
             # get the audio language of the first voice
             voice_selection = realtime_side_model.voice_selection
             logger.debug(f'voice_selection.selection_mode: {voice_selection.selection_mode}')
+            # first, we need to get the voice_id
             if voice_selection.selection_mode == constants.VoiceSelectionMode.single:
-                audio_language = voice_selection.voice.voice.language
+                voice_id = voice_selection.voice.voice_id
             else:
-                audio_language = voice_selection.get_voice_list()[0].voice.language
+                voice_id = voice_selection.get_voice_list()[0].voice.voice_id
+            # now, locate the voice for this voice id
+            voice = self.service_manager.locate_voice(voice_id)
+            audio_language = voice_module.get_audio_language_for_voice(voice)
+
+
             field_format = realtime_side_model.source.field_name
             if realtime_side_model.source.field_type == constants.AnkiTTSFieldType.Cloze:
                 field_format = f'cloze:{realtime_side_model.source.field_name}'

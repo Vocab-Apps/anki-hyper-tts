@@ -2001,7 +2001,7 @@ def test_realtime_side_component(qtbot):
     assert realtime_side.text_preview_label.text() == 'old people'
 
     # select voice
-    realtime_side.voice_selection.voices_combobox.setCurrentIndex(1)
+    testing_utils.voice_selection_voice_list_select('voice_a_1', 'ServiceA', realtime_side.voice_selection.voices_combobox)
 
     # press sound preview
     qtbot.mouseClick(realtime_side.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
@@ -2011,10 +2011,11 @@ def test_realtime_side_component(qtbot):
         'source_text': 'old people',
         'voice': {
             'gender': 'Male', 
-            'language': 'fr_FR', 
+            'audio_languages': ['fr_FR'],
             'name': 'voice_a_1', 
             'service': 'ServiceA',
-            'voice_key': {'name': 'voice_1'}
+            'voice_key': {'name': 'voice_1'},
+            'service_fee': 'free',
         },
         'options': {}
     }        

@@ -183,3 +183,9 @@ def generate_voice_with_options_str(voice: TtsVoice_v3, options) -> str:
         result += ' (' + ', '.join(options_array) + ')'
 
     return result
+
+def get_audio_language_for_voice(voice: TtsVoice_v3) -> languages.AudioLanguage:
+    if len(voice.audio_languages) == 1:
+        return voice.audio_languages[0]
+    # otherwise, we are dealing with a multilingual voice. default to en_US for now
+    return languages.AudioLanguage.en_US
