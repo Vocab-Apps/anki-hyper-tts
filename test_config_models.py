@@ -55,15 +55,12 @@ class ConfigModelsTests(unittest.TestCase):
         # =================
 
         single = config_models.VoiceSelectionSingle()
-        single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))
+        single.set_voice(config_models.VoiceWithOptions(voice_a_1.voice_id, {'speed': 42}))
 
         expected_output = {
             'voice_selection_mode': 'single',
             'voice': {
-                'voice': {
-                    'gender': 'Male', 
-                    'language': 'fr_FR', 
-                    'name': 'voice_a_1', 
+                'voice_id': {
                     'service': 'ServiceA',
                     'voice_key': {'name': 'voice_1'}
                 },
@@ -85,17 +82,14 @@ class ConfigModelsTests(unittest.TestCase):
         # =================
 
         random = config_models.VoiceSelectionRandom()
-        random.add_voice(config_models.VoiceWithOptionsRandom(voice_a_1, {'speed': 43}))
-        random.add_voice(config_models.VoiceWithOptionsRandom(voice_jane, {}))
+        random.add_voice(config_models.VoiceWithOptionsRandom(voice_a_1.voice_id, {'speed': 43}))
+        random.add_voice(config_models.VoiceWithOptionsRandom(voice_jane.voice_id, {}))
 
         expected_output = {
             'voice_selection_mode': 'random',
             'voice_list': [
                 {
-                    'voice': {
-                        'gender': 'Male', 
-                        'language': 'fr_FR', 
-                        'name': 'voice_a_1', 
+                    'voice_id': {
                         'service': 'ServiceA',
                         'voice_key': {'name': 'voice_1'}
                     },
@@ -105,10 +99,7 @@ class ConfigModelsTests(unittest.TestCase):
                     'weight': 1
                 },
                 {
-                    'voice': {
-                        'gender': 'Male', 
-                        'language': 'ja_JP', 
-                        'name': 'jane', 
+                    'voice_id': {
                         'service': 'ServiceB',
                         'voice_key': {'voice_id': 'jane'}
                     },
@@ -140,18 +131,15 @@ class ConfigModelsTests(unittest.TestCase):
         # ===================
 
         priority = config_models.VoiceSelectionPriority()
-        priority.add_voice(config_models.VoiceWithOptionsPriority(voice_a_1, {'speed': 43}))
-        priority.add_voice(config_models.VoiceWithOptionsPriority(voice_a_1, {'speed': 84}))
-        priority.add_voice(config_models.VoiceWithOptionsPriority(voice_jane, {}))
+        priority.add_voice(config_models.VoiceWithOptionsPriority(voice_a_1.voice_id, {'speed': 43}))
+        priority.add_voice(config_models.VoiceWithOptionsPriority(voice_a_1.voice_id, {'speed': 84}))
+        priority.add_voice(config_models.VoiceWithOptionsPriority(voice_jane.voice_id, {}))
 
         expected_output = {
             'voice_selection_mode': 'priority',
             'voice_list': [
                 {
-                    'voice': {
-                        'gender': 'Male', 
-                        'language': 'fr_FR', 
-                        'name': 'voice_a_1', 
+                    'voice_id': {
                         'service': 'ServiceA',
                         'voice_key': {'name': 'voice_1'}
                     },
@@ -160,10 +148,7 @@ class ConfigModelsTests(unittest.TestCase):
                     },
                 },
                 {
-                    'voice': {
-                        'gender': 'Male', 
-                        'language': 'fr_FR', 
-                        'name': 'voice_a_1', 
+                    'voice_id': {
                         'service': 'ServiceA',
                         'voice_key': {'name': 'voice_1'}
                     },
@@ -172,10 +157,7 @@ class ConfigModelsTests(unittest.TestCase):
                     },
                 },            
                 {
-                    'voice': {
-                        'gender': 'Male', 
-                        'language': 'ja_JP', 
-                        'name': 'jane', 
+                    'voice_id': {
                         'service': 'ServiceB',
                         'voice_key': {'voice_id': 'jane'}
                     },
@@ -192,10 +174,7 @@ class ConfigModelsTests(unittest.TestCase):
             'voice_selection_mode': 'priority',
             'voice_list': [
                 {
-                    'voice': {
-                        'gender': 'Male', 
-                        'language': 'fr_FR', 
-                        'name': 'voice_a_1', 
+                    'voice_id': {
                         'service': 'ServiceA',
                         'voice_key': {'name': 'voice_1'}
                     },
@@ -204,10 +183,7 @@ class ConfigModelsTests(unittest.TestCase):
                     },
                 },
                 {
-                    'voice': {
-                        'gender': 'Male', 
-                        'language': 'ja_JP', 
-                        'name': 'jane', 
+                    'voice_id': {
                         'service': 'ServiceB',
                         'voice_key': {'voice_id': 'jane'}
                     },
@@ -215,10 +191,7 @@ class ConfigModelsTests(unittest.TestCase):
                     },
                 },
                 {
-                    'voice': {
-                        'gender': 'Male', 
-                        'language': 'fr_FR', 
-                        'name': 'voice_a_1', 
+                    'voice_id': {
                         'service': 'ServiceA',
                         'voice_key': {'name': 'voice_1'}
                     },
@@ -237,10 +210,7 @@ class ConfigModelsTests(unittest.TestCase):
             'voice_selection_mode': 'priority',
             'voice_list': [
                 {
-                    'voice': {
-                        'gender': 'Male', 
-                        'language': 'ja_JP', 
-                        'name': 'jane', 
+                    'voice_id': {
                         'service': 'ServiceB',
                         'voice_key': {'voice_id': 'jane'}
                     },
@@ -248,10 +218,7 @@ class ConfigModelsTests(unittest.TestCase):
                     },
                 },
                 {
-                    'voice': {
-                        'gender': 'Male', 
-                        'language': 'fr_FR', 
-                        'name': 'voice_a_1', 
+                    'voice_id': {
                         'service': 'ServiceA',
                         'voice_key': {'name': 'voice_1'}
                     },
@@ -260,10 +227,7 @@ class ConfigModelsTests(unittest.TestCase):
                     },
                 },
                 {
-                    'voice': {
-                        'gender': 'Male', 
-                        'language': 'fr_FR', 
-                        'name': 'voice_a_1', 
+                    'voice_id': {
                         'service': 'ServiceA',
                         'voice_key': {'name': 'voice_1'}
                     },
@@ -287,7 +251,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
         voice_selection = config_models.VoiceSelectionSingle()
-        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
+        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1.voice_id, {'speed': 43}))
 
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         batch_config.name = 'preset_1'
@@ -323,10 +287,7 @@ class ConfigModelsTests(unittest.TestCase):
                 'voice_selection_mode': 'single',
                 'voice': 
                     {
-                        'voice': {
-                            'gender': 'Male', 
-                            'language': 'fr_FR', 
-                            'name': 'voice_a_1', 
+                        'voice_id': {
                             'service': 'ServiceA',
                             'voice_key': {'name': 'voice_1'}
                         },
@@ -366,7 +327,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
         voice_selection = config_models.VoiceSelectionSingle()
-        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
+        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1.voice_id, {'speed': 43}))
         batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
         source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
         text_processing = config_models.TextProcessing()
@@ -557,7 +518,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
         voice_selection = config_models.VoiceSelectionSingle()
-        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
+        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1.voice_id, {'speed': 43}))
 
         source_template = """result = 'yoyo'"""
 
@@ -596,10 +557,7 @@ class ConfigModelsTests(unittest.TestCase):
                 'voice_selection_mode': 'single',
                 'voice': 
                     {
-                        'voice': {
-                            'gender': 'Male', 
-                            'language': 'fr_FR', 
-                            'name': 'voice_a_1', 
+                        'voice_id': {
                             'service': 'ServiceA',
                             'voice_key': {'name': 'voice_1'}
                         },
@@ -637,7 +595,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
         voice_selection = config_models.VoiceSelectionSingle()
-        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
+        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1.voice_id, {'speed': 43}))
 
         # missing source field
         # ====================
@@ -705,7 +663,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
         voice_selection = config_models.VoiceSelectionSingle()
-        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 43}))
+        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1.voice_id, {'speed': 43}))
 
         realtime_config = config_models.RealtimeConfig()
         front = config_models.RealtimeConfigSide()
@@ -738,10 +696,7 @@ class ConfigModelsTests(unittest.TestCase):
                     'voice_selection_mode': 'single',
                     'voice': 
                         {
-                            'voice': {
-                                'gender': 'Male', 
-                                'language': 'fr_FR', 
-                                'name': 'voice_a_1', 
+                            'voice_id': {
                                 'service': 'ServiceA',
                                 'voice_key': {'name': 'voice_1'}
                             },
