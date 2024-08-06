@@ -26,6 +26,7 @@ import voice
 import servicemanager
 import errors
 import languages
+from languages import AudioLanguage
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 options = __import__('options', globals(), locals(), [], sys._addon_import_level_base)
@@ -247,7 +248,10 @@ class TTSTests(unittest.TestCase):
             return random.sample(voice_subset, count)
         return []
 
-
+    def random_voice_test(self, service_name, audio_language, source_text):
+        voice_list = self.manager.full_voice_list()
+        selected_voice = self.pick_random_voice(voice_list, service_name, audio_language)
+        self.verify_audio_output(selected_voice, audio_language, source_text)
 
     def test_google(self):
         service_name = 'Google'
@@ -279,12 +283,6 @@ class TTSTests(unittest.TestCase):
         selected_voice = copy.copy(selected_voice)
         voice_key = copy.copy(selected_voice.voice_key)
         voice_key['name'] = 'non existent'
-        # altered_voice = voice.Voice('non existent', 
-        #                             selected_voice.gender, 
-        #                             selected_voice.language, 
-        #                             selected_voice.service, 
-        #                             voice_key,
-        #                             selected_voice.options)
         altered_voice = voice_module.TtsVoice_v3('non existent',
                                                  voice_key,
                                                  selected_voice.options,
@@ -314,16 +312,14 @@ class TTSTests(unittest.TestCase):
         assert len(service_voices) > 300
 
         # pick a random en_US voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'This is the first sentence')
+        self.random_voice_test(service_name, AudioLanguage.en_US, 'This is the first sentence')
 
         # french
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
-        self.verify_audio_output(selected_voice, 'Je ne suis pas disponible.')
+        self.random_voice_test(service_name, AudioLanguage.fr_FR, 'Je ne suis pas disponible.')
 
         # test ogg format
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'This is the first sentence', voice_options={'format': 'ogg_opus'})
+        self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'This is the first sentence', voice_options={'format': 'ogg_opus'})
 
         # error checking
         # try a voice which doesn't exist
@@ -331,12 +327,14 @@ class TTSTests(unittest.TestCase):
         selected_voice = copy.copy(selected_voice)
         voice_key = copy.copy(selected_voice.voice_key)
         voice_key['name'] = 'non existent'
-        altered_voice = voice.Voice('non existent', 
-                                    selected_voice.gender, 
-                                    selected_voice.language, 
-                                    selected_voice.service, 
-                                    voice_key,
-                                    selected_voice.options)
+
+        altered_voice = voice_module.TtsVoice_v3('non existent',
+                                                 voice_key,
+                                                 selected_voice.options,
+                                                 service_name,
+                                                 selected_voice.gender, 
+                                                 [languages.AudioLanguage.en_US],
+                                                 constants.ServiceFee.paid)
 
         exception_caught = False
         try:
