@@ -30,6 +30,7 @@ import languages
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 options = __import__('options', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
+voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
 
 def services_dir():
@@ -156,7 +157,7 @@ class TTSTests(unittest.TestCase):
             replace(':', '').lower()
         return result_text
 
-    def verify_audio_output(self, voice, source_text, expected_text_override=None, voice_options={}):
+    def verify_audio_output(self, voice, audio_language, source_text, expected_text_override=None, voice_options={}):
         audio_data = self.manager.get_tts_audio(source_text, voice, voice_options, 
             context.AudioRequestContext(constants.AudioRequestReason.batch))
         assert len(audio_data) > 0
@@ -211,7 +212,7 @@ class TTSTests(unittest.TestCase):
             languages.AudioLanguage.th_TH: 'th-TH',
         }
 
-        recognition_language = recognition_language_map[voice.language]
+        recognition_language = recognition_language_map[audio_language]
 
         audio_input = azure.cognitiveservices.speech.audio.AudioConfig(filename=wav_filepath)
         speech_recognizer = azure.cognitiveservices.speech.SpeechRecognizer(speech_config=speech_config, audio_config=audio_input, language=recognition_language)
@@ -234,14 +235,14 @@ class TTSTests(unittest.TestCase):
             raise Exception(error_message)
 
     def pick_random_voice(self, voice_list, service_name, language):
-        voice_subset = [voice for voice in voice_list if voice.service.name == service_name and voice.language == language]
+        voice_subset = [voice for voice in voice_list if voice.service == service_name and language in voice.audio_languages]
         if len(voice_subset) == 0:
             logger.error(f'found no voices for service {service_name}, language {language}')
         random_voice = random.choice(voice_subset)
         return random_voice
 
     def pick_random_voices_sample(self, voice_list, service_name, language, count):
-        voice_subset = [voice for voice in voice_list if voice.service.name == service_name and voice.language == language]
+        voice_subset = [voice for voice in voice_list if voice.service == service_name and language in voice.audio_languages]
         if len(voice_subset) > count:
             return random.sample(voice_subset, count)
         return []
@@ -252,22 +253,25 @@ class TTSTests(unittest.TestCase):
         service_name = 'Google'
 
         voice_list = self.manager.full_voice_list()
-        google_voices = [voice for voice in voice_list if voice.service.name == 'Google']
+        google_voices = [voice for voice in voice_list if voice.service == 'Google']
         # print(voice_list)
         logger.info(f'found {len(google_voices)} voices for Google services')
         assert len(google_voices) > 300
 
         # pick a random en_US voice
-        selected_voice = self.pick_random_voice(voice_list, 'Google', languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'This is the first sentence')
+        audio_language = languages.AudioLanguage.en_US
+        selected_voice = self.pick_random_voice(voice_list, 'Google', audio_language)
+        self.verify_audio_output(selected_voice, audio_language, 'This is the first sentence')
 
         # french
-        selected_voice = self.pick_random_voice(voice_list, 'Google', languages.AudioLanguage.fr_FR)
-        self.verify_audio_output(selected_voice, 'Je ne suis pas disponible.')
+        audio_language = languages.AudioLanguage.fr_FR
+        selected_voice = self.pick_random_voice(voice_list, 'Google', audio_language)
+        self.verify_audio_output(selected_voice, audio_language, 'Je ne suis pas disponible.')
 
         # test ogg format
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'This is the first sentence', voice_options={'format': 'ogg_opus'})
+        audio_language = languages.AudioLanguage.en_US
+        selected_voice = self.pick_random_voice(voice_list, service_name, audio_language)
+        self.verify_audio_output(selected_voice, audio_language, 'This is the first sentence', voice_options={'format': 'ogg_opus'})
 
         # error checking
         # try a voice which doesn't exist
@@ -275,12 +279,20 @@ class TTSTests(unittest.TestCase):
         selected_voice = copy.copy(selected_voice)
         voice_key = copy.copy(selected_voice.voice_key)
         voice_key['name'] = 'non existent'
-        altered_voice = voice.Voice('non existent', 
-                                    selected_voice.gender, 
-                                    selected_voice.language, 
-                                    selected_voice.service, 
-                                    voice_key,
-                                    selected_voice.options)
+        # altered_voice = voice.Voice('non existent', 
+        #                             selected_voice.gender, 
+        #                             selected_voice.language, 
+        #                             selected_voice.service, 
+        #                             voice_key,
+        #                             selected_voice.options)
+        altered_voice = voice_module.TtsVoice_v3('non existent',
+                                                 voice_key,
+                                                 selected_voice.options,
+                                                 service_name,
+                                                 selected_voice.gender, 
+                                                 [languages.AudioLanguage.en_US],
+                                                 constants.ServiceFee.paid)
+
 
         exception_caught = False
         try:
@@ -289,7 +301,7 @@ class TTSTests(unittest.TestCase):
         except errors.RequestError as e:
             assert 'Could not request audio for' in str(e)
             assert e.source_text == 'This is the second sentence'
-            assert e.voice.service.name == 'Google'
+            assert e.voice.service == 'Google'
             exception_caught = True
         assert exception_caught
 
@@ -298,7 +310,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'Azure'
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         assert len(service_voices) > 300
 
         # pick a random en_US voice
@@ -333,7 +345,7 @@ class TTSTests(unittest.TestCase):
         except errors.RequestError as e:
             assert 'Could not request audio for' in str(e)
             assert e.source_text == 'This is the second sentence'
-            assert e.voice.service.name == service_name
+            assert e.voice.service == service_name
             exception_caught = True
         assert exception_caught
 
@@ -342,7 +354,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'Amazon'
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         assert len(service_voices) > 50
 
         # pick a random en_US voice
@@ -358,7 +370,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'VocalWare'
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         assert len(service_voices) > 50
 
         # pick a random en_US voice
@@ -370,7 +382,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'Watson'
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         assert len(service_voices) > 50
 
         # pick a random en_US voice
@@ -382,7 +394,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'CereProc'
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         assert len(service_voices) > 50
 
         # pick a random en_US voice
@@ -394,7 +406,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'ElevenLabs'
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         assert len(service_voices) > 5
 
         # pick a random en_US voice
@@ -406,7 +418,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'ElevenLabs'
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name and voice.language == languages.AudioLanguage.en_US]
+        service_voices = [voice for voice in voice_list if voice.service == service_name and voice.language == languages.AudioLanguage.en_US]
         charlotte_voices = [voice for voice in service_voices if 'Charlotte' in voice.name]
         # basically we are testing that all the ElevenLabs models are working, there should be 4 or them
         self.assertGreaterEqual(len(charlotte_voices), 4)
@@ -451,7 +463,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'OpenAI'
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         assert len(service_voices) > 5
 
         # pick a random en_US voice
@@ -473,7 +485,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'FptAi'
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         assert len(service_voices) > 5
 
         # pick a random en_US voice
@@ -486,7 +498,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'Voicen'
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         assert len(service_voices) > 5
 
         # test turkish
@@ -502,7 +514,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'Naver'
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         assert len(service_voices) > 30
 
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ko_KR)
@@ -516,7 +528,7 @@ class TTSTests(unittest.TestCase):
         service_name = 'Forvo'
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         assert len(service_voices) > 50
 
         # pick a random en_US voice
@@ -536,7 +548,7 @@ class TTSTests(unittest.TestCase):
             raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 2
@@ -562,7 +574,7 @@ class TTSTests(unittest.TestCase):
             raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 2
@@ -582,7 +594,7 @@ class TTSTests(unittest.TestCase):
             raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         
         logger.info(f'found {len(service_voices)} voices for {service_name} service')
         assert len(service_voices) >= 5
@@ -599,7 +611,7 @@ class TTSTests(unittest.TestCase):
             raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 2
@@ -623,7 +635,7 @@ class TTSTests(unittest.TestCase):
             raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 2
@@ -679,7 +691,7 @@ class TTSTests(unittest.TestCase):
             raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 2
@@ -714,7 +726,7 @@ class TTSTests(unittest.TestCase):
             raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 1
@@ -751,7 +763,7 @@ class TTSTests(unittest.TestCase):
             raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 1
@@ -778,7 +790,7 @@ class TTSTests(unittest.TestCase):
             raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 1
@@ -803,7 +815,7 @@ class TTSTests(unittest.TestCase):
             raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 2 # british and american
@@ -1280,7 +1292,7 @@ Zuzana (Premium)    cs_CZ    # Ahoj! Já jsem Zuzana.
             raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list(service_name)
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
 
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 64
@@ -1301,7 +1313,7 @@ Zuzana (Premium)    cs_CZ    # Ahoj! Já jsem Zuzana.
             raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service.name == service_name]
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
         
         logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 2 # spanish and english

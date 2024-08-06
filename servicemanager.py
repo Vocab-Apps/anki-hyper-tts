@@ -135,9 +135,11 @@ class ServiceManager():
     # getting TTS audio and voice list
     # ================================
 
-    def use_cloud_language_tools(self, voice):
+    def use_cloud_language_tools(self, voice: voice_module.TtsVoice_v3):
+        assert isinstance(voice, voice_module.TtsVoice_v3), f"Expected voice to be TtsVoice_v3, got {type(voice).__name__}"
         if self.cloudlanguagetools_enabled:
-            if voice.service.cloudlanguagetools_enabled():
+            service = self.get_service(voice.service)
+            if service.cloudlanguagetools_enabled():
                 return True
         return False
 

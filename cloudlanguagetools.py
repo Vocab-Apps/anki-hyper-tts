@@ -7,6 +7,7 @@ errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_b
 version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
+voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_child_logger(__name__)
 
@@ -56,9 +57,9 @@ class CloudLanguageTools():
         full_url = self.get_base_url() + url_path
         data = {
             'text': source_text,
-            'service': voice.service.name,
+            'service': voice.service,
             'request_mode': audio_request_context.get_request_mode().name,
-            'language_code': voice.language.lang.name,
+            'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,
             'voice_key': voice.voice_key,
             'options': options
         }
