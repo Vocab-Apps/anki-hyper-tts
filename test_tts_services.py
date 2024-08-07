@@ -461,15 +461,7 @@ class TTSTests(unittest.TestCase):
 
     def test_fptai(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_fptai'
-        service_name = 'FptAi'
-
-        voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service == service_name]
-        assert len(service_voices) > 5
-
-        # pick a random en_US voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.vi_VN)
-        self.verify_audio_output(selected_voice, 'Tôi bị mất cái ví.')
+        self.random_voice_test('FptAi', languages.AudioLanguage.vi_VN, 'Tôi bị mất cái ví.')
 
     @pytest.mark.skip(reason="voicen decommissioned")
     def test_voicen(self):
