@@ -488,10 +488,9 @@ class TTSTests(unittest.TestCase):
         service_voices = [voice for voice in voice_list if voice.service == service_name]
         assert len(service_voices) > 30
 
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ko_KR)
-        self.verify_audio_output(selected_voice, '여보세요')
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ja_JP)
-        self.verify_audio_output(selected_voice, 'おはようございます')
+        self.random_voice_test(service_name, languages.AudioLanguage.ko_KR, '여보세요')
+        self.random_voice_test(service_name, languages.AudioLanguage.ja_JP, 'おはようございます')
+
 
 
     def test_forvo(self):
