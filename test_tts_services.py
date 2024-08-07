@@ -502,10 +502,8 @@ class TTSTests(unittest.TestCase):
         assert len(service_voices) > 50
 
         # pick a random en_US voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'Camera')
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
-        self.verify_audio_output(selected_voice, 'ordinateur')
+        self.random_voice_test(service_name, AudioLanguage.en_US, 'Camera')
+        self.random_voice_test(service_name, AudioLanguage.fr_FR, 'ordinateur')
 
 
 
