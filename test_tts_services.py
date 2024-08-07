@@ -457,10 +457,7 @@ class TTSTests(unittest.TestCase):
         self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'This is the first sentence', voice_options={'format': 'ogg_opus'})
 
     def test_openai_french(self):
-        service_name = 'OpenAI'
-        voice_list = self.manager.full_voice_list()
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
-        self.verify_audio_output(selected_voice, 'Il va pleuvoir demain.')
+        self.random_voice_test('OpenAI', languages.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
 
     def test_fptai(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_fptai'
