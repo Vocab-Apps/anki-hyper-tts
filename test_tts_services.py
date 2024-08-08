@@ -510,6 +510,9 @@ class TTSTests(unittest.TestCase):
     def test_googletranslate(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_googletranslate'
         service_name = 'GoogleTranslate'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')        
 
         voice_list = self.manager.full_voice_list()
         service_voices = [voice for voice in voice_list if voice.service == service_name]
