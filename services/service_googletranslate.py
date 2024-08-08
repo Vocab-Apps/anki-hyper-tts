@@ -2,7 +2,7 @@ import sys
 import time
 import gtts
 import io
-
+from typing import List
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
@@ -59,9 +59,8 @@ class GoogleTranslate(service.ServiceBase):
             return LANGUAGE_KEY_MAP[language_key]
         return None
 
-    def voice_list(self):
+    def voice_list(self) -> List[voice.TtsVoice_v3]:
         languages = gtts.lang.tts_langs()
-        # pprint.pprint(languages)
         voices = []
         for language_key, language_name in languages.items():
             language = self.get_language(language_key)
@@ -69,10 +68,17 @@ class GoogleTranslate(service.ServiceBase):
                 logger.error(f'{self.name}: could not process language {language_key}')
             else:
                 gender = GENDER_MAP.get(language_key, constants.Gender.Female)
-                voices.append(voice.Voice(language_key, gender, language, self, language_key, {}))
+                voices.append(voice.build_voice_v3(
+                    name=language_name,
+                    gender=gender,
+                    language=language,
+                    service=self,
+                    voice_key=language_key,
+                    options={}
+                ))
         return voices
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
         # configuration options
         throttle_seconds = self.get_configuration_value_optional(self.CONFIG_THROTTLE_SECONDS, 0)
 
@@ -89,5 +95,4 @@ class GoogleTranslate(service.ServiceBase):
             logger.warning(f'exception while retrieving sound for {source_text}: {e}')
             # this error will be handled, and not reported as unusual
             raise errors.RequestError(source_text, voice, str(e))
-
 

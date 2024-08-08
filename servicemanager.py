@@ -180,7 +180,6 @@ class ServiceManager():
             service = self.services[voice.service]
             return service.get_tts_audio(source_text, voice, options)
 
-    @functools.cache
     def full_voice_list(self, single_service_name=None) -> typing.List[voice_module.TtsVoice_v3]:
         full_list = []
         for service_name, service_instance in self.services.items():
@@ -190,10 +189,17 @@ class ServiceManager():
                     continue
             logger.debug(f'getting voice list for service {service_name}, enabled: {service_instance.enabled}')
             if service_instance.enabled:
-                voices = service_instance.voice_list()
+                voices = self.get_service_voice_list(service_name)
                 logger.debug(f'got {len(voices)} voices from service {service_name}')
                 full_list.extend(voices)
         return full_list
+
+    @functools.cache
+    def get_service_voice_list(self, service_name: str) -> typing.List[voice_module.TtsVoice_v3]:
+        service_instance = self.services[service_name]
+        voices = service_instance.voice_list()
+        return voices
+
 
     def deserialize_voice(self, voice_data) -> voice_module.TtsVoice_v3:
         # avoid loading voice list for services we don't need, this is particularly important for ElevenLabsCustom which does

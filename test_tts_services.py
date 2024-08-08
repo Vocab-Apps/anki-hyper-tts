@@ -507,32 +507,23 @@ class TTSTests(unittest.TestCase):
 
 
 
-
     def test_googletranslate(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_googletranslate'
         service_name = 'GoogleTranslate'
-        if self.manager.get_service(service_name).enabled == False:
-            logger.warning(f'service {service_name} not enabled, skipping')
-            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
 
         voice_list = self.manager.full_voice_list()
         service_voices = [voice for voice in voice_list if voice.service == service_name]
-        
-        logger.info(f'found {len(service_voices)} voices for {service_name} services')
         assert len(service_voices) >= 2
-        pprint.pprint(service_voices)
 
-        # pick a random en_US voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'This is the first sentence')
+        # English test
+        self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'This is the first sentence')
 
-        # french
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
-        self.verify_audio_output(selected_voice, 'Je ne suis pas disponible.')
+        # French test
+        self.random_voice_test(service_name, languages.AudioLanguage.fr_FR, 'Je ne suis pas disponible.')
 
-        # hebrew
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.he_IL)
-        self.verify_audio_output(selected_voice, '.בבקשה')
+        # Hebrew test
+        self.random_voice_test(service_name, languages.AudioLanguage.he_IL, '.בבקשה')
+
 
     def test_windows(self):
         # pytest test_tts_services.py  -k test_windows
