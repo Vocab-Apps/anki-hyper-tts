@@ -2,6 +2,7 @@ import sys
 import re
 import requests
 import bs4
+from typing import List
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
@@ -27,9 +28,17 @@ class Collins(service.ServiceBase):
         return constants.ServiceFee.free
 
     def build_voice(self, audio_language, voice_key):
-        return voice.Voice(audio_language.lang.lang_name, constants.Gender.Male, audio_language, self, voice_key, {})
+        return voice.TtsVoice_v3(
+            name=audio_language.lang.lang_name,
+            gender=constants.Gender.Male,
+            audio_languages=[audio_language],
+            service=self.name,
+            voice_key=voice_key,
+            options={},
+            service_fee=self.service_fee
+        )
 
-    def voice_list(self):
+    def voice_list(self) -> List[voice.TtsVoice_v3]:
         return [
             self.build_voice(languages.AudioLanguage.en_GB, 'english'),
             self.build_voice(languages.AudioLanguage.fr_FR, 'french-english'),
@@ -38,7 +47,7 @@ class Collins(service.ServiceBase):
             self.build_voice(languages.AudioLanguage.it_IT, 'italian-english'),
         ]
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
         headers = {
 		    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0'
         }

@@ -598,19 +598,13 @@ class TTSTests(unittest.TestCase):
         assert len(service_voices) >= 2
 
         # pick a random en_GB voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
-        self.verify_audio_output(selected_voice, 'successful')
+        self.random_voice_test(service_name, languages.AudioLanguage.en_GB, 'successful')
 
         # test other languages
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.fr_FR)
-        self.verify_audio_output(selected_voice, 'bienvenue')
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.de_DE)
-        self.verify_audio_output(selected_voice, 'Hallo')
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.es_ES)
-        self.verify_audio_output(selected_voice, 'furgoneta')
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.it_IT)
-        self.verify_audio_output(selected_voice, 'attenzione')
-
+        self.random_voice_test(service_name, languages.AudioLanguage.fr_FR, 'bienvenue')
+        self.random_voice_test(service_name, languages.AudioLanguage.de_DE, 'Hallo')
+        self.random_voice_test(service_name, languages.AudioLanguage.es_ES, 'furgoneta')
+        self.random_voice_test(service_name, languages.AudioLanguage.it_IT, 'attenzione')
 
         # error handling
         # ==============
