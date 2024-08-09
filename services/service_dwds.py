@@ -27,14 +27,30 @@ class DigitalesWorterbuchDeutschenSprache(service.ServiceBase):
         return constants.ServiceFee.free
 
     def build_voice(self, audio_language, voice_key):
-        return voice.Voice(audio_language.lang.lang_name, constants.Gender.Male, audio_language, self, voice_key, {})
+        return voice.TtsVoice_v3(
+            name=audio_language.lang.lang_name,
+            gender=constants.Gender.Male,
+            audio_languages=[audio_language],
+            service=self.name,
+            voice_key=voice_key,
+            options={},
+            service_fee=self.service_fee
+        )
 
     def voice_list(self):
         return [
-            voice.Voice('German', constants.Gender.Female, languages.AudioLanguage.de_DE, self, 'german', {})
+            voice.TtsVoice_v3(
+                name='German',
+                gender=constants.Gender.Female,
+                audio_languages=[languages.AudioLanguage.de_DE],
+                service=self.name,
+                voice_key='german',
+                options={},
+                service_fee=self.service_fee
+            )
         ]
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
 
         headers = {
 		    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0'

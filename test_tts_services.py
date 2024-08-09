@@ -718,9 +718,9 @@ class TTSTests(unittest.TestCase):
         assert len(service_voices) >= 1
 
         # test german voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.de_DE)
-        self.verify_audio_output(selected_voice, 'Gesundheit', 'die Gesundheit')
-        self.verify_audio_output(selected_voice, 'Entschuldigung', 'die Entschuldigung')
+        selected_voice = self.pick_random_voice(voice_list, service_name, AudioLanguage.de_DE)
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'Gesundheit', 'die Gesundheit')
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'Entschuldigung', 'die Entschuldigung')
 
         # test error handling
         self.assertRaises(errors.AudioNotFoundError, 
