@@ -6,6 +6,7 @@ import uuid
 import hmac
 import hashlib
 import datetime
+from typing import List
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
@@ -42,9 +43,17 @@ class NaverPapago(service.ServiceBase):
         return constants.ServiceFee.free
 
     def build_voice(self, audio_language, gender, speaker_name):
-        return voice.Voice(speaker_name, gender, audio_language, self, speaker_name, {})
+        return voice.TtsVoice_v3(
+            name=speaker_name,
+            gender=gender,
+            audio_languages=[audio_language],
+            service=self.name,
+            voice_key=speaker_name,
+            options={},
+            service_fee=self.service_fee
+        )
 
-    def voice_list(self):
+    def voice_list(self) -> List[voice.TtsVoice_v3]:
         return [
             self.build_voice(languages.AudioLanguage.ko_KR, constants.Gender.Female, 'kyuri'),
             self.build_voice(languages.AudioLanguage.ja_JP, constants.Gender.Female, 'yuri'),
@@ -104,7 +113,7 @@ class NaverPapago(service.ServiceBase):
                 'TE': 'Trailers'
         }
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
         # configuration options
         throttle_seconds = self.get_configuration_value_optional(self.CONFIG_THROTTLE_SECONDS, 0)
         if throttle_seconds > 0:

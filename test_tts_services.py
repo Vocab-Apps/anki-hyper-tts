@@ -576,13 +576,11 @@ class TTSTests(unittest.TestCase):
         assert len(service_voices) >= 2
 
         # pick a random ko_KR voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ko_KR)
-        self.verify_audio_output(selected_voice, '여보세요')
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ja_JP)
-        self.verify_audio_output(selected_voice, 'おはようございます')
+        self.random_voice_test(service_name, languages.AudioLanguage.ko_KR, '여보세요')
 
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.th_TH)
-        self.verify_audio_output(selected_voice, 'สวัสดีค่ะ')
+        self.random_voice_test(service_name, languages.AudioLanguage.ja_JP, 'おはようございます')
+
+        self.random_voice_test(service_name, languages.AudioLanguage.th_TH, 'สวัสดีค่ะ')
 
 
     @pytest.mark.skip(reason="stopped working, getting 403 / enable javascript and cookies")
