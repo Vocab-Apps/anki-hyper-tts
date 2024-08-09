@@ -648,12 +648,10 @@ class TTSTests(unittest.TestCase):
         assert len(service_voices) >= 2
 
         # pick a random en_GB voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
-        self.verify_audio_output(selected_voice, 'successful')
+        self.random_voice_test(service_name, languages.AudioLanguage.en_GB, 'successful')
 
         # pick a random en_GB voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'successful')        
+        self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'successful')
 
 
         # error handling
