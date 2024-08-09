@@ -542,12 +542,10 @@ class TTSTests(unittest.TestCase):
         assert len(service_voices) >= 2
 
         # pick a random en_US voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'this is the first sentence')
+        self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'This is the first sentence')
         
         # pick a random en_US voice with modified rate
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'this is the first sentence', voice_options={'rate': -1})
+        self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'This is the first sentence', voice_options={'rate': -1})
 
     def test_espeakng(self):
         service_name = 'ESpeakNg'
