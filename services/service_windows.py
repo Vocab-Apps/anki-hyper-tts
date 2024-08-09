@@ -2,6 +2,7 @@ import sys
 import os
 import hashlib
 import aqt.sound
+from typing import List
 
 if os.name == 'nt':
     import comtypes.client  # Importing comtypes.client will make the gen subpackage

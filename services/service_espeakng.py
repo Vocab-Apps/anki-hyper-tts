@@ -4,6 +4,7 @@ import hashlib
 import aqt.sound
 import tempfile
 import espeakng
+from typing import List
 
 voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
 service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
@@ -62,7 +63,7 @@ class ESpeakNg(service.ServiceBase):
                 logger.warning(f'no default audio language for: {language}')
         return None
 
-    def voice_list(self):
+    def voice_list(self) -> List[voice.TtsVoice_v3]:
         gender_map = {
             'M': constants.Gender.Male,
             'F': constants.Gender.Female
@@ -77,8 +78,16 @@ class ESpeakNg(service.ServiceBase):
                 gender = gender_map[espeakng_voice['gender']]
                 espeakng_language = espeakng_voice['language']
                 audio_language = self.get_audio_language(espeakng_language)
-                if audio_language != None:
-                    result.append(voice.Voice(voice_name, gender, audio_language, self, espeakng_language, {}))                    
+                if audio_language is not None:
+                    result.append(voice.TtsVoice_v3(
+                        name=voice_name,
+                        gender=gender,
+                        audio_languages=[audio_language],
+                        service=self.name,
+                        voice_key=espeakng_language,
+                        options={},
+                        service_fee=self.service_fee
+                    ))
                 else:
                     logger.warning(f'language not recognized: {espeakng_language}, {espeakng_voice}')
             return result
@@ -88,7 +97,7 @@ class ESpeakNg(service.ServiceBase):
 
         return []
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
 
         esng = espeakng.ESpeakNG()
         esng.voice = voice.voice_key

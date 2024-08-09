@@ -560,8 +560,7 @@ class TTSTests(unittest.TestCase):
         assert len(service_voices) >= 5
 
         # pick a random en_US voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'welcome home')
+        self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'welcome home')
 
 
     def test_naverpapago(self):
