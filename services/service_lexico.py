@@ -11,6 +11,7 @@ languages = __import__('languages', globals(), locals(), [], sys._addon_import_l
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
 logger = logging_utils.get_child_logger(__name__)
 
+# todo: remove lexico service
 class Lexico(service.ServiceBase):
 
     def __init__(self):

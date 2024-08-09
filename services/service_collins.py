@@ -12,6 +12,7 @@ languages = __import__('languages', globals(), locals(), [], sys._addon_import_l
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
 logger = logging_utils.get_child_logger(__name__)
 
+# todo: remove collins service
 class Collins(service.ServiceBase):
     COLLINS_WEBSITE = 'https://www.collinsdictionary.com'
     SEARCH_URL = COLLINS_WEBSITE + '/search/'
