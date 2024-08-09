@@ -251,7 +251,7 @@ class Windows(service.ServiceBase):
     def service_fee(self) -> constants.ServiceFee:
         return constants.ServiceFee.free
 
-    def voice_list(self):
+    def voice_list(self) -> List[voice.TtsVoice_v3]:
         try:
             if os.name != 'nt':
                 logger.info(f'running on os {os.name}, disabling {self.name} service')
@@ -276,7 +276,14 @@ class Windows(service.ServiceBase):
                         options = {
                             'rate': {'default': self.DEFAULT_RATE, 'max': self.RATE_MAX, 'min': self.RATE_MIN, 'type': 'number_int'}
                         }
-                        result.append(voice.Voice(name, gender_enum, audio_language, self, name, options))
+                        result.append(voice.build_voice_v3(
+                            name=name,
+                            gender=gender_enum,
+                            language=audio_language,
+                            service=self,
+                            voice_key=name,
+                            options=options
+                        ))
                     else:
                         logger.error(f'unknown language: {lang}, could not process voice [{name}]')
 
@@ -296,7 +303,7 @@ class Windows(service.ServiceBase):
                 return sapi_voice
         raise Exception(f'could not find voice with name {voice_name}')
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
         logger.info(f'getting audio with voice {voice}')
         speaker = win32com.client.Dispatch("SAPI.SpVoice")
         
