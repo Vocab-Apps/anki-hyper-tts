@@ -221,7 +221,7 @@ class ServiceManagerTests(unittest.TestCase):
         }
         assert voice_id_data == expected_voice_data
 
-        assert str(selected_voice) == 'voice_a_1, Male, ServiceA'
+        assert str(selected_voice) == 'French (France), Male, voice_a_1 (ServiceA)'
 
         # test VoiceWithOptions
         # =====================
@@ -237,7 +237,7 @@ class ServiceManagerTests(unittest.TestCase):
         }
 
         assert voice_with_options.serialize() == expected_voice_with_option_data
-        expected_output = 'voice_a_1, Male, ServiceA (pitch: 1.0, speaking_rate: 2.0)'
+        expected_output = 'French (France), Male, voice_a_1 (ServiceA) (pitch: 1.0, speaking_rate: 2.0)'
         assert voice.generate_voice_with_options_str(selected_voice, voice_with_options.options) == expected_output
 
         # test deserializing of voice_id
