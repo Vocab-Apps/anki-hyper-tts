@@ -1251,7 +1251,7 @@ Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-Engli
         assert len(service_voices) >= 64
 
         # pick a random en_US voice
-        self.random_voice_test(voice_list, service_name, languages.AudioLanguage.en_US, 'this is the first sentence')
+        self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'this is the first sentence')
 
         # pick a random en_US voice with modified rate
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
@@ -1271,11 +1271,9 @@ Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-Engli
         assert len(service_voices) >= 2 # spanish and english
 
         # test spanish voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.es_ES)
-        self.verify_audio_output(selected_voice, 'furgoneta')
+        self.random_voice_test(service_name, languages.AudioLanguage.es_ES, 'furgoneta')
         # test english voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'vehicle')
+        self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'vehicle')
 
 
     def verify_all_services_language(self, service_type: constants.ServiceType, language, source_text):
