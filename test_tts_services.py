@@ -1246,12 +1246,11 @@ Zuzana (Premium)    cs_CZ    # Ahoj! Já jsem Zuzana.
         assert len(service_voices) >= 64
 
         # pick a random en_US voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'this is the first sentence')
+        self.random_voice_test(voice_list, service_name, languages.AudioLanguage.en_US, 'this is the first sentence')
 
         # pick a random en_US voice with modified rate
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'this is the first sentence', voice_options={'rate': 170})
+        self.verify_audio_output(selected_voice, languages.AudioLanguage.en_US, 'this is the first sentence', voice_options={'rate': 170})
 
 
     def test_spanishdict(self):
