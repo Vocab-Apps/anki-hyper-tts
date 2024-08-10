@@ -189,17 +189,17 @@ class ServiceManagerTests(unittest.TestCase):
         voice_list = self.manager.full_voice_list()
 
         # find ServiceA's voice_1
-        subset = [voice for voice in voice_list if voice.service.name == 'ServiceA' and voice.gender == constants.Gender.Male]
+        subset = [voice for voice in voice_list if voice.service == 'ServiceA' and voice.gender == constants.Gender.Male]
         assert len(subset) == 1
         servicea_voice_1 = subset[0]
         assert servicea_voice_1.name == 'voice_a_1'
-        assert servicea_voice_1.language == languages.AudioLanguage.fr_FR
+        assert servicea_voice_1.audio_languages == [languages.AudioLanguage.fr_FR]
 
-        subset = [voice for voice in voice_list if voice.service.name == 'ServiceB' and voice.name == 'jane']
+        subset = [voice for voice in voice_list if voice.service == 'ServiceB' and voice.name == 'jane']
         assert len(subset) == 1
         servicea_voice_1 = subset[0]
         assert servicea_voice_1.name == 'jane'
-        assert servicea_voice_1.language == languages.AudioLanguage.ja_JP
+        assert servicea_voice_1.audio_languages == [languages.AudioLanguage.ja_JP]
 
 
     def test_voice_serialization(self):
@@ -212,25 +212,24 @@ class ServiceManagerTests(unittest.TestCase):
         assert len(subset) == 1
         selected_voice = subset[0]
 
-        voice_data = selected_voice.serialize()
+        # we don't serialize voices anymore, only voice ids
+
+        voice_id_data = voice.serialize_voiceid_v3(selected_voice.voice_id)
         expected_voice_data = {
-            'name': 'voice_a_1',
-            'gender': 'Male',
-            'language': 'fr_FR',
             'service': 'ServiceA',
             'voice_key': {'name': 'voice_1'}
         }
-        assert voice_data == expected_voice_data
+        assert voice_id_data == expected_voice_data
 
-        assert str(selected_voice) == 'French (France), Male, voice_a_1, ServiceA'
+        assert str(selected_voice) == 'voice_a_1, Male, ServiceA'
 
         # test VoiceWithOptions
         # =====================
 
-        voice_with_options = config_models.VoiceWithOptions(selected_voice, {'pitch': 1.0, 'speaking_rate': 2.0})
+        voice_with_options = config_models.VoiceWithOptions(selected_voice.voice_id, {'pitch': 1.0, 'speaking_rate': 2.0})
 
         expected_voice_with_option_data = {
-            'voice': voice_data,
+            'voice_id': voice_id_data,
             'options': {
                 'pitch': 1.0,
                 'speaking_rate': 2.0
@@ -238,15 +237,15 @@ class ServiceManagerTests(unittest.TestCase):
         }
 
         assert voice_with_options.serialize() == expected_voice_with_option_data
-        assert str(voice_with_options) == "French (France), Male, voice_a_1, ServiceA (pitch: 1.0, speaking_rate: 2.0)"
+        expected_output = 'voice_a_1, Male, ServiceA (pitch: 1.0, speaking_rate: 2.0)'
+        assert voice.generate_voice_with_options_str(selected_voice, voice_with_options.options) == expected_output
 
-        # test deserializing of voice
-        # ===========================
+        # test deserializing of voice_id
+        # ==============================
 
-        deserialized_voice = self.manager.deserialize_voice(voice_data)
-        assert deserialized_voice.voice_key == {'name': 'voice_1'}
-        assert deserialized_voice.name == 'voice_a_1'
-        assert deserialized_voice.service.name == 'ServiceA'
+        deserialized_voice_id = voice.deserialize_voice_id_v3(voice_id_data)
+        assert deserialized_voice_id.voice_key == {'name': 'voice_1'}
+        assert deserialized_voice_id.service == 'ServiceA'
 
 
     def test_get_tts_audio(self):
@@ -256,7 +255,7 @@ class ServiceManagerTests(unittest.TestCase):
         voice_list = self.manager.full_voice_list()
 
         # find ServiceA's voice_1
-        subset = [voice for voice in voice_list if voice.service.name == 'ServiceA' and voice.gender == constants.Gender.Male]
+        subset = [voice for voice in voice_list if voice.service == 'ServiceA' and voice.gender == constants.Gender.Male]
         assert len(subset) == 1
         servicea_voice_1 = subset[0]
 
