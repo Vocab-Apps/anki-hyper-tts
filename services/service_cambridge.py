@@ -27,16 +27,24 @@ class Cambridge(service.ServiceBase):
     def service_fee(self) -> constants.ServiceFee:
         return constants.ServiceFee.free
 
-    def build_voice(self, audio_language, voice_key):
-        return voice.Voice(audio_language.lang.lang_name, constants.Gender.Male, audio_language, self, voice_key, {})
+    def build_voice(self, name, audio_language, voice_key):
+        return voice.TtsVoice_v3(
+            name=name,
+            gender=constants.Gender.Female,
+            audio_languages=[audio_language],
+            service=self.name,
+            voice_key=voice_key,
+            options={},
+            service_fee=self.service_fee
+        )
 
     def voice_list(self):
         return [
-            voice.Voice('UK', constants.Gender.Female, languages.AudioLanguage.en_GB, self, 'uk', {}),
-            voice.Voice('US', constants.Gender.Female, languages.AudioLanguage.en_US, self, 'us', {})
+            self.build_voice('UK', languages.AudioLanguage.en_GB, 'uk'),
+            self.build_voice('US', languages.AudioLanguage.en_US, 'us')
         ]
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
         headers = {
 		    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0'
         }
@@ -51,7 +59,7 @@ class Cambridge(service.ServiceBase):
             languages.AudioLanguage.en_GB: 'uk dpron-i',
             languages.AudioLanguage.en_US: 'us dpron-i',
         }
-        wanted_class = section_class_map[voice.language]
+        wanted_class = section_class_map[voice.audio_languages[0]]
         logger.debug(f'wanted_class: [{wanted_class}]')
         
         # <span class="uk dpron-i ">

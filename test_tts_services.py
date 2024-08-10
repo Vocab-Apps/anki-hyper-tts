@@ -770,13 +770,12 @@ class TTSTests(unittest.TestCase):
         assert len(service_voices) >= 2 # british and american
 
         # test british voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
-        self.verify_audio_output(selected_voice, 'vehicle')
+        self.random_voice_test(service_name, languages.AudioLanguage.en_GB, 'vehicle')
         # test american voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, 'vehicle')
+        self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'vehicle')
 
         # test error handling
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
         self.assertRaises(errors.AudioNotFoundError, 
                           self.manager.get_tts_audio,
                           'xxoanetuhsoae', # non-existent word
