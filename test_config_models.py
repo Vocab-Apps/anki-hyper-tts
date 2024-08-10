@@ -873,7 +873,7 @@ class ConfigModelsTests(unittest.TestCase):
         # config revision 0
         config = {}
         updated_config = config_models.migrate_configuration(anki_utils, config)
-        self.assertEqual(updated_config['config_schema'], 2)
+        self.assertEqual(updated_config['config_schema'], 3)
 
 
     def test_migration_0_to_2(self):
@@ -925,7 +925,7 @@ class ConfigModelsTests(unittest.TestCase):
         }
 
         updated_config = config_models.migrate_configuration(anki_utils, config)
-        self.assertEqual(updated_config['config_schema'], 2)
+        self.assertEqual(updated_config['config_schema'], 3)
         expected_preset_1_uuid = 'uuid_0'
         self.assertIn(expected_preset_1_uuid, updated_config['presets'])
         self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['name'], 'preset_1')
