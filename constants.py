@@ -78,7 +78,7 @@ class MappingRuleType(enum.Enum):
     DeckNoteType = enum.auto()
 
 CONFIG_SCHEMA = 'config_schema'
-CONFIG_SCHEMA_VERSION = 2
+CONFIG_SCHEMA_VERSION = 3
 # deprecated, use CONFIG_PRESETS
 CONFIG_BATCH_CONFIG = 'batch_config'
 # this is the new config category, contains dict of uuids

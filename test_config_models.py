@@ -3,6 +3,7 @@ import sys
 import os
 import pprint
 import unittest
+import json
 
 # add external modules to sys.path
 addon_dir = os.path.dirname(os.path.realpath(__file__))
@@ -935,6 +936,416 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['name'], 'preset_1')
         self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['uuid'], expected_preset_1_uuid)        
 
+
+    def test_migration_2_to_3(self):
+        anki_utils = testing_utils.MockAnkiUtils({})
+        config_rev_2_json_str = """
+{
+    "batch_config": {},
+    "config_schema": 2,
+    "configuration": {
+        "hypertts_pro_api_key": "api_key_1",
+        "service_config": {},
+        "service_enabled": {},
+        "use_vocabai_api": true,
+        "vocabai_api_url_override": null
+    },
+    "preferences": {},
+    "presets": {
+        "1f8ae532-c1e0-4467-8220-9394f523ff17": {
+            "name": "Chinese Single Voice",
+            "source": {
+                "mode": "simple",
+                "source_field": "Chinese",
+                "source_template": null,
+                "template_format_version": "v1",
+                "use_selection": false
+            },
+            "target": {
+                "remove_sound_tag": true,
+                "target_field": "Chinese",
+                "text_and_sound_tag": false
+            },
+            "text_processing": {
+                "html_to_text_line": true,
+                "ignore_case": false,
+                "run_replace_rules_after": true,
+                "ssml_convert_characters": true,
+                "strip_brackets": false,
+                "text_replacement_rules": []
+            },
+            "uuid": "1f8ae532-c1e0-4467-8220-9394f523ff17",
+            "voice_selection": {
+                "voice": {
+                    "options": {},
+                    "voice": {
+                        "gender": "Female",
+                        "language": "zh_CN",
+                        "name": "Xiaoyou 晓悠 (Neural)",
+                        "service": "Azure",
+                        "voice_key": {
+                            "name": "Microsoft Server Speech Text to Speech Voice (zh-CN, XiaoyouNeural)"
+                        }
+                    }
+                },
+                "voice_selection_mode": "single"
+            }
+        },
+        "79b2715e-9871-4b4f-9a5b-8bd5ac89d689": {
+            "name": "Chinese Priority",
+            "source": {
+                "mode": "simple",
+                "source_field": "Chinese",
+                "source_template": null,
+                "template_format_version": "v1",
+                "use_selection": false
+            },
+            "target": {
+                "remove_sound_tag": true,
+                "target_field": "Chinese",
+                "text_and_sound_tag": false
+            },
+            "text_processing": {
+                "html_to_text_line": true,
+                "ignore_case": false,
+                "run_replace_rules_after": true,
+                "ssml_convert_characters": true,
+                "strip_brackets": false,
+                "text_replacement_rules": []
+            },
+            "uuid": "79b2715e-9871-4b4f-9a5b-8bd5ac89d689",
+            "voice_selection": {
+                "voice_list": [
+                    {
+                        "options": {},
+                        "voice": {
+                            "gender": "Female",
+                            "language": "zh_CN",
+                            "name": null,
+                            "service": "Forvo",
+                            "voice_key": {
+                                "country_code": "CHN",
+                                "gender": "f",
+                                "language_code": "zh"
+                            }
+                        }
+                    },
+                    {
+                        "options": {},
+                        "voice": {
+                            "gender": "Female",
+                            "language": "zh_CN",
+                            "name": "Charlotte (Multilingual v2)",
+                            "service": "ElevenLabs",
+                            "voice_key": {
+                                "language": "zh_CN",
+                                "model_id": "eleven_multilingual_v2",
+                                "voice_id": "XB0fDUnXU5powFXDhCwa"
+                            }
+                        }
+                    }
+                ],
+                "voice_selection_mode": "priority"
+            }
+        },
+        "a82dec0d-f140-42f1-b635-89ff1dad4262": {
+            "name": "Chinese Random",
+            "source": {
+                "mode": "simple",
+                "source_field": "Chinese",
+                "source_template": null,
+                "template_format_version": "v1",
+                "use_selection": false
+            },
+            "target": {
+                "remove_sound_tag": true,
+                "target_field": "Chinese",
+                "text_and_sound_tag": false
+            },
+            "text_processing": {
+                "html_to_text_line": true,
+                "ignore_case": false,
+                "run_replace_rules_after": true,
+                "ssml_convert_characters": true,
+                "strip_brackets": false,
+                "text_replacement_rules": []
+            },
+            "uuid": "a82dec0d-f140-42f1-b635-89ff1dad4262",
+            "voice_selection": {
+                "voice_list": [
+                    {
+                        "options": {},
+                        "voice": {
+                            "gender": "Female",
+                            "language": "zh_CN",
+                            "name": "Xiaochen 晓辰 (Neural)",
+                            "service": "Azure",
+                            "voice_key": {
+                                "name": "Microsoft Server Speech Text to Speech Voice (zh-CN, XiaochenNeural)"
+                            }
+                        },
+                        "weight": 1
+                    },
+                    {
+                        "options": {},
+                        "voice": {
+                            "gender": "Male",
+                            "language": "zh_CN",
+                            "name": "Yunye 云野 (Neural)",
+                            "service": "Azure",
+                            "voice_key": {
+                                "name": "Microsoft Server Speech Text to Speech Voice (zh-CN, YunyeNeural)"
+                            }
+                        },
+                        "weight": 1
+                    }
+                ],
+                "voice_selection_mode": "random"
+            }
+        }
+    },
+    "realtime_config": {
+        "realtime_0": {
+            "back": {
+                "side_enabled": true,
+                "source": {
+                    "field_name": "English",
+                    "field_type": "Regular",
+                    "mode": "AnkiTTSTag"
+                },
+                "text_processing": {
+                    "html_to_text_line": true,
+                    "ignore_case": false,
+                    "run_replace_rules_after": true,
+                    "ssml_convert_characters": true,
+                    "strip_brackets": false,
+                    "text_replacement_rules": []
+                },
+                "voice_selection": {
+                    "voice": {
+                        "options": {},
+                        "voice": {
+                            "gender": "Female",
+                            "language": "en_AU",
+                            "name": "en-AU-Neural2-A",
+                            "service": "Google",
+                            "voice_key": {
+                                "language_code": "en-AU",
+                                "name": "en-AU-Neural2-A",
+                                "ssml_gender": "FEMALE"
+                            }
+                        }
+                    },
+                    "voice_selection_mode": "single"
+                }
+            },
+            "front": {
+                "side_enabled": false
+            }
+        }
+    },
+    "unique_id": "uuid:7a544af5402f"
+}
+"""
+        config_rev_2 = json.loads(config_rev_2_json_str)
+
+
+
+        config_rev_3_json_str = """
+{
+    "batch_config": {},
+    "config_schema": 2,
+    "configuration": {
+        "hypertts_pro_api_key": "api_key_1",
+        "service_config": {},
+        "service_enabled": {},
+        "use_vocabai_api": true,
+        "vocabai_api_url_override": null
+    },
+    "preferences": {},
+    "presets": {
+        "1f8ae532-c1e0-4467-8220-9394f523ff17": {
+            "name": "Chinese Single Voice",
+            "source": {
+                "mode": "simple",
+                "source_field": "Chinese",
+                "source_template": null,
+                "template_format_version": "v1",
+                "use_selection": false
+            },
+            "target": {
+                "remove_sound_tag": true,
+                "target_field": "Chinese",
+                "text_and_sound_tag": false
+            },
+            "text_processing": {
+                "html_to_text_line": true,
+                "ignore_case": false,
+                "run_replace_rules_after": true,
+                "ssml_convert_characters": true,
+                "strip_brackets": false,
+                "text_replacement_rules": []
+            },
+            "uuid": "1f8ae532-c1e0-4467-8220-9394f523ff17",
+            "voice_selection": {
+                "voice": {
+                    "options": {},
+                    "voice_id": {
+                        "service": "Azure",
+                        "voice_key": {
+                            "name": "Microsoft Server Speech Text to Speech Voice (zh-CN, XiaoyouNeural)"
+                        }
+                    }
+                },
+                "voice_selection_mode": "single"
+            }
+        },
+        "79b2715e-9871-4b4f-9a5b-8bd5ac89d689": {
+            "name": "Chinese Priority",
+            "source": {
+                "mode": "simple",
+                "source_field": "Chinese",
+                "source_template": null,
+                "template_format_version": "v1",
+                "use_selection": false
+            },
+            "target": {
+                "remove_sound_tag": true,
+                "target_field": "Chinese",
+                "text_and_sound_tag": false
+            },
+            "text_processing": {
+                "html_to_text_line": true,
+                "ignore_case": false,
+                "run_replace_rules_after": true,
+                "ssml_convert_characters": true,
+                "strip_brackets": false,
+                "text_replacement_rules": []
+            },
+            "uuid": "79b2715e-9871-4b4f-9a5b-8bd5ac89d689",
+            "voice_selection": {
+                "voice_list": [
+                    {
+                        "options": {},
+                        "voice_id": {
+                            "service": "Forvo",
+                            "voice_key": {
+                                "country_code": "CHN",
+                                "gender": "f",
+                                "language_code": "zh"
+                            }
+                        }
+                    },
+                    {
+                        "options": {},
+                        "voice_id": {
+                            "service": "ElevenLabs",
+                            "voice_key": {
+                                "language": "zh_CN",
+                                "model_id": "eleven_multilingual_v2",
+                                "voice_id": "XB0fDUnXU5powFXDhCwa"
+                            }
+                        }
+                    }
+                ],
+                "voice_selection_mode": "priority"
+            }
+        },
+        "a82dec0d-f140-42f1-b635-89ff1dad4262": {
+            "name": "Chinese Random",
+            "source": {
+                "mode": "simple",
+                "source_field": "Chinese",
+                "source_template": null,
+                "template_format_version": "v1",
+                "use_selection": false
+            },
+            "target": {
+                "remove_sound_tag": true,
+                "target_field": "Chinese",
+                "text_and_sound_tag": false
+            },
+            "text_processing": {
+                "html_to_text_line": true,
+                "ignore_case": false,
+                "run_replace_rules_after": true,
+                "ssml_convert_characters": true,
+                "strip_brackets": false,
+                "text_replacement_rules": []
+            },
+            "uuid": "a82dec0d-f140-42f1-b635-89ff1dad4262",
+            "voice_selection": {
+                "voice_list": [
+                    {
+                        "options": {},
+                        "voice_id": {
+                            "service": "Azure",
+                            "voice_key": {
+                                "name": "Microsoft Server Speech Text to Speech Voice (zh-CN, XiaochenNeural)"
+                            }
+                        },
+                        "weight": 1
+                    },
+                    {
+                        "options": {},
+                        "voice_id": {
+                            "service": "Azure",
+                            "voice_key": {
+                                "name": "Microsoft Server Speech Text to Speech Voice (zh-CN, YunyeNeural)"
+                            }
+                        },
+                        "weight": 1
+                    }
+                ],
+                "voice_selection_mode": "random"
+            }
+        }
+    },
+    "realtime_config": {
+        "realtime_0": {
+            "back": {
+                "side_enabled": true,
+                "source": {
+                    "field_name": "English",
+                    "field_type": "Regular",
+                    "mode": "AnkiTTSTag"
+                },
+                "text_processing": {
+                    "html_to_text_line": true,
+                    "ignore_case": false,
+                    "run_replace_rules_after": true,
+                    "ssml_convert_characters": true,
+                    "strip_brackets": false,
+                    "text_replacement_rules": []
+                },
+                "voice_selection": {
+                    "voice": {
+                        "options": {},
+                        "voice_id": {
+                            "service": "Google",
+                            "voice_key": {
+                                "language_code": "en-AU",
+                                "name": "en-AU-Neural2-A",
+                                "ssml_gender": "FEMALE"
+                            }
+                        }
+                    },
+                    "voice_selection_mode": "single"
+                }
+            },
+            "front": {
+                "side_enabled": false
+            }
+        }
+    },
+    "unique_id": "uuid:7a544af5402f"
+}
+"""
+        expected_config_rev_3 = json.loads(config_rev_3_json_str)
+
+        updated_config = config_models.migrate_configuration(anki_utils, config_rev_2)
+        self.assertEqual(updated_config['config_schema'], 3)
+        self.assertEqual(expected_config_rev_3, updated_config)
 
     def test_rule_applies(self):
         rule = config_models.MappingRule(preset_id='preset_1', 
