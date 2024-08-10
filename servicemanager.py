@@ -151,10 +151,10 @@ class ServiceManager():
         else:
             return self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)
 
-    def get_tts_audio_instrumented(self, source_text, voice, options, audio_request_context):
-        transaction_name = f'{voice.service.name}'
+    def get_tts_audio_instrumented(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):
+        transaction_name = f'{voice.service}'
         if self.use_cloud_language_tools(voice):
-            transaction_name = f'cloudlanguagetools_{voice.service.name}'
+            transaction_name = f'cloudlanguagetools_{voice.service}'
         sentry_sdk.set_tag('clt.audio_request_reason', audio_request_context.get_audio_request_reason_tag())
         raise_exception = None
         with sentry_sdk.start_transaction(op="audio", name=transaction_name) as transaction:
