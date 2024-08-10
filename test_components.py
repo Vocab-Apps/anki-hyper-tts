@@ -49,8 +49,7 @@ def test_voice_selection_defaults_single(qtbot):
     voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
 
-
-    voiceselection.voices_combobox.setCurrentIndex(3) # pick second voice
+    testing_utils.voice_selection_voice_list_select('voice_a_1', 'ServiceA', voiceselection.voices_combobox)
     expected_output = {
         'voice_selection_mode': 'single',
         'voice': {
@@ -1044,7 +1043,7 @@ def test_batch_dialog_sound_preview_error(qtbot):
         # press preview button
         qtbot.mouseClick(dialog.batch_component.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-        assert str(hypertts_instance.anki_utils.last_exception) == 'Audio not found for [hello] (voice: notfound, Male, ServiceB)'
+        assert str(hypertts_instance.anki_utils.last_exception) == 'Audio not found for [hello] (voice: Japanese, Male, notfound (ServiceB))'
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
     component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')        
