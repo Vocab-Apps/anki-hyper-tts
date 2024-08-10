@@ -1242,7 +1242,6 @@ class ConfigModelsTests(unittest.TestCase):
                         "voice_id": {
                             "service": "ElevenLabs",
                             "voice_key": {
-                                "language": "zh_CN",
                                 "model_id": "eleven_multilingual_v2",
                                 "voice_id": "XB0fDUnXU5powFXDhCwa"
                             }

@@ -654,6 +654,22 @@ def migrate_configuration(anki_utils, config):
                 config[constants.CONFIG_PRESETS][batch_uuid] = batch
 
     if current_config_schema_version < 3:
+
+
+
+        def voice_to_voice_id_conversion(voice_data):
+            service = voice['service']
+            voice_key = voice_data['voice_key']
+            if service in ['ElevenLabs', 'OpenAI']:
+                if 'language' in voice_key:
+                    # language used to be part of voice_key for OpenAI and ElevenLabs before TtsVoice_v3
+                    del voice_key['language']
+            return {
+                'service': service,
+                'voice_key': voice_key
+            }
+            
+
         # Migration from version 2 to 3
         # instead of voices, we store voice_id's
         for preset in config[constants.CONFIG_PRESETS].values():
@@ -663,19 +679,13 @@ def migrate_configuration(anki_utils, config):
                 voice = voice_selection.get('voice', {}).get('voice', {})
                 voice_selection['voice'] = {
                     'options': voice_selection['voice'].get('options', {}),
-                    'voice_id': {
-                        'service': voice.get('service'),
-                        'voice_key': voice.get('voice_key', {})
-                    }
+                    'voice_id': voice_to_voice_id_conversion(voice)
                 }
             
             elif voice_selection.get('voice_selection_mode') in ['priority', 'random']:
                 for voice_entry in voice_selection.get('voice_list', []):
                     voice = voice_entry.get('voice', {})
-                    voice_entry['voice_id'] = {
-                        'service': voice.get('service'),
-                        'voice_key': voice.get('voice_key', {})
-                    }
+                    voice_entry['voice_id'] = voice_to_voice_id_conversion(voice)
                     voice_entry.pop('voice', None)
 
         # Update realtime config
@@ -688,10 +698,7 @@ def migrate_configuration(anki_utils, config):
                         voice = voice_selection.get('voice', {}).get('voice', {})
                         voice_selection['voice'] = {
                             'options': voice_selection['voice'].get('options', {}),
-                            'voice_id': {
-                                'service': voice.get('service'),
-                                'voice_key': voice.get('voice_key', {})
-                            }
+                            'voice_id': voice_to_voice_id_conversion(voice)
                         }
 
     # Update config schema version
