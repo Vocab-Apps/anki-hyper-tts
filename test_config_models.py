@@ -4,6 +4,7 @@ import os
 import pprint
 import unittest
 import json
+import pprint
 
 # add external modules to sys.path
 addon_dir = os.path.dirname(os.path.realpath(__file__))
@@ -1154,7 +1155,7 @@ class ConfigModelsTests(unittest.TestCase):
         config_rev_3_json_str = """
 {
     "batch_config": {},
-    "config_schema": 2,
+    "config_schema": 3,
     "configuration": {
         "hypertts_pro_api_key": "api_key_1",
         "service_config": {},
@@ -1342,7 +1343,9 @@ class ConfigModelsTests(unittest.TestCase):
 }
 """
         expected_config_rev_3 = json.loads(config_rev_3_json_str)
+        # pprint.pprint(expected_config_rev_3)
 
+        self.maxDiff = None
         updated_config = config_models.migrate_configuration(anki_utils, config_rev_2)
         self.assertEqual(updated_config['config_schema'], 3)
         self.assertEqual(expected_config_rev_3, updated_config)

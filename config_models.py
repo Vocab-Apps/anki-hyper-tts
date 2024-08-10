@@ -652,7 +652,49 @@ def migrate_configuration(anki_utils, config):
                 batch['uuid'] = batch_uuid
                 batch['name'] = batch_name
                 config[constants.CONFIG_PRESETS][batch_uuid] = batch
-    # write current config
+
+    if current_config_schema_version < 3:
+        # Migration from version 2 to 3
+        # instead of voices, we store voice_id's
+        for preset in config[constants.CONFIG_PRESETS].values():
+            voice_selection = preset.get('voice_selection', {})
+            
+            if voice_selection.get('voice_selection_mode') == 'single':
+                voice = voice_selection.get('voice', {}).get('voice', {})
+                voice_selection['voice'] = {
+                    'options': voice_selection['voice'].get('options', {}),
+                    'voice_id': {
+                        'service': voice.get('service'),
+                        'voice_key': voice.get('voice_key', {})
+                    }
+                }
+            
+            elif voice_selection.get('voice_selection_mode') in ['priority', 'random']:
+                for voice_entry in voice_selection.get('voice_list', []):
+                    voice = voice_entry.get('voice', {})
+                    voice_entry['voice_id'] = {
+                        'service': voice.get('service'),
+                        'voice_key': voice.get('voice_key', {})
+                    }
+                    voice_entry.pop('voice', None)
+
+        # Update realtime config
+        realtime_config = config.get('realtime_config', {})
+        for side_config in realtime_config.values():
+            for side in ['front', 'back']:
+                if side in side_config and 'voice_selection' in side_config[side]:
+                    voice_selection = side_config[side]['voice_selection']
+                    if voice_selection.get('voice_selection_mode') == 'single':
+                        voice = voice_selection.get('voice', {}).get('voice', {})
+                        voice_selection['voice'] = {
+                            'options': voice_selection['voice'].get('options', {}),
+                            'voice_id': {
+                                'service': voice.get('service'),
+                                'voice_key': voice.get('voice_key', {})
+                            }
+                        }
+
+    # Update config schema version
     config[constants.CONFIG_SCHEMA] = constants.CONFIG_SCHEMA_VERSION
 
     return config
