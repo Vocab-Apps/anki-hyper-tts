@@ -457,7 +457,8 @@ class MacOS(service.ServiceBase):
 
     def get_audio_language(self, lang_id: str) -> languages.AudioLanguage:
         override_map = {
-            'ar_001': 'ar_XA'
+            'ar_001': 'ar_XA',
+            'en-scotland': 'en_GB',
         }
         lang_id = override_map.get(lang_id, lang_id)
         return languages.AudioLanguage[lang_id]

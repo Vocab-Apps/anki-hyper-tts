@@ -1186,6 +1186,7 @@ Zosia (Enhanced)    pl_PL    # Witaj, nazywam się Zosia.
 Zuzana              cs_CZ    # Hi my name is Zuzana
 Zuzana (Enhanced)   cs_CZ    # Ahoj! Já jsem Zuzana.
 Zuzana (Premium)    cs_CZ    # Ahoj! Já jsem Zuzana.
+Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-English voice.
 """
         import services.service_macos
         macos_service = services.service_macos.MacOS()
@@ -1230,7 +1231,11 @@ Zuzana (Premium)    cs_CZ    # Ahoj! Já jsem Zuzana.
         self.assertEquals(eddy_french_canada_voice.voice_key, {'name': 'Eddy (French (Canada))'})
         self.assertEquals(eddy_french_canada_voice.audio_languages[0], languages.AudioLanguage.fr_CA)
 
-
+        fiona_voices = [voice for voice in voice_list if voice.name == 'Fiona']
+        self.assertEquals(len(fiona_voices), 1)
+        voice = fiona_voices[0]
+        self.assertEquals(voice.gender, constants.Gender.Female)
+        self.assertEquals(voice.audio_languages[0], languages.AudioLanguage.en_GB)
 
     def test_macos(self):
         # pytest test_tts_services.py -k test_macos
