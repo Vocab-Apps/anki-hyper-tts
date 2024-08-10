@@ -134,7 +134,15 @@ class ElevenLabsCustom(service.ServiceBase):
                         gender_str = voice_entry['labels'].get('gender', 'male')
                         gender = GENDER_MAP[gender_str]
                         name = f'{voice_name} ({model_short_name})'
-                        result.append(voice.Voice(name, gender, audio_language_enum, self, voice_key, VOICE_OPTIONS))
+                        result.append(voice.TtsVoice_v3(
+                            name=name,
+                            gender=gender,
+                            audio_languages=[audio_language_enum],
+                            service=self.name,
+                            voice_key=voice_key,
+                            options=VOICE_OPTIONS,
+                            service_fee=self.service_fee
+                        ))
                     except Exception as e:
                         logger.error(e, exc_info=True)
 
@@ -145,7 +153,7 @@ class ElevenLabsCustom(service.ServiceBase):
         return self.voice_list_cached()
 
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, voice_options):
+    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, voice_options):
 
         voice_id = voice.voice_key['voice_id']
         url = f'https://api.elevenlabs.io/v1/text-to-speech/{voice_id}'
