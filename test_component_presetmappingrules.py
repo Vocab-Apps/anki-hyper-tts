@@ -70,10 +70,11 @@ def test_component_mapping_rule_1(qtbot):
         'source_text': '老人家',
         'voice': {
             'gender': 'Male', 
-            'language': 'fr_FR', 
+            'audio_languages': ['fr_FR'],
             'name': 'voice_a_1', 
             'service': 'ServiceA',
-            'voice_key': {'name': 'voice_1'}
+            'voice_key': {'name': 'voice_1'},
+            'service_fee': 'free'
         },
         'options': {}
     }        
@@ -131,10 +132,11 @@ def test_component_mapping_rule_use_selection_2(qtbot):
         'source_text': '老',
         'voice': {
             'gender': 'Male', 
-            'language': 'fr_FR', 
+            'audio_languages': ['fr_FR'],
             'name': 'voice_a_1', 
             'service': 'ServiceA',
-            'voice_key': {'name': 'voice_1'}
+            'voice_key': {'name': 'voice_1'},
+            'service_fee': 'free'
         },
         'options': {}
     }        
@@ -441,10 +443,11 @@ def test_component_preset_mapping_rules_preview_run(qtbot):
             'source_text': '老人家',
             'voice': {
                 'gender': 'Male', 
-                'language': 'fr_FR', 
+                'audio_languages': ['fr_FR'], 
                 'name': 'voice_a_1', 
                 'service': 'ServiceA',
-                'voice_key': {'name': 'voice_1'}
+                'voice_key': {'name': 'voice_1'},
+                'service_fee': 'free'
             },
             'options': {}
         }
