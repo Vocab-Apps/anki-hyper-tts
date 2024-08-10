@@ -1197,38 +1197,38 @@ Zuzana (Premium)    cs_CZ    # Ahoj! Já jsem Zuzana.
 
         audrey_1 = audrey_voices[0]
         self.assertEquals(audrey_1.name, 'Audrey')
-        self.assertEquals(audrey_1.language, languages.AudioLanguage.fr_FR)
+        self.assertEquals(audrey_1.audio_languages[0], languages.AudioLanguage.fr_FR)
         self.assertEquals(audrey_1.gender, constants.Gender.Female)
         self.assertEquals(audrey_1.voice_key, {'name': 'Audrey'})
         audrey_2 = audrey_voices[1]
         self.assertEquals(audrey_2.name, 'Audrey (Enhanced)')
         self.assertEquals(audrey_2.voice_key, {'name': 'Audrey (Enhanced)'})
         self.assertEquals(audrey_2.gender, constants.Gender.Female)
-        self.assertEquals(audrey_2.language, languages.AudioLanguage.fr_FR)
+        self.assertEquals(audrey_2.audio_languages[0], languages.AudioLanguage.fr_FR)
         audrey_3 = audrey_voices[2]
         self.assertEquals(audrey_3.name, 'Audrey (Premium)')
         self.assertEquals(audrey_3.voice_key, {'name': 'Audrey (Premium)'})
         self.assertEquals(audrey_3.gender, constants.Gender.Female)        
-        self.assertEquals(audrey_3.language, languages.AudioLanguage.fr_FR)
+        self.assertEquals(audrey_3.audio_languages[0], languages.AudioLanguage.fr_FR)
 
         # check Eddy voice, its name should be Eddy, and should be available in fr_FR and fr_CA
         eddy_voices = [voice for voice in voice_list if voice.name == 'Eddy']
         
-        eddy_fr_fr = [voice for voice in eddy_voices if voice.language == languages.AudioLanguage.fr_FR]
+        eddy_fr_fr = [voice for voice in eddy_voices if voice.audio_languages[0] == languages.AudioLanguage.fr_FR]
         self.assertEquals(len(eddy_fr_fr), 1)
         eddy_french_france_voice = eddy_fr_fr[0]
         self.assertEquals(eddy_french_france_voice.name, 'Eddy')
         self.assertEquals(eddy_french_france_voice.gender, constants.Gender.Male)
         self.assertEquals(eddy_french_france_voice.voice_key, {'name': 'Eddy (French (France))'})
-        self.assertEquals(eddy_french_france_voice.language, languages.AudioLanguage.fr_FR)
+        self.assertEquals(eddy_french_france_voice.audio_languages[0], languages.AudioLanguage.fr_FR)
 
-        eddy_fr_ca = [voice for voice in eddy_voices if voice.language == languages.AudioLanguage.fr_CA]
+        eddy_fr_ca = [voice for voice in eddy_voices if voice.audio_languages[0] == languages.AudioLanguage.fr_CA]
         self.assertEquals(len(eddy_fr_ca), 1)
         eddy_french_canada_voice = eddy_fr_ca[0]
         self.assertEquals(eddy_french_canada_voice.name, 'Eddy')
         self.assertEquals(eddy_french_canada_voice.gender, constants.Gender.Male)
         self.assertEquals(eddy_french_canada_voice.voice_key, {'name': 'Eddy (French (Canada))'})
-        self.assertEquals(eddy_french_canada_voice.language, languages.AudioLanguage.fr_CA)
+        self.assertEquals(eddy_french_canada_voice.audio_languages[0], languages.AudioLanguage.fr_CA)
 
 
 

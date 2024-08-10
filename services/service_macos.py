@@ -439,7 +439,7 @@ class MacOS(service.ServiceBase):
     def service_fee(self) -> constants.ServiceFee:
         return constants.ServiceFee.free
 
-    def voice_list(self):
+    def voice_list(self) -> List[voice.TtsVoice_v3]:
         if platform.system() != "Darwin":
             logger.info(f'running on os {os.name}, disabling {self.name} service')
             return []
@@ -466,7 +466,7 @@ class MacOS(service.ServiceBase):
         # get gender from name, default to male for new voices
         return self.GENDER_MAP.get(name, constants.Gender.Male)
 
-    def parse_voices(self, voice_list_lines) -> List[voice.Voice]:
+    def parse_voices(self, voice_list_lines) -> List[voice.TtsVoice_v3]:
         # see test_tts_services / test_macos_parse_voice_list for examples of the input
         result = []
 
@@ -505,7 +505,15 @@ class MacOS(service.ServiceBase):
                 voice_key = {
                     'name': voice_name,
                 }
-                parsed_voice = voice.Voice(short_voice_name, gender, audio_language, self, voice_key, self.VOICE_OPTIONS)
+                parsed_voice = voice.TtsVoice_v3(
+                    name=short_voice_name, 
+                    gender=gender, 
+                    audio_languages=[audio_language], 
+                    service=self.name, 
+                    voice_key=voice_key, 
+                    options=self.VOICE_OPTIONS,
+                    service_fee=self.service_fee
+                )
                 logger.debug(f'parsed voice: {parsed_voice}')
                 result.append(parsed_voice)
             except Exception as e:
@@ -514,7 +522,7 @@ class MacOS(service.ServiceBase):
 
         return result
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
         logger.info(f'getting audio with voice {voice}')
 
         rate = options.get('rate', self.DEFAULT_SPEECH_RATE)
