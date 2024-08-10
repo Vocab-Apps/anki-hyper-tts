@@ -419,9 +419,27 @@ def test_voice_selection_filters(qtbot):
     # reset filters again
     qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.MouseButton.LeftButton)    
 
-    # select random mode and add some voices
-    # ======================================
+    # filter by audio language
+    # ========================
+    voiceselection.audio_languages_combobox.setCurrentText('French (France)')
+    # ensure only french voices are present
+    assert len(voiceselection.filtered_voice_list) < len(voiceselection.voice_list)
+    assert len(voiceselection.filtered_voice_list) == voiceselection.voices_combobox.count()
+    for voice in voiceselection.filtered_voice_list:
+        assert languages.AudioLanguage.fr_FR in voice.audio_languages
 
+    # reset filters again
+    qtbot.mouseClick(voiceselection.reset_filters_button, aqt.qt.Qt.MouseButton.LeftButton)    
+
+
+    # filter by service
+    # =================
+    voiceselection.services_combobox.setCurrentText('ServiceA')
+    # ensure only ServiceA voices are present
+    assert len(voiceselection.filtered_voice_list) < len(voiceselection.voice_list)
+    assert len(voiceselection.filtered_voice_list) == voiceselection.voices_combobox.count()
+    for voice in voiceselection.filtered_voice_list:
+        assert voice.service == 'ServiceA'
 
     # dialog.exec()
 

@@ -424,7 +424,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # check filtering by service
         if self.services_combobox.currentIndex() != 0:
             service = self.services[self.services_combobox.currentIndex() - 2]
-            voice_list = [voice for voice in voice_list if voice.service.name == service] 
+            voice_list = [voice for voice in voice_list if voice.service == service] 
         # check filtering by gender
         if self.genders_combobox.currentIndex() != 0:
             gender = self.genders[self.genders_combobox.currentIndex() - 2]
