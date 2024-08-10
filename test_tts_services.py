@@ -1286,7 +1286,7 @@ Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-Engli
                 logger.info(f'testing language {language.name}, service {service_name}')
                 random_voices = self.pick_random_voices_sample(voice_list, service_name, language, self.RANDOM_VOICE_COUNT)
                 for voice in random_voices:
-                    self.verify_audio_output(voice, source_text)    
+                    self.verify_audio_output(voice, language, source_text)
 
     def test_all_services_english(self):
         self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.en_US, 'The weather is good today.')
