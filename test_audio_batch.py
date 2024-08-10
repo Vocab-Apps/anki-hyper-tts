@@ -312,9 +312,9 @@ def test_simple_error_handling_not_found(qtbot):
         
     # build voice selection model
     voice_list = hypertts_instance.service_manager.full_voice_list()
-    voice_b_notfound = [x for x in voice_list if x.name == 'notfound'][0].voice_id
+    voice_b_notfound = [x for x in voice_list if x.name == 'notfound'][0]
     single = config_models.VoiceSelectionSingle()
-    single.set_voice(config_models.VoiceWithOptions(voice_b_notfound, {}))
+    single.set_voice(config_models.VoiceWithOptions(voice_b_notfound.voice_id, {}))
 
     batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
@@ -341,7 +341,7 @@ def test_simple_error_handling_not_found(qtbot):
     # verify batch error manager stats
     # verify per-note status
     assert batch_status_obj[0].sound_file == None
-    assert str(batch_status_obj[0].error) == 'Audio not found for [老人家] (voice: notfound, Male, ServiceB)'
+    assert str(batch_status_obj[0].error) == f'Audio not found for [老人家] (voice: {voice_b_notfound})'
 
 
 
