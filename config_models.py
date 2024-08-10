@@ -153,9 +153,6 @@ class VoiceWithOptions():
             'options': self.options
         }
 
-    def __str__(self):
-        return f'{self.voice}{self.options_str()}'
-
 class VoiceWithOptionsRandom(VoiceWithOptions):
     def __init__(self, voice_id: voice.TtsVoiceId_v3, options, random_weight=1):
         VoiceWithOptions.__init__(self, voice_id, options)
@@ -191,8 +188,6 @@ class VoiceSelectionBase(ConfigModelBase):
     # properties
     selection_mode = property(get_selection_mode, None)
 
-    def __str__(self):
-        return 'voices'
 
 class VoiceSelectionSingle(VoiceSelectionBase):
     def __init__(self):

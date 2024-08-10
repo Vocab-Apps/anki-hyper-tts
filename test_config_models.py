@@ -18,6 +18,7 @@ import testing_utils
 import config_models
 import errors
 import voice
+import languages
 
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
@@ -1533,3 +1534,29 @@ class ConfigModelsTests(unittest.TestCase):
 
         self.assertEquals(voice_id_1, voice_id_2)
         self.assertEquals(hash(voice_id_1), hash(voice_id_2))
+
+    def test_voice_string(self):
+        # single language voice
+        voice_1 = voice.TtsVoice_v3(
+            name='Peppa',
+            voice_key={'id': 'peppa'},
+            options={},
+            service='ServiceA',
+            gender=constants.Gender.Female,
+            audio_languages=[languages.AudioLanguage.en_GB],
+            service_fee=constants.ServiceFee.paid
+        )
+
+        self.assertEquals(str(voice_1), 'English (UK), Female, Peppa (ServiceA)')
+
+        voice_1 = voice.TtsVoice_v3(
+            name='Peppa',
+            voice_key={'id': 'peppa'},
+            options={},
+            service='ServiceA',
+            gender=constants.Gender.Female,
+            audio_languages=[languages.AudioLanguage.en_GB, languages.AudioLanguage.fr_FR],
+            service_fee=constants.ServiceFee.paid
+        )
+
+        self.assertEquals(str(voice_1), 'Multilingual, Female, Peppa (ServiceA)')

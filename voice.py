@@ -139,18 +139,16 @@ class TtsVoice_v3:
     
 
     def __str__(self):
-        return f"{self.name}, {self.gender.name}, {self.service}"
+        return voice_str(self)
 
     def __repr__(self):
             return (f"TtsVoice_v3(name={self.name!r}, voice_key={self.voice_key!r}, options={self.options!r}, "
                     f"service={self.service!r}, gender={self.gender!r}, audio_languages={self.audio_languages!r}, "
                     f"service_fee={self.service_fee!r}, voice_id={self.voice_id!r})")
 
+# only used for testing
 def serialize_voice_v3(voice: TtsVoice_v3) -> str:
     return databind.json.dump(voice, TtsVoice_v3)
-
-def deserialize_voice_v3(voice: str) -> TtsVoice_v3:
-    return databind.json.load(voice, TtsVoice_v3)
 
 def serialize_voiceid_v3(voice_id: TtsVoiceId_v3) -> str:
     return databind.json.dump(voice_id, TtsVoiceId_v3)
@@ -170,10 +168,18 @@ def build_voice_v3(name, gender, language, service, voice_key, options) -> TtsVo
     )
 
 
+def voice_str(voice: TtsVoice_v3) -> str:
+    #language_str = 
+    if len(voice.audio_languages) == 1:
+        language_str = voice.audio_languages[0].audio_lang_name
+    else:
+        language_str = 'Multilingual'
+    return f"{language_str}, {voice.gender.name}, {voice.name} ({voice.service})"
+
 def generate_voice_with_options_str(voice: TtsVoice_v3, options) -> str:
     result = ''
 
-    result += f"{voice}"
+    result += f"{voice_str(voice)}"
 
     options_array = []
     for key, value in options.items():
