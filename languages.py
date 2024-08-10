@@ -332,6 +332,8 @@ class AudioLanguage(enum.Enum):
     id_ID = (Language.id_, "Indonesian")
     is_IS = (Language.is_, "Icelandic")
     it_IT = (Language.it, "Italian")
+    iu_Latn_CA = (Language.iu_latn, "Inuktitut (Latin, Canada)")
+    iu_Cans_CA = (Language.iu, "Inuktitut (Syllabics, Canada)")
     ja_JP = (Language.ja, "Japanese")
     jv_ID = (Language.jw, "Javanese (Indonesia)")
     ka_GE = (Language.ka, "Georgian (Georgia)")
@@ -350,6 +352,7 @@ class AudioLanguage(enum.Enum):
     ms_MY = (Language.ms, "Malay")
     mt_MT = (Language.mt, "Maltese (Malta)")
     my_MM = (Language.my, "Burmese (Myanmar [Burma])")
+    nan_CN = (Language.zh_cn, "Chinese (Minnan)")
     nb_NO = (Language.nb, "Norwegian (Norway)")
     ne_NP = (Language.ne, "Nepali (Nepal)")
     nl_BE = (Language.nl, "Dutch (Belgium)")
@@ -398,6 +401,10 @@ class AudioLanguage(enum.Enum):
     zh_CN_shandong = (Language.zh_cn, 'Chinese (Jilu Mandarin, Simplified)')
     zh_CN_sichuan = (Language.zh_cn, 'Chinese (Southwestern Mandarin, Simplified)')
     zh_CN_guangxi = (Language.zh_cn, 'Chinese (Guangxi Accent Mandarin, Simplified)')
+    zh_CN_gansu = (Language.zh_cn, 'Chinese (Lanyin Mandarin Gansu, Simplified)')
+    zh_CN_anhui = (Language.zh_cn, 'Chinese (Jianghuai Mandarin Anhui, Simplified)')
+    zh_CN_hunan = (Language.zh_cn, 'Chinese (Hunan Accent Mandarin, Simplified)')
+
 
     fa_IR = (Language.fa, "Persian (Iran)")
     zu_ZA = (Language.zu, "Zulu (South Africa)")
