@@ -30,7 +30,7 @@ def create_simple_batch(hypertts_instance,
     voice_list = hypertts_instance.service_manager.full_voice_list()
     selected_voice = [x for x in voice_list if x.name == voice_name][0]
     single = config_models.VoiceSelectionSingle()
-    single.set_voice(config_models.VoiceWithOptions(selected_voice, {}))
+    single.set_voice(config_models.VoiceWithOptions(selected_voice.voice_id, {}))
 
     batch = config_models.BatchConfig(hypertts_instance.anki_utils)
     source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese', use_selection=use_selection)
