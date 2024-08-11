@@ -124,9 +124,7 @@ class TTSTests(unittest.TestCase):
         # =============
         # google translate
         self.manager.get_service('GoogleTranslate').enabled = True
-        self.manager.get_service('Collins').enabled = True
         self.manager.get_service('Oxford').enabled = True
-        self.manager.get_service('Lexico').enabled = True
         self.manager.get_service('DigitalesWorterbuchDeutschenSprache').enabled = True
         self.manager.get_service('Duden').enabled = True
         self.manager.get_service('Cambridge').enabled = True
