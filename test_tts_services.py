@@ -120,11 +120,6 @@ class TTSTests(unittest.TestCase):
         self.manager.get_service('FptAi').configure({
             'api_key': os.environ['FPTAPI_SERVICES_KEY'],
         })
-        # voicen
-        self.manager.get_service('Voicen').enabled = True
-        self.manager.get_service('Voicen').configure({
-            'api_key': os.environ['VOICEN_API_KEY'],
-        })        
         # free services 
         # =============
         # google translate
