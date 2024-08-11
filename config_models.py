@@ -667,7 +667,8 @@ def migrate_configuration(anki_utils, config):
 
         # Migration from version 2 to 3
         # instead of voices, we store voice_id's
-        for preset in config[constants.CONFIG_PRESETS].values():
+        presets_config = config.get(constants.CONFIG_PRESETS, {})
+        for preset in presets_config.values():
             voice_selection = preset.get('voice_selection', {})
             
             if voice_selection.get('voice_selection_mode') == 'single':
