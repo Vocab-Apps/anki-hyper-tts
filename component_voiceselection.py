@@ -34,7 +34,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.services_combobox,
             self.genders_combobox,
             self.voices_combobox]:
-            combobox.setStyleSheet("combobox-popup: 0;")
+            combobox.view().setVerticalScrollBarPolicy(aqt.qt.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
         self.voices_combobox.setFont(gui_utils.get_large_combobox_font())
 
         self.play_sample_button = aqt.qt.QPushButton('Play Sample')
