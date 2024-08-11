@@ -463,23 +463,6 @@ class TTSTests(unittest.TestCase):
         # pytest test_tts_services.py  -k 'TTSTests and test_fptai'
         self.random_voice_test('FptAi', languages.AudioLanguage.vi_VN, 'Tôi bị mất cái ví.')
 
-    @pytest.mark.skip(reason="voicen decommissioned")
-    def test_voicen(self):
-        # pytest test_tts_services.py  -k 'TTSTests and test_voicen'
-        service_name = 'Voicen'
-
-        voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service == service_name]
-        assert len(service_voices) > 5
-
-        # test turkish
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.tr_TR)
-        self.verify_audio_output(selected_voice, 'kahvaltı')
-
-        # test russian
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.ru_RU)
-        self.verify_audio_output(selected_voice, 'улица') 
-
     def test_naver(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_naver'
         service_name = 'Naver'
@@ -583,58 +566,6 @@ class TTSTests(unittest.TestCase):
         self.random_voice_test(service_name, languages.AudioLanguage.th_TH, 'สวัสดีค่ะ')
 
 
-    @pytest.mark.skip(reason="stopped working, getting 403 / enable javascript and cookies")
-    def test_collins(self):
-        # pytest --log-cli-level=DEBUG test_tts_services.py  -k 'TTSTests and test_collins'
-        service_name = 'Collins'
-        if self.manager.get_service(service_name).enabled == False:
-            logger.warning(f'service {service_name} not enabled, skipping')
-            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
-
-        voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service == service_name]
-        
-        logger.info(f'found {len(service_voices)} voices for {service_name} services')
-        assert len(service_voices) >= 2
-
-        # pick a random en_GB voice
-        self.random_voice_test(service_name, languages.AudioLanguage.en_GB, 'successful')
-
-        # test other languages
-        self.random_voice_test(service_name, languages.AudioLanguage.fr_FR, 'bienvenue')
-        self.random_voice_test(service_name, languages.AudioLanguage.de_DE, 'Hallo')
-        self.random_voice_test(service_name, languages.AudioLanguage.es_ES, 'furgoneta')
-        self.random_voice_test(service_name, languages.AudioLanguage.it_IT, 'attenzione')
-
-        # error handling
-        # ==============
-
-        # ensure that a non-existent word raises AudioNotFoundError
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
-        self.assertRaises(errors.AudioNotFoundError, 
-                          self.manager.get_tts_audio,
-                          'xxoanetuhsoae', # non-existent word
-                          selected_voice,
-                          {},
-                          context.AudioRequestContext(constants.AudioRequestReason.batch))
-
-        # german word not found
-        german_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.de_DE)
-        self.assertRaises(errors.AudioNotFoundError, 
-                          self.manager.get_tts_audio,
-                          'Fahrkarte', # no pronounciation
-                          selected_voice,
-                          {},
-                          context.AudioRequestContext(constants.AudioRequestReason.batch))        
-
-        self.assertRaises(errors.AudioNotFoundError, 
-                          self.manager.get_tts_audio,
-                          'Entschuldigung', # no pronounciation
-                          selected_voice,
-                          {},
-                          context.AudioRequestContext(constants.AudioRequestReason.batch))                                  
-
-
     def test_oxford(self):
         service_name = 'Oxford'
         if self.manager.get_service(service_name).enabled == False:
@@ -667,42 +598,6 @@ class TTSTests(unittest.TestCase):
                           context.AudioRequestContext(constants.AudioRequestReason.batch))
 
 
-    @pytest.mark.skip(reason="lexico has shutdown")
-    def test_lexico(self):
-        service_name = 'Lexico'
-        if self.manager.get_service(service_name).enabled == False:
-            logger.warning(f'service {service_name} not enabled, skipping')
-            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
-
-        voice_list = self.manager.full_voice_list()
-        service_voices = [voice for voice in voice_list if voice.service == service_name]
-        
-        logger.info(f'found {len(service_voices)} voices for {service_name} services')
-        assert len(service_voices) >= 1
-
-        # pick a random en_GB voice
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
-        self.verify_audio_output(selected_voice, 'vehicle')
-
-        # error handling
-        # ==============
-
-        # ensure that a non-existent word raises AudioNotFoundError
-        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
-        self.assertRaises(errors.AudioNotFoundError, 
-                          self.manager.get_tts_audio,
-                          'xxoanetuhsoae', # non-existent word
-                          selected_voice,
-                          {},
-                          context.AudioRequestContext(constants.AudioRequestReason.batch))
-
-        # saw this issue on sentry
-        self.assertRaises(errors.AudioNotFoundError, 
-                          self.manager.get_tts_audio,
-                          "to be at one's wits' end", # non-existent word
-                          selected_voice,
-                          {},
-                          context.AudioRequestContext(constants.AudioRequestReason.batch))                          
 
     def test_dwds(self):
         # pytest test_tts_services.py -k test_dwds
