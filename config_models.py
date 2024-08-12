@@ -149,7 +149,7 @@ class VoiceWithOptions():
 
     def serialize(self):
         return {
-            'voice_id': voice.serialize_voiceid_v3(self.voice_id),
+            'voice_id': voice.serialize_voice_id_v3(self.voice_id),
             'options': self.options
         }
 
@@ -160,7 +160,7 @@ class VoiceWithOptionsRandom(VoiceWithOptions):
 
     def serialize(self):
         return {
-            'voice_id': voice.serialize_voiceid_v3(self.voice_id),
+            'voice_id': voice.serialize_voice_id_v3(self.voice_id),
             'options': self.options,
             'weight': self.random_weight
         }        

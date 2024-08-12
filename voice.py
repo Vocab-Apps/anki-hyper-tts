@@ -3,7 +3,7 @@ import abc
 import dataclasses
 import databind.json
 import functools
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Union
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
 languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
@@ -100,7 +100,7 @@ class Voice(VoiceBase):
 # voice identification only
 @dataclasses.dataclass
 class TtsVoiceId_v3:
-    voice_key: Dict[str, Any]
+    voice_key: Union[Dict[str, Any], str]
     service: str
 
     def __eq__(self, other):
@@ -156,7 +156,7 @@ class TtsVoice_v3:
 def serialize_voice_v3(voice: TtsVoice_v3) -> str:
     return databind.json.dump(voice, TtsVoice_v3)
 
-def serialize_voiceid_v3(voice_id: TtsVoiceId_v3) -> str:
+def serialize_voice_id_v3(voice_id: TtsVoiceId_v3) -> str:
     return databind.json.dump(voice_id, TtsVoiceId_v3)
 
 def deserialize_voice_id_v3(voice_id: str) -> TtsVoiceId_v3:

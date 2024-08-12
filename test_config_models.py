@@ -1575,4 +1575,15 @@ class ConfigModelsTests(unittest.TestCase):
         hash(voice_id_1)
         hash(voice_id_2)
 
+        # try serializing
+        self.assertEquals(voice.serialize_voice_id_v3(voice_id_1), {'service': 'ServiceA', 'voice_key': {'id': 'peppa'}})
+        self.assertEquals(voice.serialize_voice_id_v3(voice_id_2), {'service': 'ServiceA', 'voice_key': 'peppa'})
+
+        # try de-serializing
+        deserialized_voice_id_1 = voice.deserialize_voice_id_v3({'service': 'ServiceA', 'voice_key': {'id': 'peppa'}})
+        deserialized_voice_id_2 = voice.deserialize_voice_id_v3({'service': 'ServiceA', 'voice_key': 'peppa'})
+
+        self.assertEqual(voice_id_1, deserialized_voice_id_1)
+        self.assertEqual(voice_id_2, deserialized_voice_id_2)
+
         self.assertTrue(True)

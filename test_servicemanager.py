@@ -214,7 +214,7 @@ class ServiceManagerTests(unittest.TestCase):
 
         # we don't serialize voices anymore, only voice ids
 
-        voice_id_data = voice.serialize_voiceid_v3(selected_voice.voice_id)
+        voice_id_data = voice.serialize_voice_id_v3(selected_voice.voice_id)
         expected_voice_data = {
             'service': 'ServiceA',
             'voice_key': {'name': 'voice_1'}
