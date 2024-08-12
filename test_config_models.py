@@ -939,7 +939,7 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['uuid'], expected_preset_1_uuid)        
 
 
-    def test_migration_2_to_3(self):
+    def test_migration_2_to_3_a(self):
         anki_utils = testing_utils.MockAnkiUtils({})
         config_rev_2_json_str = """
 {
@@ -1340,6 +1340,238 @@ class ConfigModelsTests(unittest.TestCase):
         }
     },
     "unique_id": "uuid:7a544af5402f"
+}
+"""
+        expected_config_rev_3 = json.loads(config_rev_3_json_str)
+        # pprint.pprint(expected_config_rev_3)
+
+        self.maxDiff = None
+        updated_config = config_models.migrate_configuration(anki_utils, config_rev_2)
+        self.assertEqual(updated_config['config_schema'], 3)
+        self.assertEqual(expected_config_rev_3, updated_config)
+
+    def test_migration_2_to_3_b(self):
+        anki_utils = testing_utils.MockAnkiUtils({})
+        config_rev_2_json_str = """
+{
+    "batch_config": {},
+    "config_schema": 2,
+    "configuration": {
+        "hypertts_pro_api_key": "api_key_1",
+        "service_config": {},
+        "service_enabled": {},
+        "use_vocabai_api": false,
+        "vocabai_api_url_override": null
+    },
+    "preferences": {},
+    "presets": {},
+    "realtime_config": {
+        "realtime_0": {
+            "back": {
+                "side_enabled": true,
+                "source": {
+                    "field_name": "English",
+                    "field_type": "Regular",
+                    "mode": "AnkiTTSTag"
+                },
+                "text_processing": {
+                    "html_to_text_line": true,
+                    "ignore_case": false,
+                    "run_replace_rules_after": true,
+                    "ssml_convert_characters": true,
+                    "strip_brackets": false,
+                    "text_replacement_rules": []
+                },
+                "voice_selection": {
+                    "voice_list": [
+                        {
+                            "options": {},
+                            "voice": {
+                                "gender": "Female",
+                                "language": "en_US",
+                                "name": "Grace (Turbo v2)",
+                                "service": "ElevenLabs",
+                                "voice_key": {
+                                    "language": "en_US",
+                                    "model_id": "eleven_turbo_v2",
+                                    "voice_id": "oWAxZDx7w5VEj9dCyTzz"
+                                }
+                            }
+                        },
+                        {
+                            "options": {},
+                            "voice": {
+                                "gender": "Female",
+                                "language": "en_US",
+                                "name": "Matilda (Multilingual v2)",
+                                "service": "ElevenLabs",
+                                "voice_key": {
+                                    "language": "en_US",
+                                    "model_id": "eleven_multilingual_v2",
+                                    "voice_id": "XrExE9yKIg1WjnnlVkGX"
+                                }
+                            }
+                        }
+                    ],
+                    "voice_selection_mode": "priority"
+                }
+            },
+            "front": {
+                "side_enabled": true,
+                "source": {
+                    "field_name": "English",
+                    "field_type": "Regular",
+                    "mode": "AnkiTTSTag"
+                },
+                "text_processing": {
+                    "html_to_text_line": true,
+                    "ignore_case": false,
+                    "run_replace_rules_after": true,
+                    "ssml_convert_characters": true,
+                    "strip_brackets": false,
+                    "text_replacement_rules": []
+                },
+                "voice_selection": {
+                    "voice_list": [
+                        {
+                            "options": {},
+                            "voice": {
+                                "gender": "Female",
+                                "language": "en_AU",
+                                "name": "Natasha (Neural)",
+                                "service": "Azure",
+                                "voice_key": {
+                                    "name": "Microsoft Server Speech Text to Speech Voice (en-AU, NatashaNeural)"
+                                }
+                            },
+                            "weight": 1
+                        },
+                        {
+                            "options": {},
+                            "voice": {
+                                "gender": "Female",
+                                "language": "en_AU",
+                                "name": "Tina (Neural)",
+                                "service": "Azure",
+                                "voice_key": {
+                                    "name": "Microsoft Server Speech Text to Speech Voice (en-AU, TinaNeural)"
+                                }
+                            },
+                            "weight": 1
+                        }
+                    ],
+                    "voice_selection_mode": "random"
+                }
+            }
+        }
+    },
+    "unique_id": "uuid:089db83fbb66"
+}
+"""
+        config_rev_2 = json.loads(config_rev_2_json_str)
+
+
+
+        config_rev_3_json_str = """
+{
+    "batch_config": {},
+    "config_schema": 3,
+    "configuration": {
+        "hypertts_pro_api_key": "api_key_1",
+        "service_config": {},
+        "service_enabled": {},
+        "use_vocabai_api": false,
+        "vocabai_api_url_override": null
+    },
+    "preferences": {},
+    "presets": {},
+    "realtime_config": {
+        "realtime_0": {
+            "back": {
+                "side_enabled": true,
+                "source": {
+                    "field_name": "English",
+                    "field_type": "Regular",
+                    "mode": "AnkiTTSTag"
+                },
+                "text_processing": {
+                    "html_to_text_line": true,
+                    "ignore_case": false,
+                    "run_replace_rules_after": true,
+                    "ssml_convert_characters": true,
+                    "strip_brackets": false,
+                    "text_replacement_rules": []
+                },
+                "voice_selection": {
+                    "voice_list": [
+                        {
+                            "options": {},
+                            "voice_id": {
+                                "service": "ElevenLabs",
+                                "voice_key": {
+                                    "model_id": "eleven_turbo_v2",
+                                    "voice_id": "oWAxZDx7w5VEj9dCyTzz"
+                                }
+                            }
+                        },
+                        {
+                            "options": {},
+                            "voice_id": {
+                                "service": "ElevenLabs",
+                                "voice_key": {
+                                    "model_id": "eleven_multilingual_v2",
+                                    "voice_id": "XrExE9yKIg1WjnnlVkGX"
+                                }
+                            }
+                        }
+                    ],
+                    "voice_selection_mode": "priority"
+                }
+            },
+            "front": {
+                "side_enabled": true,
+                "source": {
+                    "field_name": "English",
+                    "field_type": "Regular",
+                    "mode": "AnkiTTSTag"
+                },
+                "text_processing": {
+                    "html_to_text_line": true,
+                    "ignore_case": false,
+                    "run_replace_rules_after": true,
+                    "ssml_convert_characters": true,
+                    "strip_brackets": false,
+                    "text_replacement_rules": []
+                },
+                "voice_selection": {
+                    "voice_list": [
+                        {
+                            "options": {},
+                            "voice_id": {
+                                "service": "Azure",
+                                "voice_key": {
+                                    "name": "Microsoft Server Speech Text to Speech Voice (en-AU, NatashaNeural)"
+                                }
+                            },
+                            "weight": 1
+                        },
+                        {
+                            "options": {},
+                            "voice_id": {
+                                "service": "Azure",
+                                "voice_key": {
+                                    "name": "Microsoft Server Speech Text to Speech Voice (en-AU, TinaNeural)"
+                                }
+                            },
+                            "weight": 1
+                        }
+                    ],
+                    "voice_selection_mode": "random"
+                }
+            }
+        }
+    },
+    "unique_id": "uuid:089db83fbb66"
 }
 """
         expected_config_rev_3 = json.loads(config_rev_3_json_str)

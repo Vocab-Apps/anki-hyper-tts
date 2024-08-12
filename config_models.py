@@ -696,6 +696,11 @@ def migrate_configuration(anki_utils, config):
                             'options': voice_selection['voice'].get('options', {}),
                             'voice_id': voice_to_voice_id_conversion(voice)
                         }
+                    elif voice_selection.get('voice_selection_mode') in ['priority', 'random']:
+                        for voice_entry in voice_selection.get('voice_list', []):
+                            voice = voice_entry.get('voice', {})
+                            voice_entry['voice_id'] = voice_to_voice_id_conversion(voice)
+                            voice_entry.pop('voice', None)                        
 
     # Update config schema version
     config[constants.CONFIG_SCHEMA] = constants.CONFIG_SCHEMA_VERSION
