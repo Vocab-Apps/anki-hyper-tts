@@ -1560,3 +1560,19 @@ class ConfigModelsTests(unittest.TestCase):
         )
 
         self.assertEquals(str(voice_1), 'Multilingual, Female, Peppa (ServiceA)')
+
+    def test_voice_hash(self):
+        # the hash should work whether the voice_key is a dict or str
+        voice_id_1 = voice.TtsVoiceId_v3(
+            voice_key={'id': 'peppa'},
+            service='ServiceA',
+        )
+        voice_id_2 = voice.TtsVoiceId_v3(
+            voice_key='peppa',
+            service='ServiceA',
+        )
+        # should not throw an exception
+        hash(voice_id_1)
+        hash(voice_id_2)
+
+        self.assertTrue(True)

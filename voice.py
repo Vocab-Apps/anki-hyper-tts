@@ -109,7 +109,13 @@ class TtsVoiceId_v3:
         return self.voice_key == other.voice_key and self.service == other.service
 
     def __hash__(self):
-        return hash((frozenset(self.voice_key.items()), self.service))
+        if isinstance(self.voice_key, str):
+            # voice_key is a string
+            return hash((self.voice_key, self.service))
+        else:
+            # voice_key is a dict
+            return hash((frozenset(self.voice_key.items()), self.service))
+
 
 # full voice information (to display in the GUI)
 @dataclasses.dataclass
