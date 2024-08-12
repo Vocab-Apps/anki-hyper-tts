@@ -467,7 +467,7 @@ class HyperTTS():
             if voice_selection.selection_mode == constants.VoiceSelectionMode.single:
                 voice_id = voice_selection.voice.voice_id
             else:
-                voice_id = voice_selection.get_voice_list()[0].voice.voice_id
+                voice_id = voice_selection.get_voice_list()[0].voice_id
             # now, locate the voice for this voice id
             voice = self.service_manager.locate_voice(voice_id)
             audio_language = voice_module.get_audio_language_for_voice(voice)

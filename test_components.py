@@ -2055,7 +2055,7 @@ def test_realtime_side_component(qtbot):
 
     # dialog.exec()
 
-def test_realtime_component(qtbot):
+def test_realtime_component_single_voice(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
@@ -2172,6 +2172,77 @@ def test_realtime_component(qtbot):
     # assertions on note type updated
     assert hypertts_instance.anki_utils.updated_note_model != None
     assert '{{tts' not in hypertts_instance.anki_utils.updated_note_model['tmpls'][0]['qfmt']
+
+def test_realtime_component_priority_front(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    # instantiate dialog
+    # ==================
+
+    note_id = config_gen.note_id_1
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    realtime = component_realtime.ComponentRealtime(hypertts_instance, dialog, 0)
+    realtime.configure_note(note_1)
+    realtime.draw(dialog.getLayout())
+
+    # enable TTS on each side
+    # =======================
+
+    assert realtime.apply_button.isEnabled() == False
+
+    # enable front side, select a field
+    realtime.front.side_enabled_checkbox.setChecked(True)
+    realtime.front.source.source_field_combobox.setCurrentText('English')
+
+    assert realtime.get_model().front.side_enabled == True
+    assert realtime.get_model().front.source.field_name == 'English'
+    assert realtime.get_model().front.source.field_type == constants.AnkiTTSFieldType.Regular
+
+    testing_utils.voice_selection_voice_list_select('voice_a_2', 'ServiceA', realtime.front.voice_selection.voices_combobox)
+    # select priority mode
+    realtime.front.voice_selection.radio_button_priority.setChecked(True)
+    # add voice
+    qtbot.mouseClick(realtime.front.voice_selection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    # select another voice
+    testing_utils.voice_selection_voice_list_select('voice_a_1', 'ServiceA', realtime.front.voice_selection.voices_combobox)
+    # add voice
+    qtbot.mouseClick(realtime.front.voice_selection.add_voice_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    # check resulting model
+    assert realtime.get_model().front.voice_selection.selection_mode == constants.VoiceSelectionMode.priority
+    assert len(realtime.get_model().front.voice_selection.voice_list) == 2
+
+    # check TTS tag
+    # =============
+    # click apply
+    assert realtime.apply_button.isEnabled() == True
+    qtbot.mouseClick(realtime.apply_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    # assertions on config saved
+    assert constants.CONFIG_REALTIME_CONFIG in hypertts_instance.anki_utils.written_config
+    assert 'realtime_0' in hypertts_instance.anki_utils.written_config[constants.CONFIG_REALTIME_CONFIG]
+
+    realtime_config_saved = hypertts_instance.anki_utils.written_config[constants.CONFIG_REALTIME_CONFIG]['realtime_0']
+    assert realtime_config_saved['front']['source']['field_name'] == 'English'
+
+    # pprint.pprint(hypertts_instance.anki_utils.written_config)
+
+    # assertions on note type updated
+    assert hypertts_instance.anki_utils.updated_note_model != None
+    question_format = hypertts_instance.anki_utils.updated_note_model['tmpls'][0]['qfmt'].replace('\n', ' ')
+
+    # the language should be that of the first voice
+    expected_front_tts_tag = '{{tts en_US hypertts_preset=Front_realtime_0 voices=HyperTTS:English}}'
+
+    # dialog.exec()
+
+    assert expected_front_tts_tag in question_format
+
 
 def test_realtime_component_manual(qtbot):
     # HYPERTTS_REALTIME_DIALOG_DEBUG=yes pytest test_components.py -k test_realtime_component_manual -s -rPP
