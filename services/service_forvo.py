@@ -86,7 +86,7 @@ class Forvo(service.ServiceBase):
         corporate_url = api_url == self.CONFIG_API_URL_CORPORATE
 
         if corporate_url:
-            url = f'https://apicorporate.forvo.com/api2/v1.1/{api_key}/word-pronunciations/word/{encoded_text}/language/{language}{sex_param}/order/rate-desc/limit/1{country_code}'
+            url = f'{api_url}{api_key}/word-pronunciations/word/{encoded_text}/language/{language}{sex_param}/order/rate-desc/limit/1{country_code}'
         else:
             url = f'{api_url}/key/{api_key}/format/json/action/word-pronunciations/word/{encoded_text}/language/{language}{sex_param}{username_param}/order/rate-desc/limit/1{country_code}'
 
