@@ -38,7 +38,7 @@ class ServiceManager():
         hypertts_pro_mode = configuration_model.hypertts_pro_api_key_set()
         for service_name, enabled in configuration_model.get_service_enabled_map().items():
             if not self.service_exists(service_name):
-                logger.error(f'could not find service {service_name}, cannot configure')
+                logger.warn(f'could not find service {service_name}, cannot configure')
                 continue
             service = self.get_service(service_name)
             logger.info(f'configuring service {service_name}, hypertts_pro_mode: {hypertts_pro_mode}, clt_enabled: {service.cloudlanguagetools_enabled()}')
