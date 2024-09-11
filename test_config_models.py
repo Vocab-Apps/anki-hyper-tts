@@ -295,6 +295,60 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(random_deserialized.voice_list[0].voice_id.voice_key, {'name': 'voice_1'})
         self.assertEqual(random_deserialized.voice_list[1].voice_id.voice_key, {'voice_id': 'jane'})
 
+    def test_missing_voice_priority(self):
+        manager = get_service_manager()
+        voice_list = manager.full_voice_list()    
+
+        anki_utils = testing_utils.MockAnkiUtils({})
+        hypertts_instance = hypertts.HyperTTS(anki_utils, manager)
+
+        # the first voice is non-existent
+        priority_serialized_config = {
+            'voice_selection_mode': 'priority',
+            'voice_list': [
+                {
+                    'voice_id': {
+                        'service': 'ServiceA',
+                        'voice_key': {'name': 'voice_4'}
+                    },
+                    'options': {
+                        'speed': 43
+                    },
+                },                
+                {
+                    'voice_id': {
+                        'service': 'ServiceA',
+                        'voice_key': {'name': 'voice_1'}
+                    },
+                    'options': {
+                        'speed': 43
+                    },
+                },
+                {
+                    'voice_id': {
+                        'service': 'ServiceA',
+                        'voice_key': {'name': 'voice_1'}
+                    },
+                    'options': {
+                        'speed': 84
+                    },
+                },            
+                {
+                    'voice_id': {
+                        'service': 'ServiceB',
+                        'voice_key': {'voice_id': 'jane'}
+                    },
+                    'options': {
+                    },
+                },            
+            ]
+        }
+
+        priority_deserialized = hypertts_instance.deserialize_voice_selection(priority_serialized_config)
+        self.assertEqual(len(priority_deserialized.voice_list), 3) # the first voice is missing
+        self.assertEqual(priority_deserialized.voice_list[0].voice_id.voice_key, {'name': 'voice_1'})
+        self.assertEqual(priority_deserialized.voice_list[1].voice_id.voice_key, {'name': 'voice_1'})
+        self.assertEqual(priority_deserialized.voice_list[2].voice_id.voice_key, {'voice_id': 'jane'})
         
 
     def test_batch_config(self):

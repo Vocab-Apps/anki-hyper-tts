@@ -842,7 +842,12 @@ class HyperTTS():
             priority = config_models.VoiceSelectionPriority()
             for voice_data in voice_selection_config['voice_list']:
                 voice_id = voice_module.deserialize_voice_id_v3(voice_data['voice_id'])
-                priority.add_voice(config_models.VoiceWithOptionsPriority(voice_id, voice_data['options']))
+                try:
+                    # try to locate the voice
+                    voice = self.service_manager.locate_voice(voice_id)
+                    priority.add_voice(config_models.VoiceWithOptionsPriority(voice_id, voice_data['options']))
+                except errors.VoiceIdNotFound as exc:
+                    logger.warn(f'voice_id not found: {voice_id}, omitting from priority selection')
             return priority
 
     def deserialize_text_processing(self, text_processing_config):
