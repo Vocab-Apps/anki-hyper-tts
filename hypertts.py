@@ -836,7 +836,7 @@ class HyperTTS():
                     voice = self.service_manager.locate_voice(voice_id)
                     random.add_voice(config_models.VoiceWithOptionsRandom(voice_id, voice_data['options'], voice_data['weight']))
                 except errors.VoiceIdNotFound as exc:
-                    logger.warn(f'voice_id not found: {voice_id}, omitting from random selection')
+                    logger.warning(f'voice_id not found: {voice_id}, omitting from random selection')
             return random
         elif voice_selection_mode == constants.VoiceSelectionMode.priority:
             priority = config_models.VoiceSelectionPriority()
@@ -847,7 +847,7 @@ class HyperTTS():
                     voice = self.service_manager.locate_voice(voice_id)
                     priority.add_voice(config_models.VoiceWithOptionsPriority(voice_id, voice_data['options']))
                 except errors.VoiceIdNotFound as exc:
-                    logger.warn(f'voice_id not found: {voice_id}, omitting from priority selection')
+                    logger.warning(f'voice_id not found: {voice_id}, omitting from priority selection')
             return priority
 
     def deserialize_text_processing(self, text_processing_config):
