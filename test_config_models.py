@@ -248,6 +248,55 @@ class ConfigModelsTests(unittest.TestCase):
         # check that it gives the same output
         assert priority_deserialized.serialize() == expected_output
 
+    def test_missing_voice_random(self):
+        manager = get_service_manager()
+        voice_list = manager.full_voice_list()    
+
+        anki_utils = testing_utils.MockAnkiUtils({})
+        hypertts_instance = hypertts.HyperTTS(anki_utils, manager)
+
+        # the first voice is non-existent
+        random_serialized_config = {
+            'voice_selection_mode': 'random',
+            'voice_list': [
+                {
+                    'voice_id': {
+                        'service': 'ServiceA',
+                        'voice_key': {'name': 'voice_4'}
+                    },
+                    'options': {
+                        'speed': 43
+                    },
+                    'weight': 1
+                },
+                {
+                    'voice_id': {
+                        'service': 'ServiceA',
+                        'voice_key': {'name': 'voice_1'}
+                    },
+                    'options': {
+                        'speed': 43
+                    },
+                    'weight': 1
+                },
+                {
+                    'voice_id': {
+                        'service': 'ServiceB',
+                        'voice_key': {'voice_id': 'jane'}
+                    },
+                    'options': {
+                    },
+                    'weight': 1
+                },            
+            ]
+        }
+        random_deserialized = hypertts_instance.deserialize_voice_selection(random_serialized_config)
+        self.assertEqual(len(random_deserialized.voice_list), 2) # the first voice is missing
+        self.assertEqual(random_deserialized.voice_list[0].voice_id.voice_key, {'name': 'voice_1'})
+        self.assertEqual(random_deserialized.voice_list[1].voice_id.voice_key, {'voice_id': 'jane'})
+
+        
+
     def test_batch_config(self):
         hypertts_instance = get_hypertts_instance()
         voice_list = hypertts_instance.service_manager.full_voice_list()

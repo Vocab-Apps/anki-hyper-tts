@@ -831,7 +831,12 @@ class HyperTTS():
             random = config_models.VoiceSelectionRandom()
             for voice_data in voice_selection_config['voice_list']:
                 voice_id = voice_module.deserialize_voice_id_v3(voice_data['voice_id'])
-                random.add_voice(config_models.VoiceWithOptionsRandom(voice_id, voice_data['options'], voice_data['weight']))
+                try:
+                    # try to locate the voice
+                    voice = self.service_manager.locate_voice(voice_id)
+                    random.add_voice(config_models.VoiceWithOptionsRandom(voice_id, voice_data['options'], voice_data['weight']))
+                except errors.VoiceIdNotFound as exc:
+                    logger.warn(f'voice_id not found: {voice_id}, omitting from random selection')
             return random
         elif voice_selection_mode == constants.VoiceSelectionMode.priority:
             priority = config_models.VoiceSelectionPriority()
