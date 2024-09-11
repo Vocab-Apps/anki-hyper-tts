@@ -1,0 +1,14 @@
+session_name: hypertts
+start_directory: ./ # load session relative to config location (project root).
+shell_command_before:
+  - cmd: source ${HOME}/python-env/anki-hyper-tts/bin/activate
+    sleep_before: 1
+    sleep_after: 1
+  - cmd: source .bash_aliases
+  - cmd: source ~/secrets/hypertts/hypertts_tests.sh
+windows:
+- window_name: hypertts
+  focus: true
+- window_name: git
+- window_name: log
+  cmd: tail -f ${HOME}/logs/hypertts.log
