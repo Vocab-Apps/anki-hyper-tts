@@ -83,7 +83,12 @@ class Forvo(service.ServiceBase):
         #     username_param = f"/username/{voice_key['preferred_user']}"
 
         encoded_text = urllib.parse.quote(source_text)
-        url = f'{api_url}/key/{api_key}/format/json/action/word-pronunciations/word/{encoded_text}/language/{language}{sex_param}{username_param}/order/rate-desc/limit/1{country_code}'
+        corporate_url = api_url == self.CONFIG_API_URL_CORPORATE
+
+        if corporate_url:
+            url = f'{api_url}{api_key}/word-pronunciations/word/{encoded_text}/language/{language}{sex_param}/order/rate-desc/limit/1{country_code}'
+        else:
+            url = f'{api_url}/key/{api_key}/format/json/action/word-pronunciations/word/{encoded_text}/language/{language}{sex_param}{username_param}/order/rate-desc/limit/1{country_code}'
 
         # 2024/08: forvo's certificate is invalid from what I can tell, there's an open support request via email
         verify_ssl_certificate=False
@@ -94,7 +99,10 @@ class Forvo(service.ServiceBase):
             except json.JSONDecodeError:
                 logger.error(f'Forvo: could not decode JSON for url {url}: {response.content}')
                 raise errors.RequestError(source_text, voice, 'Could not retrieve audio from Forvo')
-            items = data['items']
+            if corporate_url:
+                items = data['data']['items']
+            else:
+                items = data['items']
             if len(items) == 0:
                 raise errors.AudioNotFoundError(source_text, voice)
             audio_url = items[0]['pathmp3']
