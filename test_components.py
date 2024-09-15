@@ -1911,6 +1911,9 @@ def test_batch_dialog_load_random(qtbot):
         # click the open profile button
         qtbot.mouseClick(dialog.batch_component.profile_open_button, aqt.qt.Qt.MouseButton.LeftButton)
 
+        # save button should be disabled
+        assert dialog.batch_component.profile_save_button.isEnabled() == False
+
         # check that the voice selection mode is random
         assert dialog.batch_component.get_model().voice_selection.selection_mode == constants.VoiceSelectionMode.random
         assert len(dialog.batch_component.get_model().voice_selection.get_voice_list()) == 2
@@ -1926,7 +1929,42 @@ def test_batch_dialog_load_random(qtbot):
         assert 'Sound' in note_2.set_values     
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
-    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')        
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
+
+    # test that changing random weights enables the save button
+    # =========================================================
+
+    def dialog_input_sequence(dialog):
+        # dialog.exec()
+        assert dialog.batch_component.profile_open_button.isEnabled() == True
+        hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'batch random 1'
+        # click the open profile button
+        qtbot.mouseClick(dialog.batch_component.profile_open_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+        # save button should be disabled
+        assert dialog.batch_component.profile_save_button.isEnabled() == False
+
+        # check that the voice selection mode is random
+        assert dialog.batch_component.get_model().voice_selection.selection_mode == constants.VoiceSelectionMode.random
+        assert len(dialog.batch_component.get_model().voice_selection.get_voice_list()) == 2
+
+        # change random weight of one of the voices
+        logger.debug(f'changing random weight of second voice')
+        random_voice_index = 1 # second voice
+        widget_row = random_voice_index
+        widget_column = 1
+        weight_widget = dialog.batch_component.voice_selection.voice_list_grid_layout.itemAtPosition(widget_row, widget_column).widget()
+        weight_widget.setValue(42)
+        logger.debug(f'weight_widget.value: {weight_widget.value}')
+
+        # ensure that model got updated with the new weight
+        assert dialog.batch_component.get_model().voice_selection.get_voice_list()[random_voice_index].random_weight == 42
+
+        # save button should be enabled
+        assert dialog.batch_component.profile_save_button.isEnabled() == True, "save button enabled after changing random weight"
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
+    component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
 
     # dialog.exec()
 

@@ -490,7 +490,12 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 # add weight widget
                 weight_widget = aqt.qt.QSpinBox()
                 weight_widget.setValue(voice_entry.random_weight)
-                weight_widget.valueChanged.connect(voice_entry.set_random_weight)
+                def get_change_random_weight_lambda(voice_entry, notify_model_update_fn):
+                    def set_random_weight(value):
+                        voice_entry.random_weight = value
+                        notify_model_update_fn()
+                    return set_random_weight
+                weight_widget.valueChanged.connect(get_change_random_weight_lambda(voice_entry, self.notify_model_update))
                 self.voice_list_grid_layout.addWidget(weight_widget, row, column_index, 1, 1)
                 column_index += 1
             # add remove button
