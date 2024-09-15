@@ -99,9 +99,18 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
 
         # display the mapping rules
         self.mapping_rules_gridlayout = aqt.qt.QGridLayout()
-        vlayout = aqt.qt.QVBoxLayout()
-        vlayout.addLayout(self.mapping_rules_gridlayout)
+        self.scroll_area = aqt.qt.QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
 
+        # Set minimum horizontal size
+        self.scroll_area.setMinimumWidth(800)  # Set the desired minimum width in pixels
+
+        self.layout_widget = aqt.qt.QWidget()
+        self.layout_widget.setLayout(self.mapping_rules_gridlayout)
+
+        self.scroll_area.setWidget(self.layout_widget)
+        vlayout = aqt.qt.QVBoxLayout()
+        vlayout.addWidget(self.scroll_area)
 
         hlayout = aqt.qt.QHBoxLayout()
         hlayout.addStretch()
@@ -308,4 +317,4 @@ class PresetMappingRulesDialog(aqt.qt.QDialog):
 
 def create_dialog(hypertts, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext) -> ComponentPresetMappingRules:
     dialog = PresetMappingRulesDialog(hypertts, deck_note_type, editor_context)
-    hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_PRESET_MAPPING_RULES) 
+    hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_PRESET_MAPPING_RULES)
