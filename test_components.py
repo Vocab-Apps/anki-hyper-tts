@@ -663,9 +663,16 @@ def test_batch_source_1(qtbot):
     model.source_template = f"""result = 'yoyo'"""
     model.template_format_version = constants.TemplateFormatVersion.v1
 
+    logger.debug('clearing model change callback object')
+    model_change_callback.clear_model()
+    logger.debug('loading advanced model')
     batch_source.load_model(model)
+    logger.debug('done loading advanced model')
 
     assert batch_source.advanced_template_input.toPlainText() == f"""result = 'yoyo'"""
+
+    # there should not be a model callback
+    assert model_change_callback.model == None
 
     # dialog.exec()
 
