@@ -106,6 +106,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         model = self.hypertts.load_preset(preset_id)
         self.load_model(model)
         self.enable_delete_profile_button()
+        self.focus_apply_button()
 
     def load_model(self, model):
         logger.info('load_model')
@@ -179,6 +180,9 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
     def disable_delete_profile_button(self):
         self.profile_delete_button.setEnabled(False)
+
+    def focus_apply_button(self):
+        self.apply_button.setFocus()
 
     def sample_selected(self, note_id, text):
         self.voice_selection.sample_text_selected(text)

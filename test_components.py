@@ -913,6 +913,9 @@ def test_batch_dialog_1(qtbot):
 
         assert dialog.batch_component.profile_save_button.isEnabled() == False    
 
+        # the "apply to notes" button should be focused
+        assert dialog.focusWidget() == dialog.batch_component.apply_button, "Apply to Notes button should be focused"
+
         # play sound preview
         # ==================
 
