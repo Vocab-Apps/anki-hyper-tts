@@ -11,3 +11,6 @@ windows:
 - window_name: log
   panes:
     - shell_command: tail -f ${HOME}/logs/hypertts.log
+- window_name: secrets
+  panes:
+    - shell_command: cd ${HOME}/secrets/hypertts
