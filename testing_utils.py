@@ -111,6 +111,18 @@ class MockCollection():
     def update_note(self, note):
         pass
 
+class MockTextInputTypingTimer():
+    def __init__(self, text_input, text_input_changed_fn):
+        self.enabled = True
+        self.text_input_changed_fn = text_input_changed_fn
+        text_input.textChanged.connect(self.text_input_changed)
+
+    def text_input_changed(self):
+        logger.debug(f'text_input_changed, enabled: {self.enabled}')
+        if self.enabled:
+            self.text_input_changed_fn()
+
+
 class MockAnkiUtils():
     def __init__(self, config):
         self.config = config
@@ -255,9 +267,8 @@ class MockAnkiUtils():
         task_fn()
 
     def wire_typing_timer(self, text_input, text_input_changed):
-        # just fire the text_input_changed callback immediately, there won't be any typing
-        text_input.textChanged.connect(lambda: text_input_changed())
-        return None
+        typing_timer = MockTextInputTypingTimer(text_input, text_input_changed)
+        return typing_timer
 
     def call_on_timer_expire(self, timer_obj, task):
         # just call the task for now

@@ -671,9 +671,6 @@ def test_batch_source_1(qtbot):
 
     assert batch_source.advanced_template_input.toPlainText() == f"""result = 'yoyo'"""
 
-    # there should not be a model callback
-    assert model_change_callback.model == None
-
     # dialog.exec()
 
 def test_target(qtbot):

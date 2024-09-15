@@ -20,6 +20,21 @@ def ensure_anki_collection_open():
     if not aqt.mw.col:
         raise errors.CollectionNotOpen()
 
+class TextInputTypingTimer():
+    def __init__(self, text_input, text_input_changed_fn):
+        self.enabled = True
+        self.typing_timer = aqt.qt.QTimer()
+        self.typing_timer.setSingleShot(True)
+        # this is the external callback
+        self.typing_timer.timeout.connect(text_input_changed_fn)
+        # this is the internal callback which will start the timer
+        text_input.textChanged.connect(self.text_input_changed)
+
+    def text_input_changed(self):
+        # start the timer if callbacks are enabled only
+        if self.enabled:
+            self.typing_timer.start(1000)
+
 class AnkiUtils():
     def __init__(self):
         pass
@@ -170,12 +185,8 @@ class AnkiUtils():
         aqt.mw.taskman.run_on_main(task_fn)
 
     def wire_typing_timer(self, text_input, text_input_changed):
-        typing_timer = aqt.qt.QTimer()
-        typing_timer.setSingleShot(True)
-        typing_timer.timeout.connect(text_input_changed)
-        text_input.textChanged.connect(lambda: typing_timer.start(1000))
+        typing_timer = TextInputTypingTimer(text_input, text_input_changed)
         return typing_timer
-
 
     def call_on_timer_expire(self, timer, task):
         if timer.timer_obj != None:

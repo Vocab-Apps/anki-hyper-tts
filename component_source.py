@@ -24,6 +24,9 @@ class BatchSource(component_common.ConfigComponentBase):
         return self.batch_source_model
 
     def load_model(self, model):
+        logger.debug('load_model')
+        self.disable_typing_timers()
+
         self.batch_source_model = model
         batch_mode = model.mode
         self.batch_mode_combobox.setCurrentText(batch_mode.name)
@@ -34,6 +37,8 @@ class BatchSource(component_common.ConfigComponentBase):
             self.simple_template_input.setText(model.source_template)
         elif batch_mode == constants.BatchMode.advanced_template:
             self.advanced_template_input.setPlainText(model.source_template)
+
+        self.enable_typing_timers()
 
 
     def draw(self): # return a widget
@@ -52,8 +57,8 @@ class BatchSource(component_common.ConfigComponentBase):
         self.batch_mode_combobox.currentIndexChanged.connect(self.batch_mode_change)
         self.source_field_combobox.currentIndexChanged.connect(self.source_field_change)
         self.use_selection_checkbox.stateChanged.connect(self.use_selection_checkbox_change)
-        self.hypertts.anki_utils.wire_typing_timer(self.simple_template_input, self.simple_template_change)
-        self.hypertts.anki_utils.wire_typing_timer(self.advanced_template_input, self.advanced_template_change)
+        self.simple_template_typing_timer = self.hypertts.anki_utils.wire_typing_timer(self.simple_template_input, self.simple_template_change)
+        self.advanced_template_typing_timer = self.hypertts.anki_utils.wire_typing_timer(self.advanced_template_input, self.advanced_template_change)
 
         # select default
         self.source_field_change(0)
@@ -62,6 +67,16 @@ class BatchSource(component_common.ConfigComponentBase):
         
         self.scroll_area.setWidget(self.layout_widget)
         return self.scroll_area
+
+    def disable_typing_timers(self):
+        logger.debug('disable_typing_timers')
+        self.simple_template_typing_timer.enabled = False
+        self.advanced_template_typing_timer.enabled = False
+
+    def enable_typing_timers(self):
+        logger.debug('enable_typing_timers')
+        self.simple_template_typing_timer.enabled = True
+        self.advanced_template_typing_timer.enabled = True
 
     def draw_source_mode(self, overall_layout):
         # batch mode
@@ -161,11 +176,13 @@ class BatchSource(component_common.ConfigComponentBase):
         self.notify_model_update()
 
     def simple_template_change(self):
+        logger.debug('simple_template_change')
         simple_template_text = self.simple_template_input.text()
         self.batch_source_model = config_models.BatchSource(mode=constants.BatchMode.template, source_template=simple_template_text)
         self.notify_model_update()
 
     def advanced_template_change(self):
+        logger.debug('advanced_template_change')
         template_text = self.advanced_template_input.toPlainText()
         self.batch_source_model = config_models.BatchSource(mode=constants.BatchMode.advanced_template, source_template=template_text)
         self.notify_model_update()

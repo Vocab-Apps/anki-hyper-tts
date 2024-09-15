@@ -184,7 +184,7 @@ class HyperTTSPro(component_common.ConfigComponentBase):
         self.remove_api_key_button.pressed.connect(self.remove_api_key_button_pressed)
         self.enter_trial_email_ok_button.pressed.connect(self.trial_button_ok_pressed)
 
-        self.hypertts.anki_utils.wire_typing_timer(self.hypertts_pro_api_key, self.pro_api_key_entered)
+        self.hypertts_pro_api_key_timer = self.hypertts.anki_utils.wire_typing_timer(self.hypertts_pro_api_key, self.pro_api_key_entered) 
 
         if self.model.api_key != None:
             self.hypertts_pro_api_key.setText(self.model.api_key)
