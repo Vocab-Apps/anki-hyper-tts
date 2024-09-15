@@ -422,8 +422,8 @@ class ConfigModelsTests(unittest.TestCase):
 
         assert batch_config_deserialized.serialize() == batch_config.serialize()
 
-        self.assertEquals(batch_config_deserialized.source.source_field, 'Chinese')
-        self.assertEquals(batch_config_deserialized.source.mode, constants.BatchMode.simple)   
+        self.assertEqual(batch_config_deserialized.source.source_field, 'Chinese')
+        self.assertEqual(batch_config_deserialized.source.mode, constants.BatchMode.simple)   
 
 
     def test_batch_config_target(self):
@@ -879,8 +879,8 @@ class ConfigModelsTests(unittest.TestCase):
             }
         }
         preferences = hypertts_instance.deserialize_preferences(preferences_config)
-        self.assertEquals(preferences.keyboard_shortcuts.shortcut_editor_add_audio, 'Ctrl+T')
-        self.assertEquals(preferences.keyboard_shortcuts.shortcut_editor_preview_audio, None)
+        self.assertEqual(preferences.keyboard_shortcuts.shortcut_editor_add_audio, 'Ctrl+T')
+        self.assertEqual(preferences.keyboard_shortcuts.shortcut_editor_preview_audio, None)
         self.assertEqual(preferences.error_handling.realtime_tts_errors_dialog_type, constants.ErrorDialogType.Dialog)
         self.assertEqual(config_models.serialize_preferences(preferences), 
         {
@@ -1867,8 +1867,8 @@ class ConfigModelsTests(unittest.TestCase):
         voice_id_1 = voice.TtsVoiceId_v3(voice_key={'voice_id': 'a'}, service='ServiceA')
         voice_id_2 = voice.TtsVoiceId_v3(voice_key={'voice_id': 'a'}, service='ServiceA')
 
-        self.assertEquals(voice_id_1, voice_id_2)
-        self.assertEquals(hash(voice_id_1), hash(voice_id_2))
+        self.assertEqual(voice_id_1, voice_id_2)
+        self.assertEqual(hash(voice_id_1), hash(voice_id_2))
 
     def test_voice_string(self):
         # single language voice
@@ -1882,7 +1882,7 @@ class ConfigModelsTests(unittest.TestCase):
             service_fee=constants.ServiceFee.paid
         )
 
-        self.assertEquals(str(voice_1), 'English (UK), Female, Peppa (ServiceA)')
+        self.assertEqual(str(voice_1), 'English (UK), Female, Peppa (ServiceA)')
 
         voice_1 = voice.TtsVoice_v3(
             name='Peppa',
@@ -1894,7 +1894,7 @@ class ConfigModelsTests(unittest.TestCase):
             service_fee=constants.ServiceFee.paid
         )
 
-        self.assertEquals(str(voice_1), 'Multilingual, Female, Peppa (ServiceA)')
+        self.assertEqual(str(voice_1), 'Multilingual, Female, Peppa (ServiceA)')
 
     def test_voice_hash(self):
         # the hash should work whether the voice_key is a dict or str
@@ -1911,8 +1911,8 @@ class ConfigModelsTests(unittest.TestCase):
         hash(voice_id_2)
 
         # try serializing
-        self.assertEquals(voice.serialize_voice_id_v3(voice_id_1), {'service': 'ServiceA', 'voice_key': {'id': 'peppa'}})
-        self.assertEquals(voice.serialize_voice_id_v3(voice_id_2), {'service': 'ServiceA', 'voice_key': 'peppa'})
+        self.assertEqual(voice.serialize_voice_id_v3(voice_id_1), {'service': 'ServiceA', 'voice_key': {'id': 'peppa'}})
+        self.assertEqual(voice.serialize_voice_id_v3(voice_id_2), {'service': 'ServiceA', 'voice_key': 'peppa'})
 
         # try de-serializing
         deserialized_voice_id_1 = voice.deserialize_voice_id_v3({'service': 'ServiceA', 'voice_key': {'id': 'peppa'}})
