@@ -15,7 +15,7 @@ else:
 
 
 constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
-voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
+voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
 languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
 errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
 services = __import__('services', globals(), locals(), [], sys._addon_import_level_base)
@@ -69,19 +69,19 @@ class ServiceBase(abc.ABC):
         return False
 
     @abc.abstractmethod
-    def voice_list(self) -> typing.List[voice.TtsVoice_v3]:
+    def voice_list(self) -> typing.List[voice_module.TtsVoice_v3]:
         pass
 
     @abc.abstractmethod
-    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
+    def get_tts_audio(self, source_text, voice: voice_module.TtsVoice_v3, options):
         pass
 
 
     # some helper functions
-    def basic_voice_list(self) -> typing.List[voice.TtsVoice_v3]:
+    def basic_voice_list(self) -> typing.List[voice_module.TtsVoice_v3]:
         """basic processing for voice list which should work for most services which are represented in voicelist.py"""
         voice_list = services.voicelist.VOICE_LIST
-        service_voices = [voice for voice in voice_list if voice.service == self.name]
+        service_voices = [voice_candidate for voice_candidate in voice_list if voice_candidate.service == self.name]
         return service_voices
 
     # the following functions can be overriden if a service requires configuration

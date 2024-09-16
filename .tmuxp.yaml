@@ -14,3 +14,6 @@ windows:
 - window_name: secrets
   panes:
     - shell_command: cd ${HOME}/secrets/hypertts
+- window_name: python-3.12
+  panes:
+    - shell_command: source ${HOME}/python-env/anki-hyper-tts-3.12/bin/activate
