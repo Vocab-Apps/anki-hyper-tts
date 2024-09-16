@@ -4,6 +4,7 @@ shell_command_before:
   - source ${HOME}/python-env/anki-hyper-tts/bin/activate
   - source .bash_aliases
   - source ${HOME}/secrets/hypertts/hypertts_tests.sh
+  - clear
 windows:
 - window_name: hypertts
   focus: true
@@ -13,7 +14,11 @@ windows:
     - shell_command: tail -f ${HOME}/logs/hypertts.log
 - window_name: secrets
   panes:
-    - shell_command: cd ${HOME}/secrets/hypertts
+    - shell_command: 
+      - cd ${HOME}/secrets/hypertts
+      - clear
 - window_name: python-3.12
   panes:
-    - shell_command: source ${HOME}/python-env/anki-hyper-tts-3.12/bin/activate
+    - shell_command: 
+      - source ${HOME}/python-env/anki-hyper-tts-3.12/bin/activate
+      - clear
