@@ -2,7 +2,6 @@ import sys
 import os
 import pprint
 
-from calendar import c
 import aqt.qt
 
 test_dir = os.path.dirname(os.path.realpath(__file__))
