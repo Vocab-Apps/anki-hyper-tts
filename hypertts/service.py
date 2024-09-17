@@ -7,12 +7,7 @@ import databind.json
 from posixpath import dirname
 import typing
 
-if hasattr(sys, '_pytest_mode'):
-    import services.voicelist
-else:
-    # import running from within Anki
-    from ..services import voicelist
-
+import services.voicelist
 
 from . import constants
 from . import voice as voice_module
