@@ -4,14 +4,6 @@ import pprint
 
 import aqt.qt
 
-test_dir = os.path.dirname(os.path.realpath(__file__))
-root_dir = os.path.join(test_dir, '..')
-external_dir = os.path.join(root_dir, 'external')
-
-
-sys.path.insert(0, external_dir)
-sys.path.insert(0, root_dir)
-
 from test_utils import testing_utils
 from test_utils import gui_testing_utils
 
