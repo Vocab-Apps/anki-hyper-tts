@@ -4,12 +4,12 @@ import base64
 import time
 
 
-voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)
-service = __import__('service', globals(), locals(), [], sys._addon_import_level_services)
-errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_services)
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
-options = __import__('options', globals(), locals(), [], sys._addon_import_level_services)
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
+from hypertts import voice
+from hypertts import service
+from hypertts import errors
+from hypertts import constants
+from hypertts import options
+from hypertts import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 class Google(service.ServiceBase):
