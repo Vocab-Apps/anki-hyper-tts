@@ -4,15 +4,12 @@ import unittest
 import pytest
 import json
 
-addon_dir = os.path.dirname(os.path.realpath(__file__))
-external_dir = os.path.join(addon_dir, 'external')
-sys.path.insert(0, external_dir)
+from test_utils import testing_utils
+from test_utils import gui_testing_utils
 
-import errors
-import testing_utils
-import config_models
-import constants
-import gui_testing_utils
+from hypertts import errors
+from hypertts import config_models
+from hypertts import constants
 
 class HyperTTSTests(unittest.TestCase):
 

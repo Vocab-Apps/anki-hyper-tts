@@ -1,26 +1,21 @@
 import sys
 import sys
-import os
 import pprint
 import unittest
 import json
 import pprint
 
-# add external modules to sys.path
-addon_dir = os.path.dirname(os.path.realpath(__file__))
-external_dir = os.path.join(addon_dir, 'external')
-sys.path.insert(0, external_dir)
+from test_utils import testing_utils
 
-import hypertts
-import constants
-import servicemanager
-import testing_utils
-import config_models
-import errors
-import voice
-import languages
+from hypertts import hypertts
+from hypertts import constants
+from hypertts import servicemanager
+from hypertts import config_models
+from hypertts import errors
+from hypertts import voice
+from hypertts import languages
+from hypertts import logging_utils
 
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
 
 def get_service_manager():

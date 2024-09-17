@@ -1,19 +1,15 @@
-import sys
 import os
-import logging
 import aqt.qt
 
-addon_dir = os.path.dirname(os.path.realpath(__file__))
-external_dir = os.path.join(addon_dir, 'external')
-sys.path.insert(0, external_dir)
+from test_utils import testing_utils
+from test_utils import gui_testing_utils
 
-import constants
-import testing_utils
-import gui_testing_utils
-import component_batch
-import config_models
+from hypertts import constants
+from hypertts import component_batch
+from hypertts import config_models
+from hypertts import logging_utils
 
-logger = logging.getLogger(__name__)
+logger = logging_utils.get_test_child_logger(__name__)
 
 
 def select_default_voice(voices_combobox):

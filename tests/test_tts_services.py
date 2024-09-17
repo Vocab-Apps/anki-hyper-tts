@@ -1,12 +1,8 @@
-from calendar import c
 import sys
 import os
 import re
 import random
-import tempfile
 import copy
-import pytest
-import pprint
 import unittest
 import pydub
 import platform
@@ -14,24 +10,19 @@ import magic
 import azure.cognitiveservices.speech
 import azure.cognitiveservices.speech.audio
 
-# add external modules to sys.path
-addon_dir = os.path.dirname(os.path.realpath(__file__))
-external_dir = os.path.join(addon_dir, 'external')
-if sys.path[0] != external_dir:
-    sys.path.insert(0, external_dir)
 
-import constants
-import context
-import voice
-import servicemanager
-import errors
-import languages
-from languages import AudioLanguage
+from hypertts import constants
+from hypertts import context
+from hypertts import servicemanager
+from hypertts import errors
+from hypertts import languages
+from hypertts.languages import AudioLanguage
 
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
-options = __import__('options', globals(), locals(), [], sys._addon_import_level_base)
-config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
-from . import voice as voice_module
+from hypertts import logging_utils
+from hypertts import options
+from hypertts import config_models
+from hypertts import voice as voice_module
+
 logger = logging_utils.get_test_child_logger(__name__)
 
 def services_dir():

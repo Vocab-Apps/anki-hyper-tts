@@ -3,15 +3,12 @@ import os
 import logging
 import aqt.qt
 
-addon_dir = os.path.dirname(os.path.realpath(__file__))
-external_dir = os.path.join(addon_dir, 'external')
-sys.path.insert(0, external_dir)
+from test_utils import testing_utils
+from test_utils import gui_testing_utils
 
-import constants
-import testing_utils
-import gui_testing_utils
-import component_choosepreset
-import config_models
+from hypertts import constants
+from hypertts import component_choosepreset
+from hypertts import config_models
 
 logger = logging.getLogger(__name__)
 

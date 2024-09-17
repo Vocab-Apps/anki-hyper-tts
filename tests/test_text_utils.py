@@ -1,8 +1,9 @@
-import text_utils
-import errors
-import constants
 import unittest
-import config_models
+
+from hypertts import text_utils
+from hypertts import errors
+from hypertts import constants
+from hypertts import config_models
 
 def test_process_text(qtbot):
 
