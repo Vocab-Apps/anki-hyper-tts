@@ -1,11 +1,11 @@
 import sys
-import constants
-import languages
-import service
-import voice
-import errors
+from hypertts import constants
+from hypertts import languages
+from hypertts import service
+from hypertts import voice
+from hypertts import errors
 
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
+from hypertts import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 class VoiceB(voice.VoiceBase):

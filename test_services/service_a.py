@@ -1,16 +1,15 @@
-import sys
-import constants
-import languages
-import service
-import voice
-import typing
+from hypertts import constants
+from hypertts import languages
+from hypertts import service
+from hypertts import voice as voice_module
 import json
 import time
 
 
-options = __import__('options', globals(), locals(), [], sys._addon_import_level_services)
-from . import voice as voice_module
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
+from hypertts import options
+from hypertts import voice as voice_module
+from hypertts import logging_utils
+
 logger = logging_utils.get_child_logger(__name__)
 
 VOICE_OPTIONS = {
@@ -52,12 +51,12 @@ class ServiceA(service.ServiceBase):
 
     def voice_list(self):
         return [
-            voice.build_voice_v3('voice_a_1', constants.Gender.Male, languages.AudioLanguage.fr_FR, self, {'name': 'voice_1'}, VOICE_OPTIONS),
-            voice.build_voice_v3('voice_a_2', constants.Gender.Female, languages.AudioLanguage.en_US, self, {'name': 'voice_2'}, VOICE_OPTIONS),
-            voice.build_voice_v3('voice_a_3', constants.Gender.Female, languages.AudioLanguage.ja_JP, self, {'name': 'voice_3'}, VOICE_OPTIONS),
+            voice_module.build_voice_v3('voice_a_1', constants.Gender.Male, languages.AudioLanguage.fr_FR, self, {'name': 'voice_1'}, VOICE_OPTIONS),
+            voice_module.build_voice_v3('voice_a_2', constants.Gender.Female, languages.AudioLanguage.en_US, self, {'name': 'voice_2'}, VOICE_OPTIONS),
+            voice_module.build_voice_v3('voice_a_3', constants.Gender.Female, languages.AudioLanguage.ja_JP, self, {'name': 'voice_3'}, VOICE_OPTIONS),
         ]
 
-    def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
+    def get_tts_audio(self, source_text, voice: voice_module.TtsVoice_v3, options):
         delay_s = self._config.get('delay', 0)
         if delay_s > 0:
             logger.info(f'sleeping for {delay_s}s')

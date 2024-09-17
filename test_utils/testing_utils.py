@@ -16,8 +16,9 @@ logger = logging_utils.get_test_child_logger(__name__)
 
 def get_test_services_dir():
     current_script_path = os.path.realpath(__file__)
-    current_script_dir = os.path.dirname(current_script_path)    
-    return os.path.join(current_script_dir, 'test_services')
+    current_script_dir = os.path.dirname(current_script_path)
+    root_dir = os.path.join(current_script_dir, '..')
+    return os.path.join(root_dir, 'test_services')
 
 def create_simple_batch(hypertts_instance, 
         preset_id='uuid_0', 

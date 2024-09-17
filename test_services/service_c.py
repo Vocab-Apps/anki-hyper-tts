@@ -1,13 +1,9 @@
 import sys
-import constants
-import languages
-import service
-import voice
-import typing
-import json
-import time
+from hypertts import constants
+from hypertts import service
+from hypertts import voice as voice_module
 
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
+from hypertts import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 class ServiceC(service.ServiceBase):
@@ -43,7 +39,7 @@ class ServiceC(service.ServiceBase):
         return [
         ]
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
+    def get_tts_audio(self, source_text, voice: voice_module.VoiceBase, options):
         raise Exception('not supported, dummy service')
 
     def configuration_options(self):
