@@ -11,15 +11,15 @@ if hasattr(sys, '_pytest_mode'):
     import services.voicelist
 else:
     # import running from within Anki
-    from .services import voicelist
+    from ..services import voicelist
 
 
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
-voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
-languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
-errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
-services = __import__('services', globals(), locals(), [], sys._addon_import_level_base)
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+from . import constants
+from . import voice as voice_module
+from . import languages
+from . import errors
+# from . import services
+from . import logging_utils
 
 logger = logging_utils.get_child_logger(__name__)
 

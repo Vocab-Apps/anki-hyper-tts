@@ -3,18 +3,18 @@ import aqt.qt
 
 from typing import List, Optional
 
-component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
-component_source = __import__('component_source', globals(), locals(), [], sys._addon_import_level_base)
-component_target = __import__('component_target', globals(), locals(), [], sys._addon_import_level_base)
-component_voiceselection = __import__('component_voiceselection', globals(), locals(), [], sys._addon_import_level_base)
-component_text_processing = __import__('component_text_processing', globals(), locals(), [], sys._addon_import_level_base)
-component_batch_preview = __import__('component_batch_preview', globals(), locals(), [], sys._addon_import_level_base)
-component_label_preview = __import__('component_label_preview', globals(), locals(), [], sys._addon_import_level_base)
-config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
-errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
-gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+from . import component_common
+from . import component_source
+from . import component_target
+from . import component_voiceselection
+from . import component_text_processing
+from . import component_batch_preview
+from . import component_label_preview
+from . import config_models
+from . import constants
+from . import errors
+from . import gui_utils
+from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 

@@ -1,9 +1,9 @@
 
 import sys
 
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_services)
-languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_services)
-voice = __import__('voice', globals(), locals(), [], sys._addon_import_level_services)                
+from hypertts import constants
+from hypertts import languages
+from hypertts import voice
 
 VOICE_LIST = [
         

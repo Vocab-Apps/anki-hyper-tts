@@ -31,7 +31,7 @@ from languages import AudioLanguage
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 options = __import__('options', globals(), locals(), [], sys._addon_import_level_base)
 config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
-voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
+from . import voice as voice_module
 logger = logging_utils.get_test_child_logger(__name__)
 
 def services_dir():

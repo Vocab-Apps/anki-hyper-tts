@@ -4,10 +4,10 @@ import time
 import html
 import aqt.operations
 
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
-component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
-batch_status = __import__('batch_status', globals(), locals(), [], sys._addon_import_level_base)
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+from . import constants
+from . import component_common
+from . import batch_status
+from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 class TableRepaintTimer():

@@ -16,18 +16,18 @@ import anki.hooks
 from typing import List, Tuple
 
 # addon imports
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
-config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
-errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
-component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
-component_realtime = __import__('component_realtime', globals(), locals(), [], sys._addon_import_level_base)
-component_presetmappingrules = __import__('component_presetmappingrules', globals(), locals(), [], sys._addon_import_level_base)
-component_configuration = __import__('component_configuration', globals(), locals(), [], sys._addon_import_level_base)
-component_preferences = __import__('component_preferences', globals(), locals(), [], sys._addon_import_level_base)
-text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
-ttsplayer = __import__('ttsplayer', globals(), locals(), [], sys._addon_import_level_base)
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
-gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
+from . import constants
+from . import config_models
+from . import errors
+from . import component_batch
+from . import component_realtime
+from . import component_presetmappingrules
+from . import component_configuration
+from . import component_preferences
+from . import text_utils
+from . import ttsplayer
+from . import logging_utils
+from . import gui_utils
 logger = logging_utils.get_child_logger(__name__)
 
 

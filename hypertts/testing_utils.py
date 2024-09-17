@@ -5,13 +5,13 @@ import os
 import sys
 import datetime
 
-import constants
-import hypertts
-import errors
-import servicemanager
-import config_models
+from hypertts import constants
+from hypertts import hypertts
+from hypertts import errors
+from hypertts import servicemanager
+from hypertts import config_models
 
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+from hypertts import logging_utils
 logger = logging_utils.get_test_child_logger(__name__)
 
 def get_test_services_dir():

@@ -4,14 +4,11 @@ import anki.utils
 import re
 import html
 
-if hasattr(sys, '_pytest_mode'):
-    import constants
-    import errors
-else:
-    from . import constants
-    from . import errors
 
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+from . import constants
+from . import errors
+
+from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 

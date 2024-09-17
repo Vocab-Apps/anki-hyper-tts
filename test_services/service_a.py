@@ -9,7 +9,7 @@ import time
 
 
 options = __import__('options', globals(), locals(), [], sys._addon_import_level_services)
-voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
+from . import voice as voice_module
 logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_services)
 logger = logging_utils.get_child_logger(__name__)
 

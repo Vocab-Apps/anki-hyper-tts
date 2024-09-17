@@ -2,12 +2,12 @@ import sys
 import aqt.qt
 import html
 
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
-component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
-config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
-gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
-text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+from . import constants
+from . import component_common
+from . import config_models
+from . import gui_utils
+from . import text_utils
+from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 

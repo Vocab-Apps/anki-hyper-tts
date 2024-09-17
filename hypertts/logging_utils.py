@@ -6,7 +6,7 @@ import inspect
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
 
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+from . import constants
 
 SILENT_LOGGING_MODE = True
 

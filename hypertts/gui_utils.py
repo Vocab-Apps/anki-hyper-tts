@@ -2,8 +2,8 @@ import sys
 import os
 import aqt.qt
 
-version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+from . import version
+from . import constants
 
 
 class NonAliasedImage(aqt.qt.QWidget):

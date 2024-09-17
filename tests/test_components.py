@@ -1,40 +1,43 @@
 import sys
 import os
+import pprint
 
 from calendar import c
 import aqt.qt
 
-addon_dir = os.path.dirname(os.path.realpath(__file__))
-external_dir = os.path.join(addon_dir, 'external')
+test_dir = os.path.dirname(os.path.realpath(__file__))
+root_dir = os.path.join(test_dir, '..')
+external_dir = os.path.join(root_dir, 'external')
+
+
 sys.path.insert(0, external_dir)
+sys.path.insert(0, root_dir)
 
-import pprint
-import time
 
-import hypertts.component_batch_preview
-import hypertts.component_configuration
-import hypertts.config_models
-import hypertts.servicemanager
-import hypertts.testing_utils
+from hypertts import component_batch_preview
+from hypertts import component_configuration
+from hypertts import config_models
+from hypertts import servicemanager
+from hypertts import testing_utils
 from hypertts import logging_utils
-import hypertts.gui_testing_utils
-import hypertts.hypertts
-import hypertts.constants
-import hypertts.languages
-import hypertts.component_voiceselection
-import hypertts.component_source
-import hypertts.component_target
-import hypertts.component_batch
-import hypertts.component_text_processing
-import hypertts.component_realtime_source
-import hypertts.component_realtime_side
-import hypertts.component_realtime
-import hypertts.component_hyperttspro
-import hypertts.component_shortcuts
-import hypertts.component_errorhandling
-import hypertts.component_preferences
-import hypertts.component_presetmappingrules
-import hypertts.component_mappingrule
+from hypertts import gui_testing_utils
+from hypertts import hypertts
+from hypertts import constants
+from hypertts import languages
+from hypertts import component_voiceselection
+from hypertts import component_source
+from hypertts import component_target
+from hypertts import component_batch
+from hypertts import component_text_processing
+from hypertts import component_realtime_source
+from hypertts import component_realtime_side
+from hypertts import component_realtime
+from hypertts import component_hyperttspro
+from hypertts import component_shortcuts
+from hypertts import component_errorhandling
+from hypertts import component_preferences
+from hypertts import component_presetmappingrules
+from hypertts import component_mappingrule
 
 # logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
 # testing_utils = __import__('testing_utils', globals(), locals(), [], sys._addon_import_level_base)

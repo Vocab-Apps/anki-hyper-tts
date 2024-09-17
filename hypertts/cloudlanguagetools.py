@@ -3,12 +3,12 @@ import os
 import requests
 import json
 
-errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
-version = __import__('version', globals(), locals(), [], sys._addon_import_level_base)
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
-config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
-voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+from . import errors
+from . import version
+from . import constants
+from . import config_models
+from . import voice as voice_module
+from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 if hasattr(sys, '_sentry_crash_reporting'):

@@ -10,7 +10,7 @@ import aqt.qt
 from . import constants    
 from . import errors
 
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 if hasattr(sys, '_sentry_crash_reporting'):

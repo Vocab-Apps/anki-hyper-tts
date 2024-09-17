@@ -1,14 +1,14 @@
 import sys
 import aqt.qt
 
-component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
-component_mappingrule = __import__('component_mappingrule', globals(), locals(), [], sys._addon_import_level_base)
-component_choosepreset = __import__('component_choosepreset', globals(), locals(), [], sys._addon_import_level_base)
-config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
-errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
-gui_utils = __import__('gui_utils', globals(), locals(), [], sys._addon_import_level_base)
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+from . import component_common
+from . import component_mappingrule
+from . import component_choosepreset
+from . import config_models
+from . import constants
+from . import errors
+from . import gui_utils
+from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 

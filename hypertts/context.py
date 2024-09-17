@@ -1,6 +1,6 @@
 import sys
 
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+from . import constants
 
 class AudioRequestContext():
     def __init__(self, audio_request_reason: constants.AudioRequestReason):

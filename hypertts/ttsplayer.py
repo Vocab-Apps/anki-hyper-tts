@@ -15,9 +15,9 @@ import aqt.tts
 import anki
 import anki.utils
 
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
-languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+from . import constants
+from . import languages
+from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 

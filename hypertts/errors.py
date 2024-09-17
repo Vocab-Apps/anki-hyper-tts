@@ -1,7 +1,7 @@
 import sys
 import logging
 
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
+from . import constants
 
 logger = logging.getLogger(__name__)
 

@@ -18,15 +18,15 @@ import anki.notes
 import anki.cards
 import aqt.operations
 
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
-options = __import__('options', globals(), locals(), [], sys._addon_import_level_base)
-voice_module = __import__('voice', globals(), locals(), [], sys._addon_import_level_base)
-errors = __import__('errors', globals(), locals(), [], sys._addon_import_level_base)
-text_utils = __import__('text_utils', globals(), locals(), [], sys._addon_import_level_base)
-config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
-context = __import__('context', globals(), locals(), [], sys._addon_import_level_base)
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
-gui = __import__('gui', globals(), locals(), [], sys._addon_import_level_base)
+from . import constants
+from . import options
+from . import voice as voice_module
+from . import errors
+from . import text_utils
+from . import config_models
+from . import context
+from . import logging_utils
+from . import gui
 logger = logging_utils.get_child_logger(__name__)
 
 

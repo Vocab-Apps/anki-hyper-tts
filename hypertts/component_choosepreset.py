@@ -3,10 +3,10 @@ import aqt.qt
 
 from typing import List, Optional
 
-component_common = __import__('component_common', globals(), locals(), [], sys._addon_import_level_base)
-config_models = __import__('config_models', globals(), locals(), [], sys._addon_import_level_base)
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
-component_batch = __import__('component_batch', globals(), locals(), [], sys._addon_import_level_base)
+from . import component_common
+from . import config_models
+from . import constants
+from . import component_batch
 
 
 class ComponentChoosePreset(component_common.ComponentBase):

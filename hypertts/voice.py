@@ -5,8 +5,8 @@ import databind.json
 import functools
 from typing import Dict, Any, List, Union
 
-constants = __import__('constants', globals(), locals(), [], sys._addon_import_level_base)
-languages = __import__('languages', globals(), locals(), [], sys._addon_import_level_base)
+from . import constants
+from . import languages
 
 class VoiceBase(abc.ABC):
     """

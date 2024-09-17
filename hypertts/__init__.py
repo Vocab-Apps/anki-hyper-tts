@@ -40,7 +40,7 @@ else:
     # setup logger
     # ============
 
-    logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+    from . import logging_utils
 
     if os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'enable':
         # log everything to stdout
