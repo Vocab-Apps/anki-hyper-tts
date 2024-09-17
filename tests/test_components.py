@@ -39,8 +39,6 @@ from hypertts import component_preferences
 from hypertts import component_presetmappingrules
 from hypertts import component_mappingrule
 
-# logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
-# testing_utils = __import__('testing_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
 
 
