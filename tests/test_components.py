@@ -9,33 +9,35 @@ external_dir = os.path.join(addon_dir, 'external')
 sys.path.insert(0, external_dir)
 
 import pprint
-import component_batch_preview
-import component_configuration
-import config_models
-import servicemanager
-import testing_utils
-import gui_testing_utils
-import hypertts
-import constants
-import languages
 import time
-import component_voiceselection
-import component_source
-import component_target
-import component_batch
-import component_text_processing
-import component_realtime_source
-import component_realtime_side
-import component_realtime
-import component_hyperttspro
-import component_shortcuts
-import component_errorhandling
-import component_preferences
-import component_presetmappingrules
-import component_mappingrule
 
-logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
-testing_utils = __import__('testing_utils', globals(), locals(), [], sys._addon_import_level_base)
+import hypertts.component_batch_preview
+import hypertts.component_configuration
+import hypertts.config_models
+import hypertts.servicemanager
+import hypertts.testing_utils
+from hypertts import logging_utils
+import hypertts.gui_testing_utils
+import hypertts.hypertts
+import hypertts.constants
+import hypertts.languages
+import hypertts.component_voiceselection
+import hypertts.component_source
+import hypertts.component_target
+import hypertts.component_batch
+import hypertts.component_text_processing
+import hypertts.component_realtime_source
+import hypertts.component_realtime_side
+import hypertts.component_realtime
+import hypertts.component_hyperttspro
+import hypertts.component_shortcuts
+import hypertts.component_errorhandling
+import hypertts.component_preferences
+import hypertts.component_presetmappingrules
+import hypertts.component_mappingrule
+
+# logging_utils = __import__('logging_utils', globals(), locals(), [], sys._addon_import_level_base)
+# testing_utils = __import__('testing_utils', globals(), locals(), [], sys._addon_import_level_base)
 logger = logging_utils.get_test_child_logger(__name__)
 
 
