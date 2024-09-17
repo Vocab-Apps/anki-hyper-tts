@@ -13,14 +13,14 @@ external_dir = os.path.join(root_dir, 'external')
 sys.path.insert(0, external_dir)
 sys.path.insert(0, root_dir)
 
+from test_utils import testing_utils
+from test_utils import gui_testing_utils
 
 from hypertts import component_batch_preview
 from hypertts import component_configuration
 from hypertts import config_models
 from hypertts import servicemanager
-from hypertts import testing_utils
 from hypertts import logging_utils
-from hypertts import gui_testing_utils
 from hypertts import hypertts
 from hypertts import constants
 from hypertts import languages

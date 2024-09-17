@@ -2,8 +2,8 @@ import aqt.qt
 import logging
 import copy
 
-import testing_utils
-import config_models
+from . import testing_utils
+from hypertts import config_models
 
 logger = logging.getLogger(__name__)
 
