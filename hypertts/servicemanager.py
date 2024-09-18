@@ -96,7 +96,7 @@ class ServiceManager():
         logger.info(f'discovered {len(module_names)} services')
         # sys.path.insert(0, self.services_directory)
         for module_name in module_names:
-            logger.info(f'importing module {module_name}')
+            logger.info(f'importing module {module_name}, package_name: {self.package_name}')
             __import__(self.package_name, globals(), locals(), [module_name], 0)
 
     def instantiate_services(self):

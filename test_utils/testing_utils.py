@@ -18,7 +18,7 @@ def get_test_services_dir():
     current_script_path = os.path.realpath(__file__)
     current_script_dir = os.path.dirname(current_script_path)
     root_dir = os.path.join(current_script_dir, '..')
-    return os.path.join(root_dir, 'test_services')
+    return os.path.join(root_dir, 'hypertts/test_services')
 
 def create_simple_batch(hypertts_instance, 
         preset_id='uuid_0', 
@@ -754,7 +754,7 @@ class TestConfigGenerator():
         addon_config = self.get_addon_config(scenario)
 
         anki_utils = MockAnkiUtils(addon_config)
-        manager = servicemanager.ServiceManager(get_test_services_dir(), 'test_services', True, MockCloudLanguageTools())
+        manager = servicemanager.ServiceManager(get_test_services_dir(), 'hypertts.test_services', True, MockCloudLanguageTools())
         manager.init_services()
         manager.get_service('ServiceA').enabled = True
         manager.get_service('ServiceB').enabled = True

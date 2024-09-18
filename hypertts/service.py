@@ -7,14 +7,13 @@ import databind.json
 from posixpath import dirname
 import typing
 
-import services.voicelist
-
 from . import constants
 from . import voice as voice_module
 from . import languages
 from . import errors
-# from . import services
 from . import logging_utils
+
+from .services import voicelist
 
 logger = logging_utils.get_child_logger(__name__)
 
@@ -75,7 +74,7 @@ class ServiceBase(abc.ABC):
     # some helper functions
     def basic_voice_list(self) -> typing.List[voice_module.TtsVoice_v3]:
         """basic processing for voice list which should work for most services which are represented in voicelist.py"""
-        voice_list = services.voicelist.VOICE_LIST
+        voice_list = voicelist.VOICE_LIST
         service_voices = [voice_candidate for voice_candidate in voice_list if voice_candidate.service == self.name]
         return service_voices
 

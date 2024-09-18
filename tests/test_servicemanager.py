@@ -16,7 +16,7 @@ from hypertts import errors
 class ServiceManagerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services', True, testing_utils.MockCloudLanguageTools())
+        cls.manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'hypertts.test_services', True, testing_utils.MockCloudLanguageTools())
 
     @classmethod
     def tearDownClass(cls):

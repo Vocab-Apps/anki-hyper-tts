@@ -41,7 +41,7 @@ class TTSTests(unittest.TestCase):
 
     def configure_service_manager(self):
         # use individual service keys
-        self.manager = servicemanager.ServiceManager(services_dir(), 'services', False)
+        self.manager = servicemanager.ServiceManager(services_dir(), 'hypertts.services', False)
         self.manager.init_services()
 
         # premium services
@@ -1186,7 +1186,7 @@ Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-Engli
 class TTSTestsCloudLanguageTools(TTSTests):
     def configure_service_manager(self):
         # configure using cloud language tools
-        self.manager = servicemanager.ServiceManager(services_dir(), 'services', False)
+        self.manager = servicemanager.ServiceManager(services_dir(), 'hypertts.services', False)
         self.manager.init_services()
         services_configuration = config_models.Configuration(
             hypertts_pro_api_key = os.environ['ANKI_LANGUAGE_TOOLS_API_KEY'],

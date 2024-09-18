@@ -19,7 +19,7 @@ from hypertts import logging_utils
 logger = logging_utils.get_test_child_logger(__name__)
 
 def get_service_manager():
-    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services', True)
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'hypertts.test_services', True)
     manager.init_services()
     manager.get_service('ServiceA').enabled = True
     manager.get_service('ServiceB').enabled = True

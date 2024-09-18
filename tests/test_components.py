@@ -349,7 +349,7 @@ def test_voice_selection_priority_1(qtbot):
 
 
 def test_voice_selection_filters(qtbot):
-    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'test_services', True)
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'hypertts.test_services', True)
     manager.init_services()
     manager.get_service('ServiceA').enabled = True
     manager.get_service('ServiceB').enabled = True
