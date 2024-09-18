@@ -29,8 +29,9 @@ def services_dir():
     current_script_path = os.path.realpath(__file__)
     current_script_dir = os.path.dirname(current_script_path)
     root_dir = os.path.join(current_script_dir, '..')
+    hypertts_dir = os.path.join(root_dir, 'hypertts')
 
-    return os.path.join(root_dir, 'services')
+    return os.path.join(hypertts_dir, 'services')
 
 class TTSTests(unittest.TestCase):
     RANDOM_VOICE_COUNT = 1
