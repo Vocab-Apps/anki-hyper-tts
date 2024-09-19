@@ -19,9 +19,9 @@ else:
     import aqt
     import anki.sound
 
-    # need to declare upfront whethere we're doing crash reporting
+    # need to declare upfront whether we're doing crash reporting
     # ============================================================
-    from . import constants
+    from hypertts import constants
     if constants.ENABLE_SENTRY_CRASH_REPORTING:
         import sentry_sdk        
         # check version. some anki addons package an obsolete version of sentry_sdk
