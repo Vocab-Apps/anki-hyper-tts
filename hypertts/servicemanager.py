@@ -205,7 +205,7 @@ class ServiceManager():
         # an actual query to their API
 
         # convert voice_data to TtsVoiceId_v3
-        voice_id: voice.TttsVoiceId_v3 = voice.deserialize_voice_id_v3(voice_data)
+        voice_id: voice_module.TttsVoiceId_v3 = voice_module.deserialize_voice_id_v3(voice_data)
 
         voice_list = self.full_voice_list(single_service_name=voice_id.service)
         voice_subset = [voice for voice in voice_list if voice.get_voice_id() == voice_id]
