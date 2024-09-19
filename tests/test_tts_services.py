@@ -1070,8 +1070,8 @@ Zuzana (Enhanced)   cs_CZ    # Ahoj! Já jsem Zuzana.
 Zuzana (Premium)    cs_CZ    # Ahoj! Já jsem Zuzana.
 Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-English voice.
 """
-        import services.service_macos
-        macos_service = services.service_macos.MacOS()
+        import hypertts_addon.services.service_macos
+        macos_service = hypertts_addon.services.service_macos.MacOS()
         voice_list = macos_service.parse_voices(VOICE_LIST)
         self.assertTrue(len(voice_list) > 10)
         # look for voices named Audrey, we should have 3 of them
