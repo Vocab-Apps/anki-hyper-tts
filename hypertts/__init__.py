@@ -55,8 +55,6 @@ else:
 
         from . import version
 
-        # addon_name = __name__
-        addon_name = 'anki-hyper-tts'
         addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
         api_key = addon_config.get('configuration', {}).get('hypertts_pro_api_key', None)
         if api_key != None:
@@ -80,7 +78,7 @@ else:
                 stack_summary = traceback.extract_tb(tb)
                 for stack_frame in stack_summary:
                     filename = stack_frame.filename
-                    if 'anki-hyper-tts' in filename or '111623432' in filename:
+                    if 'anki-hyper-tts' in filename or constants.ANKIWEB_ADDON_ID in filename:
                         relevant_exception = True
                 
                 # if not, discard

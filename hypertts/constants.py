@@ -77,7 +77,12 @@ class MappingRuleType(enum.Enum):
     NoteType = enum.auto()
     DeckNoteType = enum.auto()
 
+ANKIWEB_ADDON_ID = '111623432'
+
 CONFIG_ADDON_NAME = 'anki-hyper-tts'
+if ANKIWEB_ADDON_ID in __name__:
+    CONFIG_ADDON_NAME = ANKIWEB_ADDON_ID
+
 
 CONFIG_SCHEMA = 'config_schema'
 CONFIG_SCHEMA_VERSION = 3
