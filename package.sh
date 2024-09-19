@@ -36,7 +36,7 @@ rm -f user_files/*.ogg
 rm -f *.mp3 *.ogg *.wav
 rm -rvf htmlcov/
 ADDON_FILENAME=${HOME}/anki-addons-releases/anki-hyper-tts-${VERSION_NUMBER}.ankiaddon
-zip -r ${ADDON_FILENAME} manifest.json graphics/ external/ config.json __init__.py hypertts/ user_files/
+zip -r ${ADDON_FILENAME} manifest.json graphics/ external/ config.json __init__.py hypertts/ user_files/ --exclude "*__pycache__*"
 
 # sync 
 rclone sync ~/anki-addons-releases/ dropbox:Anki/anki-addons-releases/
