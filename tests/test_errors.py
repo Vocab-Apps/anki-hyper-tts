@@ -2,9 +2,9 @@ import sys
 import os
 
 from test_utils import testing_utils
-from hypertts import errors
-from hypertts import logging_utils
-from hypertts import constants
+from hypertts_addon import errors
+from hypertts_addon import logging_utils
+from hypertts_addon import constants
 
 logger = logging_utils.get_test_child_logger(__name__)
 

@@ -5,18 +5,18 @@ import unittest
 
 from test_utils import testing_utils
 
-from hypertts import config_models
-from hypertts import constants
-from hypertts import languages
-from hypertts import servicemanager
-from hypertts import voice
-from hypertts import errors
+from hypertts_addon import config_models
+from hypertts_addon import constants
+from hypertts_addon import languages
+from hypertts_addon import servicemanager
+from hypertts_addon import voice
+from hypertts_addon import errors
 
 
 class ServiceManagerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'hypertts.test_services', True, testing_utils.MockCloudLanguageTools())
+        cls.manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), f'{constants.DIR_HYPERTTS_ADDON}.test_services', True, testing_utils.MockCloudLanguageTools())
 
     @classmethod
     def tearDownClass(cls):

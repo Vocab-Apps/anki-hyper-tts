@@ -1,14 +1,14 @@
-from hypertts import constants
-from hypertts import languages
-from hypertts import service
-from hypertts import voice as voice_module
+from hypertts_addon import constants
+from hypertts_addon import languages
+from hypertts_addon import service
+from hypertts_addon import voice as voice_module
 import json
 import time
 
 
-from hypertts import options
-from hypertts import voice as voice_module
-from hypertts import logging_utils
+from hypertts_addon import options
+from hypertts_addon import voice as voice_module
+from hypertts_addon import logging_utils
 
 logger = logging_utils.get_child_logger(__name__)
 

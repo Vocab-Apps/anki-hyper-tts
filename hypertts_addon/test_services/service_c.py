@@ -1,9 +1,9 @@
 import sys
-from hypertts import constants
-from hypertts import service
-from hypertts import voice as voice_module
+from hypertts_addon import constants
+from hypertts_addon import service
+from hypertts_addon import voice as voice_module
 
-from hypertts import logging_utils
+from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 class ServiceC(service.ServiceBase):

@@ -5,20 +5,20 @@ import os
 import sys
 import datetime
 
-from hypertts import constants
-from hypertts import hypertts
-from hypertts import errors
-from hypertts import servicemanager
-from hypertts import config_models
+from hypertts_addon import constants
+from hypertts_addon import hypertts
+from hypertts_addon import errors
+from hypertts_addon import servicemanager
+from hypertts_addon import config_models
 
-from hypertts import logging_utils
+from hypertts_addon import logging_utils
 logger = logging_utils.get_test_child_logger(__name__)
 
 def get_test_services_dir():
     current_script_path = os.path.realpath(__file__)
     current_script_dir = os.path.dirname(current_script_path)
     root_dir = os.path.join(current_script_dir, '..')
-    return os.path.join(root_dir, 'hypertts/test_services')
+    return os.path.join(root_dir, f'{constants.DIR_HYPERTTS_ADDON}/test_services')
 
 def create_simple_batch(hypertts_instance, 
         preset_id='uuid_0', 
@@ -754,7 +754,7 @@ class TestConfigGenerator():
         addon_config = self.get_addon_config(scenario)
 
         anki_utils = MockAnkiUtils(addon_config)
-        manager = servicemanager.ServiceManager(get_test_services_dir(), 'hypertts.test_services', True, MockCloudLanguageTools())
+        manager = servicemanager.ServiceManager(get_test_services_dir(), f'{constants.DIR_HYPERTTS_ADDON}.test_services', True, MockCloudLanguageTools())
         manager.init_services()
         manager.get_service('ServiceA').enabled = True
         manager.get_service('ServiceB').enabled = True

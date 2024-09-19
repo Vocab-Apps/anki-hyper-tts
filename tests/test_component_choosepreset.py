@@ -6,9 +6,9 @@ import aqt.qt
 from test_utils import testing_utils
 from test_utils import gui_testing_utils
 
-from hypertts import constants
-from hypertts import component_choosepreset
-from hypertts import config_models
+from hypertts_addon import constants
+from hypertts_addon import component_choosepreset
+from hypertts_addon import config_models
 
 logger = logging.getLogger(__name__)
 

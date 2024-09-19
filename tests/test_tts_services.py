@@ -1,4 +1,3 @@
-import sys
 import os
 import re
 import random
@@ -11,17 +10,17 @@ import azure.cognitiveservices.speech
 import azure.cognitiveservices.speech.audio
 
 
-from hypertts import constants
-from hypertts import context
-from hypertts import servicemanager
-from hypertts import errors
-from hypertts import languages
-from hypertts.languages import AudioLanguage
+from hypertts_addon import constants
+from hypertts_addon import context
+from hypertts_addon import servicemanager
+from hypertts_addon import errors
+from hypertts_addon import languages
+from hypertts_addon.languages import AudioLanguage
 
-from hypertts import logging_utils
-from hypertts import options
-from hypertts import config_models
-from hypertts import voice as voice_module
+from hypertts_addon import logging_utils
+from hypertts_addon import options
+from hypertts_addon import config_models
+from hypertts_addon import voice as voice_module
 
 logger = logging_utils.get_test_child_logger(__name__)
 
@@ -29,9 +28,9 @@ def services_dir():
     current_script_path = os.path.realpath(__file__)
     current_script_dir = os.path.dirname(current_script_path)
     root_dir = os.path.join(current_script_dir, '..')
-    hypertts_dir = os.path.join(root_dir, 'hypertts')
+    hypertts_dir = os.path.join(root_dir, constants.DIR_HYPERTTS_ADDON)
 
-    return os.path.join(hypertts_dir, 'services')
+    return os.path.join(hypertts_dir, constants.DIR_SERVICES)
 
 class TTSTests(unittest.TestCase):
     RANDOM_VOICE_COUNT = 1
@@ -42,7 +41,7 @@ class TTSTests(unittest.TestCase):
 
     def configure_service_manager(self):
         # use individual service keys
-        self.manager = servicemanager.ServiceManager(services_dir(), 'hypertts.services', False)
+        self.manager = servicemanager.ServiceManager(services_dir(), f'{constants.DIR_HYPERTTS_ADDON}.{constants.DIR_SERVICES}', False)
         self.manager.init_services()
 
         # premium services
@@ -1187,7 +1186,7 @@ Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-Engli
 class TTSTestsCloudLanguageTools(TTSTests):
     def configure_service_manager(self):
         # configure using cloud language tools
-        self.manager = servicemanager.ServiceManager(services_dir(), 'hypertts.services', False)
+        self.manager = servicemanager.ServiceManager(services_dir(), f'{constants.DIR_HYPERTTS_ADDON}.{constants.DIR_SERVICES}', False)
         self.manager.init_services()
         services_configuration = config_models.Configuration(
             hypertts_pro_api_key = os.environ['ANKI_LANGUAGE_TOOLS_API_KEY'],

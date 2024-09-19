@@ -7,19 +7,19 @@ import pprint
 
 from test_utils import testing_utils
 
-from hypertts import hypertts
-from hypertts import constants
-from hypertts import servicemanager
-from hypertts import config_models
-from hypertts import errors
-from hypertts import voice
-from hypertts import languages
-from hypertts import logging_utils
+from hypertts_addon import hypertts
+from hypertts_addon import constants
+from hypertts_addon import servicemanager
+from hypertts_addon import config_models
+from hypertts_addon import errors
+from hypertts_addon import voice
+from hypertts_addon import languages
+from hypertts_addon import logging_utils
 
 logger = logging_utils.get_test_child_logger(__name__)
 
 def get_service_manager():
-    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'hypertts.test_services', True)
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), f'{constants.DIR_HYPERTTS_ADDON}.test_services', True)
     manager.init_services()
     manager.get_service('ServiceA').enabled = True
     manager.get_service('ServiceB').enabled = True

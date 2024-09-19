@@ -1,6 +1,6 @@
 
-from hypertts import text_utils
-from hypertts import constants
+from hypertts_addon import text_utils
+from hypertts_addon import constants
 
 
 

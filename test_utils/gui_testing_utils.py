@@ -3,7 +3,7 @@ import logging
 import copy
 
 from . import testing_utils
-from hypertts import config_models
+from hypertts_addon import config_models
 
 logger = logging.getLogger(__name__)
 

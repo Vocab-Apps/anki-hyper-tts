@@ -10,4 +10,4 @@ sys.path.insert(0, external_dir)
 sys.path.insert(0, addon_dir)
 
 # import hypertts which should do the anki setup
-import hypertts
+import hypertts_addon

@@ -1,9 +1,9 @@
 import unittest
 
-from hypertts import text_utils
-from hypertts import errors
-from hypertts import constants
-from hypertts import config_models
+from hypertts_addon import text_utils
+from hypertts_addon import errors
+from hypertts_addon import constants
+from hypertts_addon import config_models
 
 def test_process_text(qtbot):
 

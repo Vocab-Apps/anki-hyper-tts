@@ -21,7 +21,7 @@ else:
 
     # need to declare upfront whether we're doing crash reporting
     # ============================================================
-    from hypertts import constants
+    from hypertts_addon import constants
     if constants.ENABLE_SENTRY_CRASH_REPORTING:
         import sentry_sdk        
         # check version. some anki addons package an obsolete version of sentry_sdk
@@ -130,7 +130,7 @@ else:
         current_script_path = os.path.realpath(__file__)
         current_script_dir = os.path.dirname(current_script_path)
         return os.path.join(current_script_dir, 'services')
-    service_manager = servicemanager.ServiceManager(services_dir(), 'hypertts.services', False)
+    service_manager = servicemanager.ServiceManager(services_dir(), f'{constants.DIR_HYPERTTS_ADDON}.{constants.DIR_SERVICES}', False)
     service_manager.init_services()
     hyper_tts = hypertts.HyperTTS(ankiutils, service_manager)
     # configure services based on config

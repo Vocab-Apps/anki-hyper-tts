@@ -7,28 +7,28 @@ import aqt.qt
 from test_utils import testing_utils
 from test_utils import gui_testing_utils
 
-from hypertts import component_batch_preview
-from hypertts import component_configuration
-from hypertts import config_models
-from hypertts import servicemanager
-from hypertts import logging_utils
-from hypertts import hypertts
-from hypertts import constants
-from hypertts import languages
-from hypertts import component_voiceselection
-from hypertts import component_source
-from hypertts import component_target
-from hypertts import component_batch
-from hypertts import component_text_processing
-from hypertts import component_realtime_source
-from hypertts import component_realtime_side
-from hypertts import component_realtime
-from hypertts import component_hyperttspro
-from hypertts import component_shortcuts
-from hypertts import component_errorhandling
-from hypertts import component_preferences
-from hypertts import component_presetmappingrules
-from hypertts import component_mappingrule
+from hypertts_addon import component_batch_preview
+from hypertts_addon import component_configuration
+from hypertts_addon import config_models
+from hypertts_addon import servicemanager
+from hypertts_addon import logging_utils
+from hypertts_addon import hypertts
+from hypertts_addon import constants
+from hypertts_addon import languages
+from hypertts_addon import component_voiceselection
+from hypertts_addon import component_source
+from hypertts_addon import component_target
+from hypertts_addon import component_batch
+from hypertts_addon import component_text_processing
+from hypertts_addon import component_realtime_source
+from hypertts_addon import component_realtime_side
+from hypertts_addon import component_realtime
+from hypertts_addon import component_hyperttspro
+from hypertts_addon import component_shortcuts
+from hypertts_addon import component_errorhandling
+from hypertts_addon import component_preferences
+from hypertts_addon import component_presetmappingrules
+from hypertts_addon import component_mappingrule
 
 logger = logging_utils.get_test_child_logger(__name__)
 
@@ -349,7 +349,7 @@ def test_voice_selection_priority_1(qtbot):
 
 
 def test_voice_selection_filters(qtbot):
-    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), 'hypertts.test_services', True)
+    manager = servicemanager.ServiceManager(testing_utils.get_test_services_dir(), f'{constants.DIR_HYPERTTS_ADDON}.test_services', True)
     manager.init_services()
     manager.get_service('ServiceA').enabled = True
     manager.get_service('ServiceB').enabled = True

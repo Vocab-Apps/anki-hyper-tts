@@ -3,10 +3,10 @@ import datetime
 
 from test_utils import testing_utils
 
-from hypertts import constants
-from hypertts import config_models
-from hypertts import batch_status
-from hypertts import logging_utils
+from hypertts_addon import constants
+from hypertts_addon import config_models
+from hypertts_addon import batch_status
+from hypertts_addon import logging_utils
 
 logger = logging_utils.get_test_child_logger(__name__)
 

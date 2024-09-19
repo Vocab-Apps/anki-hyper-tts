@@ -2,11 +2,11 @@ import sys
 import requests
 import json
 
-from hypertts import voice
-from hypertts import service
-from hypertts import errors
-from hypertts import constants
-from hypertts import logging_utils
+from hypertts_addon import voice
+from hypertts_addon import service
+from hypertts_addon import errors
+from hypertts_addon import constants
+from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 class Naver(service.ServiceBase):

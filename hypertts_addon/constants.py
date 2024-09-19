@@ -77,6 +77,9 @@ class MappingRuleType(enum.Enum):
     NoteType = enum.auto()
     DeckNoteType = enum.auto()
 
+DIR_HYPERTTS_ADDON = 'hypertts_addon'
+DIR_SERVICES = 'services'
+
 ANKIWEB_ADDON_ID = '111623432'
 
 CONFIG_ADDON_NAME = 'anki-hyper-tts'

@@ -12,7 +12,7 @@ def pytest_configure(config):
     sys.path.insert(0, external_dir)
     sys.path.insert(0, root_dir)
 
-    from hypertts import logging_utils
+    from hypertts_addon import logging_utils
     logging_utils.configure_console_logging()
     # required to access some anki functions such as anki.utils.html_to_text_line
     anki.lang.set_lang('en_US')
