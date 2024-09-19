@@ -17,3 +17,4 @@ external/comtypes/gen/
 converted_wav.wav
 generated_audio.mp3
 generated_audio.ogg
+.aider.*

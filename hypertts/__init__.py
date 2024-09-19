@@ -129,10 +129,9 @@ else:
     def services_dir():
         current_script_path = os.path.realpath(__file__)
         current_script_dir = os.path.dirname(current_script_path)
-        root_dir = os.path.join(current_script_dir, '..')
-        return os.path.join(root_dir, 'services')
-    service_manager = servicemanager.ServiceManager(services_dir(), 'hypertts.services', False)
-    service_manager.init_services()    
+        return os.path.join(current_script_dir, 'services')
+    service_manager = servicemanager.ServiceManager(services_dir(), 'services', False)
+    service_manager.init_services()
     hyper_tts = hypertts.HyperTTS(ankiutils, service_manager)
     # configure services based on config
     with hyper_tts.error_manager.get_single_action_context('Configuring Services'):

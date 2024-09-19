@@ -1,9 +1,9 @@
 
 import sys
 
-from hypertts import constants
-from hypertts import languages
-from hypertts import voice
+from .. import constants
+from .. import languages
+from .. import voice
 
 VOICE_LIST = [
         
