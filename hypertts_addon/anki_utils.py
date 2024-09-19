@@ -63,7 +63,7 @@ class AnkiUtils():
 
     def get_user_files_dir(self):
         addon_dir = os.path.dirname(os.path.realpath(__file__))
-        user_files_dir = os.path.join(addon_dir, 'user_files')
+        user_files_dir = os.path.join(addon_dir, '..', 'user_files')
         return user_files_dir        
 
     def play_anki_sound_tag(self, text):
