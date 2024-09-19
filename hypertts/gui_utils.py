@@ -89,7 +89,9 @@ def process_label_text(text):
 
 
 def get_graphics_path(filename):
-    return os.path.join(os.path.dirname(__file__), 'graphics', filename)
+    current_dir = os.path.dirname(__file__)
+    root_dir = os.path.join(current_dir, os.pardir)
+    return os.path.join(root_dir, 'graphics', filename)
 
 def get_hypertts_label_header(hypertts_pro_enabled):
     hlayout = aqt.qt.QHBoxLayout()
