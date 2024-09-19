@@ -55,7 +55,9 @@ else:
 
         from . import version
 
-        addon_config = aqt.mw.addonManager.getConfig(__name__)
+        # addon_name = __name__
+        addon_name = 'anki-hyper-tts'
+        addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
         api_key = addon_config.get('configuration', {}).get('hypertts_pro_api_key', None)
         if api_key != None:
             user_id = f'api_key:{api_key}'
@@ -64,7 +66,7 @@ else:
             if unique_id == None:
                 unique_id = f'uuid:{uuid.uuid4().hex[:12]}'
                 addon_config['unique_id'] = unique_id
-                aqt.mw.addonManager.writeConfig(__name__, addon_config)
+                aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, addon_config)
             user_id = unique_id
 
         def sentry_filter(event, hint):

@@ -40,10 +40,10 @@ class AnkiUtils():
         pass
 
     def get_config(self):
-        return aqt.mw.addonManager.getConfig(__name__)
+        return aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
 
     def write_config(self, config):
-        aqt.mw.addonManager.writeConfig(__name__, config)
+        aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, config)
 
     def night_mode_enabled(self):
         night_mode = aqt.theme.theme_manager.night_mode

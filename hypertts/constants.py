@@ -77,6 +77,8 @@ class MappingRuleType(enum.Enum):
     NoteType = enum.auto()
     DeckNoteType = enum.auto()
 
+CONFIG_ADDON_NAME = 'anki-hyper-tts'
+
 CONFIG_SCHEMA = 'config_schema'
 CONFIG_SCHEMA_VERSION = 3
 # deprecated, use CONFIG_PRESETS
