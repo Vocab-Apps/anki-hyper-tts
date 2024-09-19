@@ -17,3 +17,5 @@ requirements.external.txt
 requirements.txt
 requirements.windows.txt
 user_files
+*.code-workspace
+.*
