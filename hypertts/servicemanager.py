@@ -97,7 +97,7 @@ class ServiceManager():
         # sys.path.insert(0, self.services_directory)
         for module_name in module_names:
             logger.info(f'importing module {module_name}, package_name: {self.package_name}')
-            __import__(self.package_name, globals(), locals(), [module_name], 0)
+            __import__(self.package_name, globals(), locals(), [module_name], 1)
 
     def instantiate_services(self):
         for subclass in service.ServiceBase.__subclasses__():
