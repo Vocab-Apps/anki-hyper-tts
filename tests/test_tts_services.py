@@ -229,21 +229,21 @@ class TTSTests(unittest.TestCase):
             if expected_text_override != None:
                 expected_text = self.sanitize_recognized_text(expected_text_override)    
             if expected_text != recognized_text:
-                problem_file = self.create_problem_filename(voice.name, extension_map[audio_format], audio_language.name)
-                shutil.copy(output_temp_filename, problem_file)
+                problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
+                shutil.copy(wav_filepath, problem_file)
                 error_message = f'expected and actual text not matching (voice: {str(voice)}): expected: [{expected_text}] actual: [{recognized_text}]. Problematic audio file: {problem_file}'
                 raise AssertionError(error_message)
             logger.info(f'actual and expected text match [{recognized_text}]')
         elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
             error_message = f"No speech could be recognized: {result.no_match_details} voice: {voice} source_text: {source_text}"
-            problem_file = self.create_problem_filename(voice.name, extension_map[audio_format], audio_language.name)
-            shutil.copy(output_temp_filename, problem_file)
+            problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
+            shutil.copy(wav_filepath, problem_file)
             raise Exception(f"{error_message}. Problematic audio file: {problem_file}")
         elif result.reason == azure.cognitiveservices.speech.ResultReason.Canceled:
             cancellation_details = result.cancellation_details
             error_message = f"Speech Recognition canceled: {cancellation_details} voice: {voice} source_text: {source_text}"
-            problem_file = self.create_problem_filename(voice.name, extension_map[audio_format], audio_language.name)
-            shutil.copy(output_temp_filename, problem_file)
+            problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
+            shutil.copy(wav_filepath, problem_file)
             raise Exception(f"{error_message}. Problematic audio file: {problem_file}")
 
     def pick_random_voice(self, voice_list, service_name, language):
