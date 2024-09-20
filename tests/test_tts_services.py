@@ -171,7 +171,7 @@ class TTSTests(unittest.TestCase):
 
     def verify_audio_output(self, voice, audio_language, source_text, expected_text_override=None, voice_options={}):
         max_retries = 3
-        retry_delay = 1  # second
+        retry_delay = 2  # second
         
         for attempt in range(max_retries):
             try:
@@ -179,11 +179,11 @@ class TTSTests(unittest.TestCase):
                     context.AudioRequestContext(constants.AudioRequestReason.batch))
                 assert len(audio_data) > 0
                 break
-            except errors.RequestError:
+            except errors.RequestError as request_error:
                 if attempt < max_retries - 1:
                     time.sleep(retry_delay)
                 else:
-                    raise
+                    raise Exception(f"Failed to get audio data for {voice} and {source_text} after {max_retries} tries: {request_error}")
 
         audio_format = options.AudioFormat.mp3
         if options.AUDIO_FORMAT_PARAMETER in voice_options:
