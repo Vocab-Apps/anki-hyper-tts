@@ -206,6 +206,9 @@ class TTSTests(unittest.TestCase):
         speech_recognizer = azure.cognitiveservices.speech.SpeechRecognizer(speech_config=speech_config, audio_config=audio_input, language=recognition_language)
         result = speech_recognizer.recognize_once()
 
+        # to run problematic tests:
+        # COLUMNS=500 pytest tests/test_tts_services.py  -k 'test_all_services_mandarin or test_elevenlabs_chinese or test_elevenlabs_english or test_openai_french or test_all_services_french'
+
         # Checks result.
         if result.reason == azure.cognitiveservices.speech.ResultReason.RecognizedSpeech:
             recognized_text =  self.sanitize_recognized_text(result.text)
@@ -215,11 +218,11 @@ class TTSTests(unittest.TestCase):
             assert expected_text == recognized_text, f'expected and actual text not matching (voice: {str(voice)}): expected: [{expected_text}] actual: [{recognized_text}]'
             logger.info(f'actual and expected text match [{recognized_text}]')
         elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
-            error_message = "No speech could be recognized: {}".format(result.no_match_details)
+            error_message = f"No speech could be recognized: {result.no_match_details} voice: {voice} source_text: {source_text}"
             raise Exception(error_message)
         elif result.reason == azure.cognitiveservices.speech.ResultReason.Canceled:
             cancellation_details = result.cancellation_details
-            error_message = "Speech Recognition canceled: {}".format(cancellation_details)
+            error_message = f"Speech Recognition canceled: {cancellation_details} voice: {voice} source_text: {source_text}"
             raise Exception(error_message)
 
     def pick_random_voice(self, voice_list, service_name, language):
