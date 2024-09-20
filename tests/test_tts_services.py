@@ -193,7 +193,7 @@ class TTSTests(unittest.TestCase):
             sound = pydub.AudioSegment.from_ogg(output_temp_filename)
         # cannot use tempfiles because windows is weird
         wav_filepath = "converted_wav.wav"
-        out_filehandle = sound.export(wav_filepath, format="wav")
+        out_filehandle = sound.export(wav_filepath, format="wav", parameters=["-ar", "16000"])
         out_filehandle.close()
 
         recognition_language_map = {
