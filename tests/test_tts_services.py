@@ -9,6 +9,8 @@ import platform
 import magic
 import azure.cognitiveservices.speech
 import azure.cognitiveservices.speech.audio
+import uuid
+import shutil
 
 
 from hypertts_addon import constants
@@ -215,7 +217,13 @@ class TTSTests(unittest.TestCase):
             expected_text = self.sanitize_recognized_text(source_text)
             if expected_text_override != None:
                 expected_text = self.sanitize_recognized_text(expected_text_override)    
-            assert expected_text == recognized_text, f'expected and actual text not matching (voice: {str(voice)}): expected: [{expected_text}] actual: [{recognized_text}]'
+            if expected_text != recognized_text:
+                import uuid
+                import shutil
+                problem_file = f"{uuid.uuid4()}_{voice.name[:20]}.{extension_map[audio_format]}"
+                shutil.copy(output_temp_filename, problem_file)
+                error_message = f'expected and actual text not matching (voice: {str(voice)}): expected: [{expected_text}] actual: [{recognized_text}]. Problematic audio file: {problem_file}'
+                raise AssertionError(error_message)
             logger.info(f'actual and expected text match [{recognized_text}]')
         elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
             error_message = f"No speech could be recognized: {result.no_match_details} voice: {voice} source_text: {source_text}"
