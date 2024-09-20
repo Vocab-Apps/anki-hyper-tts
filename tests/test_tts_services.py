@@ -164,6 +164,7 @@ class TTSTests(unittest.TestCase):
             replace('。', '').\
             replace('?', '').\
             replace('？', '').\
+            replace('!', '').\
             replace('您', '你').\
             replace(':', '').lower()
         return result_text
