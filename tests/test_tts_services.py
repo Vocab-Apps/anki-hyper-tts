@@ -188,14 +188,15 @@ class TTSTests(unittest.TestCase):
             out.write(audio_data)
         file_type = magic.from_file(output_temp_filename)
 
+        verify_format_voice_information = f'verifying format {audio_format} for {voice}'
         if audio_format == options.AudioFormat.mp3:
-            self.assertIn('MPEG ADTS, layer III', file_type)
+            self.assertIn('MPEG ADTS, layer III', file_type, verify_format_voice_information)
             sound = pydub.AudioSegment.from_mp3(output_temp_filename)
         elif audio_format == options.AudioFormat.ogg_opus:
-            self.assertIn('Ogg data, Opus audio', file_type)
+            self.assertIn('Ogg data, Opus audio', file_type, verify_format_voice_information)
             sound = pydub.AudioSegment.from_ogg(output_temp_filename)
         elif audio_format == options.AudioFormat.ogg_vorbis:
-            self.assertIn('Ogg data, Vorbis audio', file_type)
+            self.assertIn('Ogg data, Vorbis audio', file_type, verify_format_voice_information)
             sound = pydub.AudioSegment.from_ogg(output_temp_filename)
 
         wav_filepath = os.path.join(self.GENERATED_FILES_DIRECTORY, f"converted_wav_{uuid.uuid4()}.wav")
