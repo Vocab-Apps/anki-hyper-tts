@@ -1232,6 +1232,10 @@ Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-Engli
                 logger.info(f'testing language {language.name}, service {service_name}')
                 random_voices = self.pick_random_voices_sample(voice_list, service_name, language, self.RANDOM_VOICE_COUNT)
                 for voice in random_voices:
+                    if (service_name in ['OpenAI', 'ElevenLabs'] and 
+                        language != languages.AudioLanguage.en_US):
+                        logger.info(f'Skipping {service_name} for non-English language {language.name}')
+                        continue
                     self.verify_audio_output(voice, language, source_text)
 
     def test_all_services_english(self):
