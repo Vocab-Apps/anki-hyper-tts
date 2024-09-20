@@ -44,6 +44,12 @@ class TTSTests(unittest.TestCase):
     def setUpClass(cls):
         cls.configure_service_manager(cls)
 
+    @classmethod
+    def tearDownClass(cls):
+        # Clean up test audio files
+        import shutil
+        shutil.rmtree('test_audio_files', ignore_errors=True)
+
     def sanitize_filename(self, filename):
         valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
         return ''.join(c for c in filename if c in valid_chars)
@@ -172,15 +178,13 @@ class TTSTests(unittest.TestCase):
             options.AudioFormat.ogg_opus: 'ogg',
         }
 
-        output_temp_filename = f'generated_audio.{extension_map[audio_format]}'
-        # cannot use tempfiles because windows is weird
-        out = open(output_temp_filename, "wb")
-        out.write(audio_data)
-        out.close()
+        os.makedirs('test_audio_files', exist_ok=True)
+        output_temp_filename = f'test_audio_files/generated_audio_{uuid.uuid4()}.{extension_map[audio_format]}'
+        with open(output_temp_filename, "wb") as out:
+            out.write(audio_data)
         file_type = magic.from_file(output_temp_filename)
 
         speech_config = azure.cognitiveservices.speech.SpeechConfig(subscription=os.environ['AZURE_SERVICES_KEY'], region='eastus')
-
 
         if audio_format == options.AudioFormat.mp3:
             self.assertIn('MPEG ADTS, layer III', file_type)
@@ -191,10 +195,9 @@ class TTSTests(unittest.TestCase):
         elif audio_format == options.AudioFormat.ogg_vorbis:
             self.assertIn('Ogg data, Vorbis audio', file_type)
             sound = pydub.AudioSegment.from_ogg(output_temp_filename)
-        # cannot use tempfiles because windows is weird
-        wav_filepath = "converted_wav.wav"
-        out_filehandle = sound.export(wav_filepath, format="wav", parameters=["-ar", "16000"])
-        out_filehandle.close()
+
+        wav_filepath = f"test_audio_files/converted_wav_{uuid.uuid4()}.wav"
+        sound.export(wav_filepath, format="wav", parameters=["-ar", "16000"])
 
         recognition_language_map = {
             languages.AudioLanguage.en_US: 'en-US',
