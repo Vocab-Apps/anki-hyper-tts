@@ -14,7 +14,7 @@ import pytest
 import uuid
 import shutil
 import string
-import os
+import time
 
 
 from hypertts_addon import constants
@@ -170,9 +170,20 @@ class TTSTests(unittest.TestCase):
         return result_text
 
     def verify_audio_output(self, voice, audio_language, source_text, expected_text_override=None, voice_options={}):
-        audio_data = self.manager.get_tts_audio(source_text, voice, voice_options, 
-            context.AudioRequestContext(constants.AudioRequestReason.batch))
-        assert len(audio_data) > 0
+        max_retries = 3
+        retry_delay = 1  # second
+        
+        for attempt in range(max_retries):
+            try:
+                audio_data = self.manager.get_tts_audio(source_text, voice, voice_options, 
+                    context.AudioRequestContext(constants.AudioRequestReason.batch))
+                assert len(audio_data) > 0
+                break
+            except errors.RequestError:
+                if attempt < max_retries - 1:
+                    time.sleep(retry_delay)
+                else:
+                    raise
 
         audio_format = options.AudioFormat.mp3
         if options.AUDIO_FORMAT_PARAMETER in voice_options:
