@@ -9,6 +9,8 @@ import platform
 import magic
 import azure.cognitiveservices.speech
 import azure.cognitiveservices.speech.audio
+import openai
+import pytest
 import uuid
 import shutil
 import string
@@ -199,9 +201,9 @@ class TTSTests(unittest.TestCase):
         sound.export(wav_filepath, format="wav")
 
         # First, try with OpenAI Whisper API
+        openai_whisper_result = None
         try:
-            from openai import OpenAI
-            client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+            client = openai.OpenAI(api_key=os.environ['OPENAI_API_KEY'])
             with open(wav_filepath, "rb") as audio_file:
                 transcript = client.audio.transcriptions.create(
                     model="whisper-1", 
@@ -219,9 +221,11 @@ class TTSTests(unittest.TestCase):
                 os.remove(output_temp_filename)
                 return
             else:
-                logger.info(f'OpenAI Whisper: Text mismatch. Expected: [{expected_text}], Actual: [{whisper_recognized_text}]')
+                openai_whisper_result = f'OpenAI Whisper: Text mismatch. Expected: [{expected_text}], Actual: [{whisper_recognized_text}]'
+                logger.info(openai_whisper_result)
         except Exception as e:
-            logger.warning(f'OpenAI Whisper transcription failed: {str(e)}')
+            openai_whisper_result = f'OpenAI Whisper transcription failed: {str(e)}'
+            logger.warning(openai_whisper_result)
 
         # If Whisper fails or doesn't match, proceed with Azure speech recognition
         speech_config = azure.cognitiveservices.speech.SpeechConfig(subscription=os.environ['AZURE_SERVICES_KEY'], region='eastus')
@@ -261,20 +265,20 @@ class TTSTests(unittest.TestCase):
             if expected_text != recognized_text:
                 problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
                 shutil.copy(wav_filepath, problem_file)
-                error_message = f'expected and actual text not matching (voice: {str(voice)}): expected: [{expected_text}] actual: [{recognized_text}]. Problematic audio file: {problem_file}'
+                error_message = f'expected and actual text not matching (voice: {str(voice)}): expected: [{expected_text}] actual: [{recognized_text}]. Problematic audio file: {problem_file}. openai_whisper_result: {openai_whisper_result}'
                 raise AssertionError(error_message)
             logger.info(f'Azure: actual and expected text match [{recognized_text}]')
         elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
             error_message = f"No speech could be recognized: {result.no_match_details} voice: {voice} source_text: {source_text}"
             problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
             shutil.copy(wav_filepath, problem_file)
-            raise Exception(f"{error_message}. Problematic audio file: {problem_file}")
+            raise Exception(f"{error_message}. Problematic audio file: {problem_file} openai_whisper_result: {openai_whisper_result}")
         elif result.reason == azure.cognitiveservices.speech.ResultReason.Canceled:
             cancellation_details = result.cancellation_details
             error_message = f"Speech Recognition canceled: {cancellation_details} voice: {voice} source_text: {source_text}"
             problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
             shutil.copy(wav_filepath, problem_file)
-            raise Exception(f"{error_message}. Problematic audio file: {problem_file}")
+            raise Exception(f"{error_message}. Problematic audio file: {problem_file} openai_whisper_result: {openai_whisper_result}")
 
         # cleanup
         os.remove(wav_filepath)
@@ -464,12 +468,14 @@ class TTSTests(unittest.TestCase):
         for voice in charlotte_voices:
             self.verify_audio_output(voice, AudioLanguage.en_US, 'This is the first sentence')
 
+    @pytest.mark.skip(reason="elevenlabs for non-english languages doesn't produce reliable results")
     def test_elevenlabs_french(self):
         self.random_voice_test('ElevenLabs', languages.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
 
     def test_elevenlabs_japanese(self):
         self.random_voice_test('ElevenLabs', languages.AudioLanguage.ja_JP, 'おはようございます')
 
+    @pytest.mark.skip(reason="elevenlabs for non-english languages doesn't produce reliable results")
     def test_elevenlabs_chinese(self):
         self.random_voice_test('ElevenLabs', languages.AudioLanguage.zh_CN, '赚钱')
 
