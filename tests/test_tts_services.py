@@ -48,9 +48,10 @@ class TTSTests(unittest.TestCase):
         valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
         return ''.join(c for c in filename if c in valid_chars)
 
-    def create_problem_filename(self, voice_name, extension):
+    def create_problem_filename(self, voice_name, extension, language):
         sanitized_name = self.sanitize_filename(voice_name[:100])
-        return f"{uuid.uuid4()}_{sanitized_name}.{extension}"
+        sanitized_name = sanitized_name.replace(' ', '-').replace('(', '-').replace(')', '-')
+        return f"{uuid.uuid4()}_{sanitized_name}_{language}.{extension}"
 
     def configure_service_manager(self):
         # use individual service keys
@@ -228,20 +229,20 @@ class TTSTests(unittest.TestCase):
             if expected_text_override != None:
                 expected_text = self.sanitize_recognized_text(expected_text_override)    
             if expected_text != recognized_text:
-                problem_file = self.create_problem_filename(voice.name, extension_map[audio_format])
+                problem_file = self.create_problem_filename(voice.name, extension_map[audio_format], audio_language.name)
                 shutil.copy(output_temp_filename, problem_file)
                 error_message = f'expected and actual text not matching (voice: {str(voice)}): expected: [{expected_text}] actual: [{recognized_text}]. Problematic audio file: {problem_file}'
                 raise AssertionError(error_message)
             logger.info(f'actual and expected text match [{recognized_text}]')
         elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
             error_message = f"No speech could be recognized: {result.no_match_details} voice: {voice} source_text: {source_text}"
-            problem_file = self.create_problem_filename(voice.name, extension_map[audio_format])
+            problem_file = self.create_problem_filename(voice.name, extension_map[audio_format], audio_language.name)
             shutil.copy(output_temp_filename, problem_file)
             raise Exception(f"{error_message}. Problematic audio file: {problem_file}")
         elif result.reason == azure.cognitiveservices.speech.ResultReason.Canceled:
             cancellation_details = result.cancellation_details
             error_message = f"Speech Recognition canceled: {cancellation_details} voice: {voice} source_text: {source_text}"
-            problem_file = self.create_problem_filename(voice.name, extension_map[audio_format])
+            problem_file = self.create_problem_filename(voice.name, extension_map[audio_format], audio_language.name)
             shutil.copy(output_temp_filename, problem_file)
             raise Exception(f"{error_message}. Problematic audio file: {problem_file}")
 
