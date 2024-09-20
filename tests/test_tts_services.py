@@ -200,12 +200,15 @@ class TTSTests(unittest.TestCase):
 
         # First, try with OpenAI Whisper API
         try:
-            import openai
-            openai.api_key = os.environ['OPENAI_API_KEY']
+            from openai import OpenAI
+            client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
             with open(wav_filepath, "rb") as audio_file:
-                transcript = openai.Audio.transcribe("whisper-1", audio_file)
+                transcript = client.audio.transcriptions.create(
+                    model="whisper-1", 
+                    file=audio_file
+                )
             
-            whisper_recognized_text = self.sanitize_recognized_text(transcript['text'])
+            whisper_recognized_text = self.sanitize_recognized_text(transcript.text)
             expected_text = self.sanitize_recognized_text(source_text)
             if expected_text_override is not None:
                 expected_text = self.sanitize_recognized_text(expected_text_override)
