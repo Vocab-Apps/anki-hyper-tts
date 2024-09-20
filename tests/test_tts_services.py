@@ -199,6 +199,9 @@ class TTSTests(unittest.TestCase):
             sound = pydub.AudioSegment.from_ogg(output_temp_filename)
 
         wav_filepath = os.path.join(self.GENERATED_FILES_DIRECTORY, f"converted_wav_{uuid.uuid4()}.wav")
+        # https://github.com/Azure-Samples/cognitive-services-speech-sdk/issues/756
+        # this indicates that converting to 16khz helps avoid this issue:
+        # No speech could be recognized: NoMatchDetails(reason=NoMatchReason.InitialSilenceTimeout)
         sound = sound.set_frame_rate(16000)
         sound.export(wav_filepath, format="wav", parameters=["-ar", "16000"])
 
