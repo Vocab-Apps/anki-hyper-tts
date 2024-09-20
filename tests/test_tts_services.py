@@ -507,6 +507,7 @@ class TTSTests(unittest.TestCase):
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'This is the first sentence', voice_options={'format': 'ogg_opus'})
 
+    @pytest.mark.skip(reason="openai for non-english languages doesn't produce reliable results")
     def test_openai_french(self):
         self.random_voice_test('OpenAI', languages.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
 
@@ -1232,7 +1233,7 @@ Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-Engli
                 logger.info(f'testing language {language.name}, service {service_name}')
                 random_voices = self.pick_random_voices_sample(voice_list, service_name, language, self.RANDOM_VOICE_COUNT)
                 for voice in random_voices:
-                    if (service_name in ['OpenAI', 'ElevenLabs'] and 
+                    if (service_name in ['OpenAI', 'ElevenLabs', 'ElevenLabsCustom'] and 
                         language != languages.AudioLanguage.en_US):
                         logger.info(f'Skipping {service_name} for non-English language {language.name}')
                         continue
