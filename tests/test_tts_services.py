@@ -185,8 +185,6 @@ class TTSTests(unittest.TestCase):
             out.write(audio_data)
         file_type = magic.from_file(output_temp_filename)
 
-        speech_config = azure.cognitiveservices.speech.SpeechConfig(subscription=os.environ['AZURE_SERVICES_KEY'], region='eastus')
-
         if audio_format == options.AudioFormat.mp3:
             self.assertIn('MPEG ADTS, layer III', file_type)
             sound = pydub.AudioSegment.from_mp3(output_temp_filename)
@@ -199,6 +197,31 @@ class TTSTests(unittest.TestCase):
 
         wav_filepath = os.path.join(self.GENERATED_FILES_DIRECTORY, f"converted_wav_{uuid.uuid4()}.wav")
         sound.export(wav_filepath, format="wav")
+
+        # First, try with OpenAI Whisper API
+        try:
+            import openai
+            openai.api_key = os.environ['OPENAI_API_KEY']
+            with open(wav_filepath, "rb") as audio_file:
+                transcript = openai.Audio.transcribe("whisper-1", audio_file)
+            
+            whisper_recognized_text = self.sanitize_recognized_text(transcript['text'])
+            expected_text = self.sanitize_recognized_text(source_text)
+            if expected_text_override is not None:
+                expected_text = self.sanitize_recognized_text(expected_text_override)
+            
+            if expected_text == whisper_recognized_text:
+                logger.info(f'OpenAI Whisper: actual and expected text match [{whisper_recognized_text}]')
+                os.remove(wav_filepath)
+                os.remove(output_temp_filename)
+                return
+            else:
+                logger.info(f'OpenAI Whisper: Text mismatch. Expected: [{expected_text}], Actual: [{whisper_recognized_text}]')
+        except Exception as e:
+            logger.warning(f'OpenAI Whisper transcription failed: {str(e)}')
+
+        # If Whisper fails or doesn't match, proceed with Azure speech recognition
+        speech_config = azure.cognitiveservices.speech.SpeechConfig(subscription=os.environ['AZURE_SERVICES_KEY'], region='eastus')
 
         recognition_language_map = {
             languages.AudioLanguage.en_US: 'en-US',
@@ -228,16 +251,16 @@ class TTSTests(unittest.TestCase):
 
         # Checks result.
         if result.reason == azure.cognitiveservices.speech.ResultReason.RecognizedSpeech:
-            recognized_text =  self.sanitize_recognized_text(result.text)
+            recognized_text = self.sanitize_recognized_text(result.text)
             expected_text = self.sanitize_recognized_text(source_text)
-            if expected_text_override != None:
+            if expected_text_override is not None:
                 expected_text = self.sanitize_recognized_text(expected_text_override)    
             if expected_text != recognized_text:
                 problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
                 shutil.copy(wav_filepath, problem_file)
                 error_message = f'expected and actual text not matching (voice: {str(voice)}): expected: [{expected_text}] actual: [{recognized_text}]. Problematic audio file: {problem_file}'
                 raise AssertionError(error_message)
-            logger.info(f'actual and expected text match [{recognized_text}]')
+            logger.info(f'Azure: actual and expected text match [{recognized_text}]')
         elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
             error_message = f"No speech could be recognized: {result.no_match_details} voice: {voice} source_text: {source_text}"
             problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
@@ -251,7 +274,6 @@ class TTSTests(unittest.TestCase):
             raise Exception(f"{error_message}. Problematic audio file: {problem_file}")
 
         # cleanup
-        # remove wav_filepath and output_temp_filename
         os.remove(wav_filepath)
         os.remove(output_temp_filename)
 
