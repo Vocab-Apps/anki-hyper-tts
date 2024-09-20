@@ -11,6 +11,7 @@ import azure.cognitiveservices.speech
 import azure.cognitiveservices.speech.audio
 import uuid
 import shutil
+import string
 
 
 from hypertts_addon import constants
@@ -41,6 +42,10 @@ class TTSTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.configure_service_manager(cls)
+
+    def sanitize_filename(self, filename):
+        valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+        return ''.join(c for c in filename if c in valid_chars)
 
     def configure_service_manager(self):
         # use individual service keys
@@ -227,11 +232,15 @@ class TTSTests(unittest.TestCase):
             logger.info(f'actual and expected text match [{recognized_text}]')
         elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
             error_message = f"No speech could be recognized: {result.no_match_details} voice: {voice} source_text: {source_text}"
-            raise Exception(error_message)
+            problem_file = f"{uuid.uuid4()}_{self.sanitize_filename(voice.name[:20])}.{extension_map[audio_format]}"
+            shutil.copy(output_temp_filename, problem_file)
+            raise Exception(f"{error_message}. Problematic audio file: {problem_file}")
         elif result.reason == azure.cognitiveservices.speech.ResultReason.Canceled:
             cancellation_details = result.cancellation_details
             error_message = f"Speech Recognition canceled: {cancellation_details} voice: {voice} source_text: {source_text}"
-            raise Exception(error_message)
+            problem_file = f"{uuid.uuid4()}_{self.sanitize_filename(voice.name[:20])}.{extension_map[audio_format]}"
+            shutil.copy(output_temp_filename, problem_file)
+            raise Exception(f"{error_message}. Problematic audio file: {problem_file}")
 
     def pick_random_voice(self, voice_list, service_name, language):
         voice_subset = [voice for voice in voice_list if voice.service == service_name and language in voice.audio_languages]
