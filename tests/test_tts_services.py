@@ -39,6 +39,7 @@ def services_dir():
 
 class TTSTests(unittest.TestCase):
     RANDOM_VOICE_COUNT = 1
+    GENERATED_FILES_DIRECTORY = 'test_audio_files'
     
     @classmethod
     def setUpClass(cls):
@@ -47,8 +48,9 @@ class TTSTests(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         # Clean up test audio files
-        import shutil
-        shutil.rmtree('test_audio_files', ignore_errors=True)
+        pass
+        # import shutil
+        # shutil.rmtree('test_audio_files', ignore_errors=True)
 
     def sanitize_filename(self, filename):
         valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
@@ -57,7 +59,7 @@ class TTSTests(unittest.TestCase):
     def create_problem_filename(self, voice_name, extension, language):
         sanitized_name = self.sanitize_filename(voice_name[:100])
         sanitized_name = sanitized_name.replace(' ', '-').replace('(', '-').replace(')', '-')
-        return f"{uuid.uuid4()}_{sanitized_name}_{language}.{extension}"
+        return os.path.join(self.GENERATED_FILES_DIRECTORY, f"{uuid.uuid4()}_{sanitized_name}_{language}.{extension}")
 
     def configure_service_manager(self):
         # use individual service keys
@@ -178,8 +180,7 @@ class TTSTests(unittest.TestCase):
             options.AudioFormat.ogg_opus: 'ogg',
         }
 
-        os.makedirs('test_audio_files', exist_ok=True)
-        output_temp_filename = f'test_audio_files/generated_audio_{uuid.uuid4()}.{extension_map[audio_format]}'
+        output_temp_filename = os.path.join(self.GENERATED_FILES_DIRECTORY, f'generated_audio_{uuid.uuid4()}.{extension_map[audio_format]}')
         with open(output_temp_filename, "wb") as out:
             out.write(audio_data)
         file_type = magic.from_file(output_temp_filename)
@@ -196,7 +197,7 @@ class TTSTests(unittest.TestCase):
             self.assertIn('Ogg data, Vorbis audio', file_type)
             sound = pydub.AudioSegment.from_ogg(output_temp_filename)
 
-        wav_filepath = f"test_audio_files/converted_wav_{uuid.uuid4()}.wav"
+        wav_filepath = os.path.join(self.GENERATED_FILES_DIRECTORY, f"converted_wav_{uuid.uuid4()}.wav")
         sound.export(wav_filepath, format="wav", parameters=["-ar", "16000"])
 
         recognition_language_map = {
@@ -248,6 +249,11 @@ class TTSTests(unittest.TestCase):
             problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
             shutil.copy(wav_filepath, problem_file)
             raise Exception(f"{error_message}. Problematic audio file: {problem_file}")
+
+        # cleanup
+        # remove wav_filepath and output_temp_filename
+        os.remove(wav_filepath)
+        os.remove(output_temp_filename)
 
     def pick_random_voice(self, voice_list, service_name, language):
         voice_subset = [voice for voice in voice_list if voice.service == service_name and language in voice.audio_languages]

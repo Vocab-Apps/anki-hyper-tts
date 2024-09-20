@@ -4,6 +4,7 @@ temp/
 .coverage
 .vscode/
 htmlcov/
+test_audio_files/
 user_files/*.mp3
 user_files/*.ogg
 web/node_modules/
