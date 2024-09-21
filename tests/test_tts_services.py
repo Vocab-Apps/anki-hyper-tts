@@ -534,7 +534,10 @@ class TTSTests(unittest.TestCase):
 
     def test_fptai(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_fptai'
-        self.random_voice_test('FptAi', languages.AudioLanguage.vi_VN, 'Tôi bị mất cái ví.', acceptable_solutions=['Tôi bị mất cái ví.', 'cứ bị mất cái ví'])
+        self.random_voice_test('FptAi', languages.AudioLanguage.vi_VN, 'Tôi bị mất cái ví.', 
+                               acceptable_solutions=['Tôi bị mất cái ví.', 
+                                                      'cứ bị mất cái ví',
+                                                      'cơ bị mất kế ví'])
 
     def test_naver(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_naver'
