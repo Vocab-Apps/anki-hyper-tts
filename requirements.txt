@@ -11,5 +11,6 @@ coverage
 azure-cognitiveservices-speech
 pydub
 python-magic
+openai
 urllib3<2
 bump2version
