@@ -173,6 +173,9 @@ class TTSTests(unittest.TestCase):
         max_retries = 3
         retry_delay = 2  # second
         
+        if acceptable_solutions:
+            acceptable_solutions = [self.sanitize_recognized_text(solution) for solution in acceptable_solutions]
+        
         for attempt in range(max_retries):
             try:
                 audio_data = self.manager.get_tts_audio(source_text, voice, voice_options, 
