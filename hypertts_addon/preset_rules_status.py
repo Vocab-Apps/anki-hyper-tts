@@ -1,3 +1,4 @@
+from . import constants
 from . import config_models
 from . import logging_utils
 from . import errors
@@ -8,7 +9,8 @@ logger = logging_utils.get_child_logger(__name__)
 # or from the preset mapping rules screen
 
 class RuleActionContext():
-    def __init__(self, status, rule):
+    def __init__(self, status, rule, anki_utils):
+        self.anki_utils = anki_utils
         self.status = status
         self.rule = rule
         self.preset = None
@@ -20,13 +22,21 @@ class RuleActionContext():
         self.status.update_progress()
 
     def __str__(self):
+        # use preset id by default, or name if available
         preset_name = self.rule.preset_id
         if self.preset != None:
             preset_name = self.preset.name
-        error_str = ''
-        if self.exception != None:
-            error_str = f': error: {self.exception}'
-        result = f'{preset_name}: success: {self.success}{error_str}'
+        
+        # rule status.
+        rule_status = 'creating audio...'
+        if self.success != None:
+            # task has completed
+            if self.success:
+                rule_status = f'<b style="color: {self.anki_utils.get_green_css_color()};">OK</b>'
+            else:
+                rule_status = f'<b style="color: {self.anki_utils.get_red_css_color()};">Error:</b> {str(self.exception)}'
+
+        result = f'{preset_name}: {rule_status}'
         return result
 
     def __enter__(self):
@@ -54,13 +64,14 @@ class PresetRulesStatus():
         self.rule_action_context_list = []
 
     def get_rule_action_context(self, rule) -> RuleActionContext:
-        action_context =  RuleActionContext(self, rule)
+        action_context =  RuleActionContext(self, rule, self.anki_utils)
         self.rule_action_context_list.append(action_context)
         return action_context
 
     def __str__(self):
         progress_updates = [str(action_context) for action_context in self.rule_action_context_list]
-        result = '<br/>'.join(progress_updates)
+        joined_updates = '<br/>'.join(progress_updates)
+        result = f'<b>{constants.ADDON_NAME}: {self.action_str} Preset Rules:</b><br/>{joined_updates}'
         return result
 
     def update_progress(self):

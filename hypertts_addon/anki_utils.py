@@ -49,6 +49,18 @@ class AnkiUtils():
         night_mode = aqt.theme.theme_manager.night_mode
         return night_mode
 
+    def get_green_css_color(self):
+        night_mode = self.night_mode_enabled()
+        if night_mode:
+            return constants.GREEN_COLOR_NIGHTMODE
+        return constants.GREEN_COLOR_REGULAR
+
+    def get_red_css_color(self):
+        night_mode = self.night_mode_enabled()
+        if night_mode:
+            return constants.RED_COLOR_NIGHTMODE
+        return constants.RED_COLOR_REGULAR
+
     def get_green_stylesheet(self):
         night_mode = self.night_mode_enabled()
         if night_mode:
