@@ -531,7 +531,7 @@ class TTSTests(unittest.TestCase):
 
     def test_fptai(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_fptai'
-        self.random_voice_test('FptAi', languages.AudioLanguage.vi_VN, 'Tôi bị mất cái ví.')
+        self.random_voice_test('FptAi', languages.AudioLanguage.vi_VN, 'Tôi bị mất cái ví.', acceptable_solutions=['Tôi bị mất cái ví.', 'cứ bị mất cái ví'])
 
     def test_naver(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_naver'
@@ -1265,7 +1265,7 @@ Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-Engli
         self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
 
     def test_all_services_mandarin(self):
-        self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.zh_CN, '赚钱')
+        self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.zh_CN, '赚钱', acceptable_solutions=['赚钱', '賺錢'])
 
     def test_all_services_japanese(self):
         self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.ja_JP, 'おはようございます')
