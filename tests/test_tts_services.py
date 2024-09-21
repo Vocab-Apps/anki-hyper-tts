@@ -169,7 +169,7 @@ class TTSTests(unittest.TestCase):
             replace(':', '').lower()
         return result_text
 
-    def verify_audio_output(self, voice, audio_language, source_text, expected_text_override=None, voice_options={}):
+    def verify_audio_output(self, voice, audio_language, source_text, expected_text_override=None, voice_options={}, acceptable_solutions=None):
         max_retries = 3
         retry_delay = 2  # second
         
@@ -232,13 +232,13 @@ class TTSTests(unittest.TestCase):
             if expected_text_override is not None:
                 expected_text = self.sanitize_recognized_text(expected_text_override)
             
-            if expected_text == whisper_recognized_text:
-                logger.info(f'OpenAI Whisper: actual and expected text match [{whisper_recognized_text}]')
+            if expected_text == whisper_recognized_text or (acceptable_solutions and whisper_recognized_text in acceptable_solutions):
+                logger.info(f'OpenAI Whisper: actual text matches expected or acceptable solution [{whisper_recognized_text}]')
                 os.remove(wav_filepath)
                 os.remove(output_temp_filename)
                 return
             else:
-                openai_whisper_result = f'OpenAI Whisper: Text mismatch. Expected: [{expected_text}], Actual: [{whisper_recognized_text}]'
+                openai_whisper_result = f'OpenAI Whisper: Text mismatch. Expected: [{expected_text}], Actual: [{whisper_recognized_text}], Acceptable: {acceptable_solutions}'
                 logger.info(openai_whisper_result)
         except Exception as e:
             openai_whisper_result = f'OpenAI Whisper transcription failed: {str(e)}'
@@ -279,12 +279,13 @@ class TTSTests(unittest.TestCase):
             expected_text = self.sanitize_recognized_text(source_text)
             if expected_text_override is not None:
                 expected_text = self.sanitize_recognized_text(expected_text_override)    
-            if expected_text != recognized_text:
+            if expected_text == recognized_text or (acceptable_solutions and recognized_text in acceptable_solutions):
+                logger.info(f'Azure: actual text matches expected or acceptable solution [{recognized_text}]')
+            else:
                 problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
                 shutil.copy(wav_filepath, problem_file)
-                error_message = f'expected and actual text not matching (voice: {str(voice)}): expected: [{expected_text}] actual: [{recognized_text}]. Problematic audio file: {problem_file}. openai_whisper_result: {openai_whisper_result}'
+                error_message = f'expected and actual text not matching (voice: {str(voice)}): expected: [{expected_text}] actual: [{recognized_text}] acceptable: {acceptable_solutions}. Problematic audio file: {problem_file}. openai_whisper_result: {openai_whisper_result}'
                 raise AssertionError(error_message)
-            logger.info(f'Azure: actual and expected text match [{recognized_text}]')
         elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
             error_message = f"No speech could be recognized: {result.no_match_details} voice: {voice} source_text: {source_text}"
             problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
@@ -1240,7 +1241,7 @@ Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-Engli
         self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'vehicle')
 
 
-    def verify_all_services_language(self, service_type: constants.ServiceType, language, source_text):
+    def verify_all_services_language(self, service_type: constants.ServiceType, language, source_text, acceptable_solutions=None):
         voice_list = self.manager.full_voice_list()
         service_name_list = [service.name for service in self.manager.get_all_services()]
 
@@ -1254,7 +1255,7 @@ Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-Engli
                         language != languages.AudioLanguage.en_US):
                         logger.info(f'Skipping {service_name} for non-English language {language.name}')
                         continue
-                    self.verify_audio_output(voice, language, source_text)
+                    self.verify_audio_output(voice, language, source_text, acceptable_solutions=acceptable_solutions)
 
     def test_all_services_english(self):
         self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.en_US, 'The weather is good today.')
