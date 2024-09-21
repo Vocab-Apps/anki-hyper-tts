@@ -315,10 +315,10 @@ class TTSTests(unittest.TestCase):
             return random.sample(voice_subset, count)
         return []
 
-    def random_voice_test(self, service_name, audio_language, source_text):
+    def random_voice_test(self, service_name, audio_language, source_text, acceptable_solutions=None):
         voice_list = self.manager.full_voice_list()
         selected_voice = self.pick_random_voice(voice_list, service_name, audio_language)
-        self.verify_audio_output(selected_voice, audio_language, source_text)
+        self.verify_audio_output(selected_voice, audio_language, source_text, acceptable_solutions=acceptable_solutions)
 
     def test_google(self):
         service_name = 'Google'
