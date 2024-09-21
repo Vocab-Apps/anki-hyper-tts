@@ -23,7 +23,10 @@ class RuleActionContext():
         preset_name = self.rule.preset_id
         if self.preset != None:
             preset_name = self.preset.name
-        result = f'{preset_name}: success: {self.success}'
+        error_str = ''
+        if self.exception != None:
+            error_str = f': error: {self.exception}'
+        result = f'{preset_name}: success: {self.success}{error_str}'
         return result
 
     def __enter__(self):
@@ -45,8 +48,9 @@ class RuleActionContext():
         return False
 
 class PresetRulesStatus():
-    def __init__(self, action_str):
+    def __init__(self, action_str, anki_utils):
         self.action_str = action_str
+        self.anki_utils = anki_utils
         self.rule_action_context_list = []
 
     def get_rule_action_context(self, rule) -> RuleActionContext:
@@ -54,6 +58,10 @@ class PresetRulesStatus():
         self.rule_action_context_list.append(action_context)
         return action_context
 
-    def update_progress(self):
+    def __str__(self):
         progress_updates = [str(action_context) for action_context in self.rule_action_context_list]
-        logger.info(f'{self.action_str}: {progress_updates}')
+        result = '<br/>'.join(progress_updates)
+        return result
+
+    def update_progress(self):
+        self.anki_utils.display_preset_rules_status(self)

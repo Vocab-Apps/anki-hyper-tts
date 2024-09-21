@@ -320,12 +320,13 @@ class HyperTTS():
 
     def get_preview_all_rules_task(self, deck_note_type: config_models.DeckNoteType,editor_context: config_models.EditorContext, preset_mapping_rules: config_models.PresetMappingRules):
         def preview_fn():
+            status = preset_rules_status.PresetRulesStatus('Previewing', self.anki_utils)
             for absolute_index, subset_index, rule in preset_mapping_rules.iterate_applicable_rules(deck_note_type, False):
-                logger.debug(f'previewing audio for rule {rule}')
-                preset = self.load_preset(rule.preset_id)
-                # self.anki_utils.tooltip_message(f'Previewing audio for rule {preset.name}')
-                self.anki_utils.run_on_main(lambda: self.anki_utils.tooltip_message(f'Previewing audio for {preset.name}'))
-                self.preview_note_audio_editor(preset, editor_context)
+                with status.get_rule_action_context(rule) as rule_action_context:
+                    logger.debug(f'previewing audio for rule {rule}')
+                    preset = self.load_preset(rule.preset_id)
+                    rule_action_context.set_preset(preset)
+                    self.preview_note_audio_editor(preset, editor_context)
         return preview_fn
 
     def get_preview_all_rules_done(self):
@@ -348,14 +349,12 @@ class HyperTTS():
 
     def get_apply_all_rules_task(self, deck_note_type: config_models.DeckNoteType,editor_context: config_models.EditorContext, preset_mapping_rules: config_models.PresetMappingRules):
         def apply_fn():
-            status = preset_rules_status.PresetRulesStatus('Applying')
+            status = preset_rules_status.PresetRulesStatus('Applying', self.anki_utils)
             for absolute_index, subset_index, rule in preset_mapping_rules.iterate_applicable_rules(deck_note_type, False):
                 with status.get_rule_action_context(rule) as rule_action_context:
                     logger.debug(f'previewing audio for rule {rule}')
                     preset = self.load_preset(rule.preset_id)
                     rule_action_context.set_preset(preset)
-                    # self.anki_utils.tooltip_message(f'Previewing audio for rule {preset.name}')
-                    self.anki_utils.run_on_main(lambda: self.anki_utils.tooltip_message(f'Generating audio for {preset.name}'))
                     self.editor_note_add_audio(preset, editor_context)
         return apply_fn
 

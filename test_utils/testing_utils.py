@@ -135,6 +135,7 @@ class MockAnkiUtils():
         self.hide_loading_indicator_called = None
         self.tooltip_messages = []
         self.mock_collection = MockCollection()
+        self.preset_rules_status = None
 
         # sounds
         self.all_played_sounds = []
@@ -285,6 +286,9 @@ class MockAnkiUtils():
 
     def tooltip_message(self, message):
         self.tooltip_messages.append(message)
+
+    def display_preset_rules_status(self, status):
+        self.preset_rules_status = status
 
     def play_sound(self, filename):
         logger.info('play_sound')

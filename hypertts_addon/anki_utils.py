@@ -214,6 +214,11 @@ class AnkiUtils():
         message = self.restrict_message_length(message)
         aqt.utils.tooltip(message)
 
+    def display_preset_rules_status(self, status):
+        message = str(status)
+        self.run_on_main(lambda: aqt.utils.closeTooltip())
+        self.run_on_main(lambda: aqt.utils.tooltip(message, period=5000))
+
     def ask_user(self, message, parent):
         result = aqt.utils.askUser(message, parent=parent, title=constants.ADDON_NAME)
         return result
