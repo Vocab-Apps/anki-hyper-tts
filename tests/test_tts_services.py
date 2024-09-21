@@ -9,6 +9,7 @@ import platform
 import magic
 import azure.cognitiveservices.speech
 import azure.cognitiveservices.speech.audio
+import requests
 import openai
 import pytest
 import uuid
@@ -186,9 +187,14 @@ class TTSTests(unittest.TestCase):
                 if attempt < max_retries - 1:
                     time.sleep(retry_delay)
                 else:
-                    if voice['service'] == 'Google' and 'Journey' in voice['name']:
+                    if voice.service == 'Google' and 'Journey' in voice.name:
                         raise unittest.SkipTest(f'skipping voice {voice} which is unsupported for now')
                     raise Exception(f"Failed to get audio data for {voice} and {source_text} after {max_retries} tries: {request_error}")
+            except requests.exceptions.ReadTimeout:
+                if attempt < max_retries - 1:
+                    time.sleep(retry_delay)
+                else:
+                    raise Exception(f"Failed to get audio data for {voice} and {source_text} after {max_retries} tries: timeout")
 
         audio_format = options.AudioFormat.mp3
         if options.AUDIO_FORMAT_PARAMETER in voice_options:
