@@ -96,7 +96,6 @@ class ElevenLabsCustom(service.ServiceBase):
 
     @cachetools.cached(cache=cachetools.TTLCache(maxsize=1, ttl=600))
     def voice_list_cached(self):
-
         # get the list of models
         url = "https://api.elevenlabs.io/v1/models"
         response = requests.get(url, headers=self.get_headers(), timeout=constants.RequestTimeout)
@@ -107,9 +106,8 @@ class ElevenLabsCustom(service.ServiceBase):
         model_data = [model for model in model_data if model['can_do_text_to_speech']]
 
         url = "https://api.elevenlabs.io/v1/voices"
-
         response = requests.get(url, headers=self.get_headers(), timeout=constants.RequestTimeout)
-        response.raise_for_status
+        response.raise_for_status()
         voice_data = response.json()['voices']
         
         result = []
@@ -125,26 +123,30 @@ class ElevenLabsCustom(service.ServiceBase):
                     'voice_id': voice_id,
                     'model_id': model_id
                 }
+                audio_languages = []
                 for language_record in model['languages']:
                     try:
                         logger.debug(f'processing voice: name: {voice_name} id: {voice_id} description: {voice_description} model_id: {model_id} language_record: {language_record}')
                         language_id = language_record['language_id']
                         audio_language_enum = self.get_audio_language(language_id)
-                        # sometimes gender is not present, default to male
-                        gender_str = voice_entry['labels'].get('gender', 'male')
-                        gender = GENDER_MAP[gender_str]
-                        name = f'{voice_name} ({model_short_name})'
-                        result.append(voice.TtsVoice_v3(
-                            name=name,
-                            gender=gender,
-                            audio_languages=[audio_language_enum],
-                            service=self.name,
-                            voice_key=voice_key,
-                            options=VOICE_OPTIONS,
-                            service_fee=self.service_fee
-                        ))
+                        audio_languages.append(audio_language_enum)
                     except Exception as e:
                         logger.error(e, exc_info=True)
+                
+                if audio_languages:
+                    # sometimes gender is not present, default to male
+                    gender_str = voice_entry['labels'].get('gender', 'male')
+                    gender = GENDER_MAP[gender_str]
+                    name = f'{voice_name} ({model_short_name})'
+                    result.append(voice.TtsVoice_v3(
+                        name=name,
+                        gender=gender,
+                        audio_languages=audio_languages,
+                        service=self.name,
+                        voice_key=voice_key,
+                        options=VOICE_OPTIONS,
+                        service_fee=self.service_fee
+                    ))
 
         # logger.debug(pprint.pformat(result))
         return result
