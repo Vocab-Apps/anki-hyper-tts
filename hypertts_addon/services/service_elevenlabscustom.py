@@ -35,6 +35,7 @@ VOICE_OPTIONS = {
 GENDER_MAP = {
     'male': constants.Gender.Male,
     'female': constants.Gender.Female,
+    'non-binary': constants.Gender.Any
 }
 
 """For custom voices user customer's own API keys"""
@@ -116,24 +117,21 @@ class ElevenLabsCustom(service.ServiceBase):
             model_name = model['name']
             model_short_name = model_name.replace('Eleven ', '').strip()
             for voice_entry in voice_data:
-                voice_name = voice_entry['name']
-                voice_id = voice_entry['voice_id']
-                voice_description = voice_entry.get('description', '')
-                voice_key = {
-                    'voice_id': voice_id,
-                    'model_id': model_id
-                }
-                audio_languages = []
-                for language_record in model['languages']:
-                    try:
+                try:
+                    voice_name = voice_entry['name']
+                    voice_id = voice_entry['voice_id']
+                    voice_description = voice_entry.get('description', '')
+                    voice_key = {
+                        'voice_id': voice_id,
+                        'model_id': model_id
+                    }
+                    audio_languages = []
+                    for language_record in model['languages']:
                         logger.debug(f'processing voice: name: {voice_name} id: {voice_id} description: {voice_description} model_id: {model_id} language_record: {language_record}')
                         language_id = language_record['language_id']
                         audio_language_enum = self.get_audio_language(language_id)
                         audio_languages.append(audio_language_enum)
-                    except Exception as e:
-                        logger.error(e, exc_info=True)
-                
-                if audio_languages:
+                    
                     # sometimes gender is not present, default to male
                     gender_str = voice_entry['labels'].get('gender', 'male')
                     gender = GENDER_MAP[gender_str]
@@ -147,6 +145,8 @@ class ElevenLabsCustom(service.ServiceBase):
                         options=VOICE_OPTIONS,
                         service_fee=self.service_fee
                     ))
+                except Exception as e:
+                    logger.error(f'ElevenLabsCustom: error when processing voice {voice_entry}: {e}', exc_info=True)
 
         # logger.debug(pprint.pformat(result))
         return result
