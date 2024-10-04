@@ -450,7 +450,8 @@ class MacOS(service.ServiceBase):
             result = self.parse_voices(voice_list_from_say)
             logger.debug(f'MacOS voice list = {result}')
         except subprocess.CalledProcessError as cpe:
-            logger.error(f'could not get macos voicelist: {cpe}', exc_info=True)
+            logger.error(f'could not get macos voicelist: {cpe}')
+            logger.error(cpe, exc_info=True)
             result = []
 
         return result
