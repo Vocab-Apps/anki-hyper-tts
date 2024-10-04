@@ -146,7 +146,8 @@ class ElevenLabsCustom(service.ServiceBase):
                         service_fee=self.service_fee
                     ))
                 except Exception as e:
-                    logger.error(f'ElevenLabsCustom: error when processing voice {voice_entry}: {e}', exc_info=True)
+                    logger.error(f'ElevenLabsCustom: error when processing voice {voice_entry}: {e}')
+                    logger.error(e, exc_info=True)
 
         # logger.debug(pprint.pformat(result))
         return result
