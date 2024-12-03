@@ -310,6 +310,9 @@ def test_batch_dialog_editor_advanced_template_rename(qtbot):
     # now, open the dialog, with the existing preset
 
     def batch_dialog_input_sequence_load(dialog):
+        # make sure advanced template text is corect
+        assert dialog.batch_component.source.advanced_template_input.toPlainText() == advanced_template_text
+
         # now rename again
         preset_name_2 = 'adv template preset 2'
         hypertts_instance.anki_utils.ask_user_get_text_response = preset_name_2
