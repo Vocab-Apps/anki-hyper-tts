@@ -1,5 +1,6 @@
 import os
 import aqt.qt
+import pprint
 
 from test_utils import testing_utils
 from test_utils import gui_testing_utils
@@ -269,3 +270,54 @@ def test_editor_get_new_preset_id_1(qtbot):
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
     preset_id = component_batch.create_dialog_editor_new_preset(hypertts_instance, editor_context)
     assert preset_id == None
+
+def test_batch_dialog_editor_advanced_template_rename(qtbot):
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+
+    advanced_template_text = """
+    field_1 = 'yoyo'
+    result = field_1"""
+    preset_uuid = 'uuid_1'
+
+    # step one, create advanced template
+    # ==================================
+
+    def batch_dialog_input_sequence_create(dialog):
+        # select template mode and enter incorrect advanced template
+        dialog.batch_component.source.batch_mode_combobox.setCurrentText('advanced_template')
+        # enter template format
+        # qtbot.keyClicks(batch.source.advanced_template_input, """field_1 = 'yoyo'""")
+        dialog.batch_component.source.advanced_template_input.setPlainText(advanced_template_text)
+
+        # set preset name and save
+        # set profile name
+        preset_name_1 = 'adv template preset 1'
+        hypertts_instance.anki_utils.ask_user_get_text_response = preset_name_1
+        qtbot.mouseClick(dialog.batch_component.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # click save button
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+        # now rename again
+        preset_name_2 = 'adv template preset 2'
+        hypertts_instance.anki_utils.ask_user_get_text_response = preset_name_2
+        qtbot.mouseClick(dialog.batch_component.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # click save button
+        qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+        # make sure the preset was saved
+        assert preset_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
+
+        logger.debug(pprint.pformat(hypertts_instance.anki_utils.written_config))
+        assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][preset_uuid]['source']['source_template'] == advanced_template_text
+
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = batch_dialog_input_sequence_create
+    component_batch.create_dialog_editor_new_preset(hypertts_instance, editor_context)
+    
+    # now, open the dialog, with the existing preset
+
+    # def batch_dialog_input_sequence_load(dialog):
+    #     pass
+
+    # hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = batch_dialog_input_sequence_load
+    # component_batch.create_dialog_editor_existing_preset(hypertts_instance, editor_context, preset_uuid)
