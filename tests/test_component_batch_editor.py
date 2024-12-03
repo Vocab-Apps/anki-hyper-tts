@@ -297,6 +297,19 @@ def test_batch_dialog_editor_advanced_template_rename(qtbot):
         # click save button
         qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
 
+        # make sure the preset was saved
+        assert preset_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
+
+        # logger.debug(pprint.pformat(hypertts_instance.anki_utils.written_config))
+        assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][preset_uuid]['source']['source_template'] == advanced_template_text
+
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = batch_dialog_input_sequence_create
+    component_batch.create_dialog_editor_new_preset(hypertts_instance, editor_context)
+    
+    # now, open the dialog, with the existing preset
+
+    def batch_dialog_input_sequence_load(dialog):
         # now rename again
         preset_name_2 = 'adv template preset 2'
         hypertts_instance.anki_utils.ask_user_get_text_response = preset_name_2
@@ -308,16 +321,7 @@ def test_batch_dialog_editor_advanced_template_rename(qtbot):
         assert preset_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
         logger.debug(pprint.pformat(hypertts_instance.anki_utils.written_config))
-        assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][preset_uuid]['source']['source_template'] == advanced_template_text
+        assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][preset_uuid]['source']['source_template'] == advanced_template_text        
 
-
-    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = batch_dialog_input_sequence_create
-    component_batch.create_dialog_editor_new_preset(hypertts_instance, editor_context)
-    
-    # now, open the dialog, with the existing preset
-
-    # def batch_dialog_input_sequence_load(dialog):
-    #     pass
-
-    # hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = batch_dialog_input_sequence_load
-    # component_batch.create_dialog_editor_existing_preset(hypertts_instance, editor_context, preset_uuid)
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = batch_dialog_input_sequence_load
+    component_batch.create_dialog_editor_existing_preset(hypertts_instance, editor_context, preset_uuid)
