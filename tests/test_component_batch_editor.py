@@ -324,7 +324,7 @@ def test_batch_dialog_editor_advanced_template_rename(qtbot):
         assert preset_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
 
         logger.debug(pprint.pformat(hypertts_instance.anki_utils.written_config))
-        assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][preset_uuid]['source']['source_template'] == advanced_template_text        
+        assert hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS][preset_uuid]['source']['source_template'] == advanced_template_text
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = batch_dialog_input_sequence_load
     component_batch.create_dialog_editor_existing_preset(hypertts_instance, editor_context, preset_uuid)
