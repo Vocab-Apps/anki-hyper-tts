@@ -1,5 +1,6 @@
 import sys
 import aqt.qt
+import pprint
 
 from typing import List, Optional
 
@@ -121,6 +122,8 @@ class ComponentBatch(component_common.ConfigComponentBase):
 
         self.model_changed = False
         self.update_save_profile_button_state()
+
+        logger.debug('load_model')
 
     def get_model(self):
         return self.batch_model
