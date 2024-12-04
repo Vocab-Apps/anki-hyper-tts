@@ -316,9 +316,14 @@ def test_batch_dialog_editor_advanced_template_rename(qtbot):
         # now rename again
         preset_name_2 = 'adv template preset 2'
         hypertts_instance.anki_utils.ask_user_get_text_response = preset_name_2
+        logger.info('clicking rename button')
         qtbot.mouseClick(dialog.batch_component.profile_rename_button, aqt.qt.Qt.MouseButton.LeftButton)
+        assert dialog.batch_component.source.advanced_template_input.toPlainText() == advanced_template_text
+
         # click save button
+        logger.info('clicking save button')
         qtbot.mouseClick(dialog.batch_component.profile_save_button, aqt.qt.Qt.MouseButton.LeftButton)
+        assert dialog.batch_component.source.advanced_template_input.toPlainText() == advanced_template_text
 
         # make sure the preset was saved
         assert preset_uuid in hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS]
