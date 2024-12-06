@@ -81,12 +81,15 @@ class BatchSource(component_common.ConfigComponentBase):
         self.advanced_template_typing_timer.enabled = True
 
     def wire_events(self):
+        logger.debug('wire_events')
         self.events_enabled = True
-        self.disable_typing_timers()
+        self.enable_typing_timers()
+
 
     def disconnect_events(self):
+        logger.debug('disconnect_events')
         self.events_enabled = False
-        self.enable_typing_timers()
+        self.disable_typing_timers()
 
     def draw_source_mode(self, overall_layout):
         # batch mode
@@ -159,8 +162,6 @@ class BatchSource(component_common.ConfigComponentBase):
         overall_layout.addWidget(groupbox)
 
     def batch_mode_change(self, current_index):
-        if not self.events_enabled:
-            return
         selected_batch_mode = constants.BatchMode[self.batch_mode_combobox.currentText()]
 
         if selected_batch_mode == constants.BatchMode.simple:
@@ -174,8 +175,6 @@ class BatchSource(component_common.ConfigComponentBase):
             self.advanced_template_change()
 
     def source_field_change(self, current_index):
-        if not self.events_enabled:
-            return
         current_index = self.source_field_combobox.currentIndex()
         if current_index == -1 or current_index >= len(self.field_list) or len(self.field_list) == 0:
             error_message = f'current_index for source_field_combobox is {current_index}, field_list: {self.field_list}'
@@ -185,8 +184,6 @@ class BatchSource(component_common.ConfigComponentBase):
         self.notify_model_update()
 
     def use_selection_checkbox_change(self):
-        if not self.events_enabled:
-            return
         use_selection = self.use_selection_checkbox.isChecked()
         self.batch_source_model.use_selection = use_selection
         self.notify_model_update()
