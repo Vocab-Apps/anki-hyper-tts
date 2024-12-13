@@ -46,6 +46,8 @@ class TTSTests(unittest.TestCase):
     
     @classmethod
     def setUpClass(cls):
+        if not os.path.exists(cls.GENERATED_FILES_DIRECTORY):
+            os.makedirs(cls.GENERATED_FILES_DIRECTORY)
         cls.configure_service_manager(cls)
 
     @classmethod
