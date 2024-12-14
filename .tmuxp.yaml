@@ -1,9 +1,9 @@
 session_name: hypertts
 start_directory: ./ # load session relative to config location (project root).
 shell_command_before:
-  - source ${HOME}/python-env/anki-hyper-tts/bin/activate
+  - source ${PYTHON_ENV_DIR}/anki-hyper-tts/bin/activate
   - source .bash_aliases
-  - source ${HOME}/secrets/hypertts/hypertts_tests.sh
+  - source ${SECRETS_DIR}/hypertts/hypertts_tests.sh
   - clear
 windows:
 - window_name: hypertts
@@ -12,14 +12,14 @@ windows:
 - window_name: aider
 - window_name: log
   panes:
-    - shell_command: tail -f ${HOME}/logs/hypertts.log
+    - shell_command: tail -f ${LOGS_DIR}/hypertts.log
 - window_name: secrets
   panes:
     - shell_command: 
-      - cd ${HOME}/secrets/hypertts
+      - cd ${SECRETS_DIR}/hypertts
       - clear
 - window_name: python-3.12
   panes:
     - shell_command: 
-      - source ${HOME}/python-env/anki-hyper-tts-3.12/bin/activate
+      - source ${PYTHON_ENV_DIR}/anki-hyper-tts-3.12/bin/activate
       - clear
