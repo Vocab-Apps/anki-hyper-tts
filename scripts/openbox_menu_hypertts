@@ -2,6 +2,10 @@
 
 items = [
     {
+        'name': 'test voice selection manual',
+        'command': 'HYPERTTS_VOICE_SELECTION_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_voice_selection_manual'
+    },
+    {
         'name': 'test preferences manual',
         'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual'
     }
