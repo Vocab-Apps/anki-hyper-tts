@@ -18,8 +18,8 @@ windows:
     - shell_command: 
       - cd ${SECRETS_DIR}/hypertts
       - clear
-- window_name: python-3.12
-  panes:
-    - shell_command: 
-      - source ${PYTHON_ENV_DIR}/anki-hyper-tts-3.12/bin/activate
-      - clear
+#- window_name: python-3.12
+#  panes:
+#    - shell_command: 
+#      - source ${PYTHON_ENV_DIR}/anki-hyper-tts-3.12/bin/activate
+#      - clear
