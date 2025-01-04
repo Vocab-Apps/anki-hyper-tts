@@ -587,6 +587,7 @@ class TTSTests(unittest.TestCase):
         # no recordings from portugal
 
         # locate forvo portuguese-portugal voice
+        # --------------------------------------
         candidates = [voice for voice in voice_list 
                       if voice.service == service_name and 
                       AudioLanguage.pt_PT in voice.audio_languages and
@@ -594,14 +595,21 @@ class TTSTests(unittest.TestCase):
         assert len(candidates) == 1
         forvo_portuguese_portugal_voice = candidates[0]
 
-        self.assertRaises(errors.AudioNotFoundError, self.verify_audio_output, forvo_portuguese_portugal_voice, AudioLanguage.pt_PT, source_text)
-        return
+        # should return not found
+        self.assertRaises(errors.AudioNotFoundError, self.verify_audio_output, forvo_portuguese_portugal_voice, AudioLanguage.pt_BR, source_text)
 
-        # self.verify_audio_output(forvo_portuguese_voice, AudioLanguage.pt_PT, source_text)
 
-        self.assertRaises(errors.AudioNotFoundError, self.random_voice_test, service_name, AudioLanguage.pt_PT, 'pomos')
-        self.random_voice_test(service_name, AudioLanguage.pt_BR, 'pomos')
-        # self.random_voice_test(service_name, AudioLanguage.fr_FR, 'ordinateur')
+        # locate forvo portuguese-brazil voice
+        # --------------------------------------
+        candidates = [voice for voice in voice_list 
+                      if voice.service == service_name and 
+                      AudioLanguage.pt_BR in voice.audio_languages and
+                      voice.gender == constants.Gender.Any]
+        assert len(candidates) == 1
+        forvo_portuguese_brazil_voice = candidates[0]
+
+        # should return audio as we have recordings from brazil
+        self.verify_audio_output(forvo_portuguese_brazil_voice, AudioLanguage.pt_PT, source_text)
 
 
     def test_googletranslate(self):
