@@ -43,7 +43,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.source_text_edit.setReadOnly(False)
         self.source_text_edit.setMinimumHeight(100)
         self.source_text_edit.setPlainText(self.source_text)
-        vlayout.addWidget(self.source_text)
+        vlayout.addWidget(self.source_text_edit)
 
         # Target group
         target_group = aqt.qt.QGroupBox('Target Field')

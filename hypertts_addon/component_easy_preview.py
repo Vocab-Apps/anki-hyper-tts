@@ -25,23 +25,8 @@ class EasyPreview(component_common.ComponentBase):
             note = self.hypertts.anki_utils.get_note_by_id(note_id)
             self.note_selector.addItem(f'Note {note_id}', note_id)
 
-    def note_selected(self, index):
-        if index >= 0:
-            note_id = self.note_id_list[index]
-            note = self.hypertts.anki_utils.get_note_by_id(note_id)
-            self.current_note = note
-            
-            if self.batch_model and self.batch_model.source:
-                try:
-                    source_text = self.hypertts.get_source_text(note, self.batch_model.source)
-                    self.sample_callback(note_id, source_text)
-                except Exception as e:
-                    logger.warning(f'Could not get source text: {e}')
-
     def load_model(self, model):
         self.batch_model = model
-        if self.current_note:
-            self.note_selected(self.note_selector.currentIndex())
 
     def apply_audio_to_notes(self):
         self.batch_start_callback()
