@@ -73,7 +73,7 @@ class ComponentEasy(component_common.ComponentBase):
 
         # Add buttons
         button_layout = aqt.qt.QHBoxLayout()
-        self.preview_button = aqt.qt.QPushButton('Preview')
+        self.preview_button = aqt.qt.QPushButton('Preview Audio')
         self.add_audio_button = aqt.qt.QPushButton('Add Audio')
         self.cancel_button = aqt.qt.QPushButton('Cancel')
         button_layout.addWidget(self.preview_button)
