@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 
 items = [
+    #HYPERTTS_EASY_DIALOG_DEBUG=yes pytest test_components.py -k test_easy_dialog_manual -s -rPP
+    {
+        'name': 'test easy mode manual',
+        'command': 'HYPERTTS_EASY_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_easy_dialog_manual'
+    },    
     {
         'name': 'test voice selection manual',
         'command': 'HYPERTTS_VOICE_SELECTION_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_voice_selection_manual'
@@ -10,11 +15,7 @@ items = [
         'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual'
     },
 
-    #HYPERTTS_EASY_DIALOG_DEBUG=yes pytest test_components.py -k test_easy_dialog_manual -s -rPP
-    {
-        'name': 'test easy mode',
-        'command': 'HYPERTTS_EASY_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_easy_dialog_manual'
-    },    
+
 ]
 
 print(f"""<openbox_pipe_menu>""")

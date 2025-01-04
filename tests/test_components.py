@@ -1203,10 +1203,11 @@ def test_easy_dialog_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]    
+    source_text = 'this is the source text for TTS'
+    field_list = ['English', 'Chinese', 'Pinyin']
 
     from hypertts_addon import component_easy
-    dialog = component_easy.create_component_easy(hypertts_instance, note_id_list, 'my preset 1')
+    dialog = component_easy.create_component_easy(hypertts_instance, source_text, field_list)
 
     if os.environ.get('HYPERTTS_EASY_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec()

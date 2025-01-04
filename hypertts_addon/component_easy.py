@@ -18,16 +18,14 @@ logger = logging_utils.get_child_logger(__name__)
 # editor for a single note.
 
 class ComponentEasy(component_common.ComponentBase):
-    def __init__(self, hypertts, dialog, source_text, profile_name):
+    def __init__(self, hypertts, dialog, source_text, field_list):
         self.hypertts = hypertts
         self.dialog = dialog
         self.source_text = source_text
-        self.profile_name = profile_name
 
         self.batch_model = None
 
         # initialize sub-components
-        field_list = hypertts.get_all_fields()
         self.target = component_target.BatchTarget(hypertts, field_list, self.model_update_target)
         self.voice_selection = component_voiceselection.VoiceSelection(hypertts, dialog, self.model_update_voice_selection)
         self.text_processing = component_text_processing.TextProcessing(hypertts, self.model_update_text_processing)
@@ -35,7 +33,6 @@ class ComponentEasy(component_common.ComponentBase):
             self.voice_selection.sample_text_selected, self.batch_start, self.batch_end)
 
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
-        self.batch_model.name = profile_name
 
     def draw(self, layout):
         # Create main vertical layout
@@ -127,9 +124,9 @@ class ComponentEasy(component_common.ComponentBase):
         else:
             self.dialog.close()
 
-def create_component_easy(hypertts, source_text, profile_name):
+def create_component_easy(hypertts, source_text, field_list):
     dialog = aqt.qt.QDialog()
-    easy_component = ComponentEasy(hypertts, dialog, source_text, profile_name)
+    easy_component = ComponentEasy(hypertts, dialog, source_text, field_list)
     layout = aqt.qt.QVBoxLayout()
     easy_component.draw(layout)
     dialog.setLayout(layout)
