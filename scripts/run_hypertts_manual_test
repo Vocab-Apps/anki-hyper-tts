@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# echo all commands, add error reporting
+set -eoux pipefail
+
+cd /home/luc/code/python/anki-hyper-tts
+source ${PYTHON_ENV_DIR}/anki-hyper-tts/bin/activate
+
+# run with all arguments passed in
+exec script -q -c "$*" --flush --log-out /volatile_home/luc/logs/anki.log
