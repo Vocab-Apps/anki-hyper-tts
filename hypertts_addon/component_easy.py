@@ -46,7 +46,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.source_text_edit.setReadOnly(False)
         self.source_text_edit.setMinimumHeight(100)
         font = self.source_text_edit.font()
-        font.setPointSize(12)  # increase font size
+        font.setPointSize(20)  # increase font size
         self.source_text_edit.setFont(font)
         self.source_text_edit.setPlainText(self.source_text)
         vlayout.addWidget(self.source_text_edit)
