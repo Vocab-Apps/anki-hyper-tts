@@ -15,6 +15,9 @@ from . import logging_utils
 
 logger = logging_utils.get_child_logger(__name__)
 
+# The ComponentEasy component allows the user to generate audio for a single note. It's invoked from the Anki
+# editor for a single note.
+
 class ComponentEasy(component_common.ComponentBase):
     def __init__(self, hypertts, dialog, note_id_list, profile_name):
         self.hypertts = hypertts
