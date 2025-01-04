@@ -3,7 +3,7 @@
 items = [
     {
         'name': 'test preferences manual',
-        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual -s -rPP'
+        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual'
     }
 ]
 
@@ -12,7 +12,7 @@ for item in items:
     print(f"""
     <item label="{item['name']}">
         <action name="Execute">
-        <command>/home/luc/code/python/anki-hyper-tts/scripts/run_hypertts_manual_test {item['command']}</command>
+        <command>/home/luc/code/python/anki-hyper-tts/scripts/run_hypertts_manual_test {item['command']} -s -rPP</command>
         </action>
     </item>
     """)
