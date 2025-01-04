@@ -27,9 +27,6 @@ class ComponentEasy(component_common.ComponentBase):
         # initialize sub-components
         self.target = component_target.BatchTarget(hypertts, field_list, self.model_update_target)
         self.voice_selection = component_voiceselection.VoiceSelection(hypertts, dialog, self.model_update_voice_selection)
-        self.preview = component_easy_preview.EasyPreview(hypertts, dialog, source_text,
-            self.voice_selection.sample_text_selected, self.batch_start, self.batch_end)
-
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
 
     def draw(self, layout):
@@ -64,12 +61,6 @@ class ComponentEasy(component_common.ComponentBase):
         vlayout.addWidget(voice_group)
 
 
-        # Preview group
-        preview_group = aqt.qt.QGroupBox('Preview')
-        preview_layout = aqt.qt.QVBoxLayout()
-        preview_layout.addLayout(self.preview.draw())
-        preview_group.setLayout(preview_layout)
-        vlayout.addWidget(preview_group)
 
         # Add buttons
         button_layout = aqt.qt.QHBoxLayout()
@@ -93,11 +84,9 @@ class ComponentEasy(component_common.ComponentBase):
 
     def model_update_target(self, model):
         self.batch_model.target = model
-        self.preview.load_model(self.batch_model)
 
     def model_update_voice_selection(self, model):
         self.batch_model.voice_selection = model
-        self.preview.load_model(self.batch_model)
 
 
     def sample_selected(self, note_id, text):
