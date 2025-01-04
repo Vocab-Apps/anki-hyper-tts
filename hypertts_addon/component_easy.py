@@ -3,7 +3,6 @@ import aqt.qt
 import copy
 
 from . import component_common 
-from . import component_source
 from . import component_target
 from . import component_voiceselection
 from . import component_text_processing
@@ -29,7 +28,6 @@ class ComponentEasy(component_common.ComponentBase):
 
         # initialize sub-components
         field_list = hypertts.get_all_fields_from_notes(note_id_list)
-        self.source = component_source.BatchSource(hypertts, field_list, self.model_update_source)
         self.target = component_target.BatchTarget(hypertts, field_list, self.model_update_target)
         self.voice_selection = component_voiceselection.VoiceSelection(hypertts, dialog, self.model_update_voice_selection)
         self.text_processing = component_text_processing.TextProcessing(hypertts, self.model_update_text_processing)
@@ -49,13 +47,12 @@ class ComponentEasy(component_common.ComponentBase):
         self.source_text.setMinimumHeight(100)
         vlayout.addWidget(self.source_text)
 
-        # Source/Target group
-        source_target_group = aqt.qt.QGroupBox('Source and Target Fields')
-        source_target_layout = aqt.qt.QHBoxLayout()
-        source_target_layout.addWidget(self.source.draw())
-        source_target_layout.addWidget(self.target.draw())
-        source_target_group.setLayout(source_target_layout)
-        vlayout.addWidget(source_target_group)
+        # Target group
+        target_group = aqt.qt.QGroupBox('Target Field')
+        target_layout = aqt.qt.QHBoxLayout()
+        target_layout.addWidget(self.target.draw())
+        target_group.setLayout(target_layout)
+        vlayout.addWidget(target_group)
 
         # Voice Selection group
         voice_group = aqt.qt.QGroupBox('Voice Selection')
@@ -92,9 +89,6 @@ class ComponentEasy(component_common.ComponentBase):
 
         layout.addLayout(vlayout)
 
-    def model_update_source(self, model):
-        self.batch_model.source = model
-        self.preview.load_model(self.batch_model)
 
     def model_update_target(self, model):
         self.batch_model.target = model
