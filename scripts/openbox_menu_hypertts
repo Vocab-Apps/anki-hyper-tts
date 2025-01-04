@@ -1,19 +1,19 @@
-#!/bin/bash
-cat <<'EOF'
-<openbox_pipe_menu>
-  <item
-    label="manual test 1"
-  >
-    <action name="Execute">
-      <command>/home/luc/code/python/anki-hyper-tts/scripts/run_hypertts_manual_test HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual -s -rPP</command>
-    </action>
-  </item>
-  <item
-    label="manual test 2"
-  >
-    <action name="Execute">
-      <command>/home/luc/code/python/anki-hyper-tts/scripts/run_hypertts_manual_test xterm</command>
-    </action>
-  </item>  
-</openbox_pipe_menu>
-EOF
+#!/usr/bin/env python3
+
+items = [
+    {
+        'name': 'test preferences manual',
+        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual -s -rPP'
+    }
+]
+
+print(f"""<openbox_pipe_menu>""")
+for item in items:
+    print(f"""
+    <item label="{item['name']}">
+        <action name="Execute">
+        <command>/home/luc/code/python/anki-hyper-tts/scripts/run_hypertts_manual_test {item['command']}</command>
+        </action>
+    </item>
+    """)
+print(f"""</openbox_pipe_menu>""")
