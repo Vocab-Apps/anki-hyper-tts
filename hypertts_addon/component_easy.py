@@ -39,10 +39,10 @@ class ComponentEasy(component_common.ComponentBase):
         vlayout = aqt.qt.QVBoxLayout()
 
         # Source text preview
-        self.source_text = aqt.qt.QPlainTextEdit()
-        self.source_text.setReadOnly(False)
-        self.source_text.setMinimumHeight(100)
-        self.source_text.setPlainText(self.source_text)
+        self.source_text_edit = aqt.qt.QPlainTextEdit()
+        self.source_text_edit.setReadOnly(False)
+        self.source_text_edit.setMinimumHeight(100)
+        self.source_text_edit.setPlainText(self.source_text)
         vlayout.addWidget(self.source_text)
 
         # Target group
@@ -101,7 +101,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.preview.load_model(self.batch_model)
 
     def sample_selected(self, note_id, text):
-        self.source_text.setPlainText(text)
+        self.source_text_edit.setPlainText(text)
         self.voice_selection.sample_text_selected(text)
 
     def batch_start(self):
