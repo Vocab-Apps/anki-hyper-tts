@@ -8,7 +8,13 @@ items = [
     {
         'name': 'test preferences manual',
         'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual'
-    }
+    },
+
+    #HYPERTTS_EASY_DIALOG_DEBUG=yes pytest test_components.py -k test_easy_dialog_manual -s -rPP
+    {
+        'name': 'test easy mode',
+        'command': 'HYPERTTS_EASY_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_easy_dialog_manual'
+    },    
 ]
 
 print(f"""<openbox_pipe_menu>""")
