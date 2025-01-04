@@ -5,29 +5,18 @@ from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 class EasyPreview(component_common.ComponentBase):
-    def __init__(self, hypertts, dialog, note_id_list, sample_callback, batch_start_callback, batch_end_callback):
+    def __init__(self, hypertts, dialog, source_text, sample_callback, batch_start_callback, batch_end_callback):
         self.hypertts = hypertts
         self.dialog = dialog
-        self.note_id_list = note_id_list
+        self.source_text = source_text
         self.sample_callback = sample_callback
         self.batch_start_callback = batch_start_callback
         self.batch_end_callback = batch_end_callback
         self.batch_model = None
-        self.current_note = None
 
     def draw(self):
         layout = aqt.qt.QVBoxLayout()
-        
-        # Note selection
-        hlayout = aqt.qt.QHBoxLayout()
-        hlayout.addWidget(aqt.qt.QLabel('Preview Note:'))
-        self.note_selector = aqt.qt.QComboBox()
-        self.populate_note_selector()
-        self.note_selector.currentIndexChanged.connect(self.note_selected)
-        hlayout.addWidget(self.note_selector)
-        hlayout.addStretch()
-        layout.addLayout(hlayout)
-
+        self.sample_callback(self.source_text)
         return layout
 
     def populate_note_selector(self):
