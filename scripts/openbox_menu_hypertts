@@ -1,0 +1,26 @@
+#!/bin/bash
+cat <<'EOF'
+<openbox_pipe_menu>
+  <item
+    label="Anki 24.04.1"
+  >
+    <action name="Execute">
+      <command>/home/luc/scripts/run_anki_dev 24.04.1</command>
+    </action>
+  </item>
+  <item
+    label="Anki 24.06.3"
+  >
+    <action name="Execute">
+      <command>/home/luc/scripts/run_anki_dev 24.06.3</command>
+    </action>
+  </item>
+  <item
+    label="Anki 24.11"
+  >
+    <action name="Execute">
+      <command>/home/luc/scripts/run_anki_dev 24.11</command>
+    </action>
+  </item>
+</openbox_pipe_menu>
+EOF
