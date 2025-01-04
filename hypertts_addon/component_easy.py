@@ -73,14 +73,17 @@ class ComponentEasy(component_common.ComponentBase):
 
         # Add buttons
         button_layout = aqt.qt.QHBoxLayout()
-        self.apply_button = aqt.qt.QPushButton('Apply to Notes')
+        self.preview_button = aqt.qt.QPushButton('Preview')
+        self.add_audio_button = aqt.qt.QPushButton('Add Audio')
         self.cancel_button = aqt.qt.QPushButton('Cancel')
-        button_layout.addWidget(self.apply_button)
+        button_layout.addWidget(self.preview_button)
+        button_layout.addWidget(self.add_audio_button)
         button_layout.addWidget(self.cancel_button)
         vlayout.addLayout(button_layout)
 
         # Wire events
-        self.apply_button.pressed.connect(self.apply_button_pressed)
+        self.preview_button.pressed.connect(self.preview_button_pressed)
+        self.add_audio_button.pressed.connect(self.add_audio_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
         layout.addLayout(vlayout)
@@ -100,7 +103,8 @@ class ComponentEasy(component_common.ComponentBase):
         self.voice_selection.sample_text_selected(text)
 
     def batch_start(self):
-        self.apply_button.setEnabled(False)
+        self.preview_button.setEnabled(False)
+        self.add_audio_button.setEnabled(False)
         self.cancel_button.setText('Stop')
 
     def batch_end(self, completed):
@@ -108,9 +112,13 @@ class ComponentEasy(component_common.ComponentBase):
             self.cancel_button.setText('Close')
         else:
             self.cancel_button.setText('Cancel')
-            self.apply_button.setEnabled(True)
+            self.preview_button.setEnabled(True)
+            self.add_audio_button.setEnabled(True)
 
-    def apply_button_pressed(self):
+    def preview_button_pressed(self):
+        self.preview.preview_audio()
+
+    def add_audio_button_pressed(self):
         self.preview.apply_audio_to_notes()
 
     def cancel_button_pressed(self):
