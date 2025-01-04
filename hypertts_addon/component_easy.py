@@ -5,7 +5,6 @@ import copy
 from . import component_common 
 from . import component_target
 from . import component_voiceselection
-from . import component_text_processing
 from . import component_easy_preview
 from . import config_models
 from . import constants
@@ -28,7 +27,6 @@ class ComponentEasy(component_common.ComponentBase):
         # initialize sub-components
         self.target = component_target.BatchTarget(hypertts, field_list, self.model_update_target)
         self.voice_selection = component_voiceselection.VoiceSelection(hypertts, dialog, self.model_update_voice_selection)
-        self.text_processing = component_text_processing.TextProcessing(hypertts, self.model_update_text_processing)
         self.preview = component_easy_preview.EasyPreview(hypertts, dialog, source_text,
             self.voice_selection.sample_text_selected, self.batch_start, self.batch_end)
 
@@ -65,12 +63,6 @@ class ComponentEasy(component_common.ComponentBase):
         voice_group.setLayout(voice_layout)
         vlayout.addWidget(voice_group)
 
-        # Text Processing group
-        text_group = aqt.qt.QGroupBox('Text Processing')
-        text_layout = aqt.qt.QVBoxLayout()
-        text_layout.addWidget(self.text_processing.draw())
-        text_group.setLayout(text_layout)
-        vlayout.addWidget(text_group)
 
         # Preview group
         preview_group = aqt.qt.QGroupBox('Preview')
@@ -102,9 +94,6 @@ class ComponentEasy(component_common.ComponentBase):
         self.batch_model.voice_selection = model
         self.preview.load_model(self.batch_model)
 
-    def model_update_text_processing(self, model):
-        self.batch_model.text_processing = model
-        self.preview.load_model(self.batch_model)
 
     def sample_selected(self, note_id, text):
         self.source_text_edit.setPlainText(text)
