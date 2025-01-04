@@ -43,7 +43,7 @@ class ComponentEasy(component_common.ComponentBase):
 
         # Source text preview
         self.source_text = aqt.qt.QPlainTextEdit()
-        self.source_text.setReadOnly(True)
+        self.source_text.setReadOnly(False)
         self.source_text.setMinimumHeight(100)
         vlayout.addWidget(self.source_text)
 
