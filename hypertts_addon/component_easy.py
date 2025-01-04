@@ -7,7 +7,7 @@ from . import component_source
 from . import component_target
 from . import component_voiceselection
 from . import component_text_processing
-from . import component_batch_preview
+from . import component_easy_preview
 from . import config_models
 from . import constants
 from . import gui_utils
@@ -30,7 +30,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.target = component_target.BatchTarget(hypertts, field_list, self.model_update_target)
         self.voice_selection = component_voiceselection.VoiceSelection(hypertts, dialog, self.model_update_voice_selection)
         self.text_processing = component_text_processing.TextProcessing(hypertts, self.model_update_text_processing)
-        self.preview = component_batch_preview.BatchPreview(hypertts, dialog, note_id_list, 
+        self.preview = component_easy_preview.EasyPreview(hypertts, dialog, note_id_list,
             self.sample_selected, self.batch_start, self.batch_end)
 
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
