@@ -62,7 +62,7 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         self.filtered_voice_list = self.get_filtered_voice_list()
         voice_display_list = [f'{voice.name} ({voice.service.name})' for voice in self.filtered_voice_list]
         self.voice_combobox.clear()
-        self.populate_combobox(self.voice_combobox, self.filtered_voice_list)
+        self.voice_combobox.addItems(voice_display_list)
 
     def language_changed(self, index):
         if index >= 0 and self.enable_model_change_callback:
