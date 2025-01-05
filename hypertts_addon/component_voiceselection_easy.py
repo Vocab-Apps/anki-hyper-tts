@@ -56,10 +56,10 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
             self.notify_model_update()
 
     def update_voice_list(self):
-        self.voice_combobox.clear()
         self.filtered_voice_list = self.get_filtered_voice_list()
-        for voice in self.filtered_voice_list:
-            self.voice_combobox.addItem(f'{voice.name} ({voice.service.name})')
+        voice_display_list = [f'{voice.name} ({voice.service.name})' for voice in self.filtered_voice_list]
+        self.voice_combobox.clear()
+        self.populate_combobox(self.voice_combobox, voice_display_list)
 
     def language_changed(self, index):
         if index >= 0 and self.enable_model_change_callback:
