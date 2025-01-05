@@ -8,8 +8,7 @@ logger = logging_utils.get_child_logger(__name__)
 
 class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
     def __init__(self, hypertts, dialog, model_change_callback):
-        self.model = config_models.VoiceSelectionConfig()
-        self.model.voice_selection_mode = constants.VoiceSelectionMode.single
+        self.model = config_models.VoiceSelectionSingle()
         super().__init__(hypertts, dialog, model_change_callback)
         self.enable_model_change_callback = True
 
