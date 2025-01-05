@@ -28,7 +28,7 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         # Service filter
         hlayout = aqt.qt.QHBoxLayout()
         hlayout.addWidget(aqt.qt.QLabel('Service:'))
-        self.populate_combobox(self.services_combobox, [service.name for service in self.services])
+        self.populate_combobox(self.services_combobox, self.services)
         hlayout.addWidget(self.services_combobox)
         vlayout.addLayout(hlayout)
 
@@ -62,7 +62,7 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         self.filtered_voice_list = self.get_filtered_voice_list()
         voice_display_list = [f'{voice.name} ({voice.service.name})' for voice in self.filtered_voice_list]
         self.voice_combobox.clear()
-        self.populate_combobox(self.voice_combobox, voice_display_list)
+        self.populate_combobox(self.voice_combobox, self.filtered_voice_list)
 
     def language_changed(self, index):
         if index >= 0 and self.enable_model_change_callback:
