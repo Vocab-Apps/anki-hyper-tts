@@ -78,6 +78,21 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
                 self.model.voice_list = [self.filtered_voice_list[0]]
                 self.notify_model_update()
 
+    def get_filtered_voice_list(self):
+        voice_list = self.voice_list
+        
+        # Filter by language if selected
+        if self.languages_combobox.currentIndex() > 1:  # Skip "All" and separator
+            selected_language = self.languages[self.languages_combobox.currentIndex() - 2]
+            voice_list = [voice for voice in voice_list if selected_language in voice.languages]
+            
+        # Filter by service if selected
+        if self.services_combobox.currentIndex() > 1:  # Skip "All" and separator
+            selected_service = self.services[self.services_combobox.currentIndex() - 2]
+            voice_list = [voice for voice in voice_list if voice.service == selected_service]
+            
+        return voice_list
+
     def load_model(self, model):
         self.enable_model_change_callback = False
         super().load_model(model)
