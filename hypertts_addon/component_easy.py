@@ -123,11 +123,20 @@ class ComponentEasy(component_common.ComponentBase):
         else:
             self.dialog.close()
 
+class EasyDialog(aqt.qt.QDialog):
+    def __init__(self, hypertts):
+        super(aqt.qt.QDialog, self).__init__()
+        self.hypertts = hypertts
+        self.setWindowTitle(constants.GUI_EASY_DIALOG_TITLE)
+        self.main_layout = aqt.qt.QVBoxLayout(self)
+
+    def configure(self, source_text: str, field_list):
+        easy_component = ComponentEasy(self.hypertts, self, source_text, field_list)
+        layout = aqt.qt.QVBoxLayout()
+        easy_component.draw(self.main_layout)
+        self.easy_component = easy_component
+
 def create_component_easy(hypertts, source_text, field_list):
-    dialog = aqt.qt.QDialog()
-    easy_component = ComponentEasy(hypertts, dialog, source_text, field_list)
-    layout = aqt.qt.QVBoxLayout()
-    easy_component.draw(layout)
-    dialog.setLayout(layout)
-    dialog.show()
-    return dialog
+    dialog = EasyDialog(hypertts)
+    dialog.configure(source_text, field_list)
+    hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)

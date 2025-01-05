@@ -1,6 +1,7 @@
 import sys
 import os
 import pprint
+import pytest
 
 import aqt.qt
 
@@ -29,6 +30,7 @@ from hypertts_addon import component_errorhandling
 from hypertts_addon import component_preferences
 from hypertts_addon import component_presetmappingrules
 from hypertts_addon import component_mappingrule
+from hypertts_addon import component_easy
 
 logger = logging_utils.get_test_child_logger(__name__)
 
@@ -1206,13 +1208,12 @@ def test_easy_dialog_manual(qtbot):
     source_text = 'this is the source text for TTS'
     field_list = ['English', 'Chinese', 'Pinyin']
 
-    from hypertts_addon import component_easy
-    dialog = component_easy.create_component_easy(hypertts_instance, source_text, field_list)
+    def dialog_input_sequence(dialog):    
+        if os.environ.get('HYPERTTS_EASY_DIALOG_DEBUG', 'no') == 'yes':
+            dialog.exec()
 
-    if os.environ.get('HYPERTTS_EASY_DIALOG_DEBUG', 'no') == 'yes':
-        dialog.exec()
-
-
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = dialog_input_sequence
+    component_easy.create_component_easy(hypertts_instance, source_text, field_list)
 
 
 def test_text_processing(qtbot):
