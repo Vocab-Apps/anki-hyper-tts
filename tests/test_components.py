@@ -31,6 +31,7 @@ from hypertts_addon import component_preferences
 from hypertts_addon import component_presetmappingrules
 from hypertts_addon import component_mappingrule
 from hypertts_addon import component_easy
+from hypertts_addon import component_voiceselection_easy
 
 logger = logging_utils.get_test_child_logger(__name__)
 
@@ -61,7 +62,32 @@ def test_voice_selection_defaults_single(qtbot):
     assert voiceselection.serialize() == expected_output
 
     # dialog.exec()
-    
+
+def test_voice_selection_easy_defaults(qtbot):
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    voiceselection = component_voiceselection_easy.VoiceSelectionEasy(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+
+    testing_utils.voice_selection_voice_list_select('voice_a_1', 'ServiceA', voiceselection.voices_combobox)
+    expected_output = {
+        'voice_selection_mode': 'single',
+        'voice': {
+            'voice_id': {
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_1'}
+            },
+            'options': {
+            }
+        }        
+    }
+
+    assert voiceselection.serialize() == expected_output
+
 def test_voice_selection_manual(qtbot):
     # HYPERTTS_VOICE_SELECTION_DIALOG_DEBUG=yes pytest test_components.py -k test_voice_selection_manual -s -rPP
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
