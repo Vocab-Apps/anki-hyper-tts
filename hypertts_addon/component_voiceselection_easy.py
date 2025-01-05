@@ -28,7 +28,7 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         # Service filter
         hlayout = aqt.qt.QHBoxLayout()
         hlayout.addWidget(aqt.qt.QLabel('Service:'))
-        self.populate_combobox(self.services_combobox, self.services)
+        self.populate_combobox(self.services_combobox, [service.name for service in self.services])
         hlayout.addWidget(self.services_combobox)
         vlayout.addLayout(hlayout)
 
