@@ -440,6 +440,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
     def draw_all_voices(self, voice_list):
         self.voices_combobox.clear()
         self.voices_combobox.addItems([str(voice) for voice in voice_list])
+        logger.debug(f'voices_combobox has {self.voices_combobox.count()} items')
 
     def clear_voice_list_grid_layout(self):
         for i in reversed(range(self.voice_list_grid_layout.count())): 

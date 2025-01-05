@@ -33,9 +33,7 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         # Voice selection combo box
         hlayout = aqt.qt.QHBoxLayout()
         hlayout.addWidget(aqt.qt.QLabel('Voice:'))
-        self.voice_combobox = aqt.qt.QComboBox()
-        self.voice_combobox.currentIndexChanged.connect(self.voice_selected)
-        hlayout.addWidget(self.voice_combobox)
+        hlayout.addWidget(self.voices_combobox)
         vlayout.addLayout(hlayout)
 
         self.populate_combobox(self.audio_languages_combobox, [audio_lang.audio_lang_name for audio_lang in self.audio_languages])
@@ -64,10 +62,4 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
     def load_model(self, model):
         self.enable_model_change_callback = False
         super().load_model(model)
-        # Update voice combobox
-        self.update_voice_list()
-        if len(model.voice_list) > 0:
-            voice = model.voice_list[0]
-            index = self.filtered_voice_list.index(voice)
-            self.voice_combobox.setCurrentIndex(index)
-        self.enable_model_change_callback = True
+
