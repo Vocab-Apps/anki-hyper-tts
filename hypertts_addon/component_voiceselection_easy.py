@@ -15,6 +15,9 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
     def draw(self):
         vlayout = aqt.qt.QVBoxLayout()
         
+        # Get voice list and populate combo boxes
+        self.get_voices()
+        
         # Language filter
         hlayout = aqt.qt.QHBoxLayout()
         hlayout.addWidget(aqt.qt.QLabel('Language:'))
