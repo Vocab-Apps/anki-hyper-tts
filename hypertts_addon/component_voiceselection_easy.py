@@ -21,14 +21,12 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         # Language filter
         hlayout = aqt.qt.QHBoxLayout()
         hlayout.addWidget(aqt.qt.QLabel('Language:'))
-        self.populate_combobox(self.languages_combobox, [language.lang_name for language in self.languages])
         hlayout.addWidget(self.languages_combobox)
         vlayout.addLayout(hlayout)
 
         # Service filter
         hlayout = aqt.qt.QHBoxLayout()
         hlayout.addWidget(aqt.qt.QLabel('Service:'))
-        self.populate_combobox(self.services_combobox, self.services)
         hlayout.addWidget(self.services_combobox)
         vlayout.addLayout(hlayout)
 
@@ -40,15 +38,20 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         hlayout.addWidget(self.voice_combobox)
         vlayout.addLayout(hlayout)
 
+        self.populate_combobox(self.audio_languages_combobox, [audio_lang.audio_lang_name for audio_lang in self.audio_languages])
+        self.populate_combobox(self.languages_combobox, [language.lang_name for language in self.languages])
+        self.populate_combobox(self.services_combobox, self.services)
+        self.populate_combobox(self.genders_combobox, [gender.name for gender in self.genders])
+
         # Wire up events
-        self.languages_combobox.currentIndexChanged.connect(self.language_changed)
-        self.services_combobox.currentIndexChanged.connect(self.service_changed)
+        self.languages_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
+        self.services_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
 
         widget = aqt.qt.QWidget()
         widget.setLayout(vlayout)
         
         # Initialize voice list
-        self.update_voice_list()
+        self.filter_and_draw_voices(0)
         
         return widget
 
@@ -57,41 +60,6 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
             voice = self.filtered_voice_list[index]
             self.model.voice_list = [voice]
             self.notify_model_update()
-
-    def update_voice_list(self):
-        self.filtered_voice_list = self.get_filtered_voice_list()
-        voice_display_list = [f'{voice.name} ({voice.service.name})' for voice in self.filtered_voice_list]
-        self.voice_combobox.clear()
-        self.voice_combobox.addItems(voice_display_list)
-
-    def language_changed(self, index):
-        if index >= 0 and self.enable_model_change_callback:
-            self.update_voice_list()
-            if len(self.filtered_voice_list) > 0:
-                self.model.voice_list = [self.filtered_voice_list[0]]
-                self.notify_model_update()
-
-    def service_changed(self, index):
-        if index >= 0 and self.enable_model_change_callback:
-            self.update_voice_list()
-            if len(self.filtered_voice_list) > 0:
-                self.model.voice_list = [self.filtered_voice_list[0]]
-                self.notify_model_update()
-
-    def get_filtered_voice_list(self):
-        voice_list = self.voice_list
-        
-        # Filter by language if selected
-        if self.languages_combobox.currentIndex() > 1:  # Skip "All" and separator
-            selected_language = self.languages[self.languages_combobox.currentIndex() - 2]
-            voice_list = [voice for voice in voice_list if selected_language in voice.languages]
-            
-        # Filter by service if selected
-        if self.services_combobox.currentIndex() > 1:  # Skip "All" and separator
-            selected_service_name = self.services_combobox.currentText()
-            voice_list = [voice for voice in voice_list if voice.service.name == selected_service_name]
-            
-        return voice_list
 
     def load_model(self, model):
         self.enable_model_change_callback = False
