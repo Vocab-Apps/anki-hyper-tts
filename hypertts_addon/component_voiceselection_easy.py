@@ -47,6 +47,9 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         widget = aqt.qt.QWidget()
         widget.setLayout(vlayout)
         
+        # Initialize voice list
+        self.update_voice_list()
+        
         return widget
 
     def voice_selected(self, index):
