@@ -88,8 +88,8 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
             
         # Filter by service if selected
         if self.services_combobox.currentIndex() > 1:  # Skip "All" and separator
-            selected_service = self.services[self.services_combobox.currentIndex() - 2]
-            voice_list = [voice for voice in voice_list if voice.service == selected_service]
+            selected_service_name = self.services_combobox.currentText()
+            voice_list = [voice for voice in voice_list if voice.service.name == selected_service_name]
             
         return voice_list
 
