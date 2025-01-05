@@ -434,6 +434,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # sort
         voice_list.sort(key=voice_sort_key)
         self.filtered_voice_list = voice_list
+        logger.debug(f'filtered_voice_list: {self.filtered_voice_list}')
         self.draw_all_voices(self.filtered_voice_list)
 
     def draw_all_voices(self, voice_list):

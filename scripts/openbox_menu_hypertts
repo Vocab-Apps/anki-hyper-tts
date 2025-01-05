@@ -4,7 +4,7 @@ items = [
     #HYPERTTS_EASY_DIALOG_DEBUG=yes pytest test_components.py -k test_easy_dialog_manual -s -rPP
     {
         'name': 'test easy mode manual',
-        'command': 'HYPERTTS_EASY_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_easy_dialog_manual'
+        'command': 'HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_components.py -k test_easy_dialog_manual'
     },    
     {
         'name': 'test voice selection manual',
