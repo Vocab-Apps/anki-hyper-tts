@@ -1,11 +1,83 @@
+import aqt.qt
+from . import component_voiceselection
+from . import config_models
+from . import constants
+from . import logging_utils
 
+logger = logging_utils.get_child_logger(__name__)
 
-# VoiceSelectionEasy is going to be used with ComponentEasy to provide simplified access to the
-# voice list. It should inherit from VoiceSelection.
-# it should only show the following filter combo boxes:
-# - Language
-# - Service
-# it should also show the voice list in a combo box
-# since it only allows selecting one voice, the mode should always default to single voice.
-# no need to show the voice list (only required for random or priority modes)
-# the VoiceSelectionEasy component doesn't need a scroll area since it will be simpler and more compact.
+class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
+    def __init__(self, hypertts, dialog, model_change_callback):
+        super().__init__(hypertts, dialog, model_change_callback)
+        # Always use single voice mode
+        self.model.voice_selection_mode = constants.VoiceSelectionMode.single
+        self.enable_model_change_callback = True
+
+    def draw(self):
+        vlayout = aqt.qt.QVBoxLayout()
+        
+        # Language filter
+        hlayout = aqt.qt.QHBoxLayout()
+        hlayout.addWidget(aqt.qt.QLabel('Language:'))
+        hlayout.addWidget(self.languages_combobox)
+        vlayout.addLayout(hlayout)
+
+        # Service filter
+        hlayout = aqt.qt.QHBoxLayout()
+        hlayout.addWidget(aqt.qt.QLabel('Service:'))
+        hlayout.addWidget(self.services_combobox)
+        vlayout.addLayout(hlayout)
+
+        # Voice selection combo box
+        hlayout = aqt.qt.QHBoxLayout()
+        hlayout.addWidget(aqt.qt.QLabel('Voice:'))
+        self.voice_combobox = aqt.qt.QComboBox()
+        self.voice_combobox.currentIndexChanged.connect(self.voice_selected)
+        hlayout.addWidget(self.voice_combobox)
+        vlayout.addLayout(hlayout)
+
+        # Wire up events
+        self.languages_combobox.currentIndexChanged.connect(self.language_changed)
+        self.services_combobox.currentIndexChanged.connect(self.service_changed)
+
+        widget = aqt.qt.QWidget()
+        widget.setLayout(vlayout)
+        
+        return widget
+
+    def voice_selected(self, index):
+        if index >= 0 and self.enable_model_change_callback:
+            voice = self.filtered_voice_list[index]
+            self.model.voice_list = [voice]
+            self.notify_model_update()
+
+    def update_voice_list(self):
+        self.voice_combobox.clear()
+        self.filtered_voice_list = self.get_filtered_voice_list()
+        for voice in self.filtered_voice_list:
+            self.voice_combobox.addItem(f'{voice.name} ({voice.service.name})')
+
+    def language_changed(self, index):
+        if index >= 0 and self.enable_model_change_callback:
+            self.update_voice_list()
+            if len(self.filtered_voice_list) > 0:
+                self.model.voice_list = [self.filtered_voice_list[0]]
+                self.notify_model_update()
+
+    def service_changed(self, index):
+        if index >= 0 and self.enable_model_change_callback:
+            self.update_voice_list()
+            if len(self.filtered_voice_list) > 0:
+                self.model.voice_list = [self.filtered_voice_list[0]]
+                self.notify_model_update()
+
+    def load_model(self, model):
+        self.enable_model_change_callback = False
+        super().load_model(model)
+        # Update voice combobox
+        self.update_voice_list()
+        if len(model.voice_list) > 0:
+            voice = model.voice_list[0]
+            index = self.filtered_voice_list.index(voice)
+            self.voice_combobox.setCurrentIndex(index)
+        self.enable_model_change_callback = True
