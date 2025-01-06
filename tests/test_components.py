@@ -898,6 +898,18 @@ def test_target_easy_model_updates(qtbot):
     batch_target.radio_button_after.setChecked(True)
     assert model_change_callback.model.insert_location == config_models.InsertLocation.AFTER
 
+    # text and sound 
+    batch_target.radio_button_sound_only.setChecked(True)
+    assert model_change_callback.model.text_and_sound_tag == False
+    batch_target.radio_button_text_sound.setChecked(True)
+    assert model_change_callback.model.text_and_sound_tag == True
+
+    # remove sound tag
+    batch_target.radio_button_keep_sound.setChecked(True)
+    assert model_change_callback.model.remove_sound_tag == False
+    batch_target.radio_button_remove_sound.setChecked(True)
+    assert model_change_callback.model.remove_sound_tag == True
+
 
 
 
