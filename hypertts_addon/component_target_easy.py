@@ -98,6 +98,8 @@ class BatchTargetEasy(component_target.BatchTarget):
         # Initial update
         self.update_same_field()
         self.update_field()
+        self.update_text_sound()
+        self.update_remove_sound() 
 
         return self.layout_widget
 

@@ -867,6 +867,12 @@ def test_target_easy(qtbot):
     assert batch_target.radio_button_text_sound.isChecked() == True
     assert batch_target.radio_button_remove_sound.isChecked() == True
 
+    # check initial model update
+    assert model_change_callback.model.same_field == True
+    assert model_change_callback.model.insert_location == config_models.InsertLocation.AFTER
+    assert model_change_callback.model.text_and_sound_tag == True
+    assert model_change_callback.model.remove_sound_tag == True
+
 
 def test_batch_preview(qtbot):
 
