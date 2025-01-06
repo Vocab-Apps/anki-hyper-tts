@@ -12,6 +12,20 @@ class BatchTargetEasy(component_target.BatchTarget):
     def __init__(self, hypertts, field_list, model_change_callback):
         super().__init__(hypertts, field_list, model_change_callback)
 
+        # initialize widgets
+        # same field
+        self.same_field_group = aqt.qt.QButtonGroup()
+        self.radio_button_same_field = aqt.qt.QRadioButton('Use same field as source')
+        self.radio_button_different_field = aqt.qt.QRadioButton('Use different field')
+        self.same_field_group.addButton(self.radio_button_same_field)
+        self.same_field_group.addButton(self.radio_button_different_field)
+        # insert location
+        self.insert_location_group = aqt.qt.QButtonGroup()
+        self.radio_button_after = aqt.qt.QRadioButton('After existing content')
+        self.radio_button_cursor = aqt.qt.QRadioButton('At cursor location')
+        self.insert_location_group.addButton(self.radio_button_after)
+        self.insert_location_group.addButton(self.radio_button_cursor)        
+
     def draw(self):
         self.scroll_area = aqt.qt.QScrollArea()
         self.scroll_area.setWidgetResizable(True)
@@ -21,11 +35,6 @@ class BatchTargetEasy(component_target.BatchTarget):
         # Same field option
         groupbox = aqt.qt.QGroupBox('Target Field')
         vlayout = aqt.qt.QVBoxLayout()
-        self.same_field_group = aqt.qt.QButtonGroup()
-        self.radio_button_same_field = aqt.qt.QRadioButton('Use same field as source')
-        self.radio_button_different_field = aqt.qt.QRadioButton('Use different field')
-        self.same_field_group.addButton(self.radio_button_same_field)
-        self.same_field_group.addButton(self.radio_button_different_field)
         vlayout.addWidget(self.radio_button_same_field)
         vlayout.addWidget(self.radio_button_different_field)
 
@@ -33,7 +42,6 @@ class BatchTargetEasy(component_target.BatchTarget):
         self.target_field_widget = aqt.qt.QWidget()
         target_field_layout = aqt.qt.QVBoxLayout(self.target_field_widget)
         target_field_layout.addWidget(aqt.qt.QLabel(constants.GUI_TEXT_TARGET_FIELD))
-        self.target_field_combobox = aqt.qt.QComboBox()
         self.target_field_combobox.addItems(self.field_list)
         target_field_layout.addWidget(self.target_field_combobox)
         vlayout.addWidget(self.target_field_widget)
@@ -44,11 +52,6 @@ class BatchTargetEasy(component_target.BatchTarget):
         self.insert_location_widget = aqt.qt.QWidget()
         groupbox = aqt.qt.QGroupBox('Insert Location')
         vlayout = aqt.qt.QVBoxLayout()
-        self.insert_location_group = aqt.qt.QButtonGroup()
-        self.radio_button_after = aqt.qt.QRadioButton('After existing content')
-        self.radio_button_cursor = aqt.qt.QRadioButton('At cursor location')
-        self.insert_location_group.addButton(self.radio_button_after)
-        self.insert_location_group.addButton(self.radio_button_cursor)
         vlayout.addWidget(self.radio_button_after)
         vlayout.addWidget(self.radio_button_cursor)
         groupbox.setLayout(vlayout)
@@ -66,11 +69,6 @@ class BatchTargetEasy(component_target.BatchTarget):
         label = aqt.qt.QLabel(constants.GUI_TEXT_TARGET_TEXT_AND_SOUND)
         label.setWordWrap(True)
         vlayout.addWidget(label)
-        self.text_sound_group = aqt.qt.QButtonGroup()
-        self.radio_button_sound_only = aqt.qt.QRadioButton('Sound Tag only')
-        self.radio_button_text_sound = aqt.qt.QRadioButton('Text and Sound Tag')
-        self.text_sound_group.addButton(self.radio_button_sound_only)
-        self.text_sound_group.addButton(self.radio_button_text_sound)
         vlayout.addWidget(self.radio_button_sound_only)
         vlayout.addWidget(self.radio_button_text_sound)
         groupbox.setLayout(vlayout)
@@ -82,11 +80,6 @@ class BatchTargetEasy(component_target.BatchTarget):
         label = aqt.qt.QLabel(constants.GUI_TEXT_TARGET_REMOVE_SOUND_TAG)
         label.setWordWrap(True)
         vlayout.addWidget(label)
-        self.remove_sound_group = aqt.qt.QButtonGroup()
-        self.radio_button_remove_sound = aqt.qt.QRadioButton('Remove other sound tags')
-        self.radio_button_keep_sound = aqt.qt.QRadioButton('Keep other sound tags (append)')
-        self.remove_sound_group.addButton(self.radio_button_remove_sound)
-        self.remove_sound_group.addButton(self.radio_button_keep_sound)
         vlayout.addWidget(self.radio_button_remove_sound)
         vlayout.addWidget(self.radio_button_keep_sound)
         groupbox.setLayout(vlayout)
