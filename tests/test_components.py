@@ -177,6 +177,42 @@ def test_voice_selection_easy_single_1(qtbot):
     }
     assert voiceselection.serialize() == expected_output
 
+def test_voice_selection_easy_load_model(qtbot):
+    # Test loading a voice selection model
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    # Create a model with voice_a_1 selected
+    model = config_models.VoiceSelectionSingle()
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    model.set_voice(config_models.VoiceWithOptions(voice_a_1.voice_id, {}))
+
+    # Create voice selection component and load model
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    voiceselection = component_voiceselection_easy.VoiceSelectionEasy(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+    voiceselection.load_model(model)
+
+    # Verify the correct voice is selected
+    selected_voice_text = voiceselection.voices_combobox.currentText()
+    assert 'voice_a_1' in selected_voice_text
+    assert 'ServiceA' in selected_voice_text
+
+    # Verify model is correct
+    expected_output = {
+        'voice_selection_mode': 'single',
+        'voice': {
+            'voice_id': {
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_1'}
+            },
+            'options': {}
+        }
+    }
+    assert voiceselection.serialize() == expected_output
+
 def test_voice_selection_format_ogg(qtbot):
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
