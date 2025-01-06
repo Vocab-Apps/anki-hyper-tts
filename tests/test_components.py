@@ -19,6 +19,7 @@ from hypertts_addon import languages
 from hypertts_addon import component_voiceselection
 from hypertts_addon import component_source
 from hypertts_addon import component_target
+from hypertts_addon import component_target_easy
 from hypertts_addon import component_batch
 from hypertts_addon import component_text_processing
 from hypertts_addon import component_realtime_source
@@ -760,7 +761,7 @@ def test_batch_source_1(qtbot):
 
     # dialog.exec()
 
-def test_target(qtbot):
+def test_target_base(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
@@ -843,6 +844,26 @@ def test_target(qtbot):
 
     assert batch_target.radio_button_keep_sound.isChecked() == True
     assert batch_target.radio_button_remove_sound.isChecked() == False
+
+def test_target_easy(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    note_id_list = [config_gen.note_id_1, config_gen.note_id_2]
+
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
+    batch_target = component_target_easy.BatchTargetEasy(hypertts_instance, field_list, model_change_callback.model_updated)
+    dialog.addChildWidget(batch_target.draw())
+
+    # check defaults
+    # ==============
+
+    assert batch_target.radio_button_same_field.isChecked() == True
+
 
 def test_batch_preview(qtbot):
 
