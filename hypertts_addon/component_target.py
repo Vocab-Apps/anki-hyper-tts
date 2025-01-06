@@ -17,6 +17,22 @@ class BatchTarget(component_common.ConfigComponentBase):
 
         self.batch_target_model = config_models.BatchTarget(None, False, True)
 
+        # initialize widgets
+        self.target_field_combobox = aqt.qt.QComboBox()
+        # text and sound
+        self.text_sound_group = aqt.qt.QButtonGroup()
+        self.radio_button_sound_only = aqt.qt.QRadioButton('Sound Tag only')
+        self.radio_button_text_sound = aqt.qt.QRadioButton('Text and Sound Tag')
+        self.text_sound_group.addButton(self.radio_button_sound_only)
+        self.text_sound_group.addButton(self.radio_button_text_sound)
+        # remove sound
+        self.remove_sound_group = aqt.qt.QButtonGroup()
+        self.radio_button_remove_sound = aqt.qt.QRadioButton('Remove other sound tags')
+        self.radio_button_keep_sound = aqt.qt.QRadioButton('Keep other sound tags (append)')
+        self.remove_sound_group.addButton(self.radio_button_remove_sound)
+        self.remove_sound_group.addButton(self.radio_button_keep_sound)
+
+
     def get_model(self):
         return self.batch_target_model
 
@@ -49,7 +65,6 @@ class BatchTarget(component_common.ConfigComponentBase):
         groupbox = aqt.qt.QGroupBox('Target Field')
         vlayout = aqt.qt.QVBoxLayout()
         vlayout.addWidget(aqt.qt.QLabel(constants.GUI_TEXT_TARGET_FIELD))
-        self.target_field_combobox = aqt.qt.QComboBox()
         self.target_field_combobox.addItems(self.field_list)
         vlayout.addWidget(self.target_field_combobox)
         groupbox.setLayout(vlayout)
@@ -63,11 +78,6 @@ class BatchTarget(component_common.ConfigComponentBase):
         label = aqt.qt.QLabel(constants.GUI_TEXT_TARGET_TEXT_AND_SOUND)
         label.setWordWrap(True)
         vlayout.addWidget(label)
-        self.text_sound_group = aqt.qt.QButtonGroup()
-        self.radio_button_sound_only = aqt.qt.QRadioButton('Sound Tag only')
-        self.radio_button_text_sound = aqt.qt.QRadioButton('Text and Sound Tag')
-        self.text_sound_group.addButton(self.radio_button_sound_only)
-        self.text_sound_group.addButton(self.radio_button_text_sound)
         self.radio_button_sound_only.setChecked(True)
         vlayout.addWidget(self.radio_button_sound_only)
         vlayout.addWidget(self.radio_button_text_sound)
@@ -81,11 +91,6 @@ class BatchTarget(component_common.ConfigComponentBase):
         label = aqt.qt.QLabel(constants.GUI_TEXT_TARGET_REMOVE_SOUND_TAG)
         label.setWordWrap(True)
         vlayout.addWidget(label)        
-        self.remove_sound_group = aqt.qt.QButtonGroup()
-        self.radio_button_remove_sound = aqt.qt.QRadioButton('Remove other sound tags')
-        self.radio_button_keep_sound = aqt.qt.QRadioButton('Keep other sound tags (append)')
-        self.remove_sound_group.addButton(self.radio_button_remove_sound)
-        self.remove_sound_group.addButton(self.radio_button_keep_sound)
         self.radio_button_remove_sound.setChecked(True)
         vlayout.addWidget(self.radio_button_remove_sound)
         vlayout.addWidget(self.radio_button_keep_sound)
@@ -95,18 +100,21 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.batch_target_layout.addStretch()
 
         # connect events
-        logger.info('wire events')
-        self.target_field_combobox.currentIndexChanged.connect(lambda x: self.update_field())
-        self.radio_button_sound_only.toggled.connect(self.update_text_sound)
-        self.radio_button_text_sound.toggled.connect(self.update_text_sound)
-        self.radio_button_remove_sound.toggled.connect(self.update_remove_sound)
-        self.radio_button_keep_sound.toggled.connect(self.update_remove_sound)
+        self.wire_events()
 
         # select default to trigger model update
         self.update_field()
 
         self.scroll_area.setWidget(self.layout_widget)
         return self.scroll_area
+
+    def wire_events(self):
+        logger.info('wire events')
+        self.target_field_combobox.currentIndexChanged.connect(lambda x: self.update_field())
+        self.radio_button_sound_only.toggled.connect(self.update_text_sound)
+        self.radio_button_text_sound.toggled.connect(self.update_text_sound)
+        self.radio_button_remove_sound.toggled.connect(self.update_remove_sound)
+        self.radio_button_keep_sound.toggled.connect(self.update_remove_sound)
 
     def update_text_sound(self):
         self.batch_target_model.text_and_sound_tag = self.radio_button_text_sound.isChecked()
