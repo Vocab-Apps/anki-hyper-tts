@@ -3,6 +3,7 @@ import abc
 import copy
 from dataclasses import dataclass, field
 import databind.json
+import enum
 from typing import List, Optional, Mapping, Any
 
 from . import constants
@@ -117,12 +118,17 @@ def serialize_batchsource(batch_source):
 def deserialize_batchsource(batch_source_config):
     return databind.json.load(batch_source_config, BatchSource)
 
+class InsertLocation(enum.Enum):
+    AFTER = 1
+    CURSOR_LOCATION = 2
 
 @dataclass
 class BatchTarget():
     target_field: str
     text_and_sound_tag: bool
     remove_sound_tag: bool
+    insert_location: InsertLocation = InsertLocation.AFTER
+    same_field: bool = False
 
     def serialize(self):
         return serialize_batch_target(self)

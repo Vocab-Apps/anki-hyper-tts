@@ -88,7 +88,7 @@ if ANKIWEB_ADDON_ID in __file__:
 
 
 CONFIG_SCHEMA = 'config_schema'
-CONFIG_SCHEMA_VERSION = 3
+CONFIG_SCHEMA_VERSION = 4
 # deprecated, use CONFIG_PRESETS
 CONFIG_BATCH_CONFIG = 'batch_config'
 # this is the new config category, contains dict of uuids

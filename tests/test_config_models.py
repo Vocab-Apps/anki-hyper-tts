@@ -382,7 +382,9 @@ class ConfigModelsTests(unittest.TestCase):
             'target': {
                 'target_field': 'Sound',
                 'text_and_sound_tag': False,
-                'remove_sound_tag': False
+                'remove_sound_tag': False,
+                'insert_location': 'AFTER',
+                'same_field': False
             },
             'voice_selection': {
                 'voice_selection_mode': 'single',
@@ -421,7 +423,7 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(batch_config_deserialized.source.mode, constants.BatchMode.simple)   
 
 
-    def test_batch_config_target(self):
+    def test_batch_config_target_serialize(self):
         # serialize tests for Target
         hypertts_instance = get_hypertts_instance()
         voice_list = hypertts_instance.service_manager.full_voice_list()
@@ -446,13 +448,46 @@ class ConfigModelsTests(unittest.TestCase):
                 expected_output = {
                     'target_field': 'Sound',
                     'text_and_sound_tag': text_and_sound_tag,
-                    'remove_sound_tag': remove_sound_tag
+                    'remove_sound_tag': remove_sound_tag,
+                    'insert_location': 'AFTER',
+                    'same_field': False
                 }
                 assert batch_config.serialize()['target'] == expected_output
 
                 # try deserializing
                 deserialized_batch_config = hypertts_instance.deserialize_batch_config(batch_config.serialize())
                 assert deserialized_batch_config.serialize()['target'] == expected_output
+
+    def test_batch_config_target_deserialize_schema_v3(self):
+        config = {
+            'target_field': 'Sound',
+            'text_and_sound_tag': False,
+            'remove_sound_tag': True
+        }
+
+        batch_target = config_models.deserialize_batch_target(config)
+        self.assertEqual(batch_target.target_field, 'Sound')
+        self.assertEqual(batch_target.text_and_sound_tag, False)
+        self.assertEqual(batch_target.remove_sound_tag, True)
+        self.assertEqual(batch_target.insert_location, config_models.InsertLocation.AFTER)
+        self.assertEqual(batch_target.same_field, False)
+
+
+    def test_batch_config_target_deserialize_schema_v4(self):
+        config = {
+            'target_field': 'Chinese',
+            'text_and_sound_tag': False,
+            'remove_sound_tag': True,
+            'insert_location': 'CURSOR_LOCATION',
+            'same_field': True
+        }
+
+        batch_target = config_models.deserialize_batch_target(config)
+        self.assertEqual(batch_target.target_field, 'Chinese')
+        self.assertEqual(batch_target.text_and_sound_tag, False)
+        self.assertEqual(batch_target.remove_sound_tag, True)
+        self.assertEqual(batch_target.insert_location, config_models.InsertLocation.CURSOR_LOCATION)
+        self.assertEqual(batch_target.same_field, True)
 
 
     def test_text_processing(self):
@@ -652,7 +687,9 @@ class ConfigModelsTests(unittest.TestCase):
             'target': {
                 'target_field': 'Audio',
                 'text_and_sound_tag': False,
-                'remove_sound_tag': False
+                'remove_sound_tag': False,
+                'insert_location': 'AFTER',
+                'same_field': False
             },
             'voice_selection': {
                 'voice_selection_mode': 'single',
@@ -972,7 +1009,7 @@ class ConfigModelsTests(unittest.TestCase):
         # config revision 0
         config = {}
         updated_config = config_models.migrate_configuration(anki_utils, config)
-        self.assertEqual(updated_config['config_schema'], 3)
+        self.assertEqual(updated_config['config_schema'], 4)
 
 
     def test_migration_0_to_2(self):
@@ -1024,7 +1061,7 @@ class ConfigModelsTests(unittest.TestCase):
         }
 
         updated_config = config_models.migrate_configuration(anki_utils, config)
-        self.assertEqual(updated_config['config_schema'], 3)
+        self.assertEqual(updated_config['config_schema'], 4)
         expected_preset_1_uuid = 'uuid_0'
         self.assertIn(expected_preset_1_uuid, updated_config['presets'])
         self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['name'], 'preset_1')
@@ -1254,7 +1291,7 @@ class ConfigModelsTests(unittest.TestCase):
         config_rev_3_json_str = """
 {
     "batch_config": {},
-    "config_schema": 3,
+    "config_schema": 4,
     "configuration": {
         "hypertts_pro_api_key": "api_key_1",
         "service_config": {},
@@ -1445,7 +1482,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         self.maxDiff = None
         updated_config = config_models.migrate_configuration(anki_utils, config_rev_2)
-        self.assertEqual(updated_config['config_schema'], 3)
+        self.assertEqual(updated_config['config_schema'], 4)
         self.assertEqual(expected_config_rev_3, updated_config)
 
     def test_migration_2_to_3_b(self):
@@ -1573,7 +1610,7 @@ class ConfigModelsTests(unittest.TestCase):
         config_rev_3_json_str = """
 {
     "batch_config": {},
-    "config_schema": 3,
+    "config_schema": 4,
     "configuration": {
         "hypertts_pro_api_key": "api_key_1",
         "service_config": {},
@@ -1677,7 +1714,7 @@ class ConfigModelsTests(unittest.TestCase):
 
         self.maxDiff = None
         updated_config = config_models.migrate_configuration(anki_utils, config_rev_2)
-        self.assertEqual(updated_config['config_schema'], 3)
+        self.assertEqual(updated_config['config_schema'], 4)
         self.assertEqual(expected_config_rev_3, updated_config)
 
     def test_rule_applies(self):
