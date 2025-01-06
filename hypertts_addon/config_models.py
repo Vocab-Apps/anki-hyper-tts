@@ -118,18 +118,14 @@ def deserialize_batchsource(batch_source_config):
     return databind.json.load(batch_source_config, BatchSource)
 
 
-class BatchTarget(ConfigModelBase):
-    def __init__(self, target_field, text_and_sound_tag, remove_sound_tag):
-        self.target_field = target_field
-        self.text_and_sound_tag = text_and_sound_tag
-        self.remove_sound_tag = remove_sound_tag
+@dataclass
+class BatchTarget():
+    target_field: str
+    text_and_sound_tag: bool
+    remove_sound_tag: bool
 
     def serialize(self):
-        return {
-            'target_field': self.target_field,
-            'text_and_sound_tag': self.text_and_sound_tag,
-            'remove_sound_tag': self.remove_sound_tag
-        }
+        return serialize_batch_target(self)
 
     def validate(self):
         if self.target_field == None or len(self.target_field) == 0:
@@ -137,6 +133,12 @@ class BatchTarget(ConfigModelBase):
 
     def __str__(self):
         return f'{self.target_field}'
+
+def serialize_batch_target(batch_target):
+    return databind.json.dump(batch_target, BatchTarget)
+
+def deserialize_batch_target(batch_target_config):
+    return databind.json.load(batch_target_config, BatchTarget)
 
 # voice selection models
 # ======================
