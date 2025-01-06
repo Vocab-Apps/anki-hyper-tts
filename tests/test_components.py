@@ -863,6 +863,9 @@ def test_target_easy(qtbot):
     # ==============
 
     assert batch_target.radio_button_same_field.isChecked() == True
+    assert batch_target.radio_button_after.isChecked() == True
+    assert batch_target.radio_button_text_sound.isChecked() == True
+    assert batch_target.radio_button_remove_sound.isChecked() == True
 
 
 def test_batch_preview(qtbot):

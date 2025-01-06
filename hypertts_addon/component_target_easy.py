@@ -88,9 +88,9 @@ class BatchTargetEasy(component_target.BatchTarget):
 
         # Set initial state
         self.radio_button_same_field.setChecked(True)
-        self.radio_button_sound_only.setChecked(True)
-        self.radio_button_remove_sound.setChecked(True)
         self.radio_button_after.setChecked(True)
+        self.radio_button_text_sound.setChecked(True)
+        self.radio_button_remove_sound.setChecked(True)        
 
         # Connect events
         self.wire_events()
