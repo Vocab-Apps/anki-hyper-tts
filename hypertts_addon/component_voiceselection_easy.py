@@ -60,7 +60,18 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice.voice_id, {}))
         self.notify_model_update()        
 
-    def load_model(self, model):
-        self.enable_model_change_callback = False
-        super().load_model(model)
 
+    def load_model(self, model):
+        # don't report changes back to parent dialog as we adjust widgets
+        self.enable_model_change_callback = False
+        logger.info(f'load_model, model: {model}')
+
+        # here we need to select the correct voice, based on what the user has saved in their preset (single voice)
+        # we have access to the voice_id, but we need to locate the proper voice
+        voice_id = model.voice.voice_id
+        voice = self.hypertts.service_manager.locate_voice(voice_id)
+        voice_index = self.voice_list.index(voice)
+        self.voices_combobox.setCurrentIndex(voice_index)
+
+        # OK to report changes after this
+        self.enable_model_change_callback = True
