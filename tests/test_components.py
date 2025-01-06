@@ -910,6 +910,89 @@ def test_target_easy_model_updates(qtbot):
     batch_target.radio_button_remove_sound.setChecked(True)
     assert model_change_callback.model.remove_sound_tag == True
 
+def test_target_easy_model_load(qtbot):
+    dialog, batch_target, model_change_callback = fixtures_target_easy()
+
+    # config 1 
+    # ========
+
+    model = config_models.BatchTarget(
+        target_field = 'Sound',
+        text_and_sound_tag = False,
+        remove_sound_tag = True,
+        insert_location = config_models.InsertLocation.AFTER,
+        same_field = False
+    )
+
+    batch_target.load_model(model)
+
+    # assert gui controls state
+    assert batch_target.radio_button_same_field.isChecked() == False
+    assert batch_target.radio_button_different_field.isChecked() == True
+    assert batch_target.target_field_combobox.currentText() == 'Sound'
+    assert batch_target.radio_button_sound_only.isChecked() == True
+
+    # config 2
+    # ========
+
+    model = config_models.BatchTarget(
+        target_field = 'Sound',
+        text_and_sound_tag = True,
+        remove_sound_tag = False,
+        insert_location = config_models.InsertLocation.AFTER,
+        same_field = False
+    )
+
+    batch_target.load_model(model)
+
+    # assert gui controls state
+    assert batch_target.radio_button_same_field.isChecked() == False
+    assert batch_target.radio_button_different_field.isChecked() == True
+    assert batch_target.target_field_combobox.currentText() == 'Sound'
+    assert batch_target.radio_button_text_sound.isChecked() == True
+    assert batch_target.radio_button_keep_sound.isChecked() == True
+
+    # config 3
+    # ========
+
+    model = config_models.BatchTarget(
+        target_field = None,
+        text_and_sound_tag = True,
+        remove_sound_tag = False,
+        insert_location = config_models.InsertLocation.CURSOR_LOCATION,
+        same_field = True
+    )
+
+    batch_target.load_model(model)
+
+    # assert gui controls state
+    assert batch_target.radio_button_same_field.isChecked() == True
+    assert batch_target.radio_button_different_field.isChecked() == False
+    assert batch_target.radio_button_cursor.isChecked() == True
+    assert batch_target.target_field_widget.isVisibleTo(dialog) == False
+    assert batch_target.sound_options_widget.isVisibleTo(dialog) == False
+    assert batch_target.insert_location_widget.isVisibleTo(dialog) == True
+
+    # config 4
+    # ========
+
+    model = config_models.BatchTarget(
+        target_field = None,
+        text_and_sound_tag = True,
+        remove_sound_tag = False,
+        insert_location = config_models.InsertLocation.AFTER,
+        same_field = True
+    )
+
+    batch_target.load_model(model)
+
+    # assert gui controls state
+    assert batch_target.radio_button_same_field.isChecked() == True
+    assert batch_target.radio_button_different_field.isChecked() == False
+    assert batch_target.radio_button_after.isChecked() == True
+    assert batch_target.target_field_widget.isVisibleTo(dialog) == False
+    assert batch_target.sound_options_widget.isVisibleTo(dialog) == False
+    assert batch_target.insert_location_widget.isVisibleTo(dialog) == True
 
 
 
