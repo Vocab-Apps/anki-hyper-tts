@@ -93,21 +93,22 @@ class BatchTargetEasy(component_target.BatchTarget):
         self.radio_button_after.setChecked(True)
 
         # Connect events
-        self.radio_button_same_field.toggled.connect(self.update_same_field)
-        self.radio_button_different_field.toggled.connect(self.update_same_field)
-        self.target_field_combobox.currentIndexChanged.connect(self.update_field)
-        self.radio_button_sound_only.toggled.connect(self.update_text_sound)
-        self.radio_button_text_sound.toggled.connect(self.update_text_sound)
-        self.radio_button_remove_sound.toggled.connect(self.update_remove_sound)
-        self.radio_button_keep_sound.toggled.connect(self.update_remove_sound)
-        self.radio_button_after.toggled.connect(self.update_insert_location)
-        self.radio_button_cursor.toggled.connect(self.update_insert_location)
+        self.wire_events()
 
         # Initial update
         self.update_same_field()
         self.update_field()
 
         return self.layout_widget
+
+    def wire_events(self):
+        self.wire_events_base()
+        # same field
+        self.radio_button_same_field.toggled.connect(self.update_same_field)
+        self.radio_button_different_field.toggled.connect(self.update_same_field)
+        # insert location
+        self.radio_button_after.toggled.connect(self.update_insert_location)
+        self.radio_button_cursor.toggled.connect(self.update_insert_location)
 
     def update_same_field(self):
         same_field = self.radio_button_same_field.isChecked()

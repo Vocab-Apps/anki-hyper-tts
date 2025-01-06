@@ -100,7 +100,7 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.batch_target_layout.addStretch()
 
         # connect events
-        self.wire_events()
+        self.wire_events_base()
 
         # select default to trigger model update
         self.update_field()
@@ -108,8 +108,8 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.scroll_area.setWidget(self.layout_widget)
         return self.scroll_area
 
-    def wire_events(self):
-        logger.info('wire events')
+    def wire_events_base(self):
+        logger.info('wire events base')
         self.target_field_combobox.currentIndexChanged.connect(lambda x: self.update_field())
         self.radio_button_sound_only.toggled.connect(self.update_text_sound)
         self.radio_button_text_sound.toggled.connect(self.update_text_sound)
