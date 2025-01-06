@@ -872,6 +872,11 @@ def test_target_easy_defaults(qtbot):
     assert batch_target.radio_button_text_sound.isChecked() == True
     assert batch_target.radio_button_remove_sound.isChecked() == True
 
+    # check visibility
+    assert batch_target.sound_options_widget.isVisibleTo(dialog) == False
+    assert batch_target.target_field_widget.isVisibleTo(dialog) == False
+    assert batch_target.insert_location_widget.isVisibleTo(dialog) == True
+    
     # check initial model update
     assert model_change_callback.model.same_field == True
     assert model_change_callback.model.insert_location == config_models.InsertLocation.AFTER
