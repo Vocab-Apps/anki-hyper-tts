@@ -845,7 +845,7 @@ def test_target_base(qtbot):
     assert batch_target.radio_button_keep_sound.isChecked() == True
     assert batch_target.radio_button_remove_sound.isChecked() == False
 
-def test_target_easy(qtbot):
+def fixtures_target_easy():
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
@@ -858,6 +858,11 @@ def test_target_easy(qtbot):
     field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
     batch_target = component_target_easy.BatchTargetEasy(hypertts_instance, field_list, model_change_callback.model_updated)
     dialog.addChildWidget(batch_target.draw())
+
+    return dialog, batch_target, model_change_callback
+
+def test_target_easy_defaults(qtbot):
+    dialog, batch_target, model_change_callback = fixtures_target_easy()
 
     # check defaults
     # ==============
