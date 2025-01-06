@@ -27,8 +27,6 @@ class BatchTargetEasy(component_target.BatchTarget):
         self.insert_location_group.addButton(self.radio_button_cursor)        
 
     def draw(self):
-        self.scroll_area = aqt.qt.QScrollArea()
-        self.scroll_area.setWidgetResizable(True)
         self.layout_widget = aqt.qt.QWidget()
         self.batch_target_layout = aqt.qt.QVBoxLayout(self.layout_widget)
 
@@ -109,8 +107,7 @@ class BatchTargetEasy(component_target.BatchTarget):
         self.update_same_field()
         self.update_field()
 
-        self.scroll_area.setWidget(self.layout_widget)
-        return self.scroll_area
+        return self.layout_widget
 
     def update_same_field(self):
         same_field = self.radio_button_same_field.isChecked()
