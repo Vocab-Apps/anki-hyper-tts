@@ -3,7 +3,7 @@ import aqt.qt
 import copy
 
 from . import component_common 
-from . import component_target
+from . import component_target_easy
 from . import component_voiceselection_easy
 from . import config_models
 from . import constants
@@ -24,7 +24,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.batch_model = None
 
         # initialize sub-components
-        self.target = component_target.BatchTarget(hypertts, field_list, self.model_update_target)
+        self.target = component_target_easy.BatchTargetEasy(hypertts, field_list, self.model_update_target)
         self.voice_selection = component_voiceselection_easy.VoiceSelectionEasy(hypertts, dialog, self.model_update_voice_selection)
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
 
