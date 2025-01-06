@@ -883,6 +883,23 @@ def test_target_easy_defaults(qtbot):
     assert model_change_callback.model.text_and_sound_tag == True
     assert model_change_callback.model.remove_sound_tag == True
 
+def test_target_easy_model_updates(qtbot):
+    dialog, batch_target, model_change_callback = fixtures_target_easy()
+
+    # set same_field to false
+    batch_target.radio_button_different_field.setChecked(True)
+    assert model_change_callback.model.same_field == False
+    batch_target.radio_button_same_field.setChecked(True)
+    assert model_change_callback.model.same_field == True
+
+    batch_target.radio_button_cursor.setChecked(True)
+    assert model_change_callback.model.insert_location == config_models.InsertLocation.CURSOR_LOCATION
+
+    batch_target.radio_button_after.setChecked(True)
+    assert model_change_callback.model.insert_location == config_models.InsertLocation.AFTER
+
+
+
 
 def test_batch_preview(qtbot):
 
