@@ -124,9 +124,9 @@ class InsertLocation(enum.Enum):
 
 @dataclass
 class BatchTarget():
-    target_field: str
-    text_and_sound_tag: bool
-    remove_sound_tag: bool
+    target_field: str = None
+    text_and_sound_tag: bool = False
+    remove_sound_tag: bool = True
     insert_location: InsertLocation = InsertLocation.AFTER
     same_field: bool = False
 

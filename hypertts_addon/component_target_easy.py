@@ -11,7 +11,6 @@ logger = logging_utils.get_child_logger(__name__)
 class BatchTargetEasy(component_target.BatchTarget):
     def __init__(self, hypertts, field_list, model_change_callback):
         super().__init__(hypertts, field_list, model_change_callback)
-        self.batch_target_model = config_models.BatchTarget(None, False, True, config_models.InsertLocation.AFTER, False)
 
     def draw(self):
         self.scroll_area = aqt.qt.QScrollArea()

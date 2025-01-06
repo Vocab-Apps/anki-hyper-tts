@@ -15,7 +15,7 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.field_list = field_list
         self.model_change_callback = model_change_callback
 
-        self.batch_target_model = config_models.BatchTarget(None, False, True)
+        self.batch_target_model = config_models.BatchTarget()
 
         # initialize widgets
         self.target_field_combobox = aqt.qt.QComboBox()
