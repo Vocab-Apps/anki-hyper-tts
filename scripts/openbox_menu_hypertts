@@ -7,6 +7,10 @@ items = [
         'command': 'HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_components.py -k test_easy_dialog_manual'
     },    
     {
+        'name': 'unit test test_voice_selection_easy_single_1',
+        'command': 'pytest --log-cli-level=DEBUG tests/test_components.py -k test_voice_selection_easy_single_1 -vv'
+    },        
+    {
         'name': 'test voice selection manual',
         'command': 'HYPERTTS_VOICE_SELECTION_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_voice_selection_manual'
     },

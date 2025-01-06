@@ -44,6 +44,7 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         # Wire up events
         self.languages_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
         self.services_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
+        self.voices_combobox.currentIndexChanged.connect(self.voice_selected)
 
         widget = aqt.qt.QWidget()
         widget.setLayout(vlayout)
@@ -53,11 +54,11 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         
         return widget
 
-    def voice_selected(self, index):
-        if index >= 0 and self.enable_model_change_callback:
-            voice = self.filtered_voice_list[index]
-            self.model.voice_list = [voice]
-            self.notify_model_update()
+    def voice_selected(self, current_index):
+        voice = self.filtered_voice_list[current_index]
+        logger.info(f'voice_selected: {voice} options: {voice.options}')
+        self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice.voice_id, {}))
+        self.notify_model_update()        
 
     def load_model(self, model):
         self.enable_model_change_callback = False

@@ -148,6 +148,35 @@ def test_voice_selection_single_1(qtbot):
     }
     assert voiceselection.serialize() == expected_output        
 
+
+def test_voice_selection_easy_single_1(qtbot):
+    # pytest --log-cli-level=DEBUG tests/test_components.py -k test_voice_selection_easy_single_1 -vv
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    voiceselection = component_voiceselection_easy.VoiceSelectionEasy(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+
+    testing_utils.voice_selection_voice_list_select('voice_a_2', 'ServiceA', voiceselection.voices_combobox)
+
+    # dialog.exec()
+
+    expected_output = {
+        'voice_selection_mode': 'single',
+        'voice': {
+            'voice_id': {
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_2'}
+            },
+            'options': {
+            }
+        }
+    }
+    assert voiceselection.serialize() == expected_output
+
 def test_voice_selection_format_ogg(qtbot):
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
