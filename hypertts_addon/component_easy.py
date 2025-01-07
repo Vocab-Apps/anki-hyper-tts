@@ -32,14 +32,14 @@ class ComponentEasy(component_common.ComponentBase):
         # Create main horizontal layout
         hlayout = aqt.qt.QHBoxLayout()
 
-        # Left side - vertical layout
-        left_layout = aqt.qt.QVBoxLayout()
-
-        # Add header with logo
+        # Add header with logo at the top
         header_layout = aqt.qt.QHBoxLayout()
         header_layout.addStretch()
         header_layout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
-        left_layout.addLayout(header_layout)
+        layout.addLayout(header_layout)
+
+        # Left side - vertical layout
+        left_layout = aqt.qt.QVBoxLayout()
 
         # Source text preview
         source_label = aqt.qt.QLabel('Source Text:')
