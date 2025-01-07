@@ -63,12 +63,6 @@ class ComponentEasy(component_common.ComponentBase):
         # Add left side to main layout
         hlayout.addLayout(left_layout)
 
-        # Add vertical separator
-        separator = aqt.qt.QFrame()
-        separator.setFrameShape(aqt.qt.QFrame.Shape.VLine)
-        separator.setFrameShadow(aqt.qt.QFrame.Shadow.Sunken)
-        hlayout.addWidget(separator)
-
         # Right side - vertical layout
         right_layout = aqt.qt.QVBoxLayout()
 
