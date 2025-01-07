@@ -21,8 +21,8 @@ class BatchTargetEasy(component_target.BatchTarget):
         self.same_field_group.addButton(self.radio_button_different_field)
         # insert location
         self.insert_location_group = aqt.qt.QButtonGroup()
-        self.radio_button_after = aqt.qt.QRadioButton('Insert at the end')
-        self.radio_button_cursor = aqt.qt.QRadioButton('Insert after cursor')
+        self.radio_button_after = aqt.qt.QRadioButton('At the end')
+        self.radio_button_cursor = aqt.qt.QRadioButton('After cursor')
         self.insert_location_group.addButton(self.radio_button_after)
         self.insert_location_group.addButton(self.radio_button_cursor)        
 
@@ -33,7 +33,7 @@ class BatchTargetEasy(component_target.BatchTarget):
         # Same field option
         target_field_container = aqt.qt.QWidget()
         vlayout = aqt.qt.QVBoxLayout(target_field_container)
-        vlayout.addWidget(aqt.qt.QLabel('Which field to insert the audio into?'))
+        vlayout.addWidget(aqt.qt.QLabel('<i>Which field to insert the audio into?</i>'))
         vlayout.addWidget(self.radio_button_same_field)
         vlayout.addWidget(self.radio_button_different_field)
 
@@ -49,7 +49,7 @@ class BatchTargetEasy(component_target.BatchTarget):
         # Insert location options (only shown when same field selected)
         self.insert_location_widget = aqt.qt.QWidget()
         insert_location_layout = aqt.qt.QVBoxLayout(self.insert_location_widget)
-        insert_location_layout.addWidget(aqt.qt.QLabel('Where to insert the audio?'))
+        insert_location_layout.addWidget(aqt.qt.QLabel('<i>Where inside the field to insert the audio?</i>'))
         insert_location_layout.addWidget(self.radio_button_after)
         insert_location_layout.addWidget(self.radio_button_cursor)
         self.batch_target_layout.addWidget(self.insert_location_widget)
