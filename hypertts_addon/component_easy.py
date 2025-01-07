@@ -72,12 +72,10 @@ class ComponentEasy(component_common.ComponentBase):
         # Right side - vertical layout
         right_layout = aqt.qt.QVBoxLayout()
 
-        # Target group
-        target_group = aqt.qt.QGroupBox('Target Field:')
-        target_layout = aqt.qt.QHBoxLayout()
-        target_layout.addWidget(self.target.draw())
-        target_group.setLayout(target_layout)
-        right_layout.addWidget(target_group)
+        # Target field
+        target_label = aqt.qt.QLabel('Target Field:')
+        right_layout.addWidget(target_label)
+        right_layout.addWidget(self.target.draw())
 
         right_layout.addStretch()
 
