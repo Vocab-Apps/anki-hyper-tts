@@ -15,14 +15,14 @@ class BatchTargetEasy(component_target.BatchTarget):
         # initialize widgets
         # same field
         self.same_field_group = aqt.qt.QButtonGroup()
-        self.radio_button_same_field = aqt.qt.QRadioButton('Use same field as source')
-        self.radio_button_different_field = aqt.qt.QRadioButton('Use different field')
+        self.radio_button_same_field = aqt.qt.QRadioButton('Into same field ()')
+        self.radio_button_different_field = aqt.qt.QRadioButton('Into different field (choose which)')
         self.same_field_group.addButton(self.radio_button_same_field)
         self.same_field_group.addButton(self.radio_button_different_field)
         # insert location
         self.insert_location_group = aqt.qt.QButtonGroup()
-        self.radio_button_after = aqt.qt.QRadioButton('After existing content')
-        self.radio_button_cursor = aqt.qt.QRadioButton('At cursor location')
+        self.radio_button_after = aqt.qt.QRadioButton('Insert at the end')
+        self.radio_button_cursor = aqt.qt.QRadioButton('Insert after cursor')
         self.insert_location_group.addButton(self.radio_button_after)
         self.insert_location_group.addButton(self.radio_button_cursor)        
 
@@ -33,7 +33,7 @@ class BatchTargetEasy(component_target.BatchTarget):
         # Same field option
         target_field_container = aqt.qt.QWidget()
         vlayout = aqt.qt.QVBoxLayout(target_field_container)
-        vlayout.addWidget(aqt.qt.QLabel('Target Field'))
+        vlayout.addWidget(aqt.qt.QLabel('Which field to insert the audio into?'))
         vlayout.addWidget(self.radio_button_same_field)
         vlayout.addWidget(self.radio_button_different_field)
 
