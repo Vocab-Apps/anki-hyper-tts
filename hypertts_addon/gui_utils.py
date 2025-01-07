@@ -37,7 +37,7 @@ def get_medium_label(text):
     label = aqt.qt.QLabel()
     label.setText(text)
     font = aqt.qt.QFont()
-    label_font_size = 13
+    label_font_size = 12
     font.setBold(True)
     font.setPointSize(label_font_size)
     label.setFont(font)
