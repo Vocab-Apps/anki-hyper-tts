@@ -59,15 +59,15 @@ class BatchTargetEasy(component_target.BatchTarget):
         sound_options_layout = aqt.qt.QVBoxLayout(self.sound_options_widget)
 
         # Text and sound tag
-        groupbox = aqt.qt.QGroupBox('Text and Sound Tag Handling')
-        vlayout = aqt.qt.QVBoxLayout()
+        text_sound_container = aqt.qt.QWidget()
+        vlayout = aqt.qt.QVBoxLayout(text_sound_container)
+        vlayout.addWidget(aqt.qt.QLabel('<i>How to handle text and sound tags?</i>'))
         label = aqt.qt.QLabel(constants.GUI_TEXT_TARGET_TEXT_AND_SOUND)
         label.setWordWrap(True)
         vlayout.addWidget(label)
         vlayout.addWidget(self.radio_button_sound_only)
         vlayout.addWidget(self.radio_button_text_sound)
-        groupbox.setLayout(vlayout)
-        sound_options_layout.addWidget(groupbox)
+        sound_options_layout.addWidget(text_sound_container)
 
         # Remove sound tag
         groupbox = aqt.qt.QGroupBox('Existing Sound Tag Handling')
