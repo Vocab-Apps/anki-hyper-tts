@@ -13,28 +13,22 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         self.enable_model_change_callback = True
 
     def draw(self):
-        vlayout = aqt.qt.QVBoxLayout()
+        grid_layout = aqt.qt.QGridLayout()
         
         # Get voice list and populate combo boxes
         self.get_voices()
         
         # Language filter
-        hlayout = aqt.qt.QHBoxLayout()
-        hlayout.addWidget(aqt.qt.QLabel('Language:'))
-        hlayout.addWidget(self.languages_combobox)
-        vlayout.addLayout(hlayout)
+        grid_layout.addWidget(aqt.qt.QLabel('Language:'), 0, 0)
+        grid_layout.addWidget(self.languages_combobox, 0, 1)
 
         # Service filter
-        hlayout = aqt.qt.QHBoxLayout()
-        hlayout.addWidget(aqt.qt.QLabel('Service:'))
-        hlayout.addWidget(self.services_combobox)
-        vlayout.addLayout(hlayout)
+        grid_layout.addWidget(aqt.qt.QLabel('Service:'), 1, 0)
+        grid_layout.addWidget(self.services_combobox, 1, 1)
 
         # Voice selection combo box
-        hlayout = aqt.qt.QHBoxLayout()
-        hlayout.addWidget(aqt.qt.QLabel('Voice:'))
-        hlayout.addWidget(self.voices_combobox)
-        vlayout.addLayout(hlayout)
+        grid_layout.addWidget(aqt.qt.QLabel('Voice:'), 2, 0)
+        grid_layout.addWidget(self.voices_combobox, 2, 1)
 
         self.populate_combobox(self.audio_languages_combobox, [audio_lang.audio_lang_name for audio_lang in self.audio_languages])
         self.populate_combobox(self.languages_combobox, [language.lang_name for language in self.languages])
@@ -47,7 +41,7 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         self.voices_combobox.currentIndexChanged.connect(self.voice_selected)
 
         widget = aqt.qt.QWidget()
-        widget.setLayout(vlayout)
+        widget.setLayout(grid_layout)
         
         # Initialize voice list
         self.filter_and_draw_voices(0)
