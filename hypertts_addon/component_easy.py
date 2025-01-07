@@ -67,8 +67,8 @@ class ComponentEasy(component_common.ComponentBase):
 
         # Add vertical separator
         separator = aqt.qt.QFrame()
-        separator.setFrameShape(aqt.qt.QFrame.VLine)
-        separator.setFrameShadow(aqt.qt.QFrame.Sunken)
+        separator.setFrameShape(aqt.qt.QFrame.Shape.VLine)
+        separator.setFrameShadow(aqt.qt.QFrame.Shadow.Sunken)
         hlayout.addWidget(separator)
 
         # Right side - vertical layout
