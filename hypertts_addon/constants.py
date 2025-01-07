@@ -182,6 +182,10 @@ GUI_TEXT_SOURCE_FIELD_TYPE_REALTIME = """Field Type:
 """It only makes to use this on the back side."""
 
 
+GUI_TEXT_EASY_SOURCE_FIELD = """<i>The sound will be generated using this text. You can edit it.</i>"""
+GUI_TEXT_EASY_VOICE_SELECTION = """<i>Choose a voice. You can filter by Language and Service.</i>"""
+GUI_TEXT_EASY_TARGET = """<i>Decide where the sound tag will be placed.</i>"""
+
 GUI_TEXT_TARGET_FIELD = """Sound tags will be inserted in this field"""
 
 GUI_TEXT_TARGET_TEXT_AND_SOUND = """Should the target field only contain the sound tag, or should

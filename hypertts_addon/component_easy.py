@@ -44,6 +44,8 @@ class ComponentEasy(component_common.ComponentBase):
         # Source text preview
         source_label = gui_utils.get_medium_label('1. Source Text:')
         left_layout.addWidget(source_label)
+        source_description_label = aqt.qt.QLabel(constants.GUI_TEXT_EASY_SOURCE_FIELD)
+        left_layout.addWidget(source_description_label)
         
         self.source_text_edit = aqt.qt.QPlainTextEdit()
         self.source_text_edit.setReadOnly(False)
@@ -57,6 +59,8 @@ class ComponentEasy(component_common.ComponentBase):
         # Voice Selection
         voice_label = gui_utils.get_medium_label('2. Voice Selection:')
         left_layout.addWidget(voice_label)
+        voice_description_label = aqt.qt.QLabel(constants.GUI_TEXT_EASY_VOICE_SELECTION)
+        left_layout.addWidget(voice_description_label)
         left_layout.addWidget(self.voice_selection.draw())
         left_layout.addStretch()
 
@@ -69,6 +73,8 @@ class ComponentEasy(component_common.ComponentBase):
         # Target field
         target_label = gui_utils.get_medium_label('3. Target Field:')
         right_layout.addWidget(target_label)
+        target_description_label = aqt.qt.QLabel(constants.GUI_TEXT_EASY_TARGET)
+        right_layout.addWidget(target_description_label)
         right_layout.addWidget(self.target.draw())
 
         right_layout.addStretch()
