@@ -29,18 +29,21 @@ class ComponentEasy(component_common.ComponentBase):
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
 
     def draw(self, layout):
-        # Create main vertical layout
-        vlayout = aqt.qt.QVBoxLayout()
+        # Create main horizontal layout
+        hlayout = aqt.qt.QHBoxLayout()
+
+        # Left side - vertical layout
+        left_layout = aqt.qt.QVBoxLayout()
 
         # Add header with logo
         header_layout = aqt.qt.QHBoxLayout()
         header_layout.addStretch()
         header_layout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
-        vlayout.addLayout(header_layout)
+        left_layout.addLayout(header_layout)
 
         # Source text preview
         source_label = aqt.qt.QLabel('Source Text:')
-        vlayout.addWidget(source_label)
+        left_layout.addWidget(source_label)
         
         self.source_text_edit = aqt.qt.QPlainTextEdit()
         self.source_text_edit.setReadOnly(False)
@@ -49,23 +52,36 @@ class ComponentEasy(component_common.ComponentBase):
         font.setPointSize(20)  # increase font size
         self.source_text_edit.setFont(font)
         self.source_text_edit.setPlainText(self.source_text)
-        vlayout.addWidget(self.source_text_edit)
+        left_layout.addWidget(self.source_text_edit)
 
         # Voice Selection group
         voice_group = aqt.qt.QGroupBox('Voice Selection:')
         voice_layout = aqt.qt.QVBoxLayout()
         voice_layout.addWidget(self.voice_selection.draw())
         voice_group.setLayout(voice_layout)
-        vlayout.addWidget(voice_group)
+        left_layout.addWidget(voice_group)
+        left_layout.addStretch()
+
+        # Add left side to main layout
+        hlayout.addLayout(left_layout)
+
+        # Add vertical separator
+        separator = aqt.qt.QFrame()
+        separator.setFrameShape(aqt.qt.QFrame.VLine)
+        separator.setFrameShadow(aqt.qt.QFrame.Sunken)
+        hlayout.addWidget(separator)
+
+        # Right side - vertical layout
+        right_layout = aqt.qt.QVBoxLayout()
 
         # Target group
         target_group = aqt.qt.QGroupBox('Target Field:')
         target_layout = aqt.qt.QHBoxLayout()
         target_layout.addWidget(self.target.draw())
         target_group.setLayout(target_layout)
-        vlayout.addWidget(target_group)
+        right_layout.addWidget(target_group)
 
-
+        right_layout.addStretch()
 
         # Add buttons
         button_layout = aqt.qt.QHBoxLayout()
@@ -77,14 +93,17 @@ class ComponentEasy(component_common.ComponentBase):
         button_layout.addWidget(self.preview_button)
         button_layout.addWidget(self.add_audio_button)
         button_layout.addWidget(self.cancel_button)
-        vlayout.addLayout(button_layout)
+        right_layout.addLayout(button_layout)
+
+        # Add right side to main layout
+        hlayout.addLayout(right_layout)
 
         # Wire events
         self.preview_button.pressed.connect(self.preview_button_pressed)
         self.add_audio_button.pressed.connect(self.add_audio_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
-        layout.addLayout(vlayout)
+        layout.addLayout(hlayout)
 
 
     def model_update_target(self, model):
