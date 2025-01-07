@@ -61,7 +61,6 @@ class BatchTargetEasy(component_target.BatchTarget):
         # Text and sound tag
         text_sound_container = aqt.qt.QWidget()
         vlayout = aqt.qt.QVBoxLayout(text_sound_container)
-        vlayout.addWidget(aqt.qt.QLabel('<i>How to handle text and sound tags?</i>'))
         label = aqt.qt.QLabel(constants.GUI_TEXT_TARGET_TEXT_AND_SOUND)
         label.setWordWrap(True)
         vlayout.addWidget(label)
@@ -72,7 +71,6 @@ class BatchTargetEasy(component_target.BatchTarget):
         # Remove sound tag
         sound_tag_container = aqt.qt.QWidget()
         vlayout = aqt.qt.QVBoxLayout(sound_tag_container)
-        vlayout.addWidget(aqt.qt.QLabel('<i>How to handle existing sound tags?</i>'))
         label = aqt.qt.QLabel(constants.GUI_TEXT_TARGET_REMOVE_SOUND_TAG)
         label.setWordWrap(True)
         vlayout.addWidget(label)

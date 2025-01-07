@@ -188,9 +188,9 @@ GUI_TEXT_EASY_TARGET = """<i>Decide where the sound tag will be placed.</i>"""
 
 GUI_TEXT_TARGET_FIELD = """Sound tags will be inserted in this field"""
 
-GUI_TEXT_TARGET_TEXT_AND_SOUND = """Should the target field only contain the sound tag, or should
-it contain both text and sound tag."""
-GUI_TEXT_TARGET_REMOVE_SOUND_TAG = """If the target field already contains a sound tag, should it get  removed?"""
+GUI_TEXT_TARGET_TEXT_AND_SOUND = """<i>Should the target field only contain the sound tag, or should
+it contain both text and sound tag.</i>"""
+GUI_TEXT_TARGET_REMOVE_SOUND_TAG = """<i>If the target field already contains a sound tag, should it get  removed?</i>"""
 
 GUI_TEXT_BATCH_COMPLETED = """<b>Finished adding Audio to notes</b>. You can undo this operation in menu Edit, 
 Undo HyperTTS: Add Audio to Notes. You may close this dialog.
