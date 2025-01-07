@@ -48,13 +48,10 @@ class BatchTargetEasy(component_target.BatchTarget):
 
         # Insert location options (only shown when same field selected)
         self.insert_location_widget = aqt.qt.QWidget()
-        groupbox = aqt.qt.QGroupBox('Insert Location')
-        vlayout = aqt.qt.QVBoxLayout()
-        vlayout.addWidget(self.radio_button_after)
-        vlayout.addWidget(self.radio_button_cursor)
-        groupbox.setLayout(vlayout)
-        self.insert_location_widget.setLayout(aqt.qt.QVBoxLayout())
-        self.insert_location_widget.layout().addWidget(groupbox)
+        insert_location_layout = aqt.qt.QVBoxLayout(self.insert_location_widget)
+        insert_location_layout.addWidget(aqt.qt.QLabel('Where to insert the audio?'))
+        insert_location_layout.addWidget(self.radio_button_after)
+        insert_location_layout.addWidget(self.radio_button_cursor)
         self.batch_target_layout.addWidget(self.insert_location_widget)
 
         # Sound handling options (only shown when different field selected)
