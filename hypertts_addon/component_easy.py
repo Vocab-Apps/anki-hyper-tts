@@ -52,14 +52,14 @@ class ComponentEasy(component_common.ComponentBase):
         vlayout.addWidget(self.source_text_edit)
 
         # Voice Selection group
-        voice_group = aqt.qt.QGroupBox('Voice Selection')
+        voice_group = aqt.qt.QGroupBox('Voice Selection:')
         voice_layout = aqt.qt.QVBoxLayout()
         voice_layout.addWidget(self.voice_selection.draw())
         voice_group.setLayout(voice_layout)
         vlayout.addWidget(voice_group)
 
         # Target group
-        target_group = aqt.qt.QGroupBox('Target Field')
+        target_group = aqt.qt.QGroupBox('Target Field:')
         target_layout = aqt.qt.QHBoxLayout()
         target_layout.addWidget(self.target.draw())
         target_group.setLayout(target_layout)
