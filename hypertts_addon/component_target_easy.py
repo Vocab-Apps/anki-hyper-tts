@@ -31,8 +31,9 @@ class BatchTargetEasy(component_target.BatchTarget):
         self.batch_target_layout = aqt.qt.QVBoxLayout(self.layout_widget)
 
         # Same field option
-        groupbox = aqt.qt.QGroupBox('Target Field')
-        vlayout = aqt.qt.QVBoxLayout()
+        target_field_container = aqt.qt.QWidget()
+        vlayout = aqt.qt.QVBoxLayout(target_field_container)
+        vlayout.addWidget(aqt.qt.QLabel('Target Field'))
         vlayout.addWidget(self.radio_button_same_field)
         vlayout.addWidget(self.radio_button_different_field)
 
@@ -43,8 +44,7 @@ class BatchTargetEasy(component_target.BatchTarget):
         self.target_field_combobox.addItems(self.field_list)
         target_field_layout.addWidget(self.target_field_combobox)
         vlayout.addWidget(self.target_field_widget)
-        groupbox.setLayout(vlayout)
-        self.batch_target_layout.addWidget(groupbox)
+        self.batch_target_layout.addWidget(target_field_container)
 
         # Insert location options (only shown when same field selected)
         self.insert_location_widget = aqt.qt.QWidget()
