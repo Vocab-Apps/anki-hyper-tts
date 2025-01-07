@@ -54,12 +54,10 @@ class ComponentEasy(component_common.ComponentBase):
         self.source_text_edit.setPlainText(self.source_text)
         left_layout.addWidget(self.source_text_edit)
 
-        # Voice Selection group
-        voice_group = aqt.qt.QGroupBox('Voice Selection:')
-        voice_layout = aqt.qt.QVBoxLayout()
-        voice_layout.addWidget(self.voice_selection.draw())
-        voice_group.setLayout(voice_layout)
-        left_layout.addWidget(voice_group)
+        # Voice Selection
+        voice_label = aqt.qt.QLabel('Voice Selection:')
+        left_layout.addWidget(voice_label)
+        left_layout.addWidget(self.voice_selection.draw())
         left_layout.addStretch()
 
         # Add left side to main layout
