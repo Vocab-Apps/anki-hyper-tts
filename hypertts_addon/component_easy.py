@@ -20,6 +20,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.hypertts = hypertts
         self.dialog = dialog
         self.source_text = source_text
+        self.original_width = None
 
         self.batch_model = None
 
@@ -153,7 +154,12 @@ class ComponentEasy(component_common.ComponentBase):
         if self.right_widget.isVisible():
             self.right_widget.hide()
             self.toggle_settings_button.setText(constants.GUI_TEXT_EASY_BUTTON_MORE_SETTINGS)
+            # Restore original width if we have it stored
+            if self.original_width is not None:
+                self.dialog.resize(self.original_width, self.dialog.height())
         else:
+            # Store current width before showing additional settings
+            self.original_width = self.dialog.width()
             self.right_widget.show()
             self.toggle_settings_button.setText(constants.GUI_TEXT_EASY_BUTTON_HIDE_MORE_SETTINGS)
 
