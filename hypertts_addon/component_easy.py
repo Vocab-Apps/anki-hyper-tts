@@ -91,7 +91,7 @@ class ComponentEasy(component_common.ComponentBase):
         # Add buttons at the bottom
         button_layout = aqt.qt.QHBoxLayout()
         button_layout.addStretch()  # Add spacer to push buttons to the right
-        self.toggle_settings_button = aqt.qt.QPushButton('Additional Settings...')
+        self.toggle_settings_button = aqt.qt.QPushButton(constants.GUI_TEXT_EASY_BUTTON_MORE_SETTINGS)
         self.preview_button = aqt.qt.QPushButton('Preview Audio')
         button_layout.addWidget(self.toggle_settings_button)
         self.add_audio_button = aqt.qt.QPushButton('Add Audio')
@@ -152,10 +152,10 @@ class ComponentEasy(component_common.ComponentBase):
     def toggle_settings(self):
         if self.right_widget.isVisible():
             self.right_widget.hide()
-            self.toggle_settings_button.setText('Additional Settings...')
+            self.toggle_settings_button.setText(constants.GUI_TEXT_EASY_BUTTON_MORE_SETTINGS)
         else:
             self.right_widget.show()
-            self.toggle_settings_button.setText('Hide Additional Settings...')
+            self.toggle_settings_button.setText(constants.GUI_TEXT_EASY_BUTTON_HIDE_MORE_SETTINGS)
 
 class EasyDialog(aqt.qt.QDialog):
     def __init__(self, hypertts):
