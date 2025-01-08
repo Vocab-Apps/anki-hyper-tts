@@ -98,7 +98,13 @@ def test_get_preset_id_full_workflow_1(qtbot):
     }
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     mock_editor = testing_utils.MockEditor()
-    editor_context = config_models.EditorContext(note, mock_editor, False, None, None)
+    editor_context = config_models.EditorContext(
+        note=note, 
+        editor=mock_editor, 
+        add_mode=False, 
+        selected_text=None, 
+        selected_text_fieldname=None,
+        current_field=None)
 
     # user cancels
     def dialog_input_sequence(dialog):

@@ -22,7 +22,12 @@ def get_editor_context():
         deck_id=deck_id)
 
     editor_context = config_models.EditorContext(
-        editor=mock_editor, note=note_1, add_mode=False, selected_text=None, selected_text_fieldname=None)
+        editor=mock_editor, 
+        note=note_1, 
+        add_mode=False, 
+        selected_text=None, 
+        selected_text_fieldname=None,
+        current_field=config_gen.field_chinese)
 
     return hypertts_instance, deck_note_type, editor_context
 

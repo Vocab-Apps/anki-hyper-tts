@@ -1449,22 +1449,6 @@ def test_batch_dialog_browser_manual(qtbot):
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = dialog_input_sequence
     component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
 
-def test_easy_dialog_manual(qtbot):
-    # HYPERTTS_EASY_DIALOG_DEBUG=yes pytest test_components.py -k test_easy_dialog_manual -s -rPP
-    config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-
-    source_text = 'this is the source text for TTS'
-    source_field = 'Chinese'
-    field_list = ['English', 'Pinyin']
-
-    def dialog_input_sequence(dialog):    
-        if os.environ.get('HYPERTTS_EASY_DIALOG_DEBUG', 'no') == 'yes':
-            dialog.exec()
-
-    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = dialog_input_sequence
-    component_easy.create_component_easy(hypertts_instance, source_text, source_field, field_list)
-
 
 def test_text_processing(qtbot):
     config_gen = testing_utils.TestConfigGenerator()

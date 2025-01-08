@@ -208,11 +208,16 @@ class HyperTTS():
     def get_editor_context(self, editor) -> config_models.EditorContext:
         selected_text = None
         selected_text_fieldname = None
-        
+
+        current_field_num = editor.currentField
+        # has the user put the cursor inside a field ?
+        current_field_name = None
+        if current_field_num != None:
+            current_field_name = model['flds'][current_field_num]['name']
+
         if len(editor.web.selectedText()) > 0:
             # need to get the field name for selected text
             deck_note_type = self.get_editor_deck_note_type(editor)
-            current_field_num = editor.currentField
             if current_field_num != None:
                 model = aqt.mw.col.models.get(deck_note_type.model_id)
                 selected_text_fieldname = model['flds'][current_field_num]['name']
@@ -222,7 +227,8 @@ class HyperTTS():
             editor=editor, 
             add_mode=editor.addMode,
             selected_text=selected_text,
-            selected_text_fieldname=selected_text_fieldname)
+            selected_text_fieldname=selected_text_fieldname,
+            current_field=current_field_name)
         logger.debug(f'editor_context: {editor_context}')
         return editor_context
 

@@ -16,13 +16,22 @@ logger = logging_utils.get_child_logger(__name__)
 # editor for a single note.
 
 class ComponentEasy(component_common.ComponentBase):
-    def __init__(self, hypertts, dialog, source_text, source_field, field_list):
+    def __init__(self, hypertts, dialog, source_text: str, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
         self.hypertts = hypertts
         self.dialog = dialog
         self.source_text = source_text
+        self.deck_note_type = deck_note_type
+        self.editor_context = editor_context
+
         self.original_width = None
 
         self.batch_model = None
+
+        source_field = editor_context.current_field
+        field_list = field_list = list(editor_context.note.keys())
+        # remove source field
+        if source_field in field_list:
+            field_list.remove(source_field)
 
         # initialize sub-components
         self.target = component_target_easy.BatchTargetEasy(hypertts, source_field, field_list, self.model_update_target)
@@ -180,19 +189,33 @@ class EasyDialog(aqt.qt.QDialog):
         self.setWindowTitle(constants.GUI_EASY_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
 
-    def configure(self, source_text: str, source_field, other_field_list):
-        easy_component = ComponentEasy(self.hypertts, self, source_text, source_field, other_field_list)
+    def configure(self, source_text: str, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
+        easy_component = ComponentEasy(self.hypertts, self, source_text, deck_note_type, editor_context)
         layout = aqt.qt.QVBoxLayout()
         easy_component.draw(self.main_layout)
         self.easy_component = easy_component
         # Set initial size
         self.adjustSize()
 
-def create_component_easy(hypertts, source_text, source_field, field_list):
+# def create_component_easy(hypertts, source_text, source_field, field_list):
+#     dialog = EasyDialog(hypertts)
+#     # remove source_field from field_list
+#     other_field_list = copy.deepcopy(field_list)
+#     if source_field in field_list:
+#         other_field_list.remove(source_field)
+#     dialog.configure(source_text, source_field, field_list)
+#     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)
+
+def get_source_text(hypertts, editor_context: config_models.EditorContext):
+    # todo: 
+    # - add text processing (strip html, etc)
+    # - look at clipboard
+    # - look at text selection
+    current_field_name = editor_context.current_field
+    return editor_context.note[current_field_name]
+
+def create_dialog_editor(hypertts, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
     dialog = EasyDialog(hypertts)
-    # remove source_field from field_list
-    other_field_list = copy.deepcopy(field_list)
-    if source_field in field_list:
-        other_field_list.remove(source_field)
-    dialog.configure(source_text, source_field, field_list)
+    source_text = get_source_text(hypertts, editor_context)
+    dialog.configure(source_text, deck_note_type, editor_context)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)

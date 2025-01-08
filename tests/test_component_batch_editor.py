@@ -7,6 +7,7 @@ from test_utils import gui_testing_utils
 
 from hypertts_addon import constants
 from hypertts_addon import component_batch
+from hypertts_addon import component_easy
 from hypertts_addon import config_models
 from hypertts_addon import logging_utils
 
@@ -236,7 +237,13 @@ def test_editor_get_new_preset_id_1(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     note = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     mock_editor = testing_utils.MockEditor()
-    editor_context = config_models.EditorContext(note, mock_editor, False, None, None)
+    editor_context = config_models.EditorContext(
+        note=note, 
+        editor=mock_editor, 
+        add_mode=False, 
+        selected_text=None, 
+        selected_text_fieldname=None,
+        current_field=None)
 
     # user cancels
     def dialog_input_sequence(dialog):
@@ -384,3 +391,12 @@ def test_batch_dialog_editor_advanced_template_save_button(qtbot):
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = batch_dialog_input_sequence_load
     component_batch.create_dialog_editor_existing_preset(hypertts_instance, editor_context, preset_uuid)    
+
+def test_easy_dialog_editor_manual(qtbot):
+    # HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_components.py -k test_easy_dialog_editor_manual -s -rPP
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+    def easy_dialog_input_sequence(dialog):
+        if os.environ.get('HYPERTTS_EASY_DIALOG_DEBUG', 'no') == 'yes':
+            dialog.exec()        
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)

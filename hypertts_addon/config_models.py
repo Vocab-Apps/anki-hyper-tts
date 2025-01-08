@@ -580,6 +580,7 @@ class EditorContext:
     add_mode: bool
     selected_text: str
     selected_text_fieldname: str
+    current_field: str
 
 @dataclass
 class MappingRule:

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 items = [
-    #HYPERTTS_EASY_DIALOG_DEBUG=yes pytest test_components.py -k test_easy_dialog_manual -s -rPP
+    # HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_components.py -k test_easy_dialog_editor_manual -s -rPP
     {
-        'name': 'test easy mode manual',
-        'command': 'HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_components.py -k test_easy_dialog_manual'
-    },    
+        'name': 'test easy dialog editor',
+        'command': 'HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_component_batch_editor.py -k test_easy_dialog_editor_manual -s -rPP'
+    },
     {
         'name': 'unit test test_voice_selection_easy_single_1',
         'command': 'pytest --log-cli-level=DEBUG tests/test_components.py -k test_voice_selection_easy_single_1 -vv'
