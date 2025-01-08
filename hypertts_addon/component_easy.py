@@ -39,13 +39,16 @@ class ComponentEasy(component_common.ComponentBase):
         # Left side - vertical layout
         left_layout = aqt.qt.QVBoxLayout()
 
-        # Source text preview
-        source_label = gui_utils.get_medium_label('1. Source Text:')
-        left_layout.addWidget(source_label)
+        # Source text group
+        source_group = aqt.qt.QGroupBox('1. Source Text')
+        source_group_layout = aqt.qt.QVBoxLayout()
         source_description_label = aqt.qt.QLabel(constants.GUI_TEXT_EASY_SOURCE_FIELD)
-        left_layout.addWidget(source_description_label)
+        source_group_layout.addWidget(source_description_label)
         
         self.source_text_edit = aqt.qt.QPlainTextEdit()
+        source_group_layout.addWidget(self.source_text_edit)
+        source_group.setLayout(source_group_layout)
+        left_layout.addWidget(source_group)
         self.source_text_edit.setReadOnly(False)
         self.source_text_edit.setMinimumHeight(50)
         font = self.source_text_edit.font()
@@ -54,24 +57,28 @@ class ComponentEasy(component_common.ComponentBase):
         self.source_text_edit.setPlainText(self.source_text)
         left_layout.addWidget(self.source_text_edit)
 
-        # Voice Selection
-        voice_label = gui_utils.get_medium_label('2. Voice Selection:')
-        left_layout.addWidget(voice_label)
+        # Voice Selection group
+        voice_group = aqt.qt.QGroupBox('2. Voice Selection')
+        voice_group_layout = aqt.qt.QVBoxLayout()
         voice_description_label = aqt.qt.QLabel(constants.GUI_TEXT_EASY_VOICE_SELECTION)
-        left_layout.addWidget(voice_description_label)
-        left_layout.addWidget(self.voice_selection.draw())
+        voice_group_layout.addWidget(voice_description_label)
+        voice_group_layout.addWidget(self.voice_selection.draw())
+        voice_group.setLayout(voice_group_layout)
+        left_layout.addWidget(voice_group)
         left_layout.addStretch()
 
         # Right side - vertical layout in a widget container
         self.right_widget = aqt.qt.QWidget()
         right_layout = aqt.qt.QVBoxLayout(self.right_widget)
 
-        # Target field
-        target_label = gui_utils.get_medium_label('3. Target Field:')
-        right_layout.addWidget(target_label)
+        # Target field group
+        target_group = aqt.qt.QGroupBox('3. Target Field')
+        target_group_layout = aqt.qt.QVBoxLayout()
         target_description_label = aqt.qt.QLabel(constants.GUI_TEXT_EASY_TARGET)
-        right_layout.addWidget(target_description_label)
-        right_layout.addWidget(self.target.draw())
+        target_group_layout.addWidget(target_description_label)
+        target_group_layout.addWidget(self.target.draw())
+        target_group.setLayout(target_group_layout)
+        right_layout.addWidget(target_group)
 
         right_layout.addStretch()
 
