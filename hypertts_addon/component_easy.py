@@ -64,11 +64,16 @@ class ComponentEasy(component_common.ComponentBase):
         left_layout.addWidget(self.voice_selection.draw())
         left_layout.addStretch()
 
+        # Add toggle button for additional settings
+        self.toggle_settings_button = aqt.qt.QPushButton('Additional Settings...')
+        left_layout.addWidget(self.toggle_settings_button)
+        
         # Add left side to main layout
         hlayout.addLayout(left_layout)
 
-        # Right side - vertical layout
-        right_layout = aqt.qt.QVBoxLayout()
+        # Right side - vertical layout in a widget container
+        self.right_widget = aqt.qt.QWidget()
+        right_layout = aqt.qt.QVBoxLayout(self.right_widget)
 
         # Target field
         target_label = gui_utils.get_medium_label('3. Target Field:')
@@ -91,13 +96,15 @@ class ComponentEasy(component_common.ComponentBase):
         button_layout.addWidget(self.cancel_button)
         right_layout.addLayout(button_layout)
 
-        # Add right side to main layout
-        hlayout.addLayout(right_layout)
+        # Add right side widget to main layout
+        hlayout.addWidget(self.right_widget)
+        self.right_widget.hide()  # hidden by default
 
         # Wire events
         self.preview_button.pressed.connect(self.preview_button_pressed)
         self.add_audio_button.pressed.connect(self.add_audio_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
+        self.toggle_settings_button.pressed.connect(self.toggle_settings)
 
         layout.addLayout(hlayout)
 
@@ -137,6 +144,14 @@ class ComponentEasy(component_common.ComponentBase):
             self.preview.batch_status.stop()
         else:
             self.dialog.close()
+
+    def toggle_settings(self):
+        if self.right_widget.isVisible():
+            self.right_widget.hide()
+            self.toggle_settings_button.setText('Additional Settings...')
+        else:
+            self.right_widget.show()
+            self.toggle_settings_button.setText('Hide Additional Settings...')
 
 class EasyDialog(aqt.qt.QDialog):
     def __init__(self, hypertts):
