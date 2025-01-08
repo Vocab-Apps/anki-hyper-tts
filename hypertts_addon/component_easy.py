@@ -46,16 +46,15 @@ class ComponentEasy(component_common.ComponentBase):
         source_group_layout.addWidget(source_description_label)
         
         self.source_text_edit = aqt.qt.QPlainTextEdit()
-        source_group_layout.addWidget(self.source_text_edit)
-        source_group.setLayout(source_group_layout)
-        left_layout.addWidget(source_group)
         self.source_text_edit.setReadOnly(False)
         self.source_text_edit.setMinimumHeight(50)
         font = self.source_text_edit.font()
         font.setPointSize(20)  # increase font size
         self.source_text_edit.setFont(font)
         self.source_text_edit.setPlainText(self.source_text)
-        left_layout.addWidget(self.source_text_edit)
+        source_group_layout.addWidget(self.source_text_edit)
+        source_group.setLayout(source_group_layout)
+        left_layout.addWidget(source_group)
 
         # Voice Selection group
         voice_group = aqt.qt.QGroupBox('2. Voice Selection')
