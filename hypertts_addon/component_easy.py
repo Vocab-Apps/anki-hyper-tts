@@ -94,6 +94,7 @@ class ComponentEasy(component_common.ComponentBase):
         
         # Add buttons at the bottom
         button_layout = aqt.qt.QHBoxLayout()
+        button_layout.addStretch()  # Add spacer to push buttons to the right
         self.preview_button = aqt.qt.QPushButton('Preview Audio')
         self.add_audio_button = aqt.qt.QPushButton('Add Audio')
         self.add_audio_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
