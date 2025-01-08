@@ -40,7 +40,7 @@ class ComponentEasy(component_common.ComponentBase):
         left_layout = aqt.qt.QVBoxLayout()
 
         # Source text group
-        source_group = aqt.qt.QGroupBox('1. Source Text')
+        source_group = aqt.qt.QGroupBox('Source Text')
         source_group_layout = aqt.qt.QVBoxLayout()
         source_description_label = aqt.qt.QLabel(constants.GUI_TEXT_EASY_SOURCE_FIELD)
         source_group_layout.addWidget(source_description_label)
@@ -57,7 +57,7 @@ class ComponentEasy(component_common.ComponentBase):
         left_layout.addWidget(source_group)
 
         # Voice Selection group
-        voice_group = aqt.qt.QGroupBox('2. Voice Selection')
+        voice_group = aqt.qt.QGroupBox('Voice Selection')
         voice_group_layout = aqt.qt.QVBoxLayout()
         voice_description_label = aqt.qt.QLabel(constants.GUI_TEXT_EASY_VOICE_SELECTION)
         voice_group_layout.addWidget(voice_description_label)
@@ -71,7 +71,7 @@ class ComponentEasy(component_common.ComponentBase):
         right_layout = aqt.qt.QVBoxLayout(self.right_widget)
 
         # Target field group
-        target_group = aqt.qt.QGroupBox('3. Target Field')
+        target_group = aqt.qt.QGroupBox('Target Field')
         target_group_layout = aqt.qt.QVBoxLayout()
         target_description_label = aqt.qt.QLabel(constants.GUI_TEXT_EASY_TARGET)
         target_group_layout.addWidget(target_description_label)
