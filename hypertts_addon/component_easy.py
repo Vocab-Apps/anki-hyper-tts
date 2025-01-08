@@ -197,15 +197,6 @@ class EasyDialog(aqt.qt.QDialog):
         # Set initial size
         self.adjustSize()
 
-# def create_component_easy(hypertts, source_text, source_field, field_list):
-#     dialog = EasyDialog(hypertts)
-#     # remove source_field from field_list
-#     other_field_list = copy.deepcopy(field_list)
-#     if source_field in field_list:
-#         other_field_list.remove(source_field)
-#     dialog.configure(source_text, source_field, field_list)
-#     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)
-
 def get_source_text(hypertts, editor_context: config_models.EditorContext):
     # todo: 
     # - add text processing (strip html, etc)
