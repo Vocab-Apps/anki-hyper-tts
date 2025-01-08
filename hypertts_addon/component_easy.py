@@ -65,9 +65,6 @@ class ComponentEasy(component_common.ComponentBase):
         self.toggle_settings_button = aqt.qt.QPushButton('Additional Settings...')
         left_layout.addWidget(self.toggle_settings_button)
         
-        # Add left side to main layout
-        hlayout.addLayout(left_layout)
-
         # Right side - vertical layout in a widget container
         self.right_widget = aqt.qt.QWidget()
         right_layout = aqt.qt.QVBoxLayout(self.right_widget)
