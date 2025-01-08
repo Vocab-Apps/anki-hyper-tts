@@ -29,9 +29,6 @@ class ComponentEasy(component_common.ComponentBase):
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
 
     def draw(self, layout):
-        # Create main horizontal layout
-        hlayout = aqt.qt.QHBoxLayout()
-
         # Add header with logo at the top
         header_layout = aqt.qt.QHBoxLayout()
         header_layout.addStretch()
@@ -84,7 +81,21 @@ class ComponentEasy(component_common.ComponentBase):
 
         right_layout.addStretch()
 
-        # Add buttons
+        # Create main vertical layout for content
+        main_content = aqt.qt.QVBoxLayout()
+        
+        # Create horizontal layout for left and right panes
+        panes_layout = aqt.qt.QHBoxLayout()
+        
+        # Add left and right sides to panes layout
+        panes_layout.addLayout(left_layout)
+        panes_layout.addWidget(self.right_widget)
+        self.right_widget.hide()  # hidden by default
+        
+        # Add panes to main content
+        main_content.addLayout(panes_layout)
+        
+        # Add buttons at the bottom
         button_layout = aqt.qt.QHBoxLayout()
         self.preview_button = aqt.qt.QPushButton('Preview Audio')
         self.add_audio_button = aqt.qt.QPushButton('Add Audio')
@@ -94,11 +105,7 @@ class ComponentEasy(component_common.ComponentBase):
         button_layout.addWidget(self.preview_button)
         button_layout.addWidget(self.add_audio_button)
         button_layout.addWidget(self.cancel_button)
-        right_layout.addLayout(button_layout)
-
-        # Add right side widget to main layout
-        hlayout.addWidget(self.right_widget)
-        self.right_widget.hide()  # hidden by default
+        main_content.addLayout(button_layout)
 
         # Wire events
         self.preview_button.pressed.connect(self.preview_button_pressed)
@@ -106,7 +113,8 @@ class ComponentEasy(component_common.ComponentBase):
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
         self.toggle_settings_button.pressed.connect(self.toggle_settings)
 
-        layout.addLayout(hlayout)
+        # Add everything to main layout
+        layout.addLayout(main_content)
 
 
     def model_update_target(self, model):
