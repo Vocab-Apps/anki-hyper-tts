@@ -9,8 +9,10 @@ logger = logging_utils.get_child_logger(__name__)
 
 
 class BatchTargetEasy(component_target.BatchTarget):
-    def __init__(self, hypertts, field_list, model_change_callback):
+    def __init__(self, hypertts, source_field, field_list, model_change_callback):
         super().__init__(hypertts, field_list, model_change_callback)
+
+        self.source_field = source_field
 
         # initialize widgets
         # same field

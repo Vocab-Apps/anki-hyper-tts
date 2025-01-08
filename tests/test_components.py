@@ -856,7 +856,13 @@ def fixtures_target_easy():
 
     model_change_callback = gui_testing_utils.MockModelChangeCallback()
     field_list = hypertts_instance.get_all_fields_from_notes(note_id_list)
-    batch_target = component_target_easy.BatchTargetEasy(hypertts_instance, field_list, model_change_callback.model_updated)
+
+    source_field = 'Chinese'
+    other_field_list = field_list
+    other_field_list.remove(source_field)
+
+
+    batch_target = component_target_easy.BatchTargetEasy(hypertts_instance, source_field, other_field_list, model_change_callback.model_updated)
     dialog.addChildWidget(batch_target.draw())
 
     return dialog, batch_target, model_change_callback
@@ -1449,14 +1455,15 @@ def test_easy_dialog_manual(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
     source_text = 'this is the source text for TTS'
-    field_list = ['English', 'Chinese', 'Pinyin']
+    source_field = 'Chinese'
+    field_list = ['English', 'Pinyin']
 
     def dialog_input_sequence(dialog):    
         if os.environ.get('HYPERTTS_EASY_DIALOG_DEBUG', 'no') == 'yes':
             dialog.exec()
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = dialog_input_sequence
-    component_easy.create_component_easy(hypertts_instance, source_text, field_list)
+    component_easy.create_component_easy(hypertts_instance, source_text, source_field, field_list)
 
 
 def test_text_processing(qtbot):

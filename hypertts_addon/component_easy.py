@@ -16,7 +16,7 @@ logger = logging_utils.get_child_logger(__name__)
 # editor for a single note.
 
 class ComponentEasy(component_common.ComponentBase):
-    def __init__(self, hypertts, dialog, source_text, field_list):
+    def __init__(self, hypertts, dialog, source_text, source_field, field_list):
         self.hypertts = hypertts
         self.dialog = dialog
         self.source_text = source_text
@@ -24,7 +24,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.batch_model = None
 
         # initialize sub-components
-        self.target = component_target_easy.BatchTargetEasy(hypertts, field_list, self.model_update_target)
+        self.target = component_target_easy.BatchTargetEasy(hypertts, source_field, field_list, self.model_update_target)
         self.voice_selection = component_voiceselection_easy.VoiceSelectionEasy(hypertts, dialog, self.model_update_voice_selection)
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
 
@@ -145,13 +145,17 @@ class EasyDialog(aqt.qt.QDialog):
         self.setWindowTitle(constants.GUI_EASY_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
 
-    def configure(self, source_text: str, field_list):
-        easy_component = ComponentEasy(self.hypertts, self, source_text, field_list)
+    def configure(self, source_text: str, source_field, other_field_list):
+        easy_component = ComponentEasy(self.hypertts, self, source_text, source_field, other_field_list)
         layout = aqt.qt.QVBoxLayout()
         easy_component.draw(self.main_layout)
         self.easy_component = easy_component
 
-def create_component_easy(hypertts, source_text, field_list):
+def create_component_easy(hypertts, source_text, source_field, field_list):
     dialog = EasyDialog(hypertts)
-    dialog.configure(source_text, field_list)
+    # remove source_field from field_list
+    other_field_list = copy.deepcopy(field_list)
+    if source_field in field_list:
+        other_field_list.remove(source_field)
+    dialog.configure(source_text, source_field, field_list)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)
