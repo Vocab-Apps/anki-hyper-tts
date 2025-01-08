@@ -61,10 +61,6 @@ class ComponentEasy(component_common.ComponentBase):
         left_layout.addWidget(self.voice_selection.draw())
         left_layout.addStretch()
 
-        # Add toggle button for additional settings
-        self.toggle_settings_button = aqt.qt.QPushButton('Additional Settings...')
-        left_layout.addWidget(self.toggle_settings_button)
-        
         # Right side - vertical layout in a widget container
         self.right_widget = aqt.qt.QWidget()
         right_layout = aqt.qt.QVBoxLayout(self.right_widget)
@@ -95,7 +91,9 @@ class ComponentEasy(component_common.ComponentBase):
         # Add buttons at the bottom
         button_layout = aqt.qt.QHBoxLayout()
         button_layout.addStretch()  # Add spacer to push buttons to the right
+        self.toggle_settings_button = aqt.qt.QPushButton('Additional Settings...')
         self.preview_button = aqt.qt.QPushButton('Preview Audio')
+        button_layout.addWidget(self.toggle_settings_button)
         self.add_audio_button = aqt.qt.QPushButton('Add Audio')
         self.add_audio_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         self.cancel_button = aqt.qt.QPushButton('Cancel')
