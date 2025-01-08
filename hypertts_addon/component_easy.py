@@ -156,12 +156,16 @@ class ComponentEasy(component_common.ComponentBase):
             self.toggle_settings_button.setText(constants.GUI_TEXT_EASY_BUTTON_MORE_SETTINGS)
             # Restore original width if we have it stored
             if self.original_width is not None:
-                self.dialog.resize(self.original_width, self.dialog.height())
+                self.dialog.setFixedWidth(self.original_width)
+                self.dialog.setMinimumWidth(0)
+                self.dialog.setMaximumWidth(16777215)  # Qt's QWIDGETSIZE_MAX
         else:
             # Store current width before showing additional settings
             self.original_width = self.dialog.width()
             self.right_widget.show()
             self.toggle_settings_button.setText(constants.GUI_TEXT_EASY_BUTTON_HIDE_MORE_SETTINGS)
+            # Let the dialog adjust to the new content
+            self.dialog.adjustSize()
 
 class EasyDialog(aqt.qt.QDialog):
     def __init__(self, hypertts):
@@ -175,6 +179,8 @@ class EasyDialog(aqt.qt.QDialog):
         layout = aqt.qt.QVBoxLayout()
         easy_component.draw(self.main_layout)
         self.easy_component = easy_component
+        # Set initial size
+        self.adjustSize()
 
 def create_component_easy(hypertts, source_text, source_field, field_list):
     dialog = EasyDialog(hypertts)
