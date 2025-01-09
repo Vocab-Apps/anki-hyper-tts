@@ -178,6 +178,36 @@ def test_voice_selection_easy_single_1(qtbot):
     }
     assert voiceselection.serialize() == expected_output
 
+def test_voice_selection_easy_filters(qtbot):
+    # pytest --log-cli-level=DEBUG tests/test_components.py -k test_voice_selection_easy_filters -vv
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    voiceselection = component_voiceselection_easy.VoiceSelectionEasy(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+
+    # ensure filters are set to All by default
+    assert voiceselection.languages_combobox.currentText() == constants.LABEL_FILTER_ALL
+    assert voiceselection.services_combobox.currentText() == constants.LABEL_FILTER_ALL
+
+    # select english language filter
+    voiceselection.languages_combobox.setCurrentText('English')
+
+    # ensure japanese filter is enabled
+    assert len(voiceselection.filtered_voice_list) < len(voiceselection.voice_list)
+    assert len(voiceselection.filtered_voice_list) == voiceselection.voices_combobox.count()
+    for voice in voiceselection.filtered_voice_list:
+        assert languages.Language.en in voice.languages
+
+    # reset to all
+    voiceselection.languages_combobox.setCurrentText(constants.LABEL_FILTER_ALL)
+
+    # ensure all voices are available now
+    assert len(voiceselection.filtered_voice_list) == len(voiceselection.voice_list)        
+
 def test_voice_selection_easy_load_model(qtbot):
     # Test loading a voice selection model
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
