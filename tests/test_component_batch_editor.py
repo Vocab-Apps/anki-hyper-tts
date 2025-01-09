@@ -434,6 +434,14 @@ def test_easy_dialog_editor_1(qtbot):
         # the toggle_settings_button button should show "Hide Settings"
         assert dialog.easy_component.toggle_settings_button.text() == constants.GUI_TEXT_EASY_BUTTON_HIDE_MORE_SETTINGS
 
+        # check target settings
+        # same field should be selected
+        assert dialog.easy_component.target.same_field_group.checkedButton() == dialog.easy_component.target.radio_button_same_field
+        # check the label of the same field group, it should say "Into same field (Chinese)"
+        assert dialog.easy_component.target.same_field_group.buttons()[0].text() == 'Into same field (Chinese)'
+        # radio_button_after should be selected
+        assert dialog.easy_component.target.insert_location_group.checkedButton() == dialog.easy_component.target.radio_button_after
+
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_inital_state
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)    
