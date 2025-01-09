@@ -476,5 +476,21 @@ def test_easy_dialog_editor_1(qtbot):
             'options': {}
         }    
 
+        # override the text
+        dialog.easy_component.source_text_edit.setPlainText('custom text')
+        qtbot.mouseClick(dialog.easy_component.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
+        assert hypertts_instance.anki_utils.played_sound == {
+            'source_text': 'custom text',
+            'voice': {
+                'gender': 'Male', 
+                'audio_languages': ['fr_FR'],
+                'name': 'voice_a_1', 
+                'service': 'ServiceA',
+                'service_fee': 'free',
+                'voice_key': {'name': 'voice_1'}
+            },
+            'options': {}
+        }
+
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_sound_preview
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)        
