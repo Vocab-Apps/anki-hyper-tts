@@ -206,7 +206,16 @@ def test_voice_selection_easy_filters(qtbot):
     voiceselection.languages_combobox.setCurrentText(constants.LABEL_FILTER_ALL)
 
     # ensure all voices are available now
-    assert len(voiceselection.filtered_voice_list) == len(voiceselection.voice_list)        
+    assert len(voiceselection.filtered_voice_list) == len(voiceselection.voice_list)
+
+    # filter by service
+    # =================
+    voiceselection.services_combobox.setCurrentText('ServiceA')
+    # ensure only ServiceA voices are present
+    assert len(voiceselection.filtered_voice_list) < len(voiceselection.voice_list)
+    assert len(voiceselection.filtered_voice_list) == voiceselection.voices_combobox.count()
+    for voice in voiceselection.filtered_voice_list:
+        assert voice.service == 'ServiceA'    
 
 def test_voice_selection_easy_load_model(qtbot):
     # Test loading a voice selection model
