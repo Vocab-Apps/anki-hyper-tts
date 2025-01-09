@@ -399,3 +399,14 @@ def test_easy_dialog_editor_manual(qtbot):
             dialog.exec()        
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
+
+
+def test_easy_dialog_editor_1(qtbot):
+    # pytest --log-cli-level=DEBUG tests/test_component_batch_editor.py -k test_easy_dialog_editor_1 -s -rPP
+    # full end to end test for easy dialog started from the editor
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+    def easy_dialog_input_sequence(dialog):
+        # check source field value
+        assert dialog.easy_component.source_text_edit.toPlainText() == '老人家'
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)    
