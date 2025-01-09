@@ -43,12 +43,16 @@ class ComponentEasy(component_common.ComponentBase):
         
         # configure the model
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
+        self.set_model_defaults()
+
+
+    def set_model_defaults(self):
         # this will get overwritten if we load a model
-        self.batch_model.name = hypertts.get_default_easy_preset_name(deck_note_type)
+        self.batch_model.name = self.hypertts.get_default_easy_preset_name(self.deck_note_type)
         # set dummy source, will not get used
         self.batch_model.source = config_models.BatchSource(
             mode=constants.BatchMode.simple,
-            source_field=editor_context.current_field
+            source_field=self.editor_context.current_field
         )
         # default text processing
         self.batch_model.text_processing = config_models.TextProcessing()
