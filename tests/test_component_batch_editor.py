@@ -445,3 +445,30 @@ def test_easy_dialog_editor_1(qtbot):
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_inital_state
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)    
+
+
+    # check sound preview
+    # ===================
+    def easy_dialog_input_sequence_sound_preview(dialog):
+        # select second voice
+        select_default_voice(dialog.easy_component.voice_selection.voices_combobox)
+
+        # test sound preview
+        # ==================
+        # dialog.exec()
+        qtbot.mouseClick(dialog.easy_component.preview_button, aqt.qt.Qt.MouseButton.LeftButton)
+        assert hypertts_instance.anki_utils.played_sound == {
+            'source_text': '老人家',
+            'voice': {
+                'gender': 'Male', 
+                'audio_languages': ['fr_FR'],
+                'name': 'voice_a_1', 
+                'service': 'ServiceA',
+                'service_fee': 'free',
+                'voice_key': {'name': 'voice_1'}
+            },
+            'options': {}
+        }    
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_sound_preview
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)        
