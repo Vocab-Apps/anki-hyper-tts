@@ -447,6 +447,7 @@ def test_easy_dialog_editor_1(qtbot):
         assert dialog.easy_component.batch_model != None
         assert dialog.easy_component.batch_model.name != None
         assert dialog.easy_component.batch_model.text_processing != None
+        assert dialog.easy_component.batch_model.target.target_field == 'Chinese'
 
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_inital_state

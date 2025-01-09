@@ -174,14 +174,20 @@ class ComponentEasy(component_common.ComponentBase):
             self.preview_sound_button.setEnabled(True)
             self.add_audio_button.setEnabled(True)
 
+    def get_source_text(self):
+        source_text = self.source_text_edit.toPlainText()
+        return source_text
+
+    # preview audio handling
+    # ======================
+
     def preview_button_pressed(self):
         self.preview_sound_button.setText(self.BUTTON_TEXT_PREVIEWING)
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
     def sound_preview_task(self):
         # get text
-        source_text = self.source_text_edit.toPlainText()
-        self.hypertts.preview_note_audio(self.batch_model, self.editor_context.note, source_text)
+        self.hypertts.preview_note_audio(self.batch_model, self.editor_context.note, self.get_source_text())
         return True
 
     def sound_preview_task_done(self, result):
@@ -202,7 +208,7 @@ class ComponentEasy(component_common.ComponentBase):
 
     def add_audio_task(self):
         logger.debug('add_audio_task')
-        self.hypertts.editor_note_add_audio(self.batch_model, self.editor_context)
+        self.hypertts.editor_note_add_audio(self.batch_model, self.editor_context, text_input=self.get_source_text())
         return True
 
     def add_audio_task_done(self, result):
@@ -253,6 +259,10 @@ class EasyDialog(aqt.qt.QDialog):
         self.easy_component = easy_component
         # Set initial size
         self.adjustSize()
+
+    def close(self):
+        self.closed = True
+        self.accept()
 
 def get_source_text(hypertts, editor_context: config_models.EditorContext):
     # todo: 

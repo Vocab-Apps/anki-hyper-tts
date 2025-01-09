@@ -102,6 +102,7 @@ class HyperTTS():
 
         target_field_content = target_field_content.strip()
 
+        logger.debug(f'setting note[{target_field}] to {target_field_content}')
         note[target_field] = target_field_content
         if not add_mode:
             anki_collection.update_note(note)
@@ -168,7 +169,10 @@ class HyperTTS():
             voice = voice_list.pop(0)
             return voice
 
-    def editor_note_add_audio(self, batch: config_models.BatchConfig, editor_context: config_models.EditorContext):
+    def editor_note_add_audio(self, 
+            batch: config_models.BatchConfig, 
+            editor_context: config_models.EditorContext,
+            text_input = None):
         # used by :
         #  - component_batch.py
         #  - component_mappingrule.py
@@ -180,9 +184,13 @@ class HyperTTS():
         if editor_context.add_mode:
             audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_add)
         text_override = None
-        if batch.source.use_selection:
-            if editor_context.selected_text != None:
-                text_override = editor_context.selected_text
+        if text_input != None:
+            # most likely coming from the Easy mode where the user directly inputs text
+            text_override = text_input
+        else:
+            if batch.source.use_selection:
+                if editor_context.selected_text != None:
+                    text_override = editor_context.selected_text
         logger.debug(f'text_override: {text_override}')
         source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, editor_context.note, editor_context.add_mode,
             audio_request_context, text_override, self.anki_utils.get_anki_collection())

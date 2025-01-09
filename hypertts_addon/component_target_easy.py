@@ -93,8 +93,8 @@ class BatchTargetEasy(component_target.BatchTarget):
         self.wire_events()
 
         # Initial update
-        self.update_same_field()
         self.update_field()
+        self.update_same_field()
         self.update_text_sound()
         self.update_remove_sound() 
 
@@ -112,6 +112,8 @@ class BatchTargetEasy(component_target.BatchTarget):
     def update_same_field(self):
         same_field = self.radio_button_same_field.isChecked()
         self.batch_target_model.same_field = same_field
+        if same_field:
+            self.batch_target_model.target_field = self.source_field
         
         # Show/hide widgets based on same_field setting
         self.target_field_widget.setVisible(not same_field)
