@@ -413,13 +413,27 @@ def test_easy_dialog_editor_1(qtbot):
         assert dialog.easy_component.right_widget.isHidden() == True
         # the toggle_settings_button button should show "More Settings"
         assert dialog.easy_component.toggle_settings_button.text() == constants.GUI_TEXT_EASY_BUTTON_MORE_SETTINGS
+        
         # voice selection assertions
+                
         # languages_combobox should have All, English, French, Japanese
         # extract text of all items
         languages = [dialog.easy_component.voice_selection.languages_combobox.itemText(i) for i in range(dialog.easy_component.voice_selection.languages_combobox.count())]
         assert languages == ['All', '', 'English', 'French', 'Japanese']
         assert dialog.easy_component.voice_selection.languages_combobox.count() == 5 # including separator
         assert dialog.easy_component.voice_selection.languages_combobox.currentText() == 'All'
+
+        # services_combobox should have All, ServiceA, ServiceB
+        services = [dialog.easy_component.voice_selection.services_combobox.itemText(i) for i in range(dialog.easy_component.voice_selection.services_combobox.count())]
+        assert services == ['All', '', 'ServiceA', 'ServiceB']
+        assert dialog.easy_component.voice_selection.services_combobox.count() == 4 # including separator
+
+        # now expand the "more settings"
+        qtbot.mouseClick(dialog.easy_component.toggle_settings_button, aqt.qt.Qt.MouseButton.LeftButton)
+        assert dialog.easy_component.right_widget.isHidden() == False
+        # the toggle_settings_button button should show "Hide Settings"
+        assert dialog.easy_component.toggle_settings_button.text() == constants.GUI_TEXT_EASY_BUTTON_HIDE_MORE_SETTINGS
+
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_inital_state
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)    
