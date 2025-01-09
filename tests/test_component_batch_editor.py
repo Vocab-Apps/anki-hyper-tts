@@ -242,7 +242,6 @@ def test_editor_get_new_preset_id_1(qtbot):
         editor=mock_editor, 
         add_mode=False, 
         selected_text=None, 
-        selected_text_fieldname=None,
         current_field=None)
 
     # user cancels

@@ -103,7 +103,6 @@ def test_get_preset_id_full_workflow_1(qtbot):
         editor=mock_editor, 
         add_mode=False, 
         selected_text=None, 
-        selected_text_fieldname=None,
         current_field=None)
 
     # user cancels
