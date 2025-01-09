@@ -17,6 +17,9 @@ logger = logging_utils.get_child_logger(__name__)
 # editor for a single note.
 
 class ComponentEasy(component_common.ComponentBase):
+    BUTTON_TEXT_PREVIEW_AUDIO = 'Preview Audio'
+    BUTTON_TEXT_PREVIEWING = 'Playing Preview...'
+
     def __init__(self, hypertts, dialog, source_text: str, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
         self.hypertts = hypertts
         self.dialog = dialog
@@ -120,7 +123,7 @@ class ComponentEasy(component_common.ComponentBase):
         button_layout = aqt.qt.QHBoxLayout()
         button_layout.addStretch()  # Add spacer to push buttons to the right
         self.toggle_settings_button = aqt.qt.QPushButton(constants.GUI_TEXT_EASY_BUTTON_MORE_SETTINGS)
-        self.preview_sound_button = aqt.qt.QPushButton('Preview Audio')
+        self.preview_sound_button = aqt.qt.QPushButton(self.BUTTON_TEXT_PREVIEW_AUDIO)
         button_layout.addWidget(self.toggle_settings_button)
         self.add_audio_button = aqt.qt.QPushButton('Add Audio')
         self.add_audio_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
@@ -166,7 +169,7 @@ class ComponentEasy(component_common.ComponentBase):
             self.add_audio_button.setEnabled(True)
 
     def preview_button_pressed(self):
-        self.preview_sound_button.setText('Playing Preview...')
+        self.preview_sound_button.setText(self.BUTTON_TEXT_PREVIEWING)
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
     def sound_preview_task(self):
@@ -181,7 +184,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.hypertts.anki_utils.run_on_main(self.finish_sound_preview)
 
     def finish_sound_preview(self):
-        self.preview_sound_button.setText('Preview Audio')
+        self.preview_sound_button.setText(self.BUTTON_TEXT_PREVIEW_AUDIO)
 
     def add_audio_button_pressed(self):
         self.preview.apply_audio_to_notes()
