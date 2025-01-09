@@ -442,6 +442,12 @@ def test_easy_dialog_editor_1(qtbot):
         # radio_button_after should be selected
         assert dialog.easy_component.target.insert_location_group.checkedButton() == dialog.easy_component.target.radio_button_after
 
+        # model checks
+        # ============
+        assert dialog.easy_component.batch_model != None
+        assert dialog.easy_component.batch_model.name != None
+        assert dialog.easy_component.batch_model.text_processing != None
+
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_inital_state
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)    
