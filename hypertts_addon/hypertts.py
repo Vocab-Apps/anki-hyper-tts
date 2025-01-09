@@ -700,6 +700,11 @@ class HyperTTS():
             new_preset_name = f'Preset {i}'
         return new_preset_name
 
+    def get_default_easy_preset_name(self, deck_note_type: config_models.DeckNoteType) -> str:
+        note_type_name = self.anki_utils.get_note_type_name(deck_note_type.model_id)
+        deck_name = self.anki_utils.get_deck_name(deck_note_type.deck_id)
+        return f'Default {note_type_name} {deck_name}'
+
     # mapping rules
     def save_mapping_rules(self, mapping_rules: config_models.PresetMappingRules):
         self.config[constants.CONFIG_MAPPING_RULES] = config_models.serialize_preset_mapping_rules(mapping_rules)

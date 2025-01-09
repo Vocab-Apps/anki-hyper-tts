@@ -456,7 +456,7 @@ def test_easy_dialog_editor_1(qtbot):
         # test sound preview
         # ==================
         # dialog.exec()
-        qtbot.mouseClick(dialog.easy_component.preview_button, aqt.qt.Qt.MouseButton.LeftButton)
+        qtbot.mouseClick(dialog.easy_component.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
         assert hypertts_instance.anki_utils.played_sound == {
             'source_text': '老人家',
             'voice': {

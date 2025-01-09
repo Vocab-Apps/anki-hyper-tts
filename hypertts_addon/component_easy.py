@@ -9,6 +9,7 @@ from . import config_models
 from . import constants
 from . import gui_utils
 from . import logging_utils
+from . import errors
 
 logger = logging_utils.get_child_logger(__name__)
 
@@ -36,7 +37,18 @@ class ComponentEasy(component_common.ComponentBase):
         # initialize sub-components
         self.target = component_target_easy.BatchTargetEasy(hypertts, source_field, field_list, self.model_update_target)
         self.voice_selection = component_voiceselection_easy.VoiceSelectionEasy(hypertts, dialog, self.model_update_voice_selection)
+        
+        # configure the model
         self.batch_model = config_models.BatchConfig(self.hypertts.anki_utils)
+        # this will get overwritten if we load a model
+        self.batch_model.name = hypertts.get_default_easy_preset_name(deck_note_type)
+        # set dummy source, will not get used
+        self.batch_model.source = config_models.BatchSource(
+            mode=constants.BatchMode.simple,
+            source_field=editor_context.current_field
+        )
+        # default text processing
+        self.batch_model.text_processing = config_models.TextProcessing()
 
     def draw(self, layout):
         # Add header with logo at the top
@@ -108,19 +120,19 @@ class ComponentEasy(component_common.ComponentBase):
         button_layout = aqt.qt.QHBoxLayout()
         button_layout.addStretch()  # Add spacer to push buttons to the right
         self.toggle_settings_button = aqt.qt.QPushButton(constants.GUI_TEXT_EASY_BUTTON_MORE_SETTINGS)
-        self.preview_button = aqt.qt.QPushButton('Preview Audio')
+        self.preview_sound_button = aqt.qt.QPushButton('Preview Audio')
         button_layout.addWidget(self.toggle_settings_button)
         self.add_audio_button = aqt.qt.QPushButton('Add Audio')
         self.add_audio_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         self.cancel_button = aqt.qt.QPushButton('Cancel')
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
-        button_layout.addWidget(self.preview_button)
+        button_layout.addWidget(self.preview_sound_button)
         button_layout.addWidget(self.add_audio_button)
         button_layout.addWidget(self.cancel_button)
         main_content.addLayout(button_layout)
 
         # Wire events
-        self.preview_button.pressed.connect(self.preview_button_pressed)
+        self.preview_sound_button.pressed.connect(self.preview_button_pressed)
         self.add_audio_button.pressed.connect(self.add_audio_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
         self.toggle_settings_button.pressed.connect(self.toggle_settings)
@@ -141,7 +153,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.voice_selection.sample_text_selected(text)
 
     def batch_start(self):
-        self.preview_button.setEnabled(False)
+        self.preview_sound_button.setEnabled(False)
         self.add_audio_button.setEnabled(False)
         self.cancel_button.setText('Stop')
 
@@ -150,11 +162,26 @@ class ComponentEasy(component_common.ComponentBase):
             self.cancel_button.setText('Close')
         else:
             self.cancel_button.setText('Cancel')
-            self.preview_button.setEnabled(True)
+            self.preview_sound_button.setEnabled(True)
             self.add_audio_button.setEnabled(True)
 
     def preview_button_pressed(self):
-        self.preview.preview_audio()
+        self.preview_sound_button.setText('Playing Preview...')
+        self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
+
+    def sound_preview_task(self):
+        # get text
+        source_text = self.source_text_edit.toPlainText()
+        self.hypertts.preview_note_audio(self.batch_model, self.editor_context.note, source_text)
+        return True
+
+    def sound_preview_task_done(self, result):
+        with self.hypertts.error_manager.get_single_action_context('Playing Sound Preview'):
+            result = result.result()
+        self.hypertts.anki_utils.run_on_main(self.finish_sound_preview)
+
+    def finish_sound_preview(self):
+        self.preview_sound_button.setText('Preview Audio')
 
     def add_audio_button_pressed(self):
         self.preview.apply_audio_to_notes()
