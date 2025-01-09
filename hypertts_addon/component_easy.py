@@ -19,6 +19,8 @@ logger = logging_utils.get_child_logger(__name__)
 class ComponentEasy(component_common.ComponentBase):
     BUTTON_TEXT_PREVIEW_AUDIO = 'Preview Audio'
     BUTTON_TEXT_PREVIEWING = 'Playing Preview...'
+    BUTTON_TEXT_ADD_AUDIO = 'Add Audio'
+    BUTTON_TEXT_ADDING_AUDIO = 'Adding Audio...'
 
     def __init__(self, hypertts, dialog, source_text: str, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
         self.hypertts = hypertts
@@ -129,7 +131,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.toggle_settings_button = aqt.qt.QPushButton(constants.GUI_TEXT_EASY_BUTTON_MORE_SETTINGS)
         self.preview_sound_button = aqt.qt.QPushButton(self.BUTTON_TEXT_PREVIEW_AUDIO)
         button_layout.addWidget(self.toggle_settings_button)
-        self.add_audio_button = aqt.qt.QPushButton('Add Audio')
+        self.add_audio_button = aqt.qt.QPushButton(self.BUTTON_TEXT_ADD_AUDIO)
         self.add_audio_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         self.cancel_button = aqt.qt.QPushButton('Cancel')
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
@@ -190,8 +192,29 @@ class ComponentEasy(component_common.ComponentBase):
     def finish_sound_preview(self):
         self.preview_sound_button.setText(self.BUTTON_TEXT_PREVIEW_AUDIO)
 
+    # add audio handling
+    # ==================
+
     def add_audio_button_pressed(self):
-        self.preview.apply_audio_to_notes()
+        self.add_audio_button.setText(self.BUTTON_TEXT_ADDING_AUDIO)
+        self.add_audio_button.setEnabled(False)
+        self.hypertts.anki_utils.run_in_background(self.add_audio_task, self.add_audio_task_done)
+
+    def add_audio_task(self):
+        logger.debug('add_audio_task')
+        self.hypertts.editor_note_add_audio(self.batch_model, self.editor_context)
+        return True
+
+    def add_audio_task_done(self, result):
+        logger.debug('add_audio_task_done')
+        with self.hypertts.error_manager.get_single_action_context('Adding Audio to Note'):
+            result = result.result()
+            self.dialog.close()
+        self.hypertts.anki_utils.run_on_main(self.finish_add_audio)
+    
+    def finish_add_audio(self):
+        self.add_audio_button.setText(self.BUTTON_TEXT_ADD_AUDIO)
+        self.add_audio_button.setEnabled(True)
 
     def cancel_button_pressed(self):
         if self.cancel_button.text() == 'Stop':

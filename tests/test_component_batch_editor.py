@@ -482,7 +482,7 @@ def test_easy_dialog_editor_1(qtbot):
         assert hypertts_instance.anki_utils.played_sound == {
             'source_text': 'custom text',
             'voice': {
-                'gender': 'Male', 
+                'gender': 'Male',
                 'audio_languages': ['fr_FR'],
                 'name': 'voice_a_1', 
                 'service': 'ServiceA',
@@ -493,4 +493,30 @@ def test_easy_dialog_editor_1(qtbot):
         }
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_sound_preview
-    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)        
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
+
+    # add audio to note
+    # =================
+
+    def easy_dialog_input_sequence_add_audio(dialog):
+        # select second voice
+        select_default_voice(dialog.easy_component.voice_selection.voices_combobox)
+
+        # apply audio
+        # ===========
+
+        qtbot.mouseClick(dialog.easy_component.add_audio_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+        # check that sound tag was set
+        sound_tag = editor_context.note.set_values['Chinese']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+
+        assert audio_data['source_text'] == '老人家'
+
+        assert editor_context.editor.set_note_called == True
+
+        assert dialog.closed == True
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_add_audio
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
