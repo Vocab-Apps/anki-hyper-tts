@@ -233,7 +233,8 @@ class HyperTTS():
             editor=editor, 
             add_mode=editor.addMode,
             selected_text=selected_text,
-            current_field=current_field_name)
+            current_field=current_field_name,
+            clipboard=self.anki_utils.get_clipboard_content())
         logger.debug(f'editor_context: {editor_context}')
         return editor_context
 

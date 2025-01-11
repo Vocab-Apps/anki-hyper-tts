@@ -580,6 +580,7 @@ class EditorContext:
     add_mode: bool
     selected_text: str
     current_field: str
+    clipboard: str
 
 @dataclass
 class MappingRule:

@@ -242,7 +242,8 @@ def test_editor_get_new_preset_id_1(qtbot):
         editor=mock_editor, 
         add_mode=False, 
         selected_text=None, 
-        current_field=None)
+        current_field=None,
+        clipboard=None)
 
     # user cancels
     def dialog_input_sequence(dialog):

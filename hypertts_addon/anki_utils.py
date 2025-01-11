@@ -258,6 +258,10 @@ class AnkiUtils():
         logger.debug(f'returning current row: {current_row}, retvalue: {retvalue}')
         return current_row, retvalue
 
+    def get_clipboard_content(self):
+        # return self.clipboard_content
+        return aqt.qt.QApplicationclipboard().text()
+
     def play_sound(self, filename):
         # play files one after another
         aqt.sound.av_player.insert_file(filename)

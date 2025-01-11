@@ -162,6 +162,9 @@ class MockAnkiUtils():
         self.ask_user_choose_from_list_response = None
         self.ask_user_choose_from_list_response_string = None
 
+        # clipboard
+        self.clipboard_content = None
+
         # time
         self.current_time = datetime.datetime.now()
 
@@ -329,6 +332,9 @@ class MockAnkiUtils():
             chosen_row = choices.index(self.ask_user_choose_from_list_response_string)
             return chosen_row, 1
         return self.ask_user_choose_from_list_response, 1
+
+    def get_clipboard_content(self):
+        return self.clipboard_content
 
     def reset_exceptions(self):
         self.last_exception = None
