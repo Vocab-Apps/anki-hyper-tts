@@ -549,3 +549,13 @@ def test_easy_dialog_editor_1(qtbot):
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_overwrite_text_add_audio
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)    
+
+
+def test_easy_dialog_editor_get_source_text(qtbot):
+    # pytest --log-cli-level=DEBUG tests/test_component_batch_editor.py -k test_easy_dialog_editor_get_source_text -s -rPP
+
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+
+    source_text, source_text_origin = component_easy.get_source_text(hypertts_instance, editor_context)
+    assert source_text == '老人家'
+    assert source_text_origin == config_models.SourceTextOrigin.FIELD_TEXT

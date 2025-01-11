@@ -582,6 +582,15 @@ class EditorContext:
     current_field: str
     clipboard: str
 
+# when we use the Easy mode
+class SourceTextOrigin(enum.Enum):
+    FIELD_TEXT = ("Text from field")
+    SELECTION = ("Selected text")
+    CLIPBOARD = ("Clipboard")
+
+    def __init__(self, description):
+        self.description = description
+
 @dataclass
 class MappingRule:
     preset_id: str

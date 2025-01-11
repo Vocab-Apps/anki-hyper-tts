@@ -270,10 +270,12 @@ def get_source_text(hypertts, editor_context: config_models.EditorContext):
     # - look at clipboard
     # - look at text selection
     current_field_name = editor_context.current_field
-    return editor_context.note[current_field_name]
+    source_text = editor_context.note[current_field_name]
+    source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
+    return source_text, source_text_origin
 
 def create_dialog_editor(hypertts, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
     dialog = EasyDialog(hypertts)
-    source_text = get_source_text(hypertts, editor_context)
+    source_text, source_text_origin = get_source_text(hypertts, editor_context)
     dialog.configure(source_text, deck_note_type, editor_context)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)
