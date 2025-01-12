@@ -479,7 +479,7 @@ def test_easy_dialog_editor_1(qtbot):
         }    
 
         # override the text
-        dialog.easy_component.source_text_edit.setPlainText('custom text')
+        dialog.easy_component.source.source_text_edit.setPlainText('custom text')
         qtbot.mouseClick(dialog.easy_component.preview_sound_button, aqt.qt.Qt.MouseButton.LeftButton)
         assert hypertts_instance.anki_utils.played_sound == {
             'source_text': 'custom text',
