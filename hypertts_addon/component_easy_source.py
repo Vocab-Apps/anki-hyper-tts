@@ -3,13 +3,20 @@ from . import component_common
 from . import config_models
 from . import constants
 
-class ComponentEasySource(component_common.ComponentBase):
-    def __init__(self, hypertts, editor_context: config_models.EditorContext):
+class ComponentEasySource(component_common.ConfigComponentBase):
+    def __init__(self, hypertts, editor_context: config_models.EditorContext, model_change_callback):
         self.hypertts = hypertts
         self.editor_context = editor_context
+        self.model_change_callback = model_change_callback
         
         # get initial source text
         self.source_text, self.source_text_origin = self.get_source_text()
+        
+        # initialize model
+        self.batch_source_model = config_models.BatchSource(
+            mode=constants.BatchMode.simple,
+            source_field=self.editor_context.current_field
+        )
 
     def get_source_text(self):
         # this function will get the appropriate source text based on the EditorContext
@@ -45,3 +52,13 @@ class ComponentEasySource(component_common.ComponentBase):
 
     def get_current_text(self):
         return self.source_text_edit.toPlainText()
+
+    def get_model(self):
+        return self.batch_source_model
+
+    def load_model(self, model):
+        self.batch_source_model = model
+        # no UI elements to update since this is just a text editor
+
+    def notify_model_update(self):
+        self.model_change_callback(self.batch_source_model)

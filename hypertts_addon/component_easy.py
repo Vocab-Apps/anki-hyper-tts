@@ -32,7 +32,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.batch_model = None
 
         # initialize source component
-        self.source = component_easy_source.ComponentEasySource(hypertts, editor_context)
+        self.source = component_easy_source.ComponentEasySource(hypertts, editor_context, self.model_update_source)
         source_field = editor_context.current_field
         field_list = field_list = list(editor_context.note.keys())
         # remove source field
@@ -135,6 +135,9 @@ class ComponentEasy(component_common.ComponentBase):
         # Add everything to main layout
         layout.addLayout(main_content)
 
+
+    def model_update_source(self, model):
+        self.batch_model.source = model
 
     def model_update_target(self, model):
         self.batch_model.target = model
