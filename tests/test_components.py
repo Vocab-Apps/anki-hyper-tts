@@ -906,7 +906,13 @@ def fixtures_source_easy(build_editor_context_fn):
 
 def test_component_easy_source_initial(qtbot):
     def build_editor_context_fn(note):
-        return config_models.EditorContext(note, None, False, None, 'Chinese', None)
+        return config_models.EditorContext(
+            note=note, 
+            editor=None, 
+            add_mode=False, 
+            selected_text=None, 
+            current_field='Chinese', 
+            clipboard=None)
     dialog, source = fixtures_source_easy(build_editor_context_fn)
 
     # verify initial state

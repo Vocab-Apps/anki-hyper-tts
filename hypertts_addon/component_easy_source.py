@@ -12,6 +12,13 @@ class ComponentEasySource(component_common.ComponentBase):
         self.source_text, self.source_text_origin = self.get_source_text()
 
     def get_source_text(self):
+        # this function will get the appropriate source text based on the EditorContext
+        # the priority should be:
+        # - clipboard content if available
+        # - selected text if available
+        # - current field if available
+        # - otherwise, look at whether the source model has a default field
+        # - finally, by default, select a field which is populated
         current_field_name = self.editor_context.current_field
         source_text = self.editor_context.note[current_field_name]
         source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
