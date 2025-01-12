@@ -528,7 +528,7 @@ def test_easy_dialog_editor_1(qtbot):
         select_default_voice(dialog.easy_component.voice_selection.voices_combobox)
 
         # overwrite input text
-        dialog.easy_component.source_text_edit.setPlainText('custom text')
+        dialog.easy_component.source.source_text_edit.setPlainText('custom text')
 
 
         # apply audio
