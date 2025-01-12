@@ -160,10 +160,6 @@ class ComponentEasy(component_common.ComponentBase):
             self.preview_sound_button.setEnabled(True)
             self.add_audio_button.setEnabled(True)
 
-    def source_text_updated(self, text):
-        # callback when source text changes
-        pass
-
     def get_source_text(self):
         return self.source.get_current_text()
 

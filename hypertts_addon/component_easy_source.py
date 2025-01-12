@@ -31,16 +31,11 @@ class ComponentEasySource(component_common.ComponentBase):
         font.setPointSize(20)  # increase font size
         self.source_text_edit.setFont(font)
         self.source_text_edit.setPlainText(self.source_text)
-        self.source_text_edit.textChanged.connect(self.on_text_changed)
         
         source_group_layout.addWidget(self.source_text_edit)
         source_group.setLayout(source_group_layout)
         
         return source_group
 
-    def on_text_changed(self):
-        self.source_text = self.source_text_edit.toPlainText()
-        self.source_text_updated_fn(self.source_text)
-
-    def get_current_text(self):
+    def get_source_text(self):
         return self.source_text
