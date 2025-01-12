@@ -15,6 +15,7 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         #     source_field=self.editor_context.current_field
         # )
         self.batch_source_model = None
+        self.source_text_origin = None
 
     def draw(self):
         source_group = aqt.qt.QGroupBox('Source Text')
@@ -45,8 +46,8 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         # - finally, by default, select a field which is populated
         current_field_name = self.editor_context.current_field
         source_text = self.editor_context.note[current_field_name]
-        source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
-        return source_text, source_text_origin
+        self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
+        self.source_text_edit.setPlainText(source_text)
 
     def get_current_text(self):
         return self.source_text_edit.toPlainText()
