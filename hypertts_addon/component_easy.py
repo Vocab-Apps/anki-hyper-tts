@@ -256,6 +256,8 @@ class EasyDialog(aqt.qt.QDialog):
 
 def create_dialog_editor(hypertts, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
     dialog = EasyDialog(hypertts)
-    source_text, source_text_origin = get_source_text(hypertts, editor_context)
+    # create temporary source component to get initial text
+    temp_source = component_easy_source.ComponentEasySource(hypertts, editor_context, lambda x: None)
+    source_text, source_text_origin = temp_source.get_source_text()
     dialog.configure(source_text, deck_note_type, editor_context)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)
