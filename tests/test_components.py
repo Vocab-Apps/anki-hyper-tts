@@ -901,7 +901,7 @@ def fixtures_source_easy(build_editor_context_fn):
     source = component_easy_source.ComponentEasySource(hypertts_instance, editor_context, model_change_callback.model_updated)
     dialog.addChildWidget(source.draw())
 
-    return dialog, source
+    return dialog, source, model_change_callback
 
 
 def test_component_easy_source_initial(qtbot):
@@ -913,7 +913,7 @@ def test_component_easy_source_initial(qtbot):
             selected_text=None, 
             current_field='Chinese', 
             clipboard=None)
-    dialog, source = fixtures_source_easy(build_editor_context_fn)
+    dialog, source, model_change_callback = fixtures_source_easy(build_editor_context_fn)
 
     # verify initial state
     assert source.source_text == '老人家'
