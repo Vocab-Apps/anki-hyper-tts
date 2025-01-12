@@ -4,10 +4,9 @@ from . import config_models
 from . import constants
 
 class ComponentEasySource(component_common.ComponentBase):
-    def __init__(self, hypertts, editor_context: config_models.EditorContext, source_text_updated_fn):
+    def __init__(self, hypertts, editor_context: config_models.EditorContext):
         self.hypertts = hypertts
         self.editor_context = editor_context
-        self.source_text_updated_fn = source_text_updated_fn
         
         # get initial source text
         self.source_text, self.source_text_origin = self.get_source_text()

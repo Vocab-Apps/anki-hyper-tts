@@ -32,7 +32,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.batch_model = None
 
         # initialize source component
-        self.source = component_easy_source.ComponentEasySource(hypertts, editor_context, self.source_text_updated)
+        self.source = component_easy_source.ComponentEasySource(hypertts, editor_context)
         source_field = editor_context.current_field
         field_list = field_list = list(editor_context.note.keys())
         # remove source field
