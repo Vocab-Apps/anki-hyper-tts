@@ -885,7 +885,7 @@ def test_target_base(qtbot):
     assert batch_target.radio_button_keep_sound.isChecked() == True
     assert batch_target.radio_button_remove_sound.isChecked() == False
 
-def test_component_easy_source(qtbot):
+def fixtures_source_easy(build_editor_context_fn):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
 
@@ -894,11 +894,20 @@ def test_component_easy_source(qtbot):
 
     # create editor context
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    editor_context = build_editor_context_fn(note_1)
     editor_context = config_models.EditorContext(note_1, None, False, None, 'Chinese', None)
 
     # instantiate component
     source = component_easy_source.ComponentEasySource(hypertts_instance, editor_context)
     dialog.addChildWidget(source.draw())
+
+    return dialog, source
+
+
+def test_component_easy_source_initial(qtbot):
+    def build_editor_context_fn(note):
+        return config_models.EditorContext(note, None, False, None, 'Chinese', None)
+    dialog, source = fixtures_source_easy(build_editor_context_fn)
 
     # verify initial state
     assert source.source_text == '老人家'
