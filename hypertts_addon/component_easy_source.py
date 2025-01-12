@@ -36,5 +36,5 @@ class ComponentEasySource(component_common.ComponentBase):
         
         return source_group
 
-    def get_source_text(self):
-        return self.source_text
+    def get_current_text(self):
+        return self.source_text_edit.toPlainText()
