@@ -5,6 +5,7 @@ import copy
 from . import component_common 
 from . import component_target_easy
 from . import component_voiceselection_easy
+from . import component_easy_source
 from . import config_models
 from . import constants
 from . import gui_utils
@@ -25,14 +26,13 @@ class ComponentEasy(component_common.ComponentBase):
     def __init__(self, hypertts, dialog, source_text: str, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
         self.hypertts = hypertts
         self.dialog = dialog
-        self.source_text = source_text
         self.deck_note_type = deck_note_type
         self.editor_context = editor_context
-
         self.original_width = None
-
         self.batch_model = None
 
+        # initialize source component
+        self.source = component_easy_source.ComponentEasySource(hypertts, editor_context, self.source_text_updated)
         source_field = editor_context.current_field
         field_list = field_list = list(editor_context.note.keys())
         # remove source field
@@ -69,22 +69,8 @@ class ComponentEasy(component_common.ComponentBase):
         # Left side - vertical layout
         left_layout = aqt.qt.QVBoxLayout()
 
-        # Source text group
-        source_group = aqt.qt.QGroupBox('Source Text')
-        source_group_layout = aqt.qt.QVBoxLayout()
-        source_description_label = aqt.qt.QLabel(constants.GUI_TEXT_EASY_SOURCE_FIELD)
-        source_group_layout.addWidget(source_description_label)
-        
-        self.source_text_edit = aqt.qt.QPlainTextEdit()
-        self.source_text_edit.setReadOnly(False)
-        self.source_text_edit.setMinimumHeight(50)
-        font = self.source_text_edit.font()
-        font.setPointSize(20)  # increase font size
-        self.source_text_edit.setFont(font)
-        self.source_text_edit.setPlainText(self.source_text)
-        source_group_layout.addWidget(self.source_text_edit)
-        source_group.setLayout(source_group_layout)
-        left_layout.addWidget(source_group)
+        # Add source component
+        left_layout.addWidget(self.source.draw())
 
         # Voice Selection group
         voice_group = aqt.qt.QGroupBox('Voice Selection')
@@ -158,7 +144,7 @@ class ComponentEasy(component_common.ComponentBase):
 
 
     def sample_selected(self, note_id, text):
-        self.source_text_edit.setPlainText(text)
+        self.source.source_text_edit.setPlainText(text)
         self.voice_selection.sample_text_selected(text)
 
     def batch_start(self):
@@ -174,9 +160,12 @@ class ComponentEasy(component_common.ComponentBase):
             self.preview_sound_button.setEnabled(True)
             self.add_audio_button.setEnabled(True)
 
+    def source_text_updated(self, text):
+        # callback when source text changes
+        pass
+
     def get_source_text(self):
-        source_text = self.source_text_edit.toPlainText()
-        return source_text
+        return self.source.get_current_text()
 
     # preview audio handling
     # ======================
@@ -264,15 +253,6 @@ class EasyDialog(aqt.qt.QDialog):
         self.closed = True
         self.accept()
 
-def get_source_text(hypertts, editor_context: config_models.EditorContext):
-    # todo: 
-    # - add text processing (strip html, etc)
-    # - look at clipboard
-    # - look at text selection
-    current_field_name = editor_context.current_field
-    source_text = editor_context.note[current_field_name]
-    source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
-    return source_text, source_text_origin
 
 def create_dialog_editor(hypertts, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
     dialog = EasyDialog(hypertts)
