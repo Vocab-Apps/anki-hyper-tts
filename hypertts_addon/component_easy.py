@@ -23,7 +23,7 @@ class ComponentEasy(component_common.ComponentBase):
     BUTTON_TEXT_ADD_AUDIO = 'Add Audio'
     BUTTON_TEXT_ADDING_AUDIO = 'Adding Audio...'
 
-    def __init__(self, hypertts, dialog, source_text: str, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
+    def __init__(self, hypertts, dialog, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
         self.hypertts = hypertts
         self.dialog = dialog
         self.deck_note_type = deck_note_type
@@ -241,8 +241,8 @@ class EasyDialog(aqt.qt.QDialog):
         self.setWindowTitle(constants.GUI_EASY_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
 
-    def configure(self, source_text: str, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
-        easy_component = ComponentEasy(self.hypertts, self, source_text, deck_note_type, editor_context)
+    def configure(self, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
+        easy_component = ComponentEasy(self.hypertts, self, deck_note_type, editor_context)
         layout = aqt.qt.QVBoxLayout()
         easy_component.draw(self.main_layout)
         self.easy_component = easy_component
@@ -254,13 +254,7 @@ class EasyDialog(aqt.qt.QDialog):
         self.accept()
 
 
-def get_source_text(hypertts, editor_context: config_models.EditorContext):
-    temp_source = component_easy_source.ComponentEasySource(hypertts, editor_context, lambda x: None)
-    return temp_source.get_source_text()
-
 def create_dialog_editor(hypertts, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
     dialog = EasyDialog(hypertts)
-    # create temporary source component to get initial text
-    source_text, source_text_origin = get_source_text(hypertts, editor_context)
-    dialog.configure(source_text, deck_note_type, editor_context)
+    dialog.configure(deck_note_type, editor_context)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)
