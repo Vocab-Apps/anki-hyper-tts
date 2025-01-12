@@ -9,27 +9,12 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         self.editor_context = editor_context
         self.model_change_callback = model_change_callback
         
-        # get initial source text
-        self.source_text, self.source_text_origin = self.get_source_text()
-        
         # initialize model
-        self.batch_source_model = config_models.BatchSource(
-            mode=constants.BatchMode.simple,
-            source_field=self.editor_context.current_field
-        )
-
-    def get_source_text(self):
-        # this function will get the appropriate source text based on the EditorContext
-        # the priority should be:
-        # - clipboard content if available
-        # - selected text if available
-        # - current field if available
-        # - otherwise, look at whether the source model has a default field
-        # - finally, by default, select a field which is populated
-        current_field_name = self.editor_context.current_field
-        source_text = self.editor_context.note[current_field_name]
-        source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
-        return source_text, source_text_origin
+        # self.batch_source_model = config_models.BatchSource(
+        #     mode=constants.BatchMode.simple,
+        #     source_field=self.editor_context.current_field
+        # )
+        self.batch_source_model = None
 
     def draw(self):
         source_group = aqt.qt.QGroupBox('Source Text')
@@ -49,6 +34,19 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         source_group.setLayout(source_group_layout)
         
         return source_group
+
+    def update_source_text(self):
+        # this function will get the appropriate source text based on the EditorContext
+        # the priority should be:
+        # - clipboard content if available
+        # - selected text if available
+        # - current field if available
+        # - otherwise, look at whether the source model has a default field
+        # - finally, by default, select a field which is populated
+        current_field_name = self.editor_context.current_field
+        source_text = self.editor_context.note[current_field_name]
+        source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
+        return source_text, source_text_origin
 
     def get_current_text(self):
         return self.source_text_edit.toPlainText()
