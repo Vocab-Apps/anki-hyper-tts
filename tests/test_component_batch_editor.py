@@ -409,7 +409,7 @@ def test_easy_dialog_editor_1(qtbot):
     hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
     def easy_dialog_input_sequence_inital_state(dialog):
         # check source field value
-        assert dialog.easy_component.source_text_edit.toPlainText() == '老人家'
+        assert dialog.easy_component.source.source_text_edit.toPlainText() == '老人家'
         # the right side widget should be hidden
         assert dialog.easy_component.right_widget.isHidden() == True
         # the toggle_settings_button button should show "More Settings"
