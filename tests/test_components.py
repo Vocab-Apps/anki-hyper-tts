@@ -895,10 +895,10 @@ def fixtures_source_easy(build_editor_context_fn):
     # create editor context
     note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
     editor_context = build_editor_context_fn(note_1)
-    editor_context = config_models.EditorContext(note_1, None, False, None, 'Chinese', None)
 
     # instantiate component
-    source = component_easy_source.ComponentEasySource(hypertts_instance, editor_context)
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    source = component_easy_source.ComponentEasySource(hypertts_instance, editor_context, model_change_callback.model_updated)
     dialog.addChildWidget(source.draw())
 
     return dialog, source
