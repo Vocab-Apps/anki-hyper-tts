@@ -260,7 +260,7 @@ class AnkiUtils():
 
     def get_clipboard_content(self):
         # return self.clipboard_content
-        return aqt.qt.QApplicationclipboard().text()
+        return aqt.qt.QApplication.clipboard().text()
 
     def play_sound(self, filename):
         # play files one after another
