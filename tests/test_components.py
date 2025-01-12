@@ -33,6 +33,7 @@ from hypertts_addon import component_presetmappingrules
 from hypertts_addon import component_mappingrule
 from hypertts_addon import component_easy
 from hypertts_addon import component_voiceselection_easy
+from hypertts_addon import component_easy_source
 
 logger = logging_utils.get_test_child_logger(__name__)
 
