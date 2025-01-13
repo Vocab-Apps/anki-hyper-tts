@@ -918,6 +918,12 @@ def test_component_easy_source_initial(qtbot):
     # verify initial state
     assert source.source_text_origin == config_models.SourceTextOrigin.FIELD_TEXT
     assert source.get_current_text() == '老人家'
+    assert source.field_radio.isEnabled() == True
+
+    # we have no selected text, selection_radio should be disabled
+    assert source.selection_radio.isEnabled() == False
+    # we have no clipboard text, clipboard_radio should be disabled
+    assert source.clipboard_radio.isEnabled() == False
 
     # modify text
     source.source_text_edit.setPlainText('你好')
