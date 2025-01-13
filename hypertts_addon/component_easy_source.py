@@ -82,11 +82,11 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         self.field_combobox.currentIndexChanged.connect(self.update_source_text)
         
         # set initial state
-        self.update_source_text()
+        self.update_source_text_initial_options()
         
         return source_group
 
-    def update_source_text(self):
+    def update_source_text_initial_options(self):
         self.clipboard_radio.setEnabled(False)
         self.selection_radio.setEnabled(False)
 
@@ -115,6 +115,22 @@ class ComponentEasySource(component_common.ConfigComponentBase):
             
         self.source_text_edit.setPlainText(source_text)
         self.notify_model_update()
+
+    def update_source_text(self):
+        # the user click a radio button change source text
+        if self.field_radio.isChecked():
+            self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
+            current_field = self.field_combobox.currentData()
+            source_text = self.editor_context.note[current_field]
+        elif self.selection_radio.isChecked():
+            self.source_text_origin = config_models.SourceTextOrigin.SELECTION
+            source_text = self.editor_context.selected_text
+        else:
+            self.source_text_origin = config_models.SourceTextOrigin.CLIPBOARD
+            source_text = self.editor_context.clipboard
+        self.source_text_edit.setPlainText(source_text)
+        self.notify_model_update()
+
 
     def get_current_text(self):
         # this should always return the value in self.source_text_edit
