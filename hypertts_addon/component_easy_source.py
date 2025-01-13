@@ -130,7 +130,7 @@ class ComponentEasySource(component_common.ConfigComponentBase):
             source_text = self.editor_context.note[current_field]
             
         self.source_text_edit.setPlainText(source_text)
-        self.notify_model_update()
+        self.build_update_model()
 
     def update_source_text(self):
         # the user click a radio button change source text
@@ -148,8 +148,18 @@ class ComponentEasySource(component_common.ConfigComponentBase):
             self.source_text_origin = config_models.SourceTextOrigin.CLIPBOARD
             source_text = self.editor_context.clipboard
         self.source_text_edit.setPlainText(source_text)
-        self.notify_model_update()
 
+        self.build_update_model()
+        
+
+    def build_update_model(self):
+        current_field = self.field_combobox.currentData()
+        # even if the user wants selection or clipboard, we set the model to the currently
+        # selected field
+        self.batch_source_model = config_models.BatchSource(
+            mode=constants.BatchMode.simple, 
+            source_field=current_field)
+        self.notify_model_update()
 
     def get_current_text(self):
         # this should always return the value in self.source_text_edit
