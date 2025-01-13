@@ -46,7 +46,8 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         
         # text preview
         self.source_text_edit = aqt.qt.QPlainTextEdit()
-        self.source_text_edit.setReadOnly(True)
+        # self.source_text_edit should not be readonly, the user can enter any value 
+        # they want in there.
         self.source_text_edit.setMinimumHeight(50)
         font = self.source_text_edit.font()
         font.setPointSize(20)
