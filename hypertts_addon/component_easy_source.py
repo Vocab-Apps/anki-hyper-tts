@@ -45,15 +45,19 @@ class ComponentEasySource(component_common.ConfigComponentBase):
 
         # Add selection option with preview
         if self.editor_context.selected_text:
-            preview_text = f"({trim_preview(self.editor_context.selected_text)})"
-            self.selection_preview_label.setText(preview_text)
+            self.selection_preview_label.setText(f"({trim_preview(self.editor_context.selected_text)})")
+        else:
+            self.selection_preview_label.setText('<i>(no selected text)</i>')
+            self.selection_preview_label.setEnabled(False)
         source_group_layout.addWidget(self.selection_radio, 1, 0)
         source_group_layout.addWidget(self.selection_preview_label, 1, 1)
 
         # Add clipboard option with preview
         if self.editor_context.clipboard:
-            preview_text = f"({trim_preview(self.editor_context.clipboard)})"
-            self.clipboard_preview_label.setText(preview_text)
+            self.clipboard_preview_label.setText(f"({trim_preview(self.editor_context.clipboard)})")
+        else:
+            self.clipboard_preview_label.setText("<i>(no clipboard text)</i>")
+            self.clipboard_preview_label.setEnabled(False)
         source_group_layout.addWidget(self.clipboard_radio, 2, 0)
         source_group_layout.addWidget(self.clipboard_preview_label, 2, 1)
         
