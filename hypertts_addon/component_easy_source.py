@@ -50,6 +50,8 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
         self.source_text_edit.setPlainText(source_text)
 
+        self.notify_model_update()
+
     def get_current_text(self):
         return self.source_text_edit.toPlainText()
 
