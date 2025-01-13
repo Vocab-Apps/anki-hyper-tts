@@ -916,7 +916,6 @@ def test_component_easy_source_initial(qtbot):
     dialog, source, model_change_callback = fixtures_source_easy(build_editor_context_fn)
 
     # verify initial state
-    assert source.source_text == '老人家'
     assert source.source_text_origin == config_models.SourceTextOrigin.FIELD_TEXT
     assert source.get_current_text() == '老人家'
 
