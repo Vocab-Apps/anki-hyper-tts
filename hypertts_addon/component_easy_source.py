@@ -85,13 +85,10 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         self.notify_model_update()
 
     def get_current_text(self):
-        if self.field_radio.isChecked():
-            return self.editor_context.note[self.field_combobox.currentText()]
-        elif self.selection_radio.isChecked():
-            return self.editor_context.selected_text
-        elif self.clipboard_radio.isChecked():
-            return self.editor_context.clipboard
-        return ""
+        # this should always return the value in self.source_text_edit
+        # since the user can enter any text they want
+        return self.source_text_edit.toPlainText()
+
 
     def get_model(self):
         return self.batch_source_model
