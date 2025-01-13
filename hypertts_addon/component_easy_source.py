@@ -19,6 +19,8 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         self.selection_radio = aqt.qt.QRadioButton(config_models.SourceTextOrigin.SELECTION.description)
         self.clipboard_radio = aqt.qt.QRadioButton(config_models.SourceTextOrigin.CLIPBOARD.description)
         self.field_combobox = aqt.qt.QComboBox()
+        self.selection_preview_label = aqt.qt.QLabel()
+        self.clipboard_preview_label = aqt.qt.QLabel()
 
     def draw(self):
         def trim_preview(text):
@@ -42,18 +44,18 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         source_group_layout.addWidget(self.field_combobox, 0, 1)
 
         # Add selection option with preview
-        selection_preview = ''
         if self.editor_context.selected_text:
-            selection_preview = f" ({trim_preview(self.editor_context.selected_text)})"
-        self.selection_radio.setText(f"{config_models.SourceTextOrigin.SELECTION.description}{selection_preview}")
-        source_group_layout.addWidget(self.selection_radio, 1, 0, 1, 2)
+            preview_text = f"({trim_preview(self.editor_context.selected_text)})"
+            self.selection_preview_label.setText(preview_text)
+        source_group_layout.addWidget(self.selection_radio, 1, 0)
+        source_group_layout.addWidget(self.selection_preview_label, 1, 1)
 
         # Add clipboard option with preview
-        clipboard_preview = ''
         if self.editor_context.clipboard:
-            clipboard_preview = f" ({trim_preview(self.editor_context.clipboard)})"
-        self.clipboard_radio.setText(f"{config_models.SourceTextOrigin.CLIPBOARD.description}{clipboard_preview}")
-        source_group_layout.addWidget(self.clipboard_radio, 2, 0, 1, 2)
+            preview_text = f"({trim_preview(self.editor_context.clipboard)})"
+            self.clipboard_preview_label.setText(preview_text)
+        source_group_layout.addWidget(self.clipboard_radio, 2, 0)
+        source_group_layout.addWidget(self.clipboard_preview_label, 2, 1)
         
         # disable options if not available
         if not self.editor_context.selected_text:
