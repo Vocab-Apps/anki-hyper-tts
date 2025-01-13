@@ -63,24 +63,32 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         self.field_combobox.currentIndexChanged.connect(self.update_source_text)
         
         # set initial state
-        self.field_radio.setChecked(True)
         self.update_source_text()
         
         return source_group
 
     def update_source_text(self):
-        if self.field_radio.isChecked():
+        self.clipboard_radio.setEnabled(False)
+        self.selection_radio.setEnabled(False)
+
+        # first, check clipboard
+        if self.editor_context.clipboard:
+            self.clipboard_radio.setEnabled(True)
+            self.clipboard_radio.setChecked(True)
+            self.source_text_origin = config_models.SourceTextOrigin.CLIPBOARD
+            source_text = self.editor_context.clipboard
+        # next, check selection
+        elif self.editor_context.selected_text:
+            self.selection_radio.setEnabled(True)
+            self.selection_radio.setChecked(True)
+            self.source_text_origin = config_models.SourceTextOrigin.SELECTION
+            source_text = self.editor_context.selected_text
+        else:
+            # default, use field
+            self.field_radio.setChecked(True)
             self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
             current_field = self.field_combobox.currentText()
             source_text = self.editor_context.note[current_field]
-        elif self.selection_radio.isChecked():
-            self.source_text_origin = config_models.SourceTextOrigin.SELECTION
-            source_text = self.editor_context.selected_text
-        elif self.clipboard_radio.isChecked():
-            self.source_text_origin = config_models.SourceTextOrigin.CLIPBOARD
-            source_text = self.editor_context.clipboard
-        else:
-            source_text = ""
             
         self.source_text_edit.setPlainText(source_text)
         self.notify_model_update()

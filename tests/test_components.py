@@ -904,7 +904,7 @@ def fixtures_source_easy(build_editor_context_fn):
     return dialog, source, model_change_callback
 
 
-def test_component_easy_source_initial(qtbot):
+def test_component_easy_source_initial_field_text(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(
             note=note, 
@@ -919,6 +919,8 @@ def test_component_easy_source_initial(qtbot):
     assert source.source_text_origin == config_models.SourceTextOrigin.FIELD_TEXT
     assert source.get_current_text() == '老人家'
     assert source.field_radio.isEnabled() == True
+    # field radio should be selected
+    assert source.field_radio.isChecked() == True
 
     # we have no selected text, selection_radio should be disabled
     assert source.selection_radio.isEnabled() == False
@@ -928,6 +930,33 @@ def test_component_easy_source_initial(qtbot):
     # modify text
     source.source_text_edit.setPlainText('你好')
     assert source.get_current_text() == '你好'
+
+def test_component_easy_source_initial_clipboard(qtbot):
+    def build_editor_context_fn(note):
+        return config_models.EditorContext(
+            note=note, 
+            editor=None, 
+            add_mode=False, 
+            selected_text=None, 
+            current_field='Chinese', 
+            clipboard='override text')
+    dialog, source, model_change_callback = fixtures_source_easy(build_editor_context_fn)
+
+    # verify initial state
+    assert source.source_text_origin == config_models.SourceTextOrigin.CLIPBOARD
+    assert source.get_current_text() == 'override text'
+    
+    # source field is always enabled
+    assert source.field_radio.isEnabled() == True
+    # but not checked (since we have clipboard text)
+    assert source.field_radio.isChecked() == False
+
+    # we have no selected text, selection_radio should be disabled
+    assert source.selection_radio.isEnabled() == False
+
+    # we have clipboard text, so this should be the default option
+    assert source.clipboard_radio.isEnabled() == True
+    assert source.clipboard_radio.isChecked() == True
 
 def fixtures_target_easy():
     config_gen = testing_utils.TestConfigGenerator()
