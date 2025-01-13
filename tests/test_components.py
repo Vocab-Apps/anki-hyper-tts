@@ -924,6 +924,8 @@ def test_component_easy_source_initial_field_text(qtbot):
 
     # we have no selected text, selection_radio should be disabled
     assert source.selection_radio.isEnabled() == False
+    assert source.selection_preview_label.isEnabled() == False
+    
     # we have no clipboard text, clipboard_radio should be disabled
     assert source.clipboard_radio.isEnabled() == False
 
