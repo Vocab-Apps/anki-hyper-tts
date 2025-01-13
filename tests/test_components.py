@@ -958,6 +958,34 @@ def test_component_easy_source_initial_clipboard(qtbot):
     assert source.clipboard_radio.isEnabled() == True
     assert source.clipboard_radio.isChecked() == True
 
+def test_component_easy_source_initial_clipboard_selected(qtbot):
+    def build_editor_context_fn(note):
+        return config_models.EditorContext(
+            note=note, 
+            editor=None, 
+            add_mode=False, 
+            selected_text='selected text',
+            current_field='Chinese', 
+            clipboard='clipboard text')
+    dialog, source, model_change_callback = fixtures_source_easy(build_editor_context_fn)
+
+    # verify initial state
+    assert source.source_text_origin == config_models.SourceTextOrigin.CLIPBOARD
+    assert source.get_current_text() == 'clipboard text'
+    
+    # source field is always enabled
+    assert source.field_radio.isEnabled() == True
+    # but not checked (since we have clipboard text)
+    assert source.field_radio.isChecked() == False
+
+    # we have no selected text, selection_radio should be disabled
+    assert source.selection_radio.isEnabled() == True
+    assert source.selection_radio.isChecked() == False
+
+    # we have clipboard text, so this should be the default option
+    assert source.clipboard_radio.isEnabled() == True
+    assert source.clipboard_radio.isChecked() == True    
+
 def fixtures_target_easy():
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    

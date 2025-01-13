@@ -71,15 +71,19 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         self.clipboard_radio.setEnabled(False)
         self.selection_radio.setEnabled(False)
 
-        # first, check clipboard
+        # set available options
         if self.editor_context.clipboard:
             self.clipboard_radio.setEnabled(True)
+        if self.editor_context.selected_text:
+            self.selection_radio.setEnabled(True)            
+
+        # first, check clipboard
+        if self.editor_context.clipboard:
             self.clipboard_radio.setChecked(True)
             self.source_text_origin = config_models.SourceTextOrigin.CLIPBOARD
             source_text = self.editor_context.clipboard
         # next, check selection
         elif self.editor_context.selected_text:
-            self.selection_radio.setEnabled(True)
             self.selection_radio.setChecked(True)
             self.source_text_origin = config_models.SourceTextOrigin.SELECTION
             source_text = self.editor_context.selected_text
