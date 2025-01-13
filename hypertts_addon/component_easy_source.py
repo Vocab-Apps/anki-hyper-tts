@@ -22,6 +22,9 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         source_group = aqt.qt.QGroupBox('Source Text')
         source_group_layout = aqt.qt.QVBoxLayout()
         
+        # source origin controls
+        # ======================
+
         # radio button group
         radio_layout = aqt.qt.QVBoxLayout()
         
@@ -45,6 +48,8 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         source_group_layout.addLayout(radio_layout)
         
         # text preview
+        # ============
+
         self.source_text_edit = aqt.qt.QPlainTextEdit()
         # self.source_text_edit should not be readonly, the user can enter any value 
         # they want in there.
