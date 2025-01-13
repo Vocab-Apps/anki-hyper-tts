@@ -929,7 +929,7 @@ def test_component_easy_source_initial_field_text_no_current_field(qtbot):
 
 
 
-def test_component_easy_source_initial_field_text(qtbot):
+def test_component_easy_source_initial_field_text_current_field_1(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(
             note=note, 
@@ -963,6 +963,32 @@ def test_component_easy_source_initial_field_text(qtbot):
     source.source_text_edit.setPlainText('你好')
     assert source.get_current_text() == '你好'
 
+def test_component_easy_source_initial_field_text_current_field_2(qtbot):
+    def build_editor_context_fn(note):
+        return config_models.EditorContext(
+            note=note, 
+            editor=None, 
+            add_mode=False, 
+            selected_text=None, 
+            current_field='English',  # user has placed the cursor in the english field
+            clipboard=None)
+    dialog, source, model_change_callback = fixtures_source_easy(build_editor_context_fn)
+
+    # verify initial state
+    assert source.source_text_origin == config_models.SourceTextOrigin.FIELD_TEXT
+    assert source.get_current_text() == 'old people'
+    assert source.field_radio.isEnabled() == True
+    # field radio should be selected
+    assert source.field_radio.isChecked() == True
+    # field combobox should be enabled
+    assert source.field_combobox.isEnabled() == True
+
+    # check model
+    # the field selected should be "English"
+    expected_source_model = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='English')
+    assert source.batch_source_model == expected_source_model
+    assert model_change_callback.model == expected_source_model    
+
 def test_component_easy_source_initial_clipboard(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(
@@ -993,6 +1019,11 @@ def test_component_easy_source_initial_clipboard(qtbot):
     assert source.clipboard_radio.isChecked() == True
     assert source.clipboard_preview_label.isEnabled() == True
     assert source.clipboard_preview_label.text() == '(override text)'
+
+    # the field selected should be "Chinese", just because it's the first field
+    expected_source_model = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
+    assert source.batch_source_model == expected_source_model
+    assert model_change_callback.model == expected_source_model    
 
 def test_component_easy_source_initial_clipboard_selected(qtbot):
     def build_editor_context_fn(note):

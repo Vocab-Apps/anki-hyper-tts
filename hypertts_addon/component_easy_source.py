@@ -114,23 +114,21 @@ class ComponentEasySource(component_common.ConfigComponentBase):
             self.field_combobox.setEnabled(False)
             self.clipboard_radio.setChecked(True)
             self.source_text_origin = config_models.SourceTextOrigin.CLIPBOARD
-            source_text = self.editor_context.clipboard
         # next, check selection
         elif self.editor_context.selected_text:
             self.field_combobox.setEnabled(False)
             self.selection_radio.setChecked(True)
             self.source_text_origin = config_models.SourceTextOrigin.SELECTION
-            source_text = self.editor_context.selected_text
         else:
             # default, use field
             self.field_radio.setChecked(True)
             self.field_combobox.setEnabled(True)
             self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
-            current_field = self.field_combobox.currentData()
-            source_text = self.editor_context.note[current_field]
+            # do we have a current field ? (user put the cursor in a field)
+            if self.editor_context.current_field:
+                self.field_combobox.setCurrentIndex(self.field_combobox.findData(self.editor_context.current_field))
             
-        self.source_text_edit.setPlainText(source_text)
-        self.build_update_model()
+        self.update_source_text()
 
     def update_source_text(self):
         # the user click a radio button change source text
