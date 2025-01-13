@@ -75,6 +75,10 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         self.source_text_edit.setFont(font)
         
         source_group_layout.addWidget(self.source_text_edit, 3, 0, 1, 2)
+        
+        # Make second column expand
+        source_group_layout.setColumnStretch(1, 1)
+        
         source_group.setLayout(source_group_layout)
 
         # wire up events
