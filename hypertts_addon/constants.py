@@ -184,6 +184,7 @@ GUI_TEXT_SOURCE_FIELD_TYPE_REALTIME = """Field Type:
 
 GUI_TEXT_EASY_SOURCE_SELECTION_NO_TEXT = '<i>(no selected text)</i>'
 GUI_TEXT_EASY_SOURCE_CLIPBOARD_NO_TEXT = '<i>(no clipboard text)</i>'
+GUI_TEXT_EASY_SOURCE_FIELD_EMPTY = 'empty'
 
 GUI_TEXT_EASY_SOURCE_FIELD = """<i>The sound will be generated using this text. You can edit it.</i>"""
 GUI_TEXT_EASY_VOICE_SELECTION = """<i>Choose a voice. You can filter by Language and Service.</i>"""
