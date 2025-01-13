@@ -392,9 +392,20 @@ def test_batch_dialog_editor_advanced_template_save_button(qtbot):
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_BATCH] = batch_dialog_input_sequence_load
     component_batch.create_dialog_editor_existing_preset(hypertts_instance, editor_context, preset_uuid)    
 
-def test_easy_dialog_editor_manual(qtbot):
+def test_easy_dialog_editor_manual_field_text(qtbot):
     # HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_components.py -k test_easy_dialog_editor_manual -s -rPP
     hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+    def easy_dialog_input_sequence(dialog):
+        if os.environ.get('HYPERTTS_EASY_DIALOG_DEBUG', 'no') == 'yes':
+            dialog.exec()        
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
+
+def test_easy_dialog_editor_manual_clipboard_selected(qtbot):
+    # HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_components.py -k test_easy_dialog_editor_manual_clipboard_selected -s -rPP
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+    editor_context.clipboard = 'clipboard text'
+    editor_context.selected_text = 'selected text'
     def easy_dialog_input_sequence(dialog):
         if os.environ.get('HYPERTTS_EASY_DIALOG_DEBUG', 'no') == 'yes':
             dialog.exec()        

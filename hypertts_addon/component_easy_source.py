@@ -3,6 +3,8 @@ from . import component_common
 from . import config_models
 from . import constants
 
+MAX_PREVIEW_CHARACTERS = 20
+
 class ComponentEasySource(component_common.ConfigComponentBase):
     def __init__(self, hypertts, editor_context: config_models.EditorContext, model_change_callback):
         self.hypertts = hypertts
@@ -21,8 +23,8 @@ class ComponentEasySource(component_common.ConfigComponentBase):
     def draw(self):
         def trim_preview(text):
             """Trim text to 20 chars and add ellipsis if needed"""
-            if len(text) > 20:
-                return text[:20] + '...'
+            if len(text) > MAX_PREVIEW_CHARACTERS:
+                return text[:MAX_PREVIEW_CHARACTERS] + '...'
             return text
 
         source_group = aqt.qt.QGroupBox('Source Text')

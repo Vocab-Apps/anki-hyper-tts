@@ -3,9 +3,13 @@
 items = [
     # HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_components.py -k test_easy_dialog_editor_manual -s -rPP
     {
-        'name': 'test easy dialog editor',
-        'command': 'HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_component_batch_editor.py -k test_easy_dialog_editor_manual -s -rPP'
+        'name': 'test easy dialog editor (field text)',
+        'command': 'HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_component_batch_editor.py -k test_easy_dialog_editor_manual_field_text -s -rPP'
     },
+    {
+        'name': 'test easy dialog editor (clipboard, selected)',
+        'command': 'HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_component_batch_editor.py -k test_easy_dialog_editor_manual_clipboard_selected -s -rPP'
+    },    
     {
         'name': 'unit test test_voice_selection_easy_single_1',
         'command': 'pytest --log-cli-level=DEBUG tests/test_components.py -k test_voice_selection_easy_single_1 -vv'
