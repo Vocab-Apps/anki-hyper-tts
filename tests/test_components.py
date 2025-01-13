@@ -925,9 +925,12 @@ def test_component_easy_source_initial_field_text(qtbot):
     # we have no selected text, selection_radio should be disabled
     assert source.selection_radio.isEnabled() == False
     assert source.selection_preview_label.isEnabled() == False
-    
+    assert source.selection_preview_label.text() == constants.GUI_TEXT_EASY_SOURCE_SELECTION_NO_TEXT
+
     # we have no clipboard text, clipboard_radio should be disabled
     assert source.clipboard_radio.isEnabled() == False
+    assert source.clipboard_preview_label.isEnabled() == False
+    assert source.clipboard_preview_label.text() == constants.GUI_TEXT_EASY_SOURCE_CLIPBOARD_NO_TEXT
 
     # modify text
     source.source_text_edit.setPlainText('你好')
