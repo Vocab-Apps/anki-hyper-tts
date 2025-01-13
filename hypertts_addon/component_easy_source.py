@@ -36,7 +36,7 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         # populate combobox with field names and preview text
         for field_name in self.editor_context.note.keys():
             preview = trim_preview(self.editor_context.note[field_name])
-            self.field_combobox.addItem(f"{field_name} ({preview})")
+            self.field_combobox.addItem(f"{field_name} ({preview})", field_name)
         source_group_layout.addWidget(self.field_combobox, 0, 1)
 
         # Add selection option with preview
@@ -108,7 +108,7 @@ class ComponentEasySource(component_common.ConfigComponentBase):
             # default, use field
             self.field_radio.setChecked(True)
             self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
-            current_field = self.field_combobox.currentText()
+            current_field = self.field_combobox.currentData()
             source_text = self.editor_context.note[current_field]
             
         self.source_text_edit.setPlainText(source_text)
