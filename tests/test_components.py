@@ -958,10 +958,13 @@ def test_component_easy_source_initial_clipboard(qtbot):
 
     # we have no selected text, selection_radio should be disabled
     assert source.selection_radio.isEnabled() == False
+    assert source.selection_preview_label.isEnabled() == False
 
     # we have clipboard text, so this should be the default option
     assert source.clipboard_radio.isEnabled() == True
     assert source.clipboard_radio.isChecked() == True
+    assert source.clipboard_preview_label.isEnabled() == True
+    assert source.clipboard_preview_label.text() == '(override text)'
 
 def test_component_easy_source_initial_clipboard_selected(qtbot):
     def build_editor_context_fn(note):
@@ -986,10 +989,14 @@ def test_component_easy_source_initial_clipboard_selected(qtbot):
     # we have no selected text, selection_radio should be disabled
     assert source.selection_radio.isEnabled() == True
     assert source.selection_radio.isChecked() == False
+    assert source.selection_preview_label.isEnabled() == True
+    assert source.selection_preview_label.text() == '(selected text)'
 
     # we have clipboard text, so this should be the default option
     assert source.clipboard_radio.isEnabled() == True
     assert source.clipboard_radio.isChecked() == True    
+    assert source.clipboard_preview_label.isEnabled() == True
+    assert source.clipboard_preview_label.text() == '(clipboard text)'
 
 def fixtures_target_easy():
     config_gen = testing_utils.TestConfigGenerator()
