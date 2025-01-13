@@ -19,33 +19,45 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         self.field_combobox = aqt.qt.QComboBox()
 
     def draw(self):
+        def trim_preview(text):
+            """Trim text to 20 chars and add ellipsis if needed"""
+            if len(text) > 20:
+                return text[:20] + '...'
+            return text
+
         source_group = aqt.qt.QGroupBox('Source Text')
-        source_group_layout = aqt.qt.QVBoxLayout()
+        source_group_layout = aqt.qt.QGridLayout()
         
         # source origin controls
         # ======================
 
-        # radio button group
-        radio_layout = aqt.qt.QVBoxLayout()
-        
-        # field selection row
-        field_layout = aqt.qt.QHBoxLayout()
-        field_layout.addWidget(self.field_radio)
-        self.field_combobox.addItems(self.editor_context.note.keys())
-        field_layout.addWidget(self.field_combobox)
-        radio_layout.addLayout(field_layout)
-        
-        # selection and clipboard options
-        radio_layout.addWidget(self.selection_radio)
-        radio_layout.addWidget(self.clipboard_radio)
+        # Add field selection controls
+        source_group_layout.addWidget(self.field_radio, 0, 0)
+        # populate combobox with field names and preview text
+        for field_name in self.editor_context.note.keys():
+            preview = trim_preview(self.editor_context.note[field_name])
+            self.field_combobox.addItem(f"{field_name} ({preview})")
+        source_group_layout.addWidget(self.field_combobox, 0, 1)
+
+        # Add selection option with preview
+        selection_preview = ''
+        if self.editor_context.selected_text:
+            selection_preview = f" ({trim_preview(self.editor_context.selected_text)})"
+        self.selection_radio.setText(f"{config_models.SourceTextOrigin.SELECTION.description}{selection_preview}")
+        source_group_layout.addWidget(self.selection_radio, 1, 0, 1, 2)
+
+        # Add clipboard option with preview
+        clipboard_preview = ''
+        if self.editor_context.clipboard:
+            clipboard_preview = f" ({trim_preview(self.editor_context.clipboard)})"
+        self.clipboard_radio.setText(f"{config_models.SourceTextOrigin.CLIPBOARD.description}{clipboard_preview}")
+        source_group_layout.addWidget(self.clipboard_radio, 2, 0, 1, 2)
         
         # disable options if not available
         if not self.editor_context.selected_text:
             self.selection_radio.setEnabled(False)
         if not self.editor_context.clipboard:
             self.clipboard_radio.setEnabled(False)
-            
-        source_group_layout.addLayout(radio_layout)
         
         # text preview
         # ============
@@ -58,7 +70,7 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         font.setPointSize(20)
         self.source_text_edit.setFont(font)
         
-        source_group_layout.addWidget(self.source_text_edit)
+        source_group_layout.addWidget(self.source_text_edit, 3, 0, 1, 2)
         source_group.setLayout(source_group_layout)
 
         # wire up events
