@@ -9,51 +9,89 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         self.editor_context = editor_context
         self.model_change_callback = model_change_callback
         
-        # initialize model
-        # self.batch_source_model = config_models.BatchSource(
-        #     mode=constants.BatchMode.simple,
-        #     source_field=self.editor_context.current_field
-        # )
         self.batch_source_model = None
-        self.source_text_origin = None
+        self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
+
+        # initialize widgets
+        self.field_radio = aqt.qt.QRadioButton(config_models.SourceTextOrigin.FIELD_TEXT.description)
+        self.selection_radio = aqt.qt.QRadioButton(config_models.SourceTextOrigin.SELECTION.description)
+        self.clipboard_radio = aqt.qt.QRadioButton(config_models.SourceTextOrigin.CLIPBOARD.description)
+        self.field_combobox = aqt.qt.QComboBox()
 
     def draw(self):
         source_group = aqt.qt.QGroupBox('Source Text')
         source_group_layout = aqt.qt.QVBoxLayout()
-        source_description_label = aqt.qt.QLabel(constants.GUI_TEXT_EASY_SOURCE_FIELD)
-        source_group_layout.addWidget(source_description_label)
         
+        # radio button group
+        radio_layout = aqt.qt.QVBoxLayout()
+        
+        # field selection row
+        field_layout = aqt.qt.QHBoxLayout()
+        field_layout.addWidget(self.field_radio)
+        self.field_combobox.addItems(self.editor_context.note.keys())
+        field_layout.addWidget(self.field_combobox)
+        radio_layout.addLayout(field_layout)
+        
+        # selection and clipboard options
+        radio_layout.addWidget(self.selection_radio)
+        radio_layout.addWidget(self.clipboard_radio)
+        
+        # disable options if not available
+        if not self.editor_context.selected_text:
+            self.selection_radio.setEnabled(False)
+        if not self.editor_context.clipboard:
+            self.clipboard_radio.setEnabled(False)
+            
+        source_group_layout.addLayout(radio_layout)
+        
+        # text preview
         self.source_text_edit = aqt.qt.QPlainTextEdit()
-        self.source_text_edit.setReadOnly(False)
+        self.source_text_edit.setReadOnly(True)
         self.source_text_edit.setMinimumHeight(50)
         font = self.source_text_edit.font()
-        font.setPointSize(20)  # increase font size
+        font.setPointSize(20)
         self.source_text_edit.setFont(font)
         
         source_group_layout.addWidget(self.source_text_edit)
         source_group.setLayout(source_group_layout)
 
+        # wire up events
+        self.field_radio.toggled.connect(self.update_source_text)
+        self.selection_radio.toggled.connect(self.update_source_text)
+        self.clipboard_radio.toggled.connect(self.update_source_text)
+        self.field_combobox.currentIndexChanged.connect(self.update_source_text)
+        
+        # set initial state
+        self.field_radio.setChecked(True)
         self.update_source_text()
         
         return source_group
 
     def update_source_text(self):
-        # this function will get the appropriate source text based on the EditorContext
-        # the priority should be:
-        # - clipboard content if available
-        # - selected text if available
-        # - current field if available
-        # - otherwise, look at whether the source model has a default field
-        # - finally, by default, select a field which is populated
-        current_field_name = self.editor_context.current_field
-        source_text = self.editor_context.note[current_field_name]
-        self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
+        if self.field_radio.isChecked():
+            self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
+            current_field = self.field_combobox.currentText()
+            source_text = self.editor_context.note[current_field]
+        elif self.selection_radio.isChecked():
+            self.source_text_origin = config_models.SourceTextOrigin.SELECTION
+            source_text = self.editor_context.selected_text
+        elif self.clipboard_radio.isChecked():
+            self.source_text_origin = config_models.SourceTextOrigin.CLIPBOARD
+            source_text = self.editor_context.clipboard
+        else:
+            source_text = ""
+            
         self.source_text_edit.setPlainText(source_text)
-
         self.notify_model_update()
 
     def get_current_text(self):
-        return self.source_text_edit.toPlainText()
+        if self.field_radio.isChecked():
+            return self.editor_context.note[self.field_combobox.currentText()]
+        elif self.selection_radio.isChecked():
+            return self.editor_context.selected_text
+        elif self.clipboard_radio.isChecked():
+            return self.editor_context.clipboard
+        return ""
 
     def get_model(self):
         return self.batch_source_model
