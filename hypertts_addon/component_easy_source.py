@@ -111,17 +111,20 @@ class ComponentEasySource(component_common.ConfigComponentBase):
 
         # first, check clipboard
         if self.editor_context.clipboard:
+            self.field_combobox.setEnabled(False)
             self.clipboard_radio.setChecked(True)
             self.source_text_origin = config_models.SourceTextOrigin.CLIPBOARD
             source_text = self.editor_context.clipboard
         # next, check selection
         elif self.editor_context.selected_text:
+            self.field_combobox.setEnabled(False)
             self.selection_radio.setChecked(True)
             self.source_text_origin = config_models.SourceTextOrigin.SELECTION
             source_text = self.editor_context.selected_text
         else:
             # default, use field
             self.field_radio.setChecked(True)
+            self.field_combobox.setEnabled(True)
             self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
             current_field = self.field_combobox.currentData()
             source_text = self.editor_context.note[current_field]
@@ -132,13 +135,16 @@ class ComponentEasySource(component_common.ConfigComponentBase):
     def update_source_text(self):
         # the user click a radio button change source text
         if self.field_radio.isChecked():
+            self.field_combobox.setEnabled(True)
             self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
             current_field = self.field_combobox.currentData()
             source_text = self.editor_context.note[current_field]
         elif self.selection_radio.isChecked():
+            self.field_combobox.setEnabled(False)
             self.source_text_origin = config_models.SourceTextOrigin.SELECTION
             source_text = self.editor_context.selected_text
         else:
+            self.field_combobox.setEnabled(False)
             self.source_text_origin = config_models.SourceTextOrigin.CLIPBOARD
             source_text = self.editor_context.clipboard
         self.source_text_edit.setPlainText(source_text)

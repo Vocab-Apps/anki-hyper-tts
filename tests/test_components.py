@@ -955,6 +955,7 @@ def test_component_easy_source_initial_clipboard(qtbot):
     assert source.field_radio.isEnabled() == True
     # but not checked (since we have clipboard text)
     assert source.field_radio.isChecked() == False
+    assert source.field_combobox.isEnabled() == False
 
     # we have no selected text, selection_radio should be disabled
     assert source.selection_radio.isEnabled() == False
