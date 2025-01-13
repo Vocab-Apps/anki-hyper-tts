@@ -37,10 +37,12 @@ class ComponentEasySource(component_common.ConfigComponentBase):
 
         # Add field selection controls
         source_group_layout.addWidget(self.field_radio, 0, 0)
+        # enable HTML rendering in combobox
+        self.field_combobox.setItemDelegate(aqt.qt.QStyledItemDelegate())
         # populate combobox with field names and preview text
         for field_name in self.editor_context.note.keys():
             preview = trim_preview(self.editor_context.note[field_name])
-            self.field_combobox.addItem(f"{field_name} ({preview})", field_name)
+            self.field_combobox.addItem(f"{field_name} (<i>{preview}</i>)", field_name)
         source_group_layout.addWidget(self.field_combobox, 0, 1)
 
         # Add selection option with preview
