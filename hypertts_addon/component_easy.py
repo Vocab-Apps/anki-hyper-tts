@@ -18,7 +18,7 @@ logger = logging_utils.get_child_logger(__name__)
 # editor for a single note.
 
 # todo:
-# add load_model logic for ComponentEasy, and test
+# OK add load_model logic for ComponentEasy, and test
 # add audio at cursor location
 # properly strip html when getting source text
 
