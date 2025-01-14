@@ -19,6 +19,8 @@ logger = logging_utils.get_child_logger(__name__)
 
 # todo:
 # add load_model logic for ComponentEasy, and test
+# add audio at cursor location
+# properly strip html when getting source text
 
 class ComponentEasy(component_common.ComponentBase):
     BUTTON_TEXT_PREVIEW_AUDIO = 'Preview Audio'
