@@ -109,6 +109,13 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         if self.editor_context.selected_text:
             self.selection_radio.setEnabled(True)            
 
+        # do we have a current field ? (user put the cursor in a field)
+        if self.editor_context.current_field:
+            field_index = self.field_combobox.findData(self.editor_context.current_field)
+            if field_index != -1:
+                # field data found
+                self.field_combobox.setCurrentIndex(field_index)
+
         # first, check clipboard
         if self.editor_context.clipboard:
             self.field_combobox.setEnabled(False)
@@ -124,9 +131,6 @@ class ComponentEasySource(component_common.ConfigComponentBase):
             self.field_radio.setChecked(True)
             self.field_combobox.setEnabled(True)
             self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
-            # do we have a current field ? (user put the cursor in a field)
-            if self.editor_context.current_field:
-                self.field_combobox.setCurrentIndex(self.field_combobox.findData(self.editor_context.current_field))
             
         self.update_source_text()
 
