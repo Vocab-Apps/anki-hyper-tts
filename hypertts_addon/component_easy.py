@@ -64,6 +64,18 @@ class ComponentEasy(component_common.ComponentBase):
         # default text processing
         self.batch_model.text_processing = config_models.TextProcessing()
 
+    def load_preset(self, preset_id):
+        model = self.hypertts.load_preset(preset_id)
+        self.load_model(model)
+
+    def load_model(self, model):
+        logger.info('load_model')
+        self.batch_model = model
+        # disseminate to all components
+        self.source.load_model(model.source)
+        self.target.load_model(model.target)
+        self.voice_selection.load_model(model.voice_selection)
+
     def draw(self, layout):
         # Add header with logo at the top
         header_layout = aqt.qt.QHBoxLayout()
@@ -253,6 +265,9 @@ class EasyDialog(aqt.qt.QDialog):
         # Set initial size
         self.adjustSize()
 
+    def load_preset(self, preset_id:str):
+        self.easy_component.load_preset(preset_id)
+
     def close(self):
         self.closed = True
         self.accept()
@@ -262,3 +277,14 @@ def create_dialog_editor(hypertts, deck_note_type: config_models.DeckNoteType, e
     dialog = EasyDialog(hypertts)
     dialog.configure(deck_note_type, editor_context)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)
+
+def create_dialog_editor_existing_preset(hypertts, 
+        deck_note_type: config_models.DeckNoteType, 
+        editor_context: config_models.EditorContext,
+        preset_id: str):
+    logger.debug(f'create_dialog_editor_existing_preset: {preset_id}')
+    dialog = EasyDialog(hypertts)
+    dialog.configure(deck_note_type, editor_context)
+    dialog.load_preset(preset_id)
+    hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)    
+

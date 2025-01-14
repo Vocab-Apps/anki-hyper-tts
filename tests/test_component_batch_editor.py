@@ -561,3 +561,49 @@ def test_easy_dialog_editor_1(qtbot):
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_overwrite_text_add_audio
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)    
 
+
+def test_easy_dialog_editor_2(qtbot):
+    # pytest --log-cli-level=DEBUG tests/test_component_batch_editor.py -k test_easy_dialog_editor_2 -s -rPP
+    # full end to end test for easy dialog started from the editor
+
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+    # modify the editor context to remove the current field (no field selected)
+    editor_context.current_field = None
+
+
+    # first, create the preset
+    batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
+    batch_config.name = 'default'
+    source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='English')
+    target = config_models.BatchTarget(target_field='English', same_field=True)
+    text_processing = config_models.TextProcessing()
+
+    #  preset 1
+    voice_list = hypertts_instance.service_manager.full_voice_list()    
+    voice_a_3 = [x for x in voice_list if x.name == 'voice_a_3'][0].voice_id
+    voice_selection = config_models.VoiceSelectionSingle()
+    voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_3, {}))
+
+    batch_config.set_source(source)
+    batch_config.set_target(target)
+    batch_config.set_voice_selection(voice_selection)
+    batch_config.set_text_processing(text_processing)
+
+    # save the preset
+    hypertts_instance.save_preset(batch_config)    
+
+    preset_uuid = batch_config.uuid
+
+    def easy_dialog_input_sequence_load_preset(dialog):
+        # check source field value
+        assert dialog.easy_component.source.field_combobox.currentData() == 'English'
+        assert dialog.easy_component.source.source_text_edit.toPlainText() == 'old people'
+        # check voice selection
+        # Verify the correct voice is selected
+        selected_voice_text = dialog.easy_component.voice_selection.voices_combobox.currentText()
+        assert 'voice_a_3' in selected_voice_text
+        assert 'ServiceA' in selected_voice_text        
+
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_load_preset
+    component_easy.create_dialog_editor_existing_preset(hypertts_instance, deck_note_type, editor_context, preset_uuid)
