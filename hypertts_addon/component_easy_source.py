@@ -174,7 +174,11 @@ class ComponentEasySource(component_common.ConfigComponentBase):
 
     def load_model(self, model):
         self.batch_source_model = model
-        # no UI elements to update since this is just a text editor
+        
+        # if the field name is found in the list of fields, set the combobox to that field
+        field_index = self.field_combobox.findData(model.source_field)
+        if field_index != -1:
+            self.field_combobox.setCurrentIndex(field_index)
 
     def notify_model_update(self):
         self.model_change_callback(self.batch_source_model)

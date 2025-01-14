@@ -1141,6 +1141,31 @@ def test_component_easy_source_initial_current_field_model_with_clipboard_select
     assert source.batch_source_model == expected_source_model
     assert model_change_callback.model == expected_source_model    
 
+def test_component_easy_source_initial_load_model(qtbot):
+    def build_editor_context_fn(note):
+        return config_models.EditorContext(
+            note=note, 
+            editor=None, 
+            add_mode=False, 
+            selected_text=None,
+            current_field=None, 
+            clipboard=None)
+    dialog, source, model_change_callback = fixtures_source_easy(build_editor_context_fn)
+
+    source_model = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Pinyin')
+    source.load_model(source_model)
+
+    # verify initial state
+    # even though text is present on the clipboard, the field combobox should still default to
+    # Pinyin, because that's the field the user put the cursor into
+    assert source.source_text_origin == config_models.SourceTextOrigin.FIELD_TEXT
+    assert source.field_combobox.currentData() == 'Pinyin'
+    assert source.get_current_text() == ''
+    # check model
+    expected_source_model = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Pinyin')
+    assert source.batch_source_model == expected_source_model
+    assert model_change_callback.model == expected_source_model
+
 # BatchTargetEasy tests
 # =====================
 
