@@ -885,6 +885,9 @@ def test_target_base(qtbot):
     assert batch_target.radio_button_keep_sound.isChecked() == True
     assert batch_target.radio_button_remove_sound.isChecked() == False
 
+# ComponentEasySource tests
+# =========================
+
 def fixtures_source_easy(build_editor_context_fn):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')    
@@ -1056,6 +1059,48 @@ def test_component_easy_source_initial_clipboard_selected(qtbot):
     assert source.clipboard_radio.isChecked() == True    
     assert source.clipboard_preview_label.isEnabled() == True
     assert source.clipboard_preview_label.text() == '(clipboard text)'
+
+def test_component_easy_source_select_field(qtbot):
+    def build_editor_context_fn(note):
+        return config_models.EditorContext(
+            note=note, 
+            editor=None, 
+            add_mode=False, 
+            selected_text=None, 
+            current_field=None,  # no selected field
+            clipboard=None)
+    dialog, source, model_change_callback = fixtures_source_easy(build_editor_context_fn)
+
+    # verify initial state (Chinese field as it's the first)
+    # =====================================================
+
+    assert source.source_text_origin == config_models.SourceTextOrigin.FIELD_TEXT
+    assert source.get_current_text() == '老人家'
+    assert source.field_radio.isEnabled() == True
+    # field radio should be selected
+    assert source.field_radio.isChecked() == True
+    # field combobox should be enabled
+    assert source.field_combobox.isEnabled() == True
+    assert source.field_combobox.currentText() == 'Chinese (老人家)'
+    assert source.field_combobox.currentData() == 'Chinese'
+
+    # check model
+    # the field selected should be "English"
+    expected_source_model = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
+    assert source.batch_source_model == expected_source_model
+    assert model_change_callback.model == expected_source_model    
+
+    # select different field
+    # =======================
+    field_index = source.field_combobox.findData('English')
+    source.field_combobox.setCurrentIndex(field_index)
+    assert source.get_current_text() == 'old people'
+    expected_source_model = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='English')
+    assert source.batch_source_model == expected_source_model
+    assert model_change_callback.model == expected_source_model        
+
+# BatchTargetEasy tests
+# =====================
 
 def fixtures_target_easy():
     config_gen = testing_utils.TestConfigGenerator()
