@@ -17,6 +17,9 @@ logger = logging_utils.get_child_logger(__name__)
 # The ComponentEasy component allows the user to generate audio for a single note. It's invoked from the Anki
 # editor for a single note.
 
+# todo:
+# add load_model logic for ComponentEasy, and test
+
 class ComponentEasy(component_common.ComponentBase):
     BUTTON_TEXT_PREVIEW_AUDIO = 'Preview Audio'
     BUTTON_TEXT_PREVIEWING = 'Playing Preview...'
