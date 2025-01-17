@@ -177,6 +177,10 @@ class HyperTTS():
         #  - component_batch.py
         #  - component_mappingrule.py
 
+        # adding audio after the cursor is not yet supported
+        if batch.target.insert_location == config_models.InsertLocation.CURSOR_LOCATION:
+            raise errors.HyperTTSError('inserting at cursor location not yet supported')
+
         logger.debug(f'editor_note_add_audio, editor_context: {editor_context}')
         # editor, note, add_mode, text_override
         # don't perform undo, it doesn't actually work, because of the way we call update_note
