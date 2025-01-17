@@ -166,7 +166,6 @@ class ComponentEasy(component_common.ComponentBase):
     def model_update_voice_selection(self, model):
         self.batch_model.voice_selection = model
 
-
     def get_source_text(self):
         return self.source.get_current_text()
 
@@ -215,10 +214,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.add_audio_button.setEnabled(True)
 
     def cancel_button_pressed(self):
-        if self.cancel_button.text() == 'Stop':
-            self.preview.batch_status.stop()
-        else:
-            self.dialog.close()
+        self.dialog.close()
 
     def toggle_settings(self):
         if self.right_widget.isVisible():

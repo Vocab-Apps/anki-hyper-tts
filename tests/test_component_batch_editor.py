@@ -607,3 +607,19 @@ def test_easy_dialog_editor_2(qtbot):
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_load_preset
     component_easy.create_dialog_editor_existing_preset(hypertts_instance, deck_note_type, editor_context, preset_uuid)
+
+def test_easy_dialog_editor_3(qtbot):
+    # pytest --log-cli-level=DEBUG tests/test_component_batch_editor.py -k test_easy_dialog_editor_3 -s -rPP
+    # full end to end test for easy dialog started from the editor
+
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+
+    def easy_dialog_input_sequence_close(dialog):
+        # press the cancel button
+        qtbot.mouseClick(dialog.easy_component.cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # check that dialog was closed
+        assert dialog.closed == True
+
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_close
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
