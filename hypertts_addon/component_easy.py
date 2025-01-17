@@ -167,23 +167,6 @@ class ComponentEasy(component_common.ComponentBase):
         self.batch_model.voice_selection = model
 
 
-    def sample_selected(self, note_id, text):
-        self.source.source_text_edit.setPlainText(text)
-        self.voice_selection.sample_text_selected(text)
-
-    def batch_start(self):
-        self.preview_sound_button.setEnabled(False)
-        self.add_audio_button.setEnabled(False)
-        self.cancel_button.setText('Stop')
-
-    def batch_end(self, completed):
-        if completed:
-            self.cancel_button.setText('Close')
-        else:
-            self.cancel_button.setText('Cancel')
-            self.preview_sound_button.setEnabled(True)
-            self.add_audio_button.setEnabled(True)
-
     def get_source_text(self):
         return self.source.get_current_text()
 
