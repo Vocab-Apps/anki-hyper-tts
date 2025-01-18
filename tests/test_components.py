@@ -33,7 +33,7 @@ from hypertts_addon import component_presetmappingrules
 from hypertts_addon import component_mappingrule
 from hypertts_addon import component_easy
 from hypertts_addon import component_voiceselection_easy
-from hypertts_addon import component_easy_source
+from hypertts_addon import component_source_easy
 
 logger = logging_utils.get_test_child_logger(__name__)
 
@@ -901,12 +901,12 @@ def fixtures_source_easy(build_editor_context_fn):
 
     # instantiate component
     model_change_callback = gui_testing_utils.MockModelChangeCallback()
-    source = component_easy_source.ComponentEasySource(hypertts_instance, editor_context, model_change_callback.model_updated)
+    source = component_source_easy.ComponentEasySource(hypertts_instance, editor_context, model_change_callback.model_updated)
     dialog.addChildWidget(source.draw())
 
     return dialog, source, model_change_callback
 
-def test_component_easy_source_initial_field_text_no_current_field(qtbot):
+def test_component_source_easy_initial_field_text_no_current_field(qtbot):
     def build_editor_context_fn(note):
         # the user has not put the cursor in a field
         return config_models.EditorContext(
@@ -932,7 +932,7 @@ def test_component_easy_source_initial_field_text_no_current_field(qtbot):
 
 
 
-def test_component_easy_source_initial_field_text_current_field_1(qtbot):
+def test_component_source_easy_initial_field_text_current_field_1(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(
             note=note, 
@@ -966,7 +966,7 @@ def test_component_easy_source_initial_field_text_current_field_1(qtbot):
     source.source_text_edit.setPlainText('你好')
     assert source.get_current_text() == '你好'
 
-def test_component_easy_source_initial_field_text_current_field_2(qtbot):
+def test_component_source_easy_initial_field_text_current_field_2(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(
             note=note, 
@@ -992,7 +992,7 @@ def test_component_easy_source_initial_field_text_current_field_2(qtbot):
     assert source.batch_source_model == expected_source_model
     assert model_change_callback.model == expected_source_model    
 
-def test_component_easy_source_initial_clipboard(qtbot):
+def test_component_source_easy_initial_clipboard(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(
             note=note, 
@@ -1028,7 +1028,7 @@ def test_component_easy_source_initial_clipboard(qtbot):
     assert source.batch_source_model == expected_source_model
     assert model_change_callback.model == expected_source_model    
 
-def test_component_easy_source_initial_clipboard_selected(qtbot):
+def test_component_source_easy_initial_clipboard_selected(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(
             note=note, 
@@ -1060,7 +1060,7 @@ def test_component_easy_source_initial_clipboard_selected(qtbot):
     assert source.clipboard_preview_label.isEnabled() == True
     assert source.clipboard_preview_label.text() == '(clipboard text)'
 
-def test_component_easy_source_select_field(qtbot):
+def test_component_source_easy_select_field(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(
             note=note, 
@@ -1099,7 +1099,7 @@ def test_component_easy_source_select_field(qtbot):
     assert source.batch_source_model == expected_source_model
     assert model_change_callback.model == expected_source_model
 
-def test_component_easy_source_initial_current_field_model(qtbot):
+def test_component_source_easy_initial_current_field_model(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(
             note=note, 
@@ -1119,7 +1119,7 @@ def test_component_easy_source_initial_current_field_model(qtbot):
     assert source.batch_source_model == expected_source_model
     assert model_change_callback.model == expected_source_model
 
-def test_component_easy_source_initial_current_field_model_with_clipboard_selection(qtbot):
+def test_component_source_easy_initial_current_field_model_with_clipboard_selection(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(
             note=note, 
@@ -1141,7 +1141,7 @@ def test_component_easy_source_initial_current_field_model_with_clipboard_select
     assert source.batch_source_model == expected_source_model
     assert model_change_callback.model == expected_source_model    
 
-def test_component_easy_source_initial_load_model(qtbot):
+def test_component_source_easy_initial_load_model(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(
             note=note, 

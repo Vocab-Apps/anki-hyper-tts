@@ -5,7 +5,7 @@ import copy
 from . import component_common 
 from . import component_target_easy
 from . import component_voiceselection_easy
-from . import component_easy_source
+from . import component_source_easy
 from . import config_models
 from . import constants
 from . import gui_utils
@@ -43,7 +43,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.batch_model = None
 
         # initialize source component
-        self.source = component_easy_source.ComponentEasySource(hypertts, editor_context, self.model_update_source)
+        self.source = component_source_easy.ComponentEasySource(hypertts, editor_context, self.model_update_source)
         source_field = editor_context.current_field
         field_list = field_list = list(editor_context.note.keys())
         # remove source field
