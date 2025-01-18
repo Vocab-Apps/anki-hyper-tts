@@ -24,7 +24,7 @@ logger = logging_utils.get_child_logger(__name__)
 #  https://github.com/AwesomeTTS/awesometts-anki-addon/blob/90826a8d79794b1e813f5286202f932ca09e6363/awesometts/gui/generator.py#L798C17-L798C45
 # properly strip html when getting source text
 # clear clipboard when user moves away from clipboard source radio button
-# save profile as default profile for DeckNoteType when applying audio
+# OK save profile as default profile for DeckNoteType when applying audio
 # potential issues:
 #  - what if the user didn't select a source field in the editor ? we need to set the target field (write a test)
 
