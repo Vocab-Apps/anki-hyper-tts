@@ -4,6 +4,7 @@ import pprint
 import unittest
 import json
 import pprint
+import copy
 
 from test_utils import testing_utils
 
@@ -1972,9 +1973,12 @@ class ConfigModelsTests(unittest.TestCase):
         batch_config.text_processing = config_models.TextProcessing()
 
         uuid_1 = 'uuid_1'
+        uuid_2 = 'uuid_2'
+        uuid_3 = 'uuid_3'
+
         deck_note_type_1 = config_models.DeckNoteType(model_id=42, deck_id=52)
         deck_note_type_2 = config_models.DeckNoteType(model_id=42, deck_id=53)
-        deck_note_type_2 = config_models.DeckNoteType(model_id=58, deck_id=54)
+        deck_note_type_3 = config_models.DeckNoteType(model_id=58, deck_id=54)
 
         # should be none by default
         self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_1), None)
@@ -1985,4 +1989,32 @@ class ConfigModelsTests(unittest.TestCase):
         hypertts_instance.save_default_preset(deck_note_type_1, batch_config)
         # now the default preset_id should be returned
         self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_1), uuid_1)
+
+        # check other deck note types
+        self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_2), None)
+        batch_config_2 = copy.copy(batch_config)
+        batch_config_2.uuid = uuid_2
+        batch_config_2.name = 'default for model_id 42, deck_id 53'
+        hypertts_instance.save_default_preset(deck_note_type_2, batch_config_2)
+        self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_2), uuid_2)
+
+        # overwrite for uuid_1
+        hypertts_instance.save_default_preset(deck_note_type_1, batch_config_2)
+        self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_1), uuid_2)
+
+        # check uuid_3
+        self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_3), None)
+        batch_config_3 = copy.copy(batch_config)
+        batch_config_3.uuid = uuid_3
+        batch_config_3.name = 'default for model_id 58, deck_id 54'
+        hypertts_instance.save_default_preset(deck_note_type_3, batch_config_3)
+        self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_3), uuid_3)
+
+        # load the preset
+        preset = hypertts_instance.load_preset(hypertts_instance.get_default_preset_id(deck_note_type_3))
+        self.assertEqual(preset.name, 'default for model_id 58, deck_id 54')
+
+
+
+
 
