@@ -217,6 +217,8 @@ class ComponentEasy(component_common.ComponentBase):
         logger.debug('add_audio_task_done')
         with self.hypertts.error_manager.get_single_action_context('Adding Audio to Note'):
             result = result.result()
+            # save default profile
+            self.hypertts.save_default_preset(self.deck_note_type, self.get_model())
             self.dialog.close()
         self.hypertts.anki_utils.run_on_main(self.finish_add_audio)
     

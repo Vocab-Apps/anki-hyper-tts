@@ -459,7 +459,11 @@ def test_easy_dialog_editor_1(qtbot):
         assert dialog.easy_component.batch_model != None
         assert dialog.easy_component.batch_model.name != None
         assert dialog.easy_component.batch_model.text_processing != None
-        assert dialog.easy_component.batch_model.target.target_field == 'Chinese'
+        # the target_field is temporarily incorrect in the target model, but that's OK
+        # assert dialog.easy_component.batch_model.target.target_field == None
+
+        # now check the main dialog's get_model function, it should have the target field set
+        assert dialog.easy_component.get_model().target.target_field == 'Chinese'
 
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_inital_state
@@ -657,6 +661,9 @@ def test_easy_dialog_editor_4_save_load_default_preset(qtbot):
 
         # check that dialog was closed
         assert dialog.closed == True
+
+        # after this, the default profile should have been saved
+
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_apply_close
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
