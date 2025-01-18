@@ -652,6 +652,40 @@ def serialize_preset_mapping_rules(preset_mapping_rules):
 def deserialize_preset_mapping_rules(preset_mapping_rules_config):
     return databind.json.load(preset_mapping_rules_config, PresetMappingRules)
 
+@dataclass 
+class DefaultPresetsForNoteType:
+    # map from deck_id to str (preset_id)
+    deck_id_map: Mapping[int, str] = field(default_factory=dict)
+
+    def get_default_preset_id(self, deck_id: int):
+        return self.deck_id_map.get(deck_id, None)
+
+    def set_default_preset_id(self, deck_id: int, preset_id: str):
+        self.deck_id_map[deck_id] = preset_id
+
+@dataclass
+class DefaultPresets:
+    # map from model_id to DefaultPresetsForNoteType
+    model_id_map: Mapping[int, DefaultPresetsForNoteType] = field(default_factory=dict)
+
+    def get_default_presets_for_note_type(self, model_id: int):
+        return self.model_id_map.get(model_id, DefaultPresetsForNoteType())
+
+    def get_default_preset_id(self, deck_note_type: DeckNoteType):
+        default_presets_for_note_type = self.get_default_presets_for_note_type(deck_note_type.model_id)
+        return default_presets_for_note_type.get_default_preset_id(deck_note_type.deck_id)
+
+    def set_default_preset_id(self, deck_note_type: DeckNoteType, preset_id: str):
+        if deck_note_type.model_id not in self.model_id_map:
+            self.model_id_map[deck_note_type.model_id] = DefaultPresetsForNoteType()
+        self.model_id_map[deck_note_type.model_id].set_default_preset_id(deck_note_type.deck_id, preset_id)
+
+def deserialize_default_presets(default_presets_config):
+    return databind.json.load(default_presets_config, DefaultPresets)
+
+def serialize_default_presets(default_presets: DefaultPresets):
+    return databind.json.dump(default_presets, DefaultPresets)
+
 def migrate_configuration(anki_utils, config):
     current_config_schema_version = config.get(constants.CONFIG_SCHEMA, 0)
     if current_config_schema_version < 2:

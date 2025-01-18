@@ -713,10 +713,31 @@ class HyperTTS():
             new_preset_name = f'Preset {i}'
         return new_preset_name
 
+    # default presets / easy mode
+
     def get_default_easy_preset_name(self, deck_note_type: config_models.DeckNoteType) -> str:
         note_type_name = self.anki_utils.get_note_type_name(deck_note_type.model_id)
         deck_name = self.anki_utils.get_deck_name(deck_note_type.deck_id)
         return f'Default {note_type_name} {deck_name}'
+
+    def get_default_preset_id(self, deck_note_type: config_models.DeckNoteType) -> str:
+        # returns preset_id or None
+        # deserialize DefaultPreset
+        default_presets: config_models.DefaultPresets = self.get_default_presets()
+        return default_presets.get_default_preset_id(deck_note_type)
+
+    def get_default_presets(self) -> config_models.DefaultPresets:
+        return config_models.deserialize_default_presets(self.config.get(constants.CONFIG_DEFAULT_PRESETS, {}))
+
+    def save_default_preset(self, deck_note_type: config_models.DeckNoteType, preset: config_models.BatchConfig):
+        # first, save the preset
+        self.save_preset(preset)
+        # associate the preset with the deck_note_type
+        default_presets: config_models.DefaultPresets = self.get_default_presets()
+        default_presets.set_default_preset_id(deck_note_type, preset.uuid)
+        # save the default presets
+        self.config[constants.CONFIG_DEFAULT_PRESETS] = config_models.serialize_default_presets(default_presets)
+        
 
     # mapping rules
     def save_mapping_rules(self, mapping_rules: config_models.PresetMappingRules):

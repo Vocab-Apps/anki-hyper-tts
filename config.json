@@ -4,5 +4,6 @@
     "presets": {},
     "mapping_rules": {},
     "batch_config": {},
-    "realtime_config": {}
+    "realtime_config": {},
+    "default_presets": {}
 }

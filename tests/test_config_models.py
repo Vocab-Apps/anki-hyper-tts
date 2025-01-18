@@ -1954,3 +1954,35 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(voice_id_2, deserialized_voice_id_2)
 
         self.assertTrue(True)
+
+    def test_default_presets(self):
+        hypertts_instance: hypertts.HyperTTS = get_hypertts_instance()
+
+        # build batch config
+        # ------------------
+        voice_list = hypertts_instance.service_manager.full_voice_list()
+        voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+        voice_selection = config_models.VoiceSelectionSingle()
+        voice_selection.set_voice(config_models.VoiceWithOptions(voice_a_1.voice_id, {}))
+
+        batch_config = config_models.BatchConfig(hypertts_instance.anki_utils)
+        batch_config.source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
+        batch_config.target = config_models.BatchTarget('Sound', False, False)
+        batch_config.voice_selection = voice_selection
+        batch_config.text_processing = config_models.TextProcessing()
+
+        uuid_1 = 'uuid_1'
+        deck_note_type_1 = config_models.DeckNoteType(model_id=42, deck_id=52)
+        deck_note_type_2 = config_models.DeckNoteType(model_id=42, deck_id=53)
+        deck_note_type_2 = config_models.DeckNoteType(model_id=58, deck_id=54)
+
+        # should be none by default
+        self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_1), None)
+
+        # save default preset
+        batch_config.uuid = uuid_1
+        batch_config.name = 'default for model_id 42, deck_id 52'
+        hypertts_instance.save_default_preset(deck_note_type_1, batch_config)
+        # now the default preset_id should be returned
+        self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_1), uuid_1)
+

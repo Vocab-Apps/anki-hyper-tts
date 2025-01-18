@@ -93,6 +93,7 @@ CONFIG_SCHEMA_VERSION = 4
 CONFIG_BATCH_CONFIG = 'batch_config'
 # this is the new config category, contains dict of uuids
 CONFIG_PRESETS = 'presets'
+CONFIG_DEFAULT_PRESETS = 'default_presets'
 CONFIG_MAPPING_RULES = 'mapping_rules'
 CONFIG_REALTIME_CONFIG = 'realtime_config'
 CONFIG_CONFIGURATION = 'configuration'
