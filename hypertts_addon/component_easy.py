@@ -25,6 +25,7 @@ logger = logging_utils.get_child_logger(__name__)
 # properly strip html when getting source text
 # clear clipboard when user moves away from clipboard source radio button
 # OK save profile as default profile for DeckNoteType when applying audio
+# integrate with the editor buttons / preset mapping rules
 # potential issues:
 #  - what if the user didn't select a source field in the editor ? we need to set the target field (write a test)
 

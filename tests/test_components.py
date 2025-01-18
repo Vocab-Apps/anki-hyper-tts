@@ -1028,6 +1028,23 @@ def test_component_source_easy_initial_clipboard(qtbot):
     assert source.batch_source_model == expected_source_model
     assert model_change_callback.model == expected_source_model    
 
+def test_component_source_easy_initial_clipboard_html(qtbot):
+    def build_editor_context_fn(note):
+        return config_models.EditorContext(
+            note=note, 
+            editor=None, 
+            add_mode=False, 
+            selected_text=None, 
+            current_field='Chinese', 
+            clipboard='<span>override text</span>')
+    dialog, source, model_change_callback = fixtures_source_easy(build_editor_context_fn)
+
+    # verify initial state
+    assert source.source_text_origin == config_models.SourceTextOrigin.CLIPBOARD
+    # html tags should have been stripped
+    assert source.get_current_text() == 'override text'
+
+
 def test_component_source_easy_initial_clipboard_selected(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(

@@ -2,6 +2,7 @@ import aqt.qt
 from . import component_common
 from . import config_models
 from . import constants
+from . import text_utils
 
 MAX_PREVIEW_CHARACTERS = 20
 
@@ -149,6 +150,12 @@ class ComponentEasySource(component_common.ConfigComponentBase):
             self.field_combobox.setEnabled(False)
             self.source_text_origin = config_models.SourceTextOrigin.CLIPBOARD
             source_text = self.editor_context.clipboard
+
+        # process source_text (strip html, etc)
+        if source_text != None:
+            text_processing_model = config_models.TextProcessing()
+            source_text = text_utils.process_text(source_text, text_processing_model)
+
         self.source_text_edit.setPlainText(source_text)
 
         self.build_update_model()
