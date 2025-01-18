@@ -25,6 +25,8 @@ logger = logging_utils.get_child_logger(__name__)
 # properly strip html when getting source text
 # clear clipboard when user moves away from clipboard source radio button
 # save profile as default profile for DeckNoteType when applying audio
+# potential issues:
+#  - what if the user didn't select a source field in the editor ? we need to set the target field (write a test)
 
 class ComponentEasy(component_common.ComponentBase):
     BUTTON_TEXT_PREVIEW_AUDIO = 'Preview Audio'
@@ -79,6 +81,12 @@ class ComponentEasy(component_common.ComponentBase):
         self.source.load_model(model.source)
         self.target.load_model(model.target)
         self.voice_selection.load_model(model.voice_selection)
+
+    def get_model(self):
+        if self.batch_model.target.same_field:
+            # if same field, we need to set the target field to the source field
+            self.batch_model.target.target_field = self.batch_model.source.source_field
+        return self.batch_model
 
     def draw(self, layout):
         # Add header with logo at the top
@@ -158,12 +166,15 @@ class ComponentEasy(component_common.ComponentBase):
 
 
     def model_update_source(self, model):
+        logger.debug(f'model_update_source: {model}')
         self.batch_model.source = model
 
     def model_update_target(self, model):
+        logger.debug(f'model_update_target: {model}')
         self.batch_model.target = model
 
     def model_update_voice_selection(self, model):
+        logger.debug(f'model_update_voice_selection: {model}')
         self.batch_model.voice_selection = model
 
     def get_source_text(self):
@@ -178,7 +189,7 @@ class ComponentEasy(component_common.ComponentBase):
 
     def sound_preview_task(self):
         # get text
-        self.hypertts.preview_note_audio(self.batch_model, self.editor_context.note, self.get_source_text())
+        self.hypertts.preview_note_audio(self.get_model(), self.editor_context.note, self.get_source_text())
         return True
 
     def sound_preview_task_done(self, result):
@@ -199,7 +210,7 @@ class ComponentEasy(component_common.ComponentBase):
 
     def add_audio_task(self):
         logger.debug('add_audio_task')
-        self.hypertts.editor_note_add_audio(self.batch_model, self.editor_context, text_input=self.get_source_text())
+        self.hypertts.editor_note_add_audio(self.get_model(), self.editor_context, text_input=self.get_source_text())
         return True
 
     def add_audio_task_done(self, result):
@@ -271,3 +282,12 @@ def create_dialog_editor_existing_preset(hypertts,
     dialog.load_preset(preset_id)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)    
 
+def create_dialog_editor(hypertts, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
+    dialog = EasyDialog(hypertts)
+    dialog.configure(deck_note_type, editor_context)
+    # load preset if one exists
+    preset_id: str = hypertts.get_default_preset_id(deck_note_type)
+    if preset_id != None:
+        logger.info(f'loading preset_id {preset_id}')
+        dialog.load_preset(preset_id)
+    hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)

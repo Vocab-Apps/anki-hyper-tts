@@ -623,3 +623,47 @@ def test_easy_dialog_editor_3(qtbot):
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_close
     component_easy.create_dialog_editor_new_preset(hypertts_instance, deck_note_type, editor_context)
+
+def test_easy_dialog_editor_4_save_load_default_preset(qtbot):
+    # pytest --log-cli-level=DEBUG tests/test_component_batch_editor.py -k test_easy_dialog_editor_4_save_load_default_preset -s -rPP
+    # full end to end test for easy dialog started from the editor
+
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+    # ensure there's no field selected
+    editor_context.current_field = None
+
+    # run once , and change the source field
+
+    def easy_dialog_input_sequence_apply_close(dialog):
+        # check that the source field selected is English
+        assert dialog.easy_component.source.field_combobox.currentData() == 'Chinese'
+        # select the English field
+        logger.debug(f'setting source field to English')
+        field_index = dialog.easy_component.source.field_combobox.findData('English')
+        assert field_index != -1
+        dialog.easy_component.source.field_combobox.setCurrentIndex(field_index)
+        # press the add audio button
+        logger.debug(f'clicking add audio button')
+        qtbot.mouseClick(dialog.easy_component.add_audio_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+        # ensure that sound has been applied
+        # check that sound tag was set
+        assert 'English' in editor_context.note.set_values
+        sound_tag = editor_context.note.set_values['English']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        assert audio_data['source_text'] == 'old people'
+        assert editor_context.editor.set_note_called == True
+
+        # check that dialog was closed
+        assert dialog.closed == True
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_apply_close
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
+
+    def easy_dialog_input_sequence_load(dialog):
+        # this time, because we loaded a profile previously, the source field should be English
+        assert dialog.easy_component.source.field_combobox.currentData() == 'English'
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_load
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)    
