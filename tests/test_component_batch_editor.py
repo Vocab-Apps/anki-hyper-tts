@@ -399,7 +399,7 @@ def test_easy_dialog_editor_manual_field_text(qtbot):
         if os.environ.get('HYPERTTS_EASY_DIALOG_DEBUG', 'no') == 'yes':
             dialog.exec()        
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence
-    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
+    component_easy.create_dialog_editor_new_preset(hypertts_instance, deck_note_type, editor_context)
 
 def test_easy_dialog_editor_manual_clipboard_selected(qtbot):
     # HYPERTTS_EASY_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_components.py -k test_easy_dialog_editor_manual_clipboard_selected -s -rPP
@@ -410,7 +410,7 @@ def test_easy_dialog_editor_manual_clipboard_selected(qtbot):
         if os.environ.get('HYPERTTS_EASY_DIALOG_DEBUG', 'no') == 'yes':
             dialog.exec()        
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence
-    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
+    component_easy.create_dialog_editor_new_preset(hypertts_instance, deck_note_type, editor_context)
 
 
 def test_easy_dialog_editor_1(qtbot):
@@ -463,7 +463,7 @@ def test_easy_dialog_editor_1(qtbot):
 
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_inital_state
-    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)    
+    component_easy.create_dialog_editor_new_preset(hypertts_instance, deck_note_type, editor_context)    
 
 
     # check sound preview
@@ -506,7 +506,7 @@ def test_easy_dialog_editor_1(qtbot):
         }
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_sound_preview
-    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
+    component_easy.create_dialog_editor_new_preset(hypertts_instance, deck_note_type, editor_context)
 
     # add audio to note
     # =================
@@ -532,7 +532,7 @@ def test_easy_dialog_editor_1(qtbot):
         assert dialog.closed == True
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_add_audio
-    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
+    component_easy.create_dialog_editor_new_preset(hypertts_instance, deck_note_type, editor_context)
 
     def easy_dialog_input_sequence_overwrite_text_add_audio(dialog):
         # select second voice
@@ -559,7 +559,7 @@ def test_easy_dialog_editor_1(qtbot):
         assert dialog.closed == True
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_overwrite_text_add_audio
-    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)    
+    component_easy.create_dialog_editor_new_preset(hypertts_instance, deck_note_type, editor_context)    
 
 
 def test_easy_dialog_editor_2(qtbot):
@@ -622,4 +622,4 @@ def test_easy_dialog_editor_3(qtbot):
 
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_close
-    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
+    component_easy.create_dialog_editor_new_preset(hypertts_instance, deck_note_type, editor_context)

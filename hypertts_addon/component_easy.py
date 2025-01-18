@@ -256,7 +256,7 @@ class EasyDialog(aqt.qt.QDialog):
         self.accept()
 
 
-def create_dialog_editor(hypertts, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
+def create_dialog_editor_new_preset(hypertts, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
     dialog = EasyDialog(hypertts)
     dialog.configure(deck_note_type, editor_context)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)
