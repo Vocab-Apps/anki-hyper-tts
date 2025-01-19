@@ -953,7 +953,8 @@ class ConfigModelsTests(unittest.TestCase):
                     'automatic': False,
                     'is_default': False
                 }
-            ]
+            ],
+            'use_easy_mode': False
         }
         self.assertEqual(config_models.serialize_preset_mapping_rules(mapping_rules), expected_output)
 
@@ -972,7 +973,8 @@ class ConfigModelsTests(unittest.TestCase):
                     'automatic': False,
                     'is_default': False
                 }
-            ]
+            ],
+            'use_easy_mode': False
         }
 
         mapping_rules = config_models.deserialize_preset_mapping_rules(preset_mapping_rule_data)
@@ -995,7 +997,8 @@ class ConfigModelsTests(unittest.TestCase):
                     'automatic': False,
                     'is_default': False
                 }
-            ]
+            ],
+            'use_easy_mode': False
         }
 
         mapping_rules = config_models.deserialize_preset_mapping_rules(preset_mapping_rule_data)

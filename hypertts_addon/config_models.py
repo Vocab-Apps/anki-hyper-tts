@@ -629,6 +629,8 @@ class MappingRule:
 @dataclass
 class PresetMappingRules:
     rules: list[MappingRule] = field(default_factory=list)
+    # whether to use the easy add mode
+    use_easy_mode: bool = False
 
     def iterate_applicable_rules(self, deck_note_type: DeckNoteType, automated: bool):
         subset_index = 0
