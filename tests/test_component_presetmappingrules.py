@@ -472,3 +472,34 @@ def test_component_preset_mapping_rules_preview_run(qtbot):
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence    
     component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
 
+
+
+def test_component_preset_mapping_easy_mode(qtbot):
+    # pytest --log-cli-level=DEBUG tests/test_component_presetmappingrules.py -k test_component_preset_mapping_easy_mode
+
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+
+    def dialog_input_sequence_initial(dialog):
+        # assert that easy_mode_checkbox is unchecked
+        assert dialog.mapping_rules.easy_mode_checkbox.isChecked() == False
+        # now check it
+        dialog.mapping_rules.easy_mode_checkbox.setChecked(True)
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence_initial
+    component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
+
+    def dialog_input_sequence_2(dialog):
+        # assert that easy_mode_checkbox is checked
+        assert dialog.mapping_rules.easy_mode_checkbox.isChecked() == True
+        # now uncheck it
+        dialog.mapping_rules.easy_mode_checkbox.setChecked(False)
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence_2
+    component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
+
+    def dialog_input_sequence_3(dialog):
+        # assert that easy_mode_checkbox is unchecked
+        assert dialog.mapping_rules.easy_mode_checkbox.isChecked() == False
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence_3
+    component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)    
