@@ -1985,6 +1985,8 @@ class ConfigModelsTests(unittest.TestCase):
 
         # should be none by default
         self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_1), None)
+        # we also should have no preset mapping rules
+        self.assertEqual(hypertts_instance.load_mapping_rules().rules, [])
 
         # save default preset
         batch_config.uuid = uuid_1
@@ -1992,6 +1994,13 @@ class ConfigModelsTests(unittest.TestCase):
         hypertts_instance.save_default_preset(deck_note_type_1, batch_config)
         # now the default preset_id should be returned
         self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_1), uuid_1)
+        # we should have one mapping rule set
+        mapping_rules: config_models.PresetMappingRules = hypertts_instance.load_mapping_rules()
+        self.assertEqual(len(mapping_rules.rules), 1)
+        rule: config_models.MappingRule = mapping_rules.rules[0]
+        self.assertEqual(rule.preset_id, uuid_1)
+        self.assertEqual(rule.model_id, 42)
+        self.assertEqual(rule.deck_id, 52)
 
         # check other deck note types
         self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_2), None)
@@ -2000,10 +2009,16 @@ class ConfigModelsTests(unittest.TestCase):
         batch_config_2.name = 'default for model_id 42, deck_id 53'
         hypertts_instance.save_default_preset(deck_note_type_2, batch_config_2)
         self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_2), uuid_2)
+        # we should have two mapping rules set
+        mapping_rules: config_models.PresetMappingRules = hypertts_instance.load_mapping_rules()
+        self.assertEqual(len(mapping_rules.rules), 2)
 
         # overwrite for uuid_1
         hypertts_instance.save_default_preset(deck_note_type_1, batch_config_2)
         self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_1), uuid_2)
+        # we should still have two mapping rules set
+        mapping_rules: config_models.PresetMappingRules = hypertts_instance.load_mapping_rules()
+        self.assertEqual(len(mapping_rules.rules), 2)
 
         # check uuid_3
         self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_3), None)
@@ -2012,6 +2027,10 @@ class ConfigModelsTests(unittest.TestCase):
         batch_config_3.name = 'default for model_id 58, deck_id 54'
         hypertts_instance.save_default_preset(deck_note_type_3, batch_config_3)
         self.assertEqual(hypertts_instance.get_default_preset_id(deck_note_type_3), uuid_3)
+
+        # now, we should have three in total
+        mapping_rules: config_models.PresetMappingRules = hypertts_instance.load_mapping_rules()
+        self.assertEqual(len(mapping_rules.rules), 3)        
 
         # load the preset
         preset = hypertts_instance.load_preset(hypertts_instance.get_default_preset_id(deck_note_type_3))
