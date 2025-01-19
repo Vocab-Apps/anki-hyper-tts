@@ -193,6 +193,8 @@ GUI_TEXT_EASY_TARGET = """<i>Decide where the sound tag will be placed.</i>"""
 GUI_TEXT_EASY_BUTTON_MORE_SETTINGS = 'More Settings...'
 GUI_TEXT_EASY_BUTTON_HIDE_MORE_SETTINGS = 'Hide Settings...'
 
+GUI_TEXT_EASY_MODE_LABEL_PRESET_MAPPING_RULES = '<i>Enable to use a simplified interface when adding audio to a single note (similar to AwesomeTTS)</i>'
+
 GUI_TEXT_TARGET_FIELD = """Sound tags will be inserted in this field"""
 
 GUI_TEXT_TARGET_TEXT_AND_SOUND = """<i>Should the target field only contain the sound tag, or should
