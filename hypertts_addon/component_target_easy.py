@@ -9,15 +9,13 @@ logger = logging_utils.get_child_logger(__name__)
 
 
 class BatchTargetEasy(component_target.BatchTarget):
-    def __init__(self, hypertts, source_field, field_list, model_change_callback):
+    def __init__(self, hypertts, field_list, model_change_callback):
         super().__init__(hypertts, field_list, model_change_callback)
-
-        self.source_field = source_field
 
         # initialize widgets
         # same field
         self.same_field_group = aqt.qt.QButtonGroup()
-        self.radio_button_same_field = aqt.qt.QRadioButton(f'Into same field ({self.source_field})')
+        self.radio_button_same_field = aqt.qt.QRadioButton(f'Into same field')
         self.radio_button_different_field = aqt.qt.QRadioButton('Into different field (choose which)')
         self.same_field_group.addButton(self.radio_button_same_field)
         self.same_field_group.addButton(self.radio_button_different_field)

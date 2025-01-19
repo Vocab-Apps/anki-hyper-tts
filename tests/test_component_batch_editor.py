@@ -449,8 +449,6 @@ def test_easy_dialog_editor_1(qtbot):
         # check target settings
         # same field should be selected
         assert dialog.easy_component.target.same_field_group.checkedButton() == dialog.easy_component.target.radio_button_same_field
-        # check the label of the same field group, it should say "Into same field (Chinese)"
-        assert dialog.easy_component.target.same_field_group.buttons()[0].text() == 'Into same field (Chinese)'
         # radio_button_after should be selected
         assert dialog.easy_component.target.insert_location_group.checkedButton() == dialog.easy_component.target.radio_button_after
 

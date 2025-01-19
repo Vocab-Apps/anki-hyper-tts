@@ -55,7 +55,7 @@ class ComponentEasy(component_common.ComponentBase):
             field_list.remove(source_field)
 
         # initialize sub-components
-        self.target = component_target_easy.BatchTargetEasy(hypertts, source_field, field_list, self.model_update_target)
+        self.target = component_target_easy.BatchTargetEasy(hypertts, field_list, self.model_update_target)
         self.voice_selection = component_voiceselection_easy.VoiceSelectionEasy(hypertts, dialog, self.model_update_voice_selection)
         
         # configure the model

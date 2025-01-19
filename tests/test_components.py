@@ -1242,7 +1242,7 @@ def fixtures_target_easy():
     other_field_list.remove(source_field)
 
 
-    batch_target = component_target_easy.BatchTargetEasy(hypertts_instance, source_field, other_field_list, model_change_callback.model_updated)
+    batch_target = component_target_easy.BatchTargetEasy(hypertts_instance, other_field_list, model_change_callback.model_updated)
     dialog.addChildWidget(batch_target.draw())
 
     return dialog, batch_target, model_change_callback
