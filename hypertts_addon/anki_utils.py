@@ -262,6 +262,9 @@ class AnkiUtils():
         # return self.clipboard_content
         return aqt.qt.QApplication.clipboard().text()
 
+    def clear_clipboard_contents(self):
+        aqt.qt.QApplication.clipboard().clear()
+
     def play_sound(self, filename):
         # play files one after another
         aqt.sound.av_player.insert_file(filename)

@@ -164,6 +164,7 @@ class MockAnkiUtils():
 
         # clipboard
         self.clipboard_content = None
+        self.clipboard_cleared = False
 
         # time
         self.current_time = datetime.datetime.now()
@@ -335,6 +336,9 @@ class MockAnkiUtils():
 
     def get_clipboard_content(self):
         return self.clipboard_content
+
+    def clear_clipboard_contents(self):
+        self.clipboard_cleared = True
 
     def reset_exceptions(self):
         self.last_exception = None

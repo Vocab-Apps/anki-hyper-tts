@@ -1201,6 +1201,27 @@ def test_component_source_easy_text_processing_html_entities(qtbot):
     # the text here should not have been replaced by HTML entities, as the text is visible to the user
     assert source.get_current_text() == 'A & B'
 
+def test_component_source_easy_clipboard_clearing(qtbot):
+    def build_editor_context_fn(note):
+        return config_models.EditorContext(
+            note=note, 
+            editor=None, 
+            add_mode=False, 
+            selected_text='selected text',
+            current_field='Pinyin', 
+            clipboard='clipboard text')
+    dialog, source, model_change_callback = fixtures_source_easy(build_editor_context_fn)
+
+    # verify initial state
+    # even though text is present on the clipboard, the field combobox should still default to
+    # Pinyin, because that's the field the user put the cursor into
+    assert source.source_text_origin == config_models.SourceTextOrigin.CLIPBOARD
+    assert source.get_current_text() == 'clipboard text'
+    # now, pick "selected"
+    source.selection_radio.setChecked(True)
+    # check that clipboard was cleared
+    assert source.hypertts.anki_utils.clipboard_cleared == True
+
 # BatchTargetEasy tests
 # =====================
 
