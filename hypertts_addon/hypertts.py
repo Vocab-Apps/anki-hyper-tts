@@ -90,7 +90,7 @@ class HyperTTS():
         
         # do we need to remove existing sound tags ?
         if batch.target.remove_sound_tag == True:
-            target_field_content = self.strip_sound_tag(target_field_content)
+            target_field_content = text_utils.strip_sound_tag(target_field_content)
         
         if batch.target.text_and_sound_tag == True:
             # user wants text and sound tag together, append the sound tag
@@ -456,10 +456,6 @@ class HyperTTS():
             'options': options
         }
         return hashlib.sha224(str(combined_data).encode('utf-8')).hexdigest()
-
-    def strip_sound_tag(self, field_value):
-        field_value = re.sub(r'\[sound:[^\]]+\]', '', field_value)
-        return field_value.strip()
 
     def keep_only_sound_tags(self, field_value):
         matches = re.findall(r'\[sound:[^\]]+\]', field_value)
