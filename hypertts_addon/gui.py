@@ -24,6 +24,7 @@ from . import component_realtime
 from . import component_presetmappingrules
 from . import component_configuration
 from . import component_preferences
+from . import component_easy
 from . import text_utils
 from . import ttsplayer
 from . import logging_utils
@@ -211,7 +212,12 @@ def init(hypertts):
     def run_hypertts_apply(editor):
         with hypertts.error_manager.get_single_action_context('Generating Audio'):
             editor_context = hypertts.get_editor_context(editor)
-            hypertts.apply_all_mapping_rules(editor_context)
+            if hypertts.load_mapping_rules().use_easy_mode:
+                logger.debug('use easy mode')
+                deck_note_type: config_models.DeckNoteType = hypertts.get_editor_deck_note_type(editor)
+                component_easy.create_dialog_editor(hypertts, deck_note_type, editor_context)
+            else:
+                hypertts.apply_all_mapping_rules(editor_context)
 
     def setup_editor_buttons(buttons, editor):
         preferences = hypertts.get_preferences()
