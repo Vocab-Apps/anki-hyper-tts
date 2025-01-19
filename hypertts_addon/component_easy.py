@@ -87,9 +87,13 @@ class ComponentEasy(component_common.ComponentBase):
         self.voice_selection.load_model(model.voice_selection)
 
     def get_model(self):
+        # do some adjustments on the model
         if self.batch_model.target.same_field:
             # if same field, we need to set the target field to the source field
             self.batch_model.target.target_field = self.batch_model.source.source_field
+            # also, the only thing that makes sense is text_and_sound_tag=True
+            self.batch_model.target.text_and_sound_tag = True
+        
         return self.batch_model
 
     def draw(self, layout):
