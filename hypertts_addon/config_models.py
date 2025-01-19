@@ -658,18 +658,16 @@ class PresetMappingRules:
 
     def set_default_preset_id(self, deck_note_type: DeckNoteType, preset_id: str):
         """Set a preset as the default for a deck/note type combination"""
-        # First remove any existing default for this combination
-        for rule in self.rules:
-            if (rule.model_id == deck_note_type.model_id and 
-                rule.deck_id == deck_note_type.deck_id):
-                rule.is_default = False
         
         # Look for an existing rule for this preset/deck/note type
         for rule in self.rules:
-            if (rule.preset_id == preset_id and 
-                rule.model_id == deck_note_type.model_id and 
-                rule.deck_id == deck_note_type.deck_id):
-                rule.is_default = True
+            if (rule.model_id == deck_note_type.model_id and 
+                rule.deck_id == deck_note_type.deck_id and 
+                rule.is_default == True):
+                # we've located the default rule for this preset
+                # set its preset_id again, it might been unchanged
+                rule.preset_id = preset_id
+                # then return, so that we don't create a new rule
                 return
 
         # Create new rule if none exists
