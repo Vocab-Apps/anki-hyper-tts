@@ -22,6 +22,10 @@ items = [
         'name': 'test preferences manual',
         'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual'
     },
+    {
+        'name': 'test preset mapping rules manual',
+        'command': 'HYPERTTS_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_component_presetmappingrules.py -k test_component_preset_mapping_rules_manual_4'
+    },    
 
 
 ]
