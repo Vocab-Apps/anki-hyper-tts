@@ -110,6 +110,17 @@ class BatchTargetEasy(component_target.BatchTarget):
     def update_same_field(self):
         same_field = self.radio_button_same_field.isChecked()
         self.batch_target_model.same_field = same_field
+
+        if same_field:
+            # we are going to the same field, it will contain text and sound
+            self.radio_button_text_sound.setChecked(True)
+            # remove other tags by default
+            self.radio_button_remove_sound.setChecked(True)
+        else:
+            # we are going to a different field, it will only contain sound
+            self.radio_button_sound_only.setChecked(True)
+            # remove other tags by default
+            self.radio_button_remove_sound.setChecked(True)
         
         # Show/hide widgets based on same_field setting
         self.target_field_widget.setVisible(not same_field)
@@ -131,6 +142,8 @@ class BatchTargetEasy(component_target.BatchTarget):
         # Set same field radio buttons
         self.radio_button_same_field.setChecked(model.same_field)
         self.radio_button_different_field.setChecked(not model.same_field)
+        # Update visibility
+        self.update_same_field()        
 
         # Set insert location radio buttons
         self.radio_button_after.setChecked(model.insert_location == config_models.InsertLocation.AFTER)
@@ -146,5 +159,3 @@ class BatchTargetEasy(component_target.BatchTarget):
         self.radio_button_remove_sound.setChecked(model.remove_sound_tag)
         self.radio_button_keep_sound.setChecked(not model.remove_sound_tag)
 
-        # Update visibility
-        self.update_same_field()

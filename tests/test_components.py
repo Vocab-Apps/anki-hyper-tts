@@ -1296,6 +1296,24 @@ def test_target_easy_model_updates(qtbot):
     batch_target.radio_button_remove_sound.setChecked(True)
     assert model_change_callback.model.remove_sound_tag == True
 
+def test_target_easy_to_different_field_then_back(qtbot):
+    dialog, batch_target, model_change_callback = fixtures_target_easy()
+
+    # set same_field to false
+    batch_target.radio_button_different_field.setChecked(True)
+    assert model_change_callback.model.same_field == False
+    # we expect a certain combination of settings
+    # we are going to a different field, assume it's sound tag only
+    assert model_change_callback.model.text_and_sound_tag == False 
+    assert model_change_callback.model.remove_sound_tag == True
+
+    # now, go back to same_field = True
+    batch_target.radio_button_same_field.setChecked(True)
+    assert model_change_callback.model.same_field == True
+    # the model should now understand that the target field will contain text and sound
+    assert model_change_callback.model.text_and_sound_tag == True
+    assert model_change_callback.model.remove_sound_tag == True
+
 def test_target_easy_model_load(qtbot):
     dialog, batch_target, model_change_callback = fixtures_target_easy()
 
