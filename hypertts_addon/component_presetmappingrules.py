@@ -103,6 +103,9 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         # settings groupbox
         # ================
         settings_vlayout = aqt.qt.QVBoxLayout()
+        easy_mode_label = aqt.qt.QLabel('<i>Enable to use a simplified interface when adding audio to a single note (similar to AwesomeTTS)</i>')
+        easy_mode_label.setWordWrap(True)
+        settings_vlayout.addWidget(easy_mode_label)
         self.easy_mode_checkbox = aqt.qt.QCheckBox('Easy Mode')
         self.easy_mode_checkbox.setToolTip('Enable Easy Mode for adding audio')
         settings_vlayout.addWidget(self.easy_mode_checkbox)
