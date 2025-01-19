@@ -484,6 +484,8 @@ def test_component_preset_mapping_easy_mode(qtbot):
         assert dialog.mapping_rules.easy_mode_checkbox.isChecked() == False
         # now check it
         dialog.mapping_rules.easy_mode_checkbox.setChecked(True)
+        # click save and close
+        qtbot.mouseClick(dialog.mapping_rules.save_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence_initial
     component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
@@ -493,6 +495,8 @@ def test_component_preset_mapping_easy_mode(qtbot):
         assert dialog.mapping_rules.easy_mode_checkbox.isChecked() == True
         # now uncheck it
         dialog.mapping_rules.easy_mode_checkbox.setChecked(False)
+        # click save and close
+        qtbot.mouseClick(dialog.mapping_rules.save_button, aqt.qt.Qt.MouseButton.LeftButton)        
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence_2
     component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
