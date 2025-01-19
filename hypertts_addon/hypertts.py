@@ -458,7 +458,7 @@ class HyperTTS():
         return hashlib.sha224(str(combined_data).encode('utf-8')).hexdigest()
 
     def strip_sound_tag(self, field_value):
-        field_value = re.sub('\[sound:[^\]]+\]', '', field_value)
+        field_value = re.sub(r'\[sound:[^\]]+\]', '', field_value)
         return field_value.strip()
 
     def keep_only_sound_tags(self, field_value):
@@ -532,7 +532,7 @@ class HyperTTS():
             side_template_key = 'afmt'
         side_template = card_template[side_template_key]
         side_template = side_template.replace('\n', ' ')
-        m = re.match('.*{{tts.*' + constants.TTS_TAG_HYPERTTS_PRESET + '=([^\s]+).*}}.*', side_template)
+        m = re.match(r'.*{{tts.*' + constants.TTS_TAG_HYPERTTS_PRESET + r'=([^\s]+).*}}.*', side_template)
         if m != None:
             preset_name = m.groups()[0]
             preset_name = preset_name.replace(side.name + '_', '')
