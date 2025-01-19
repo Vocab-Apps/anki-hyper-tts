@@ -24,7 +24,7 @@ class BatchTargetEasy(component_target.BatchTarget):
         # insert location
         self.insert_location_group = aqt.qt.QButtonGroup()
         self.radio_button_after = aqt.qt.QRadioButton('At the end')
-        self.radio_button_cursor = aqt.qt.QRadioButton('After cursor')
+        self.radio_button_cursor = aqt.qt.QRadioButton('After cursor (not supported)')
         self.insert_location_group.addButton(self.radio_button_after)
         self.insert_location_group.addButton(self.radio_button_cursor)        
 

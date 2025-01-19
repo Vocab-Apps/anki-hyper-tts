@@ -28,6 +28,7 @@ logger = logging_utils.get_child_logger(__name__)
 # OK save profile as default profile for DeckNoteType when applying audio
 # OK integrate with the editor buttons / preset mapping rules
 # OK preview button should disable while preview is running
+# bug: adding to same field overwrites the text
 # potential issues:
 #  - what if the user didn't select a source field in the editor ? we need to set the target field (write a test)
 
