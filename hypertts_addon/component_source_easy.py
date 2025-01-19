@@ -159,7 +159,7 @@ class ComponentEasySource(component_common.ConfigComponentBase):
 
         # process source_text (strip html, etc)
         if source_text != None:
-            text_processing_model = config_models.TextProcessing()
+            text_processing_model = config_models.get_easy_mode_source_default_text_processing()
             source_text = text_utils.process_text(source_text, text_processing_model)
 
         self.source_text_edit.setPlainText(source_text)

@@ -367,6 +367,13 @@ class TextProcessing(ConfigModelBase):
     def validate(self):
         pass
 
+def get_easy_mode_source_default_text_processing() -> TextProcessing:
+    text_processing = TextProcessing()
+    # don't replace HTML entities at this stage, because the text is displayed to the user
+    text_processing.ssml_convert_characters = False
+    return text_processing
+
+
 # service configuration
 # =====================
 @dataclass
