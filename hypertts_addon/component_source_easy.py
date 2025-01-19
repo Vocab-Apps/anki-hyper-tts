@@ -142,10 +142,16 @@ class ComponentEasySource(component_common.ConfigComponentBase):
             self.source_text_origin = config_models.SourceTextOrigin.FIELD_TEXT
             current_field = self.field_combobox.currentData()
             source_text = self.editor_context.note[current_field]
+            # Clear clipboard if we're moving away from clipboard source
+            if self.editor_context.clipboard:
+                self.hypertts.anki_utils.clear_clipboard_contents()
         elif self.selection_radio.isChecked():
             self.field_combobox.setEnabled(False)
             self.source_text_origin = config_models.SourceTextOrigin.SELECTION
             source_text = self.editor_context.selected_text
+            # Clear clipboard if we're moving away from clipboard source
+            if self.editor_context.clipboard:
+                self.hypertts.anki_utils.clear_clipboard_contents()
         else:
             self.field_combobox.setEnabled(False)
             self.source_text_origin = config_models.SourceTextOrigin.CLIPBOARD
