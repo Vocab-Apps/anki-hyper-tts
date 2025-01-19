@@ -599,6 +599,8 @@ class MappingRule:
     enabled: bool
     automatic: bool
     deck_id: Optional[int] = None
+    # whether this mapping rule is the default for the deck_note_type in easy mode
+    is_default: bool = False
 
     def rule_related(self, deck_note_type: DeckNoteType):
         """used to determine whether we should display a rule in the mapping rule editor"""

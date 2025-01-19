@@ -950,7 +950,8 @@ class ConfigModelsTests(unittest.TestCase):
                     'model_id': 42,
                     'deck_id': 52,
                     'enabled': True,
-                    'automatic': False
+                    'automatic': False,
+                    'is_default': False
                 }
             ]
         }
@@ -968,7 +969,8 @@ class ConfigModelsTests(unittest.TestCase):
                     'model_id': 43,
                     'deck_id': 53,
                     'enabled': False,
-                    'automatic': False
+                    'automatic': False,
+                    'is_default': False
                 }
             ]
         }
@@ -990,7 +992,8 @@ class ConfigModelsTests(unittest.TestCase):
                     'model_id': 42,
                     'deck_id': None,
                     'enabled': False,
-                    'automatic': False
+                    'automatic': False,
+                    'is_default': False
                 }
             ]
         }
