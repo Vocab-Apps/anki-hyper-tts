@@ -188,6 +188,7 @@ class ComponentEasy(component_common.ComponentBase):
 
     def preview_button_pressed(self):
         self.preview_sound_button.setText(self.BUTTON_TEXT_PREVIEWING)
+        self.preview_sound_button.setEnabled(False)
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
     def sound_preview_task(self):
@@ -202,6 +203,7 @@ class ComponentEasy(component_common.ComponentBase):
 
     def finish_sound_preview(self):
         self.preview_sound_button.setText(self.BUTTON_TEXT_PREVIEW_AUDIO)
+        self.preview_sound_button.setEnabled(True)
 
     # add audio handling
     # ==================
