@@ -28,8 +28,15 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.model = model
         # draw the presets
         self.refresh_mapping_rules_gridlayout()
+        # set checkbox state
+        self.easy_mode_checkbox.setChecked(self.model.use_easy_mode)
         self.model_changed = False
         self.update_button_states() 
+
+    def easy_mode_changed(self, state):
+        self.model.use_easy_mode = state == aqt.qt.Qt.Checked
+        self.model_changed = True
+        self.update_button_states()
 
     def get_model(self) -> config_models.PresetMappingRules:
         return self.model
@@ -92,7 +99,18 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         instructions_groubox.setLayout(instructions_layout)
         # self.vlayout.addWidget(instructions_label)
         top_hlayout.addWidget(instructions_groubox, 1)
-        # ============
+
+        # settings groupbox
+        # ================
+        settings_vlayout = aqt.qt.QVBoxLayout()
+        self.easy_mode_checkbox = aqt.qt.QCheckBox('Easy Mode')
+        self.easy_mode_checkbox.setToolTip('Enable Easy Mode for adding audio')
+        settings_vlayout.addWidget(self.easy_mode_checkbox)
+        settings_vlayout.addStretch()
+        settings_groupbox = aqt.qt.QGroupBox('Settings')
+        settings_groupbox.setLayout(settings_vlayout)
+        top_hlayout.addWidget(settings_groupbox)
+        # ================
 
         self.vlayout.addLayout(top_hlayout)
 
@@ -154,6 +172,7 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
         self.preview_all_button.pressed.connect(self.preview_all_button_pressed)
         self.run_all_button.pressed.connect(self.run_all_button_pressed)
+        self.easy_mode_checkbox.stateChanged.connect(self.easy_mode_changed)
 
         layout.addLayout(self.vlayout)
 
