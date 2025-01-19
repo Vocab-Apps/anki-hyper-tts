@@ -34,7 +34,7 @@ class ComponentPresetMappingRules(component_common.ConfigComponentBase):
         self.update_button_states() 
 
     def easy_mode_changed(self, state):
-        self.model.use_easy_mode = state == aqt.qt.Qt.Checked
+        self.model.use_easy_mode = self.easy_mode_checkbox.isChecked()
         self.model_changed = True
         self.update_button_states()
 
