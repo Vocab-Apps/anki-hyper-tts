@@ -23,7 +23,7 @@ logger = logging_utils.get_child_logger(__name__)
 #  note: this will require calling self._editor.addMedia(path), like AwesomeTTS used to do
 #  https://github.com/AwesomeTTS/awesometts-anki-addon/blob/90826a8d79794b1e813f5286202f932ca09e6363/awesometts/gui/generator.py#L798C17-L798C45
 # OK properly strip html when getting source text
-# need to make sure HTML entities are not replaced when displaying text to user
+# OK need to make sure HTML entities are not replaced when displaying text to user
 # OK clear clipboard when user moves away from clipboard source radio button
 # OK save profile as default profile for DeckNoteType when applying audio
 # OK integrate with the editor buttons / preset mapping rules
