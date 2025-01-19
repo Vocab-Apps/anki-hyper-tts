@@ -723,21 +723,17 @@ class HyperTTS():
 
     def get_default_preset_id(self, deck_note_type: config_models.DeckNoteType) -> str:
         # returns preset_id or None
-        # deserialize DefaultPreset
-        default_presets: config_models.DefaultPresets = self.get_default_presets()
-        return default_presets.get_default_preset_id(deck_note_type)
-
-    def get_default_presets(self) -> config_models.DefaultPresets:
-        return config_models.deserialize_default_presets(self.config.get(constants.CONFIG_DEFAULT_PRESETS, {}))
+        mapping_rules = self.load_mapping_rules()
+        return mapping_rules.get_default_preset_id(deck_note_type)
 
     def save_default_preset(self, deck_note_type: config_models.DeckNoteType, preset: config_models.BatchConfig):
         # first, save the preset
         self.save_preset(preset)
         # associate the preset with the deck_note_type
-        default_presets: config_models.DefaultPresets = self.get_default_presets()
-        default_presets.set_default_preset_id(deck_note_type, preset.uuid)
-        # save the default presets
-        self.config[constants.CONFIG_DEFAULT_PRESETS] = config_models.serialize_default_presets(default_presets)
+        mapping_rules = self.load_mapping_rules()
+        mapping_rules.set_default_preset_id(deck_note_type, preset.uuid)
+        # save the mapping rules
+        self.save_mapping_rules(mapping_rules)
         
 
     # mapping rules
