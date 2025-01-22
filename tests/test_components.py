@@ -2123,7 +2123,8 @@ def test_configuration(qtbot):
                 'delay': 42,
                 'demo_key': True
             },
-        }
+        },
+        'user_uuid': None
     }
     assert hypertts_instance.anki_utils.written_config['configuration'] == expected_output
 

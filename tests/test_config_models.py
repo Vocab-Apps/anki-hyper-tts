@@ -584,7 +584,8 @@ class ConfigModelsTests(unittest.TestCase):
                 'ServiceA': {
                     'region': 'europe'
                 },
-            }
+            },
+            'user_uuid': None
         }
 
         assert config_models.serialize_configuration(configuration) == expected_output
@@ -639,7 +640,8 @@ class ConfigModelsTests(unittest.TestCase):
                 'ServiceA': {
                     'speed': 1.42
                 },
-            }
+            },
+            'user_uuid': None
         }
         assert config_models.serialize_configuration(configuration) == expected_output
 
