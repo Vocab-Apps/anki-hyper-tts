@@ -56,6 +56,10 @@ class StatsGlobal:
 def event_global(event: constants_events.Event):
     sys._hypertts_stats_global.publish(constants_events.EventContext.addon, event, None)
 
+def send_event(context: constants_events.EventContext, event: constants_events.Event, event_mode: constants_events.EventMode = None):
+    if hasattr(sys, '_hypertts_stats_global'):
+        sys._hypertts_stats_global.publish(context, event, event_mode)
+
 class StatsEvent:
     def __init__(self, 
                  context: constants_events.EventContext, 
@@ -68,8 +72,7 @@ class StatsEvent:
     def __call__(self, func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            if hasattr(sys, '_hypertts_stats_global'):
-                sys._hypertts_stats_global.publish(self.context, self.event, self.event_mode)
+            send_event(self.context, self.event, self.event_mode)
             return func(*args, **kwargs)
         return wrapper
 
@@ -81,3 +84,5 @@ class StatsContext:
     def event(self, event: constants_events.Event, event_mode: constants_events.EventMode = None):
         return StatsEvent(self.context, event, event_mode)
 
+    def send_event(self, event: constants_events.Event, event_mode: constants_events.EventMode = None):
+        send_event(self.context, event, event_mode)
