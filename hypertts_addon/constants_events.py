@@ -31,7 +31,6 @@ class Event(enum.Enum):
     click_sign_up = enum.auto()
     click_free_trial_ok = enum.auto()
     click_free_trial_confirm = enum.auto()
-    select_voice = enum.auto()
 
 class EventMode(enum.Enum):
     advanced_browser_existing_preset = enum.auto()

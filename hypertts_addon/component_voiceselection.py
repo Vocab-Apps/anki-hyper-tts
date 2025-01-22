@@ -344,7 +344,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.notify_model_update()
 
 
-    @sc.event(Event.select_voice)
     def voice_selected(self, current_index):
         # clear the options layout
         self.voice_options_widgets = {}

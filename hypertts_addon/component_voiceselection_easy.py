@@ -53,7 +53,6 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         
         return widget
 
-    @sc.event(Event.select_voice)
     def voice_selected(self, current_index):
         voice = self.filtered_voice_list[current_index]
         logger.info(f'voice_selected: {voice} options: {voice.options}')
