@@ -4,13 +4,15 @@ import webbrowser
 
 from . import component_common
 from . import constants
+from . import constants_events
+from .constants_events import Event
 from . import logging_utils
 from . import gui_utils
 from . import config_models
 from . import stats
 logger = logging_utils.get_child_logger(__name__)
 
-sc = stats.StatsContext('hyperttspro')
+sc = stats.StatsContext(constants_events.EventContext.hyperttspro)
 
 class HyperTTSPro(component_common.ConfigComponentBase):
     PRO_STACK_LEVEL_BUTTONS = 0 # show all the buttons
@@ -195,22 +197,22 @@ class HyperTTSPro(component_common.ConfigComponentBase):
 
         global_vlayout.addWidget(groupbox)
 
-    @sc.event('click_free_trial')
+    @sc.event(Event.click_free_trial)
     def trial_button_pressed(self):
         self.trial_email_validation_label.setText('')
         self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_TRIAL)
 
-    @sc.event('click_enter_api_key')
+    @sc.event(Event.click_enter_api_key)
     def enter_api_key_button_pressed(self):
         self.api_key_validation_label.setText('')
         self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_API_KEY)
 
-    @sc.event('click_sign_up')
+    @sc.event(Event.click_sign_up)
     def signup_button_pressed(self):
         logger.info('opening signup page')
         webbrowser.open(constants.BUY_PLAN_URL)
 
-    @sc.event('click_cancel')
+    @sc.event(Event.click_cancel)
     def action_cancel_button_pressed(self):
         self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_BUTTONS)
 
@@ -220,7 +222,7 @@ class HyperTTSPro(component_common.ConfigComponentBase):
         self.hypertts_pro_api_key.setText('')
         self.report_model_change()
 
-    @sc.event('click_free_trial_ok')
+    @sc.event(Event.click_free_trial_ok)
     def trial_button_ok_pressed(self):
         self.trial_email_validation_label.setText('Verifying...')
         self.email = self.trial_email_input.text()
@@ -229,7 +231,7 @@ class HyperTTSPro(component_common.ConfigComponentBase):
     def trial_email_signup_task(self):
         return self.hypertts.service_manager.cloudlanguagetools.request_trial_key(self.email)
 
-    @sc.event('click_free_trial_confirm')
+    @sc.event(Event.click_free_trial_confirm)
     def trial_email_signup_task_done(self, result):
         with self.hypertts.error_manager.get_single_action_context('Signing up for trial'):
             trial_signup_result = result.result()

@@ -144,8 +144,9 @@ else:
     # stats
     logger.debug('loading stats')
     from . import stats
+    from . import constants_events
     sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, 'phc_MyLwGiptNC6mpOSOQWiyEiykey6gEaqOIwPufswHnnG', user_uuid)
-    stats.event_global('addon_loaded')
+    stats.event_global(constants_events.Event.open)
     # stats_context = stats.StatsContext('global')
     # stats_context.publish('addon_loaded')
     # logger.debug('finished publishing')

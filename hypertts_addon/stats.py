@@ -3,6 +3,7 @@ import requests
 import json
 import functools
 
+from . import constants_events
 from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
@@ -14,18 +15,18 @@ class StatsGlobal:
         self.api_key = api_key
         self.user_uuid = user_uuid
 
-    def publish(self, context: str, event: str):
+    def publish(self, context: constants_events.EventContext, event: constants_events.Event):
         logger.debug('publish')
-        def get_publish_lambda(context: str, event: str):
+        def get_publish_lambda(context: constants_events.EventContext, event: constants_events.Event):
             def publish():
                 self.publish_event(context, event)
             return publish
         self.anki_utils.run_in_background(get_publish_lambda(context, event), None)
 
-    def construct_event_name(self, context: str, event: str):
-        return f'anki_addon_v1:hypertts:{context}:{event}'
+    def construct_event_name(self, context: constants_events.EventContext, event: constants_events.Event):
+        return f'{constants_events.PREFIX}:{constants_events.ADDON}:{context.name}:{event.name}'
 
-    def publish_event(self, context: str, event: str):
+    def publish_event(self, context: constants_events.EventContext, event: constants_events.Event):
         logger.debug('publishing event')
         # in background thread
         headers = {
@@ -42,11 +43,11 @@ class StatsGlobal:
         logger.debug(f'sent event: {context}:{event}, status: {response.status_code}')
         # print(response)        
 
-def event_global(event: str):
-    sys._hypertts_stats_global.publish('global', event)
+def event_global(event: constants_events.Event):
+    sys._hypertts_stats_global.publish(constants_events.EventContext.addon, event)
 
 class StatsEvent:
-    def __init__(self, context: str, event: str):
+    def __init__(self, context: constants_events.EventContext, event: constants_events.Event):
         self.context = context
         self.event = event
 
@@ -59,9 +60,9 @@ class StatsEvent:
 
 class StatsContext:
 
-    def __init__(self, context_str):
-        self.context_str = context_str
+    def __init__(self, context: constants_events.EventContext):
+        self.context = context
 
     def event(self, event: str):
-        return StatsEvent(self.context_str, event)
+        return StatsEvent(self.context, event)
 

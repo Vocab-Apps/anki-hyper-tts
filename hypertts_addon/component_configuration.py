@@ -7,6 +7,8 @@ from . import component_common
 from . import component_hyperttspro
 from . import config_models
 from . import constants
+from . import constants_events
+from .constants_events import Event
 from . import gui_utils
 from . import logging_utils
 from . import stats
@@ -21,14 +23,14 @@ class ScrollAreaCustom(aqt.qt.QScrollArea):
         return aqt.qt.QSize(100, 100)
 
 
-sc = stats.StatsContext('services')
+sc = stats.StatsContext(constants_events.EventContext.services)
 
 class Configuration(component_common.ConfigComponentBase):
 
     STACK_LEVEL_LITE = 0
     STACK_LEVEL_PRO = 1
 
-    @sc.event('open')
+    @sc.event(Event.open)
     def __init__(self, hypertts, dialog):
         self.hypertts = hypertts
         self.dialog = dialog
@@ -125,7 +127,7 @@ class Configuration(component_common.ConfigComponentBase):
             service_stack.setVisible(True)
             clt_stack.setVisible(False)
 
-    @sc.event('click_disable_all_services')
+    @sc.event(Event.click_disable_all_services)
     def disable_all_services(self):
         for service in self.get_service_list():
             checkbox_name = self.get_service_enabled_widget_name(service)
@@ -133,7 +135,7 @@ class Configuration(component_common.ConfigComponentBase):
             checkbox = self.dialog.findChild(aqt.qt.QCheckBox, checkbox_name)
             checkbox.setChecked(False)
 
-    @sc.event('click_enable_free_services')
+    @sc.event(Event.click_enable_free_services)
     def enable_all_free_services(self):
         for service in self.get_service_list():
             if service.service_fee == constants.ServiceFee.free:
@@ -350,13 +352,13 @@ class Configuration(component_common.ConfigComponentBase):
 
         layout.addLayout(self.global_vlayout)
 
-    @sc.event('click_save')
+    @sc.event(Event.click_save)
     def save_button_pressed(self):
         with self.hypertts.error_manager.get_single_action_context('Saving Service Configuration'):
             self.hypertts.save_configuration(self.model)
             self.hypertts.service_manager.configure(self.model)
             self.dialog.close()
 
-    @sc.event('click_cancel')
+    @sc.event(Event.click_cancel)
     def cancel_button_pressed(self):
         self.dialog.close()

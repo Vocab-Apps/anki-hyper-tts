@@ -263,3 +263,4 @@ class ErrorDialogType(str, enum.Enum):
     Dialog = 'Dialog'
     Tooltip = 'Tooltip'
     Nothing = 'Nothing'
+
