@@ -50,6 +50,7 @@ else:
     # =================
 
     # get or create user_uuid
+    first_install = False
     addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
     config_configuration = addon_config.get(constants.CONFIG_CONFIGURATION, {})
     user_uuid = config_configuration.get('user_uuid', None)
@@ -61,6 +62,9 @@ else:
         addon_config[constants.CONFIG_CONFIGURATION] = config_configuration
         aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, addon_config)
         user_id = user_uuid
+        # check if legacy unique_id exists
+        if 'unique_id' not in addon_config:
+            first_install = True
 
     # setup sentry crash reporting
     # ============================
@@ -147,6 +151,5 @@ else:
     from . import constants_events
     sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, 'phc_MyLwGiptNC6mpOSOQWiyEiykey6gEaqOIwPufswHnnG', user_uuid)
     stats.event_global(constants_events.Event.open)
-    # stats_context = stats.StatsContext('global')
-    # stats_context.publish('addon_loaded')
-    # logger.debug('finished publishing')
+    if first_install:
+        stats.event_global(constants_events.Event.install)

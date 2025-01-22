@@ -17,6 +17,7 @@ class Event(enum.Enum):
     open = enum.auto()
     click_cancel = enum.auto()
     click_save = enum.auto()
+    install = enum.auto()
     # dialog-specific
     click_disable_all_services = enum.auto()
     click_enable_free_services = enum.auto()
