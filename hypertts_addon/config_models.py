@@ -399,6 +399,8 @@ class Configuration:
     use_vocabai_api: Optional[bool] = False
     # allow overriding vocab.ai api url during testing
     vocabai_api_url_override: Optional[str] = None
+    # anonymous identifier
+    user_uuid: Optional[str] = None
 
     # pro api key
     # ===========
@@ -766,6 +768,11 @@ def migrate_configuration(anki_utils, config):
                             voice = voice_entry.get('voice', {})
                             voice_entry['voice_id'] = voice_to_voice_id_conversion(voice)
                             voice_entry.pop('voice', None)                        
+
+    if current_config_schema_version < 4:
+        # remove the previously used unique_id
+        if 'unique_id' in config:
+            del config['unique_id']
 
     # Update config schema version
     config[constants.CONFIG_SCHEMA] = constants.CONFIG_SCHEMA_VERSION

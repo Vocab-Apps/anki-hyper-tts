@@ -46,6 +46,22 @@ else:
 
     logger = logging_utils.get_child_logger(__name__)
 
+    # anonymous user id
+    # =================
+
+    # get or create user_uuid
+    addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
+    config_configuration = addon_config.get(constants.CONFIG_CONFIGURATION, {})
+    user_uuid = config_configuration.get('user_uuid', None)
+    if user_uuid != None:
+        user_id = user_uuid
+    else:
+        user_uuid = uuid.uuid1().hex
+        config_configuration['user_uuid'] = user_uuid
+        addon_config[constants.CONFIG_CONFIGURATION] = config_configuration
+        aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, addon_config)
+        user_id = user_uuid
+
     # setup sentry crash reporting
     # ============================
 
@@ -55,23 +71,9 @@ else:
 
         from . import version
 
-        addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
-        api_key = addon_config.get('configuration', {}).get('hypertts_pro_api_key', None)
-        if api_key != None:
-            user_id = f'api_key:{api_key}'
-        else:
-            unique_id = addon_config.get('unique_id', None)
-            if unique_id == None:
-                unique_id = f'uuid:{uuid.uuid4().hex[:12]}'
-                addon_config['unique_id'] = unique_id
-                aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, addon_config)
-            user_id = unique_id
-
         def sentry_filter(event, hint):
             if 'exc_info' in hint:
                 exc_type, exc_value, tb = hint['exc_info']
-
-                event['contexts']['cloudlanguagetools'] = {'user_id': api_key}
 
                 # do we recognize the paths in this stack trace ?
                 relevant_exception = False
@@ -137,3 +139,12 @@ else:
     with hyper_tts.error_manager.get_single_action_context('Configuring Services'):
         service_manager.configure(hyper_tts.get_configuration())
     gui.init(hyper_tts)
+
+
+    # stats
+    logger.debug('loading stats')
+    from . import stats
+    sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, 'phc_MyLwGiptNC6mpOSOQWiyEiykey6gEaqOIwPufswHnnG', user_uuid)
+    stats_context = stats.StatsContext('global')
+    stats_context.publish('addon_loaded')
+    logger.debug('finished publishing')
