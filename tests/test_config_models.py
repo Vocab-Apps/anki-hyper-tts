@@ -1482,8 +1482,7 @@ class ConfigModelsTests(unittest.TestCase):
                 "side_enabled": false
             }
         }
-    },
-    "unique_id": "uuid:7a544af5402f"
+    }
 }
 """
         expected_config_rev_3 = json.loads(config_rev_3_json_str)
@@ -1714,8 +1713,7 @@ class ConfigModelsTests(unittest.TestCase):
                 }
             }
         }
-    },
-    "unique_id": "uuid:089db83fbb66"
+    }
 }
 """
         expected_config_rev_3 = json.loads(config_rev_3_json_str)

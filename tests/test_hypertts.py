@@ -138,7 +138,8 @@ yoyo
             'service_enabled': {
                 'ServiceA': True,
                 'ServiceB': False
-            }
+            },
+            'user_uuid': None
         }
 
         self.assertEqual(hypertts_instance.anki_utils.written_config['configuration'], expected_saved_config)
