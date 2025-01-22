@@ -1,6 +1,7 @@
 import sys
 import requests
 import json
+import functools
 
 from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
@@ -38,14 +39,29 @@ class StatsGlobal:
             },
         }
         response = requests.post(self.CAPTURE_URL, headers=headers, data=json.dumps(payload))
-        logger.debug(f'sent event: {context}:{event}, response: {response.content}')
+        logger.debug(f'sent event: {context}:{event}, status: {response.status_code}')
         # print(response)        
+
+def event_global(event: str):
+    sys._hypertts_stats_global.publish('global', event)
+
+class StatsEvent:
+    def __init__(self, context: str, event: str):
+        self.context = context
+        self.event = event
+
+    def __call__(self, func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            sys._hypertts_stats_global.publish(self.context, self.event)
+            return func(*args, **kwargs)
+        return wrapper
 
 class StatsContext:
 
     def __init__(self, context_str):
         self.context_str = context_str
 
-    def publish(self, event: str):
-        sys._hypertts_stats_global.publish(self.context_str, event)
+    def event(self, event: str):
+        return StatsEvent(self.context_str, event)
 
