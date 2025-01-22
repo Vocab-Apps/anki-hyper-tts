@@ -26,6 +26,10 @@ items = [
         'name': 'test preset mapping rules manual',
         'command': 'HYPERTTS_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_component_presetmappingrules.py -k test_component_preset_mapping_rules_manual_4'
     },    
+    {
+        'name': 'test choose easy advanced',
+        'command': 'HYPERTTS_EASY_ADVANCED_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_choose_easy_advanced_manual -s -rPP'
+    },        
 
 
 ]

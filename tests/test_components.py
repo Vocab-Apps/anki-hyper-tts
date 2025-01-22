@@ -34,6 +34,7 @@ from hypertts_addon import component_mappingrule
 from hypertts_addon import component_easy
 from hypertts_addon import component_voiceselection_easy
 from hypertts_addon import component_source_easy
+from hypertts_addon import component_choose_easy_advanced
 
 logger = logging_utils.get_test_child_logger(__name__)
 
@@ -3187,3 +3188,10 @@ def test_preferences_load(qtbot):
     assert preferences.shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Alt+P'
 
 
+def test_choose_easy_advanced_manual(qtbot):
+    # HYPERTTS_EASY_ADVANCED_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_choose_easy_advanced_manual -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    if os.environ.get('HYPERTTS_EASY_ADVANCED_DIALOG_DEBUG', 'no') == 'yes':
+        component_choose_easy_advanced.show_easy_advanced_dialog()
