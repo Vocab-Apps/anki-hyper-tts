@@ -701,6 +701,11 @@ def deserialize_preset_mapping_rules(preset_mapping_rules_config):
     return databind.json.load(preset_mapping_rules_config, PresetMappingRules)
 
 
+class EasyAdvancedMode(enum.Enum):
+    EASY = 1
+    ADVANCED = 2
+
+
 def migrate_configuration(anki_utils, config):
     current_config_schema_version = config.get(constants.CONFIG_SCHEMA, 0)
     if current_config_schema_version < 2:
