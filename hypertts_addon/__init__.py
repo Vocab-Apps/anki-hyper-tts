@@ -146,7 +146,6 @@ else:
 
 
     # stats
-    logger.debug('loading stats')
     from . import stats
     from . import constants_events
     sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, 'phc_MyLwGiptNC6mpOSOQWiyEiykey6gEaqOIwPufswHnnG', user_uuid)
