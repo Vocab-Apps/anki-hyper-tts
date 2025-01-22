@@ -8,6 +8,9 @@ from . import component_voiceselection_easy
 from . import component_source_easy
 from . import config_models
 from . import constants
+from . import constants_events
+from .constants_events import Event, EventMode
+from . import stats
 from . import gui_utils
 from . import logging_utils
 from . import errors
@@ -32,6 +35,8 @@ logger = logging_utils.get_child_logger(__name__)
 # OK bug: if existing sound tag, it's not stripped when displaying to the user
 # potential issues:
 #  - what if the user didn't select a source field in the editor ? we need to set the target field (write a test)
+
+sc = stats.StatsContext(constants_events.EventContext.generate)
 
 class ComponentEasy(component_common.ComponentBase):
     BUTTON_TEXT_PREVIEW_AUDIO = 'Preview Audio'
@@ -192,6 +197,7 @@ class ComponentEasy(component_common.ComponentBase):
     # preview audio handling
     # ======================
 
+    @sc.event(Event.click_preview)
     def preview_button_pressed(self):
         self.preview_sound_button.setText(self.BUTTON_TEXT_PREVIEWING)
         self.preview_sound_button.setEnabled(False)
@@ -214,6 +220,7 @@ class ComponentEasy(component_common.ComponentBase):
     # add audio handling
     # ==================
 
+    @sc.event(Event.click_add)
     def add_audio_button_pressed(self):
         self.add_audio_button.setText(self.BUTTON_TEXT_ADDING_AUDIO)
         self.add_audio_button.setEnabled(False)
@@ -237,6 +244,7 @@ class ComponentEasy(component_common.ComponentBase):
         self.add_audio_button.setText(self.BUTTON_TEXT_ADD_AUDIO)
         self.add_audio_button.setEnabled(True)
 
+    @sc.event(Event.click_cancel)
     def cancel_button_pressed(self):
         self.dialog.close()
 
@@ -295,6 +303,7 @@ def create_dialog_editor_existing_preset(hypertts,
     dialog.load_preset(preset_id)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)    
 
+@sc.event(Event.open, EventMode.easy_editor)
 def create_dialog_editor(hypertts, deck_note_type: config_models.DeckNoteType, editor_context: config_models.EditorContext):
     dialog = EasyDialog(hypertts)
     dialog.configure(deck_note_type, editor_context)

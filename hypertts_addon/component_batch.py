@@ -13,12 +13,15 @@ from . import component_batch_preview
 from . import component_label_preview
 from . import config_models
 from . import constants
+from . import constants_events
+from .constants_events import Event, EventMode
+from . import stats
 from . import errors
 from . import gui_utils
 from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
-
+sc = stats.StatsContext(constants_events.EventContext.generate)
 
 class ComponentBatch(component_common.ConfigComponentBase):
     MIN_WIDTH_COMPONENT = 600
@@ -392,6 +395,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         else:
             self.display_settings()
 
+    @sc.event(Event.click_preview)
     def sound_preview_button_pressed(self):
         self.disable_bottom_buttons()
         self.preview_sound_button.setText('Playing Preview...')
@@ -402,6 +406,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
         self.editor_new_preset_id = self.last_saved_preset_id
         self.dialog.close()
 
+    @sc.event(Event.click_add)
     def apply_button_pressed(self):
         with self.hypertts.error_manager.get_single_action_context('Applying Audio to Notes'):
             self.get_model().validate()
@@ -415,6 +420,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
                 self.apply_button.setText('Loading...')
                 self.preview.apply_audio_to_notes()
 
+    @sc.event(Event.click_cancel)
     def cancel_button_pressed(self):
         self.dialog.close()
 
@@ -529,11 +535,13 @@ class BatchDialog(aqt.qt.QDialog):
         self.verify_profile_saved()
         super(aqt.qt.QDialog, self).closeEvent(evnt)
 
+    @sc.event(Event.close)
     def close(self):
         self.verify_profile_saved()
         self.closed = True
         self.accept()
 
+@sc.event(Event.open, EventMode.advanced_browser_existing_preset)
 def create_component_batch_browser_existing_preset(hypertts, note_id_list, preset_id: str) -> ComponentBatch:
     if len(note_id_list) == 0:
         raise errors.NoNotesSelected()
@@ -541,6 +549,7 @@ def create_component_batch_browser_existing_preset(hypertts, note_id_list, prese
     dialog.configure_browser_existing_preset(note_id_list, preset_id)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_BATCH)
 
+@sc.event(Event.open, EventMode.advanced_browser_new_preset)
 def create_component_batch_browser_new_preset(hypertts, note_id_list, new_preset_name: str) -> ComponentBatch:
     if len(note_id_list) == 0:
         raise errors.NoNotesSelected()    
@@ -548,11 +557,13 @@ def create_component_batch_browser_new_preset(hypertts, note_id_list, new_preset
     dialog.configure_browser_new_preset(note_id_list, new_preset_name)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_BATCH)
 
+@sc.event(Event.open, EventMode.advanced_editor_existing_preset)
 def create_dialog_editor_existing_preset(hypertts, editor_context: config_models.EditorContext, preset_id: str):
     dialog = BatchDialog(hypertts)
     dialog.configure_editor_existing_preset(editor_context, preset_id)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_BATCH)    
 
+@sc.event(Event.open, EventMode.advanced_editor_new_preset)
 def create_dialog_editor_new_preset(hypertts, editor_context: config_models.EditorContext):
     """get a new preset_id from the editor, and return the new preset_id"""
     dialog = BatchDialog(hypertts)

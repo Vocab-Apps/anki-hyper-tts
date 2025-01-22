@@ -148,7 +148,8 @@ else:
     # stats
     from . import stats
     from . import constants_events
-    sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, 'phc_MyLwGiptNC6mpOSOQWiyEiykey6gEaqOIwPufswHnnG', user_uuid)
-    stats.event_global(constants_events.Event.open)
-    if first_install:
-        stats.event_global(constants_events.Event.install)
+    if not hasattr(sys, '_pytest_mode'):
+        sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, user_uuid)
+        stats.event_global(constants_events.Event.open)
+        if first_install:
+            stats.event_global(constants_events.Event.install)

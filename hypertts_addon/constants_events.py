@@ -11,12 +11,17 @@ class EventContext(enum.Enum):
     addon = enum.auto()
     services = enum.auto()
     hyperttspro = enum.auto()
+    generate = enum.auto()
+    voice_selection = enum.auto()
 
 # events
 class Event(enum.Enum):
     open = enum.auto()
+    close = enum.auto()
     click_cancel = enum.auto()
     click_save = enum.auto()
+    click_add = enum.auto()
+    click_preview = enum.auto()
     install = enum.auto()
     # dialog-specific
     click_disable_all_services = enum.auto()
@@ -26,3 +31,11 @@ class Event(enum.Enum):
     click_sign_up = enum.auto()
     click_free_trial_ok = enum.auto()
     click_free_trial_confirm = enum.auto()
+    select_voice = enum.auto()
+
+class EventMode(enum.Enum):
+    advanced_browser_existing_preset = enum.auto()
+    advanced_browser_new_preset = enum.auto()
+    advanced_editor_existing_preset = enum.auto()
+    advanced_editor_new_preset = enum.auto()
+    easy_editor = enum.auto()

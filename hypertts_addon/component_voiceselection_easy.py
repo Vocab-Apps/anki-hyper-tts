@@ -2,9 +2,14 @@ import aqt.qt
 from . import component_voiceselection
 from . import config_models
 from . import constants
+from . import constants_events
+from .constants_events import Event, EventMode
+from . import stats
 from . import logging_utils
 
 logger = logging_utils.get_child_logger(__name__)
+
+sc = stats.StatsContext(constants_events.EventContext.voice_selection)
 
 class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
     def __init__(self, hypertts, dialog, model_change_callback):
@@ -48,6 +53,7 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         
         return widget
 
+    @sc.event(Event.select_voice)
     def voice_selected(self, current_index):
         voice = self.filtered_voice_list[current_index]
         logger.info(f'voice_selected: {voice} options: {voice.options}')

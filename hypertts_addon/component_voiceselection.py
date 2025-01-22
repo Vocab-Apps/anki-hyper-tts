@@ -9,9 +9,13 @@ from . import config_models
 from . import gui_utils
 from . import errors
 from . import voice as voice_module
+from . import constants_events
+from .constants_events import Event, EventMode
+from . import stats
 from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
+sc = stats.StatsContext(constants_events.EventContext.voice_selection)
 
 class VoiceSelection(component_common.ConfigComponentBase):
     def __init__(self, hypertts, dialog, model_change_callback):
@@ -340,6 +344,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.notify_model_update()
 
 
+    @sc.event(Event.select_voice)
     def voice_selected(self, current_index):
         # clear the options layout
         self.voice_options_widgets = {}
