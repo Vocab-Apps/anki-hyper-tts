@@ -51,6 +51,6 @@ def show_easy_advanced_dialog() -> config_models.EasyAdvancedMode:
         EasyAdvancedMode enum value, or None if user cancelled
     """
     dialog = ChooseEasyAdvancedDialog()
-    if dialog.exec_():
+    if dialog.exec():
         return dialog.mode
     return None
