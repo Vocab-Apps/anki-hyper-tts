@@ -207,7 +207,12 @@ def init(hypertts):
     def run_hypertts_preview(editor):
         with hypertts.error_manager.get_single_action_context('Previewing Audio'):
             editor_context = hypertts.get_editor_context(editor)
-            hypertts.preview_all_mapping_rules(editor_context)
+            if hypertts.load_mapping_rules().use_easy_mode:
+                logger.debug('use easy mode')
+                deck_note_type: config_models.DeckNoteType = hypertts.get_editor_deck_note_type(editor)
+                component_easy.create_dialog_editor(hypertts, deck_note_type, editor_context)
+            else:
+                hypertts.preview_all_mapping_rules(editor_context)
 
     def run_hypertts_apply(editor):
         with hypertts.error_manager.get_single_action_context('Generating Audio'):
