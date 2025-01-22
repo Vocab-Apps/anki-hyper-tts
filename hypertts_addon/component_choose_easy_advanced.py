@@ -22,7 +22,8 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
 
         # Button box
         button_box = aqt.qt.QDialogButtonBox(
-            aqt.qt.QDialogButtonBox.Ok | aqt.qt.QDialogButtonBox.Cancel)
+            aqt.qt.QDialogButtonBox.StandardButton.Ok | 
+            aqt.qt.QDialogButtonBox.StandardButton.Cancel)
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
 
