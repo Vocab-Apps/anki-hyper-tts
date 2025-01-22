@@ -2,6 +2,7 @@ import aqt.qt
 from . import config_models
 
 class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
+    """Dialog for choosing between Easy and Advanced modes"""
     def __init__(self):
         super(aqt.qt.QDialog, self).__init__()
         self.setupUi()
@@ -33,6 +34,9 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         self.easy_frame.setProperty('selected', True)
         easy_layout = aqt.qt.QVBoxLayout()
         
+        # Create button group for mutual exclusion
+        self.button_group = aqt.qt.QButtonGroup(self)
+        
         # Radio buttons with larger font
         self.easy_radio = aqt.qt.QRadioButton('Easy Mode')
         font = self.easy_radio.font()
@@ -40,6 +44,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         font.setBold(True)
         self.easy_radio.setFont(font)
         self.easy_radio.setChecked(True)
+        self.button_group.addButton(self.easy_radio)
         self.easy_radio.toggled.connect(self.update_selection)
         
         easy_description = aqt.qt.QLabel('Simple interface for basic\ntext-to-speech needs')
@@ -56,6 +61,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         
         self.advanced_radio = aqt.qt.QRadioButton('Advanced Mode')
         self.advanced_radio.setFont(font)
+        self.button_group.addButton(self.advanced_radio)
         self.advanced_radio.toggled.connect(self.update_selection)
         
         advanced_description = aqt.qt.QLabel('Full control over all\ntext-to-speech settings')
