@@ -3188,6 +3188,63 @@ def test_preferences_load(qtbot):
     assert preferences.shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Alt+P'
 
 
+def test_choose_easy_advanced_default(qtbot):
+    """Test that Easy mode is selected by default"""
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    def dialog_input_sequence(dialog):    
+        # just click OK with default selection (Easy mode)
+        qtbot.mouseClick(dialog.button_box.button(aqt.qt.QDialogButtonBox.StandardButton.Ok), 
+                        aqt.qt.Qt.MouseButton.LeftButton)
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED] = dialog_input_sequence
+    result = component_choose_easy_advanced.show_easy_advanced_dialog(hypertts_instance)
+    assert result == config_models.EasyAdvancedMode.EASY
+
+def test_choose_easy_advanced_select_advanced(qtbot):
+    """Test selecting Advanced mode"""
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    def dialog_input_sequence(dialog):    
+        # select Advanced mode
+        dialog.advanced_radio.setChecked(True)
+        # click OK
+        qtbot.mouseClick(dialog.button_box.button(aqt.qt.QDialogButtonBox.StandardButton.Ok), 
+                        aqt.qt.Qt.MouseButton.LeftButton)
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED] = dialog_input_sequence
+    result = component_choose_easy_advanced.show_easy_advanced_dialog(hypertts_instance)
+    assert result == config_models.EasyAdvancedMode.ADVANCED
+
+def test_choose_easy_advanced_cancel(qtbot):
+    """Test canceling the dialog"""
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    def dialog_input_sequence(dialog):    
+        # click Cancel
+        qtbot.mouseClick(dialog.button_box.button(aqt.qt.QDialogButtonBox.StandardButton.Cancel), 
+                        aqt.qt.Qt.MouseButton.LeftButton)
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED] = dialog_input_sequence
+    result = component_choose_easy_advanced.show_easy_advanced_dialog(hypertts_instance)
+    assert result == None
+
+def test_choose_easy_advanced_close(qtbot):
+    """Test closing the dialog"""
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    def dialog_input_sequence(dialog):    
+        # simulate clicking the X button
+        dialog.reject()
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED] = dialog_input_sequence
+    result = component_choose_easy_advanced.show_easy_advanced_dialog(hypertts_instance)
+    assert result == None
+
 def test_choose_easy_advanced_manual(qtbot):
     # HYPERTTS_EASY_ADVANCED_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_choose_easy_advanced_manual -s -rPP
     config_gen = testing_utils.TestConfigGenerator()
