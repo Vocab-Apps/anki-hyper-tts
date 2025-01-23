@@ -82,16 +82,16 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         self.setStyleSheet(frame_style)
         
         # Button box
-        button_box = aqt.qt.QDialogButtonBox(
+        self.button_box = aqt.qt.QDialogButtonBox(
             aqt.qt.QDialogButtonBox.StandardButton.Ok | 
             aqt.qt.QDialogButtonBox.StandardButton.Cancel)
-        button_box.accepted.connect(self.accept)
-        button_box.rejected.connect(self.reject)
+        self.button_box.accepted.connect(self.accept)
+        self.button_box.rejected.connect(self.reject)
 
         # Main layout
         layout.addLayout(options_layout)
         layout.addSpacing(20)
-        layout.addWidget(button_box)
+        layout.addWidget(self.button_box)
 
         self.setLayout(layout)
 
