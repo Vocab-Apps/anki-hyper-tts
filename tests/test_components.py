@@ -3245,6 +3245,75 @@ def test_choose_easy_advanced_close(qtbot):
     result = component_choose_easy_advanced.show_easy_advanced_dialog(hypertts_instance)
     assert result == None
 
+def test_ensure_easy_advanced_choice_not_made(qtbot):
+    """Test ensuring choice when user hasn't chosen yet"""
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    def dialog_input_sequence(dialog):    
+        # select Advanced mode
+        dialog.advanced_radio.setChecked(True)
+        # click OK
+        qtbot.mouseClick(dialog.button_box.button(aqt.qt.QDialogButtonBox.StandardButton.Ok), 
+                        aqt.qt.Qt.MouseButton.LeftButton)
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED] = dialog_input_sequence
+
+    # User hasn't made a choice yet
+    config = config_models.Configuration()
+    config.user_choice_easy_advanced = False
+    hypertts_instance.anki_utils.config[constants.CONFIG_CONFIGURATION] = config.serialize()
+
+    # Should show dialog and save choice
+    component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts_instance)
+
+    # Verify configuration was updated
+    assert hypertts_instance.anki_utils.written_config[constants.CONFIG_CONFIGURATION]['user_choice_easy_advanced'] == True
+
+    # Verify mapping rules were updated for Advanced mode
+    assert hypertts_instance.anki_utils.written_config[constants.CONFIG_MAPPING_RULES]['use_easy_mode'] == False
+
+def test_ensure_easy_advanced_choice_already_made(qtbot):
+    """Test ensuring choice when user has already chosen"""
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    # User has already made a choice
+    config = config_models.Configuration()
+    config.user_choice_easy_advanced = True
+    hypertts_instance.anki_utils.config[constants.CONFIG_CONFIGURATION] = config.serialize()
+
+    # Should not show dialog or update anything
+    component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts_instance)
+
+    # Verify no configuration was written
+    assert constants.CONFIG_CONFIGURATION not in hypertts_instance.anki_utils.written_config
+    assert constants.CONFIG_MAPPING_RULES not in hypertts_instance.anki_utils.written_config
+
+def test_ensure_easy_advanced_choice_cancelled(qtbot):
+    """Test ensuring choice when user cancels dialog"""
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    def dialog_input_sequence(dialog):    
+        # Click Cancel
+        qtbot.mouseClick(dialog.button_box.button(aqt.qt.QDialogButtonBox.StandardButton.Cancel), 
+                        aqt.qt.Qt.MouseButton.LeftButton)
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED] = dialog_input_sequence
+
+    # User hasn't made a choice yet
+    config = config_models.Configuration()
+    config.user_choice_easy_advanced = False
+    hypertts_instance.anki_utils.config[constants.CONFIG_CONFIGURATION] = config.serialize()
+
+    # Should show dialog but not update anything since user cancelled
+    component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts_instance)
+
+    # Verify no configuration was written
+    assert constants.CONFIG_CONFIGURATION not in hypertts_instance.anki_utils.written_config
+    assert constants.CONFIG_MAPPING_RULES not in hypertts_instance.anki_utils.written_config
+
 def test_choose_easy_advanced_manual(qtbot):
     # HYPERTTS_EASY_ADVANCED_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_choose_easy_advanced_manual -s -rPP
     config_gen = testing_utils.TestConfigGenerator()
