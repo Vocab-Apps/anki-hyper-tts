@@ -111,6 +111,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         else:
             self.mode = config_models.EasyAdvancedMode.ADVANCED
         super().accept()
+        return self.mode
 
 def show_easy_advanced_dialog(hypertts) -> config_models.EasyAdvancedMode:
     """Show dialog to choose between Easy and Advanced modes
@@ -118,7 +119,6 @@ def show_easy_advanced_dialog(hypertts) -> config_models.EasyAdvancedMode:
         EasyAdvancedMode enum value, or None if user cancelled
     """
     dialog = ChooseEasyAdvancedDialog()
-    return_value = hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED)
-    if return_value:
+    if hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED):
         return dialog.mode
     return None
