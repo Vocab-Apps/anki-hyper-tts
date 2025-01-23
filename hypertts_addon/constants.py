@@ -118,6 +118,7 @@ DIALOG_ID_CHOOSE_PRESET = 'choose_preset'
 DIALOG_ID_BATCH = 'batch'
 DIALOG_ID_PRESET_MAPPING_RULES = 'preset_mapping_rules'
 DIALOG_ID_EASY = 'easy'
+DIALOG_ID_CHDOOSE_EASY_ADVANCED = 'choose_easy_advanced'
 
 TTS_TAG_VOICE = 'HyperTTS'
 TTS_TAG_HYPERTTS_PRESET = 'hypertts_preset'

@@ -3193,5 +3193,9 @@ def test_choose_easy_advanced_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
-    if os.environ.get('HYPERTTS_EASY_ADVANCED_DIALOG_DEBUG', 'no') == 'yes':
-        component_choose_easy_advanced.show_easy_advanced_dialog()
+    def dialog_input_sequence(dialog):    
+        if os.environ.get('HYPERTTS_EASY_ADVANCED_DIALOG_DEBUG', 'no') == 'yes':
+            dialog.exec()
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED] = dialog_input_sequence
+    component_choose_easy_advanced.show_easy_advanced_dialog(hypertts_instance)

@@ -327,4 +327,4 @@ class AnkiUtils():
 
     def wait_for_dialog_input(self, dialog, dialog_id):
         logger.info(f'waiting for dialog input: {dialog_id}')
-        dialog.exec()
+        return dialog.exec()
