@@ -132,6 +132,7 @@ def ensure_easy_advanced_choice_made(hypertts):
     
     configuration = hypertts.get_configuration()
     if not configuration.user_choice_easy_advanced:
+        logger.debug('user hasnt chosen easy/advanced mode yet')
         # User hasn't chosen yet, show dialog
         choice = show_easy_advanced_dialog(hypertts)
         if choice is not None:

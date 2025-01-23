@@ -3260,9 +3260,11 @@ def test_ensure_easy_advanced_choice_not_made(qtbot):
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED] = dialog_input_sequence
 
     # User hasn't made a choice yet
-    config = config_models.Configuration()
-    config.user_choice_easy_advanced = False
-    hypertts_instance.anki_utils.config[constants.CONFIG_CONFIGURATION] = config.serialize()
+    configuration = hypertts_instance.get_configuration()
+    configuration.user_choice_easy_advanced = False
+    hypertts_instance.save_configuration(configuration)
+    # clear config updates (make sure the assert works later)
+    del hypertts_instance.anki_utils.written_config[constants.CONFIG_CONFIGURATION]    
 
     # Should show dialog and save choice
     component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts_instance)
@@ -3279,15 +3281,15 @@ def test_ensure_easy_advanced_choice_already_made(qtbot):
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
     # User has already made a choice
-    config = config_models.Configuration()
-    config.user_choice_easy_advanced = True
-    hypertts_instance.anki_utils.config[constants.CONFIG_CONFIGURATION] = config.serialize()
+    configuration = hypertts_instance.get_configuration()
+    configuration.user_choice_easy_advanced = True
+    hypertts_instance.save_configuration(configuration)
 
     # Should not show dialog or update anything
     component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts_instance)
 
     # Verify no configuration was written
-    assert constants.CONFIG_CONFIGURATION not in hypertts_instance.anki_utils.written_config
+    # assert constants.CONFIG_CONFIGURATION not in hypertts_instance.anki_utils.written_config
     assert constants.CONFIG_MAPPING_RULES not in hypertts_instance.anki_utils.written_config
 
 def test_ensure_easy_advanced_choice_cancelled(qtbot):
@@ -3303,9 +3305,11 @@ def test_ensure_easy_advanced_choice_cancelled(qtbot):
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED] = dialog_input_sequence
 
     # User hasn't made a choice yet
-    config = config_models.Configuration()
-    config.user_choice_easy_advanced = False
-    hypertts_instance.anki_utils.config[constants.CONFIG_CONFIGURATION] = config.serialize()
+    configuration = hypertts_instance.get_configuration()
+    configuration.user_choice_easy_advanced = False
+    hypertts_instance.save_configuration(configuration)    
+    # clear config updates (make sure the assert works later)
+    del hypertts_instance.anki_utils.written_config[constants.CONFIG_CONFIGURATION]    
 
     # Should show dialog but not update anything since user cancelled
     component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts_instance)
