@@ -585,7 +585,8 @@ class ConfigModelsTests(unittest.TestCase):
                     'region': 'europe'
                 },
             },
-            'user_uuid': None
+            'user_uuid': None,
+            'user_choice_easy_advanced': False
         }
 
         assert config_models.serialize_configuration(configuration) == expected_output
@@ -641,7 +642,8 @@ class ConfigModelsTests(unittest.TestCase):
                     'speed': 1.42
                 },
             },
-            'user_uuid': None
+            'user_uuid': None,
+            'user_choice_easy_advanced': False
         }
         assert config_models.serialize_configuration(configuration) == expected_output
 

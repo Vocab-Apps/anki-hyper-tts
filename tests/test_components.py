@@ -2125,7 +2125,8 @@ def test_configuration(qtbot):
                 'demo_key': True
             },
         },
-        'user_uuid': None
+        'user_uuid': None,
+        'user_choice_easy_advanced': False
     }
     assert hypertts_instance.anki_utils.written_config['configuration'] == expected_output
 

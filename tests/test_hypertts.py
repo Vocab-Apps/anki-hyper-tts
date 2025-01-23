@@ -139,7 +139,8 @@ yoyo
                 'ServiceA': True,
                 'ServiceB': False
             },
-            'user_uuid': None
+            'user_uuid': None,
+            'user_choice_easy_advanced': False
         }
 
         self.assertEqual(hypertts_instance.anki_utils.written_config['configuration'], expected_saved_config)
