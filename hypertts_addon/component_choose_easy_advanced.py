@@ -125,3 +125,21 @@ def show_easy_advanced_dialog(hypertts) -> config_models.EasyAdvancedMode:
     dialog = ChooseEasyAdvancedDialog()
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED)
     return dialog.chosen_mode
+
+def ensure_easy_advanced_choice_made(hypertts):
+    """Ensure user has made a choice between Easy and Advanced modes.
+    If not, show the dialog and save their choice."""
+    
+    configuration = hypertts.get_configuration()
+    if not configuration.user_choice_easy_advanced:
+        # User hasn't chosen yet, show dialog
+        choice = show_easy_advanced_dialog(hypertts)
+        if choice is not None:
+            # Save their choice
+            configuration.user_choice_easy_advanced = True
+            hypertts.save_configuration(configuration)
+            
+            # Update mapping rules based on their choice
+            mapping_rules = hypertts.load_mapping_rules()
+            mapping_rules.use_easy_mode = (choice == config_models.EasyAdvancedMode.EASY)
+            hypertts.save_mapping_rules(mapping_rules)
