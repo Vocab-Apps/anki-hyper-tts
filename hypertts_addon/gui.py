@@ -25,6 +25,7 @@ from . import component_presetmappingrules
 from . import component_configuration
 from . import component_preferences
 from . import component_easy
+from . import component_choose_easy_advanced
 from . import text_utils
 from . import ttsplayer
 from . import logging_utils
@@ -206,6 +207,7 @@ def init(hypertts):
 
     def run_hypertts_preview(editor):
         with hypertts.error_manager.get_single_action_context('Previewing Audio'):
+            component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts)
             editor_context = hypertts.get_editor_context(editor)
             if hypertts.load_mapping_rules().use_easy_mode:
                 logger.debug('use easy mode')
@@ -216,6 +218,7 @@ def init(hypertts):
 
     def run_hypertts_apply(editor):
         with hypertts.error_manager.get_single_action_context('Generating Audio'):
+            component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts)
             editor_context = hypertts.get_editor_context(editor)
             if hypertts.load_mapping_rules().use_easy_mode:
                 logger.debug('use easy mode')
