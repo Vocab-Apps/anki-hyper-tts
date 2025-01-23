@@ -781,7 +781,7 @@ class HyperTTS():
         self.config[constants.CONFIG_CONFIGURATION] = config_models.serialize_configuration(configuration_model)
         self.anki_utils.write_config(self.config)
 
-    def get_configuration(self):
+    def get_configuration(self) -> config_models.Configuration:
         return self.deserialize_configuration(self.config.get(constants.CONFIG_CONFIGURATION, {}))
 
     def hypertts_pro_enabled(self):
@@ -902,7 +902,7 @@ class HyperTTS():
             text_processing.add_text_replacement_rule(rule_obj)
         return text_processing
 
-    def deserialize_configuration(self, configuration_config):
+    def deserialize_configuration(self, configuration_config) -> config_models.Configuration:
         return config_models.deserialize_configuration(configuration_config)
 
     def deserialize_preferences(self, preferences_config):

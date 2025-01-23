@@ -401,6 +401,9 @@ class Configuration:
     vocabai_api_url_override: Optional[str] = None
     # anonymous identifier
     user_uuid: Optional[str] = None
+    # whether the user has chosen easy/advanced mode. 
+    # False initially and True after use made a choice
+    user_choice_easy_advanced: Optional[bool] = False
 
     # pro api key
     # ===========
@@ -467,7 +470,7 @@ class Configuration:
 def serialize_configuration(service_config):
     return databind.json.dump(service_config, Configuration)
 
-def deserialize_configuration(service_config):
+def deserialize_configuration(service_config) -> Configuration:
     return databind.json.load(service_config, Configuration)
 
 # realtime config models
