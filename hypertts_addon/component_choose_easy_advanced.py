@@ -1,13 +1,16 @@
 import aqt.qt
 from . import config_models
 from . import constants
+from . import logging_utils
+
+logger = logging_utils.get_test_child_logger(__name__)
 
 class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
     """Dialog for choosing between Easy and Advanced modes"""
     def __init__(self):
         super(aqt.qt.QDialog, self).__init__()
         self.setupUi()
-        self.mode = None
+        self.chosen_mode = None
 
     def setupUi(self):
         self.setWindowTitle('Choose Mode')
@@ -106,12 +109,13 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         self.advanced_frame.style().polish(self.advanced_frame)
 
     def accept(self):
+        logger.debug('accept')
         if self.easy_radio.isChecked():
-            self.mode = config_models.EasyAdvancedMode.EASY
+            self.chosen_mode = config_models.EasyAdvancedMode.EASY
         else:
-            self.mode = config_models.EasyAdvancedMode.ADVANCED
+            self.chosen_mode = config_models.EasyAdvancedMode.ADVANCED
+        logger.debug(f'User selected mode: {self.chosen_mode}')
         super().accept()
-        return self.mode
 
 def show_easy_advanced_dialog(hypertts) -> config_models.EasyAdvancedMode:
     """Show dialog to choose between Easy and Advanced modes
@@ -119,6 +123,5 @@ def show_easy_advanced_dialog(hypertts) -> config_models.EasyAdvancedMode:
         EasyAdvancedMode enum value, or None if user cancelled
     """
     dialog = ChooseEasyAdvancedDialog()
-    if hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED):
-        return dialog.mode
-    return None
+    hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED)
+    return dialog.chosen_mode
