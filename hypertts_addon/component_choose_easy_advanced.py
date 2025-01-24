@@ -22,7 +22,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         explanation.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
         explanation.setStyleSheet('border: none; background-color: transparent;')
         font = explanation.font()
-        font.setPointSize(font.pointSize() + 1)
+        font.setPointSize(14)
         explanation.setFont(font)
         layout.addWidget(explanation)
         
@@ -105,6 +105,13 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
 
         # Main layout
         layout.addLayout(options_layout)
+        
+        explanation_bottom = aqt.qt.QLabel(constants.GUI_TEXT_CHOICE_EASY_ADVANCED_BOTTOM)
+        explanation_bottom.setWordWrap(True)
+        explanation_bottom.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        explanation_bottom.setStyleSheet('border: none; background-color: transparent;')
+        layout.addWidget(explanation_bottom)
+
         layout.addStretch()
         layout.addWidget(self.button_box)
 
