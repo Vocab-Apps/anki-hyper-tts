@@ -1,5 +1,6 @@
 import os
 import json
+import pprint
 import pytest
 
 from hypertts_addon import sentry_utils
@@ -19,6 +20,7 @@ def test_sentry_filter():
             filepath = os.path.join(valid_events_dir, filename)
             logger.info(f'loading valid exception {filepath}')
             event = load_json_file(filepath)
+            logger.debug(f'valid exception content: {pprint.pformat(event)}')
             result = sentry_utils.sentry_filter(event, {})
             assert result is not None, f"Valid event {filename} was rejected"
             logger.info(f'confirmed valid exception accept {filepath}')
@@ -30,6 +32,7 @@ def test_sentry_filter():
             filepath = os.path.join(reject_events_dir, filename)
             logger.info(f'loading invalid exception {filepath}')
             event = load_json_file(filepath)
+            logger.debug(f'invalid exception content: {pprint.pformat(event)}')
             result = sentry_utils.sentry_filter(event, {})
             assert result is None, f"Invalid event {filename} was accepted"
             logger.info(f'confirmed invalid exception reject {filepath}')
