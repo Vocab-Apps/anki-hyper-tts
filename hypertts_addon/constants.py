@@ -196,8 +196,10 @@ GUI_TEXT_EASY_BUTTON_HIDE_MORE_SETTINGS = 'Hide Settings...'
 
 GUI_TEXT_EASY_MODE_LABEL_PRESET_MAPPING_RULES = '<i>Enable to use a simplified, easier interface when adding audio to a single note in the Anki editor.</i>'
  
-GUI_TEXT_CHOICE_EASY_MODE = """Simple interface for basic text-to-speech needs"""
-GUI_TEXT_CHOICE_ADVANCED_MODE = """Full control over all\ntext-to-speech settings"""
+GUI_TEXT_CHOICE_EASY_MODE = """Simple interface for adding audio manually. Just choose the field \
+and the voice to add audio. Similar to AwesomeTTS."""
+GUI_TEXT_CHOICE_ADVANCED_MODE = """Full interface with all settings, allows you to add sound manually \
+or automatically. You can setup presets for different note types or decks."""
 
 GUI_TEXT_TARGET_FIELD = """Sound tags will be inserted in this field"""
 

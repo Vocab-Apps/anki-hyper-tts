@@ -25,7 +25,6 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         font.setPointSize(font.pointSize() + 1)
         explanation.setFont(font)
         layout.addWidget(explanation)
-        layout.addSpacing(10)
         
         # Create horizontal layout for options
         options_layout = aqt.qt.QHBoxLayout()
