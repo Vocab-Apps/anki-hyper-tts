@@ -14,27 +14,6 @@ def sentry_filter_dump_json(event, hint):
 
 # this is the implementation of the before_send function
 def sentry_filter(event, hint):
-    # check if we have exception info
-    if 'exc_info' in hint:
-        exc_type, exc_value, tb = hint['exc_info']
-
-        # do we recognize the paths in this stack trace ?
-        stack_summary = traceback.extract_tb(tb)
-        
-        # must have at least one frame from our code
-        relevant_exception = False
-        for stack_frame in stack_summary:
-            filename = stack_frame.filename
-            # check if from our addon code
-            if ('anki-hyper-tts' in filename or 
-                constants.ANKIWEB_ADDON_ID in filename):
-                relevant_exception = True
-        
-        # if not from our code, discard
-        if not relevant_exception:
-            return None
-
-        return event
     
     # if no exception info, check if event is from our module
     if 'logger' in event:
