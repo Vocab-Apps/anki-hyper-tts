@@ -884,7 +884,8 @@ class ConfigModelsTests(unittest.TestCase):
                 'shortcut_editor_preview_audio': 'Ctrl+P'
             },
             'error_handling': {
-                'realtime_tts_errors_dialog_type': 'Dialog'
+                'realtime_tts_errors_dialog_type': 'Dialog',
+                'error_stats_reporting': True
             }
         }
         self.assertEqual(config_models.serialize_preferences(preferences), expected_output)
@@ -905,7 +906,8 @@ class ConfigModelsTests(unittest.TestCase):
                 'shortcut_editor_preview_audio': None
             },
             'error_handling': {
-                'realtime_tts_errors_dialog_type': 'Dialog'
+                'realtime_tts_errors_dialog_type': 'Dialog',
+                'error_stats_reporting': True
             }                           
         })
 
@@ -926,7 +928,8 @@ class ConfigModelsTests(unittest.TestCase):
                 'shortcut_editor_preview_audio': None
             },
             'error_handling': {
-                'realtime_tts_errors_dialog_type': 'Dialog'
+                'realtime_tts_errors_dialog_type': 'Dialog',
+                'error_stats_reporting': True
             }                           
         })        
 
