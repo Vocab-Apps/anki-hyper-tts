@@ -37,14 +37,15 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         # Style for the frames
         frame_style = """
             QFrame {
-                border: 2px solid #ccc;
+                border: 2px solid palette(mid);
                 border-radius: 5px;
                 padding: 10px;
-                background-color: #f0f0f0;
+                background-color: palette(window);
             }
             QFrame[selected="true"] {
-                border-color: #2196F3;
-                background-color: #E3F2FD;
+                border-color: palette(highlight);
+                background-color: palette(highlight);
+                background-color: rgba(palette(highlight), 0.1);
             }
         """
         
