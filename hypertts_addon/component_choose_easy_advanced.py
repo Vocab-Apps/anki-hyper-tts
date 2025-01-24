@@ -51,7 +51,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         self.button_group.addButton(self.easy_radio)
         self.easy_radio.toggled.connect(self.update_selection)
         
-        easy_description = aqt.qt.QLabel('Simple interface for basic\ntext-to-speech needs')
+        easy_description = aqt.qt.QLabel(constants.GUI_TEXT_CHOICE_EASY_MODE)
         easy_description.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
         easy_description.setStyleSheet('border: none; background-color: transparent;')
         
@@ -69,7 +69,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         self.button_group.addButton(self.advanced_radio)
         self.advanced_radio.toggled.connect(self.update_selection)
         
-        advanced_description = aqt.qt.QLabel('Full control over all\ntext-to-speech settings')
+        advanced_description = aqt.qt.QLabel(constants.GUI_TEXT_CHOICE_ADVANCED_MODE)
         advanced_description.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
         advanced_description.setStyleSheet('border: none; background-color: transparent;')
         
