@@ -32,10 +32,7 @@ def sentry_filter(event, hint):
             # check if from our addon code
             if ('anki-hyper-tts' in filename or 
                 constants.ANKIWEB_ADDON_ID in filename):
-                # but exclude certain paths
-                if 'ankihub' not in filename.lower():
-                    relevant_exception = True
-                    break
+                relevant_exception = True
         
         # if not from our code, discard
         if not relevant_exception:
@@ -49,14 +46,6 @@ def sentry_filter(event, hint):
         if logger_name.startswith('hypertts'):
             return event
             
-    # check breadcrumbs categories
-    if 'breadcrumbs' in event:
-        breadcrumbs = event.get('breadcrumbs', {}).get('values', [])
-        for crumb in breadcrumbs:
-            category = crumb.get('category', '')
-            if category.startswith('hypertts'):
-                return event
-
     # check if there's an exception object directly in the event
     if 'exception' in event:
         exception = event.get('exception', {})
@@ -67,8 +56,8 @@ def sentry_filter(event, hint):
                 for frame in frames:
                     filename = frame.get('filename', '')
                     if ('anki-hyper-tts' in filename or 
-                        constants.ANKIWEB_ADDON_ID in filename):
-                        if 'ankihub' not in filename.lower():
+                        constants.ANKIWEB_ADDON_ID in filename or
+                        'hypertts_addon' in filename):
                             return event
 
     return None
