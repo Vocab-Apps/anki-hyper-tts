@@ -80,6 +80,6 @@ class ErrorHandling(component_common.ConfigComponentBase):
 
     def error_stats_reporting_changed(self, state):
         logger.info(f'error_stats_reporting_changed {state}')
-        self.model.error_stats_reporting = state == aqt.qt.Qt.CheckState.Checked
+        self.model.error_stats_reporting = bool(state)
         self.notify_model_update()
 
