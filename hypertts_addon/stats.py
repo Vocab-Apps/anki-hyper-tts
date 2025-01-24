@@ -50,12 +50,14 @@ class StatsGlobal:
             "distinct_id": self.user_uuid,
             "properties": event_properties,
         }
-        response = requests.post(self.CAPTURE_URL, 
-                headers=headers, 
-                data=json.dumps(payload), 
-                timeout=constants.RequestTimeoutShort)
-        logger.debug(f'sent event: {context}:{event} ({event_mode}), status: {response.status_code}')
-        # print(response)        
+        try:
+            response = requests.post(self.CAPTURE_URL, 
+                    headers=headers, 
+                    data=json.dumps(payload), 
+                    timeout=constants.RequestTimeoutShort)
+            logger.debug(f'sent event: {context}:{event} ({event_mode}), status: {response.status_code}')
+        except Exception as e:
+            logger.error(f'could not send event: {context}:{event} ({event_mode})', exc_info=e)
 
 def event_global(event: constants_events.Event):
     sys._hypertts_stats_global.publish(constants_events.EventContext.addon, event, None)
