@@ -60,7 +60,8 @@ class StatsGlobal:
             logger.error(f'could not send event: {context}:{event} ({event_mode})', exc_info=e)
 
 def event_global(event: constants_events.Event):
-    sys._hypertts_stats_global.publish(constants_events.EventContext.addon, event, None)
+    if hasattr(sys, '_hypertts_stats_global'):
+        sys._hypertts_stats_global.publish(constants_events.EventContext.addon, event, None)
 
 def send_event(context: constants_events.EventContext, event: constants_events.Event, event_mode: constants_events.EventMode = None):
     if hasattr(sys, '_hypertts_stats_global'):
