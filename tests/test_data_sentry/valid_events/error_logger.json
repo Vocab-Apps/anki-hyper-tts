@@ -1,0 +1,552 @@
+{
+    "level": "error",
+    "logger": "hypertts.component_preferences",
+    "logentry": {
+        "message": "test error 2",
+        "params": []
+    },
+    "extra": {
+        "asctime": "06:51:16",
+        "sys.argv": [
+            "/volatile_home/luc/anki/anki-24.11-linux-qt6/anki"
+        ]
+    },
+    "event_id": "f24a924e945d4c9080371f1b4bea4381",
+    "timestamp": "2025-01-24T22:51:16.842910Z",
+    "contexts": {
+        "trace": {
+            "trace_id": "518093ac38fd4a379453970c1045ace5",
+            "span_id": "b8fc2f7ecd8f5f44",
+            "parent_span_id": null,
+            "dynamic_sampling_context": {
+                "trace_id": "518093ac38fd4a379453970c1045ace5",
+                "environment": "development",
+                "release": "anki-hyper-tts@2.0.0",
+                "public_key": "a4170596966d47bb9f8fda74a9370bc7",
+                "sample_rate": 1.0
+            }
+        },
+        "runtime": {
+            "name": "CPython",
+            "version": "3.9.18",
+            "build": "3.9.18 (main, Jan  8 2024, 05:44:35) \n[Clang 17.0.6 ]"
+        }
+    },
+    "user": {
+        "id": "92d52464daa211efaf8d4b240ecdc26d"
+    },
+    "transaction_info": {},
+    "tags": {
+        "anki_version": "24.11"
+    },
+    "breadcrumbs": {
+        "values": [
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "discovered 22 services",
+                "timestamp": "2025-01-24T22:51:13.798225Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_amazon, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.798587Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_azure, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.805106Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_cambridge, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.805381Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_cereproc, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.805581Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_duden, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.805815Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_dwds, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.806009Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_elevenlabs, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.806194Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_elevenlabscustom, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.806380Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_espeakng, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.807267Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_forvo, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.807634Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_fptai, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.807859Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_google, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.808068Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_googletranslate, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.808277Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_macos, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.810448Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_naver, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.810826Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_naverpapago, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.811052Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_openai, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.811305Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_oxford, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.811486Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_spanishdict, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.811647Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_vocalware, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.811842Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_watson, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.812032Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "importing module service_windows, package_name: hypertts_addon.services",
+                "timestamp": "2025-01-24T22:51:13.812216Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service Amazon",
+                "timestamp": "2025-01-24T22:51:13.812539Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service Azure",
+                "timestamp": "2025-01-24T22:51:13.812604Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service Cambridge",
+                "timestamp": "2025-01-24T22:51:13.812666Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service CereProc",
+                "timestamp": "2025-01-24T22:51:13.812713Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service Duden",
+                "timestamp": "2025-01-24T22:51:13.812759Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service DigitalesWorterbuchDeutschenSprache",
+                "timestamp": "2025-01-24T22:51:13.812798Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service ElevenLabs",
+                "timestamp": "2025-01-24T22:51:13.812836Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service ElevenLabsCustom",
+                "timestamp": "2025-01-24T22:51:13.812878Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service ESpeakNg",
+                "timestamp": "2025-01-24T22:51:13.812917Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service Forvo",
+                "timestamp": "2025-01-24T22:51:13.812953Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service FptAi",
+                "timestamp": "2025-01-24T22:51:13.812990Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service Google",
+                "timestamp": "2025-01-24T22:51:13.813026Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service GoogleTranslate",
+                "timestamp": "2025-01-24T22:51:13.813063Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service MacOS",
+                "timestamp": "2025-01-24T22:51:13.813101Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service Naver",
+                "timestamp": "2025-01-24T22:51:13.813138Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service NaverPapago",
+                "timestamp": "2025-01-24T22:51:13.813181Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service OpenAI",
+                "timestamp": "2025-01-24T22:51:13.813222Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service Oxford",
+                "timestamp": "2025-01-24T22:51:13.813258Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service SpanishDict",
+                "timestamp": "2025-01-24T22:51:13.813294Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service VocalWare",
+                "timestamp": "2025-01-24T22:51:13.813333Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service Watson",
+                "timestamp": "2025-01-24T22:51:13.813369Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.servicemanager",
+                "message": "instantiating service Windows",
+                "timestamp": "2025-01-24T22:51:13.813404Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.ttsplayer",
+                "message": "created AnkiHyperTTSPlayer",
+                "timestamp": "2025-01-24T22:51:13.821351Z",
+                "data": {
+                    "asctime": "06:51:13"
+                }
+            },
+            {
+                "type": "subprocess",
+                "category": "subprocess",
+                "message": "mpv --idle --no-terminal --force-window=no --ontop --audio-display=no --keep-open=no --autoload-files=no --gapless-audio=no --reset-on-next-file=pause --config-dir=/volatile_home/luc/.local/share/Anki2 --input-ipc-server=/tmp/mpv.58kvbhn3",
+                "data": {
+                    "thread.id": "140170142990912",
+                    "thread.name": "MainThread"
+                },
+                "timestamp": "2025-01-24T22:51:13.914381Z"
+            },
+            {
+                "type": "log",
+                "level": "info",
+                "category": "hypertts.gui",
+                "message": "launch_preferences_dialog",
+                "timestamp": "2025-01-24T22:51:16.839137Z",
+                "data": {
+                    "asctime": "06:51:16"
+                }
+            }
+        ]
+    },
+    "modules": {},
+    "release": "anki-hyper-tts@2.0.0",
+    "environment": "development",
+    "server_name": "anki.ipv6n.net",
+    "sdk": {
+        "name": "sentry.python",
+        "version": "1.44.0",
+        "packages": [
+            {
+                "name": "pypi:sentry-sdk",
+                "version": "1.44.0"
+            }
+        ],
+        "integrations": [
+            "argv",
+            "atexit",
+            "boto3",
+            "dedupe",
+            "excepthook",
+            "logging",
+            "modules",
+            "stdlib",
+            "threading"
+        ]
+    },
+    "platform": "python"
+}
