@@ -17,7 +17,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         layout = aqt.qt.QVBoxLayout()
 
         # Add explanation label at top
-        explanation = aqt.qt.QLabel('Please choose how you want to add audio in the Anki editor:')
+        explanation = aqt.qt.QLabel(constants.GUI_TEXT_CHOICE_EASY_ADVANCED_EXPLANATION)
         explanation.setWordWrap(True)
         explanation.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
         explanation.setStyleSheet('border: none; background-color: transparent;')
