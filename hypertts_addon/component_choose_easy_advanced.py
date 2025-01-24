@@ -13,7 +13,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         self.chosen_mode = None
 
     def setupUi(self):
-        self.setWindowTitle('Choose Mode')
+        self.setWindowTitle(constants.TITLE_PREFIX + 'Choose Mode')
         layout = aqt.qt.QVBoxLayout()
 
         # Add explanation label at top
