@@ -13,7 +13,7 @@ class StatsGlobal:
 
     def __init__(self, anki_utils, user_uuid):
         self.anki_utils = anki_utils
-        self.api_key = os.environ.get('STATS_API_KEY', 'phc_MyLwGiptNC6mpOSOQWiyEiykey6gEaqOIwPufswHnnG')
+        self.api_key = os.environ.get('STATS_API_KEY', 'phc_c9ijDJMNO8n7kzxPNlxwuiKIAlNcYhzeq7pa6aQYq9G')
         self.user_uuid = user_uuid
 
     def publish(self, 
