@@ -105,7 +105,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
 
         # Main layout
         layout.addLayout(options_layout)
-        layout.addSpacing(20)
+        layout.addStretch()
         layout.addWidget(self.button_box)
 
         self.setLayout(layout)
