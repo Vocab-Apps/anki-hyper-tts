@@ -53,6 +53,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         
         easy_description = aqt.qt.QLabel(constants.GUI_TEXT_CHOICE_EASY_MODE)
         easy_description.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        easy_description.setWordWrap(True)
         easy_description.setStyleSheet('border: none; background-color: transparent;')
         
         easy_layout.addWidget(self.easy_radio, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
@@ -71,6 +72,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         
         advanced_description = aqt.qt.QLabel(constants.GUI_TEXT_CHOICE_ADVANCED_MODE)
         advanced_description.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        advanced_description.setWordWrap(True)
         advanced_description.setStyleSheet('border: none; background-color: transparent;')
         
         advanced_layout.addWidget(self.advanced_radio, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
