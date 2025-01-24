@@ -14,6 +14,10 @@ def sentry_filter_dump_json(event, hint):
 
 # this is the implementation of the before_send function
 def sentry_filter(event, hint):
+    # First check - reject events from ankihub logger
+    if 'logger' in event and event.get('logger', '').startswith('ankihub'):
+        return None
+
     # check if we have exception info
     if 'exc_info' in hint:
         exc_type, exc_value, tb = hint['exc_info']
