@@ -2,8 +2,13 @@ import aqt.qt
 from . import config_models
 from . import constants
 from . import logging_utils
+from . import constants_events
+from .constants_events import Event, EventMode
+from . import stats
 
 logger = logging_utils.get_test_child_logger(__name__)
+
+sc = stats.StatsContext(constants_events.EventContext.choose_easy_advanced)
 
 class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
     """Dialog for choosing between Easy and Advanced modes"""
@@ -138,6 +143,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         logger.debug(f'User selected mode: {self.chosen_mode}')
         super().accept()
 
+@sc.event(Event.open)
 def show_easy_advanced_dialog(hypertts) -> config_models.EasyAdvancedMode:
     """Show dialog to choose between Easy and Advanced modes
     Returns:
@@ -165,3 +171,9 @@ def ensure_easy_advanced_choice_made(hypertts):
             mapping_rules = hypertts.load_mapping_rules()
             mapping_rules.use_easy_mode = (choice == config_models.EasyAdvancedMode.EASY)
             hypertts.save_mapping_rules(mapping_rules)
+
+            if mapping_rules.use_easy_mode:
+                sc.send_event(Event.choose, EventMode.easy_mode)
+            else:
+                sc.send_event(Event.choose, EventMode.advanced_mode)
+                

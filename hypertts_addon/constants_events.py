@@ -13,6 +13,7 @@ class EventContext(enum.Enum):
     hyperttspro = enum.auto()
     generate = enum.auto()
     voice_selection = enum.auto()
+    choose_easy_advanced = enum.auto()
 
 # events
 class Event(enum.Enum):
@@ -23,6 +24,7 @@ class Event(enum.Enum):
     click_add = enum.auto()
     click_preview = enum.auto()
     install = enum.auto()
+    choose = enum.auto()
     # dialog-specific
     click_disable_all_services = enum.auto()
     click_enable_free_services = enum.auto()
@@ -38,3 +40,5 @@ class EventMode(enum.Enum):
     advanced_editor_existing_preset = enum.auto()
     advanced_editor_new_preset = enum.auto()
     easy_editor = enum.auto()
+    easy_mode = enum.auto()
+    advanced_mode = enum.auto()
