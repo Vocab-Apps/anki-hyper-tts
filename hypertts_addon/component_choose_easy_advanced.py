@@ -15,6 +15,16 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
     def setupUi(self):
         self.setWindowTitle('Choose Mode')
         layout = aqt.qt.QVBoxLayout()
+
+        # Add explanation label at top
+        explanation = aqt.qt.QLabel('Please choose how you want to add audio in the Anki editor:')
+        explanation.setWordWrap(True)
+        explanation.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        font = explanation.font()
+        font.setPointSize(font.pointSize() + 1)
+        explanation.setFont(font)
+        layout.addWidget(explanation)
+        layout.addSpacing(10)
         
         # Create horizontal layout for options
         options_layout = aqt.qt.QHBoxLayout()
