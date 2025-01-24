@@ -1,1 +1,971 @@
-{"event_id":"19cb36f9e14e4a06a1656b8a1daf55fa","project":6170140,"release":"anki-hyper-tts@1.13.6","dist":null,"platform":"python","message":"Error processing note 1737758035860: Cannot connect to host anki-smart-notes-server-production.up.railway.app:443 ssl:default [Cannot allocate memory], Traceback (most recent call last):\n  File \"/Users/kacperpaluch/Library/Application Support/Anki2/addons21/1531888719/vendor/aiohttp/connector.py\", line 1025, in _wrap_create_connection\n    return await self._loop.create_connection(*args, **kwargs)\n  File \"asyncio.base_events\", line 1065, in create_connection\n  File \"asyncio.base_events\", line 1050, in create_connection\n  File \"asyncio.base_events\", line 961, in _connect_sock\n  File \"asyncio.selector_events\", line 500, in sock_connect\n  File \"asyncio.selector_events\", line 505, in _sock_connect\nOSError: [Errno 12] Cannot allocate memory\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kacperpaluch/Library/Application Support/Anki2/addons21/1531888719/src/note_proccessor.py\", line 340, in _process_note\n    responses = await asyncio.gather...","datetime":"2025-01-24T22:38:48+00:00","tags":[["anki_version","24.11"],["clt.audio_request_reason","batch"],["environment","production"],["level","error"],["logger","smart_notes"],["runtime","CPython 3.9.18"],["runtime.name","CPython"],["release","anki-hyper-tts@1.13.6"],["user","id:uuid:b520b1bfbf09"],["server_name","Mac.lan"],["transaction","ElevenLabs"]],"_dsc":{"environment":"production","public_key":"a4170596966d47bb9f8fda74a9370bc7","release":"anki-hyper-tts@1.13.6","replay_id":null,"sample_rate":"0.021","trace_id":"156ad70a-0ac3-41af-8360-a4f5dd3e5543","transaction":null},"_meta":{"logentry":{"formatted":{"":{"rem":[["!limit","x",1021,1024]],"len":3485}}}},"_metrics":{"bytes.ingested.event":25475,"bytes.stored.event":26381},"breadcrumbs":{"values":[{"timestamp":1737758262.658783,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text: frying pan, fry pan"},{"timestamp":1737758262.658884,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for frying pan, fry pan"},{"timestamp":1737758262.659412,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash d0dd221d0e82fc0180246e794fcd9d430edb5c9f63f5785eaa30e1f7, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d0dd221d0e82fc0180246e794fcd9d430edb5c9f63f5785eaa30e1f7.mp3"},{"timestamp":1737758262.659519,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"},{"timestamp":1737758263.847841,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":200,"reason":"OK","thread.id":"12901707776","thread.name":"ThreadPoolExecutor-1_0","url":"https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"}},{"timestamp":1737758263.997001,"type":"log","category":"hypertts.hypertts","level":"info","message":"not found in cache, requesting"},{"timestamp":1737758263.997212,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d0dd221d0e82fc0180246e794fcd9d430edb5c9f63f5785eaa30e1f7.mp3"},{"timestamp":1737758263.998024,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d0dd221d0e82fc0180246e794fcd9d430edb5c9f63f5785eaa30e1f7.mp3"},{"timestamp":1737758263.998355,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] wrote audio data"},{"timestamp":1737758263.998637,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] finished generating audio file and write to file for frying pan, fry pan"},{"timestamp":1737758264.006337,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text: tablecloth, table cover"},{"timestamp":1737758264.006547,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for tablecloth, table cover"},{"timestamp":1737758264.007905,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 1aa4a56f515dd5446ce0d9699ec1d8483435c15bd1e40783e5e84f08, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-1aa4a56f515dd5446ce0d9699ec1d8483435c15bd1e40783e5e84f08.mp3"},{"timestamp":1737758264.008265,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"},{"timestamp":1737758265.295185,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":200,"reason":"OK","thread.id":"12901707776","thread.name":"ThreadPoolExecutor-1_0","url":"https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"}},{"timestamp":1737758265.448512,"type":"log","category":"hypertts.hypertts","level":"info","message":"not found in cache, requesting"},{"timestamp":1737758265.448657,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-1aa4a56f515dd5446ce0d9699ec1d8483435c15bd1e40783e5e84f08.mp3"},{"timestamp":1737758265.449232,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-1aa4a56f515dd5446ce0d9699ec1d8483435c15bd1e40783e5e84f08.mp3"},{"timestamp":1737758265.449526,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] wrote audio data"},{"timestamp":1737758265.449738,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] finished generating audio file and write to file for tablecloth, table cover"},{"timestamp":1737758265.458566,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text: salt shaker, salt cellar"},{"timestamp":1737758265.458824,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for salt shaker, salt cellar"},{"timestamp":1737758265.459683,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash d661171dc34c4cef7465494c6ea27bd5335e081de3824cf7abf3b650, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d661171dc34c4cef7465494c6ea27bd5335e081de3824cf7abf3b650.mp3"},{"timestamp":1737758265.459955,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"},{"timestamp":1737758266.747385,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":200,"reason":"OK","thread.id":"12901707776","thread.name":"ThreadPoolExecutor-1_0","url":"https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"}},{"timestamp":1737758266.95819,"type":"log","category":"hypertts.hypertts","level":"info","message":"not found in cache, requesting"},{"timestamp":1737758266.958465,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d661171dc34c4cef7465494c6ea27bd5335e081de3824cf7abf3b650.mp3"},{"timestamp":1737758266.959247,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d661171dc34c4cef7465494c6ea27bd5335e081de3824cf7abf3b650.mp3"},{"timestamp":1737758266.959507,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] wrote audio data"},{"timestamp":1737758266.95971,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] finished generating audio file and write to file for salt shaker, salt cellar"},{"timestamp":1737758266.965545,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text: pepper shaker, pepper cellar, pepper shaker"},{"timestamp":1737758266.965747,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for pepper shaker, pepper cellar, pepper shaker"},{"timestamp":1737758266.966656,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 735e95fd385903b71d626a6533862776e977a80bb233786e7ee1154d, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-735e95fd385903b71d626a6533862776e977a80bb233786e7ee1154d.mp3"},{"timestamp":1737758266.966811,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"},{"timestamp":1737758268.849291,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":200,"reason":"OK","thread.id":"12901707776","thread.name":"ThreadPoolExecutor-1_0","url":"https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"}},{"timestamp":1737758269.008764,"type":"log","category":"hypertts.hypertts","level":"info","message":"not found in cache, requesting"},{"timestamp":1737758269.009054,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-735e95fd385903b71d626a6533862776e977a80bb233786e7ee1154d.mp3"},{"timestamp":1737758269.010162,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-735e95fd385903b71d626a6533862776e977a80bb233786e7ee1154d.mp3"},{"timestamp":1737758269.010565,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] wrote audio data"},{"timestamp":1737758269.011536,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] finished generating audio file and write to file for pepper shaker, pepper cellar, pepper shaker"},{"timestamp":1737758269.019218,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text: blender, liquidizer"},{"timestamp":1737758269.019517,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for blender, liquidizer"},{"timestamp":1737758269.020051,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 4533a22f0cf905f361805ba31a60671f193431c58085bcb9d9caf2be, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-4533a22f0cf905f361805ba31a60671f193431c58085bcb9d9caf2be.mp3"},{"timestamp":1737758269.020228,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"},{"timestamp":1737758270.197107,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":200,"reason":"OK","thread.id":"12901707776","thread.name":"ThreadPoolExecutor-1_0","url":"https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"}},{"timestamp":1737758270.346163,"type":"log","category":"hypertts.hypertts","level":"info","message":"not found in cache, requesting"},{"timestamp":1737758270.346289,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-4533a22f0cf905f361805ba31a60671f193431c58085bcb9d9caf2be.mp3"},{"timestamp":1737758270.346689,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-4533a22f0cf905f361805ba31a60671f193431c58085bcb9d9caf2be.mp3"},{"timestamp":1737758270.346829,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] wrote audio data"},{"timestamp":1737758270.34698,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] finished generating audio file and write to file for blender, liquidizer"},{"timestamp":1737758270.352805,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text: stand mixer"},{"timestamp":1737758270.353021,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for stand mixer"},{"timestamp":1737758270.353483,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 94532825e1930a15ec2aa9f485c8aedb6b7dd9bfce5b62d30d2f0263, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-94532825e1930a15ec2aa9f485c8aedb6b7dd9bfce5b62d30d2f0263.mp3"},{"timestamp":1737758270.353639,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"},{"timestamp":1737758271.702961,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":200,"reason":"OK","thread.id":"12901707776","thread.name":"ThreadPoolExecutor-1_0","url":"https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"}},{"timestamp":1737758271.861624,"type":"log","category":"hypertts.hypertts","level":"info","message":"not found in cache, requesting"},{"timestamp":1737758271.861727,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-94532825e1930a15ec2aa9f485c8aedb6b7dd9bfce5b62d30d2f0263.mp3"},{"timestamp":1737758271.862023,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-94532825e1930a15ec2aa9f485c8aedb6b7dd9bfce5b62d30d2f0263.mp3"},{"timestamp":1737758271.86217,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] wrote audio data"},{"timestamp":1737758271.862286,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] finished generating audio file and write to file for stand mixer"},{"timestamp":1737758271.866443,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text: electric kettle"},{"timestamp":1737758271.866653,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for electric kettle"},{"timestamp":1737758271.867306,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash e078dc19ce374084a6f2d3c5aabba8ad9dd6afd1a53f28bb8eac9744, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-e078dc19ce374084a6f2d3c5aabba8ad9dd6afd1a53f28bb8eac9744.mp3"},{"timestamp":1737758271.867406,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"},{"timestamp":1737758272.990767,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":200,"reason":"OK","thread.id":"12901707776","thread.name":"ThreadPoolExecutor-1_0","url":"https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"}},{"timestamp":1737758273.12438,"type":"log","category":"hypertts.hypertts","level":"info","message":"not found in cache, requesting"},{"timestamp":1737758273.124493,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-e078dc19ce374084a6f2d3c5aabba8ad9dd6afd1a53f28bb8eac9744.mp3"},{"timestamp":1737758273.124921,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-e078dc19ce374084a6f2d3c5aabba8ad9dd6afd1a53f28bb8eac9744.mp3"},{"timestamp":1737758273.125066,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] wrote audio data"},{"timestamp":1737758273.125205,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] finished generating audio file and write to file for electric kettle"},{"timestamp":1737758273.129763,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text: cooker, stove"},{"timestamp":1737758273.129895,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for cooker, stove"},{"timestamp":1737758273.132797,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 9b2ded741fc719be21466b8bb5d45c74c0a044f1760b43978259ee14, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-9b2ded741fc719be21466b8bb5d45c74c0a044f1760b43978259ee14.mp3"},{"timestamp":1737758273.13309,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"},{"timestamp":1737758274.317581,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":200,"reason":"OK","thread.id":"12901707776","thread.name":"ThreadPoolExecutor-1_0","url":"https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"}},{"timestamp":1737758274.436872,"type":"log","category":"hypertts.hypertts","level":"info","message":"not found in cache, requesting"},{"timestamp":1737758274.436914,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-9b2ded741fc719be21466b8bb5d45c74c0a044f1760b43978259ee14.mp3"},{"timestamp":1737758274.437048,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-9b2ded741fc719be21466b8bb5d45c74c0a044f1760b43978259ee14.mp3"},{"timestamp":1737758274.437086,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] wrote audio data"},{"timestamp":1737758274.437142,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] finished generating audio file and write to file for cooker, stove"},{"timestamp":1737758274.43862,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text: fridge, refrigerator"},{"timestamp":1737758274.438655,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for fridge, refrigerator"},{"timestamp":1737758274.438851,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 445df78dd62a734d290188063a044d98cef36a1ed9f825c34e82e634, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-445df78dd62a734d290188063a044d98cef36a1ed9f825c34e82e634.mp3"},{"timestamp":1737758274.43891,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"},{"timestamp":1737758275.646979,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":200,"reason":"OK","thread.id":"12901707776","thread.name":"ThreadPoolExecutor-1_0","url":"https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"}},{"timestamp":1737758275.754416,"type":"log","category":"hypertts.hypertts","level":"info","message":"not found in cache, requesting"},{"timestamp":1737758275.754638,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-445df78dd62a734d290188063a044d98cef36a1ed9f825c34e82e634.mp3"},{"timestamp":1737758275.75526,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-445df78dd62a734d290188063a044d98cef36a1ed9f825c34e82e634.mp3"},{"timestamp":1737758275.755988,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] wrote audio data"},{"timestamp":1737758275.756432,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] finished generating audio file and write to file for fridge, refrigerator"},{"timestamp":1737758275.762868,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text: dustbin, rubbish bin, garbage can, trash can"},{"timestamp":1737758275.763103,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for dustbin, rubbish bin, garbage can, trash can"},{"timestamp":1737758275.764097,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 8c419b6ecce54bea81c5bc5c5bc3d836fe3b3ed1995c7e1c7f72c969, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-8c419b6ecce54bea81c5bc5c5bc3d836fe3b3ed1995c7e1c7f72c969.mp3"},{"timestamp":1737758275.764301,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"},{"timestamp":1737758277.116298,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":200,"reason":"OK","thread.id":"12901707776","thread.name":"ThreadPoolExecutor-1_0","url":"https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"}},{"timestamp":1737758277.31351,"type":"log","category":"hypertts.hypertts","level":"info","message":"not found in cache, requesting"},{"timestamp":1737758277.31376,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-8c419b6ecce54bea81c5bc5c5bc3d836fe3b3ed1995c7e1c7f72c969.mp3"},{"timestamp":1737758277.314595,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-8c419b6ecce54bea81c5bc5c5bc3d836fe3b3ed1995c7e1c7f72c969.mp3"},{"timestamp":1737758277.314922,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] wrote audio data"},{"timestamp":1737758277.315214,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] finished generating audio file and write to file for dustbin, rubbish bin, garbage can, trash can"}]},"contexts":{"audio_request":{"error":"Audio not found for [dustbin, rubbish bin, garbage can, trash can] (voice: English (US), Female, US (Cambridge))","text":"dustbin, rubbish bin, garbage can, trash can","type":"audio_request","voice":"English (US), Female, US (Cambridge)"},"runtime":{"runtime":"CPython 3.9.18","name":"CPython","version":"3.9.18","build":"3.9.18 (main, Jan  7 2024, 23:06:15) \n[Clang 16.0.3 ]","type":"runtime"},"trace":{"trace_id":"156ad70a0ac341af8360a4f5dd3e5543","span_id":"96397ddfaf158ec0","status":"unknown","client_sample_rate":0.021,"type":"trace"}},"culprit":"ElevenLabs","environment":"production","extra":{"asctime":"2025-01-24 23:38:48,439","sys.argv":["/Applications/Anki.app/Contents/MacOS/anki"]},"fingerprint":["{{ default }}"],"grouping_config":{"enhancements":"KLUv_SAYwQAAkwKRs25ld3N0eWxlOjIwMjMtMDEtMTGQ","id":"newstyle:2023-01-11"},"hashes":["b8157208f8e48acab29ea3921c157af4"],"ingest_path":[{"version":"25.1.0","public_key":"XE7QiyuNlja9PZ7I9qJlwQotzecWrUIN91BAO7Q5R38"}],"key_id":"2011620","level":"error","logentry":{"formatted":"Error processing note 1737758035860: Cannot connect to host anki-smart-notes-server-production.up.railway.app:443 ssl:default [Cannot allocate memory], Traceback (most recent call last):\n  File \"/Users/kacperpaluch/Library/Application Support/Anki2/addons21/1531888719/vendor/aiohttp/connector.py\", line 1025, in _wrap_create_connection\n    return await self._loop.create_connection(*args, **kwargs)\n  File \"asyncio.base_events\", line 1065, in create_connection\n  File \"asyncio.base_events\", line 1050, in create_connection\n  File \"asyncio.base_events\", line 961, in _connect_sock\n  File \"asyncio.selector_events\", line 500, in sock_connect\n  File \"asyncio.selector_events\", line 505, in _sock_connect\nOSError: [Errno 12] Cannot allocate memory\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kacperpaluch/Library/Application Support/Anki2/addons21/1531888719/src/note_proccessor.py\", line 340, in _process_note\n    responses = await asyncio.gather...","params":[]},"logger":"smart_notes","metadata":{"title":"Error processing note 1737758035860: Cannot connect to host anki-smart-notes-server-production.up..."},"nodestore_insert":1737758330.873344,"received":1737758328.479,"sdk":{"name":"sentry.python","version":"1.44.0","integrations":["argv","atexit","boto3","dedupe","excepthook","logging","modules","stdlib","threading"],"packages":[{"name":"pypi:sentry-sdk","version":"1.44.0"}]},"timestamp":1737758328.439895,"title":"Error processing note 1737758035860: Cannot connect to host anki-smart-notes-server-production.up...","transaction":"ElevenLabs","transaction_info":{"source":"custom"},"type":"default","user":{"id":"uuid:b520b1bfbf09","sentry_user":"id:uuid:b520b1bfbf09"},"version":"7","location":null}
+{
+    "event_id": "19cb36f9e14e4a06a1656b8a1daf55fa",
+    "project": 6170140,
+    "release": "anki-hyper-tts@1.13.6",
+    "dist": null,
+    "platform": "python",
+    "message": "Error processing note 1737758035860: Cannot connect to host anki-smart-notes-server-production.up.railway.app:443 ssl:default [Cannot allocate memory], Traceback (most recent call last):\n  File \"/Users/kacperpaluch/Library/Application Support/Anki2/addons21/1531888719/vendor/aiohttp/connector.py\", line 1025, in _wrap_create_connection\n    return await self._loop.create_connection(*args, **kwargs)\n  File \"asyncio.base_events\", line 1065, in create_connection\n  File \"asyncio.base_events\", line 1050, in create_connection\n  File \"asyncio.base_events\", line 961, in _connect_sock\n  File \"asyncio.selector_events\", line 500, in sock_connect\n  File \"asyncio.selector_events\", line 505, in _sock_connect\nOSError: [Errno 12] Cannot allocate memory\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kacperpaluch/Library/Application Support/Anki2/addons21/1531888719/src/note_proccessor.py\", line 340, in _process_note\n    responses = await asyncio.gather...",
+    "datetime": "2025-01-24T22:38:48+00:00",
+    "tags": [
+        [
+            "anki_version",
+            "24.11"
+        ],
+        [
+            "clt.audio_request_reason",
+            "batch"
+        ],
+        [
+            "environment",
+            "production"
+        ],
+        [
+            "level",
+            "error"
+        ],
+        [
+            "logger",
+            "smart_notes"
+        ],
+        [
+            "runtime",
+            "CPython 3.9.18"
+        ],
+        [
+            "runtime.name",
+            "CPython"
+        ],
+        [
+            "release",
+            "anki-hyper-tts@1.13.6"
+        ],
+        [
+            "user",
+            "id:uuid:b520b1bfbf09"
+        ],
+        [
+            "server_name",
+            "Mac.lan"
+        ],
+        [
+            "transaction",
+            "ElevenLabs"
+        ]
+    ],
+    "_dsc": {
+        "environment": "production",
+        "public_key": "a4170596966d47bb9f8fda74a9370bc7",
+        "release": "anki-hyper-tts@1.13.6",
+        "replay_id": null,
+        "sample_rate": "0.021",
+        "trace_id": "156ad70a-0ac3-41af-8360-a4f5dd3e5543",
+        "transaction": null
+    },
+    "_meta": {
+        "logentry": {
+            "formatted": {
+                "": {
+                    "rem": [
+                        [
+                            "!limit",
+                            "x",
+                            1021,
+                            1024
+                        ]
+                    ],
+                    "len": 3485
+                }
+            }
+        }
+    },
+    "_metrics": {
+        "bytes.ingested.event": 25475,
+        "bytes.stored.event": 26381
+    },
+    "breadcrumbs": {
+        "values": [
+            {
+                "timestamp": 1737758262.658783,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text: frying pan, fry pan"
+            },
+            {
+                "timestamp": 1737758262.658884,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for frying pan, fry pan"
+            },
+            {
+                "timestamp": 1737758262.659412,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash d0dd221d0e82fc0180246e794fcd9d430edb5c9f63f5785eaa30e1f7, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d0dd221d0e82fc0180246e794fcd9d430edb5c9f63f5785eaa30e1f7.mp3"
+            },
+            {
+                "timestamp": 1737758262.659519,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"
+            },
+            {
+                "timestamp": 1737758263.847841,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 200,
+                    "reason": "OK",
+                    "thread.id": "12901707776",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"
+                }
+            },
+            {
+                "timestamp": 1737758263.997001,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "not found in cache, requesting"
+            },
+            {
+                "timestamp": 1737758263.997212,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d0dd221d0e82fc0180246e794fcd9d430edb5c9f63f5785eaa30e1f7.mp3"
+            },
+            {
+                "timestamp": 1737758263.998024,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d0dd221d0e82fc0180246e794fcd9d430edb5c9f63f5785eaa30e1f7.mp3"
+            },
+            {
+                "timestamp": 1737758263.998355,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] wrote audio data"
+            },
+            {
+                "timestamp": 1737758263.998637,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] finished generating audio file and write to file for frying pan, fry pan"
+            },
+            {
+                "timestamp": 1737758264.006337,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text: tablecloth, table cover"
+            },
+            {
+                "timestamp": 1737758264.006547,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for tablecloth, table cover"
+            },
+            {
+                "timestamp": 1737758264.007905,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 1aa4a56f515dd5446ce0d9699ec1d8483435c15bd1e40783e5e84f08, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-1aa4a56f515dd5446ce0d9699ec1d8483435c15bd1e40783e5e84f08.mp3"
+            },
+            {
+                "timestamp": 1737758264.008265,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"
+            },
+            {
+                "timestamp": 1737758265.295185,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 200,
+                    "reason": "OK",
+                    "thread.id": "12901707776",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"
+                }
+            },
+            {
+                "timestamp": 1737758265.448512,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "not found in cache, requesting"
+            },
+            {
+                "timestamp": 1737758265.448657,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-1aa4a56f515dd5446ce0d9699ec1d8483435c15bd1e40783e5e84f08.mp3"
+            },
+            {
+                "timestamp": 1737758265.449232,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-1aa4a56f515dd5446ce0d9699ec1d8483435c15bd1e40783e5e84f08.mp3"
+            },
+            {
+                "timestamp": 1737758265.449526,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] wrote audio data"
+            },
+            {
+                "timestamp": 1737758265.449738,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] finished generating audio file and write to file for tablecloth, table cover"
+            },
+            {
+                "timestamp": 1737758265.458566,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text: salt shaker, salt cellar"
+            },
+            {
+                "timestamp": 1737758265.458824,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for salt shaker, salt cellar"
+            },
+            {
+                "timestamp": 1737758265.459683,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash d661171dc34c4cef7465494c6ea27bd5335e081de3824cf7abf3b650, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d661171dc34c4cef7465494c6ea27bd5335e081de3824cf7abf3b650.mp3"
+            },
+            {
+                "timestamp": 1737758265.459955,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"
+            },
+            {
+                "timestamp": 1737758266.747385,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 200,
+                    "reason": "OK",
+                    "thread.id": "12901707776",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"
+                }
+            },
+            {
+                "timestamp": 1737758266.95819,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "not found in cache, requesting"
+            },
+            {
+                "timestamp": 1737758266.958465,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d661171dc34c4cef7465494c6ea27bd5335e081de3824cf7abf3b650.mp3"
+            },
+            {
+                "timestamp": 1737758266.959247,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d661171dc34c4cef7465494c6ea27bd5335e081de3824cf7abf3b650.mp3"
+            },
+            {
+                "timestamp": 1737758266.959507,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] wrote audio data"
+            },
+            {
+                "timestamp": 1737758266.95971,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] finished generating audio file and write to file for salt shaker, salt cellar"
+            },
+            {
+                "timestamp": 1737758266.965545,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text: pepper shaker, pepper cellar, pepper shaker"
+            },
+            {
+                "timestamp": 1737758266.965747,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for pepper shaker, pepper cellar, pepper shaker"
+            },
+            {
+                "timestamp": 1737758266.966656,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 735e95fd385903b71d626a6533862776e977a80bb233786e7ee1154d, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-735e95fd385903b71d626a6533862776e977a80bb233786e7ee1154d.mp3"
+            },
+            {
+                "timestamp": 1737758266.966811,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"
+            },
+            {
+                "timestamp": 1737758268.849291,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 200,
+                    "reason": "OK",
+                    "thread.id": "12901707776",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"
+                }
+            },
+            {
+                "timestamp": 1737758269.008764,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "not found in cache, requesting"
+            },
+            {
+                "timestamp": 1737758269.009054,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-735e95fd385903b71d626a6533862776e977a80bb233786e7ee1154d.mp3"
+            },
+            {
+                "timestamp": 1737758269.010162,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-735e95fd385903b71d626a6533862776e977a80bb233786e7ee1154d.mp3"
+            },
+            {
+                "timestamp": 1737758269.010565,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] wrote audio data"
+            },
+            {
+                "timestamp": 1737758269.011536,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] finished generating audio file and write to file for pepper shaker, pepper cellar, pepper shaker"
+            },
+            {
+                "timestamp": 1737758269.019218,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text: blender, liquidizer"
+            },
+            {
+                "timestamp": 1737758269.019517,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for blender, liquidizer"
+            },
+            {
+                "timestamp": 1737758269.020051,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 4533a22f0cf905f361805ba31a60671f193431c58085bcb9d9caf2be, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-4533a22f0cf905f361805ba31a60671f193431c58085bcb9d9caf2be.mp3"
+            },
+            {
+                "timestamp": 1737758269.020228,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"
+            },
+            {
+                "timestamp": 1737758270.197107,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 200,
+                    "reason": "OK",
+                    "thread.id": "12901707776",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"
+                }
+            },
+            {
+                "timestamp": 1737758270.346163,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "not found in cache, requesting"
+            },
+            {
+                "timestamp": 1737758270.346289,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-4533a22f0cf905f361805ba31a60671f193431c58085bcb9d9caf2be.mp3"
+            },
+            {
+                "timestamp": 1737758270.346689,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-4533a22f0cf905f361805ba31a60671f193431c58085bcb9d9caf2be.mp3"
+            },
+            {
+                "timestamp": 1737758270.346829,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] wrote audio data"
+            },
+            {
+                "timestamp": 1737758270.34698,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] finished generating audio file and write to file for blender, liquidizer"
+            },
+            {
+                "timestamp": 1737758270.352805,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text: stand mixer"
+            },
+            {
+                "timestamp": 1737758270.353021,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for stand mixer"
+            },
+            {
+                "timestamp": 1737758270.353483,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 94532825e1930a15ec2aa9f485c8aedb6b7dd9bfce5b62d30d2f0263, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-94532825e1930a15ec2aa9f485c8aedb6b7dd9bfce5b62d30d2f0263.mp3"
+            },
+            {
+                "timestamp": 1737758270.353639,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"
+            },
+            {
+                "timestamp": 1737758271.702961,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 200,
+                    "reason": "OK",
+                    "thread.id": "12901707776",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"
+                }
+            },
+            {
+                "timestamp": 1737758271.861624,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "not found in cache, requesting"
+            },
+            {
+                "timestamp": 1737758271.861727,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-94532825e1930a15ec2aa9f485c8aedb6b7dd9bfce5b62d30d2f0263.mp3"
+            },
+            {
+                "timestamp": 1737758271.862023,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-94532825e1930a15ec2aa9f485c8aedb6b7dd9bfce5b62d30d2f0263.mp3"
+            },
+            {
+                "timestamp": 1737758271.86217,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] wrote audio data"
+            },
+            {
+                "timestamp": 1737758271.862286,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] finished generating audio file and write to file for stand mixer"
+            },
+            {
+                "timestamp": 1737758271.866443,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text: electric kettle"
+            },
+            {
+                "timestamp": 1737758271.866653,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for electric kettle"
+            },
+            {
+                "timestamp": 1737758271.867306,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash e078dc19ce374084a6f2d3c5aabba8ad9dd6afd1a53f28bb8eac9744, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-e078dc19ce374084a6f2d3c5aabba8ad9dd6afd1a53f28bb8eac9744.mp3"
+            },
+            {
+                "timestamp": 1737758271.867406,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"
+            },
+            {
+                "timestamp": 1737758272.990767,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 200,
+                    "reason": "OK",
+                    "thread.id": "12901707776",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"
+                }
+            },
+            {
+                "timestamp": 1737758273.12438,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "not found in cache, requesting"
+            },
+            {
+                "timestamp": 1737758273.124493,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-e078dc19ce374084a6f2d3c5aabba8ad9dd6afd1a53f28bb8eac9744.mp3"
+            },
+            {
+                "timestamp": 1737758273.124921,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-e078dc19ce374084a6f2d3c5aabba8ad9dd6afd1a53f28bb8eac9744.mp3"
+            },
+            {
+                "timestamp": 1737758273.125066,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] wrote audio data"
+            },
+            {
+                "timestamp": 1737758273.125205,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] finished generating audio file and write to file for electric kettle"
+            },
+            {
+                "timestamp": 1737758273.129763,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text: cooker, stove"
+            },
+            {
+                "timestamp": 1737758273.129895,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for cooker, stove"
+            },
+            {
+                "timestamp": 1737758273.132797,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 9b2ded741fc719be21466b8bb5d45c74c0a044f1760b43978259ee14, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-9b2ded741fc719be21466b8bb5d45c74c0a044f1760b43978259ee14.mp3"
+            },
+            {
+                "timestamp": 1737758273.13309,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"
+            },
+            {
+                "timestamp": 1737758274.317581,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 200,
+                    "reason": "OK",
+                    "thread.id": "12901707776",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"
+                }
+            },
+            {
+                "timestamp": 1737758274.436872,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "not found in cache, requesting"
+            },
+            {
+                "timestamp": 1737758274.436914,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-9b2ded741fc719be21466b8bb5d45c74c0a044f1760b43978259ee14.mp3"
+            },
+            {
+                "timestamp": 1737758274.437048,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-9b2ded741fc719be21466b8bb5d45c74c0a044f1760b43978259ee14.mp3"
+            },
+            {
+                "timestamp": 1737758274.437086,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] wrote audio data"
+            },
+            {
+                "timestamp": 1737758274.437142,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] finished generating audio file and write to file for cooker, stove"
+            },
+            {
+                "timestamp": 1737758274.43862,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text: fridge, refrigerator"
+            },
+            {
+                "timestamp": 1737758274.438655,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for fridge, refrigerator"
+            },
+            {
+                "timestamp": 1737758274.438851,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 445df78dd62a734d290188063a044d98cef36a1ed9f825c34e82e634, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-445df78dd62a734d290188063a044d98cef36a1ed9f825c34e82e634.mp3"
+            },
+            {
+                "timestamp": 1737758274.43891,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"
+            },
+            {
+                "timestamp": 1737758275.646979,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 200,
+                    "reason": "OK",
+                    "thread.id": "12901707776",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"
+                }
+            },
+            {
+                "timestamp": 1737758275.754416,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "not found in cache, requesting"
+            },
+            {
+                "timestamp": 1737758275.754638,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-445df78dd62a734d290188063a044d98cef36a1ed9f825c34e82e634.mp3"
+            },
+            {
+                "timestamp": 1737758275.75526,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-445df78dd62a734d290188063a044d98cef36a1ed9f825c34e82e634.mp3"
+            },
+            {
+                "timestamp": 1737758275.755988,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] wrote audio data"
+            },
+            {
+                "timestamp": 1737758275.756432,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] finished generating audio file and write to file for fridge, refrigerator"
+            },
+            {
+                "timestamp": 1737758275.762868,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text: dustbin, rubbish bin, garbage can, trash can"
+            },
+            {
+                "timestamp": 1737758275.763103,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for dustbin, rubbish bin, garbage can, trash can"
+            },
+            {
+                "timestamp": 1737758275.764097,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 8c419b6ecce54bea81c5bc5c5bc3d836fe3b3ed1995c7e1c7f72c969, full filename /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-8c419b6ecce54bea81c5bc5c5bc3d836fe3b3ed1995c7e1c7f72c969.mp3"
+            },
+            {
+                "timestamp": 1737758275.764301,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: Multilingual, Male, Brian (Multilingual v2) (ElevenLabs)"
+            },
+            {
+                "timestamp": 1737758277.116298,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 200,
+                    "reason": "OK",
+                    "thread.id": "12901707776",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://api.elevenlabs.io/v1/text-to-speech/nPczCjzI2devNBz1zQrb"
+                }
+            },
+            {
+                "timestamp": 1737758277.31351,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "not found in cache, requesting"
+            },
+            {
+                "timestamp": 1737758277.31376,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-8c419b6ecce54bea81c5bc5c5bc3d836fe3b3ed1995c7e1c7f72c969.mp3"
+            },
+            {
+                "timestamp": 1737758277.314595,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] done opening /Users/kacperpaluch/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-8c419b6ecce54bea81c5bc5c5bc3d836fe3b3ed1995c7e1c7f72c969.mp3"
+            },
+            {
+                "timestamp": 1737758277.314922,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] wrote audio data"
+            },
+            {
+                "timestamp": 1737758277.315214,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] finished generating audio file and write to file for dustbin, rubbish bin, garbage can, trash can"
+            }
+        ]
+    },
+    "contexts": {
+        "audio_request": {
+            "error": "Audio not found for [dustbin, rubbish bin, garbage can, trash can] (voice: English (US), Female, US (Cambridge))",
+            "text": "dustbin, rubbish bin, garbage can, trash can",
+            "type": "audio_request",
+            "voice": "English (US), Female, US (Cambridge)"
+        },
+        "runtime": {
+            "runtime": "CPython 3.9.18",
+            "name": "CPython",
+            "version": "3.9.18",
+            "build": "3.9.18 (main, Jan  7 2024, 23:06:15) \n[Clang 16.0.3 ]",
+            "type": "runtime"
+        },
+        "trace": {
+            "trace_id": "156ad70a0ac341af8360a4f5dd3e5543",
+            "span_id": "96397ddfaf158ec0",
+            "status": "unknown",
+            "client_sample_rate": 0.021,
+            "type": "trace"
+        }
+    },
+    "culprit": "ElevenLabs",
+    "environment": "production",
+    "extra": {
+        "asctime": "2025-01-24 23:38:48,439",
+        "sys.argv": [
+            "/Applications/Anki.app/Contents/MacOS/anki"
+        ]
+    },
+    "fingerprint": [
+        "{{ default }}"
+    ],
+    "grouping_config": {
+        "enhancements": "KLUv_SAYwQAAkwKRs25ld3N0eWxlOjIwMjMtMDEtMTGQ",
+        "id": "newstyle:2023-01-11"
+    },
+    "hashes": [
+        "b8157208f8e48acab29ea3921c157af4"
+    ],
+    "ingest_path": [
+        {
+            "version": "25.1.0",
+            "public_key": "XE7QiyuNlja9PZ7I9qJlwQotzecWrUIN91BAO7Q5R38"
+        }
+    ],
+    "key_id": "2011620",
+    "level": "error",
+    "logentry": {
+        "formatted": "Error processing note 1737758035860: Cannot connect to host anki-smart-notes-server-production.up.railway.app:443 ssl:default [Cannot allocate memory], Traceback (most recent call last):\n  File \"/Users/kacperpaluch/Library/Application Support/Anki2/addons21/1531888719/vendor/aiohttp/connector.py\", line 1025, in _wrap_create_connection\n    return await self._loop.create_connection(*args, **kwargs)\n  File \"asyncio.base_events\", line 1065, in create_connection\n  File \"asyncio.base_events\", line 1050, in create_connection\n  File \"asyncio.base_events\", line 961, in _connect_sock\n  File \"asyncio.selector_events\", line 500, in sock_connect\n  File \"asyncio.selector_events\", line 505, in _sock_connect\nOSError: [Errno 12] Cannot allocate memory\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kacperpaluch/Library/Application Support/Anki2/addons21/1531888719/src/note_proccessor.py\", line 340, in _process_note\n    responses = await asyncio.gather...",
+        "params": []
+    },
+    "logger": "smart_notes",
+    "metadata": {
+        "title": "Error processing note 1737758035860: Cannot connect to host anki-smart-notes-server-production.up..."
+    },
+    "nodestore_insert": 1737758330.873344,
+    "received": 1737758328.479,
+    "sdk": {
+        "name": "sentry.python",
+        "version": "1.44.0",
+        "integrations": [
+            "argv",
+            "atexit",
+            "boto3",
+            "dedupe",
+            "excepthook",
+            "logging",
+            "modules",
+            "stdlib",
+            "threading"
+        ],
+        "packages": [
+            {
+                "name": "pypi:sentry-sdk",
+                "version": "1.44.0"
+            }
+        ]
+    },
+    "timestamp": 1737758328.439895,
+    "title": "Error processing note 1737758035860: Cannot connect to host anki-smart-notes-server-production.up...",
+    "transaction": "ElevenLabs",
+    "transaction_info": {
+        "source": "custom"
+    },
+    "type": "default",
+    "user": {
+        "id": "uuid:b520b1bfbf09",
+        "sentry_user": "id:uuid:b520b1bfbf09"
+    },
+    "version": "7",
+    "location": null
+}
