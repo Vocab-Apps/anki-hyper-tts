@@ -154,27 +154,34 @@ def show_easy_advanced_dialog(hypertts) -> config_models.EasyAdvancedMode:
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_CHDOOSE_EASY_ADVANCED)
     return dialog.chosen_mode
 
-def ensure_easy_advanced_choice_made(hypertts):
+def ensure_easy_advanced_choice_made(hypertts) -> bool:
     """Ensure user has made a choice between Easy and Advanced modes.
     If not, show the dialog and save their choice."""
-    
-    configuration = hypertts.get_configuration()
-    if not configuration.user_choice_easy_advanced:
-        logger.debug('user hasnt chosen easy/advanced mode yet')
-        # User hasn't chosen yet, show dialog
-        choice = show_easy_advanced_dialog(hypertts)
-        if choice is not None:
-            # Save their choice
-            configuration.user_choice_easy_advanced = True
-            hypertts.save_configuration(configuration)
-            
-            # Update mapping rules based on their choice
-            mapping_rules = hypertts.load_mapping_rules()
-            mapping_rules.use_easy_mode = (choice == config_models.EasyAdvancedMode.EASY)
-            hypertts.save_mapping_rules(mapping_rules)
 
-            if mapping_rules.use_easy_mode:
-                sc.send_event(Event.choose, EventMode.easy_mode)
-            else:
-                sc.send_event(Event.choose, EventMode.advanced_mode)
+    # return True if we can proceed to the next step    
+
+    configuration = hypertts.get_configuration()
+    if configuration.user_choice_easy_advanced:
+        return True  # can proceed to the next step
+
+    logger.debug('user hasnt chosen easy/advanced mode yet')
+    # User hasn't chosen yet, show dialog
+    choice = show_easy_advanced_dialog(hypertts)
+    if choice is not None:
+        # Save their choice
+        configuration.user_choice_easy_advanced = True
+        hypertts.save_configuration(configuration)
+        
+        # Update mapping rules based on their choice
+        mapping_rules = hypertts.load_mapping_rules()
+        mapping_rules.use_easy_mode = (choice == config_models.EasyAdvancedMode.EASY)
+        hypertts.save_mapping_rules(mapping_rules)
+
+        if mapping_rules.use_easy_mode:
+            sc.send_event(Event.choose, EventMode.easy_mode)
+        else:
+            sc.send_event(Event.choose, EventMode.advanced_mode)
+        
+        return True
                 
+    return False

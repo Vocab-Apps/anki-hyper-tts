@@ -3268,7 +3268,8 @@ def test_ensure_easy_advanced_choice_not_made(qtbot):
     del hypertts_instance.anki_utils.written_config[constants.CONFIG_CONFIGURATION]    
 
     # Should show dialog and save choice
-    component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts_instance)
+    return_value = component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts_instance)
+    assert return_value == True
 
     # Verify configuration was updated
     assert hypertts_instance.anki_utils.written_config[constants.CONFIG_CONFIGURATION]['user_choice_easy_advanced'] == True
@@ -3287,7 +3288,8 @@ def test_ensure_easy_advanced_choice_already_made(qtbot):
     hypertts_instance.save_configuration(configuration)
 
     # Should not show dialog or update anything
-    component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts_instance)
+    return_value = component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts_instance)
+    assert return_value == True
 
     # Verify no configuration was written
     # assert constants.CONFIG_CONFIGURATION not in hypertts_instance.anki_utils.written_config
@@ -3313,7 +3315,8 @@ def test_ensure_easy_advanced_choice_cancelled(qtbot):
     del hypertts_instance.anki_utils.written_config[constants.CONFIG_CONFIGURATION]    
 
     # Should show dialog but not update anything since user cancelled
-    component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts_instance)
+    return_value = component_choose_easy_advanced.ensure_easy_advanced_choice_made(hypertts_instance)
+    assert return_value == False
 
     # Verify no configuration was written
     assert constants.CONFIG_CONFIGURATION not in hypertts_instance.anki_utils.written_config
