@@ -30,6 +30,10 @@ items = [
         'name': 'test choose easy advanced',
         'command': 'HYPERTTS_EASY_ADVANCED_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_choose_easy_advanced_manual -s -rPP'
     },        
+    {
+        'name': 'test preferences',
+        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual -s -rPP'
+    },            
 
 
 ]
