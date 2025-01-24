@@ -9,6 +9,7 @@ LOGGER_NAME_TEST = 'test_hypertts'
 
 # requests related constants
 RequestTimeout = 20 # 20 seconds max
+RequestTimeoutShort = 3
 
 CLOUDLANGUAGETOOLS_API_BASE_URL = 'https://cloudlanguagetools-api.vocab.ai'
 VOCABAI_API_BASE_URL = 'https://app.vocab.ai/languagetools-api/v2'

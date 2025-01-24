@@ -4,6 +4,7 @@ import requests
 import json
 import functools
 
+from . import constants
 from . import constants_events
 from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
@@ -49,7 +50,10 @@ class StatsGlobal:
             "distinct_id": self.user_uuid,
             "properties": event_properties,
         }
-        response = requests.post(self.CAPTURE_URL, headers=headers, data=json.dumps(payload))
+        response = requests.post(self.CAPTURE_URL, 
+                headers=headers, 
+                data=json.dumps(payload), 
+                timeout=constants.RequestTimeoutShort)
         logger.debug(f'sent event: {context}:{event} ({event_mode}), status: {response.status_code}')
         # print(response)        
 
