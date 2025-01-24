@@ -36,18 +36,30 @@ def sentry_filter(event, hint):
         # if not from our code, discard
         if not relevant_exception:
             return None
+
+        return event
     
     # if no exception info, check if event is from our module
-    elif 'logger' in event:
+    if 'logger' in event:
         logger_name = event.get('logger', '')
-        if not (logger_name.startswith('hypertts') or 
-                'anki-hyper-tts' in logger_name or
-                constants.ANKIWEB_ADDON_ID in logger_name):
-            return None
-    else:
-        return None
+        if logger_name.startswith('hypertts'):
+            return event
 
-    return event
+    # check if there's an exception object directly in the event
+    if 'exception' in event:
+        exception = event.get('exception', {})
+        values = exception.get('values', [])
+        if values:
+            for value in values:
+                frames = value.get('stacktrace', {}).get('frames', [])
+                for frame in frames:
+                    filename = frame.get('filename', '')
+                    if ('anki-hyper-tts' in filename or 
+                        constants.ANKIWEB_ADDON_ID in filename):
+                        if 'ankihub' not in filename.lower():
+                            return event
+
+    return None
 
 # before_send_transaction
 def filter_transactions(event, hint):
