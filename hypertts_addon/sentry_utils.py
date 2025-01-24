@@ -6,8 +6,10 @@ from . import constants
 def sentry_filter_dump_json(event, hint):
     with open('/home/luc/code/python/anki-hyper-tts/temp/exception.json', 'w') as f:
         json.dump(event, f, indent=4)
+        f.flush()
     with open('/home/luc/code/python/anki-hyper-tts/temp/hint.json', 'w') as f:
         json.dump(hint, f, indent=4)
+        f.flush()
     return event    
 
 # this is the implementation of the before_send function
