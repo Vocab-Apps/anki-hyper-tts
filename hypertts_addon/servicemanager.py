@@ -221,6 +221,6 @@ class ServiceManager():
         # logger.debug(pprint.pformat(voice_list))
         voice_subset = [voice for voice in voice_list if voice.get_voice_id() == voice_id]
         if len(voice_subset) == 0:
-            logger.error(f'could not locate voice for voice_id: {voice_id!r}')
+            logger.warning(f'could not locate voice for voice_id: {voice_id!r}')
             raise errors.VoiceIdNotFound(voice_id)
         return voice_subset[0]
