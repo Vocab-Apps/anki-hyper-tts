@@ -44,6 +44,14 @@ def sentry_filter(event, hint):
         logger_name = event.get('logger', '')
         if logger_name.startswith('hypertts'):
             return event
+            
+    # check breadcrumbs categories
+    if 'breadcrumbs' in event:
+        breadcrumbs = event.get('breadcrumbs', {}).get('values', [])
+        for crumb in breadcrumbs:
+            category = crumb.get('category', '')
+            if category.startswith('hypertts'):
+                return event
 
     # check if there's an exception object directly in the event
     if 'exception' in event:
