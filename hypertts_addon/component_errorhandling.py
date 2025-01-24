@@ -23,6 +23,8 @@ class ErrorHandling(component_common.ConfigComponentBase):
         for error_dialog_type in constants.ErrorDialogType:
             self.realtime_tts_errors_dialog_type.addItem(error_dialog_type.name, error_dialog_type)
 
+        self.error_stats_reporting = aqt.qt.QCheckBox('Send anonymous usage statistics and error reports to help improve HyperTTS')
+
     def get_model(self):
         return self.model
 
@@ -30,6 +32,7 @@ class ErrorHandling(component_common.ConfigComponentBase):
         self.model = model
         self.propagate_model_change = False
         self.realtime_tts_errors_dialog_type.setCurrentText(self.model.realtime_tts_errors_dialog_type.name)
+        self.error_stats_reporting.setChecked(self.model.error_stats_reporting)
         self.propagate_model_change = True
 
     def notify_model_update(self):
@@ -50,6 +53,7 @@ class ErrorHandling(component_common.ConfigComponentBase):
         realtime_tts_error_dialog.setWordWrap(True)
         vlayout.addWidget(realtime_tts_error_dialog)
         vlayout.addWidget(self.realtime_tts_errors_dialog_type)
+        vlayout.addWidget(self.error_stats_reporting)
 
         groupbox.setLayout(vlayout)
         layout.addWidget(groupbox)
@@ -58,11 +62,17 @@ class ErrorHandling(component_common.ConfigComponentBase):
 
         # wire events
         self.realtime_tts_errors_dialog_type.currentIndexChanged.connect(self.realtime_tts_errors_dialog_type_changed)
+        self.error_stats_reporting.stateChanged.connect(self.error_stats_reporting_changed)
 
         return layout_widget
 
     def realtime_tts_errors_dialog_type_changed(self, index):
         logger.info(f'realtime_tts_errors_dialog_type_changed {index}')
         self.model.realtime_tts_errors_dialog_type = self.realtime_tts_errors_dialog_type.itemData(index)
+        self.notify_model_update()
+
+    def error_stats_reporting_changed(self, state):
+        logger.info(f'error_stats_reporting_changed {state}')
+        self.model.error_stats_reporting = state == aqt.qt.Qt.Checked
         self.notify_model_update()
 

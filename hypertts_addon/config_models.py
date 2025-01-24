@@ -563,6 +563,7 @@ class KeyboardShortcuts:
 @dataclass
 class ErrorHandling:
     realtime_tts_errors_dialog_type: constants.ErrorDialogType = constants.ErrorDialogType.Dialog
+    error_stats_reporting: bool = True
 
 @dataclass
 class Preferences:
