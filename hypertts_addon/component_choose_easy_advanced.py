@@ -20,6 +20,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         explanation = aqt.qt.QLabel('Please choose how you want to add audio in the Anki editor:')
         explanation.setWordWrap(True)
         explanation.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        explanation.setStyleSheet('border: none; background-color: transparent;')
         font = explanation.font()
         font.setPointSize(font.pointSize() + 1)
         explanation.setFont(font)
