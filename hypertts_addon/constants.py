@@ -201,7 +201,7 @@ GUI_TEXT_CHOICE_EASY_MODE = """Simple interface for adding audio manually. Just 
 and the voice to add audio. Similar to AwesomeTTS. Choose this if you want something simple."""
 GUI_TEXT_CHOICE_ADVANCED_MODE = """Full interface with all settings, allows you to add sound manually \
 or automatically. You can setup presets for different note types or decks. Choose this if you \
-don't mind configuring settings setup presets."""
+don't mind configuring settings and setup presets."""
 GUI_TEXT_CHOICE_EASY_ADVANCED_BOTTOM = """<i>You can change this setting later by clicking the gear button on the editor button bar (Configure preset rules)</i>"""
 
 GUI_TEXT_TARGET_FIELD = """Sound tags will be inserted in this field"""
