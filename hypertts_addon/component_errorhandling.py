@@ -46,17 +46,24 @@ class ErrorHandling(component_common.ConfigComponentBase):
         # editor add audio
         # ================
 
-        groupbox = aqt.qt.QGroupBox('Realtime TTS Errors')
-        vlayout = aqt.qt.QVBoxLayout()
+        # Realtime TTS Errors group
+        realtime_groupbox = aqt.qt.QGroupBox('Realtime TTS Errors')
+        realtime_vlayout = aqt.qt.QVBoxLayout()
 
         realtime_tts_error_dialog = aqt.qt.QLabel(constants.GUI_TEXT_ERROR_HANDLING_REALTIME_TTS)
         realtime_tts_error_dialog.setWordWrap(True)
-        vlayout.addWidget(realtime_tts_error_dialog)
-        vlayout.addWidget(self.realtime_tts_errors_dialog_type)
-        vlayout.addWidget(self.error_stats_reporting)
+        realtime_vlayout.addWidget(realtime_tts_error_dialog)
+        realtime_vlayout.addWidget(self.realtime_tts_errors_dialog_type)
 
-        groupbox.setLayout(vlayout)
-        layout.addWidget(groupbox)
+        realtime_groupbox.setLayout(realtime_vlayout)
+        layout.addWidget(realtime_groupbox)
+
+        # Error Reporting group
+        reporting_groupbox = aqt.qt.QGroupBox('Error Reporting')
+        reporting_vlayout = aqt.qt.QVBoxLayout()
+        reporting_vlayout.addWidget(self.error_stats_reporting)
+        reporting_groupbox.setLayout(reporting_vlayout)
+        layout.addWidget(reporting_groupbox)
 
         layout.addStretch()
 
