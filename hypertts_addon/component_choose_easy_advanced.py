@@ -67,7 +67,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         easy_description.setStyleSheet('border: none; background-color: transparent;')
         
         easy_layout.addWidget(self.easy_radio, alignment=aqt.qt.Qt.AlignmentFlag.AlignTop | aqt.qt.Qt.AlignmentFlag.AlignHCenter)
-        easy_layout.addWidget(easy_description)
+        easy_layout.addWidget(easy_description, alignment=aqt.qt.Qt.AlignmentFlag.AlignTop)
         self.easy_frame.setLayout(easy_layout)
         
         # Advanced mode frame
@@ -86,7 +86,7 @@ class ChooseEasyAdvancedDialog(aqt.qt.QDialog):
         advanced_description.setStyleSheet('border: none; background-color: transparent;')
         
         advanced_layout.addWidget(self.advanced_radio, alignment=aqt.qt.Qt.AlignmentFlag.AlignTop | aqt.qt.Qt.AlignmentFlag.AlignHCenter)
-        advanced_layout.addWidget(advanced_description)
+        advanced_layout.addWidget(advanced_description, alignment=aqt.qt.Qt.AlignmentFlag.AlignTop)
         self.advanced_frame.setLayout(advanced_layout)
         
         # Add frames to horizontal layout
