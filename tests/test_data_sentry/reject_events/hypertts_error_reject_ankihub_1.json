@@ -1,1 +1,545 @@
-{"event_id":"f82931eb4554400da7f96bac9f6c6afd","project":6170140,"release":"anki-hyper-tts@1.13.6","dist":null,"platform":"python","message":"{'event': 'Failed to fetch feature flags: AnkiHub request error: 401 Unauthorized. Using default values.', 'level': 'error', 'thread': 6391689216, 'module': 'feature_flags', 'func_name': '_setup_feature_flags', 'timestamp': '2025-01-24T22:33:56.045534Z'}","datetime":"2025-01-24T22:33:56+00:00","tags":[["anki_version","24.06.3"],["environment","production"],["level","error"],["logger","ankihub"],["runtime","CPython 3.9.18"],["runtime.name","CPython"],["release","anki-hyper-tts@1.13.6"],["user","id:uuid:8ab1a5690ec5"],["server_name","dhcp-10-144-177-124.dgsom.guest"]],"_dsc":{"environment":"production","public_key":"a4170596966d47bb9f8fda74a9370bc7","release":"anki-hyper-tts@1.13.6","replay_id":null,"sample_rate":"0.021","trace_id":"e62c48cd-bd00-4e3c-904b-72e70084109c","transaction":null},"_metrics":{"bytes.ingested.event":11775,"bytes.stored.event":12638},"breadcrumbs":{"values":[{"timestamp":1737758034.112814,"type":"log","category":"hypertts.servicemanager","level":"info","message":"discovered 22 services"},{"timestamp":1737758034.113025,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_openai, package_name: hypertts_addon.services"},{"timestamp":1737758034.113226,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_amazon, package_name: hypertts_addon.services"},{"timestamp":1737758034.124417,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_fptai, package_name: hypertts_addon.services"},{"timestamp":1737758034.124733,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_watson, package_name: hypertts_addon.services"},{"timestamp":1737758034.124903,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_dwds, package_name: hypertts_addon.services"},{"timestamp":1737758034.125073,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_duden, package_name: hypertts_addon.services"},{"timestamp":1737758034.125257,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_windows, package_name: hypertts_addon.services"},{"timestamp":1737758034.125546,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_cambridge, package_name: hypertts_addon.services"},{"timestamp":1737758034.125879,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_elevenlabs, package_name: hypertts_addon.services"},{"timestamp":1737758034.126164,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_vocalware, package_name: hypertts_addon.services"},{"timestamp":1737758034.126433,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_macos, package_name: hypertts_addon.services"},{"timestamp":1737758034.126805,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_googletranslate, package_name: hypertts_addon.services"},{"timestamp":1737758034.130349,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_elevenlabscustom, package_name: hypertts_addon.services"},{"timestamp":1737758034.13149,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_oxford, package_name: hypertts_addon.services"},{"timestamp":1737758034.131656,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_cereproc, package_name: hypertts_addon.services"},{"timestamp":1737758034.131821,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_espeakng, package_name: hypertts_addon.services"},{"timestamp":1737758034.132291,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_azure, package_name: hypertts_addon.services"},{"timestamp":1737758034.132573,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_google, package_name: hypertts_addon.services"},{"timestamp":1737758034.132725,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_naver, package_name: hypertts_addon.services"},{"timestamp":1737758034.13287,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_forvo, package_name: hypertts_addon.services"},{"timestamp":1737758034.133023,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_spanishdict, package_name: hypertts_addon.services"},{"timestamp":1737758034.133164,"type":"log","category":"hypertts.servicemanager","level":"info","message":"importing module service_naverpapago, package_name: hypertts_addon.services"},{"timestamp":1737758034.133503,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service OpenAI"},{"timestamp":1737758034.133534,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service Amazon"},{"timestamp":1737758034.133551,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service FptAi"},{"timestamp":1737758034.133564,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service Watson"},{"timestamp":1737758034.133577,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service DigitalesWorterbuchDeutschenSprache"},{"timestamp":1737758034.133589,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service Duden"},{"timestamp":1737758034.133601,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service Windows"},{"timestamp":1737758034.133614,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service Cambridge"},{"timestamp":1737758034.133626,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service ElevenLabs"},{"timestamp":1737758034.133639,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service VocalWare"},{"timestamp":1737758034.133651,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service MacOS"},{"timestamp":1737758034.133663,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service GoogleTranslate"},{"timestamp":1737758034.133675,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service ElevenLabsCustom"},{"timestamp":1737758034.133687,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service Oxford"},{"timestamp":1737758034.133698,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service CereProc"},{"timestamp":1737758034.13371,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service ESpeakNg"},{"timestamp":1737758034.133722,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service Azure"},{"timestamp":1737758034.133734,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service Google"},{"timestamp":1737758034.133745,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service Naver"},{"timestamp":1737758034.133759,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service Forvo"},{"timestamp":1737758034.133771,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service SpanishDict"},{"timestamp":1737758034.133783,"type":"log","category":"hypertts.servicemanager","level":"info","message":"instantiating service NaverPapago"},{"timestamp":1737758034.142637,"type":"log","category":"hypertts.ttsplayer","level":"info","message":"created AnkiHyperTTSPlayer"},{"timestamp":1737758034.38179,"type":"log","category":"ankihub","level":"info","message":"{'event': 'Set up logger.', 'level': 'info', 'thread': 8481110080, 'module': 'entry_point', 'func_name': 'run', 'timestamp': '2025-01-24T22:33:54.381769Z'}"},{"timestamp":1737758034.382175,"type":"log","category":"ankihub","level":"info","message":"{'addon_version': '2025-01-09.1', 'anki_version': '24.06.3', 'qt_version': '6.6.1', 'app_url': 'https://app.ankihub.net', 's3_bucket_url': 'https://ankihub.s3.amazonaws.com', 'event': 'Application and version info', 'level': 'info', 'thread': 8481110080, 'module': 'entry_point', 'func_name': 'run', 'timestamp': '2025-01-24T22:33:54.382168Z'}"},{"timestamp":1737758035.916126,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"GET","http.query":"","http.response.status_code":301,"reason":"Moved Permanently","thread.id":"6391689216","thread.name":"ThreadPoolExecutor-0_0","url":"https://app.ankihub.net/api/feature-flags"}},{"timestamp":1737758035.91666,"type":"log","category":"ankihub","level":"info","message":"{'method': 'GET', 'endpoint': 'https://app.ankihub.net/api/feature-flags', 'headers': {'Content-Type': 'application/json', 'Accept': 'application/json; version=21.0', 'Authorization': '<redacted>'}, 'request_body': None, 'response_status': 301, 'event': 'AnkiHubClient HTTP Transaction', 'level': 'info', 'thread': 6391689216, 'module': 'addon_ankihub_client', 'func_name': 'logging_hook', 'timestamp': '2025-01-24T22:33:55.916639Z'}"},{"timestamp":1737758036.044843,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"GET","http.query":"","http.response.status_code":401,"reason":"Unauthorized","thread.id":"6391689216","thread.name":"ThreadPoolExecutor-0_0","url":"https://app.ankihub.net/api/feature-flags/"}},{"timestamp":1737758036.045031,"type":"log","category":"ankihub","level":"info","message":"{'method': 'GET', 'endpoint': 'https://app.ankihub.net/api/feature-flags/', 'headers': {'Accept': 'application/json; version=21.0', 'Authorization': '<redacted>'}, 'request_body': None, 'response_status': 401, 'event': 'AnkiHubClient HTTP Transaction', 'level': 'info', 'thread': 6391689216, 'module': 'addon_ankihub_client', 'func_name': 'logging_hook', 'timestamp': '2025-01-24T22:33:56.045020Z'}"},{"timestamp":1737758036.04529,"type":"log","category":"ankihub","level":"info","message":"{'content': '{\"detail\":\"Invalid token.\"}', 'event': 'Response content', 'level': 'info', 'thread': 6391689216, 'module': 'addon_ankihub_client', 'func_name': 'logging_hook', 'timestamp': '2025-01-24T22:33:56.045282Z'}"}]},"contexts":{"runtime":{"runtime":"CPython 3.9.18","name":"CPython","version":"3.9.18","build":"3.9.18 (main, Jan  7 2024, 23:06:15) \n[Clang 16.0.3 ]","type":"runtime"},"trace":{"trace_id":"e62c48cdbd004e3c904b72e70084109c","span_id":"9b95d94db78d844e","status":"unknown","client_sample_rate":0.021,"type":"trace"}},"culprit":"","environment":"production","extra":{"sys.argv":["/Applications/Anki.app/Contents/MacOS/anki"]},"fingerprint":["{{ default }}"],"grouping_config":{"enhancements":"KLUv_SAYwQAAkwKRs25ld3N0eWxlOjIwMjMtMDEtMTGQ","id":"newstyle:2023-01-11"},"hashes":["d57eab7a76986cc889222592a7acfe8f"],"ingest_path":[{"version":"25.1.0","public_key":"XE7QiyuNlja9PZ7I9qJlwQotzecWrUIN91BAO7Q5R38"}],"key_id":"2011620","level":"error","logentry":{"formatted":"{'event': 'Failed to fetch feature flags: AnkiHub request error: 401 Unauthorized. Using default values.', 'level': 'error', 'thread': 6391689216, 'module': 'feature_flags', 'func_name': '_setup_feature_flags', 'timestamp': '2025-01-24T22:33:56.045534Z'}","params":[]},"logger":"ankihub","metadata":{"title":"{'event': 'Failed to fetch feature flags: AnkiHub request error: 401 Unauthorized. Using default ..."},"modules":{"certifi":"2019.9.11","packaging":"19.2","pyparsing":"2.4.2","python-dotenv":"0.10.3","qtawesome":"1.1.1","qtpy":"2.1.0","sentry-sdk":"0.13.0","six":"1.15.0"},"nodestore_insert":1737758037.978395,"received":1737758036.245167,"sdk":{"name":"sentry.python","version":"1.44.0","integrations":["argv","atexit","boto3","dedupe","excepthook","logging","modules","stdlib","threading"],"packages":[{"name":"pypi:sentry-sdk","version":"1.44.0"}]},"timestamp":1737758036.04565,"title":"{'event': 'Failed to fetch feature flags: AnkiHub request error: 401 Unauthorized. Using default ...","transaction_info":{},"type":"default","user":{"id":"uuid:8ab1a5690ec5","sentry_user":"id:uuid:8ab1a5690ec5"},"version":"7","location":null}
+{
+    "event_id": "f82931eb4554400da7f96bac9f6c6afd",
+    "project": 6170140,
+    "release": "anki-hyper-tts@1.13.6",
+    "dist": null,
+    "platform": "python",
+    "message": "{'event': 'Failed to fetch feature flags: AnkiHub request error: 401 Unauthorized. Using default values.', 'level': 'error', 'thread': 6391689216, 'module': 'feature_flags', 'func_name': '_setup_feature_flags', 'timestamp': '2025-01-24T22:33:56.045534Z'}",
+    "datetime": "2025-01-24T22:33:56+00:00",
+    "tags": [
+        [
+            "anki_version",
+            "24.06.3"
+        ],
+        [
+            "environment",
+            "production"
+        ],
+        [
+            "level",
+            "error"
+        ],
+        [
+            "logger",
+            "ankihub"
+        ],
+        [
+            "runtime",
+            "CPython 3.9.18"
+        ],
+        [
+            "runtime.name",
+            "CPython"
+        ],
+        [
+            "release",
+            "anki-hyper-tts@1.13.6"
+        ],
+        [
+            "user",
+            "id:uuid:8ab1a5690ec5"
+        ],
+        [
+            "server_name",
+            "dhcp-10-144-177-124.dgsom.guest"
+        ]
+    ],
+    "_dsc": {
+        "environment": "production",
+        "public_key": "a4170596966d47bb9f8fda74a9370bc7",
+        "release": "anki-hyper-tts@1.13.6",
+        "replay_id": null,
+        "sample_rate": "0.021",
+        "trace_id": "e62c48cd-bd00-4e3c-904b-72e70084109c",
+        "transaction": null
+    },
+    "_metrics": {
+        "bytes.ingested.event": 11775,
+        "bytes.stored.event": 12638
+    },
+    "breadcrumbs": {
+        "values": [
+            {
+                "timestamp": 1737758034.112814,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "discovered 22 services"
+            },
+            {
+                "timestamp": 1737758034.113025,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_openai, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.113226,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_amazon, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.124417,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_fptai, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.124733,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_watson, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.124903,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_dwds, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.125073,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_duden, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.125257,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_windows, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.125546,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_cambridge, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.125879,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_elevenlabs, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.126164,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_vocalware, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.126433,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_macos, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.126805,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_googletranslate, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.130349,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_elevenlabscustom, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.13149,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_oxford, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.131656,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_cereproc, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.131821,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_espeakng, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.132291,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_azure, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.132573,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_google, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.132725,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_naver, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.13287,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_forvo, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.133023,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_spanishdict, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.133164,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "importing module service_naverpapago, package_name: hypertts_addon.services"
+            },
+            {
+                "timestamp": 1737758034.133503,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service OpenAI"
+            },
+            {
+                "timestamp": 1737758034.133534,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service Amazon"
+            },
+            {
+                "timestamp": 1737758034.133551,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service FptAi"
+            },
+            {
+                "timestamp": 1737758034.133564,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service Watson"
+            },
+            {
+                "timestamp": 1737758034.133577,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service DigitalesWorterbuchDeutschenSprache"
+            },
+            {
+                "timestamp": 1737758034.133589,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service Duden"
+            },
+            {
+                "timestamp": 1737758034.133601,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service Windows"
+            },
+            {
+                "timestamp": 1737758034.133614,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service Cambridge"
+            },
+            {
+                "timestamp": 1737758034.133626,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service ElevenLabs"
+            },
+            {
+                "timestamp": 1737758034.133639,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service VocalWare"
+            },
+            {
+                "timestamp": 1737758034.133651,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service MacOS"
+            },
+            {
+                "timestamp": 1737758034.133663,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service GoogleTranslate"
+            },
+            {
+                "timestamp": 1737758034.133675,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service ElevenLabsCustom"
+            },
+            {
+                "timestamp": 1737758034.133687,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service Oxford"
+            },
+            {
+                "timestamp": 1737758034.133698,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service CereProc"
+            },
+            {
+                "timestamp": 1737758034.13371,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service ESpeakNg"
+            },
+            {
+                "timestamp": 1737758034.133722,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service Azure"
+            },
+            {
+                "timestamp": 1737758034.133734,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service Google"
+            },
+            {
+                "timestamp": 1737758034.133745,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service Naver"
+            },
+            {
+                "timestamp": 1737758034.133759,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service Forvo"
+            },
+            {
+                "timestamp": 1737758034.133771,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service SpanishDict"
+            },
+            {
+                "timestamp": 1737758034.133783,
+                "type": "log",
+                "category": "hypertts.servicemanager",
+                "level": "info",
+                "message": "instantiating service NaverPapago"
+            },
+            {
+                "timestamp": 1737758034.142637,
+                "type": "log",
+                "category": "hypertts.ttsplayer",
+                "level": "info",
+                "message": "created AnkiHyperTTSPlayer"
+            },
+            {
+                "timestamp": 1737758034.38179,
+                "type": "log",
+                "category": "ankihub",
+                "level": "info",
+                "message": "{'event': 'Set up logger.', 'level': 'info', 'thread': 8481110080, 'module': 'entry_point', 'func_name': 'run', 'timestamp': '2025-01-24T22:33:54.381769Z'}"
+            },
+            {
+                "timestamp": 1737758034.382175,
+                "type": "log",
+                "category": "ankihub",
+                "level": "info",
+                "message": "{'addon_version': '2025-01-09.1', 'anki_version': '24.06.3', 'qt_version': '6.6.1', 'app_url': 'https://app.ankihub.net', 's3_bucket_url': 'https://ankihub.s3.amazonaws.com', 'event': 'Application and version info', 'level': 'info', 'thread': 8481110080, 'module': 'entry_point', 'func_name': 'run', 'timestamp': '2025-01-24T22:33:54.382168Z'}"
+            },
+            {
+                "timestamp": 1737758035.916126,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "GET",
+                    "http.query": "",
+                    "http.response.status_code": 301,
+                    "reason": "Moved Permanently",
+                    "thread.id": "6391689216",
+                    "thread.name": "ThreadPoolExecutor-0_0",
+                    "url": "https://app.ankihub.net/api/feature-flags"
+                }
+            },
+            {
+                "timestamp": 1737758035.91666,
+                "type": "log",
+                "category": "ankihub",
+                "level": "info",
+                "message": "{'method': 'GET', 'endpoint': 'https://app.ankihub.net/api/feature-flags', 'headers': {'Content-Type': 'application/json', 'Accept': 'application/json; version=21.0', 'Authorization': '<redacted>'}, 'request_body': None, 'response_status': 301, 'event': 'AnkiHubClient HTTP Transaction', 'level': 'info', 'thread': 6391689216, 'module': 'addon_ankihub_client', 'func_name': 'logging_hook', 'timestamp': '2025-01-24T22:33:55.916639Z'}"
+            },
+            {
+                "timestamp": 1737758036.044843,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "GET",
+                    "http.query": "",
+                    "http.response.status_code": 401,
+                    "reason": "Unauthorized",
+                    "thread.id": "6391689216",
+                    "thread.name": "ThreadPoolExecutor-0_0",
+                    "url": "https://app.ankihub.net/api/feature-flags/"
+                }
+            },
+            {
+                "timestamp": 1737758036.045031,
+                "type": "log",
+                "category": "ankihub",
+                "level": "info",
+                "message": "{'method': 'GET', 'endpoint': 'https://app.ankihub.net/api/feature-flags/', 'headers': {'Accept': 'application/json; version=21.0', 'Authorization': '<redacted>'}, 'request_body': None, 'response_status': 401, 'event': 'AnkiHubClient HTTP Transaction', 'level': 'info', 'thread': 6391689216, 'module': 'addon_ankihub_client', 'func_name': 'logging_hook', 'timestamp': '2025-01-24T22:33:56.045020Z'}"
+            },
+            {
+                "timestamp": 1737758036.04529,
+                "type": "log",
+                "category": "ankihub",
+                "level": "info",
+                "message": "{'content': '{\"detail\":\"Invalid token.\"}', 'event': 'Response content', 'level': 'info', 'thread': 6391689216, 'module': 'addon_ankihub_client', 'func_name': 'logging_hook', 'timestamp': '2025-01-24T22:33:56.045282Z'}"
+            }
+        ]
+    },
+    "contexts": {
+        "runtime": {
+            "runtime": "CPython 3.9.18",
+            "name": "CPython",
+            "version": "3.9.18",
+            "build": "3.9.18 (main, Jan  7 2024, 23:06:15) \n[Clang 16.0.3 ]",
+            "type": "runtime"
+        },
+        "trace": {
+            "trace_id": "e62c48cdbd004e3c904b72e70084109c",
+            "span_id": "9b95d94db78d844e",
+            "status": "unknown",
+            "client_sample_rate": 0.021,
+            "type": "trace"
+        }
+    },
+    "culprit": "",
+    "environment": "production",
+    "extra": {
+        "sys.argv": [
+            "/Applications/Anki.app/Contents/MacOS/anki"
+        ]
+    },
+    "fingerprint": [
+        "{{ default }}"
+    ],
+    "grouping_config": {
+        "enhancements": "KLUv_SAYwQAAkwKRs25ld3N0eWxlOjIwMjMtMDEtMTGQ",
+        "id": "newstyle:2023-01-11"
+    },
+    "hashes": [
+        "d57eab7a76986cc889222592a7acfe8f"
+    ],
+    "ingest_path": [
+        {
+            "version": "25.1.0",
+            "public_key": "XE7QiyuNlja9PZ7I9qJlwQotzecWrUIN91BAO7Q5R38"
+        }
+    ],
+    "key_id": "2011620",
+    "level": "error",
+    "logentry": {
+        "formatted": "{'event': 'Failed to fetch feature flags: AnkiHub request error: 401 Unauthorized. Using default values.', 'level': 'error', 'thread': 6391689216, 'module': 'feature_flags', 'func_name': '_setup_feature_flags', 'timestamp': '2025-01-24T22:33:56.045534Z'}",
+        "params": []
+    },
+    "logger": "ankihub",
+    "metadata": {
+        "title": "{'event': 'Failed to fetch feature flags: AnkiHub request error: 401 Unauthorized. Using default ..."
+    },
+    "modules": {
+        "certifi": "2019.9.11",
+        "packaging": "19.2",
+        "pyparsing": "2.4.2",
+        "python-dotenv": "0.10.3",
+        "qtawesome": "1.1.1",
+        "qtpy": "2.1.0",
+        "sentry-sdk": "0.13.0",
+        "six": "1.15.0"
+    },
+    "nodestore_insert": 1737758037.978395,
+    "received": 1737758036.245167,
+    "sdk": {
+        "name": "sentry.python",
+        "version": "1.44.0",
+        "integrations": [
+            "argv",
+            "atexit",
+            "boto3",
+            "dedupe",
+            "excepthook",
+            "logging",
+            "modules",
+            "stdlib",
+            "threading"
+        ],
+        "packages": [
+            {
+                "name": "pypi:sentry-sdk",
+                "version": "1.44.0"
+            }
+        ]
+    },
+    "timestamp": 1737758036.04565,
+    "title": "{'event': 'Failed to fetch feature flags: AnkiHub request error: 401 Unauthorized. Using default ...",
+    "transaction_info": {},
+    "type": "default",
+    "user": {
+        "id": "uuid:8ab1a5690ec5",
+        "sentry_user": "id:uuid:8ab1a5690ec5"
+    },
+    "version": "7",
+    "location": null
+}
