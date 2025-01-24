@@ -5,6 +5,7 @@ import logging
 import uuid
 import re
 import pprint
+import json
 
 if hasattr(sys, '_pytest_mode'):
     # called from within a test run
@@ -76,30 +77,7 @@ else:
         # =====================
 
         from . import version
-
-        def sentry_filter(event, hint):
-            if 'exc_info' in hint:
-                exc_type, exc_value, tb = hint['exc_info']
-
-                # do we recognize the paths in this stack trace ?
-                relevant_exception = False
-                stack_summary = traceback.extract_tb(tb)
-                for stack_frame in stack_summary:
-                    filename = stack_frame.filename
-                    if 'anki-hyper-tts' in filename or constants.ANKIWEB_ADDON_ID in filename:
-                        relevant_exception = True
-                
-                # if not, discard
-                if not relevant_exception:
-                    return None
-
-            return event
-
-        def filter_transactions(event, hint):
-            operation = event.get('contexts', {}).get('trace', {}).get('op', None)
-            if operation == 'audio':
-                return event
-            return None
+        from . import sentry_utils
 
         traces_sample_rate_map = {
             'development': 1.0,
@@ -113,8 +91,8 @@ else:
             traces_sample_rate=traces_sample_rate_map[sentry_env],
             release=f'anki-hyper-tts@{version.ANKI_HYPER_TTS_VERSION}',
             environment=sentry_env,
-            before_send=sentry_filter,
-            before_send_transaction=filter_transactions
+            before_send=sentry_utils.sentry_filter,
+            before_send_transaction=sentry_utils.filter_transactions
         )
         sentry_sdk.set_user({"id": user_id})
         sentry_sdk.set_tag("anki_version", anki.version)
