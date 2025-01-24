@@ -22,7 +22,10 @@ else:
     # need to declare upfront whether we're doing crash reporting
     # ============================================================
     from hypertts_addon import constants
-    if constants.ENABLE_SENTRY_CRASH_REPORTING:
+    addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
+    enable_stats_error_reporting = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
+        get('error_handling', {}).get('error_stats_reporting', True)
+    if constants.ENABLE_SENTRY_CRASH_REPORTING and enable_stats_error_reporting:
         import sentry_sdk        
         # check version. some anki addons package an obsolete version of sentry_sdk
         sentry_sdk_int_version = int(sentry_sdk.VERSION.replace('.', ''))
@@ -51,7 +54,6 @@ else:
 
     # get or create user_uuid
     first_install = False
-    addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
     config_configuration = addon_config.get(constants.CONFIG_CONFIGURATION, {})
     user_uuid = config_configuration.get('user_uuid', None)
     if user_uuid != None:
@@ -117,7 +119,7 @@ else:
         sentry_sdk.set_user({"id": user_id})
         sentry_sdk.set_tag("anki_version", anki.version)
     else:
-        logger.info(f'sentry_sdk.VERSION: {sentry_sdk.VERSION}, disabling crash reporting')
+        logger.info(f'disabling crash reporting')
 
     # addon imports
     # =============
@@ -148,7 +150,7 @@ else:
     # stats
     from . import stats
     from . import constants_events
-    if not hasattr(sys, '_pytest_mode'):
+    if not hasattr(sys, '_pytest_mode') and enable_stats_error_reporting:
         sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, user_uuid)
         stats.event_global(constants_events.Event.open)
         if first_install:
