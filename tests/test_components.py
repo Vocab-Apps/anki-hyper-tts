@@ -3088,11 +3088,19 @@ def test_error_handling(qtbot):
 
     assert error_handling.realtime_tts_errors_dialog_type.currentText() == 'Tooltip'
 
-    # try to make a change
+    # try to make changes
     # ====================
 
+    # Change dialog type
     error_handling.realtime_tts_errors_dialog_type.setCurrentText('Nothing')
     assert model_change_callback.model.realtime_tts_errors_dialog_type == constants.ErrorDialogType.Nothing
+
+    # Test error stats reporting checkbox
+    assert error_handling.error_stats_reporting.isChecked() == True  # default should be True
+    error_handling.error_stats_reporting.setChecked(False)
+    assert model_change_callback.model.error_stats_reporting == False
+    error_handling.error_stats_reporting.setChecked(True) 
+    assert model_change_callback.model.error_stats_reporting == True
 
 
 def test_preferences_manual(qtbot):
