@@ -1,1 +1,1973 @@
-{"event_id":"9108d83aa5494e71a8cd71d68e76fbd2","project":6170140,"release":"anki-hyper-tts@1.13.6","dist":null,"platform":"python","message":"","datetime":"2025-01-24T14:36:34+00:00","tags":[["anki_version","24.11"],["clt.audio_request_reason","batch"],["environment","production"],["handled","yes"],["level","error"],["mechanism","generic"],["runtime","CPython 3.9.18"],["runtime.name","CPython"],["release","anki-hyper-tts@1.13.6"],["user","id:api_key:secret_api_key"],["server_name","MartinTiandeMacBook-Pro.local"],["transaction","cloudlanguagetools_Google"]],"_dsc":{"environment":"production","public_key":"a4170596966d47bb9f8fda74a9370bc7","release":"anki-hyper-tts@1.13.6","replay_id":null,"sample_rate":"0.021","trace_id":"b1d702f7-7733-4ac6-b372-c8cee735fb55","transaction":null},"_meta":{"exception":{"values":{"0":{"stacktrace":{"frames":{"0":{"vars":{"":{"len":25}}},"3":{"vars":{"":{"len":19}}},"4":{"vars":{"":{"len":14}}},"6":{"vars":{"session":{"":{"rem":[["!config","s"]]}}}},"7":{"vars":{"":{"len":14},"session":{"":{"rem":[["!config","s"]]}}}}}}},"1":{"stacktrace":{"frames":{"1":{"vars":{"":{"len":25}}},"2":{"vars":{"":{"len":16}}},"4":{"vars":{"":{"len":25}}}}}},"2":{"stacktrace":{"frames":{"0":{"vars":{"":{"len":13},"modified_notes":{"":{"len":551}},"note_id_list":{"":{"len":766}}}},"10":{"vars":{"session":{"":{"rem":[["!config","s"]]}}}},"11":{"vars":{"":{"len":21},"auth":{"":{"rem":[["!config","s"]]}}}}}}}}}},"_metrics":{"bytes.ingested.event":57261,"bytes.stored.event":66533},"breadcrumbs":{"values":[{"timestamp":1737729352.126866,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Proposition"},{"timestamp":1737729352.127041,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Proposition"},{"timestamp":1737729352.127659,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash d5ac09994a444cdbf3fa104a297b8cbdca3e0ce058397168e251098a, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d5ac09994a444cdbf3fa104a297b8cbdca3e0ce058397168e251098a.mp3"},{"timestamp":1737729352.127791,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729352.128121,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Proposition', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729353.287874,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729353.293742,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Defy"},{"timestamp":1737729353.29392,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Defy"},{"timestamp":1737729353.294586,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash cb68ad1c99b94f61d0abcf930771a5189d0d8f6540a5a58a5fe786d8, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-cb68ad1c99b94f61d0abcf930771a5189d0d8f6540a5a58a5fe786d8.mp3"},{"timestamp":1737729353.294736,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729353.295091,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Defy', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729354.765806,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729354.770361,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Australasia"},{"timestamp":1737729354.770633,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Australasia"},{"timestamp":1737729354.77182,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 7a99559db08fc7603dfd7bef6db5e0eb171cee9bc6d2e5aea4bfe8ce, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-7a99559db08fc7603dfd7bef6db5e0eb171cee9bc6d2e5aea4bfe8ce.mp3"},{"timestamp":1737729354.773335,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729354.773697,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Australasia', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729355.958954,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729355.964908,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Molecule"},{"timestamp":1737729355.965274,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Molecule"},{"timestamp":1737729355.965962,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 4611ed107ca262f454358c21fce56aef57e3eb7989fb6a02f62f8229, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-4611ed107ca262f454358c21fce56aef57e3eb7989fb6a02f62f8229.mp3"},{"timestamp":1737729355.967265,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729355.967807,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Molecule', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729357.163053,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729357.166698,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Neuron"},{"timestamp":1737729357.166952,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Neuron"},{"timestamp":1737729357.168064,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 4d8c159e9627cd8bbd7e7c0f0e5b7ecfeff6d95beb91890d4b4b3c13, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-4d8c159e9627cd8bbd7e7c0f0e5b7ecfeff6d95beb91890d4b4b3c13.mp3"},{"timestamp":1737729357.168228,"type":"log","category":"hypertts.hypertts","level":"info","message":"file exists in cache"},{"timestamp":1737729357.168293,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] finished generating audio file and write to file for  Neuron"},{"timestamp":1737729357.174148,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Evoke"},{"timestamp":1737729357.174252,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Evoke"},{"timestamp":1737729357.174664,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 6bb1d3b343b1e40bf1d0901bc5d2c0746e71a5ba940394eddcaf9309, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-6bb1d3b343b1e40bf1d0901bc5d2c0746e71a5ba940394eddcaf9309.mp3"},{"timestamp":1737729357.175132,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729357.175497,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Evoke', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729360.431217,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729360.435096,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Proclaim"},{"timestamp":1737729360.435285,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Proclaim"},{"timestamp":1737729360.435957,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash b75703efeef6a32ffc2f8ed043ae8ce9639c4be6ab2b1acaf2457667, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-b75703efeef6a32ffc2f8ed043ae8ce9639c4be6ab2b1acaf2457667.mp3"},{"timestamp":1737729360.4361,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729360.436491,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Proclaim', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729361.82687,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729361.83525,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Segregation"},{"timestamp":1737729361.835398,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Segregation"},{"timestamp":1737729361.835969,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 177d8a5d146b5ea77198a2c07014551485bf746975d11f09e190fb9b, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-177d8a5d146b5ea77198a2c07014551485bf746975d11f09e190fb9b.mp3"},{"timestamp":1737729361.836102,"type":"log","category":"hypertts.hypertts","level":"info","message":"file exists in cache"},{"timestamp":1737729361.836152,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] finished generating audio file and write to file for  Segregation"},{"timestamp":1737729361.841323,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Domestic"},{"timestamp":1737729361.841438,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Domestic"},{"timestamp":1737729361.842063,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash a42509a72ca695459262e7c33849e25748149783a95f7ce82a5176c8, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-a42509a72ca695459262e7c33849e25748149783a95f7ce82a5176c8.mp3"},{"timestamp":1737729361.842382,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729361.842715,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Domestic', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729364.1716,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729364.176214,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Intrepid"},{"timestamp":1737729364.176439,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Intrepid"},{"timestamp":1737729364.177349,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 9e0b1b2e8fc462ed8bb532a07510884808d254053e9f5a2da630bc23, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-9e0b1b2e8fc462ed8bb532a07510884808d254053e9f5a2da630bc23.mp3"},{"timestamp":1737729364.177547,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729364.177974,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Intrepid', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729365.335814,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729365.343922,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Innovation"},{"timestamp":1737729365.344061,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Innovation"},{"timestamp":1737729365.345395,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 0f19050cc2313d071bce365ecd16212303b4a790ea72e39be3628fce, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-0f19050cc2313d071bce365ecd16212303b4a790ea72e39be3628fce.mp3"},{"timestamp":1737729365.346703,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729365.347019,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Innovation', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729365.43049,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":200,"reason":"OK","thread.id":"12188676096","thread.name":"raven-sentry.BackgroundWorker","url":"https://127.0.0.1:7890/api/6170140/envelope/"}},{"timestamp":1737729367.06684,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729367.071121,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Biodiversity"},{"timestamp":1737729367.071299,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Biodiversity"},{"timestamp":1737729367.072172,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 8c9b23d17ecd5f5e5530a7fb24a6f8913a84db9d8a20bd2089947b9b, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-8c9b23d17ecd5f5e5530a7fb24a6f8913a84db9d8a20bd2089947b9b.mp3"},{"timestamp":1737729367.073294,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729367.073693,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Biodiversity', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729369.191119,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729369.19555,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Cholera"},{"timestamp":1737729369.195787,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Cholera"},{"timestamp":1737729369.196624,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 6f5068d9737eb9c01c5b5bc2070a429c729fbea8e1cd1ae1610f7640, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-6f5068d9737eb9c01c5b5bc2070a429c729fbea8e1cd1ae1610f7640.mp3"},{"timestamp":1737729369.197926,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729369.19832,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Cholera', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729370.297545,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729370.301411,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Hoe"},{"timestamp":1737729370.301568,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Hoe"},{"timestamp":1737729370.302493,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 815a599c9f5a4e8926247c37170b478f002ca3ee41f2ca08960911cb, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-815a599c9f5a4e8926247c37170b478f002ca3ee41f2ca08960911cb.mp3"},{"timestamp":1737729370.303506,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729370.303848,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Hoe', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729371.768919,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729371.77891,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Timescale"},{"timestamp":1737729371.779055,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Timescale"},{"timestamp":1737729371.779591,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash c264a23518f6730477e64bdbcd23615a6c8ebd8b0e823c285b111908, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-c264a23518f6730477e64bdbcd23615a6c8ebd8b0e823c285b111908.mp3"},{"timestamp":1737729371.779711,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729371.780004,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Timescale', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729373.333389,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729373.33595,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Royal"},{"timestamp":1737729373.336231,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Royal"},{"timestamp":1737729373.337337,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash 3dc48208b19d418f633aa60810b6fbdeec14635927bbf413105788de, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-3dc48208b19d418f633aa60810b6fbdeec14635927bbf413105788de.mp3"},{"timestamp":1737729373.337505,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729373.337916,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Royal', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"},{"timestamp":1737729374.531843,"type":"http","category":"httplib","level":"info","data":{"http.fragment":"","http.method":"POST","http.query":"","http.response.status_code":429,"reason":"Too Many Requests","thread.id":"6431174656","thread.name":"ThreadPoolExecutor-1_0","url":"https://127.0.0.1:7890/audio_v2"}},{"timestamp":1737729374.536229,"type":"log","category":"hypertts.text_utils","level":"info","message":"[debug] process_text source_text:  Multidimensional"},{"timestamp":1737729374.536515,"type":"log","category":"hypertts.hypertts","level":"info","message":"[debug] about to generate audio file and write to file for  Multidimensional"},{"timestamp":1737729374.537205,"type":"log","category":"hypertts.hypertts","level":"info","message":"requesting audio for hash f7bf6a464970fea6715216b4caa246fb10b2501df48ae8dbd4f040a9, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-f7bf6a464970fea6715216b4caa246fb10b2501df48ae8dbd4f040a9.mp3"},{"timestamp":1737729374.537413,"type":"log","category":"hypertts.hypertts","level":"info","message":"located voice: English (US), Male, en-US-Casual-K (Google)"},{"timestamp":1737729374.538023,"type":"log","category":"hypertts.cloudlanguagetools","level":"info","message":"request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Multidimensional', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"}]},"contexts":{"audio_request":{"error":"HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)","text":" Multidimensional","type":"audio_request","voice":"English (US), Male, en-US-Casual-K (Google)"},"cloudlanguagetools":{"type":"cloudlanguagetools","user_id":"secret_api_key"},"runtime":{"runtime":"CPython 3.9.18","name":"CPython","version":"3.9.18","build":"3.9.18 (main, Jan  7 2024, 23:06:15) \n[Clang 16.0.3 ]","type":"runtime"},"trace":{"trace_id":"b1d702f777334ac6b372c8cee735fb55","span_id":"bcb2ef4ee7dab391","status":"unknown","client_sample_rate":0.021,"type":"trace"},"user":{"api_key":"secret_api_key","type":"user"}},"culprit":"cloudlanguagetools_Google","environment":"production","exception":{"values":[{"type":"timeout","value":"_ssl.c:1112: The handshake operation timed out","module":"socket","stacktrace":{"frames":[{"function":"urlopen","module":"urllib3.connectionpool","filename":"urllib3.connectionpool","abs_path":"/urllib3.connectionpool","lineno":775,"in_app":true,"vars":{"assert_same_host":"False","body":"b'{\"text\": \" Multidimensional\", \"service\": \"Google\", \"request_mode\": \"batch\", \"language_code\": \"en\", \"voice_key\": {\"name\": \"en-US-Casual-K\", \"language_code\": \"en-US\", \"ssml_gender\": \"MALE\"}, \"options\": {}}'","headers":{"Accept":"'*/*'","Accept-Encoding":"'gzip, deflate'","Connection":"'keep-alive'","Content-Length":"'203'","Content-Type":"'application/json'","User-Agent":"'anki-hyper-tts/1.13.6'","api_key":"'secret_api_key'","client":"'hypertts'","client_version":"'1.13.6'"},"method":"'POST'","pool_timeout":"None","redirect":"False","retries":"Retry(total=0, connect=None, read=False, redirect=None, status=None)","self":"<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>","timeout":"Timeout(connect=20, read=20, total=None)","url":"'/audio_v2'"}},{"function":"_prepare_proxy","module":"urllib3.connectionpool","filename":"urllib3.connectionpool","abs_path":"/urllib3.connectionpool","lineno":1044,"in_app":true,"vars":{"conn":"<urllib3.connection.HTTPSConnection object at 0x175291d30>","self":"<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>","tunnel_scheme":"'http'"}},{"function":"connect","module":"urllib3.connection","filename":"urllib3.connection","abs_path":"/urllib3.connection","lineno":652,"in_app":true,"vars":{"is_time_off":"False","self":"<urllib3.connection.HTTPSConnection object at 0x175291d30>","server_hostname":"'cloudlanguagetools-api.vocab.ai'","server_hostname_rm_dot":"'cloudlanguagetools-api.vocab.ai'","sock":"<socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=6>","tls_in_tls":"False"}},{"function":"_ssl_wrap_socket_and_match_hostname","module":"urllib3.connection","filename":"urllib3.connection","abs_path":"/urllib3.connection","lineno":805,"in_app":true,"vars":{"ca_cert_dir":"None","ca_certs":"None","cert_file":"None","cert_reqs":"'CERT_REQUIRED'","key_file":"None","key_password":"None","sock":"<socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=6>","ssl_maximum_version":"None","ssl_minimum_version":"None","ssl_version":"None"}},{"function":"ssl_wrap_socket","module":"urllib3.util.ssl_","filename":"urllib3.util.ssl_","abs_path":"/urllib3.util.ssl_","lineno":465,"in_app":true,"vars":{"ca_cert_dir":"None","ca_certs":"None","cert_reqs":"None","certfile":"None","ciphers":"None","keyfile":"None","server_hostname":"'cloudlanguagetools-api.vocab.ai'","sock":"<socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=6>","ssl_context":"<ssl.SSLContext object at 0x12f26f940>","ssl_version":"None"}},{"function":"_ssl_wrap_socket_impl","module":"urllib3.util.ssl_","filename":"urllib3.util.ssl_","abs_path":"/urllib3.util.ssl_","lineno":509,"in_app":true,"vars":{"server_hostname":"'cloudlanguagetools-api.vocab.ai'","sock":"<socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=6>","ssl_context":"<ssl.SSLContext object at 0x12f26f940>","tls_in_tls":"False"}},{"function":"wrap_socket","module":"ssl","filename":"ssl","abs_path":"/ssl","lineno":501,"in_app":true,"vars":{"do_handshake_on_connect":"True","self":"<ssl.SSLContext object at 0x12f26f940>","server_hostname":"'cloudlanguagetools-api.vocab.ai'","server_side":"False","session":"[Filtered]","sock":"<socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=6>","suppress_ragged_eofs":"True"}},{"function":"_create","module":"ssl","filename":"ssl","abs_path":"/ssl","lineno":1074,"in_app":true,"vars":{"cls":"<class 'ssl.SSLSocket'>","context":"<ssl.SSLContext object at 0x12f26f940>","do_handshake_on_connect":"True","kwargs":{"family":"<AddressFamily.AF_INET: 2>","fileno":"263","proto":"6","type":"<SocketKind.SOCK_STREAM: 1>"},"self":"<ssl.SSLSocket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0>","server_hostname":"'cloudlanguagetools-api.vocab.ai'","server_side":"False","session":"[Filtered]","sock":"<socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=6>","suppress_ragged_eofs":"True"}},{"function":"do_handshake","module":"ssl","filename":"ssl","abs_path":"/ssl","lineno":1343,"in_app":true,"vars":{"block":"False","self":"<ssl.SSLSocket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0>","timeout":"20.0"}}]},"mechanism":{"type":"generic","handled":true}},{"type":"ReadTimeoutError","value":"HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)","module":"urllib3.exceptions","stacktrace":{"frames":[{"function":"send","module":"requests.adapters","filename":"requests.adapters","abs_path":"/requests.adapters","lineno":667,"in_app":true,"vars":{"cert":"None","chunked":"False","conn":"<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>","proxies":{"http":"'http://127.0.0.1:7890'","https":"'http://127.0.0.1:7890'"},"request":"<PreparedRequest [POST]>","self":"<requests.adapters.HTTPAdapter object at 0x17fee0ca0>","stream":"False","timeout":"Timeout(connect=20, read=20, total=None)","url":"'/audio_v2'","verify":"True"}},{"function":"urlopen","module":"urllib3.connectionpool","filename":"urllib3.connectionpool","abs_path":"/urllib3.connectionpool","lineno":843,"in_app":true,"vars":{"assert_same_host":"False","body":"b'{\"text\": \" Multidimensional\", \"service\": \"Google\", \"request_mode\": \"batch\", \"language_code\": \"en\", \"voice_key\": {\"name\": \"en-US-Casual-K\", \"language_code\": \"en-US\", \"ssml_gender\": \"MALE\"}, \"options\": {}}'","headers":{"Accept":"'*/*'","Accept-Encoding":"'gzip, deflate'","Connection":"'keep-alive'","Content-Length":"'203'","Content-Type":"'application/json'","User-Agent":"'anki-hyper-tts/1.13.6'","api_key":"'secret_api_key'","client":"'hypertts'","client_version":"'1.13.6'"},"method":"'POST'","pool_timeout":"None","redirect":"False","retries":"Retry(total=0, connect=None, read=False, redirect=None, status=None)","self":"<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>","timeout":"Timeout(connect=20, read=20, total=None)","url":"'/audio_v2'"}},{"function":"increment","module":"urllib3.util.retry","filename":"urllib3.util.retry","abs_path":"/urllib3.util.retry","lineno":474,"in_app":true,"vars":{"_pool":"<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>","_stacktrace":"<traceback object at 0x12f286140>","connect":"None","error":"ReadTimeoutError(\"HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)\")","method":"'POST'","read":"False","response":"None","self":"Retry(total=0, connect=None, read=False, redirect=None, status=None)","total":"-1","url":"'/audio_v2'"}},{"function":"reraise","module":"urllib3.util.util","filename":"urllib3.util.util","abs_path":"/urllib3.util.util","lineno":39,"in_app":true,"vars":{"tb":"None","tp":"<class 'urllib3.exceptions.ReadTimeoutError'>","value":"None"}},{"function":"urlopen","module":"urllib3.connectionpool","filename":"urllib3.connectionpool","abs_path":"/urllib3.connectionpool","lineno":777,"in_app":true,"vars":{"assert_same_host":"False","body":"b'{\"text\": \" Multidimensional\", \"service\": \"Google\", \"request_mode\": \"batch\", \"language_code\": \"en\", \"voice_key\": {\"name\": \"en-US-Casual-K\", \"language_code\": \"en-US\", \"ssml_gender\": \"MALE\"}, \"options\": {}}'","headers":{"Accept":"'*/*'","Accept-Encoding":"'gzip, deflate'","Connection":"'keep-alive'","Content-Length":"'203'","Content-Type":"'application/json'","User-Agent":"'anki-hyper-tts/1.13.6'","api_key":"'secret_api_key'","client":"'hypertts'","client_version":"'1.13.6'"},"method":"'POST'","pool_timeout":"None","redirect":"False","retries":"Retry(total=0, connect=None, read=False, redirect=None, status=None)","self":"<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>","timeout":"Timeout(connect=20, read=20, total=None)","url":"'/audio_v2'"}},{"function":"_raise_timeout","module":"urllib3.connectionpool","filename":"urllib3.connectionpool","abs_path":"/urllib3.connectionpool","lineno":369,"in_app":true,"vars":{"err":"timeout('_ssl.c:1112: The handshake operation timed out')","self":"<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>","timeout_value":"20","url":"'http://127.0.0.1:7890'"}}]},"mechanism":{"type":"generic","handled":true}},{"type":"ReadTimeout","value":"HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)","module":"requests.exceptions","stacktrace":{"frames":[{"function":"process_batch_audio","module":"hypertts_addon.hypertts","filename":"hypertts_addon/hypertts.py","abs_path":"/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/hypertts.py","lineno":64,"pre_context":["","            for note_id in note_id_list:","                with batch_status.get_note_action_context(note_id, False) as note_action_context:","                    note = self.anki_utils.get_note_by_id(note_id)","                    # process note"],"context_line":"                    source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, False,","post_context":["                        context.AudioRequestContext(constants.AudioRequestReason.batch), None, anki_collection)","                    # update note action context","                    note_action_context.set_source_text(source_text)","                    note_action_context.set_processed_text(processed_text)","                    note_action_context.set_sound(sound_file)"],"in_app":true,"vars":{"anki_collection":"<anki.collection.Collection object at 0x115da4370>","batch":"<hypertts_addon.config_models.BatchConfig object at 0x29c74d790>","batch_status":"<hypertts_addon.batch_status.BatchStatus object at 0x17f873340>","modified_notes":["<anki.notes.Note object at 0x17663c700>","<anki.notes.Note object at 0x17663cca0>","<anki.notes.Note object at 0x17663c5e0>","<anki.notes.Note object at 0x17f93e670>","<anki.notes.Note object at 0x17f93e160>","<anki.notes.Note object at 0x17f93e8e0>","<anki.notes.Note object at 0x17f93eee0>","<anki.notes.Note object at 0x17f93e040>","<anki.notes.Note object at 0x17f93ed90>","<anki.notes.Note object at 0x148d2c460>"],"note":"<anki.notes.Note object at 0x175287550>","note_action_context":"<hypertts_addon.batch_status.BatchNoteActionContext object at 0x17fee0cd0>","note_id":"1737727871772","note_id_list":["1737727871011","1737727871012","1737727871013","1737727871014","1737727871015","1737727871016","1737727871017","1737727871018","1737727871019","1737727871020"],"self":"<hypertts_addon.hypertts.HyperTTS object at 0x1151fbbb0>","source_text":"' Segregation'"}},{"function":"process_note_audio","module":"hypertts_addon.hypertts","filename":"hypertts_addon/hypertts.py","abs_path":"/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/hypertts.py","lineno":86,"pre_context":["            raise errors.TargetFieldNotFoundError(target_field)","","        source_text = self.get_source_text(note, batch.source, text_override)","        processed_text = self.process_text(source_text, batch.text_processing)",""],"context_line":"        full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)","post_context":["        sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)","","        target_field_content = note[target_field]","        ","        # do we need to remove existing sound tags ?"],"in_app":true,"vars":{"add_mode":"False","anki_collection":"<anki.collection.Collection object at 0x115da4370>","audio_request_context":"<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>","batch":"<hypertts_addon.config_models.BatchConfig object at 0x29c74d790>","note":"<anki.notes.Note object at 0x175287550>","processed_text":"' Multidimensional'","self":"<hypertts_addon.hypertts.HyperTTS object at 0x1151fbbb0>","source_text":"' Multidimensional'","target_field":"'背面'","text_override":"None"}},{"function":"get_audio_file","module":"hypertts_addon.hypertts","filename":"hypertts_addon/hypertts.py","abs_path":"/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/hypertts.py","lineno":147,"pre_context":["                logger.debug(f'about to generate audio file and write to file for {processed_text}')","                voice_id = voice_with_options.voice_id","                assert isinstance(voice_id, voice_module.TtsVoiceId_v3), \\","                    f\"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}, voice_with_options: {type(voice_with_options).__name__}\"",""],"context_line":"                full_filename, audio_filename = self.generate_audio_write_file(processed_text, ","post_context":["                    voice_with_options.voice_id, voice_with_options.options, audio_request_context)","                logger.debug(f'finished generating audio file and write to file for {processed_text}')","                return full_filename, audio_filename","            except errors.AudioNotFoundError as exc:","                # try the next voice, as long as one is available"],"in_app":true,"vars":{"audio_request_context":"<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>","loop_condition":"True","priority_mode":"False","processed_text":"' Multidimensional'","self":"<hypertts_addon.hypertts.HyperTTS object at 0x1151fbbb0>","sound_found":"False","voice_id":"TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google')","voice_list":"None","voice_selection":"<hypertts_addon.config_models.VoiceSelectionSingle object at 0x1689656a0>","voice_with_options":"<hypertts_addon.config_models.VoiceWithOptions object at 0x17f756e20>"}},{"function":"generate_audio_write_file","module":"hypertts_addon.hypertts","filename":"hypertts_addon/hypertts.py","abs_path":"/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/hypertts.py","lineno":400,"pre_context":["","            # get the voice which corresponds to the voice_id","            voice = self.service_manager.locate_voice(voice_id)","            logger.info(f'located voice: {voice}')",""],"context_line":"            audio_data = self.service_manager.get_tts_audio(source_text, voice, voice_options, audio_request_context)","post_context":["            logger.info(f'not found in cache, requesting')","            logger.debug(f'opening {full_filename}')","            f = open(full_filename, 'wb')","            logger.debug(f'done opening {full_filename}')","            f.write(audio_data)"],"in_app":true,"vars":{"audio_filename":"'hypertts-f7bf6a464970fea6715216b4caa246fb10b2501df48ae8dbd4f040a9.mp3'","audio_request_context":"<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>","format":"<AudioFormat.mp3: 1>","full_filename":"'/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-f7bf6a464970fea6715216b4caa246fb10b2501df48ae8dbd4f040a9.mp3'","hash_str":"'f7bf6a464970fea6715216b4caa246fb10b2501df48ae8dbd4f040a9'","self":"<hypertts_addon.hypertts.HyperTTS object at 0x1151fbbb0>","source_text":"' Multidimensional'","voice":"TtsVoice_v3(name='en-US-Casual-K', voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -20.0, 'max': 20.0, 'default': 0.0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}}, service='Google', gender=<Gender.Male: 1>, audio_languages=[<AudioLanguage.en_US: (<Language.en: 'English'>, 'English (US)')>], service_fee=<ServiceFee.paid: 2>, voice_id=TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google'))","voice_id":"TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google')","voice_options":{}}},{"function":"get_tts_audio","module":"hypertts_addon.servicemanager","filename":"hypertts_addon/servicemanager.py","abs_path":"/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/servicemanager.py","lineno":149,"pre_context":["","    def get_tts_audio(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):","        # assert the type of voice being passed in","        assert isinstance(voice, voice_module.TtsVoice_v3), f\"Expected voice to be TtsVoice_v3, got {type(voice).__name__}\"","        if hasattr(sys, '_sentry_crash_reporting'):"],"context_line":"            return self.get_tts_audio_instrumented(source_text, voice, options, audio_request_context)","post_context":["        else:","            return self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)","","    def get_tts_audio_instrumented(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):","        transaction_name = f'{voice.service}'"],"in_app":true,"vars":{"audio_request_context":"<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>","options":{},"self":"<hypertts_addon.servicemanager.ServiceManager object at 0x1151fbdc0>","source_text":"' Multidimensional'","voice":"TtsVoice_v3(name='en-US-Casual-K', voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -20.0, 'max': 20.0, 'default': 0.0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}}, service='Google', gender=<Gender.Male: 1>, audio_languages=[<AudioLanguage.en_US: (<Language.en: 'English'>, 'English (US)')>], service_fee=<ServiceFee.paid: 2>, voice_id=TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google'))"}},{"function":"get_tts_audio_instrumented","module":"hypertts_addon.servicemanager","filename":"hypertts_addon/servicemanager.py","abs_path":"/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/servicemanager.py","lineno":173,"pre_context":["                    'voice': str(voice),","                    'error': str(e)","                })","                raise_exception = e","        if raise_exception != None:"],"context_line":"            raise raise_exception","post_context":["","    def get_tts_audio_implementation(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):","        if self.use_cloud_language_tools(voice):","            return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)","        else:"],"in_app":true,"vars":{"audio_request_context":"<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>","options":{},"raise_exception":"ReadTimeout(ReadTimeoutError(\"HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)\"))","self":"<hypertts_addon.servicemanager.ServiceManager object at 0x1151fbdc0>","source_text":"' Multidimensional'","transaction":"<Transaction(name='cloudlanguagetools_Google', op='audio', trace_id='47409785af4241c3b59b536407971856', span_id='b71a9bb505db75db', parent_span_id=None, sampled=False, source='custom')>","transaction_name":"'cloudlanguagetools_Google'","voice":"TtsVoice_v3(name='en-US-Casual-K', voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -20.0, 'max': 20.0, 'default': 0.0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}}, service='Google', gender=<Gender.Male: 1>, audio_languages=[<AudioLanguage.en_US: (<Language.en: 'English'>, 'English (US)')>], service_fee=<ServiceFee.paid: 2>, voice_id=TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google'))"}},{"function":"get_tts_audio_instrumented","module":"hypertts_addon.servicemanager","filename":"hypertts_addon/servicemanager.py","abs_path":"/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/servicemanager.py","lineno":161,"pre_context":["            transaction_name = f'cloudlanguagetools_{voice.service}'","        sentry_sdk.set_tag('clt.audio_request_reason', audio_request_context.get_audio_request_reason_tag())","        raise_exception = None","        with sentry_sdk.start_transaction(op=\"audio\", name=transaction_name) as transaction:","            try:"],"context_line":"                result_audio = self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)","post_context":["                transaction.status = 'ok'","                return result_audio","            except Exception as e:","                transaction.status = 'invalid_argument'","                sentry_sdk.set_context(\"audio_request\", {"],"in_app":true,"vars":{"audio_request_context":"<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>","options":{},"raise_exception":"ReadTimeout(ReadTimeoutError(\"HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)\"))","self":"<hypertts_addon.servicemanager.ServiceManager object at 0x1151fbdc0>","source_text":"' Multidimensional'","transaction":"<Transaction(name='cloudlanguagetools_Google', op='audio', trace_id='47409785af4241c3b59b536407971856', span_id='b71a9bb505db75db', parent_span_id=None, sampled=False, source='custom')>","transaction_name":"'cloudlanguagetools_Google'","voice":"TtsVoice_v3(name='en-US-Casual-K', voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -20.0, 'max': 20.0, 'default': 0.0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}}, service='Google', gender=<Gender.Male: 1>, audio_languages=[<AudioLanguage.en_US: (<Language.en: 'English'>, 'English (US)')>], service_fee=<ServiceFee.paid: 2>, voice_id=TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google'))"}},{"function":"get_tts_audio_implementation","module":"hypertts_addon.servicemanager","filename":"hypertts_addon/servicemanager.py","abs_path":"/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/servicemanager.py","lineno":177,"pre_context":["        if raise_exception != None:","            raise raise_exception","","    def get_tts_audio_implementation(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):","        if self.use_cloud_language_tools(voice):"],"context_line":"            return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)","post_context":["        else:","            service = self.services[voice.service]","            return service.get_tts_audio(source_text, voice, options)","","    def full_voice_list(self, single_service_name=None) -> typing.List[voice_module.TtsVoice_v3]:"],"in_app":true,"vars":{"audio_request_context":"<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>","options":{},"self":"<hypertts_addon.servicemanager.ServiceManager object at 0x1151fbdc0>","source_text":"' Multidimensional'","voice":"TtsVoice_v3(name='en-US-Casual-K', voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -20.0, 'max': 20.0, 'default': 0.0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}}, service='Google', gender=<Gender.Male: 1>, audio_languages=[<AudioLanguage.en_US: (<Language.en: 'English'>, 'English (US)')>], service_fee=<ServiceFee.paid: 2>, voice_id=TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google'))"}},{"function":"get_tts_audio","module":"hypertts_addon.cloudlanguagetools","filename":"hypertts_addon/cloudlanguagetools.py","abs_path":"/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/cloudlanguagetools.py","lineno":67,"pre_context":["            'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,","            'voice_key': voice.voice_key,","            'options': options","        }","        logger.info(f'request url: {full_url}, data: {data}')"],"context_line":"        response = requests.post(full_url, json=data, headers=self.get_request_headers(),","post_context":["            timeout=constants.RequestTimeout)","","        if response.status_code == 200:","            return response.content","        elif response.status_code == 404:"],"in_app":true,"vars":{"audio_request_context":"<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>","data":{"language_code":"'en'","options":{},"request_mode":"'batch'","service":"'Google'","text":"' Multidimensional'","voice_key":{"language_code":"'en-US'","name":"'en-US-Casual-K'","ssml_gender":"'MALE'"}},"full_url":"'https://cloudlanguagetools-api.vocab.ai/audio_v2'","options":{},"self":"<hypertts_addon.cloudlanguagetools.CloudLanguageTools object at 0x1152378e0>","source_text":"' Multidimensional'","url_path":"'/audio_v2'","voice":"TtsVoice_v3(name='en-US-Casual-K', voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -20.0, 'max': 20.0, 'default': 0.0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}}, service='Google', gender=<Gender.Male: 1>, audio_languages=[<AudioLanguage.en_US: (<Language.en: 'English'>, 'English (US)')>], service_fee=<ServiceFee.paid: 2>, voice_id=TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google'))"}},{"function":"post","module":"requests.api","filename":"requests.api","abs_path":"/requests.api","lineno":115,"in_app":true,"vars":{"data":"None","json":{"language_code":"'en'","options":{},"request_mode":"'batch'","service":"'Google'","text":"' Multidimensional'","voice_key":{"language_code":"'en-US'","name":"'en-US-Casual-K'","ssml_gender":"'MALE'"}},"kwargs":{"headers":{"User-Agent":"'anki-hyper-tts/1.13.6'","api_key":"'secret_api_key'","client":"'hypertts'","client_version":"'1.13.6'"},"timeout":"20"},"url":"'https://cloudlanguagetools-api.vocab.ai/audio_v2'"}},{"function":"request","module":"requests.api","filename":"requests.api","abs_path":"/requests.api","lineno":59,"in_app":true,"vars":{"kwargs":{"data":"None","headers":{"User-Agent":"'anki-hyper-tts/1.13.6'","api_key":"'secret_api_key'","client":"'hypertts'","client_version":"'1.13.6'"},"json":{"language_code":"'en'","options":{},"request_mode":"'batch'","service":"'Google'","text":"' Multidimensional'","voice_key":{"language_code":"'en-US'","name":"'en-US-Casual-K'","ssml_gender":"'MALE'"}},"timeout":"20"},"method":"'post'","session":"[Filtered]","url":"'https://cloudlanguagetools-api.vocab.ai/audio_v2'"}},{"function":"request","module":"requests.sessions","filename":"requests.sessions","abs_path":"/requests.sessions","lineno":589,"in_app":true,"vars":{"auth":"[Filtered]","cookies":"None","data":"None","files":"None","headers":{"User-Agent":"'anki-hyper-tts/1.13.6'","api_key":"'secret_api_key'","client":"'hypertts'","client_version":"'1.13.6'"},"method":"'post'","params":"None","self":"<requests.sessions.Session object at 0x168a4da00>","timeout":"20","url":"'https://cloudlanguagetools-api.vocab.ai/audio_v2'"}},{"function":"send","module":"requests.sessions","filename":"requests.sessions","abs_path":"/requests.sessions","lineno":703,"in_app":true,"vars":{"adapter":"<requests.adapters.HTTPAdapter object at 0x17fee0ca0>","allow_redirects":"True","hooks":{"response":[]},"kwargs":{"cert":"None","proxies":{"http":"'http://127.0.0.1:7890'","https":"'http://127.0.0.1:7890'"},"stream":"False","timeout":"20","verify":"True"},"request":"<PreparedRequest [POST]>","self":"<requests.sessions.Session object at 0x168a4da00>","start":"1737729374.626017","stream":"False"}},{"function":"send","module":"requests.adapters","filename":"requests.adapters","abs_path":"/requests.adapters","lineno":713,"in_app":true,"vars":{"cert":"None","chunked":"False","conn":"<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>","proxies":{"http":"'http://127.0.0.1:7890'","https":"'http://127.0.0.1:7890'"},"request":"<PreparedRequest [POST]>","self":"<requests.adapters.HTTPAdapter object at 0x17fee0ca0>","stream":"False","timeout":"Timeout(connect=20, read=20, total=None)","url":"'/audio_v2'","verify":"True"}}]},"mechanism":{"type":"generic","handled":true}}]},"extra":{"sys.argv":["/Applications/Anki.app/Contents/MacOS/anki"]},"fingerprint":["{{ default }}"],"grouping_config":{"enhancements":"KLUv_SAYwQAAkwKRs25ld3N0eWxlOjIwMjMtMDEtMTGQ","id":"newstyle:2023-01-11"},"hashes":["a7c3973654dd34919fa72f9e5701b0ae"],"ingest_path":[{"version":"25.1.0","public_key":"XE7QiyuNlja9PZ7I9qJlwQotzecWrUIN91BAO7Q5R38"}],"key_id":"2011620","level":"error","location":"requests.adapters","logger":"","metadata":{"filename":"requests.adapters","function":"send","in_app_frame_mix":"in-app-only","type":"ReadTimeout","value":"HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)"},"nodestore_insert":1737729396.870139,"received":1737729394.881503,"sdk":{"name":"sentry.python","version":"1.44.0","integrations":["argv","atexit","boto3","dedupe","excepthook","logging","modules","stdlib","threading"],"packages":[{"name":"pypi:sentry-sdk","version":"1.44.0"}]},"timestamp":1737729394.650786,"title":"ReadTimeout: HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read time...","transaction":"cloudlanguagetools_Google","transaction_info":{"source":"custom"},"type":"error","user":{"id":"api_key:secret_api_key","sentry_user":"id:api_key:secret_api_key"},"version":"7"}
+{
+    "event_id": "9108d83aa5494e71a8cd71d68e76fbd2",
+    "project": 6170140,
+    "release": "anki-hyper-tts@1.13.6",
+    "dist": null,
+    "platform": "python",
+    "message": "",
+    "datetime": "2025-01-24T14:36:34+00:00",
+    "tags": [
+        [
+            "anki_version",
+            "24.11"
+        ],
+        [
+            "clt.audio_request_reason",
+            "batch"
+        ],
+        [
+            "environment",
+            "production"
+        ],
+        [
+            "handled",
+            "yes"
+        ],
+        [
+            "level",
+            "error"
+        ],
+        [
+            "mechanism",
+            "generic"
+        ],
+        [
+            "runtime",
+            "CPython 3.9.18"
+        ],
+        [
+            "runtime.name",
+            "CPython"
+        ],
+        [
+            "release",
+            "anki-hyper-tts@1.13.6"
+        ],
+        [
+            "user",
+            "id:api_key:obscured_secret"
+        ],
+        [
+            "server_name",
+            "MartinTiandeMacBook-Pro.local"
+        ],
+        [
+            "transaction",
+            "cloudlanguagetools_Google"
+        ]
+    ],
+    "_dsc": {
+        "environment": "production",
+        "public_key": "a4170596966d47bb9f8fda74a9370bc7",
+        "release": "anki-hyper-tts@1.13.6",
+        "replay_id": null,
+        "sample_rate": "0.021",
+        "trace_id": "b1d702f7-7733-4ac6-b372-c8cee735fb55",
+        "transaction": null
+    },
+    "_meta": {
+        "exception": {
+            "values": {
+                "0": {
+                    "stacktrace": {
+                        "frames": {
+                            "0": {
+                                "vars": {
+                                    "": {
+                                        "len": 25
+                                    }
+                                }
+                            },
+                            "3": {
+                                "vars": {
+                                    "": {
+                                        "len": 19
+                                    }
+                                }
+                            },
+                            "4": {
+                                "vars": {
+                                    "": {
+                                        "len": 14
+                                    }
+                                }
+                            },
+                            "6": {
+                                "vars": {
+                                    "session": {
+                                        "": {
+                                            "rem": [
+                                                [
+                                                    "!config",
+                                                    "s"
+                                                ]
+                                            ]
+                                        }
+                                    }
+                                }
+                            },
+                            "7": {
+                                "vars": {
+                                    "": {
+                                        "len": 14
+                                    },
+                                    "session": {
+                                        "": {
+                                            "rem": [
+                                                [
+                                                    "!config",
+                                                    "s"
+                                                ]
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "1": {
+                    "stacktrace": {
+                        "frames": {
+                            "1": {
+                                "vars": {
+                                    "": {
+                                        "len": 25
+                                    }
+                                }
+                            },
+                            "2": {
+                                "vars": {
+                                    "": {
+                                        "len": 16
+                                    }
+                                }
+                            },
+                            "4": {
+                                "vars": {
+                                    "": {
+                                        "len": 25
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "2": {
+                    "stacktrace": {
+                        "frames": {
+                            "0": {
+                                "vars": {
+                                    "": {
+                                        "len": 13
+                                    },
+                                    "modified_notes": {
+                                        "": {
+                                            "len": 551
+                                        }
+                                    },
+                                    "note_id_list": {
+                                        "": {
+                                            "len": 766
+                                        }
+                                    }
+                                }
+                            },
+                            "10": {
+                                "vars": {
+                                    "session": {
+                                        "": {
+                                            "rem": [
+                                                [
+                                                    "!config",
+                                                    "s"
+                                                ]
+                                            ]
+                                        }
+                                    }
+                                }
+                            },
+                            "11": {
+                                "vars": {
+                                    "": {
+                                        "len": 21
+                                    },
+                                    "auth": {
+                                        "": {
+                                            "rem": [
+                                                [
+                                                    "!config",
+                                                    "s"
+                                                ]
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "_metrics": {
+        "bytes.ingested.event": 57261,
+        "bytes.stored.event": 66533
+    },
+    "breadcrumbs": {
+        "values": [
+            {
+                "timestamp": 1737729352.126866,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Proposition"
+            },
+            {
+                "timestamp": 1737729352.127041,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Proposition"
+            },
+            {
+                "timestamp": 1737729352.127659,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash d5ac09994a444cdbf3fa104a297b8cbdca3e0ce058397168e251098a, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-d5ac09994a444cdbf3fa104a297b8cbdca3e0ce058397168e251098a.mp3"
+            },
+            {
+                "timestamp": 1737729352.127791,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729352.128121,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Proposition', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729353.287874,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729353.293742,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Defy"
+            },
+            {
+                "timestamp": 1737729353.29392,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Defy"
+            },
+            {
+                "timestamp": 1737729353.294586,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash cb68ad1c99b94f61d0abcf930771a5189d0d8f6540a5a58a5fe786d8, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-cb68ad1c99b94f61d0abcf930771a5189d0d8f6540a5a58a5fe786d8.mp3"
+            },
+            {
+                "timestamp": 1737729353.294736,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729353.295091,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Defy', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729354.765806,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729354.770361,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Australasia"
+            },
+            {
+                "timestamp": 1737729354.770633,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Australasia"
+            },
+            {
+                "timestamp": 1737729354.77182,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 7a99559db08fc7603dfd7bef6db5e0eb171cee9bc6d2e5aea4bfe8ce, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-7a99559db08fc7603dfd7bef6db5e0eb171cee9bc6d2e5aea4bfe8ce.mp3"
+            },
+            {
+                "timestamp": 1737729354.773335,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729354.773697,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Australasia', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729355.958954,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729355.964908,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Molecule"
+            },
+            {
+                "timestamp": 1737729355.965274,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Molecule"
+            },
+            {
+                "timestamp": 1737729355.965962,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 4611ed107ca262f454358c21fce56aef57e3eb7989fb6a02f62f8229, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-4611ed107ca262f454358c21fce56aef57e3eb7989fb6a02f62f8229.mp3"
+            },
+            {
+                "timestamp": 1737729355.967265,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729355.967807,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Molecule', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729357.163053,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729357.166698,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Neuron"
+            },
+            {
+                "timestamp": 1737729357.166952,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Neuron"
+            },
+            {
+                "timestamp": 1737729357.168064,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 4d8c159e9627cd8bbd7e7c0f0e5b7ecfeff6d95beb91890d4b4b3c13, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-4d8c159e9627cd8bbd7e7c0f0e5b7ecfeff6d95beb91890d4b4b3c13.mp3"
+            },
+            {
+                "timestamp": 1737729357.168228,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "file exists in cache"
+            },
+            {
+                "timestamp": 1737729357.168293,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] finished generating audio file and write to file for  Neuron"
+            },
+            {
+                "timestamp": 1737729357.174148,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Evoke"
+            },
+            {
+                "timestamp": 1737729357.174252,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Evoke"
+            },
+            {
+                "timestamp": 1737729357.174664,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 6bb1d3b343b1e40bf1d0901bc5d2c0746e71a5ba940394eddcaf9309, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-6bb1d3b343b1e40bf1d0901bc5d2c0746e71a5ba940394eddcaf9309.mp3"
+            },
+            {
+                "timestamp": 1737729357.175132,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729357.175497,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Evoke', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729360.431217,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729360.435096,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Proclaim"
+            },
+            {
+                "timestamp": 1737729360.435285,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Proclaim"
+            },
+            {
+                "timestamp": 1737729360.435957,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash b75703efeef6a32ffc2f8ed043ae8ce9639c4be6ab2b1acaf2457667, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-b75703efeef6a32ffc2f8ed043ae8ce9639c4be6ab2b1acaf2457667.mp3"
+            },
+            {
+                "timestamp": 1737729360.4361,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729360.436491,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Proclaim', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729361.82687,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729361.83525,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Segregation"
+            },
+            {
+                "timestamp": 1737729361.835398,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Segregation"
+            },
+            {
+                "timestamp": 1737729361.835969,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 177d8a5d146b5ea77198a2c07014551485bf746975d11f09e190fb9b, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-177d8a5d146b5ea77198a2c07014551485bf746975d11f09e190fb9b.mp3"
+            },
+            {
+                "timestamp": 1737729361.836102,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "file exists in cache"
+            },
+            {
+                "timestamp": 1737729361.836152,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] finished generating audio file and write to file for  Segregation"
+            },
+            {
+                "timestamp": 1737729361.841323,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Domestic"
+            },
+            {
+                "timestamp": 1737729361.841438,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Domestic"
+            },
+            {
+                "timestamp": 1737729361.842063,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash a42509a72ca695459262e7c33849e25748149783a95f7ce82a5176c8, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-a42509a72ca695459262e7c33849e25748149783a95f7ce82a5176c8.mp3"
+            },
+            {
+                "timestamp": 1737729361.842382,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729361.842715,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Domestic', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729364.1716,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729364.176214,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Intrepid"
+            },
+            {
+                "timestamp": 1737729364.176439,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Intrepid"
+            },
+            {
+                "timestamp": 1737729364.177349,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 9e0b1b2e8fc462ed8bb532a07510884808d254053e9f5a2da630bc23, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-9e0b1b2e8fc462ed8bb532a07510884808d254053e9f5a2da630bc23.mp3"
+            },
+            {
+                "timestamp": 1737729364.177547,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729364.177974,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Intrepid', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729365.335814,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729365.343922,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Innovation"
+            },
+            {
+                "timestamp": 1737729365.344061,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Innovation"
+            },
+            {
+                "timestamp": 1737729365.345395,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 0f19050cc2313d071bce365ecd16212303b4a790ea72e39be3628fce, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-0f19050cc2313d071bce365ecd16212303b4a790ea72e39be3628fce.mp3"
+            },
+            {
+                "timestamp": 1737729365.346703,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729365.347019,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Innovation', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729365.43049,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 200,
+                    "reason": "OK",
+                    "thread.id": "12188676096",
+                    "thread.name": "raven-sentry.BackgroundWorker",
+                    "url": "https://127.0.0.1:7890/api/6170140/envelope/"
+                }
+            },
+            {
+                "timestamp": 1737729367.06684,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729367.071121,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Biodiversity"
+            },
+            {
+                "timestamp": 1737729367.071299,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Biodiversity"
+            },
+            {
+                "timestamp": 1737729367.072172,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 8c9b23d17ecd5f5e5530a7fb24a6f8913a84db9d8a20bd2089947b9b, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-8c9b23d17ecd5f5e5530a7fb24a6f8913a84db9d8a20bd2089947b9b.mp3"
+            },
+            {
+                "timestamp": 1737729367.073294,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729367.073693,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Biodiversity', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729369.191119,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729369.19555,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Cholera"
+            },
+            {
+                "timestamp": 1737729369.195787,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Cholera"
+            },
+            {
+                "timestamp": 1737729369.196624,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 6f5068d9737eb9c01c5b5bc2070a429c729fbea8e1cd1ae1610f7640, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-6f5068d9737eb9c01c5b5bc2070a429c729fbea8e1cd1ae1610f7640.mp3"
+            },
+            {
+                "timestamp": 1737729369.197926,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729369.19832,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Cholera', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729370.297545,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729370.301411,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Hoe"
+            },
+            {
+                "timestamp": 1737729370.301568,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Hoe"
+            },
+            {
+                "timestamp": 1737729370.302493,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 815a599c9f5a4e8926247c37170b478f002ca3ee41f2ca08960911cb, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-815a599c9f5a4e8926247c37170b478f002ca3ee41f2ca08960911cb.mp3"
+            },
+            {
+                "timestamp": 1737729370.303506,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729370.303848,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Hoe', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729371.768919,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729371.77891,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Timescale"
+            },
+            {
+                "timestamp": 1737729371.779055,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Timescale"
+            },
+            {
+                "timestamp": 1737729371.779591,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash c264a23518f6730477e64bdbcd23615a6c8ebd8b0e823c285b111908, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-c264a23518f6730477e64bdbcd23615a6c8ebd8b0e823c285b111908.mp3"
+            },
+            {
+                "timestamp": 1737729371.779711,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729371.780004,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Timescale', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729373.333389,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729373.33595,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Royal"
+            },
+            {
+                "timestamp": 1737729373.336231,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Royal"
+            },
+            {
+                "timestamp": 1737729373.337337,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash 3dc48208b19d418f633aa60810b6fbdeec14635927bbf413105788de, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-3dc48208b19d418f633aa60810b6fbdeec14635927bbf413105788de.mp3"
+            },
+            {
+                "timestamp": 1737729373.337505,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729373.337916,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Royal', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            },
+            {
+                "timestamp": 1737729374.531843,
+                "type": "http",
+                "category": "httplib",
+                "level": "info",
+                "data": {
+                    "http.fragment": "",
+                    "http.method": "POST",
+                    "http.query": "",
+                    "http.response.status_code": 429,
+                    "reason": "Too Many Requests",
+                    "thread.id": "6431174656",
+                    "thread.name": "ThreadPoolExecutor-1_0",
+                    "url": "https://127.0.0.1:7890/audio_v2"
+                }
+            },
+            {
+                "timestamp": 1737729374.536229,
+                "type": "log",
+                "category": "hypertts.text_utils",
+                "level": "info",
+                "message": "[debug] process_text source_text:  Multidimensional"
+            },
+            {
+                "timestamp": 1737729374.536515,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "[debug] about to generate audio file and write to file for  Multidimensional"
+            },
+            {
+                "timestamp": 1737729374.537205,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "requesting audio for hash f7bf6a464970fea6715216b4caa246fb10b2501df48ae8dbd4f040a9, full filename /Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-f7bf6a464970fea6715216b4caa246fb10b2501df48ae8dbd4f040a9.mp3"
+            },
+            {
+                "timestamp": 1737729374.537413,
+                "type": "log",
+                "category": "hypertts.hypertts",
+                "level": "info",
+                "message": "located voice: English (US), Male, en-US-Casual-K (Google)"
+            },
+            {
+                "timestamp": 1737729374.538023,
+                "type": "log",
+                "category": "hypertts.cloudlanguagetools",
+                "level": "info",
+                "message": "request url: https://cloudlanguagetools-api.vocab.ai/audio_v2, data: {'text': ' Multidimensional', 'service': 'Google', 'request_mode': 'batch', 'language_code': 'en', 'voice_key': {'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, 'options': {}}"
+            }
+        ]
+    },
+    "contexts": {
+        "audio_request": {
+            "error": "HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)",
+            "text": " Multidimensional",
+            "type": "audio_request",
+            "voice": "English (US), Male, en-US-Casual-K (Google)"
+        },
+        "cloudlanguagetools": {
+            "type": "cloudlanguagetools",
+            "user_id": "obscured_secret"
+        },
+        "runtime": {
+            "runtime": "CPython 3.9.18",
+            "name": "CPython",
+            "version": "3.9.18",
+            "build": "3.9.18 (main, Jan  7 2024, 23:06:15) \n[Clang 16.0.3 ]",
+            "type": "runtime"
+        },
+        "trace": {
+            "trace_id": "b1d702f777334ac6b372c8cee735fb55",
+            "span_id": "bcb2ef4ee7dab391",
+            "status": "unknown",
+            "client_sample_rate": 0.021,
+            "type": "trace"
+        },
+        "user": {
+            "api_key": "obscured_secret",
+            "type": "user"
+        }
+    },
+    "culprit": "cloudlanguagetools_Google",
+    "environment": "production",
+    "exception": {
+        "values": [
+            {
+                "type": "timeout",
+                "value": "_ssl.c:1112: The handshake operation timed out",
+                "module": "socket",
+                "stacktrace": {
+                    "frames": [
+                        {
+                            "function": "urlopen",
+                            "module": "urllib3.connectionpool",
+                            "filename": "urllib3.connectionpool",
+                            "abs_path": "/urllib3.connectionpool",
+                            "lineno": 775,
+                            "in_app": true,
+                            "vars": {
+                                "assert_same_host": "False",
+                                "body": "b'{\"text\": \" Multidimensional\", \"service\": \"Google\", \"request_mode\": \"batch\", \"language_code\": \"en\", \"voice_key\": {\"name\": \"en-US-Casual-K\", \"language_code\": \"en-US\", \"ssml_gender\": \"MALE\"}, \"options\": {}}'",
+                                "headers": {
+                                    "Accept": "'*/*'",
+                                    "Accept-Encoding": "'gzip, deflate'",
+                                    "Connection": "'keep-alive'",
+                                    "Content-Length": "'203'",
+                                    "Content-Type": "'application/json'",
+                                    "User-Agent": "'anki-hyper-tts/1.13.6'",
+                                    "api_key": "obscured_secret",
+                                    "client": "'hypertts'",
+                                    "client_version": "'1.13.6'"
+                                },
+                                "method": "'POST'",
+                                "pool_timeout": "None",
+                                "redirect": "False",
+                                "retries": "Retry(total=0, connect=None, read=False, redirect=None, status=None)",
+                                "self": "<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>",
+                                "timeout": "Timeout(connect=20, read=20, total=None)",
+                                "url": "'/audio_v2'"
+                            }
+                        },
+                        {
+                            "function": "_prepare_proxy",
+                            "module": "urllib3.connectionpool",
+                            "filename": "urllib3.connectionpool",
+                            "abs_path": "/urllib3.connectionpool",
+                            "lineno": 1044,
+                            "in_app": true,
+                            "vars": {
+                                "conn": "<urllib3.connection.HTTPSConnection object at 0x175291d30>",
+                                "self": "<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>",
+                                "tunnel_scheme": "'http'"
+                            }
+                        },
+                        {
+                            "function": "connect",
+                            "module": "urllib3.connection",
+                            "filename": "urllib3.connection",
+                            "abs_path": "/urllib3.connection",
+                            "lineno": 652,
+                            "in_app": true,
+                            "vars": {
+                                "is_time_off": "False",
+                                "self": "<urllib3.connection.HTTPSConnection object at 0x175291d30>",
+                                "server_hostname": "'cloudlanguagetools-api.vocab.ai'",
+                                "server_hostname_rm_dot": "'cloudlanguagetools-api.vocab.ai'",
+                                "sock": "<socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=6>",
+                                "tls_in_tls": "False"
+                            }
+                        },
+                        {
+                            "function": "_ssl_wrap_socket_and_match_hostname",
+                            "module": "urllib3.connection",
+                            "filename": "urllib3.connection",
+                            "abs_path": "/urllib3.connection",
+                            "lineno": 805,
+                            "in_app": true,
+                            "vars": {
+                                "ca_cert_dir": "None",
+                                "ca_certs": "None",
+                                "cert_file": "None",
+                                "cert_reqs": "'CERT_REQUIRED'",
+                                "key_file": "None",
+                                "key_password": "None",
+                                "sock": "<socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=6>",
+                                "ssl_maximum_version": "None",
+                                "ssl_minimum_version": "None",
+                                "ssl_version": "None"
+                            }
+                        },
+                        {
+                            "function": "ssl_wrap_socket",
+                            "module": "urllib3.util.ssl_",
+                            "filename": "urllib3.util.ssl_",
+                            "abs_path": "/urllib3.util.ssl_",
+                            "lineno": 465,
+                            "in_app": true,
+                            "vars": {
+                                "ca_cert_dir": "None",
+                                "ca_certs": "None",
+                                "cert_reqs": "None",
+                                "certfile": "None",
+                                "ciphers": "None",
+                                "keyfile": "None",
+                                "server_hostname": "'cloudlanguagetools-api.vocab.ai'",
+                                "sock": "<socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=6>",
+                                "ssl_context": "<ssl.SSLContext object at 0x12f26f940>",
+                                "ssl_version": "None"
+                            }
+                        },
+                        {
+                            "function": "_ssl_wrap_socket_impl",
+                            "module": "urllib3.util.ssl_",
+                            "filename": "urllib3.util.ssl_",
+                            "abs_path": "/urllib3.util.ssl_",
+                            "lineno": 509,
+                            "in_app": true,
+                            "vars": {
+                                "server_hostname": "'cloudlanguagetools-api.vocab.ai'",
+                                "sock": "<socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=6>",
+                                "ssl_context": "<ssl.SSLContext object at 0x12f26f940>",
+                                "tls_in_tls": "False"
+                            }
+                        },
+                        {
+                            "function": "wrap_socket",
+                            "module": "ssl",
+                            "filename": "ssl",
+                            "abs_path": "/ssl",
+                            "lineno": 501,
+                            "in_app": true,
+                            "vars": {
+                                "do_handshake_on_connect": "True",
+                                "self": "<ssl.SSLContext object at 0x12f26f940>",
+                                "server_hostname": "'cloudlanguagetools-api.vocab.ai'",
+                                "server_side": "False",
+                                "session": "[Filtered]",
+                                "sock": "<socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=6>",
+                                "suppress_ragged_eofs": "True"
+                            }
+                        },
+                        {
+                            "function": "_create",
+                            "module": "ssl",
+                            "filename": "ssl",
+                            "abs_path": "/ssl",
+                            "lineno": 1074,
+                            "in_app": true,
+                            "vars": {
+                                "cls": "<class 'ssl.SSLSocket'>",
+                                "context": "<ssl.SSLContext object at 0x12f26f940>",
+                                "do_handshake_on_connect": "True",
+                                "kwargs": {
+                                    "family": "<AddressFamily.AF_INET: 2>",
+                                    "fileno": "263",
+                                    "proto": "6",
+                                    "type": "<SocketKind.SOCK_STREAM: 1>"
+                                },
+                                "self": "<ssl.SSLSocket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0>",
+                                "server_hostname": "'cloudlanguagetools-api.vocab.ai'",
+                                "server_side": "False",
+                                "session": "[Filtered]",
+                                "sock": "<socket.socket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=6>",
+                                "suppress_ragged_eofs": "True"
+                            }
+                        },
+                        {
+                            "function": "do_handshake",
+                            "module": "ssl",
+                            "filename": "ssl",
+                            "abs_path": "/ssl",
+                            "lineno": 1343,
+                            "in_app": true,
+                            "vars": {
+                                "block": "False",
+                                "self": "<ssl.SSLSocket [closed] fd=-1, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0>",
+                                "timeout": "20.0"
+                            }
+                        }
+                    ]
+                },
+                "mechanism": {
+                    "type": "generic",
+                    "handled": true
+                }
+            },
+            {
+                "type": "ReadTimeoutError",
+                "value": "HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)",
+                "module": "urllib3.exceptions",
+                "stacktrace": {
+                    "frames": [
+                        {
+                            "function": "send",
+                            "module": "requests.adapters",
+                            "filename": "requests.adapters",
+                            "abs_path": "/requests.adapters",
+                            "lineno": 667,
+                            "in_app": true,
+                            "vars": {
+                                "cert": "None",
+                                "chunked": "False",
+                                "conn": "<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>",
+                                "proxies": {
+                                    "http": "'http://127.0.0.1:7890'",
+                                    "https": "'http://127.0.0.1:7890'"
+                                },
+                                "request": "<PreparedRequest [POST]>",
+                                "self": "<requests.adapters.HTTPAdapter object at 0x17fee0ca0>",
+                                "stream": "False",
+                                "timeout": "Timeout(connect=20, read=20, total=None)",
+                                "url": "'/audio_v2'",
+                                "verify": "True"
+                            }
+                        },
+                        {
+                            "function": "urlopen",
+                            "module": "urllib3.connectionpool",
+                            "filename": "urllib3.connectionpool",
+                            "abs_path": "/urllib3.connectionpool",
+                            "lineno": 843,
+                            "in_app": true,
+                            "vars": {
+                                "assert_same_host": "False",
+                                "body": "b'{\"text\": \" Multidimensional\", \"service\": \"Google\", \"request_mode\": \"batch\", \"language_code\": \"en\", \"voice_key\": {\"name\": \"en-US-Casual-K\", \"language_code\": \"en-US\", \"ssml_gender\": \"MALE\"}, \"options\": {}}'",
+                                "headers": {
+                                    "Accept": "'*/*'",
+                                    "Accept-Encoding": "'gzip, deflate'",
+                                    "Connection": "'keep-alive'",
+                                    "Content-Length": "'203'",
+                                    "Content-Type": "'application/json'",
+                                    "User-Agent": "'anki-hyper-tts/1.13.6'",
+                                    "api_key": "obscured_secret",
+                                    "client": "'hypertts'",
+                                    "client_version": "'1.13.6'"
+                                },
+                                "method": "'POST'",
+                                "pool_timeout": "None",
+                                "redirect": "False",
+                                "retries": "Retry(total=0, connect=None, read=False, redirect=None, status=None)",
+                                "self": "<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>",
+                                "timeout": "Timeout(connect=20, read=20, total=None)",
+                                "url": "'/audio_v2'"
+                            }
+                        },
+                        {
+                            "function": "increment",
+                            "module": "urllib3.util.retry",
+                            "filename": "urllib3.util.retry",
+                            "abs_path": "/urllib3.util.retry",
+                            "lineno": 474,
+                            "in_app": true,
+                            "vars": {
+                                "_pool": "<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>",
+                                "_stacktrace": "<traceback object at 0x12f286140>",
+                                "connect": "None",
+                                "error": "ReadTimeoutError(\"HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)\")",
+                                "method": "'POST'",
+                                "read": "False",
+                                "response": "None",
+                                "self": "Retry(total=0, connect=None, read=False, redirect=None, status=None)",
+                                "total": "-1",
+                                "url": "'/audio_v2'"
+                            }
+                        },
+                        {
+                            "function": "reraise",
+                            "module": "urllib3.util.util",
+                            "filename": "urllib3.util.util",
+                            "abs_path": "/urllib3.util.util",
+                            "lineno": 39,
+                            "in_app": true,
+                            "vars": {
+                                "tb": "None",
+                                "tp": "<class 'urllib3.exceptions.ReadTimeoutError'>",
+                                "value": "None"
+                            }
+                        },
+                        {
+                            "function": "urlopen",
+                            "module": "urllib3.connectionpool",
+                            "filename": "urllib3.connectionpool",
+                            "abs_path": "/urllib3.connectionpool",
+                            "lineno": 777,
+                            "in_app": true,
+                            "vars": {
+                                "assert_same_host": "False",
+                                "body": "b'{\"text\": \" Multidimensional\", \"service\": \"Google\", \"request_mode\": \"batch\", \"language_code\": \"en\", \"voice_key\": {\"name\": \"en-US-Casual-K\", \"language_code\": \"en-US\", \"ssml_gender\": \"MALE\"}, \"options\": {}}'",
+                                "headers": {
+                                    "Accept": "'*/*'",
+                                    "Accept-Encoding": "'gzip, deflate'",
+                                    "Connection": "'keep-alive'",
+                                    "Content-Length": "'203'",
+                                    "Content-Type": "'application/json'",
+                                    "User-Agent": "'anki-hyper-tts/1.13.6'",
+                                    "api_key": "obscured_secret",
+                                    "client": "'hypertts'",
+                                    "client_version": "'1.13.6'"
+                                },
+                                "method": "'POST'",
+                                "pool_timeout": "None",
+                                "redirect": "False",
+                                "retries": "Retry(total=0, connect=None, read=False, redirect=None, status=None)",
+                                "self": "<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>",
+                                "timeout": "Timeout(connect=20, read=20, total=None)",
+                                "url": "'/audio_v2'"
+                            }
+                        },
+                        {
+                            "function": "_raise_timeout",
+                            "module": "urllib3.connectionpool",
+                            "filename": "urllib3.connectionpool",
+                            "abs_path": "/urllib3.connectionpool",
+                            "lineno": 369,
+                            "in_app": true,
+                            "vars": {
+                                "err": "timeout('_ssl.c:1112: The handshake operation timed out')",
+                                "self": "<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>",
+                                "timeout_value": "20",
+                                "url": "'http://127.0.0.1:7890'"
+                            }
+                        }
+                    ]
+                },
+                "mechanism": {
+                    "type": "generic",
+                    "handled": true
+                }
+            },
+            {
+                "type": "ReadTimeout",
+                "value": "HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)",
+                "module": "requests.exceptions",
+                "stacktrace": {
+                    "frames": [
+                        {
+                            "function": "process_batch_audio",
+                            "module": "hypertts_addon.hypertts",
+                            "filename": "hypertts_addon/hypertts.py",
+                            "abs_path": "/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/hypertts.py",
+                            "lineno": 64,
+                            "pre_context": [
+                                "",
+                                "            for note_id in note_id_list:",
+                                "                with batch_status.get_note_action_context(note_id, False) as note_action_context:",
+                                "                    note = self.anki_utils.get_note_by_id(note_id)",
+                                "                    # process note"
+                            ],
+                            "context_line": "                    source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, False,",
+                            "post_context": [
+                                "                        context.AudioRequestContext(constants.AudioRequestReason.batch), None, anki_collection)",
+                                "                    # update note action context",
+                                "                    note_action_context.set_source_text(source_text)",
+                                "                    note_action_context.set_processed_text(processed_text)",
+                                "                    note_action_context.set_sound(sound_file)"
+                            ],
+                            "in_app": true,
+                            "vars": {
+                                "anki_collection": "<anki.collection.Collection object at 0x115da4370>",
+                                "batch": "<hypertts_addon.config_models.BatchConfig object at 0x29c74d790>",
+                                "batch_status": "<hypertts_addon.batch_status.BatchStatus object at 0x17f873340>",
+                                "modified_notes": [
+                                    "<anki.notes.Note object at 0x17663c700>",
+                                    "<anki.notes.Note object at 0x17663cca0>",
+                                    "<anki.notes.Note object at 0x17663c5e0>",
+                                    "<anki.notes.Note object at 0x17f93e670>",
+                                    "<anki.notes.Note object at 0x17f93e160>",
+                                    "<anki.notes.Note object at 0x17f93e8e0>",
+                                    "<anki.notes.Note object at 0x17f93eee0>",
+                                    "<anki.notes.Note object at 0x17f93e040>",
+                                    "<anki.notes.Note object at 0x17f93ed90>",
+                                    "<anki.notes.Note object at 0x148d2c460>"
+                                ],
+                                "note": "<anki.notes.Note object at 0x175287550>",
+                                "note_action_context": "<hypertts_addon.batch_status.BatchNoteActionContext object at 0x17fee0cd0>",
+                                "note_id": "1737727871772",
+                                "note_id_list": [
+                                    "1737727871011",
+                                    "1737727871012",
+                                    "1737727871013",
+                                    "1737727871014",
+                                    "1737727871015",
+                                    "1737727871016",
+                                    "1737727871017",
+                                    "1737727871018",
+                                    "1737727871019",
+                                    "1737727871020"
+                                ],
+                                "self": "<hypertts_addon.hypertts.HyperTTS object at 0x1151fbbb0>",
+                                "source_text": "' Segregation'"
+                            }
+                        },
+                        {
+                            "function": "process_note_audio",
+                            "module": "hypertts_addon.hypertts",
+                            "filename": "hypertts_addon/hypertts.py",
+                            "abs_path": "/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/hypertts.py",
+                            "lineno": 86,
+                            "pre_context": [
+                                "            raise errors.TargetFieldNotFoundError(target_field)",
+                                "",
+                                "        source_text = self.get_source_text(note, batch.source, text_override)",
+                                "        processed_text = self.process_text(source_text, batch.text_processing)",
+                                ""
+                            ],
+                            "context_line": "        full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)",
+                            "post_context": [
+                                "        sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)",
+                                "",
+                                "        target_field_content = note[target_field]",
+                                "        ",
+                                "        # do we need to remove existing sound tags ?"
+                            ],
+                            "in_app": true,
+                            "vars": {
+                                "add_mode": "False",
+                                "anki_collection": "<anki.collection.Collection object at 0x115da4370>",
+                                "audio_request_context": "<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>",
+                                "batch": "<hypertts_addon.config_models.BatchConfig object at 0x29c74d790>",
+                                "note": "<anki.notes.Note object at 0x175287550>",
+                                "processed_text": "' Multidimensional'",
+                                "self": "<hypertts_addon.hypertts.HyperTTS object at 0x1151fbbb0>",
+                                "source_text": "' Multidimensional'",
+                                "target_field": "'背面'",
+                                "text_override": "None"
+                            }
+                        },
+                        {
+                            "function": "get_audio_file",
+                            "module": "hypertts_addon.hypertts",
+                            "filename": "hypertts_addon/hypertts.py",
+                            "abs_path": "/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/hypertts.py",
+                            "lineno": 147,
+                            "pre_context": [
+                                "                logger.debug(f'about to generate audio file and write to file for {processed_text}')",
+                                "                voice_id = voice_with_options.voice_id",
+                                "                assert isinstance(voice_id, voice_module.TtsVoiceId_v3), \\",
+                                "                    f\"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}, voice_with_options: {type(voice_with_options).__name__}\"",
+                                ""
+                            ],
+                            "context_line": "                full_filename, audio_filename = self.generate_audio_write_file(processed_text, ",
+                            "post_context": [
+                                "                    voice_with_options.voice_id, voice_with_options.options, audio_request_context)",
+                                "                logger.debug(f'finished generating audio file and write to file for {processed_text}')",
+                                "                return full_filename, audio_filename",
+                                "            except errors.AudioNotFoundError as exc:",
+                                "                # try the next voice, as long as one is available"
+                            ],
+                            "in_app": true,
+                            "vars": {
+                                "audio_request_context": "<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>",
+                                "loop_condition": "True",
+                                "priority_mode": "False",
+                                "processed_text": "' Multidimensional'",
+                                "self": "<hypertts_addon.hypertts.HyperTTS object at 0x1151fbbb0>",
+                                "sound_found": "False",
+                                "voice_id": "TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google')",
+                                "voice_list": "None",
+                                "voice_selection": "<hypertts_addon.config_models.VoiceSelectionSingle object at 0x1689656a0>",
+                                "voice_with_options": "<hypertts_addon.config_models.VoiceWithOptions object at 0x17f756e20>"
+                            }
+                        },
+                        {
+                            "function": "generate_audio_write_file",
+                            "module": "hypertts_addon.hypertts",
+                            "filename": "hypertts_addon/hypertts.py",
+                            "abs_path": "/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/hypertts.py",
+                            "lineno": 400,
+                            "pre_context": [
+                                "",
+                                "            # get the voice which corresponds to the voice_id",
+                                "            voice = self.service_manager.locate_voice(voice_id)",
+                                "            logger.info(f'located voice: {voice}')",
+                                ""
+                            ],
+                            "context_line": "            audio_data = self.service_manager.get_tts_audio(source_text, voice, voice_options, audio_request_context)",
+                            "post_context": [
+                                "            logger.info(f'not found in cache, requesting')",
+                                "            logger.debug(f'opening {full_filename}')",
+                                "            f = open(full_filename, 'wb')",
+                                "            logger.debug(f'done opening {full_filename}')",
+                                "            f.write(audio_data)"
+                            ],
+                            "in_app": true,
+                            "vars": {
+                                "audio_filename": "'hypertts-f7bf6a464970fea6715216b4caa246fb10b2501df48ae8dbd4f040a9.mp3'",
+                                "audio_request_context": "<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>",
+                                "format": "<AudioFormat.mp3: 1>",
+                                "full_filename": "'/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/../user_files/hypertts-f7bf6a464970fea6715216b4caa246fb10b2501df48ae8dbd4f040a9.mp3'",
+                                "hash_str": "'f7bf6a464970fea6715216b4caa246fb10b2501df48ae8dbd4f040a9'",
+                                "self": "<hypertts_addon.hypertts.HyperTTS object at 0x1151fbbb0>",
+                                "source_text": "' Multidimensional'",
+                                "voice": "TtsVoice_v3(name='en-US-Casual-K', voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -20.0, 'max': 20.0, 'default': 0.0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}}, service='Google', gender=<Gender.Male: 1>, audio_languages=[<AudioLanguage.en_US: (<Language.en: 'English'>, 'English (US)')>], service_fee=<ServiceFee.paid: 2>, voice_id=TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google'))",
+                                "voice_id": "TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google')",
+                                "voice_options": {}
+                            }
+                        },
+                        {
+                            "function": "get_tts_audio",
+                            "module": "hypertts_addon.servicemanager",
+                            "filename": "hypertts_addon/servicemanager.py",
+                            "abs_path": "/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/servicemanager.py",
+                            "lineno": 149,
+                            "pre_context": [
+                                "",
+                                "    def get_tts_audio(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):",
+                                "        # assert the type of voice being passed in",
+                                "        assert isinstance(voice, voice_module.TtsVoice_v3), f\"Expected voice to be TtsVoice_v3, got {type(voice).__name__}\"",
+                                "        if hasattr(sys, '_sentry_crash_reporting'):"
+                            ],
+                            "context_line": "            return self.get_tts_audio_instrumented(source_text, voice, options, audio_request_context)",
+                            "post_context": [
+                                "        else:",
+                                "            return self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)",
+                                "",
+                                "    def get_tts_audio_instrumented(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):",
+                                "        transaction_name = f'{voice.service}'"
+                            ],
+                            "in_app": true,
+                            "vars": {
+                                "audio_request_context": "<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>",
+                                "options": {},
+                                "self": "<hypertts_addon.servicemanager.ServiceManager object at 0x1151fbdc0>",
+                                "source_text": "' Multidimensional'",
+                                "voice": "TtsVoice_v3(name='en-US-Casual-K', voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -20.0, 'max': 20.0, 'default': 0.0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}}, service='Google', gender=<Gender.Male: 1>, audio_languages=[<AudioLanguage.en_US: (<Language.en: 'English'>, 'English (US)')>], service_fee=<ServiceFee.paid: 2>, voice_id=TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google'))"
+                            }
+                        },
+                        {
+                            "function": "get_tts_audio_instrumented",
+                            "module": "hypertts_addon.servicemanager",
+                            "filename": "hypertts_addon/servicemanager.py",
+                            "abs_path": "/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/servicemanager.py",
+                            "lineno": 173,
+                            "pre_context": [
+                                "                    'voice': str(voice),",
+                                "                    'error': str(e)",
+                                "                })",
+                                "                raise_exception = e",
+                                "        if raise_exception != None:"
+                            ],
+                            "context_line": "            raise raise_exception",
+                            "post_context": [
+                                "",
+                                "    def get_tts_audio_implementation(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):",
+                                "        if self.use_cloud_language_tools(voice):",
+                                "            return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)",
+                                "        else:"
+                            ],
+                            "in_app": true,
+                            "vars": {
+                                "audio_request_context": "<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>",
+                                "options": {},
+                                "raise_exception": "ReadTimeout(ReadTimeoutError(\"HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)\"))",
+                                "self": "<hypertts_addon.servicemanager.ServiceManager object at 0x1151fbdc0>",
+                                "source_text": "' Multidimensional'",
+                                "transaction": "<Transaction(name='cloudlanguagetools_Google', op='audio', trace_id='47409785af4241c3b59b536407971856', span_id='b71a9bb505db75db', parent_span_id=None, sampled=False, source='custom')>",
+                                "transaction_name": "'cloudlanguagetools_Google'",
+                                "voice": "TtsVoice_v3(name='en-US-Casual-K', voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -20.0, 'max': 20.0, 'default': 0.0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}}, service='Google', gender=<Gender.Male: 1>, audio_languages=[<AudioLanguage.en_US: (<Language.en: 'English'>, 'English (US)')>], service_fee=<ServiceFee.paid: 2>, voice_id=TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google'))"
+                            }
+                        },
+                        {
+                            "function": "get_tts_audio_instrumented",
+                            "module": "hypertts_addon.servicemanager",
+                            "filename": "hypertts_addon/servicemanager.py",
+                            "abs_path": "/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/servicemanager.py",
+                            "lineno": 161,
+                            "pre_context": [
+                                "            transaction_name = f'cloudlanguagetools_{voice.service}'",
+                                "        sentry_sdk.set_tag('clt.audio_request_reason', audio_request_context.get_audio_request_reason_tag())",
+                                "        raise_exception = None",
+                                "        with sentry_sdk.start_transaction(op=\"audio\", name=transaction_name) as transaction:",
+                                "            try:"
+                            ],
+                            "context_line": "                result_audio = self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)",
+                            "post_context": [
+                                "                transaction.status = 'ok'",
+                                "                return result_audio",
+                                "            except Exception as e:",
+                                "                transaction.status = 'invalid_argument'",
+                                "                sentry_sdk.set_context(\"audio_request\", {"
+                            ],
+                            "in_app": true,
+                            "vars": {
+                                "audio_request_context": "<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>",
+                                "options": {},
+                                "raise_exception": "ReadTimeout(ReadTimeoutError(\"HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)\"))",
+                                "self": "<hypertts_addon.servicemanager.ServiceManager object at 0x1151fbdc0>",
+                                "source_text": "' Multidimensional'",
+                                "transaction": "<Transaction(name='cloudlanguagetools_Google', op='audio', trace_id='47409785af4241c3b59b536407971856', span_id='b71a9bb505db75db', parent_span_id=None, sampled=False, source='custom')>",
+                                "transaction_name": "'cloudlanguagetools_Google'",
+                                "voice": "TtsVoice_v3(name='en-US-Casual-K', voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -20.0, 'max': 20.0, 'default': 0.0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}}, service='Google', gender=<Gender.Male: 1>, audio_languages=[<AudioLanguage.en_US: (<Language.en: 'English'>, 'English (US)')>], service_fee=<ServiceFee.paid: 2>, voice_id=TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google'))"
+                            }
+                        },
+                        {
+                            "function": "get_tts_audio_implementation",
+                            "module": "hypertts_addon.servicemanager",
+                            "filename": "hypertts_addon/servicemanager.py",
+                            "abs_path": "/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/servicemanager.py",
+                            "lineno": 177,
+                            "pre_context": [
+                                "        if raise_exception != None:",
+                                "            raise raise_exception",
+                                "",
+                                "    def get_tts_audio_implementation(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):",
+                                "        if self.use_cloud_language_tools(voice):"
+                            ],
+                            "context_line": "            return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)",
+                            "post_context": [
+                                "        else:",
+                                "            service = self.services[voice.service]",
+                                "            return service.get_tts_audio(source_text, voice, options)",
+                                "",
+                                "    def full_voice_list(self, single_service_name=None) -> typing.List[voice_module.TtsVoice_v3]:"
+                            ],
+                            "in_app": true,
+                            "vars": {
+                                "audio_request_context": "<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>",
+                                "options": {},
+                                "self": "<hypertts_addon.servicemanager.ServiceManager object at 0x1151fbdc0>",
+                                "source_text": "' Multidimensional'",
+                                "voice": "TtsVoice_v3(name='en-US-Casual-K', voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -20.0, 'max': 20.0, 'default': 0.0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}}, service='Google', gender=<Gender.Male: 1>, audio_languages=[<AudioLanguage.en_US: (<Language.en: 'English'>, 'English (US)')>], service_fee=<ServiceFee.paid: 2>, voice_id=TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google'))"
+                            }
+                        },
+                        {
+                            "function": "get_tts_audio",
+                            "module": "hypertts_addon.cloudlanguagetools",
+                            "filename": "hypertts_addon/cloudlanguagetools.py",
+                            "abs_path": "/Users/martin.tian/Library/Application Support/Anki2/addons21/111623432/hypertts_addon/cloudlanguagetools.py",
+                            "lineno": 67,
+                            "pre_context": [
+                                "            'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,",
+                                "            'voice_key': voice.voice_key,",
+                                "            'options': options",
+                                "        }",
+                                "        logger.info(f'request url: {full_url}, data: {data}')"
+                            ],
+                            "context_line": "        response = requests.post(full_url, json=data, headers=self.get_request_headers(),",
+                            "post_context": [
+                                "            timeout=constants.RequestTimeout)",
+                                "",
+                                "        if response.status_code == 200:",
+                                "            return response.content",
+                                "        elif response.status_code == 404:"
+                            ],
+                            "in_app": true,
+                            "vars": {
+                                "audio_request_context": "<hypertts_addon.context.AudioRequestContext object at 0x168a4dfd0>",
+                                "data": {
+                                    "language_code": "'en'",
+                                    "options": {},
+                                    "request_mode": "'batch'",
+                                    "service": "'Google'",
+                                    "text": "' Multidimensional'",
+                                    "voice_key": {
+                                        "language_code": "'en-US'",
+                                        "name": "'en-US-Casual-K'",
+                                        "ssml_gender": "'MALE'"
+                                    }
+                                },
+                                "full_url": "'https://cloudlanguagetools-api.vocab.ai/audio_v2'",
+                                "options": {},
+                                "self": "<hypertts_addon.cloudlanguagetools.CloudLanguageTools object at 0x1152378e0>",
+                                "source_text": "' Multidimensional'",
+                                "url_path": "'/audio_v2'",
+                                "voice": "TtsVoice_v3(name='en-US-Casual-K', voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -20.0, 'max': 20.0, 'default': 0.0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}}, service='Google', gender=<Gender.Male: 1>, audio_languages=[<AudioLanguage.en_US: (<Language.en: 'English'>, 'English (US)')>], service_fee=<ServiceFee.paid: 2>, voice_id=TtsVoiceId_v3(voice_key={'name': 'en-US-Casual-K', 'language_code': 'en-US', 'ssml_gender': 'MALE'}, service='Google'))"
+                            }
+                        },
+                        {
+                            "function": "post",
+                            "module": "requests.api",
+                            "filename": "requests.api",
+                            "abs_path": "/requests.api",
+                            "lineno": 115,
+                            "in_app": true,
+                            "vars": {
+                                "data": "None",
+                                "json": {
+                                    "language_code": "'en'",
+                                    "options": {},
+                                    "request_mode": "'batch'",
+                                    "service": "'Google'",
+                                    "text": "' Multidimensional'",
+                                    "voice_key": {
+                                        "language_code": "'en-US'",
+                                        "name": "'en-US-Casual-K'",
+                                        "ssml_gender": "'MALE'"
+                                    }
+                                },
+                                "kwargs": {
+                                    "headers": {
+                                        "User-Agent": "'anki-hyper-tts/1.13.6'",
+                                        "api_key": "obscured_secret",
+                                        "client": "'hypertts'",
+                                        "client_version": "'1.13.6'"
+                                    },
+                                    "timeout": "20"
+                                },
+                                "url": "'https://cloudlanguagetools-api.vocab.ai/audio_v2'"
+                            }
+                        },
+                        {
+                            "function": "request",
+                            "module": "requests.api",
+                            "filename": "requests.api",
+                            "abs_path": "/requests.api",
+                            "lineno": 59,
+                            "in_app": true,
+                            "vars": {
+                                "kwargs": {
+                                    "data": "None",
+                                    "headers": {
+                                        "User-Agent": "'anki-hyper-tts/1.13.6'",
+                                        "api_key": "obscured_secret",
+                                        "client": "'hypertts'",
+                                        "client_version": "'1.13.6'"
+                                    },
+                                    "json": {
+                                        "language_code": "'en'",
+                                        "options": {},
+                                        "request_mode": "'batch'",
+                                        "service": "'Google'",
+                                        "text": "' Multidimensional'",
+                                        "voice_key": {
+                                            "language_code": "'en-US'",
+                                            "name": "'en-US-Casual-K'",
+                                            "ssml_gender": "'MALE'"
+                                        }
+                                    },
+                                    "timeout": "20"
+                                },
+                                "method": "'post'",
+                                "session": "[Filtered]",
+                                "url": "'https://cloudlanguagetools-api.vocab.ai/audio_v2'"
+                            }
+                        },
+                        {
+                            "function": "request",
+                            "module": "requests.sessions",
+                            "filename": "requests.sessions",
+                            "abs_path": "/requests.sessions",
+                            "lineno": 589,
+                            "in_app": true,
+                            "vars": {
+                                "auth": "[Filtered]",
+                                "cookies": "None",
+                                "data": "None",
+                                "files": "None",
+                                "headers": {
+                                    "User-Agent": "'anki-hyper-tts/1.13.6'",
+                                    "api_key": "obscured_secret",
+                                    "client": "'hypertts'",
+                                    "client_version": "'1.13.6'"
+                                },
+                                "method": "'post'",
+                                "params": "None",
+                                "self": "<requests.sessions.Session object at 0x168a4da00>",
+                                "timeout": "20",
+                                "url": "'https://cloudlanguagetools-api.vocab.ai/audio_v2'"
+                            }
+                        },
+                        {
+                            "function": "send",
+                            "module": "requests.sessions",
+                            "filename": "requests.sessions",
+                            "abs_path": "/requests.sessions",
+                            "lineno": 703,
+                            "in_app": true,
+                            "vars": {
+                                "adapter": "<requests.adapters.HTTPAdapter object at 0x17fee0ca0>",
+                                "allow_redirects": "True",
+                                "hooks": {
+                                    "response": []
+                                },
+                                "kwargs": {
+                                    "cert": "None",
+                                    "proxies": {
+                                        "http": "'http://127.0.0.1:7890'",
+                                        "https": "'http://127.0.0.1:7890'"
+                                    },
+                                    "stream": "False",
+                                    "timeout": "20",
+                                    "verify": "True"
+                                },
+                                "request": "<PreparedRequest [POST]>",
+                                "self": "<requests.sessions.Session object at 0x168a4da00>",
+                                "start": "1737729374.626017",
+                                "stream": "False"
+                            }
+                        },
+                        {
+                            "function": "send",
+                            "module": "requests.adapters",
+                            "filename": "requests.adapters",
+                            "abs_path": "/requests.adapters",
+                            "lineno": 713,
+                            "in_app": true,
+                            "vars": {
+                                "cert": "None",
+                                "chunked": "False",
+                                "conn": "<urllib3.connectionpool.HTTPSConnectionPool object at 0x175291a30>",
+                                "proxies": {
+                                    "http": "'http://127.0.0.1:7890'",
+                                    "https": "'http://127.0.0.1:7890'"
+                                },
+                                "request": "<PreparedRequest [POST]>",
+                                "self": "<requests.adapters.HTTPAdapter object at 0x17fee0ca0>",
+                                "stream": "False",
+                                "timeout": "Timeout(connect=20, read=20, total=None)",
+                                "url": "'/audio_v2'",
+                                "verify": "True"
+                            }
+                        }
+                    ]
+                },
+                "mechanism": {
+                    "type": "generic",
+                    "handled": true
+                }
+            }
+        ]
+    },
+    "extra": {
+        "sys.argv": [
+            "/Applications/Anki.app/Contents/MacOS/anki"
+        ]
+    },
+    "fingerprint": [
+        "{{ default }}"
+    ],
+    "grouping_config": {
+        "enhancements": "KLUv_SAYwQAAkwKRs25ld3N0eWxlOjIwMjMtMDEtMTGQ",
+        "id": "newstyle:2023-01-11"
+    },
+    "hashes": [
+        "a7c3973654dd34919fa72f9e5701b0ae"
+    ],
+    "ingest_path": [
+        {
+            "version": "25.1.0",
+            "public_key": "XE7QiyuNlja9PZ7I9qJlwQotzecWrUIN91BAO7Q5R38"
+        }
+    ],
+    "key_id": "2011620",
+    "level": "error",
+    "location": "requests.adapters",
+    "logger": "",
+    "metadata": {
+        "filename": "requests.adapters",
+        "function": "send",
+        "in_app_frame_mix": "in-app-only",
+        "type": "ReadTimeout",
+        "value": "HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read timeout=20)"
+    },
+    "nodestore_insert": 1737729396.870139,
+    "received": 1737729394.881503,
+    "sdk": {
+        "name": "sentry.python",
+        "version": "1.44.0",
+        "integrations": [
+            "argv",
+            "atexit",
+            "boto3",
+            "dedupe",
+            "excepthook",
+            "logging",
+            "modules",
+            "stdlib",
+            "threading"
+        ],
+        "packages": [
+            {
+                "name": "pypi:sentry-sdk",
+                "version": "1.44.0"
+            }
+        ]
+    },
+    "timestamp": 1737729394.650786,
+    "title": "ReadTimeout: HTTPSConnectionPool(host='cloudlanguagetools-api.vocab.ai', port=443): Read timed out. (read time...",
+    "transaction": "cloudlanguagetools_Google",
+    "transaction_info": {
+        "source": "custom"
+    },
+    "type": "error",
+    "user": {
+        "id": "api_key:obscured_secret",
+        "sentry_user": "id:api_key:obscured_secret"
+    },
+    "version": "7"
+}
