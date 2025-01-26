@@ -2,6 +2,7 @@ import aqt.qt
 from . import component_voiceselection
 from . import config_models
 from . import constants
+from . import errors
 from . import constants_events
 from .constants_events import Event, EventMode
 from . import stats
@@ -68,9 +69,14 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         # here we need to select the correct voice, based on what the user has saved in their preset (single voice)
         # we have access to the voice_id, but we need to locate the proper voice
         voice_id = model.voice.voice_id
-        voice = self.hypertts.service_manager.locate_voice(voice_id)
-        voice_index = self.voice_list.index(voice)
-        self.voices_combobox.setCurrentIndex(voice_index)
+        try:
+            voice = self.hypertts.service_manager.locate_voice(voice_id)
+            voice_index = self.voice_list.index(voice)
+            self.voices_combobox.setCurrentIndex(voice_index)
+        except ValueError as e:
+            logger.error(f'Voice not found: {model.voice}: {e}', exc_info=True)
+        except errors.VoiceIdNotFound as e:
+            logger.error(f'VoiceId not found: {model.voice}: {e}', exc_info=True)
 
         # OK to report changes after this
         self.enable_model_change_callback = True
