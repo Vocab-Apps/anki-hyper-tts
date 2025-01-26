@@ -3,10 +3,12 @@ import os
 import requests
 import json
 import functools
+import anki
 
 from . import constants
 from . import constants_events
 from . import logging_utils
+from . import version
 logger = logging_utils.get_child_logger(__name__)
 
 class StatsGlobal:
@@ -50,6 +52,15 @@ class StatsGlobal:
             "distinct_id": self.user_uuid,
             "properties": event_properties,
         }
+        # for global events, add additional properties
+        if context == constants_events.EventContext.addon:
+            payload['properties']['hypertts_addon_version'] = version.ANKI_HYPER_TTS_VERSION
+            payload['properties']['anki_version'] = anki.version
+            payload['properties']['$set'] = {
+                'anki_version': anki.version,
+                'hypertts_addon_version': version.ANKI_HYPER_TTS_VERSION,
+                'hypertts_addon_user': True
+            }
         try:
             response = requests.post(self.CAPTURE_URL, 
                     headers=headers, 
