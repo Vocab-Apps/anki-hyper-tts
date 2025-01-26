@@ -55,6 +55,7 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         return widget
 
     def voice_selected(self, current_index):
+        logger.debug(f'voice_selected, current_index: {current_index}')
         voice = self.filtered_voice_list[current_index]
         logger.info(f'voice_selected: {voice} options: {voice.options}')
         self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice.voice_id, {}))

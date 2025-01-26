@@ -417,22 +417,27 @@ class VoiceSelection(component_common.ConfigComponentBase):
     def filter_and_draw_voices(self, current_index):
         logger.info('filter_and_draw_voices')
         voice_list = self.voice_list
+        logger.debug(f'initial voice count: {len(voice_list)}')
         # check filtering by audio language
         if self.audio_languages_combobox.currentIndex() != 0:
             audio_language = self.audio_languages[self.audio_languages_combobox.currentIndex() - 2]
             voice_list = [voice for voice in voice_list if audio_language in voice.audio_languages]
+            logger.debug(f'filtered by audio_language {audio_language}, voice count: {len(voice_list)}')
         # check filtering by language
         if self.languages_combobox.currentIndex() != 0:
             language = self.languages[self.languages_combobox.currentIndex() - 2]
             voice_list = [voice for voice in voice_list if language in voice.languages]
+            logger.debug(f'filtered by language {language}, voice count: {len(voice_list)}')
         # check filtering by service
         if self.services_combobox.currentIndex() != 0:
             service = self.services[self.services_combobox.currentIndex() - 2]
             voice_list = [voice for voice in voice_list if voice.service == service] 
+            logger.debug(f'filtered by service {service}, voice count: {len(voice_list)}')
         # check filtering by gender
         if self.genders_combobox.currentIndex() != 0:
             gender = self.genders[self.genders_combobox.currentIndex() - 2]
             voice_list = [voice for voice in voice_list if voice.gender == gender]
+            logger.debug(f'filtered by gender {gender}, voice count: {len(voice_list)}')
         def voice_sort_key(voice):
             return str(voice)
         # sort
