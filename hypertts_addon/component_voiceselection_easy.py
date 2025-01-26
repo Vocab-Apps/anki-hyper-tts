@@ -56,6 +56,9 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
 
     def voice_selected(self, current_index):
         logger.debug(f'voice_selected, current_index: {current_index}')
+        if current_index >= len(self.filtered_voice_list):
+            logger.error(f'voice_selected: current_index out of range: {current_index}, len(self.filtered_voice_list): {len(self.filtered_voice_list)}')
+            return
         voice = self.filtered_voice_list[current_index]
         logger.info(f'voice_selected: {voice} options: {voice.options}')
         self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice.voice_id, {}))
