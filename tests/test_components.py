@@ -256,35 +256,26 @@ def test_voice_selection_easy_load_model(qtbot):
     }
     assert voiceselection.voice_selection_model.serialize() == expected_output
 
-def test_voice_selection_easy_load_model_non_existent_voice(qtbot):
+def test_voice_selection_easy_load_model_disabled_service(qtbot):
     """Test loading a model with a non-existent voice"""
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
     dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    # Create a model with a non-existent voice
+    # Create a model with voice_a_3 selected
     model = config_models.VoiceSelectionSingle()
-    voice_id = voice.TtsVoiceId_v3(voice_key='fr', service='GoogleTranslate')
-    non_existent_voice = voice.TtsVoice_v3(
-        name='French',
-        voice_key='fr',
-        options={},
-        service='GoogleTranslate',
-        gender=constants.Gender.Female,
-        audio_languages=[languages.AudioLanguage.fr_FR],
-        service_fee=constants.ServiceFee.free,
-        voice_id=voice_id
-    )
-    model.set_voice(config_models.VoiceWithOptions(non_existent_voice.voice_id, {}))
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_3 = [x for x in voice_list if x.name == 'voice_a_3'][0]
+    model.set_voice(config_models.VoiceWithOptions(voice_a_3.voice_id, {}))
+
+    # now, disable the service ServiceA
+    hypertts_instance.service_manager.get_service('ServiceA').enabled = False
 
     # Create voice selection component and try to load model
     model_change_callback = gui_testing_utils.MockModelChangeCallback()
     voiceselection = component_voiceselection_easy.VoiceSelectionEasy(hypertts_instance, dialog, model_change_callback.model_updated)
     dialog.addChildWidget(voiceselection.draw())
-    
-    # Loading should raise ValueError since voice doesn't exist
-    with pytest.raises(ValueError):
-        voiceselection.load_model(model)
+    voiceselection.load_model(model) # should not throw an exception
 
 def test_voice_selection_format_ogg(qtbot):
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
