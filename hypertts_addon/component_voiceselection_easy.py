@@ -74,9 +74,11 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
             voice_index = self.voice_list.index(voice)
             self.voices_combobox.setCurrentIndex(voice_index)
         except ValueError as e:
-            logger.error(f'Voice not found: {model.voice}: {e}', exc_info=True)
+            logger.warning(f'Voice not found: {voice_id}: {e}')
+            logger.error(f'while loading model: voice not found')
         except errors.VoiceIdNotFound as e:
-            logger.error(f'VoiceId not found: {model.voice}: {e}', exc_info=True)
+            logger.warning(f'VoiceId not found: {model.voice}: {e}')
+            logger.error(f'while loading model: voice_id not found')
 
         # OK to report changes after this
         self.enable_model_change_callback = True
