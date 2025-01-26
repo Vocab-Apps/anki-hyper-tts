@@ -134,7 +134,8 @@ class ComponentMappingRule(component_common.ConfigComponentBase):
         self.hypertts.anki_utils.run_in_background(self.sound_preview_task, self.sound_preview_task_done)
 
     def edit_button_clicked(self):
-        component_batch.create_dialog_editor_existing_preset(self.hypertts, self.editor_context, self.model.preset_id)
+        with self.hypertts.error_manager.get_single_action_context('Editing Preset'):
+            component_batch.create_dialog_editor_existing_preset(self.hypertts, self.editor_context, self.model.preset_id)
 
     def delete_button_clicked(self):
         # self.hypertts.anki_utils.run_on_main(self.model_delete_callback)

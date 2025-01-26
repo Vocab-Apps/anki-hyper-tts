@@ -523,7 +523,7 @@ def test_component_preset_mapping_rules_deleted_preset(qtbot):
         # verify error was shown
         assert isinstance(hypertts_instance.anki_utils.last_exception, errors.PresetNotFound)
         # it should be handled, should be a known exception 
-        assert hypertts_instance.anki_utils.last_exception.last_exception_is_known == True
+        assert hypertts_instance.anki_utils.last_exception_is_known == True
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence_2
     component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
