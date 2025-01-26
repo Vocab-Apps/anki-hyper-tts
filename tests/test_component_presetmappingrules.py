@@ -474,6 +474,58 @@ def test_component_preset_mapping_rules_preview_run(qtbot):
 
 
 
+def test_component_preset_mapping_rules_deleted_preset(qtbot):
+    # pytest --log-cli-level=DEBUG tests/test_component_presetmappingrules.py -k test_component_preset_mapping_rules_deleted_preset
+
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+
+    # create simple preset
+    preset_id = 'uuid_0'
+    preset_name = 'my preset 42'
+    testing_utils.create_simple_batch(hypertts_instance, preset_id=preset_id, name=preset_name)
+    
+    def dialog_input_sequence(dialog):
+        # patch the "choose_preset" function
+        def mock_choose_preset():
+            return preset_id
+        dialog.mapping_rules.choose_preset = mock_choose_preset
+
+        # add preset
+        qtbot.mouseClick(dialog.mapping_rules.add_rule_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+        # make sure that the rule is displayed
+        preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
+        assert preset_name_label_0.text() == preset_name
+
+        # click save button
+        qtbot.mouseClick(dialog.mapping_rules.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence    
+    component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
+
+    # now delete the preset
+    hypertts_instance.delete_preset(preset_id)
+
+    # re-open dialog and try to edit the now-deleted preset
+    def dialog_input_sequence_2(dialog):
+        # find the edit button
+        edit_button = dialog.findChild(aqt.qt.QPushButton, 'edit_button_0')
+        assert edit_button != None
+
+        # verify preset shows as unknown
+        preset_name_label_0 = dialog.findChild(aqt.qt.QLabel, 'preset_name_label_0')
+        assert preset_name_label_0.text() == constants.GUI_TEXT_UNKNOWN_PRESET
+
+        # click edit button, should raise PresetNotFound
+        qtbot.mouseClick(edit_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+        # verify error was shown
+        assert len(hypertts_instance.anki_utils.shown_critical_msg) == 1
+        assert 'Preset not found' in hypertts_instance.anki_utils.shown_critical_msg[0]
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_PRESET_MAPPING_RULES] = dialog_input_sequence_2
+    component_presetmappingrules.create_dialog(hypertts_instance, deck_note_type, editor_context)
+
 def test_component_preset_mapping_easy_mode(qtbot):
     # pytest --log-cli-level=DEBUG tests/test_component_presetmappingrules.py -k test_component_preset_mapping_easy_mode
 
