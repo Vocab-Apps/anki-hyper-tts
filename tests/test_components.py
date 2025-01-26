@@ -16,6 +16,7 @@ from hypertts_addon import logging_utils
 from hypertts_addon import hypertts
 from hypertts_addon import constants
 from hypertts_addon import languages
+from hypertts_addon import voice
 from hypertts_addon import component_voiceselection
 from hypertts_addon import component_source
 from hypertts_addon import component_target
