@@ -57,7 +57,7 @@ class StatsGlobal:
                     timeout=constants.RequestTimeoutShort)
             logger.debug(f'sent event: {context}:{event} ({event_mode}), status: {response.status_code}')
         except Exception as e:
-            logger.error(f'could not send event: {context}:{event} ({event_mode})', exc_info=e)
+            logger.warning(f'could not send event: {context}:{event} ({event_mode}): {e}')
 
 def event_global(event: constants_events.Event):
     if hasattr(sys, '_hypertts_stats_global'):
