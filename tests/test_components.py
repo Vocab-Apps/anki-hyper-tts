@@ -220,6 +220,27 @@ def test_voice_selection_easy_filters(qtbot):
     for voice in voiceselection.filtered_voice_list:
         assert voice.service == 'ServiceA'    
 
+def test_voice_selection_easy_filters_no_voices(qtbot):
+    # pytest test_components.py -k test_voice_selection_easy_filters_no_voices -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    voiceselection = component_voiceselection_easy.VoiceSelectionEasy(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+
+    # Filter by English language
+    voiceselection.languages_combobox.setCurrentText('English')
+    # Filter by ServiceB (which only has Japanese voices)
+    voiceselection.services_combobox.setCurrentText('ServiceB')
+
+    # This should result in no voices matching both filters
+    assert len(voiceselection.filtered_voice_list) == 0
+    assert voiceselection.voices_combobox.count() == 0
+
 def test_voice_selection_easy_load_model(qtbot):
     # Test loading a voice selection model
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
