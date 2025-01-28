@@ -4,6 +4,7 @@
 # https://stackoverflow.com/questions/75202383/raise-packaging-version-invalidversion-linux-pip
 pip==20.3.3
 setuptools==65.7.0
+protobuf==3.20.0
 aqt==2.1.49
 anki==2.1.49
 pytest
