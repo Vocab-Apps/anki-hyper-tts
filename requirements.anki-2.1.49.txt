@@ -1,6 +1,8 @@
 # later versions seem to cause a crash during unit tests
 # PyQt5
 # PyQt5-Qt5
+# https://stackoverflow.com/questions/75202383/raise-packaging-version-invalidversion-linux-pip
+setuptools==65.7.0
 aqt==2.1.49
 anki==2.1.49
 pytest
