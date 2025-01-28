@@ -7,6 +7,7 @@ import anki.template
 import anki.sound
 import anki.collection
 import aqt.qt
+from typing import List
 from . import constants    
 from . import errors
 

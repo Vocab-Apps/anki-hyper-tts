@@ -4,6 +4,7 @@ import re
 import os
 import sys
 import datetime
+from typing import List
 
 from hypertts_addon import constants
 from hypertts_addon import hypertts
@@ -328,7 +329,7 @@ class MockAnkiUtils():
     def ask_user_get_text(self, message, parent, default, title):
         return self.ask_user_get_text_response, 1
 
-    def ask_user_choose_from_list(self, parent, prompt: str, choices: list[str], startrow: int = 0) -> int:
+    def ask_user_choose_from_list(self, parent, prompt: str, choices: List[str], startrow: int = 0) -> int:
         if self.ask_user_choose_from_list_response_string != None:
             # we need to look for the index of that string inside choices
             chosen_row = choices.index(self.ask_user_choose_from_list_response_string)

@@ -193,7 +193,7 @@ class ServiceManager():
                 full_list.extend(voices)
         return full_list
 
-    @functools.cache
+    @functools.lru_cache(maxsize=None)
     def get_service_voice_list(self, service_name: str) -> typing.List[voice_module.TtsVoice_v3]:
         service_instance = self.services[service_name]
         voices = service_instance.voice_list()
@@ -213,7 +213,7 @@ class ServiceManager():
             raise errors.VoiceNotFound(voice_data)
         return voice_subset[0]
 
-    @functools.cache
+    @functools.lru_cache(maxsize=None)
     def locate_voice(self, voice_id: voice_module.TtsVoiceId_v3) -> voice_module.TtsVoice_v3:
         assert isinstance(voice_id, voice_module.TtsVoiceId_v3), f"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}"
         # convert from voice_id to actual voice

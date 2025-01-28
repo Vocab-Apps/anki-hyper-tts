@@ -641,7 +641,7 @@ class MappingRule:
 
 @dataclass
 class PresetMappingRules:
-    rules: list[MappingRule] = field(default_factory=list)
+    rules: List[MappingRule] = field(default_factory=list)
     # whether to use the easy add mode
     use_easy_mode: bool = False
 
