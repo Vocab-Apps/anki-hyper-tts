@@ -239,7 +239,7 @@ class AnkiUtils():
     def ask_user_get_text(self, message, parent, default, title):
         return aqt.utils.getText(message, parent, default=default, title=f'{constants.TITLE_PREFIX}{title}')
 
-    def ask_user_choose_from_list(self, parent, prompt: str, choices: list[str], startrow: int = 0) -> int:
+    def ask_user_choose_from_list(self, parent, prompt: str, choices: List[str], startrow: int = 0) -> int:
         d = aqt.qt.QDialog(parent)
         d.setWindowModality(aqt.qt.Qt.WindowModality.WindowModal)
         l = aqt.qt.QVBoxLayout()
