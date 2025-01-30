@@ -29866,4 +29866,612 @@ VOICE_LIST = [
             ],
             service_fee=constants.ServiceFee.paid
         )
+,
+
+        voice.TtsVoice_v3(
+            name='Xiaoyun',
+            voice_key={'voice_key': 'Xiaoyun'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Xiaogang',
+            voice_key={'voice_key': 'Xiaogang'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Ruoxi',
+            voice_key={'voice_key': 'Ruoxi'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Siqi',
+            voice_key={'voice_key': 'Siqi'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Sijia',
+            voice_key={'voice_key': 'Sijia'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Sicheng',
+            voice_key={'voice_key': 'Sicheng'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aiqi',
+            voice_key={'voice_key': 'Aiqi'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aijia',
+            voice_key={'voice_key': 'Aijia'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aicheng',
+            voice_key={'voice_key': 'Aicheng'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aida',
+            voice_key={'voice_key': 'Aida'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Ning\'er',
+            voice_key={'voice_key': 'Ninger'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Ruilin',
+            voice_key={'voice_key': 'Ruilin'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Siyue',
+            voice_key={'voice_key': 'Siyue'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aiya',
+            voice_key={'voice_key': 'Aiya'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aixia',
+            voice_key={'voice_key': 'Aixia'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aimei',
+            voice_key={'voice_key': 'Aimei'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aiyu',
+            voice_key={'voice_key': 'Aiyu'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aiyue',
+            voice_key={'voice_key': 'Aiyue'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aijing',
+            voice_key={'voice_key': 'Aijing'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Xiaomei',
+            voice_key={'voice_key': 'Xiaomei'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aina',
+            voice_key={'voice_key': 'Aina'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Yina',
+            voice_key={'voice_key': 'Yina'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Sijing',
+            voice_key={'voice_key': 'Sijing'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Sitong',
+            voice_key={'voice_key': 'Sitong'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Xiaobei',
+            voice_key={'voice_key': 'Xiaobei'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aitong',
+            voice_key={'voice_key': 'Aitong'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aiwei',
+            voice_key={'voice_key': 'Aiwei'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aibao',
+            voice_key={'voice_key': 'Aibao'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Harry',
+            voice_key={'voice_key': 'Harry'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Abby',
+            voice_key={'voice_key': 'Abby'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Andy',
+            voice_key={'voice_key': 'Andy'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Eric',
+            voice_key={'voice_key': 'Eric'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Emily',
+            voice_key={'voice_key': 'Emily'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Luna',
+            voice_key={'voice_key': 'Luna'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Luca',
+            voice_key={'voice_key': 'Luca'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Wendy',
+            voice_key={'voice_key': 'Wendy'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='William',
+            voice_key={'voice_key': 'William'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Olivia',
+            voice_key={'voice_key': 'Olivia'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Shanshan',
+            voice_key={'voice_key': 'Shanshan'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Xiaoyue',
+            voice_key={'voice_key': 'Xiaoyue'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Lydia',
+            voice_key={'voice_key': 'Lydia'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Aishuo',
+            voice_key={'voice_key': 'Aishuo'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US,
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Qingqing',
+            voice_key={'voice_key': 'Qingqing'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Cuijie',
+            voice_key={'voice_key': 'Cuijie'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+        voice.TtsVoice_v3(
+            name='Xiaoze',
+            voice_key={'voice_key': 'Xiaoze'},
+            options={'speed': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}, 'pitch': {'type': 'number', 'min': -500, 'max': 500, 'default': 0}},
+            service='AliCloud',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid,
+        )
+,
+
+
 ]
