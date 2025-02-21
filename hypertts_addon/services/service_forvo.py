@@ -90,9 +90,7 @@ class Forvo(service.ServiceBase):
         else:
             url = f'{api_url}/key/{api_key}/format/json/action/word-pronunciations/word/{encoded_text}/language/{language}{sex_param}{username_param}/order/rate-desc/limit/1{country_code}'
 
-        # 2024/08: forvo's certificate is invalid from what I can tell, there's an open support request via email
-        verify_ssl_certificate=False
-        response = requests.get(url, headers=headers, timeout=constants.RequestTimeout, verify=verify_ssl_certificate)
+        response = requests.get(url, headers=headers, timeout=constants.RequestTimeout)
         if response.status_code == 200:
             try:
                 data = response.json()
@@ -106,7 +104,7 @@ class Forvo(service.ServiceBase):
             if len(items) == 0:
                 raise errors.AudioNotFoundError(source_text, voice)
             audio_url = items[0]['pathmp3']
-            audio_request = requests.get(audio_url, headers=headers, timeout=constants.RequestTimeout, verify=verify_ssl_certificate)
+            audio_request = requests.get(audio_url, headers=headers, timeout=constants.RequestTimeout)
             return audio_request.content
 
         error_message = f'status_code: {response.status_code} response: {response.content}'
