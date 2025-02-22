@@ -166,10 +166,16 @@ class ComponentEasy(component_common.ComponentBase):
         self.preview_sound_button = aqt.qt.QPushButton(self.BUTTON_TEXT_PREVIEW_AUDIO)
         if preview_shortcut is not None:
             self.preview_sound_button.setShortcut(preview_shortcut)
+            self.preview_sound_button.setToolTip(f'Preview the audio that will be generated ({preview_shortcut})')
+        else:
+            self.preview_sound_button.setToolTip('Preview the audio that will be generated')
         button_layout.addWidget(self.toggle_settings_button)
         self.add_audio_button = aqt.qt.QPushButton(self.BUTTON_TEXT_ADD_AUDIO)
         if add_shortcut is not None:
             self.add_audio_button.setShortcut(add_shortcut)
+            self.add_audio_button.setToolTip(f'Add the audio to your note ({add_shortcut})')
+        else:
+            self.add_audio_button.setToolTip('Add the audio to your note')
         self.add_audio_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         self.cancel_button = aqt.qt.QPushButton('Cancel')
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
