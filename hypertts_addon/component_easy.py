@@ -158,9 +158,18 @@ class ComponentEasy(component_common.ComponentBase):
         button_layout = aqt.qt.QHBoxLayout()
         button_layout.addStretch()  # Add spacer to push buttons to the right
         self.toggle_settings_button = aqt.qt.QPushButton(constants.GUI_TEXT_EASY_BUTTON_MORE_SETTINGS)
+        # get shortcuts from preferences
+        preferences = self.hypertts.get_preferences()
+        preview_shortcut = preferences.keyboard_shortcuts.shortcut_editor_preview_audio
+        add_shortcut = preferences.keyboard_shortcuts.shortcut_editor_add_audio
+
         self.preview_sound_button = aqt.qt.QPushButton(self.BUTTON_TEXT_PREVIEW_AUDIO)
+        if preview_shortcut is not None:
+            self.preview_sound_button.setShortcut(preview_shortcut)
         button_layout.addWidget(self.toggle_settings_button)
         self.add_audio_button = aqt.qt.QPushButton(self.BUTTON_TEXT_ADD_AUDIO)
+        if add_shortcut is not None:
+            self.add_audio_button.setShortcut(add_shortcut)
         self.add_audio_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         self.cancel_button = aqt.qt.QPushButton('Cancel')
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
