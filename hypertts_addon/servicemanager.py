@@ -143,6 +143,7 @@ class ServiceManager():
         return False
 
     def get_tts_audio(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):
+        logger.debug(f'get_tts_audio for voice: {voice}')
         # assert the type of voice being passed in
         assert isinstance(voice, voice_module.TtsVoice_v3), f"Expected voice to be TtsVoice_v3, got {type(voice).__name__}"
         if hasattr(sys, '_sentry_crash_reporting'):
@@ -174,9 +175,11 @@ class ServiceManager():
 
     def get_tts_audio_implementation(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):
         if self.use_cloud_language_tools(voice):
+            logger.debug(f'voice: {voice}, using cloudlanguagetools')
             return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)
         else:
             service = self.services[voice.service]
+            logger.debug(f'voice: {voice}, using service {service.name}')
             return service.get_tts_audio(source_text, voice, options)
 
     def full_voice_list(self, single_service_name=None) -> typing.List[voice_module.TtsVoice_v3]:
