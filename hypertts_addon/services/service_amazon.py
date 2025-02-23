@@ -114,7 +114,12 @@ class Amazon(service.ServiceBase):
 </speak>"""
 
         try:
-            response = self.polly_client.synthesize_speech(Text=ssml_str, TextType="ssml", OutputFormat=audio_format_map[audio_format], VoiceId=voice.voice_key['voice_id'], Engine=voice.voice_key['engine'])
+            if voice.voice_key['engine'] in ['generative', 'long-form']:
+                logger.info(f'voice: {voice}, generating text format: {source_text}')
+                response = self.polly_client.synthesize_speech(Text=source_text, TextType="text", OutputFormat=audio_format_map[audio_format], VoiceId=voice.voice_key['voice_id'], Engine=voice.voice_key['engine'])            
+            else:
+                logger.info(f'voice: {voice}, generating ssml format: {ssml_str}')
+                response = self.polly_client.synthesize_speech(Text=ssml_str, TextType="ssml", OutputFormat=audio_format_map[audio_format], VoiceId=voice.voice_key['voice_id'], Engine=voice.voice_key['engine'])
         except (botocore.exceptions.BotoCoreError, botocore.exceptions.ClientError) as error:
             raise errors.RequestError(source_text, voice, str(error))
 
