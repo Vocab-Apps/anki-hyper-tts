@@ -15,8 +15,8 @@ logger = logging_utils.get_child_logger(__name__)
 
 
 class Alibaba(service.ServiceBase):
-    CONFIG_ACCESS_KEY_SECRET_ID = 'access_id'
-    CONFIG_ACCESS_KEY_SECRET = 'access_key'
+    CONFIG_ACCESS_KEY_ID = 'access_key_id'
+    CONFIG_ACCESS_KEY_SECRET = 'access_key_secret'
     CONFIG_APP_KEY = 'app_key'
  
     access_token = None
@@ -34,7 +34,7 @@ class Alibaba(service.ServiceBase):
 
     def configuration_options(self):
         return {
-            self.CONFIG_ACCESS_KEY_SECRET_ID: str,
+            self.CONFIG_ACCESS_KEY_ID: str,
             self.CONFIG_ACCESS_KEY_SECRET: str,
             self.CONFIG_APP_KEY: str,
         }
@@ -43,7 +43,7 @@ class Alibaba(service.ServiceBase):
     def refresh_token(self):
         logger.info(f"refreshing token")
         params = {
-            "AccessKeyId": self.get_configuration_value_mandatory(self.CONFIG_ACCESS_KEY_SECRET_ID),
+            "AccessKeyId": self.get_configuration_value_mandatory(self.CONFIG_ACCESS_KEY_ID),
             "Action": "CreateToken",
             "Version": "2019-07-17",
             "Format": "JSON",
@@ -98,13 +98,9 @@ class Alibaba(service.ServiceBase):
             self.refresh_token()
 
         app_key = self.get_configuration_value_mandatory(self.CONFIG_APP_KEY)
-        throttle_seconds = self.get_configuration_value_optional(self.CONFIG_THROTTLE_SECONDS, 0)
         speed = int(voice_options.get('speed', voice.options['speed']['default']))
         pitch = int(voice_options.get('pitch', voice.options['pitch']['default']))
         voice = voice.voice_key['voice_key']
-
-        if throttle_seconds > 0:
-            time.sleep(throttle_seconds)
 
         params = {
             "format": "mp3",

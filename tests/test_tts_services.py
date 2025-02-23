@@ -140,6 +140,13 @@ class TTSTests(unittest.TestCase):
         self.manager.get_service('FptAi').configure({
             'api_key': os.environ['FPTAPI_SERVICES_KEY'],
         })
+        # alibaba
+        self.manager.get_service('Alibaba').enabled = True
+        self.manager.get_service('Alibaba').configure({
+            'access_key_id': os.environ['ALIBABA_ACCESS_KEY_ID'],
+            'access_key_secret': os.environ['ALIBABA_ACCESS_KEY_SECRET'],
+            'app_key': os.environ['ALIBABA_APP_KEY'],
+        })
         # free services 
         # =============
         # google translate
@@ -474,6 +481,9 @@ class TTSTests(unittest.TestCase):
 
         # pick a random en_US voice
         self.random_voice_test(service_name, AudioLanguage.en_GB, 'This is the first sentence')
+
+    def test_alibaba_chinese(self):
+        self.random_voice_test('Alibaba', languages.AudioLanguage.zh_CN, '赚钱')
 
     def test_elevenlabs_english(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_elevenlabs_english'
