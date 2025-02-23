@@ -100,7 +100,7 @@ class Alibaba(service.ServiceBase):
         app_key = self.get_configuration_value_mandatory(self.CONFIG_APP_KEY)
         speed = int(voice_options.get('speed', voice.options['speed']['default']))
         pitch = int(voice_options.get('pitch', voice.options['pitch']['default']))
-        voice = voice.voice_key['voice_key']
+        voice_name = voice.voice_key['name']
 
         params = {
             "format": "mp3",
@@ -109,7 +109,7 @@ class Alibaba(service.ServiceBase):
             "pitch_rate": pitch,
             "text": source_text,
             "token": self.access_token["Id"],
-            "voice": voice
+            "voice": voice_name
         }
 
         response = requests.get(
