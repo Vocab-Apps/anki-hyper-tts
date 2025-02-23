@@ -15,8 +15,8 @@ logger = logging_utils.get_child_logger(__name__)
 
 
 class Alibaba(service.ServiceBase):
-    CONFIG_ACCESS_ID = 'access_id'
-    CONFIG_ACCESS_KEY = 'access_key'
+    CONFIG_ACCESS_KEY_SECRET_ID = 'access_id'
+    CONFIG_ACCESS_KEY_SECRET = 'access_key'
     CONFIG_APP_KEY = 'app_key'
  
     access_token = None
@@ -34,8 +34,8 @@ class Alibaba(service.ServiceBase):
 
     def configuration_options(self):
         return {
-            self.CONFIG_ACCESS_ID: str,
-            self.CONFIG_ACCESS_KEY: str,
+            self.CONFIG_ACCESS_KEY_SECRET_ID: str,
+            self.CONFIG_ACCESS_KEY_SECRET: str,
             self.CONFIG_APP_KEY: str,
         }
     
@@ -43,7 +43,7 @@ class Alibaba(service.ServiceBase):
     def refresh_token(self):
         logger.info(f"refreshing token")
         params = {
-            "AccessKeyId": self.get_configuration_value_mandatory(self.CONFIG_ACCESS_ID),
+            "AccessKeyId": self.get_configuration_value_mandatory(self.CONFIG_ACCESS_KEY_SECRET_ID),
             "Action": "CreateToken",
             "Version": "2019-07-17",
             "Format": "JSON",
@@ -67,7 +67,7 @@ class Alibaba(service.ServiceBase):
         str_to_sign = f"GET&{url_encoded}&{urllib.parse.quote(params_str, safe='')}"
         str_to_sign = str_to_sign.encode("utf-8")
 
-        key = self.get_configuration_value_mandatory(self.CONFIG_ACCESS_KEY) + "&"
+        key = self.get_configuration_value_mandatory(self.CONFIG_ACCESS_KEY_SECRET) + "&"
         key = key.encode("utf-8")
 
         # calculate HMAC-SHA1 digest, and convert to base64 repr
