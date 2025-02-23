@@ -14,16 +14,15 @@ from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 
-class AliCloud(service.ServiceBase):
+class Alibaba(service.ServiceBase):
     CONFIG_ACCESS_ID = 'access_id'
     CONFIG_ACCESS_KEY = 'access_key'
     CONFIG_APP_KEY = 'app_key'
-    CONFIG_THROTTLE_SECONDS = 'throttle_seconds'
-
+ 
     access_token = None
 
     def cloudlanguagetools_enabled(self):
-        return False
+        return True
 
     @property
     def service_type(self) -> constants.ServiceType:
@@ -38,7 +37,6 @@ class AliCloud(service.ServiceBase):
             self.CONFIG_ACCESS_ID: str,
             self.CONFIG_ACCESS_KEY: str,
             self.CONFIG_APP_KEY: str,
-            self.CONFIG_THROTTLE_SECONDS: float
         }
     
     # this process is described by https://www.alibabacloud.com/help/en/isi/getting-started/use-http-or-https-to-obtain-an-access-token?spm=a2c63.p38356.0.i1#topic-2572194
