@@ -4,6 +4,7 @@ shell_command_before:
   - source ${PYTHON_ENV_DIR}/anki-hyper-tts/bin/activate
   - source .bash_aliases
   - source ${SECRETS_DIR}/hypertts/hypertts_tests.sh
+  - eval "$(register-python-argcomplete pytest)"
   - clear
 windows:
 - window_name: hypertts
