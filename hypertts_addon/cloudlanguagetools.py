@@ -121,8 +121,12 @@ class CloudLanguageTools():
 
 
     def build_trial_key_request_data(self, email, password, client_uuid):
-        exec(constants.REQUEST_TRIAL_PAYLOAD)
-        data = build_trial_request_payload(email, client_uuid)
+        # Create a local namespace to capture the functions defined in the exec
+        local_namespace = {}
+        # Execute the code in this namespace
+        exec(constants.REQUEST_TRIAL_PAYLOAD, globals(), local_namespace)
+        # Now we can access the function from the local namespace
+        data = local_namespace['build_trial_request_payload'](email, client_uuid)
         data['email'] = email
         data['password'] = password
         return data
