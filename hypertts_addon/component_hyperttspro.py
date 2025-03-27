@@ -78,6 +78,13 @@ class HyperTTSPro(component_common.ConfigComponentBase):
         vlayout.addWidget(label)
         self.trial_email_input = aqt.qt.QLineEdit()
         vlayout.addWidget(self.trial_email_input)
+        
+        password_label = aqt.qt.QLabel("Password:")
+        vlayout.addWidget(password_label)
+        self.trial_password_input = aqt.qt.QLineEdit()
+        self.trial_password_input.setEchoMode(aqt.qt.QLineEdit.EchoMode.Password)
+        vlayout.addWidget(self.trial_password_input)
+        
         self.trial_email_validation_label = aqt.qt.QLabel()
         self.trial_email_validation_label.setWordWrap(True)
         vlayout.addWidget(self.trial_email_validation_label)
@@ -226,10 +233,12 @@ class HyperTTSPro(component_common.ConfigComponentBase):
     def trial_button_ok_pressed(self):
         self.trial_email_validation_label.setText('Verifying...')
         self.email = self.trial_email_input.text()
+        self.password = self.trial_password_input.text()
         self.hypertts.anki_utils.run_in_background(self.trial_email_signup_task, self.trial_email_signup_task_done)
 
     def trial_email_signup_task(self):
-        return self.hypertts.service_manager.cloudlanguagetools.request_trial_key(self.email)
+        client_uuid = self.hypertts.get_client_uuid()
+        return self.hypertts.service_manager.cloudlanguagetools.request_trial_key(self.email, self.password, client_uuid)
 
     @sc.event(Event.click_free_trial_confirm)
     def trial_email_signup_task_done(self, result):
