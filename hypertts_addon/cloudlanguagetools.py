@@ -134,7 +134,8 @@ class CloudLanguageTools():
     def request_trial_key(self, email, password, client_uuid):
         logger.info(f'requesting trial key for email {email}')
         
-        response = requests.post(self.vocabai_api_base_url + '/register_trial', json={'email': email})
+        data = self.build_trial_key_request_data(email, password, client_uuid)
+        response = requests.post(self.vocabai_api_base_url + '/register_trial', json=data)
         data = json.loads(response.content)
         logger.info(f'retrieved {data}')
         return data        
