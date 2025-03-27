@@ -3,6 +3,7 @@ import os
 import unittest
 import pytest
 import json
+import pprint
 
 from test_utils import testing_utils
 from test_utils import gui_testing_utils
@@ -10,6 +11,7 @@ from test_utils import gui_testing_utils
 from hypertts_addon import errors
 from hypertts_addon import config_models
 from hypertts_addon import constants
+from hypertts_addon import cloudlanguagetools
 
 class HyperTTSTests(unittest.TestCase):
 
@@ -477,3 +479,13 @@ yoyo
         audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
 
         assert audio_data['source_text'] == '老人家'
+
+    def test_trial_request_payload(self):
+        email = 'test@email.com'
+        client_uuid = '1234567890'
+        password = 'password@01'
+
+        cloudlanguagetools_instance = cloudlanguagetools.CloudLanguageTools()
+        data = cloudlanguagetools_instance.build_trial_key_request_data(email, password, client_uuid)
+        pprint.pprint(data)
+        self.assertTrue(False)
