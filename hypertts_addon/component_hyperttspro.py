@@ -77,7 +77,7 @@ class HyperTTSPro(component_common.ConfigComponentBase):
         label.setWordWrap(True)
         vlayout.addWidget(label)
         self.trial_email_input = aqt.qt.QLineEdit()
-        self.trial_email_input.setPlaceholderText("Enter your email")
+        self.trial_email_input.setPlaceholderText("Enter your email (no disposable email addresses)")
         vlayout.addWidget(self.trial_email_input)
         
         password_label = aqt.qt.QLabel("Password:")
