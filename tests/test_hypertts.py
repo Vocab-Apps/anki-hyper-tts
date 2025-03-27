@@ -494,3 +494,11 @@ yoyo
         self.assertEqual(data['id_1'], client_uuid)
         self.assertTrue('id_2' in data)  # machine ID will be dynamic
         self.assertTrue('id_3' in data)  # HMAC signature will be dynamic
+
+        pprint.pprint(data)
+
+        self.assertEqual(data, {'email': 'test@email.com',
+            'id_1': '1234567890',
+            'id_2': '5ada07e49da742fbb640595632bd36b8',
+            'id_3': '8929e02001664ae9d21f73a61e62f7aa024cd42304bf63b4af4ec11bbcc20d98',
+            'password': 'password@01'})
