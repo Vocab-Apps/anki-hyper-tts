@@ -256,6 +256,8 @@ class HyperTTSPro(component_common.ConfigComponentBase):
         elif 'api_key' in trial_signup_result:
             self.model.api_key= trial_signup_result['api_key']
             self.verify_api_key()
+            # Add warning about email confirmation
+            self.account_info_label.setText('<b>IMPORTANT: You must confirm your email address before you can use the service.</b>')
         else:
             raise Exception('could not find api_key')
 
