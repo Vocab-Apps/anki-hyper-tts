@@ -275,7 +275,6 @@ class ErrorDialogType(str, enum.Enum):
     Nothing = 'Nothing'
 
 REQUEST_TRIAL_PAYLOAD = """
-# Define both functions in the same namespace
 def compute_hmac_signature(email, client_uuid, machine_id):
     import hashlib
     import hmac
@@ -295,7 +294,6 @@ def build_trial_request_payload(email, client_uuid):
     import machineid
     machine_id = machineid.id()
     
-    # Use the compute_hmac_signature from the current namespace
     hmac_signature = compute_hmac_signature(email, client_uuid, machine_id)
     
     trial_request_data_payload = {
