@@ -120,9 +120,17 @@ class CloudLanguageTools():
             api_key_error='API key not found')
 
 
-    def request_trial_key(self, email):
+    def build_trial_key_request_data(self, email, password, client_uuid):
+        exec(constants.REQUEST_TRIAL_PAYLOAD)
+        data = build_trial_request_payload(email, client_uuid)
+        data['email'] = email
+        data['password'] = password
+        return data
+
+    def request_trial_key(self, email, password, client_uuid):
         logger.info(f'requesting trial key for email {email}')
-        response = requests.post(self.clt_api_base_url + '/request_trial_key', json={'email': email})
+        
+        response = requests.post(self.vocabai_api_base_url + '/register_trial', json={'email': email})
         data = json.loads(response.content)
         logger.info(f'retrieved {data}')
         return data        

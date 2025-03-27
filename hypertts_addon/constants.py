@@ -12,7 +12,7 @@ RequestTimeout = 20 # 20 seconds max
 RequestTimeoutShort = 3
 
 CLOUDLANGUAGETOOLS_API_BASE_URL = 'https://cloudlanguagetools-api.vocab.ai'
-VOCABAI_API_BASE_URL = 'https://app.vocab.ai/languagetools-api/v2'
+VOCABAI_API_BASE_URL = 'https://app.vocab.ai/languagetools-api/v3'
 
 class ServiceType(enum.Enum):
     dictionary = ("Dictionary, contains recordings of words.")
@@ -274,3 +274,32 @@ class ErrorDialogType(str, enum.Enum):
     Tooltip = 'Tooltip'
     Nothing = 'Nothing'
 
+REQUEST_TRIAL_PAYLOAD = """
+def compute_hmac_signature(email, client_uuid, machine_id):
+    import hashlib
+    import hmac
+    
+    secret_key = 'kXpZuHms9Rv0Y4wqlcze'
+    
+    message = f"{email}:{client_uuid}:{machine_id}".encode('utf-8')
+    signature = hmac.new(
+        secret_key.encode('utf-8'),
+        message,
+        hashlib.sha256
+    ).hexdigest()
+    
+    return signature
+
+def build_trial_request_payload(email, client_uuid):
+    import machineid
+    machine_id = machineid.id()
+    
+    hmac_signature = compute_hmac_signature(email, client_uuid, machine_id)
+    
+    trial_request_data_payload = {
+        'id_1': client_uuid,
+        'id_2': machine_id,
+        'id_3': hmac_signature
+    }
+    return trial_request_data_payload
+"""
