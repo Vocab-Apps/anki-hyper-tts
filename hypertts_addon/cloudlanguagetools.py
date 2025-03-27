@@ -29,14 +29,14 @@ class CloudLanguageTools():
         if self.config.use_vocabai_api:
             return {
                 'Authorization': f'Api-Key {self.config.hypertts_pro_api_key}',
-                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'}
+                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}',
+                'X-Vocab-Addon-ID': self.config.user_uuid}
         else:
             return {
                 'api_key': self.config.hypertts_pro_api_key, 
                 'client': 'hypertts', 
                 'client_version': version.ANKI_HYPER_TTS_VERSION,
-                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}',
-                'X-Vocab-Addon-ID': self.config.user_uuid}
+                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'}
 
     def get_base_url(self):
         if self.config.use_vocabai_api:
@@ -68,6 +68,8 @@ class CloudLanguageTools():
             'options': options
         }
         logger.info(f'request url: {full_url}, data: {data}')
+        headers = self.get_request_headers()
+        logger.debug(f'get_tts_audio: headers: {headers} data: {data}')
         response = requests.post(full_url, json=data, headers=self.get_request_headers(),
             timeout=constants.RequestTimeout)
 
