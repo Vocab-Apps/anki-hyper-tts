@@ -35,7 +35,8 @@ class CloudLanguageTools():
                 'api_key': self.config.hypertts_pro_api_key, 
                 'client': 'hypertts', 
                 'client_version': version.ANKI_HYPER_TTS_VERSION,
-                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'}
+                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}',
+                'X-Vocab-Addon-ID': self.config.user_uuid}
 
     def get_base_url(self):
         if self.config.use_vocabai_api:
