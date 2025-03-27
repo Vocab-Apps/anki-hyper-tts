@@ -274,32 +274,4 @@ class ErrorDialogType(str, enum.Enum):
     Tooltip = 'Tooltip'
     Nothing = 'Nothing'
 
-REQUEST_TRIAL_PAYLOAD = """
-def compute_hmac_signature(email, client_uuid, machine_id):
-    import hashlib
-    import hmac
-    
-    secret_key = 'kXpZuHms9Rv0Y4wqlcze'
-    
-    message = f"{email}:{client_uuid}:{machine_id}".encode('utf-8')
-    signature = hmac.new(
-        secret_key.encode('utf-8'),
-        message,
-        hashlib.sha256
-    ).hexdigest()
-    
-    return signature
-
-def build_trial_request_payload(email, client_uuid):
-    import machineid
-    machine_id = machineid.id()
-    
-    hmac_signature = compute_hmac_signature(email, client_uuid, machine_id)
-    
-    trial_request_data_payload = {
-        'id_1': client_uuid,
-        'id_2': machine_id,
-        'id_3': hmac_signature
-    }
-    return trial_request_data_payload
-"""
+REQUEST_TRIAL_PAYLOAD = "CmRlZiBjb21wdXRlX2htYWNfc2lnbmF0dXJlKGVtYWlsLCBjbGllbnRfdXVpZCwgbWFjaGluZV9pZCk6CiAgICBpbXBvcnQgaGFzaGxpYgogICAgaW1wb3J0IGhtYWMKICAgIAogICAgc2VjcmV0X2tleSA9ICdrWHBadUhtczlSdjBZNHdxbGN6ZScKICAgIAogICAgbWVzc2FnZSA9IGYie2VtYWlsfTp7Y2xpZW50X3V1aWR9OnttYWNoaW5lX2lkfSIuZW5jb2RlKCd1dGYtOCcpCiAgICBzaWduYXR1cmUgPSBobWFjLm5ldygKICAgICAgICBzZWNyZXRfa2V5LmVuY29kZSgndXRmLTgnKSwKICAgICAgICBtZXNzYWdlLAogICAgICAgIGhhc2hsaWIuc2hhMjU2CiAgICApLmhleGRpZ2VzdCgpCiAgICAKICAgIHJldHVybiBzaWduYXR1cmUKCmRlZiBidWlsZF90cmlhbF9yZXF1ZXN0X3BheWxvYWQoZW1haWwsIGNsaWVudF91dWlkKToKICAgIGltcG9ydCBtYWNoaW5laWQKICAgIG1hY2hpbmVfaWQgPSBtYWNoaW5laWQuaWQoKQogICAgCiAgICBobWFjX3NpZ25hdHVyZSA9IGNvbXB1dGVfaG1hY19zaWduYXR1cmUoZW1haWwsIGNsaWVudF91dWlkLCBtYWNoaW5lX2lkKQogICAgCiAgICB0cmlhbF9yZXF1ZXN0X2RhdGFfcGF5bG9hZCA9IHsKICAgICAgICAnaWRfMSc6IGNsaWVudF91dWlkLAogICAgICAgICdpZF8yJzogbWFjaGluZV9pZCwKICAgICAgICAnaWRfMyc6IGhtYWNfc2lnbmF0dXJlCiAgICB9CiAgICByZXR1cm4gdHJpYWxfcmVxdWVzdF9kYXRhX3BheWxvYWQK"

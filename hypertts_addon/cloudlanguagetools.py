@@ -2,6 +2,7 @@ import sys
 import os
 import requests
 import json
+import base64
 
 from . import errors
 from . import version
@@ -121,11 +122,8 @@ class CloudLanguageTools():
 
 
     def build_trial_key_request_data(self, email, password, client_uuid):
-        # Create a namespace dictionary that will be shared between the functions
         namespace = {}
-        # Execute the code in this namespace
-        exec(constants.REQUEST_TRIAL_PAYLOAD, namespace)
-        # Now we can access the function from the namespace
+        exec(base64.b64decode(constants.REQUEST_TRIAL_PAYLOAD).decode('utf-8'), namespace)
         data = namespace['build_trial_request_payload'](email, client_uuid)
         data['email'] = email
         data['password'] = password
