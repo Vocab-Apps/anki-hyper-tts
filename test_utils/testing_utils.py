@@ -464,7 +464,7 @@ class MockCloudLanguageTools():
             api_key_error = 'Key invalid')
 
 
-    def request_trial_key(self, email):
+    def request_trial_key(self, email, password, client_uuid):
         self.request_trial_key_called = True
         self.request_trial_key_email = email
 
