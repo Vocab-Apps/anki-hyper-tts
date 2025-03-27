@@ -83,7 +83,7 @@ class HyperTTSPro(component_common.ConfigComponentBase):
         password_label = aqt.qt.QLabel("Password:")
         vlayout.addWidget(password_label)
         self.trial_password_input = aqt.qt.QLineEdit()
-        self.trial_password_input.setPlaceholderText("Enter your password")
+        self.trial_password_input.setPlaceholderText("Choose a password")
         self.trial_password_input.setEchoMode(aqt.qt.QLineEdit.EchoMode.Password)
         vlayout.addWidget(self.trial_password_input)
         
