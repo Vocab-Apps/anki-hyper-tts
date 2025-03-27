@@ -775,6 +775,10 @@ class HyperTTS():
 
     # services config
 
+    def get_client_uuid(self) -> str:
+        client_uuid = self.config[constants.CONFIG_CONFIGURATION]['user_uuid']
+        return client_uuid
+
     def save_configuration(self, configuration_model):
         configuration_model = self.service_manager.remove_non_existent_services(configuration_model)
         configuration_model.validate()

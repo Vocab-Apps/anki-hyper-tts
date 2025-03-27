@@ -60,7 +60,7 @@ else:
     if user_uuid != None:
         user_id = user_uuid
     else:
-        user_uuid = uuid.uuid1().hex
+        user_uuid = uuid.uuid4().hex
         config_configuration['user_uuid'] = user_uuid
         addon_config[constants.CONFIG_CONFIGURATION] = config_configuration
         aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, addon_config)
