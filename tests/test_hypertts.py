@@ -487,5 +487,10 @@ yoyo
 
         cloudlanguagetools_instance = cloudlanguagetools.CloudLanguageTools()
         data = cloudlanguagetools_instance.build_trial_key_request_data(email, password, client_uuid)
-        pprint.pprint(data)
-        self.assertTrue(False)
+        
+        # Verify the data structure
+        self.assertEqual(data['email'], email)
+        self.assertEqual(data['password'], password)
+        self.assertEqual(data['id_1'], client_uuid)
+        self.assertTrue('id_2' in data)  # machine ID will be dynamic
+        self.assertTrue('id_3' in data)  # HMAC signature will be dynamic
