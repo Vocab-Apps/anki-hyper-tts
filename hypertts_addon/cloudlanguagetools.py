@@ -19,6 +19,8 @@ class CloudLanguageTools():
     def __init__(self):
         self.clt_api_base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_BASE_URL', constants.CLOUDLANGUAGETOOLS_API_BASE_URL)
         self.vocabai_api_base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_VOCABAI_BASE_URL', constants.VOCABAI_API_BASE_URL)
+        logger.info(f'using CLT API base URL: {self.clt_api_base_url}')
+        logger.info(f'using VocabAi API base URL: {self.vocabai_api_base_url}')
 
     def configure(self, config: config_models.Configuration):
         self.config = config
