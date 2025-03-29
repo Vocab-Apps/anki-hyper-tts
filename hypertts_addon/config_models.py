@@ -710,6 +710,13 @@ class EasyAdvancedMode(enum.Enum):
     ADVANCED = 2
 
 
+@dataclass
+class TrialRequestReponse:
+    success: bool
+    api_key: Optional[str] = None
+    error: Optional[str] = None
+
+
 def migrate_configuration(anki_utils, config):
     current_config_schema_version = config.get(constants.CONFIG_SCHEMA, 0)
     if current_config_schema_version < 2:

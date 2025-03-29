@@ -469,13 +469,13 @@ class MockCloudLanguageTools():
         self.request_trial_key_email = email
 
         if email == 'valid@email.com':
-            return {
-                'api_key': 'trial_key'
-            }
-
-        return {
-            'error': 'invalid email'
-        }
+            return config_models.TrialRequestReponse(
+                success=True,
+                api_key='trial_key')
+        return config_models.TrialRequestReponse(
+            success=False,
+            error='invalid email',
+        )
 
 
     def get_tts_audio(self, api_key, source_text, service, language_code, voice_key, options):

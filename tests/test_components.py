@@ -2504,7 +2504,7 @@ def test_hyperttspro_test_1(qtbot):
     logger.info('entering incorrect email for trial signup')
     model_change_callback.model = None
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_TRIAL
-    qtbot.keyClicks(hyperttspro.trial_email_input, 'spam@spam.com')    
+    qtbot.keyClicks(hyperttspro.trial_email_input, 'spam@spam.com')
     qtbot.mouseClick(hyperttspro.enter_trial_email_ok_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_TRIAL
     assert hyperttspro.trial_email_validation_label.text() == 'invalid email'

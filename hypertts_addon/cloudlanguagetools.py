@@ -10,6 +10,7 @@ from . import constants
 from . import config_models
 from . import voice as voice_module
 from . import logging_utils
+from . import config_models
 logger = logging_utils.get_child_logger(__name__)
 
 if hasattr(sys, '_sentry_crash_reporting'):
@@ -134,11 +135,23 @@ class CloudLanguageTools():
         data['password'] = password
         return data
 
-    def request_trial_key(self, email, password, client_uuid):
+    def request_trial_key(self, email, password, client_uuid) -> config_models.TrialRequestReponse:
         logger.info(f'requesting trial key for email {email}')
         
         data = self.build_trial_key_request_data(email, password, client_uuid)
         response = requests.post(self.vocabai_api_base_url + '/register_trial', json=data)
         data = json.loads(response.content)
-        logger.info(f'retrieved {data}')
-        return data        
+        logger.info(f'retrieved {data}, status_code: {response.status_code}')
+
+        if response.status_code == 201:
+            # trial key was successfully created
+            return config_models.TrialRequestReponse(
+                success=True,
+                api_key=data['trial_key']
+            )
+        else:
+            error_message = ', '.join([f"{key}: {value}" for key, value in data.items()])
+            return config_models.TrialRequestReponse(
+                success=False,
+                error=error_message
+            )

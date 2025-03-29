@@ -1,6 +1,7 @@
 import sys
 import aqt.qt
 import webbrowser
+import pprint
 
 from . import component_common
 from . import constants
@@ -249,17 +250,15 @@ class HyperTTSPro(component_common.ConfigComponentBase):
             logger.debug(f'trial_signup_result: {trial_signup_result}')
             self.hypertts.anki_utils.run_on_main(lambda: self.trial_email_signup_update(trial_signup_result))
 
-    def trial_email_signup_update(self, trial_signup_result):
-        logger.info(f'trial_signup_result: {trial_signup_result}')
-        if 'error' in trial_signup_result:
-            self.trial_email_validation_label.setText(trial_signup_result['error'])
-        elif 'api_key' in trial_signup_result:
-            self.model.api_key= trial_signup_result['api_key']
+    def trial_email_signup_update(self, trial_signup_result: config_models.TrialRequestReponse):
+        logger.info(f'trial_signup_result: {pprint.pformat(trial_signup_result)}')
+        if trial_signup_result.success == False:
+            self.trial_email_validation_label.setText(trial_signup_result.error)
+        else:
+            self.model.api_key= trial_signup_result.api_key
             self.verify_api_key()
             # Add warning about email confirmation
             self.hypertts.anki_utils.info_message('<b>IMPORTANT: You must confirm your email address before you can use the service.</b>', None)
-        else:
-            raise Exception('could not find api_key')
 
     def pro_api_key_entered(self):
         if self.hypertts_pro_stack.currentIndex() == self.PRO_STACK_LEVEL_API_KEY:
