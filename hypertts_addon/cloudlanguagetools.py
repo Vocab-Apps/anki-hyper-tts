@@ -147,7 +147,7 @@ class CloudLanguageTools():
             # trial key was successfully created
             return config_models.TrialRequestReponse(
                 success=True,
-                api_key=data['trial_key']
+                api_key=data['api_key']
             )
         else:
             error_message = '<b>error:</b> ' + ', '.join([f"{key}: {value}" for key, value in data.items()])
