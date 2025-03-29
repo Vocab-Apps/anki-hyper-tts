@@ -258,7 +258,7 @@ class HyperTTSPro(component_common.ConfigComponentBase):
             self.model.api_key= trial_signup_result.api_key
             self.verify_api_key()
             # Add warning about email confirmation
-            self.hypertts.anki_utils.info_message('<b>IMPORTANT: You must confirm your email address before you can use the service.</b>', None)
+            self.hypertts.anki_utils.info_message(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_CONFIRM_EMAIL, None)
 
     def pro_api_key_entered(self):
         if self.hypertts_pro_stack.currentIndex() == self.PRO_STACK_LEVEL_API_KEY:

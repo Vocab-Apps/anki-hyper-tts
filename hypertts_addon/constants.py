@@ -231,7 +231,10 @@ GUI_TEXT_HYPERTTS_PRO_ENTER_API_KEY = """Enter HyperTTS Pro / AwesomeTTS Plus / 
 
 GUI_TEXT_HYPERTTS_PRO_ENABLED = """<b>HyperTTS Pro Enabled</b>"""
 GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL = """Enter your email to get trial access instantly. """\
-"""Try all <b>1200 premium voices, 60+ languages</b>. Trial quota of 5,000 characters."""
+"""Try all <b>1200 premium voices, 60+ languages</b>. Trial quota of 50,000 characters."""
+
+GUI_TEXT_HYPERTTS_PRO_TRIAL_CONFIRM_EMAIL = """<b>IMPORTANT</b>: You must confirm your email address before you can use the service. """\
+"""The email subject should be <b>Please Confirm Your Email Address</b> and sender: <b>Vocab.Ai</b>."""
 
 GUI_TEXT_REALTIME_SINGLE_NOTE = """Please select a single note to add Realtime Audio"""
 GUI_TEXT_REALTIME_CHOOSE_TEMPLATE = """Choose card template"""
