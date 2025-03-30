@@ -39,6 +39,12 @@ class CloudLanguageTools():
                 'client_version': version.ANKI_HYPER_TTS_VERSION,
                 'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'}
 
+    def get_trial_request_headers(self):
+        return {
+            'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}',
+            'X-Vocab-Addon-ID': self.config.user_uuid
+        }
+
     def get_base_url(self):
         if self.config.use_vocabai_api:
             if self.config.vocabai_api_url_override != None:
@@ -139,7 +145,9 @@ class CloudLanguageTools():
         logger.info(f'requesting trial key for email {email}')
         
         data = self.build_trial_key_request_data(email, password, client_uuid)
-        response = requests.post(self.vocabai_api_base_url + '/register_trial', json=data)
+        response = requests.post(self.vocabai_api_base_url + '/register_trial', 
+                                 json=data,
+                                 headers=self.get_trial_request_headers())
         data = json.loads(response.content)
         logger.info(f'retrieved {data}, status_code: {response.status_code}')
 
