@@ -57,12 +57,14 @@ class HyperTTS():
 
             modified_notes = []
 
+            audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.batch)
+            
             for note_id in note_id_list:
                 with batch_status.get_note_action_context(note_id, False) as note_action_context:
                     note = self.anki_utils.get_note_by_id(note_id)
                     # process note
                     source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, False,
-                        context.AudioRequestContext(constants.AudioRequestReason.batch), None, anki_collection)
+                        audio_request_context, None, anki_collection)
                     # update note action context
                     note_action_context.set_source_text(source_text)
                     note_action_context.set_processed_text(processed_text)

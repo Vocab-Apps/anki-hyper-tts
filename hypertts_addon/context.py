@@ -1,10 +1,12 @@
 import sys
+import uuid
 
 from . import constants
 
 class AudioRequestContext():
     def __init__(self, audio_request_reason: constants.AudioRequestReason):
         self.audio_request_reason = audio_request_reason
+        self.batch_uuid = uuid.uuid4()
 
     def get_request_mode(self) -> constants.RequestMode:
         request_mode_map = {

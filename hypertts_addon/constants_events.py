@@ -14,6 +14,7 @@ class EventContext(enum.Enum):
     generate = enum.auto()
     voice_selection = enum.auto()
     choose_easy_advanced = enum.auto()
+    servicemanager = enum.auto()
 
 # events
 class Event(enum.Enum):
@@ -33,6 +34,8 @@ class Event(enum.Enum):
     click_sign_up = enum.auto()
     click_free_trial_ok = enum.auto()
     click_free_trial_confirm = enum.auto()
+    # backend
+    get_tts_audio = enum.auto()
 
 class EventMode(enum.Enum):
     advanced_browser_existing_preset = enum.auto()

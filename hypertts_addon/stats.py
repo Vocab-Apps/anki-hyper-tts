@@ -22,14 +22,16 @@ class StatsGlobal:
     def publish(self, 
                 context: constants_events.EventContext, 
                 event: constants_events.Event,
-                event_mode: constants_events.EventMode):
+                event_mode: constants_events.EventMode,
+                event_properties: dict):
         logger.debug('publish')
         def get_publish_lambda(context: constants_events.EventContext, event: constants_events.Event,
-                               event_mode: constants_events.EventMode):
+                               event_mode: constants_events.EventMode,
+                               event_properties: dict):
             def publish():
-                self.publish_event(context, event, event_mode)
+                self.publish_event(context, event, event_mode, event_properties)
             return publish
-        self.anki_utils.run_in_background(get_publish_lambda(context, event, event_mode), None)
+        self.anki_utils.run_in_background(get_publish_lambda(context, event, event_mode, event_properties), None)
 
     def construct_event_name(self, context: constants_events.EventContext, event: constants_events.Event):
         return f'{constants_events.PREFIX}:{constants_events.ADDON}:{context.name}:{event.name}'
@@ -37,13 +39,13 @@ class StatsGlobal:
     def publish_event(self, 
                 context: constants_events.EventContext, 
                 event: constants_events.Event,
-                event_mode: constants_events.EventMode):
+                event_mode: constants_events.EventMode,
+                event_properties: dict):
         logger.debug('publishing event')
         # in background thread
         headers = {
             "Content-Type": "application/json"
         }
-        event_properties = {}
         if event_mode:
             event_properties['mode'] = event_mode.name
         payload = {
@@ -72,11 +74,12 @@ class StatsGlobal:
 
 def event_global(event: constants_events.Event):
     if hasattr(sys, '_hypertts_stats_global'):
-        sys._hypertts_stats_global.publish(constants_events.EventContext.addon, event, None)
+        sys._hypertts_stats_global.publish(constants_events.EventContext.addon, event, None, {})
 
-def send_event(context: constants_events.EventContext, event: constants_events.Event, event_mode: constants_events.EventMode = None):
+def send_event(context: constants_events.EventContext, event: constants_events.Event, event_mode: constants_events.EventMode,
+               event_properties: dict):
     if hasattr(sys, '_hypertts_stats_global'):
-        sys._hypertts_stats_global.publish(context, event, event_mode)
+        sys._hypertts_stats_global.publish(context, event, event_mode, event_properties)
 
 class StatsEvent:
     def __init__(self, 
@@ -90,7 +93,7 @@ class StatsEvent:
     def __call__(self, func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            send_event(self.context, self.event, self.event_mode)
+            send_event(self.context, self.event, self.event_mode, {})
             return func(*args, **kwargs)
         return wrapper
 
@@ -102,5 +105,6 @@ class StatsContext:
     def event(self, event: constants_events.Event, event_mode: constants_events.EventMode = None):
         return StatsEvent(self.context, event, event_mode)
 
-    def send_event(self, event: constants_events.Event, event_mode: constants_events.EventMode = None):
-        send_event(self.context, event, event_mode)
+    def send_event(self, event: constants_events.Event, event_mode: constants_events.EventMode = None,
+                   properties: dict = {}):
+        send_event(self.context, event, event_mode, properties)

@@ -13,10 +13,14 @@ from . import service
 from . import errors
 from . import version
 from . import constants
+from . import constants_events
 from . import config_models
 from . import cloudlanguagetools as cloudlanguagetools_module
 from . import logging_utils
+from . import stats
 logger = logging_utils.get_child_logger(__name__)
+
+sc = stats.StatsContext(constants_events.EventContext.servicemanager)
 
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
@@ -174,7 +178,16 @@ class ServiceManager():
             raise raise_exception
 
     def get_tts_audio_implementation(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):
-        if self.use_cloud_language_tools(voice):
+        use_clt = self.use_cloud_language_tools(voice)
+        sc.send_event(constants_events.Event.get_tts_audio, event_mode = None,
+                   properties = {
+                       'use_clt': use_clt,
+                       'service_fee': voice.service_fee.name,
+                       'service': voice.service,
+                       'voice_name': voice.name,
+                       'voice_key': voice.voice_key,
+                   })
+        if use_clt:
             logger.debug(f'voice: {voice}, using cloudlanguagetools')
             return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)
         else:
