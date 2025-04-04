@@ -81,6 +81,12 @@ def send_event(context: constants_events.EventContext, event: constants_events.E
     if hasattr(sys, '_hypertts_stats_global'):
         sys._hypertts_stats_global.publish(context, event, event_mode, event_properties)
 
+def send_event_bg(context: constants_events.EventContext, event: constants_events.Event, event_mode: constants_events.EventMode,
+               event_properties: dict):
+    # we are already in the background thread
+    if hasattr(sys, '_hypertts_stats_global'):
+        sys._hypertts_stats_global.publish_event(context, event, event_mode, event_properties)
+
 class StatsEvent:
     def __init__(self, 
                  context: constants_events.EventContext, 
@@ -108,3 +114,4 @@ class StatsContext:
     def send_event(self, event: constants_events.Event, event_mode: constants_events.EventMode = None,
                    properties: dict = {}):
         send_event(self.context, event, event_mode, properties)
+
