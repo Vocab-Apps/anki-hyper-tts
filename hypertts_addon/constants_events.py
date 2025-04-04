@@ -6,6 +6,8 @@ import enum
 PREFIX = 'anki_addon_v1'
 ADDON = 'hypertts'
 
+GENERATE_MAX_EVENTS = 5
+
 # contexts
 class EventContext(enum.Enum):
     addon = enum.auto()

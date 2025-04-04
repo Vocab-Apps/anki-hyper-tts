@@ -20,6 +20,9 @@ from . import logging_utils
 from . import stats
 logger = logging_utils.get_child_logger(__name__)
 
+# don't publish more than X events for a batch uuid
+COUNT_BY_BATCH_UUID = {}
+
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
 
@@ -178,16 +181,22 @@ class ServiceManager():
     def get_tts_audio_implementation(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):
         logger.debug(f'get_tts_audio_implementation for voice: {voice}, source_text: {source_text}')
         use_clt = self.use_cloud_language_tools(voice)
-        stats.send_event_bg(constants_events.EventContext.servicemanager,
-                            constants_events.Event.get_tts_audio, 
-                            None,
-                            {
-                                'use_clt': use_clt,
-                                'service_fee': voice.service_fee.name,
-                                'service': voice.service,
-                                'voice_name': voice.name,
-                                'voice_key': voice.voice_key,
-                            })
+
+        event_count = COUNT_BY_BATCH_UUID.get(audio_request_context.batch_uuid, 0)
+        if event_count < constants_events.GENERATE_MAX_EVENTS:
+            stats.send_event_bg(constants_events.EventContext.servicemanager,
+                                constants_events.Event.get_tts_audio, 
+                                None,
+                                {
+                                    'use_clt': use_clt,
+                                    'service_fee': voice.service_fee.name,
+                                    'service': voice.service,
+                                    'voice_name': voice.name,
+                                    'voice_key': voice.voice_key,
+                                })
+            event_count += 1
+            COUNT_BY_BATCH_UUID[audio_request_context.batch_uuid] = event_count
+
         if use_clt:
             logger.debug(f'voice: {voice}, using cloudlanguagetools')
             return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)
