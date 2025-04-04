@@ -11,6 +11,7 @@ from hypertts_addon import languages
 from hypertts_addon import servicemanager
 from hypertts_addon import voice
 from hypertts_addon import errors
+from hypertts_addon import context
 
 
 class ServiceManagerTests(unittest.TestCase):
@@ -254,7 +255,7 @@ class ServiceManagerTests(unittest.TestCase):
         assert len(subset) == 1
         servicea_voice_1 = subset[0]
 
-        audio_result = self.manager.get_tts_audio('test sentence 123', servicea_voice_1, {}, None)
+        audio_result = self.manager.get_tts_audio('test sentence 123', servicea_voice_1, {}, context.AudioRequestContext(constants.AudioRequestReason.batch))
 
         audio_result_dict = json.loads(audio_result)
 
