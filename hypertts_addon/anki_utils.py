@@ -1,4 +1,4 @@
-import sys
+'import sys
 import os
 import datetime
 import uuid
@@ -9,10 +9,14 @@ import anki.collection
 import aqt.qt
 from typing import List
 from . import constants    
+from . import constants_events
 from . import errors
+from . import stats
 
 from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
+
+sc_error = stats.StatsContext(constants_events.EventContext.addon)
 
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
@@ -301,13 +305,22 @@ class AnkiUtils():
     def display_dialog(self, dialog):
         return dialog.exec()
 
+    def report_error_event(self, error_message):
+        sc_error.send_event(constants_events.Event.error, 
+                            event_mode = None,
+                            properties = {
+                                'error_message': error_message
+                            })
+
     def report_known_exception_interactive_dialog(self, exception, action):
         error_message = f'Encountered an error while {action}: {str(exception)}'
         self.critical_message(error_message, None)
+        self.report_error_event(error_message)
 
     def report_known_exception_interactive_tooltip(self, exception, action):
         error_message = f'Encountered an error while {action}: {str(exception)}'
         self.tooltip_message(error_message)
+        self.report_error_event(error_message)
 
     def report_unknown_exception_interactive(self, exception, action):
         error_message = f'Encountered an unknown error while {action}: {str(exception)}'
@@ -316,6 +329,7 @@ class AnkiUtils():
         else:
             logger.critical(exception, exc_info=True)
         self.critical_message(error_message, None)
+        self.report_error_event(error_message)
 
     def report_unknown_exception_background(self, exception):
         if hasattr(sys, '_sentry_crash_reporting'):

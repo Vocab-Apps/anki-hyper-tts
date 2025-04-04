@@ -38,6 +38,7 @@ class Event(enum.Enum):
     click_free_trial_confirm = enum.auto()
     # backend
     get_tts_audio = enum.auto()
+    error = enum.auto()
 
 class EventMode(enum.Enum):
     advanced_browser_existing_preset = enum.auto()
