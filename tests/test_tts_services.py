@@ -366,14 +366,10 @@ class TTSTests(unittest.TestCase):
 
         # test Chirp voice
         audio_language = languages.AudioLanguage.en_US
-        voice_list = self.manager.full_voice_list()
-        chirp_voices = [voice for voice in voice_list if voice.service == 'Google' and 'Chirp3-HD-Charon' in voice.voice_key['name']]
-        if len(chirp_voices) > 0:
-            chirp_voice = chirp_voices[0]
-            self.verify_audio_output(chirp_voice, audio_language, 'This is the first sentence')
-        else:
-            logger.warning('Could not find Google Chirp3-HD-Charon voice, skipping test')
-        
+        chirp_voices = [voice for voice in voice_list if voice.service == 'Google' and 'en-US-Chirp3-HD-Charon' in voice.voice_key['name']]
+        self.assertEqual(len(chirp_voices), 1)
+        chirp_voice = chirp_voices[0]
+        self.verify_audio_output(chirp_voice, audio_language, 'This is the first sentence')
 
         # error checking
         # try a voice which doesn't exist
