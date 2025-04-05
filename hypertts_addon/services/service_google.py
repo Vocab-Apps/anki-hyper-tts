@@ -74,9 +74,7 @@ class Google(service.ServiceBase):
                 "pitch": voice_options.get('pitch', voice.options['pitch']['default']),
                 "speakingRate": voice_options.get('speaking_rate', voice.options['speaking_rate']['default']),
             },
-            "input": {
-                "ssml": f"<speak>{source_text}</speak>"
-            },
+            "input": input,
             "voice": {
                 "languageCode": voice.voice_key['language_code'],
                 "name": voice.voice_key['name'],
