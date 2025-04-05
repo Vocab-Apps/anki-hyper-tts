@@ -364,6 +364,11 @@ class TTSTests(unittest.TestCase):
         selected_voice = self.pick_random_voice(voice_list, service_name, audio_language)
         self.verify_audio_output(selected_voice, audio_language, 'This is the first sentence', voice_options={'format': 'ogg_opus'})
 
+        # test Chirp voice
+        # audio_language = languages.AudioLanguage.en_US
+        # select
+        
+
         # error checking
         # try a voice which doesn't exist
         selected_voice = self.pick_random_voice(voice_list, 'Google', languages.AudioLanguage.en_US)
