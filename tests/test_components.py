@@ -1121,6 +1121,47 @@ def test_component_source_easy_initial_clipboard_selected(qtbot):
     assert source.clipboard_preview_label.isEnabled() == True
     assert source.clipboard_preview_label.text() == '(clipboard text)'
 
+def test_component_source_easy_initial_selected_only(qtbot):
+    # try to reproduce:
+    # https://github.com/Vocab-Apps/anki-hyper-tts/issues/247
+    # model has Front and Back
+    # user selects the whole Back field
+    # the easy dialog pops up with selection_radio
+    # the field_combobox has Front (empty)
+    # and then when generating, the sound incorrectly goes to Front
+    #  => it should go to Back instead
+    def build_editor_context_fn(note):
+        return config_models.EditorContext(
+            note=note, 
+            editor=None, 
+            add_mode=False, 
+            selected_text='selected text',
+            current_field='English', 
+            clipboard=None)
+    dialog, source, model_change_callback = fixtures_source_easy(build_editor_context_fn)
+
+    # verify initial state
+    assert source.source_text_origin == config_models.SourceTextOrigin.SELECTION
+    assert source.get_current_text() == 'selected text'
+    
+    # source field is always enabled
+    assert source.field_radio.isEnabled() == True
+    # but not checked (since we have selected text)
+    assert source.field_radio.isChecked() == False
+    # it should display the English field by default
+    assert source.field_combobox.currentText() == 'English (old people)'
+    assert source.field_combobox.currentData() == 'English'    
+
+    # we have selected text, selection_radio should be enabled
+    assert source.selection_radio.isEnabled() == True
+    assert source.selection_radio.isChecked() == True
+    assert source.selection_preview_label.isEnabled() == True
+    assert source.selection_preview_label.text() == '(selected text)'
+
+    # we have no clipboard text
+    assert source.clipboard_radio.isEnabled() == False
+    assert source.clipboard_radio.isChecked() == False
+
 def test_component_source_easy_select_field(qtbot):
     def build_editor_context_fn(note):
         return config_models.EditorContext(
