@@ -57,6 +57,17 @@ class Google(service.ServiceBase):
             options.AudioFormat.ogg_opus: 'OGG_OPUS'
         }
 
+        input_ssml = {
+            "ssml": f"<speak>{source_text}</speak>"
+        }
+        input_text = {
+            "text": source_text
+        }
+        input = input_ssml
+        if 'Chirp' in voice.voice_key['name']:
+            input = input_text
+
+
         payload = {
             "audioConfig": {
                 "audioEncoding": audio_format_map[audio_format],
