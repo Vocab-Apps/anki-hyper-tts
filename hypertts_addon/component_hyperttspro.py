@@ -243,7 +243,6 @@ class HyperTTSPro(component_common.ConfigComponentBase):
         client_uuid = self.hypertts.get_client_uuid()
         return self.hypertts.service_manager.cloudlanguagetools.request_trial_key(self.email, self.password, client_uuid)
 
-    @sc.event(Event.click_free_trial_confirm)
     def trial_email_signup_task_done(self, result):
         with self.hypertts.error_manager.get_single_action_context('Signing up for trial'):
             trial_signup_result = result.result()
