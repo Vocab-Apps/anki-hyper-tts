@@ -15,3 +15,4 @@ openai
 urllib3<2
 bump2version
 argcomplete
+pytest-xdist

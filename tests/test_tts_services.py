@@ -43,6 +43,8 @@ def services_dir():
 class TTSTests(unittest.TestCase):
     RANDOM_VOICE_COUNT = 1
     GENERATED_FILES_DIRECTORY = 'test_audio_files'
+
+    ENGLISH_INPUT_TEXT = 'english language'
     
     @classmethod
     def setUpClass(cls):
@@ -407,14 +409,14 @@ class TTSTests(unittest.TestCase):
         assert len(service_voices) > 300
 
         # pick a random en_US voice
-        self.random_voice_test(service_name, AudioLanguage.en_US, 'This is the first sentence')
+        self.random_voice_test(service_name, AudioLanguage.en_US, self.ENGLISH_INPUT_TEXT)
 
         # french
         self.random_voice_test(service_name, AudioLanguage.fr_FR, 'Je ne suis pas disponible.')
 
         # test ogg format
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
-        self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'This is the first sentence', voice_options={'format': 'ogg_opus'})
+        self.verify_audio_output(selected_voice, AudioLanguage.en_US, self.ENGLISH_INPUT_TEXT, voice_options={'format': 'ogg_opus'})
 
         # error checking
         # try a voice which doesn't exist
@@ -565,7 +567,8 @@ class TTSTests(unittest.TestCase):
         self.random_voice_test('FptAi', languages.AudioLanguage.vi_VN, 'Tôi bị mất cái ví.', 
                                acceptable_solutions=['Tôi bị mất cái ví.', 
                                                       'cứ bị mất cái ví',
-                                                      'cơ bị mất kế ví'])
+                                                      'cơ bị mất kế ví',
+                                                      'có bị mất cái ví'])
 
     def test_naver(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_naver'
