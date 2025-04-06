@@ -313,9 +313,6 @@ def init(hypertts):
                     <h3 style="margin: 0;">Thank you for installing HyperTTS</h3>
                     <button id="hypertts-welcome-close" style="background: none; border: none; cursor: pointer; font-size: 1.2em; color: {text_color};">× Close</button>
                 </div>
-                <div style="text-align: center; margin: 15px 0;">
-                    <img src="{banner_path}" style="max-width: 100%; height: auto;" alt="HyperTTS Lite">
-                </div>
                 <p>HyperTTS allows you to add audio to your Anki cards using text-to-speech services.</p>
                 <div style="text-align: center; margin-top: 10px;">
                     <button id="hypertts-configure-services" style="padding: 5px 10px; margin-right: 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">Configure Services</button>
