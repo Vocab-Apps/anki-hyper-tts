@@ -283,7 +283,41 @@ def init(hypertts):
     # 
 
 
+    def should_show_welcome_message(hypertts):
+        config = hypertts.anki_utils.config
+        welcome_shown = config.get(constants.CONFIG_WELCOME_MESSAGE_SHOWN, False)
+        return not welcome_shown
+
     def on_deck_browser_will_render_content(deck_browser, content):
-        content.stats += "\\n<div>my html</div>"    
+        if should_show_welcome_message(hypertts):
+            welcome_html = """
+            <div id="hypertts-welcome-message" style="margin: 1em 0; padding: 1em; background-color: #f0f8ff; border: 1px solid #add8e6; border-radius: 5px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0;">Thank you for installing HyperTTS</h3>
+                    <button id="hypertts-welcome-close" style="background: none; border: none; cursor: pointer; font-size: 1.2em;">×</button>
+                </div>
+                <p>HyperTTS allows you to add audio to your Anki cards using text-to-speech services.</p>
+            </div>
+            <script>
+                (function() {
+                    document.getElementById('hypertts-welcome-close').addEventListener('click', function() {
+                        document.getElementById('hypertts-welcome-message').style.display = 'none';
+                        pycmd('hypertts:welcome_closed');
+                    });
+                })();
+            </script>
+            """
+            content.stats += welcome_html
+    
     aqt.gui_hooks.deck_browser_will_render_content.append(on_deck_browser_will_render_content)
+    
+    def on_bridge_cmd(handled, cmd):
+        if cmd.startswith('hypertts:welcome_closed'):
+            config = hypertts.anki_utils.config
+            config[constants.CONFIG_WELCOME_MESSAGE_SHOWN] = True
+            hypertts.anki_utils.write_config(config)
+            return (True, None)
+        return handled
+    
+    aqt.gui_hooks.webview_did_receive_js_message.append(on_bridge_cmd)
     
