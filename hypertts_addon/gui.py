@@ -290,7 +290,7 @@ def init(hypertts):
     def on_deck_browser_will_render_content(deck_browser, content):
         if should_show_welcome_message(hypertts):
             welcome_html = """
-            <div id="hypertts-welcome-message" style="margin: 1em 0; padding: 1em; background-color: #f0f8ff; border: 1px solid #add8e6; border-radius: 5px;">
+            <div id="hypertts-welcome-message" style="margin: 1em 0; padding: 1em; background-color: white; border: 1px solid #cccccc; border-radius: 5px;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h3 style="margin: 0;">Thank you for installing HyperTTS</h3>
                     <button id="hypertts-welcome-close" style="background: none; border: none; cursor: pointer; font-size: 1.2em;">× Close</button>
