@@ -330,6 +330,12 @@ def init(hypertts):
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                 }}
+                
+                .important-gradient-text {{
+                    background: linear-gradient(to right, #ff748d, #ff7daf);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }}
             </style>
             <script>
                 (function() {{
