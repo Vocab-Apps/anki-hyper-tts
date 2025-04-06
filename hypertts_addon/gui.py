@@ -326,6 +326,9 @@ def init(hypertts):
                 #hypertts-configure-services:hover, #hypertts-how-to-add-audio:hover {{
                     background-color: {button_bg_color} !important;
                     color: {button_text_color} !important;
+                    border-color: {button_bg_color} !important;
+                    outline: none !important;
+                    box-shadow: none !important;
                 }}
             </style>
             <script>
