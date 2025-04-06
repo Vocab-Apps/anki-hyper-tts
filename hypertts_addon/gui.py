@@ -324,21 +324,10 @@ def init(hypertts):
             </div>
             <style>
                 .hypertts-welcome-button {{
-                    padding: 5px 10px;
-                    background-color: {button_bg_color};
-                    color: {button_text_color};
-                    border: none;
-                    border-radius: 3px;
                     cursor: pointer;
                 }}
                 
-                .hypertts-welcome-button:hover {{
-                    background-color: #6abf6e !important; /* Lighter green on hover */
-                    color: {button_text_color} !important;
-                    border-color: #6abf6e !important;
-                    outline: none !important;
-                    box-shadow: none !important;
-                }}
+
             </style>
             <script>
                 (function() {{
