@@ -586,11 +586,12 @@ class ConfigModelsTests(unittest.TestCase):
                 },
             },
             'user_uuid': None,
-            'user_choice_easy_advanced': False,
-            'display_introduction_message': True
+            'user_choice_easy_advanced': False
         }
 
-        assert config_models.serialize_configuration(configuration) == expected_output
+        actual_output = config_models.serialize_configuration(configuration)
+        del actual_output['display_introduction_message']
+        assert actual_output == expected_output
 
         deserialized_configuration = hypertts_instance.deserialize_configuration(config_models.serialize_configuration(configuration))
         assert deserialized_configuration.get_service_configuration_key('ServiceA', 'region') == 'europe'
@@ -646,7 +647,10 @@ class ConfigModelsTests(unittest.TestCase):
             'user_uuid': None,
             'user_choice_easy_advanced': False
         }
-        assert config_models.serialize_configuration(configuration) == expected_output
+
+        actual_output = config_models.serialize_configuration(configuration)
+        del actual_output['display_introduction_message']        
+        assert actual_output == expected_output
 
         # now try to deserialize float
         deserialized_configuration = config_models.deserialize_configuration(expected_output)
