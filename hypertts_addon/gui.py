@@ -311,7 +311,7 @@ def init(hypertts):
     
     aqt.gui_hooks.deck_browser_will_render_content.append(on_deck_browser_will_render_content)
     
-    def on_bridge_cmd(handled, cmd):
+    def on_bridge_cmd(handled, cmd, context):
         if cmd.startswith('hypertts:welcome_closed'):
             config = hypertts.anki_utils.get_config()
             config[constants.CONFIG_WELCOME_MESSAGE_SHOWN] = True
