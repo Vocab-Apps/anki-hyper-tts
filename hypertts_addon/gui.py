@@ -17,6 +17,7 @@ from typing import List, Tuple
 
 # addon imports
 from . import constants
+from . import constants_events
 from . import config_models
 from . import errors
 from . import component_batch
@@ -30,6 +31,7 @@ from . import text_utils
 from . import ttsplayer
 from . import logging_utils
 from . import gui_utils
+from . import stats
 logger = logging_utils.get_child_logger(__name__)
 
 
@@ -363,9 +365,11 @@ def init(hypertts):
             hypertts.save_configuration(configuration)
             return (True, None)
         elif cmd.startswith('hypertts:configure_services'):
+            stats.event_global(constants_events.Event.click_welcome_configure_services)
             launch_configuration_dialog(hypertts)
             return (True, None)
         elif cmd.startswith('hypertts:how_to_add_audio'):
+            stats.event_global(constants_events.Event.click_welcome_add_audio)
             configuration = hypertts.get_configuration()
             user_uuid = configuration.user_uuid or ""
             help_url = f"https://www.vocab.ai/tips/hypertts-adding-audio?utm_source=hypertts&utm_medium=addon&utm_campaign=deckbrowser_welcome&distinct_id={user_uuid}"

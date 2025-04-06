@@ -35,6 +35,8 @@ class Event(enum.Enum):
     click_enter_api_key = enum.auto()
     click_sign_up = enum.auto()
     click_free_trial_ok = enum.auto()
+    click_welcome_configure_services = enum.auto()
+    click_welcome_add_audio = enum.auto()
     # backend
     get_tts_audio = enum.auto()
     error = enum.auto()
