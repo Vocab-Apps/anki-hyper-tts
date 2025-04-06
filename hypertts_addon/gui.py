@@ -312,7 +312,10 @@ def init(hypertts):
                 </div>
                 <p><b>Important</b>: you have to configure services before adding audio.</p>
                 <div style="text-align: center; margin-top: 10px;">
-                    <button id="hypertts-configure-services" style="padding: 5px 10px; margin-right: 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">Configure Services</button>
+                    <button id="hypertts-configure-services" style="padding: 5px 10px; margin-right: 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">
+                        <div><b style="font-size: 1.2em;">Configure Services</b></div>
+                        <div style="font-size: 0.8em;">Click here before adding audio</div>
+                    </button>
                     <button id="hypertts-how-to-add-audio" style="padding: 5px 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">How to add Audio</button>
                 </div>
             </div>
