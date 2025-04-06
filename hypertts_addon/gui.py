@@ -279,3 +279,11 @@ def init(hypertts):
 
     # register TTS player
     aqt.sound.av_player.players.append(ttsplayer.AnkiHyperTTSPlayer(aqt.mw.taskman, hypertts))
+
+    # 
+
+
+    def on_deck_browser_will_render_content(deck_browser, content):
+        content.stats += "\\n<div>my html</div>"    
+    aqt.gui_hooks.deck_browser_will_render_content.append(on_deck_browser_will_render_content)
+    
