@@ -307,7 +307,7 @@ def init(hypertts):
             welcome_html = f"""
             <div id="hypertts-welcome-message" style="margin: 1em 0; padding: 1em; background-color: {bg_color}; border: 1px solid {border_color}; border-radius: 15px; color: {text_color};">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3 style="margin: 0;">HyperTTS - Add Audio to your Flashcards</h3>
+                    <h3 style="margin: 0; text-align: center; flex-grow: 1;">HyperTTS - Add Audio to your Flashcards</h3>
                     <button id="hypertts-welcome-close" style="background: none; border: none; cursor: pointer; font-size: 1.2em; color: {text_color};">× Close</button>
                 </div>
                 <p><b>Important</b>: you have to configure services before adding audio.</p>
