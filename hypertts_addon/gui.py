@@ -311,11 +311,11 @@ def init(hypertts):
                 <p><b>Important</b>: you have to configure services before adding audio.</p>
                 <div style="text-align: center; margin-top: 10px;">
                     <button id="hypertts-configure-services" class="hypertts-welcome-button" style="margin-right: 10px;">
-                        <div><b style="font-size: 1.2em; background: linear-gradient(to right, #6975dd, #7355b0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Configure Services</b></div>
+                        <div><b class="gradient-text" style="font-size: 1.2em;">Configure Services</b></div>
                         <div style="font-size: 0.8em;">Click here before adding audio</div>
                     </button>
                     <button id="hypertts-how-to-add-audio" class="hypertts-welcome-button">
-                        <div><b style="font-size: 1.2em; background: linear-gradient(to right, #6975dd, #7355b0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Adding Audio</b></div>
+                        <div><b class="gradient-text" style="font-size: 1.2em;">Adding Audio</b></div>
                         <div style="font-size: 0.8em;">Click to learn how to add audio</div>
                     </button>
                 </div>
@@ -325,7 +325,11 @@ def init(hypertts):
                     cursor: pointer;
                 }}
                 
-
+                .gradient-text {{
+                    background: linear-gradient(to right, #6975dd, #7355b0);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }}
             </style>
             <script>
                 (function() {{
