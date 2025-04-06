@@ -322,6 +322,12 @@ def init(hypertts):
                     </button>
                 </div>
             </div>
+            <style>
+                #hypertts-configure-services:hover, #hypertts-how-to-add-audio:hover {
+                    background-color: {button_bg_color} !important;
+                    color: {button_text_color} !important;
+                }
+            </style>
             <script>
                 (function() {{
                     document.getElementById('hypertts-welcome-close').addEventListener('click', function() {{
