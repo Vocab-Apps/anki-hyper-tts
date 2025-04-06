@@ -296,8 +296,6 @@ def init(hypertts):
             bg_color = "#2f2f31" if night_mode else "white"
             border_color = "#555555" if night_mode else "#cccccc"
             text_color = "#ffffff" if night_mode else "#000000"
-            button_bg_color = "#4CAF50"  # Keep green for both modes
-            button_text_color = "white"
             
             # Get the user UUID for the help URL
             configuration = hypertts.get_configuration()
