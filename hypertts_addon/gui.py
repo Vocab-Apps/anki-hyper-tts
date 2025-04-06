@@ -319,6 +319,9 @@ def init(hypertts):
                     document.getElementById('hypertts-configure-services').addEventListener('click', function() {{
                         pycmd('hypertts:configure_services');
                     }});
+                    document.getElementById('hypertts-how-to-add-audio').addEventListener('click', function() {{
+                        pycmd('hypertts:how_to_add_audio');
+                    }});
                 }})();
             </script>
             """
@@ -334,6 +337,12 @@ def init(hypertts):
             return (True, None)
         elif cmd.startswith('hypertts:configure_services'):
             launch_configuration_dialog(hypertts)
+            return (True, None)
+        elif cmd.startswith('hypertts:how_to_add_audio'):
+            configuration = hypertts.get_configuration()
+            user_uuid = configuration.user_uuid or ""
+            help_url = f"https://www.vocab.ai/tips/hypertts-adding-audio?utm_source=hypertts&utm_medium=addon&utm_campaign=deckbrowser_welcome&distinct_id={user_uuid}"
+            aqt.utils.openLink(help_url)
             return (True, None)
         return handled
     
