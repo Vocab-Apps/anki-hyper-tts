@@ -296,12 +296,18 @@ def init(hypertts):
                     <button id="hypertts-welcome-close" style="background: none; border: none; cursor: pointer; font-size: 1.2em;">×</button>
                 </div>
                 <p>HyperTTS allows you to add audio to your Anki cards using text-to-speech services.</p>
+                <div style="text-align: center; margin-top: 10px;">
+                    <button id="hypertts-configure-services" style="padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer;">Configure Services</button>
+                </div>
             </div>
             <script>
                 (function() {
                     document.getElementById('hypertts-welcome-close').addEventListener('click', function() {
                         document.getElementById('hypertts-welcome-message').style.display = 'none';
                         pycmd('hypertts:welcome_closed');
+                    });
+                    document.getElementById('hypertts-configure-services').addEventListener('click', function() {
+                        pycmd('hypertts:configure_services');
                     });
                 })();
             </script>
@@ -315,6 +321,9 @@ def init(hypertts):
             configuration = hypertts.get_configuration()
             configuration.display_introduction_message = False
             hypertts.save_configuration(configuration)
+            return (True, None)
+        elif cmd.startswith('hypertts:configure_services'):
+            launch_configuration_dialog(hypertts)
             return (True, None)
         return handled
     
