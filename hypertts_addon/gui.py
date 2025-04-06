@@ -318,7 +318,7 @@ def init(hypertts):
                     </button>
                     <button id="hypertts-how-to-add-audio" style="padding: 5px 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">
                         <div><b style="font-size: 1.2em;">Adding Audio</b></div>
-                        <div style="font-size: 0.8em;">Click here to learn how to add audio to your cards</div>
+                        <div style="font-size: 0.8em;">Click to learn how to add audio</div>
                     </button>
                 </div>
             </div>
