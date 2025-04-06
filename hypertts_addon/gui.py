@@ -310,13 +310,13 @@ def init(hypertts):
             welcome_html = f"""
             <div id="hypertts-welcome-message" style="margin: 1em 0; padding: 1em; background-color: {bg_color}; border: 1px solid {border_color}; border-radius: 15px; color: {text_color};">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3 style="margin: 0;">Thank you for installing HyperTTS</h3>
+                    <h3 style="margin: 0;">HyperTTS - Add Audio to your Flashcards</h3>
                     <button id="hypertts-welcome-close" style="background: none; border: none; cursor: pointer; font-size: 1.2em; color: {text_color};">× Close</button>
                 </div>
-                <p>HyperTTS allows you to add audio to your Anki cards using text-to-speech services.</p>
+                <p><b>Important</b>: you have to configure services before adding audio.</p>
                 <div style="text-align: center; margin-top: 10px;">
-                    <button id="hypertts-configure-services" style="padding: 5px 10px; margin-right: 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">Configure Services</button>
-                    <button id="hypertts-how-to-add-audio" style="padding: 5px 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">How to add Audio</button>
+                    <button id="hypertts-configure-services" style="padding: 5px 10px; margin-right: 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">1. Configure Services</button>
+                    <button id="hypertts-how-to-add-audio" style="padding: 5px 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">2. How to add Audio</button>
                 </div>
             </div>
             <script>
