@@ -316,7 +316,10 @@ def init(hypertts):
                         <div><b style="font-size: 1.2em;">Configure Services</b></div>
                         <div style="font-size: 0.8em;">Click here before adding audio</div>
                     </button>
-                    <button id="hypertts-how-to-add-audio" style="padding: 5px 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">How to add Audio</button>
+                    <button id="hypertts-how-to-add-audio" style="padding: 5px 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">
+                        <div><b style="font-size: 1.2em;">Adding Audio</b></div>
+                        <div style="font-size: 0.8em;">Click here to learn how to add audio to your cards</div>
+                    </button>
                 </div>
             </div>
             <script>
