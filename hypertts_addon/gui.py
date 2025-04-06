@@ -311,15 +311,15 @@ def init(hypertts):
                 </div>
             </div>
             <script>
-                (function() {
-                    document.getElementById('hypertts-welcome-close').addEventListener('click', function() {
+                (function() {{
+                    document.getElementById('hypertts-welcome-close').addEventListener('click', function() {{
                         document.getElementById('hypertts-welcome-message').style.display = 'none';
                         pycmd('hypertts:welcome_closed');
-                    });
-                    document.getElementById('hypertts-configure-services').addEventListener('click', function() {
+                    }});
+                    document.getElementById('hypertts-configure-services').addEventListener('click', function() {{
                         pycmd('hypertts:configure_services');
-                    });
-                })();
+                    }});
+                }})();
             </script>
             """
             content.stats += welcome_html
