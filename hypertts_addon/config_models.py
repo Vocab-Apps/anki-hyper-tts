@@ -405,7 +405,7 @@ class Configuration:
     # False initially and True after use made a choice
     user_choice_easy_advanced: Optional[bool] = False
     # whether to display the introduction message
-    display_introduction_message: bool = True
+    display_introduction_message: bool = False
 
     # pro api key
     # ===========

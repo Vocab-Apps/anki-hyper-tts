@@ -62,6 +62,8 @@ else:
     else:
         user_uuid = uuid.uuid4().hex
         config_configuration['user_uuid'] = user_uuid
+        # first install, display introduction message, but not for existing users
+        config_configuration['display_introduction_message'] = True
         addon_config[constants.CONFIG_CONFIGURATION] = config_configuration
         aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, addon_config)
         user_id = user_uuid
