@@ -299,9 +299,6 @@ def init(hypertts):
             button_bg_color = "#4CAF50"  # Keep green for both modes
             button_text_color = "white"
             
-            # Get the path to the banner image
-            banner_path = gui_utils.get_graphics_path(constants.GRAPHICS_LITE_BANNER)
-            
             # Get the user UUID for the help URL
             configuration = hypertts.get_configuration()
             user_uuid = configuration.user_uuid or ""
