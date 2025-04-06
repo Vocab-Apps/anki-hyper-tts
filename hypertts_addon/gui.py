@@ -284,7 +284,7 @@ def init(hypertts):
 
 
     def should_show_welcome_message(hypertts):
-        config = hypertts.anki_utils.config
+        config = hypertts.anki_utils.get_config()
         welcome_shown = config.get(constants.CONFIG_WELCOME_MESSAGE_SHOWN, False)
         return not welcome_shown
 
@@ -313,7 +313,7 @@ def init(hypertts):
     
     def on_bridge_cmd(handled, cmd):
         if cmd.startswith('hypertts:welcome_closed'):
-            config = hypertts.anki_utils.config
+            config = hypertts.anki_utils.get_config()
             config[constants.CONFIG_WELCOME_MESSAGE_SHOWN] = True
             hypertts.anki_utils.write_config(config)
             return (True, None)
