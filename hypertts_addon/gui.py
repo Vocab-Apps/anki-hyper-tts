@@ -299,15 +299,27 @@ def init(hypertts):
             button_bg_color = "#4CAF50"  # Keep green for both modes
             button_text_color = "white"
             
+            # Get the path to the banner image
+            banner_path = gui_utils.get_graphics_path(constants.GRAPHICS_LITE_BANNER)
+            
+            # Get the user UUID for the help URL
+            configuration = hypertts.get_configuration()
+            user_uuid = configuration.user_uuid or ""
+            help_url = f"https://www.vocab.ai/tips/hypertts-adding-audio?utm_source=hypertts&utm_medium=addon&utm_campaign=deckbrowser_welcome&distinct_id={user_uuid}"
+            
             welcome_html = f"""
             <div id="hypertts-welcome-message" style="margin: 1em 0; padding: 1em; background-color: {bg_color}; border: 1px solid {border_color}; border-radius: 15px; color: {text_color};">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h3 style="margin: 0;">Thank you for installing HyperTTS</h3>
                     <button id="hypertts-welcome-close" style="background: none; border: none; cursor: pointer; font-size: 1.2em; color: {text_color};">× Close</button>
                 </div>
+                <div style="text-align: center; margin: 15px 0;">
+                    <img src="{banner_path}" style="max-width: 100%; height: auto;" alt="HyperTTS Lite">
+                </div>
                 <p>HyperTTS allows you to add audio to your Anki cards using text-to-speech services.</p>
                 <div style="text-align: center; margin-top: 10px;">
-                    <button id="hypertts-configure-services" style="padding: 5px 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">Configure Services</button>
+                    <button id="hypertts-configure-services" style="padding: 5px 10px; margin-right: 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">Configure Services</button>
+                    <button id="hypertts-how-to-add-audio" style="padding: 5px 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">How to add Audio</button>
                 </div>
             </div>
             <script>
