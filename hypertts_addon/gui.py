@@ -284,9 +284,8 @@ def init(hypertts):
 
 
     def should_show_welcome_message(hypertts):
-        config = hypertts.anki_utils.get_config()
-        welcome_shown = config.get(constants.CONFIG_WELCOME_MESSAGE_SHOWN, False)
-        return not welcome_shown
+        configuration = hypertts.get_configuration()
+        return configuration.display_introduction_message
 
     def on_deck_browser_will_render_content(deck_browser, content):
         if should_show_welcome_message(hypertts):
@@ -313,9 +312,9 @@ def init(hypertts):
     
     def on_bridge_cmd(handled, cmd, context):
         if cmd.startswith('hypertts:welcome_closed'):
-            config = hypertts.anki_utils.get_config()
-            config[constants.CONFIG_WELCOME_MESSAGE_SHOWN] = True
-            hypertts.anki_utils.write_config(config)
+            configuration = hypertts.get_configuration()
+            configuration.display_introduction_message = False
+            hypertts.save_configuration(configuration)
             return (True, None)
         return handled
     
