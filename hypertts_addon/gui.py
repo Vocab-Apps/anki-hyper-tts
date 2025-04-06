@@ -312,18 +312,27 @@ def init(hypertts):
                 </div>
                 <p><b>Important</b>: you have to configure services before adding audio.</p>
                 <div style="text-align: center; margin-top: 10px;">
-                    <button id="hypertts-configure-services" style="padding: 5px 10px; margin-right: 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">
+                    <button id="hypertts-configure-services" class="hypertts-welcome-button" style="margin-right: 10px;">
                         <div><b style="font-size: 1.2em;">Configure Services</b></div>
                         <div style="font-size: 0.8em;">Click here before adding audio</div>
                     </button>
-                    <button id="hypertts-how-to-add-audio" style="padding: 5px 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">
+                    <button id="hypertts-how-to-add-audio" class="hypertts-welcome-button">
                         <div><b style="font-size: 1.2em;">Adding Audio</b></div>
                         <div style="font-size: 0.8em;">Click to learn how to add audio</div>
                     </button>
                 </div>
             </div>
             <style>
-                #hypertts-configure-services:hover, #hypertts-how-to-add-audio:hover {{
+                .hypertts-welcome-button {{
+                    padding: 5px 10px;
+                    background-color: {button_bg_color};
+                    color: {button_text_color};
+                    border: none;
+                    border-radius: 3px;
+                    cursor: pointer;
+                }}
+                
+                .hypertts-welcome-button:hover {{
                     background-color: #6abf6e !important; /* Lighter green on hover */
                     color: {button_text_color} !important;
                     border-color: #6abf6e !important;
