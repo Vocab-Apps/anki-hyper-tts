@@ -289,15 +289,25 @@ def init(hypertts):
 
     def on_deck_browser_will_render_content(deck_browser, content):
         if should_show_welcome_message(hypertts):
-            welcome_html = """
-            <div id="hypertts-welcome-message" style="margin: 1em 0; padding: 1em; background-color: white; border: 1px solid #cccccc; border-radius: 5px;">
+            # Check if night mode is enabled
+            night_mode = hypertts.anki_utils.night_mode_enabled()
+            
+            # Set colors based on night mode
+            bg_color = "#2f2f31" if night_mode else "white"
+            border_color = "#555555" if night_mode else "#cccccc"
+            text_color = "#ffffff" if night_mode else "#000000"
+            button_bg_color = "#4CAF50"  # Keep green for both modes
+            button_text_color = "white"
+            
+            welcome_html = f"""
+            <div id="hypertts-welcome-message" style="margin: 1em 0; padding: 1em; background-color: {bg_color}; border: 1px solid {border_color}; border-radius: 5px; color: {text_color};">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h3 style="margin: 0;">Thank you for installing HyperTTS</h3>
-                    <button id="hypertts-welcome-close" style="background: none; border: none; cursor: pointer; font-size: 1.2em;">× Close</button>
+                    <button id="hypertts-welcome-close" style="background: none; border: none; cursor: pointer; font-size: 1.2em; color: {text_color};">× Close</button>
                 </div>
                 <p>HyperTTS allows you to add audio to your Anki cards using text-to-speech services.</p>
                 <div style="text-align: center; margin-top: 10px;">
-                    <button id="hypertts-configure-services" style="padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer;">Configure Services</button>
+                    <button id="hypertts-configure-services" style="padding: 5px 10px; background-color: {button_bg_color}; color: {button_text_color}; border: none; border-radius: 3px; cursor: pointer;">Configure Services</button>
                 </div>
             </div>
             <script>
