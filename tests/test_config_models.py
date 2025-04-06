@@ -586,7 +586,8 @@ class ConfigModelsTests(unittest.TestCase):
                 },
             },
             'user_uuid': None,
-            'user_choice_easy_advanced': False
+            'user_choice_easy_advanced': False,
+            'display_introduction_message': True
         }
 
         assert config_models.serialize_configuration(configuration) == expected_output

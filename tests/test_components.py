@@ -2210,7 +2210,8 @@ def test_configuration(qtbot):
             },
         },
         'user_uuid': None,
-        'user_choice_easy_advanced': False
+        'user_choice_easy_advanced': False,
+        'display_introduction_message': False
     }
     assert hypertts_instance.anki_utils.written_config['configuration'] == expected_output
 
