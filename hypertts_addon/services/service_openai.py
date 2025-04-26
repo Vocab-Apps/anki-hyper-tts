@@ -12,6 +12,8 @@ logger = logging_utils.get_child_logger(__name__)
 
 class OpenAI(service.ServiceBase):
     CONFIG_API_KEY = 'api_key'
+    CONFIG_MODEL = 'model'
+    CONFIG_INSTRUCTIONS= 'instructions'
 
     def __init__(self):
         service.ServiceBase.__init__(self)
@@ -29,7 +31,13 @@ class OpenAI(service.ServiceBase):
 
     def configuration_options(self):
         return {
-            self.CONFIG_API_KEY: str
+            self.CONFIG_API_KEY: str,
+            self.CONFIG_MODEL: [
+                'tts-1',
+                'tts-1-hd',
+                'gpt-4o-mini-tts'
+            ],
+            self.CONFIG_INSTRUCTIONS: str
         }
 
     def configure(self, config):
@@ -58,14 +66,19 @@ class OpenAI(service.ServiceBase):
             options.AudioFormat.ogg_opus: 'opus'
         }
         response_format = audio_format_map[audio_format]
+        model = self.get_configuration_value_optional(self.CONFIG_MODEL, 'tts-1')
+        instructions = self.get_configuration_value_optional(self.CONFIG_INSTRUCTIONS, None)
 
         data = {
-            "model": "tts-1",
+            "model": model,
             "input": source_text,
             "voice": voice.voice_key['name'],
             'response_format': response_format,
-            'speed': speed
+            'speed': speed,
         }
+        # Passing None will result in a 400
+        if instructions:
+            data['instructions'] = instructions
 
         response = requests.post(url, json=data, headers=headers)
         response.raise_for_status()
