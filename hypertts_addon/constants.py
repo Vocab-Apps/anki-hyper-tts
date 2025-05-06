@@ -263,8 +263,6 @@ TEXT_PROCESSING_DEFAULT_IGNORE_CASE = False
 # prevent message boxes from getting too big
 MESSAGE_TEXT_MAX_LENGTH = 500
 
-CLIENT_NAME = 'hypertts'
-
 class ReplaceType(enum.Enum):
     simple = enum.auto()
     regex = enum.auto()
