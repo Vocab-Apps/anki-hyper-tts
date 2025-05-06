@@ -1351,7 +1351,8 @@ class TTSTestsCloudLanguageTools(TTSTests):
         self.manager.init_services()
         services_configuration = config_models.Configuration(
             hypertts_pro_api_key = os.environ['ANKI_LANGUAGE_TOOLS_API_KEY'],
-            use_vocabai_api = os.environ.get('ANKI_LANGUAGE_TOOLS_VOCABAI_API', 'false').lower() == 'true'
+            use_vocabai_api = os.environ.get('ANKI_LANGUAGE_TOOLS_VOCABAI_API', 'false').lower() == 'true',
+            user_uuid = uuid.uuid4().hex
         )
         self.manager.configure(services_configuration)
 
