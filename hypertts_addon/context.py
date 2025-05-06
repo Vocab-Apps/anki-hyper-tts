@@ -20,3 +20,6 @@ class AudioRequestContext():
 
     def get_audio_request_reason_tag(self):
         return self.audio_request_reason.name
+
+    def get_batch_uuid_str(self):
+        return self.batch_uuid.hex
