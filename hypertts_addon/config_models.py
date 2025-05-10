@@ -1,6 +1,7 @@
 import sys
 import abc
 import copy
+import datetime
 from dataclasses import dataclass, field
 import databind.json
 import enum
@@ -423,6 +424,8 @@ class Configuration:
     display_introduction_message: bool = False
     # trial registration step
     trial_registration_step: TrialRegistrationStep = TrialRegistrationStep.new_install
+    # installation timestamp
+    install_time: datetime.datetime = field(default_factory=datetime.datetime.now)
 
     # pro api key
     # ===========
