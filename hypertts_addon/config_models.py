@@ -403,6 +403,7 @@ class TrialRegistrationStep(enum.Enum):
     new_install = 1
     pending_email_confirmation = 2
     pending_add_audio = 3
+    finished = 4
 
 @dataclass
 class Configuration:
