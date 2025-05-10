@@ -399,6 +399,11 @@ class HyperTTSProAccountConfig:
         self.api_key_error = None
         self.account_info = None
 
+class TrialRegistrationStep(enum.Enum):
+    new_install = 1
+    pending_email_confirmation = 2
+    pending_add_audio = 3
+
 @dataclass
 class Configuration:
     service_enabled: Mapping[str, bool] = field(default_factory=dict)
@@ -415,6 +420,8 @@ class Configuration:
     user_choice_easy_advanced: Optional[bool] = False
     # whether to display the introduction message
     display_introduction_message: bool = False
+    # trial registration step
+    trial_registration_step: Optional[TrialRegistrationStep] = None
 
     # pro api key
     # ===========
