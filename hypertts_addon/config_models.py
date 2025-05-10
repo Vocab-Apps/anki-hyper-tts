@@ -422,7 +422,7 @@ class Configuration:
     # whether to display the introduction message
     display_introduction_message: bool = False
     # trial registration step
-    trial_registration_step: Optional[TrialRegistrationStep] = None
+    trial_registration_step: TrialRegistrationStep = TrialRegistrationStep.new_install
 
     # pro api key
     # ===========
