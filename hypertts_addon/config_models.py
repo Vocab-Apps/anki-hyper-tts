@@ -421,7 +421,7 @@ class Configuration:
     # False initially and True after use made a choice
     user_choice_easy_advanced: Optional[bool] = False
     # whether to display the introduction message
-    display_introduction_message: bool = False
+    display_introduction_message: bool = True
     # trial registration step
     trial_registration_step: TrialRegistrationStep = TrialRegistrationStep.new_install
     # installation timestamp (stored as epoch timestamp)
