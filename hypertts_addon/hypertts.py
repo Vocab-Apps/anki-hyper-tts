@@ -226,7 +226,9 @@ class HyperTTS():
         logger.debug(f'anki editor configuration: currentField: {editor.currentField} '
                      f'last_field_index: {editor.last_field_index} '
                      f'addMode: {editor.addMode} '
-                     f'selectedText: [{editor.web.selectedText()}]')
+                     f'selectedText: [{editor.web.selectedText()}] '
+                     f'card: [{editor.card}] '
+                     f'states: [{editor.state}] ')
 
         current_field_num = editor.currentField
         # has the user put the cursor inside a field ?
