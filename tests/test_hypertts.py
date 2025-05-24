@@ -513,6 +513,7 @@ yoyo
         
         # Set up test conditions
         mock_editor.currentField = 0  # First field
+        mock_editor.last_field_index = 0
         mock_editor.web.selected_text = '人'  # Set some selected text
         
         # Get editor context
