@@ -509,7 +509,7 @@ yoyo
         hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
         # Create a mock editor with note
-        mock_editor = config_gen.get_mock_editor_with_note(config_gen.note_id_1)
+        mock_editor = config_gen.get_mock_editor_with_note(config_gen.note_id_1, config_gen.deck_id)
         
         # Set up test conditions
         mock_editor.currentField = 0  # First field
