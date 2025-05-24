@@ -221,14 +221,15 @@ class HyperTTS():
     # ========================
 
     def get_editor_context(self, editor) -> config_models.EditorContext:
-        selected_text = None
-
         logger.debug(f'anki editor configuration: currentField: {editor.currentField} '
                      f'last_field_index: {editor.last_field_index} '
                      f'addMode: {editor.addMode} '
                      f'selectedText: [{editor.web.selectedText()}] '
-                     f'card: [{editor.card}] '
-                     f'states: [{editor.state}] ')
+                     f'card.note.items: {pprint.pformat(editor.card.note().items())} '
+                     f'card.note_type name: {pprint.pformat(editor.card.note_type()["name"])} '
+                     )
+
+        selected_text = None
 
         current_field_num = editor.currentField
         # has the user put the cursor inside a field ?
