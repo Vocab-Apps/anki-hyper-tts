@@ -689,7 +689,7 @@ class HyperTTS():
             self.config[constants.CONFIG_PRESETS] = {}
         self.config[constants.CONFIG_PRESETS][preset.uuid] = preset.serialize()
         self.anki_utils.write_config(self.config)
-        logger.info(f'saved preset [{preset.name}]')
+        logger.info(f'saved preset [{preset.name}] {pprint.pformat(preset.serialize(), compact=True, width=500)}')
 
     def load_preset(self, preset_id: str) -> config_models.BatchConfig:
         logger.info(f'loading preset [{preset_id}]')
