@@ -504,7 +504,7 @@ yoyo
             'id_3': '8929e02001664ae9d21f73a61e62f7aa024cd42304bf63b4af4ec11bbcc20d98',
             'password': 'password@01'})
             
-    def test_get_editor_context(self):
+    def test_get_editor_context_card_not_set(self):
         config_gen = testing_utils.TestConfigGenerator()
         hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
         
@@ -515,6 +515,9 @@ yoyo
         mock_editor.currentField = 0  # First field
         mock_editor.last_field_index = 0
         mock_editor.web.selected_text = '人'  # Set some selected text
+
+        # set card to None
+        mock_editor.card = None
         
         # Get editor context
         editor_context = hypertts_instance.get_editor_context(mock_editor)
