@@ -672,3 +672,51 @@ def test_easy_dialog_editor_4_save_load_default_preset(qtbot):
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_load
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)    
+
+def test_easy_dialog_editor_5_default_add_then_select(qtbot):
+    # pytest --log-cli-level=DEBUG tests/test_component_batch_editor.py -k test_easy_dialog_editor_5_default_add_then_select -s -rPP
+    # Test that selection is prioritized over field text when available
+
+    # First, create a context with cursor in Chinese field
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+    editor_context.current_field = 'Chinese'
+    
+    # First dialog: add audio with Chinese field selected
+    def easy_dialog_input_sequence_add_audio(dialog):
+        # Verify Text from field radio is selected with Chinese field
+        assert dialog.easy_component.source.field_radio.isChecked() == True
+        assert dialog.easy_component.source.field_combobox.currentData() == 'Chinese'
+        assert dialog.easy_component.source.source_text_edit.toPlainText() == '老人家'
+        
+        # Add audio
+        qtbot.mouseClick(dialog.easy_component.add_audio_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
+        # Verify dialog closed
+        assert dialog.closed == True
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_add_audio
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
+    
+    # Now create a new context with selected text in English field
+    editor_context_with_selection = copy.deepcopy(editor_context)
+    editor_context_with_selection.current_field = 'English'
+    editor_context_with_selection.selected_text = 'old people'  # Full content of English field
+    
+    # Second dialog: verify selection is prioritized
+    def easy_dialog_input_sequence_verify_selection(dialog):
+        # Verify Selected text radio is selected
+        assert dialog.easy_component.source.selection_radio.isChecked() == True
+        assert dialog.easy_component.source.field_radio.isChecked() == False
+        
+        # Field combobox should still show English
+        assert dialog.easy_component.source.field_combobox.currentData() == 'English'
+        assert dialog.easy_component.source.field_combobox.isEnabled() == False
+        
+        # Text should be the selected text
+        assert dialog.easy_component.source.source_text_edit.toPlainText() == 'old people'
+        
+        # Close dialog
+        qtbot.mouseClick(dialog.easy_component.cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_verify_selection
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context_with_selection)
