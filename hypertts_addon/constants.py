@@ -7,12 +7,14 @@ ENABLE_SENTRY_CRASH_REPORTING = True
 LOGGER_NAME = 'hypertts'
 LOGGER_NAME_TEST = 'test_hypertts'
 
+CLIENT_NAME='anki-hyper-tts'
+
 # requests related constants
 RequestTimeout = 20 # 20 seconds max
 RequestTimeoutShort = 3
 
 CLOUDLANGUAGETOOLS_API_BASE_URL = 'https://cloudlanguagetools-api.vocab.ai'
-VOCABAI_API_BASE_URL = 'https://app.vocab.ai/languagetools-api/v3'
+VOCABAI_API_BASE_URL = 'https://app.vocab.ai/languagetools-api/v4'
 
 class ServiceType(enum.Enum):
     dictionary = ("Dictionary, contains recordings of words.")
@@ -260,8 +262,6 @@ TEXT_PROCESSING_DEFAULT_IGNORE_CASE = False
 
 # prevent message boxes from getting too big
 MESSAGE_TEXT_MAX_LENGTH = 500
-
-CLIENT_NAME = 'hypertts'
 
 class ReplaceType(enum.Enum):
     simple = enum.auto()

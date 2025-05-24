@@ -3,6 +3,9 @@ from . import component_common
 from . import config_models
 from . import constants
 from . import text_utils
+from . import logging_utils
+
+logger = logging_utils.get_child_logger(__name__)
 
 MAX_PREVIEW_CHARACTERS = 20
 
@@ -101,21 +104,35 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         return source_group
 
     def update_source_text_initial_options(self):
+        logger.debug(f'editor_context: {self.editor_context}')
         self.clipboard_radio.setEnabled(False)
         self.selection_radio.setEnabled(False)
 
         # set available options
         if self.editor_context.clipboard:
+            logger.debug(f'clipboard enabled: [{self.editor_context.clipboard}]')
             self.clipboard_radio.setEnabled(True)
         if self.editor_context.selected_text:
+            logger.debug(f'selection enabled: [{self.editor_context.selected_text}]')
             self.selection_radio.setEnabled(True)            
 
         # do we have a current field ? (user put the cursor in a field)
         if self.editor_context.current_field:
+            logger.debug(f'current_field: {self.editor_context.current_field}')
             field_index = self.field_combobox.findData(self.editor_context.current_field)
+
+            # log full contents of field_combobox
+            for i in range(self.field_combobox.count()):
+                item_text = self.field_combobox.itemText(i)
+                item_data = self.field_combobox.itemData(i)
+                logger.debug(f'self.field_combobox: [{i}] text: "{item_text}", data: "{item_data}"')
+
             if field_index != -1:
                 # field data found
+                logger.debug(f'found field_index in field_combobox: {field_index}')
                 self.field_combobox.setCurrentIndex(field_index)
+            else:
+                logger.error(f'could not find field in field_combobox')
 
         # first, check clipboard
         if self.editor_context.clipboard:

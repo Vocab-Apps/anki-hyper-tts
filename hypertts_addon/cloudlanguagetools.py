@@ -30,8 +30,7 @@ class CloudLanguageTools():
         if self.config.use_vocabai_api:
             return {
                 'Authorization': f'Api-Key {self.config.hypertts_pro_api_key}',
-                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}',
-                'X-Vocab-Addon-ID': self.config.user_uuid}
+            }
         else:
             return {
                 'api_key': self.config.hypertts_pro_api_key, 
@@ -63,17 +62,30 @@ class CloudLanguageTools():
         # query cloud language tools API
         if self.config.use_vocabai_api:
             url_path = '/audio'
+            # api V4
+            data = {
+                'text': source_text,
+                'service': voice.service,
+                'request_mode': audio_request_context.get_request_mode().name,
+                'client': constants.CLIENT_NAME,
+                'client_version': version.ANKI_HYPER_TTS_VERSION,
+                'client_uuid': self.config.user_uuid,
+                'batch_uuid': audio_request_context.get_batch_uuid_str(),
+                'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,
+                'voice_key': voice.voice_key,
+                'options': options
+            }            
         else:
             url_path = '/audio_v2'
+            data = {
+                'text': source_text,
+                'service': voice.service,
+                'request_mode': audio_request_context.get_request_mode().name,
+                'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,
+                'voice_key': voice.voice_key,
+                'options': options
+            }
         full_url = self.get_base_url() + url_path
-        data = {
-            'text': source_text,
-            'service': voice.service,
-            'request_mode': audio_request_context.get_request_mode().name,
-            'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,
-            'voice_key': voice.voice_key,
-            'options': options
-        }
         logger.info(f'request url: {full_url}, data: {data}')
         headers = self.get_request_headers()
         logger.debug(f'get_tts_audio: headers: {headers} data: {data}')
