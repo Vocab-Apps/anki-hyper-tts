@@ -709,7 +709,7 @@ def test_easy_dialog_editor_5_default_add_then_select(qtbot):
         assert dialog.easy_component.source.selection_radio.isChecked() == True
         assert dialog.easy_component.source.field_radio.isChecked() == False
         
-        # Field combobox should still show English
+        # Field combobox should show English, because that's the field we selected from
         assert dialog.easy_component.source.field_combobox.currentData() == 'English'
         assert dialog.easy_component.source.field_combobox.isEnabled() == False
         
