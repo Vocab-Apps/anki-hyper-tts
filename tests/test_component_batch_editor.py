@@ -1,6 +1,7 @@
 import os
 import aqt.qt
 import pprint
+import copy
 
 from test_utils import testing_utils
 from test_utils import gui_testing_utils
