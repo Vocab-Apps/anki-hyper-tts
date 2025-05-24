@@ -225,7 +225,7 @@ class HyperTTS():
                      f'last_field_index: {editor.last_field_index} '
                      f'addMode: {editor.addMode} '
                      f'selectedText: [{editor.web.selectedText()}] '
-                     + (f'card.note.items: {pprint.pformat(editor.card.note.items())} '
+                     + (f'card.note.items: {pprint.pformat(editor.card.note().items())} '
                         f'card.note_type name: {pprint.pformat(editor.card.note_type()["name"])} '
                         if editor.card is not None else 'card: None')
                      )
