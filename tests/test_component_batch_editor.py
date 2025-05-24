@@ -678,6 +678,8 @@ def test_easy_dialog_editor_5_default_add_then_select(qtbot):
     # pytest --log-cli-level=DEBUG tests/test_component_batch_editor.py -k test_easy_dialog_editor_5_default_add_then_select -s -rPP
     # Test that selection is prioritized over field text when available
 
+    logger.debug(f'START test_easy_dialog_editor_5_default_add_then_select')
+
     # First, create a context with cursor in Chinese field
     hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
     editor_context.current_field = 'Chinese'
@@ -690,6 +692,7 @@ def test_easy_dialog_editor_5_default_add_then_select(qtbot):
         assert dialog.easy_component.source.source_text_edit.toPlainText() == '老人家'
         
         # Add audio
+        logger.debug(f'adding audio for field Chinese')
         qtbot.mouseClick(dialog.easy_component.add_audio_button, aqt.qt.Qt.MouseButton.LeftButton)
         
         # Verify dialog closed
@@ -697,7 +700,10 @@ def test_easy_dialog_editor_5_default_add_then_select(qtbot):
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_add_audio
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
-    
+
+    logger.debug(f'finished initial step, by now the default preset should be saved with Chinese field text')
+    logger.debug(f'prepare dialog with selection in English field')
+
     # Now create a new context with selected text in English field
     editor_context_with_selection = copy.deepcopy(editor_context)
     editor_context_with_selection.current_field = 'English'
@@ -705,6 +711,8 @@ def test_easy_dialog_editor_5_default_add_then_select(qtbot):
     
     # Second dialog: verify selection is prioritized
     def easy_dialog_input_sequence_verify_selection(dialog):
+        logger.debug(f'entering dialog input fn, easy_dialog_input_sequence_verify_selection')
+
         # Verify Selected text radio is selected
         assert dialog.easy_component.source.selection_radio.isChecked() == True
         assert dialog.easy_component.source.field_radio.isChecked() == False
