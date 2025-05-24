@@ -503,3 +503,24 @@ yoyo
             'id_2': '5ada07e49da742fbb640595632bd36b8',
             'id_3': '8929e02001664ae9d21f73a61e62f7aa024cd42304bf63b4af4ec11bbcc20d98',
             'password': 'password@01'})
+            
+    def test_get_editor_context(self):
+        config_gen = testing_utils.TestConfigGenerator()
+        hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        
+        # Create a mock editor with note
+        mock_editor = config_gen.get_mock_editor_with_note(config_gen.note_id_1)
+        
+        # Set up test conditions
+        mock_editor.currentField = 0  # First field
+        mock_editor.web.selected_text = '人'  # Set some selected text
+        
+        # Get editor context
+        editor_context = hypertts_instance.get_editor_context(mock_editor)
+        
+        # Verify the editor context
+        self.assertEqual(editor_context.note.id, config_gen.note_id_1)
+        self.assertEqual(editor_context.editor, mock_editor)
+        self.assertEqual(editor_context.add_mode, False)
+        self.assertEqual(editor_context.selected_text, '人')
+        self.assertEqual(editor_context.current_field, 'Chinese')  # First field should be 'Chinese' based on TestConfigGenerator
