@@ -741,3 +741,79 @@ def test_easy_dialog_editor_5_default_add_then_select(qtbot):
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_verify_selection
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context_with_selection)
+
+def test_easy_dialog_editor_6_default_add_then_select_diff_target_field(qtbot):
+    # pytest --log-cli-level=DEBUG tests/test_component_batch_editor.py -k test_easy_dialog_editor_6_default_add_then_select_diff_target_field -s -rPP
+    # Test that selection is prioritized and we can change the target field
+
+    logger.debug(f'START test_easy_dialog_editor_6_default_add_then_select_diff_target_field')
+
+    # First, create a context with cursor in Chinese field
+    hypertts_instance, deck_note_type, editor_context = gui_testing_utils.get_editor_context()
+    editor_context.current_field = 'Chinese'
+    
+    # First dialog: add audio with Chinese field selected
+    def easy_dialog_input_sequence_add_audio(dialog):
+        # Verify Text from field radio is selected with Chinese field
+        assert dialog.easy_component.source.field_radio.isChecked() == True
+        assert dialog.easy_component.source.field_combobox.currentData() == 'Chinese'
+        assert dialog.easy_component.source.source_text_edit.toPlainText() == '老人家'
+        
+        # Add audio
+        logger.debug(f'adding audio for field Chinese')
+        qtbot.mouseClick(dialog.easy_component.add_audio_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
+        # Verify dialog closed
+        assert dialog.closed == True
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_add_audio
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context)
+
+    logger.debug(f'finished initial step, by now the default preset should be saved with Chinese field text')
+    logger.debug(f'prepare dialog with selection in English field')
+
+    # Now create a new context with selected text in English field
+    editor_context_with_selection = copy.deepcopy(editor_context)
+    editor_context_with_selection.current_field = 'English'
+    editor_context_with_selection.selected_text = 'old people'  # Full content of English field
+    
+    # Second dialog: verify selection is prioritized and change target field
+    def easy_dialog_input_sequence_verify_selection_diff_target(dialog):
+        logger.debug(f'entering dialog input fn, easy_dialog_input_sequence_verify_selection_diff_target')
+
+        # Verify Selected text radio is selected
+        assert dialog.easy_component.source.selection_radio.isChecked() == True
+        assert dialog.easy_component.source.field_radio.isChecked() == False
+        
+        # Field combobox should show English, because that's the field we selected from
+        assert dialog.easy_component.source.field_combobox.currentData() == 'English'
+        assert dialog.easy_component.source.field_combobox.isEnabled() == False
+        
+        # Text should be the selected text
+        assert dialog.easy_component.source.source_text_edit.toPlainText() == 'old people'
+        
+        # Show more settings to access target field
+        qtbot.mouseClick(dialog.easy_component.toggle_settings_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
+        # Change target field to Sound
+        dialog.easy_component.target.same_field_group.checkedButton().setChecked(False)
+        dialog.easy_component.target.radio_button_different_field.setChecked(True)
+        dialog.easy_component.target.target_field_combobox.setCurrentText('Sound')
+        
+        # Add audio 
+        logger.debug('clicking add audio button, the expectation is to generate audio into the Sound field')
+        qtbot.mouseClick(dialog.easy_component.add_audio_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
+        # Verify sound was added to the Sound field
+        assert 'Sound' in editor_context_with_selection.note.set_values
+        sound_tag = editor_context_with_selection.note.set_values['Sound']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        assert audio_data['source_text'] == 'old people'
+        assert editor_context_with_selection.editor.set_note_called == True
+        
+        # Verify dialog closed
+        assert dialog.closed == True
+
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_verify_selection_diff_target
+    component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context_with_selection)
