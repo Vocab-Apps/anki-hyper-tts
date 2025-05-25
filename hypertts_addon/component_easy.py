@@ -88,8 +88,13 @@ class ComponentEasy(component_common.ComponentBase):
         logger.info('load_model')
         self.batch_model = model
         # disseminate to all components
-        self.source.load_model(model.source)
-        self.target.load_model(model.target)
+        # check the current_field in editor context. If it's different from the preset, don't load
+        # target / source, because the user is trying to load from a different field
+        if self.editor_context.current_field != None and self.editor_context.current_field != model.source.source_field:
+            logger.warning(f'Current field {self.editor_context.current_field} does not match model source field {model.source.source_field}. Not loading source/target.')
+        else:
+            self.source.load_model(model.source)
+            self.target.load_model(model.target)
         self.voice_selection.load_model(model.voice_selection)
 
     def get_model(self):
