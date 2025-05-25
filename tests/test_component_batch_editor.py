@@ -724,8 +724,19 @@ def test_easy_dialog_editor_5_default_add_then_select(qtbot):
         # Text should be the selected text
         assert dialog.easy_component.source.source_text_edit.toPlainText() == 'old people'
         
-        # Close dialog
-        qtbot.mouseClick(dialog.easy_component.cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
+        # Add audio instead of canceling
+        qtbot.mouseClick(dialog.easy_component.add_audio_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
+        # Verify sound was added to the English field
+        assert 'English' in editor_context_with_selection.note.set_values
+        sound_tag = editor_context_with_selection.note.set_values['English']
+        audio_full_path = hypertts_instance.anki_utils.extract_sound_tag_audio_full_path(sound_tag)
+        audio_data = hypertts_instance.anki_utils.extract_mock_tts_audio(audio_full_path)
+        assert audio_data['source_text'] == 'old people'
+        assert editor_context_with_selection.editor.set_note_called == True
+        
+        # Verify dialog closed
+        assert dialog.closed == True
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_verify_selection
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context_with_selection)
