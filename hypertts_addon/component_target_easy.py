@@ -10,6 +10,7 @@ logger = logging_utils.get_child_logger(__name__)
 
 class BatchTargetEasy(component_target.BatchTarget):
     def __init__(self, hypertts, field_list, model_change_callback):
+        logger.debug('BatchTargetEasy.__init__')
         super().__init__(hypertts, field_list, model_change_callback)
 
         # initialize widgets
@@ -137,6 +138,7 @@ class BatchTargetEasy(component_target.BatchTarget):
         self.notify_model_update()
 
     def load_model(self, model):
+        logger.debug('load_model')
         self.batch_target_model = model
 
         # Set same field radio buttons

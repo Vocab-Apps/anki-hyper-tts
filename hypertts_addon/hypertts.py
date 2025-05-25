@@ -184,7 +184,7 @@ class HyperTTS():
             raise errors.HyperTTSError('inserting at cursor location not yet supported')
 
         logger.debug(f'editor_note_add_audio, editor_context: {editor_context}')
-        logger.debug(f'editor_note_add_audio, batch: {batch}')
+        logger.debug(f'editor_note_add_audio, batch: {repr(batch)}')
         # editor, note, add_mode, text_override
         # don't perform undo, it doesn't actually work, because of the way we call update_note
         audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.editor_browser)
