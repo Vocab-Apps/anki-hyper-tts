@@ -67,6 +67,9 @@ class BatchConfig(ConfigModelBase):
 <b>Target:</b> {self.target}
 <b>Voice Selection:</b> {self.voice_selection}
 """
+        
+    def __repr__(self):
+        return f"BatchConfig(uuid={self.uuid}, name={self.name}, source={repr(self.source)}, target={repr(self.target)})"
 
     def serialize(self):
         return {
@@ -111,6 +114,9 @@ class BatchSource():
         if self.mode in [constants.BatchMode.template, constants.BatchMode.advanced_template]:
             return f'template'
         return None
+        
+    def __repr__(self):
+        return f"BatchSource(mode={self.mode}, source_field={self.source_field}, source_template={self.source_template})"
 
 def serialize_batchsource(batch_source):
     return databind.json.dump(batch_source, BatchSource)
@@ -139,6 +145,9 @@ class BatchTarget():
 
     def __str__(self):
         return f'{self.target_field}'
+        
+    def __repr__(self):
+        return f"BatchTarget(target_field={self.target_field}, text_and_sound_tag={self.text_and_sound_tag}, remove_sound_tag={self.remove_sound_tag})"
 
 def serialize_batch_target(batch_target):
     return databind.json.dump(batch_target, BatchTarget)
