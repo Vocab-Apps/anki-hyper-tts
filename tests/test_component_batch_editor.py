@@ -724,7 +724,8 @@ def test_easy_dialog_editor_5_default_add_then_select(qtbot):
         # Text should be the selected text
         assert dialog.easy_component.source.source_text_edit.toPlainText() == 'old people'
         
-        # Add audio instead of canceling
+        # Add audio 
+        logger.debug('clicking add audio button, the expectation is to generate audio into the English field')
         qtbot.mouseClick(dialog.easy_component.add_audio_button, aqt.qt.Qt.MouseButton.LeftButton)
         
         # Verify sound was added to the English field
