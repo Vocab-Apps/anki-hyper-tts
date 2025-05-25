@@ -97,7 +97,12 @@ class ComponentEasy(component_common.ComponentBase):
     def get_model(self):
         logger.debug('get_model')
         # do some adjustments on the model
-        if self.batch_model.target.same_field:
+        
+        # If we have selected text, set the target field to the current field
+        if self.source.selection_radio.isChecked() and self.editor_context.current_field:
+            self.batch_model.target.target_field = self.editor_context.current_field
+            logger.debug(f'get_model: selection active, set target field to {self.batch_model.target.target_field}')
+        elif self.batch_model.target.same_field:
             # if same field, we need to set the target field to the source field
             self.batch_model.target.target_field = self.batch_model.source.source_field
             # also, the only thing that makes sense is text_and_sound_tag=True
