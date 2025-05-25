@@ -99,15 +99,20 @@ class ComponentEasy(component_common.ComponentBase):
         # do some adjustments on the model
         
         # If we have selected text, set the target field to the current field
-        if self.source.selection_radio.isChecked() and self.editor_context.current_field:
-            self.batch_model.target.target_field = self.editor_context.current_field
-            logger.debug(f'get_model: selection active, set target field to {self.batch_model.target.target_field}')
-        elif self.batch_model.target.same_field:
-            # if same field, we need to set the target field to the source field
-            self.batch_model.target.target_field = self.batch_model.source.source_field
-            # also, the only thing that makes sense is text_and_sound_tag=True
-            self.batch_model.target.text_and_sound_tag = True
-            logger.debug(f'get_model: same field selected, set target field to {self.batch_model.target.target_field}')
+        if self.batch_model.target.same_field:
+            # we want to insert into "same field". this requires some manipulation because the target field
+            # is not necessarily set on the model
+            if self.source.selection_radio.isChecked() and self.editor_context.current_field:
+                # user is generating from a selection
+                self.batch_model.target.target_field = self.editor_context.current_field
+                logger.debug(f'get_model: selection active, set target field to {self.batch_model.target.target_field}')
+            else:
+                # not generating from a selection
+                # if same field, we need to set the target field to the source field
+                self.batch_model.target.target_field = self.batch_model.source.source_field
+                # also, the only thing that makes sense is text_and_sound_tag=True
+                self.batch_model.target.text_and_sound_tag = True
+                logger.debug(f'get_model: same field selected, set target field to {self.batch_model.target.target_field}')
         
         logger.debug(f'get_model: returning model {repr(self.batch_model)}')
 
