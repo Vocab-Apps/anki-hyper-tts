@@ -192,6 +192,8 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         self.batch_source_model = config_models.BatchSource(
             mode=constants.BatchMode.simple, 
             source_field=current_field)
+
+        logger.debug(f'build_update_model: {repr(self.batch_source_model)}')
         self.notify_model_update()
 
     def get_current_text(self):
