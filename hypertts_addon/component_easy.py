@@ -56,9 +56,6 @@ class ComponentEasy(component_common.ComponentBase):
         self.source = component_source_easy.ComponentEasySource(hypertts, editor_context, self.model_update_source)
         source_field = editor_context.current_field
         field_list = field_list = list(editor_context.note.keys())
-        # remove source field
-        if source_field in field_list:
-            field_list.remove(source_field)
 
         # initialize sub-components
         self.target = component_target_easy.BatchTargetEasy(hypertts, field_list, self.model_update_target)
