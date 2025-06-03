@@ -7,6 +7,25 @@ import re
 import pprint
 import json
 
+from hypertts_addon import constants
+from hypertts_addon import config_models
+
+def get_configuration_dict() -> dict:
+    """
+    return the `configuration` key of the addon config.
+    """
+    addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
+    config_configuration = addon_config.get(constants.CONFIG_CONFIGURATION, {})
+    return config_configuration
+
+def get_configuration() -> config_models.Configuration:
+    """
+    Returns the configuration for the addon, in config_models.Configuration type.
+    """
+    config_dict: dict = get_configuration_dict()
+    config: config_models.Configuration =  config_models.deserialize_configuration(config_dict)
+    return config
+
 if hasattr(sys, '_pytest_mode'):
     # called from within a test run
     pass
@@ -22,7 +41,6 @@ else:
 
     # need to declare upfront whether we're doing crash reporting
     # ============================================================
-    from hypertts_addon import constants
     addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
     enable_stats_error_reporting = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
         get('error_handling', {}).get('error_stats_reporting', True)
@@ -52,6 +70,12 @@ else:
 
     # anonymous user id
     # =================
+
+    # for new installs
+    # - create the user_uuid
+    # - enable all help screens
+    # for existing installs
+    # - default help screens to off
 
     # get or create user_uuid
     first_install = False

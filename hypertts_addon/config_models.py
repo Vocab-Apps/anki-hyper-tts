@@ -425,7 +425,7 @@ class Configuration:
     # trial registration step
     trial_registration_step: TrialRegistrationStep = TrialRegistrationStep.new_install
     # installation timestamp (stored as epoch timestamp)
-    install_time: float = field(default_factory=lambda: datetime.datetime.now().timestamp())
+    install_time: datetime.datetime = field(default_factory=lambda: datetime.datetime.now())
 
     # pro api key
     # ===========
