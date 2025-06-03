@@ -4,6 +4,7 @@ import unittest
 import pytest
 import json
 import pprint
+import datetime
 
 from test_utils import testing_utils
 from test_utils import gui_testing_utils
@@ -508,74 +509,20 @@ yoyo
         from hypertts_addon.config_models import Configuration
         from hypertts_addon import get_configuration, get_configuration_dict
         from unittest.mock import patch
+        import datetime
         
         # Test with empty configuration
         mock_uuid = "mocked-uuid-12345"
+        mock_datetime_value = datetime.datetime(2025, 6, 3, 10, 30, 0)
+        mock_timestamp_value = mock_datetime_value.timestamp()
         with patch('hypertts_addon.get_configuration_dict', return_value={}), \
-             patch('hypertts_addon.generate_user_uuid', return_value=mock_uuid):
+             patch('hypertts_addon.generate_user_uuid', return_value=mock_uuid), \
+             patch('datetime.datetime.now', return_value=mock_datetime_value):
             config, first_install = get_configuration()
             self.assertTrue(first_install)
             self.assertIsInstance(config, config_models.Configuration)
             self.assertEqual(config.user_uuid, mock_uuid)
             self.assertTrue(config.display_introduction_message)
+            self.assertEqual(config.trial_registration_step, config_models.TrialRegistrationStep.new_install)
+            self.assertEqual(config.install_time, mock_timestamp_value)
 
-        return
-            
-        # Test with service configuration
-        mock_config = {
-            'service_enabled': {'ServiceA': True, 'ServiceB': False},
-            'service_config': {'ServiceA': {'api_key': 'test_key'}}
-        }
-        with patch('hypertts_addon.get_configuration_dict', return_value=mock_config):
-            config = get_configuration()
-            self.assertIsInstance(config, config_models.Configuration)
-            self.assertEqual(config.service_enabled, {'ServiceA': True, 'ServiceB': False})
-            self.assertEqual(config.service_config, {'ServiceA': {'api_key': 'test_key'}})
-            
-        # Test with hypertts_pro_api_key
-        mock_config = {
-            'hypertts_pro_api_key': 'pro_api_key_123',
-            'service_enabled': {},
-            'service_config': {}
-        }
-        with patch('hypertts_addon.get_configuration_dict', return_value=mock_config):
-            config = get_configuration()
-            self.assertIsInstance(config, config_models.Configuration)
-            self.assertEqual(config.hypertts_pro_api_key, 'pro_api_key_123')
-            
-        # Test with user_uuid
-        mock_config = {
-            'user_uuid': '12345-abcde',
-            'service_enabled': {},
-            'service_config': {}
-        }
-        with patch('hypertts_addon.get_configuration_dict', return_value=mock_config):
-            config = get_configuration()
-            self.assertIsInstance(config, config_models.Configuration)
-            self.assertEqual(config.user_uuid, '12345-abcde')
-            
-        # Test with install_time
-        from datetime import datetime
-        mock_timestamp = datetime(2023, 1, 15, 12, 30, 45).timestamp()
-        mock_config = {
-            'install_time': mock_timestamp,
-            'service_enabled': {},
-            'service_config': {}
-        }
-        with patch('hypertts_addon.get_configuration_dict', return_value=mock_config):
-            config = get_configuration()
-            self.assertIsInstance(config, config_models.Configuration)
-            self.assertEqual(config.install_time, mock_timestamp)
-            
-        # Test default install_time when not provided
-        mock_config = {
-            'service_enabled': {},
-            'service_config': {}
-        }
-        mock_timestamp = datetime(2025, 6, 3, 10, 30, 0).timestamp()
-        with patch('hypertts_addon.get_configuration_dict', return_value=mock_config), \
-             patch('datetime.datetime', wraps=datetime) as mock_datetime:
-            mock_datetime.now.return_value = datetime.fromtimestamp(mock_timestamp)
-            config = get_configuration()
-            self.assertIsInstance(config, config_models.Configuration)
-            self.assertEqual(config.install_time, mock_timestamp)
