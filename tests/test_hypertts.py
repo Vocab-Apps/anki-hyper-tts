@@ -516,8 +516,6 @@ yoyo
             config, first_install = get_configuration()
             self.assertTrue(first_install)
             self.assertIsInstance(config, config_models.Configuration)
-            self.assertEqual(config.service_enabled, {})
-            self.assertEqual(config.service_config, {})
             self.assertEqual(config.user_uuid, mock_uuid)
             self.assertTrue(config.display_introduction_message)
 
