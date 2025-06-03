@@ -510,12 +510,16 @@ yoyo
         from unittest.mock import patch
         
         # Test with empty configuration
-        with patch('hypertts_addon.get_configuration_dict', return_value={}):
+        mock_uuid = "mocked-uuid-12345"
+        with patch('hypertts_addon.get_configuration_dict', return_value={}), \
+             patch('hypertts_addon.generate_user_uuid', return_value=mock_uuid):
             config, first_install = get_configuration()
             self.assertTrue(first_install)
             self.assertIsInstance(config, config_models.Configuration)
             self.assertEqual(config.service_enabled, {})
             self.assertEqual(config.service_config, {})
+            self.assertEqual(config.user_uuid, mock_uuid)
+            self.assertTrue(config.display_introduction_message)
 
         return
             
