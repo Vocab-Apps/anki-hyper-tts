@@ -505,12 +505,13 @@ yoyo
             'password': 'password@01'})
             
     def test_get_configuration(self):
-        from hypertts_addon import __init__ as hypertts_init
+        from hypertts_addon.config_models import Configuration
+        from hypertts_addon import get_configuration, get_configuration_dict
         from unittest.mock import patch
         
         # Test with empty configuration
         with patch('hypertts_addon.get_configuration_dict', return_value={}):
-            config = hypertts_init.get_configuration()
+            config = get_configuration()
             self.assertIsInstance(config, config_models.Configuration)
             self.assertEqual(config.service_enabled, {})
             self.assertEqual(config.service_config, {})
@@ -521,7 +522,7 @@ yoyo
             'service_config': {'ServiceA': {'api_key': 'test_key'}}
         }
         with patch('hypertts_addon.get_configuration_dict', return_value=mock_config):
-            config = hypertts_init.get_configuration()
+            config = get_configuration()
             self.assertIsInstance(config, config_models.Configuration)
             self.assertEqual(config.service_enabled, {'ServiceA': True, 'ServiceB': False})
             self.assertEqual(config.service_config, {'ServiceA': {'api_key': 'test_key'}})
@@ -533,7 +534,7 @@ yoyo
             'service_config': {}
         }
         with patch('hypertts_addon.get_configuration_dict', return_value=mock_config):
-            config = hypertts_init.get_configuration()
+            config = get_configuration()
             self.assertIsInstance(config, config_models.Configuration)
             self.assertEqual(config.hypertts_pro_api_key, 'pro_api_key_123')
             
@@ -544,6 +545,6 @@ yoyo
             'service_config': {}
         }
         with patch('hypertts_addon.get_configuration_dict', return_value=mock_config):
-            config = hypertts_init.get_configuration()
+            config = get_configuration()
             self.assertIsInstance(config, config_models.Configuration)
             self.assertEqual(config.user_uuid, '12345-abcde')
