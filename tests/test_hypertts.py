@@ -551,3 +551,24 @@ yoyo
             self.assertFalse(config.display_introduction_message)
             self.assertEqual(config.trial_registration_step, config_models.TrialRegistrationStep.finished)
             self.assertEqual(config.install_time, mock_timestamp_value)
+            
+        # existing install with install_time and trial_registration_step already set
+        # =========================================================================
+        mock_uuid_3 = "mocked-uuid-12347"
+        existing_timestamp = 1672531200.0  # 2023-01-01 00:00:00
+        existing_config = {
+            'user_uuid': mock_uuid_3,
+            'install_time': existing_timestamp,
+            'trial_registration_step': 'pending_add_audio'
+        }
+        with patch('hypertts_addon.get_configuration_dict', return_value=existing_config), \
+             patch('datetime.datetime', wraps=datetime.datetime) as patched_datetime:
+            patched_datetime.now.return_value = mock_datetime  # This should be ignored
+            config, first_install = get_configuration()
+            self.assertFalse(first_install)
+            self.assertIsInstance(config, config_models.Configuration)
+            self.assertEqual(config.user_uuid, mock_uuid_3)
+            self.assertFalse(config.display_introduction_message)
+            # Verify that the existing values are preserved
+            self.assertEqual(config.trial_registration_step, config_models.TrialRegistrationStep.pending_add_audio)
+            self.assertEqual(config.install_time, existing_timestamp)
