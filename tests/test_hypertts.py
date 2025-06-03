@@ -515,14 +515,13 @@ yoyo
         mock_uuid = "mocked-uuid-12345"
         mock_timestamp_value = 1717412200.0  # 2025-06-03 10:30:00
         
-        # Create a mock for the default_factory that returns our timestamp
-        def mock_timestamp_factory():
-            return mock_timestamp_value
+        # Create a mock datetime object that returns our timestamp
+        mock_datetime = datetime.datetime.fromtimestamp(mock_timestamp_value)
             
         with patch('hypertts_addon.get_configuration_dict', return_value={}), \
              patch('hypertts_addon.generate_user_uuid', return_value=mock_uuid), \
-             patch('hypertts_addon.config_models.Configuration.__dataclass_fields__["install_time"].default_factory', 
-                   mock_timestamp_factory):
+             patch('datetime.datetime', wraps=datetime.datetime) as patched_datetime:
+            patched_datetime.now.return_value = mock_datetime
             config, first_install = get_configuration()
             self.assertTrue(first_install)
             self.assertIsInstance(config, config_models.Configuration)
