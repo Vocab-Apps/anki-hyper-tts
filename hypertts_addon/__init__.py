@@ -18,13 +18,27 @@ def get_configuration_dict() -> dict:
     config_configuration = addon_config.get(constants.CONFIG_CONFIGURATION, {})
     return config_configuration
 
-def get_configuration() -> config_models.Configuration:
+def generate_user_uuid() -> str:
+    """
+    Generate a new user UUID.
+    """
+    return uuid.uuid4().hex
+
+def get_configuration() -> tuple[config_models.Configuration, bool]:
     """
     Returns the configuration for the addon, in config_models.Configuration type.
     """
     config_dict: dict = get_configuration_dict()
     config: config_models.Configuration = config_models.deserialize_configuration(config_dict)
-    return config
+    first_install = False
+    if config.user_uuid == None:
+        # first install
+        first_install = True
+        config.user_uuid = generate_user_uuid()
+        # first install, display introduction message, but not for existing users
+        config.display_introduction_message = True
+
+    return config, first_install
 
 if hasattr(sys, '_pytest_mode'):
     # called from within a test run

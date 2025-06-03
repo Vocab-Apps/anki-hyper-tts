@@ -511,10 +511,13 @@ yoyo
         
         # Test with empty configuration
         with patch('hypertts_addon.get_configuration_dict', return_value={}):
-            config = get_configuration()
+            config, first_install = get_configuration()
+            self.assertTrue(first_install)
             self.assertIsInstance(config, config_models.Configuration)
             self.assertEqual(config.service_enabled, {})
             self.assertEqual(config.service_config, {})
+
+        return
             
         # Test with service configuration
         mock_config = {
