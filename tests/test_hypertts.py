@@ -513,11 +513,10 @@ yoyo
         
         # Test with empty configuration
         mock_uuid = "mocked-uuid-12345"
-        mock_datetime_value = datetime.datetime(2025, 6, 3, 10, 30, 0)
-        mock_timestamp_value = mock_datetime_value.timestamp()
+        mock_timestamp_value = 1717412200.0  # 2025-06-03 10:30:00
         with patch('hypertts_addon.get_configuration_dict', return_value={}), \
              patch('hypertts_addon.generate_user_uuid', return_value=mock_uuid), \
-             patch('datetime.datetime.now', return_value=mock_datetime_value):
+             patch('hypertts_addon.config_models.datetime.datetime.now', return_value=datetime.datetime.fromtimestamp(mock_timestamp_value)):
             config, first_install = get_configuration()
             self.assertTrue(first_install)
             self.assertIsInstance(config, config_models.Configuration)
