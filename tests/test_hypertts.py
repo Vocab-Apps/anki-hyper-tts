@@ -504,3 +504,46 @@ yoyo
             'id_3': '8929e02001664ae9d21f73a61e62f7aa024cd42304bf63b4af4ec11bbcc20d98',
             'password': 'password@01'})
             
+    def test_get_configuration(self):
+        from hypertts_addon import __init__ as hypertts_init
+        from unittest.mock import patch
+        
+        # Test with empty configuration
+        with patch('hypertts_addon.__init__.get_configuration_dict', return_value={}):
+            config = hypertts_init.get_configuration()
+            self.assertIsInstance(config, config_models.Configuration)
+            self.assertEqual(config.service_enabled, {})
+            self.assertEqual(config.service_config, {})
+            
+        # Test with service configuration
+        mock_config = {
+            'service_enabled': {'ServiceA': True, 'ServiceB': False},
+            'service_config': {'ServiceA': {'api_key': 'test_key'}}
+        }
+        with patch('hypertts_addon.__init__.get_configuration_dict', return_value=mock_config):
+            config = hypertts_init.get_configuration()
+            self.assertIsInstance(config, config_models.Configuration)
+            self.assertEqual(config.service_enabled, {'ServiceA': True, 'ServiceB': False})
+            self.assertEqual(config.service_config, {'ServiceA': {'api_key': 'test_key'}})
+            
+        # Test with hypertts_pro_api_key
+        mock_config = {
+            'hypertts_pro_api_key': 'pro_api_key_123',
+            'service_enabled': {},
+            'service_config': {}
+        }
+        with patch('hypertts_addon.__init__.get_configuration_dict', return_value=mock_config):
+            config = hypertts_init.get_configuration()
+            self.assertIsInstance(config, config_models.Configuration)
+            self.assertEqual(config.hypertts_pro_api_key, 'pro_api_key_123')
+            
+        # Test with user_uuid
+        mock_config = {
+            'user_uuid': '12345-abcde',
+            'service_enabled': {},
+            'service_config': {}
+        }
+        with patch('hypertts_addon.__init__.get_configuration_dict', return_value=mock_config):
+            config = hypertts_init.get_configuration()
+            self.assertIsInstance(config, config_models.Configuration)
+            self.assertEqual(config.user_uuid, '12345-abcde')
