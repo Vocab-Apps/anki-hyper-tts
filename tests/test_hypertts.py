@@ -551,26 +551,26 @@ yoyo
             
         # Test with install_time
         from datetime import datetime
-        mock_date = datetime(2023, 1, 15, 12, 30, 45)
+        mock_timestamp = datetime(2023, 1, 15, 12, 30, 45).timestamp()
         mock_config = {
-            'install_time': mock_date.timestamp(),
+            'install_time': mock_timestamp,
             'service_enabled': {},
             'service_config': {}
         }
         with patch('hypertts_addon.get_configuration_dict', return_value=mock_config):
             config = get_configuration()
             self.assertIsInstance(config, config_models.Configuration)
-            self.assertEqual(config.install_time, mock_date)
+            self.assertEqual(config.install_time, mock_timestamp)
             
         # Test default install_time when not provided
         mock_config = {
             'service_enabled': {},
             'service_config': {}
         }
-        mock_now = datetime(2025, 6, 3, 10, 30, 0)
+        mock_timestamp = datetime(2025, 6, 3, 10, 30, 0).timestamp()
         with patch('hypertts_addon.get_configuration_dict', return_value=mock_config), \
              patch('datetime.datetime', wraps=datetime) as mock_datetime:
-            mock_datetime.now.return_value = mock_now
+            mock_datetime.now.return_value = datetime.fromtimestamp(mock_timestamp)
             config = get_configuration()
             self.assertIsInstance(config, config_models.Configuration)
-            self.assertEqual(config.install_time, mock_now)
+            self.assertEqual(config.install_time, mock_timestamp)

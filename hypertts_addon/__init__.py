@@ -23,7 +23,7 @@ def get_configuration() -> config_models.Configuration:
     Returns the configuration for the addon, in config_models.Configuration type.
     """
     config_dict: dict = get_configuration_dict()
-    config: config_models.Configuration =  config_models.deserialize_configuration(config_dict)
+    config: config_models.Configuration = config_models.deserialize_configuration(config_dict)
     return config
 
 if hasattr(sys, '_pytest_mode'):
