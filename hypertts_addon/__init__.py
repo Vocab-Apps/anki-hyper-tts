@@ -35,8 +35,8 @@ def get_configuration() -> tuple[config_models.Configuration, bool]:
         # first install
         first_install = True
         config.user_uuid = generate_user_uuid()
-        # first install, display introduction message, but not for existing users
-        config.display_introduction_message = True
+        # enable welcome messages and features
+        config.new_install_settings()
 
     return config, first_install
 

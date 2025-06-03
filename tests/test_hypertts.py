@@ -512,20 +512,42 @@ yoyo
         import datetime
         
         # Test with empty configuration
-        mock_uuid = "mocked-uuid-12345"
+        mock_uuid_1 = "mocked-uuid-12345"
         mock_timestamp_value = 1717412200.0  # 2025-06-03 10:30:00
         
         # Create a mock datetime object that returns our timestamp
         mock_datetime = datetime.datetime.fromtimestamp(mock_timestamp_value)
             
-        with patch('hypertts_addon.get_configuration_dict', return_value={}), \
-             patch('hypertts_addon.generate_user_uuid', return_value=mock_uuid), \
+        # new install
+        # ===========
+
+        blank_config = {}
+        with patch('hypertts_addon.get_configuration_dict', return_value=blank_config), \
+             patch('hypertts_addon.generate_user_uuid', return_value=mock_uuid_1), \
              patch('datetime.datetime', wraps=datetime.datetime) as patched_datetime:
             patched_datetime.now.return_value = mock_datetime
             config, first_install = get_configuration()
             self.assertTrue(first_install)
             self.assertIsInstance(config, config_models.Configuration)
-            self.assertEqual(config.user_uuid, mock_uuid)
+            self.assertEqual(config.user_uuid, mock_uuid_1)
             self.assertTrue(config.display_introduction_message)
             self.assertEqual(config.trial_registration_step, config_models.TrialRegistrationStep.new_install)
+            self.assertEqual(config.install_time, mock_timestamp_value)
+
+        # existing install
+        # ================
+        mock_uuid_2 = "mocked-uuid-12346"
+        # note: doesn't have an install time, but this should get generated
+        existing_config = {
+            'user_uuid': mock_uuid_2,
+        }
+        with patch('hypertts_addon.get_configuration_dict', return_value=existing_config), \
+             patch('datetime.datetime', wraps=datetime.datetime) as patched_datetime:
+            patched_datetime.now.return_value = mock_datetime
+            config, first_install = get_configuration()
+            self.assertFalse(first_install)
+            self.assertIsInstance(config, config_models.Configuration)
+            self.assertEqual(config.user_uuid, mock_uuid_2)
+            self.assertFalse(config.display_introduction_message)
+            self.assertEqual(config.trial_registration_step, config_models.TrialRegistrationStep.finished)
             self.assertEqual(config.install_time, mock_timestamp_value)

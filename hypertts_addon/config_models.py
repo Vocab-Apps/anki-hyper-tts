@@ -421,9 +421,11 @@ class Configuration:
     # False initially and True after use made a choice
     user_choice_easy_advanced: Optional[bool] = False
     # whether to display the introduction message
-    display_introduction_message: bool = True
+    # default to false so that we don't display it for existing users
+    display_introduction_message: bool = False
     # trial registration step
-    trial_registration_step: TrialRegistrationStep = TrialRegistrationStep.new_install
+    # default to finished so that it doesn't kick off for existing users
+    trial_registration_step: TrialRegistrationStep = TrialRegistrationStep.finished
     # installation timestamp (stored as epoch timestamp)
     install_time: float = field(default_factory=lambda: datetime.datetime.now().timestamp())
 
@@ -452,6 +454,13 @@ class Configuration:
     def check_service_config_key(self, service_name):
         if service_name not in self.service_config:
             self.service_config[service_name] = {}
+
+    # new install
+    # ===========
+
+    def new_install_settings(self):
+        self.display_introduction_message = True
+        self.trial_registration_step = TrialRegistrationStep.new_install
 
     # service enabled / disabled
     # ==========================
