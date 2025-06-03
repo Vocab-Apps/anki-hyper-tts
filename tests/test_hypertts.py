@@ -509,7 +509,7 @@ yoyo
         from unittest.mock import patch
         
         # Test with empty configuration
-        with patch('hypertts_addon.__init__.get_configuration_dict', return_value={}):
+        with patch('hypertts_addon.get_configuration_dict', return_value={}):
             config = hypertts_init.get_configuration()
             self.assertIsInstance(config, config_models.Configuration)
             self.assertEqual(config.service_enabled, {})
@@ -520,7 +520,7 @@ yoyo
             'service_enabled': {'ServiceA': True, 'ServiceB': False},
             'service_config': {'ServiceA': {'api_key': 'test_key'}}
         }
-        with patch('hypertts_addon.__init__.get_configuration_dict', return_value=mock_config):
+        with patch('hypertts_addon.get_configuration_dict', return_value=mock_config):
             config = hypertts_init.get_configuration()
             self.assertIsInstance(config, config_models.Configuration)
             self.assertEqual(config.service_enabled, {'ServiceA': True, 'ServiceB': False})
@@ -532,7 +532,7 @@ yoyo
             'service_enabled': {},
             'service_config': {}
         }
-        with patch('hypertts_addon.__init__.get_configuration_dict', return_value=mock_config):
+        with patch('hypertts_addon.get_configuration_dict', return_value=mock_config):
             config = hypertts_init.get_configuration()
             self.assertIsInstance(config, config_models.Configuration)
             self.assertEqual(config.hypertts_pro_api_key, 'pro_api_key_123')
@@ -543,7 +543,7 @@ yoyo
             'service_enabled': {},
             'service_config': {}
         }
-        with patch('hypertts_addon.__init__.get_configuration_dict', return_value=mock_config):
+        with patch('hypertts_addon.get_configuration_dict', return_value=mock_config):
             config = hypertts_init.get_configuration()
             self.assertIsInstance(config, config_models.Configuration)
             self.assertEqual(config.user_uuid, '12345-abcde')
