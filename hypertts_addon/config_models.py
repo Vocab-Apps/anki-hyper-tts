@@ -750,6 +750,10 @@ class EasyAdvancedMode(enum.Enum):
     EASY = 1
     ADVANCED = 2
 
+class ServicesConfigurationMode(enum.Enum):
+    TRIAL = 1
+    FREE_SERVICES = 2
+    MANUAL_CONFIGURATION = 3
 
 @dataclass
 class TrialRequestReponse:
