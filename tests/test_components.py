@@ -2132,6 +2132,9 @@ def test_text_processing_manual(qtbot):
 
 def test_configuration(qtbot):
     # pytest test_components.py -k test_configuration -o log_cli_level=DEBUG -o capture=no
+    import unittest.mock
+    import datetime
+    
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     # start by disabling both services
@@ -2192,7 +2195,11 @@ def test_configuration(qtbot):
     assert configuration.save_button.isEnabled() == True
 
     # press save button
-    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+    # mock datetime to get consistent install_time
+    with unittest.mock.patch('datetime.datetime') as mock_datetime:
+        mock_datetime.now.return_value = datetime.datetime(2023, 1, 1)
+        qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+            
     assert 'configuration' in hypertts_instance.anki_utils.written_config
     expected_output = {
         'hypertts_pro_api_key': None,
@@ -2211,7 +2218,9 @@ def test_configuration(qtbot):
         },
         'user_uuid': None,
         'user_choice_easy_advanced': False,
-        'display_introduction_message': False
+        'display_introduction_message': False,
+        'trial_registration_step': 'finished',
+        'install_time': datetime.datetime(2023, 1, 1).timestamp()
     }
     assert hypertts_instance.anki_utils.written_config['configuration'] == expected_output
 
