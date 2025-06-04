@@ -144,10 +144,13 @@ yoyo
             },
             'user_uuid': None,
             'user_choice_easy_advanced': False,
-            'display_introduction_message': False
+            'display_introduction_message': False,
+            'trial_registration_step': 'finished'
         }
+        actual_output = hypertts_instance.anki_utils.written_config['configuration']
+        del actual_output['install_time']
 
-        self.assertEqual(hypertts_instance.anki_utils.written_config['configuration'], expected_saved_config)
+        self.assertEqual(actual_output, expected_saved_config)
 
     def test_play_sound_empty(self):
         config_gen = testing_utils.TestConfigGenerator()
