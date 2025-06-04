@@ -572,3 +572,27 @@ yoyo
             # Verify that the existing values are preserved
             self.assertEqual(config.trial_registration_step, config_models.TrialRegistrationStep.pending_add_audio)
             self.assertEqual(config.install_time, existing_timestamp)
+            
+        # Test days_since_install function
+        # ================================
+        from datetime import datetime, timedelta
+        
+        # Test with a recent installation (1 day ago)
+        one_day_ago = (datetime.now() - timedelta(days=1)).timestamp()
+        config_with_recent_install = config_models.Configuration(install_time=one_day_ago)
+        
+        # Mock current time to be exactly 1 day after installation
+        with patch('datetime.datetime', wraps=datetime) as patched_datetime:
+            patched_datetime.now.return_value = datetime.fromtimestamp(one_day_ago + 86400)  # +1 day in seconds
+            days = config_with_recent_install.days_since_install()
+            self.assertAlmostEqual(days, 1.0, places=1)
+            
+        # Test with an older installation (30 days ago)
+        thirty_days_ago = (datetime.now() - timedelta(days=30)).timestamp()
+        config_with_older_install = config_models.Configuration(install_time=thirty_days_ago)
+        
+        # Mock current time to be exactly 30 days after installation
+        with patch('datetime.datetime', wraps=datetime) as patched_datetime:
+            patched_datetime.now.return_value = datetime.fromtimestamp(thirty_days_ago + 86400 * 30)  # +30 days in seconds
+            days = config_with_older_install.days_since_install()
+            self.assertAlmostEqual(days, 30.0, places=1)
