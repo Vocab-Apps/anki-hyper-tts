@@ -38,6 +38,10 @@ items = [
         'name': 'test hyperttspro',
         'command': 'HYPERTTS_PRO_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_hyperttspro_manual -s -rPP'
     },                
+    {
+        'name': 'test services configuration',
+        'command': 'HYPERTTS_SERVICES_CONFIG_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_services_configuration_manual -s -rPP'
+    },
 
 
 ]
