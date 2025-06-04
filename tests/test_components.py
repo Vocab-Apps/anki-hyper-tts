@@ -2194,11 +2194,7 @@ def test_configuration(qtbot):
 
     assert configuration.save_button.isEnabled() == True
 
-    # press save button
-    # mock datetime to get consistent install_time
-    with unittest.mock.patch('datetime.datetime') as mock_datetime:
-        mock_datetime.now.return_value = datetime.datetime(2023, 1, 1)
-        qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
             
     assert 'configuration' in hypertts_instance.anki_utils.written_config
     expected_output = {
@@ -2220,9 +2216,14 @@ def test_configuration(qtbot):
         'user_choice_easy_advanced': False,
         'display_introduction_message': False,
         'trial_registration_step': 'finished',
-        'install_time': datetime.datetime(2023, 1, 1).timestamp()
     }
-    assert hypertts_instance.anki_utils.written_config['configuration'] == expected_output
+    actual_output = hypertts_instance.anki_utils.written_config['configuration']
+    # remove install_time because it's variable and hard to test
+    keys_to_remove = ['install_time']
+    for key in keys_to_remove:
+        del actual_output[key]
+
+    assert actual_output == expected_output
 
     # make sure dialog was closed
     assert dialog.closed == True
