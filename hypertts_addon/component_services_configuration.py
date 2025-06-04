@@ -12,8 +12,9 @@ sc = stats.StatsContext(constants_events.EventContext.services_configuration)
 
 class ServicesConfigurationDialog(aqt.qt.QDialog):
     """Dialog for choosing how to configure HyperTTS services"""
-    def __init__(self):
+    def __init__(self, hypertts):
         super(aqt.qt.QDialog, self).__init__()
+        self.hypertts = hypertts
         self.setupUi()
         self.chosen_mode = None
 
@@ -52,7 +53,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         
         # Trial button
         self.trial_button = aqt.qt.QPushButton()
-        self.trial_button.setStyleSheet(button_style)
+        self.trial_button.setStyleSheet(button_style + self.hypertts.anki_utils.get_green_stylesheet())
         self.trial_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.TRIAL))
         
         trial_layout = aqt.qt.QVBoxLayout()
@@ -129,6 +130,6 @@ def show_services_configuration_dialog(hypertts) -> config_models.ServicesConfig
     Returns:
         ServicesConfigurationMode enum value, or None if user cancelled
     """
-    dialog = ServicesConfigurationDialog()
+    dialog = ServicesConfigurationDialog(hypertts)
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_SERVICES_CONFIGURATION)
     return dialog.chosen_mode
