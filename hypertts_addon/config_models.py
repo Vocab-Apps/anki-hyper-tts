@@ -429,14 +429,14 @@ class Configuration:
     # installation timestamp (stored as epoch timestamp)
     install_time: float = field(default_factory=lambda: datetime.datetime.now().timestamp())
 
-    def days_since_install(self) -> float:
+    def days_since_install(self) -> int:
         """
         Calculate the number of days since installation.
-        Returns a float representing days (fractional for partial days).
+        Returns an integer representing the number of days.
         """
         current_time = datetime.datetime.now().timestamp()
         seconds_since_install = current_time - self.install_time
-        days = seconds_since_install / (60 * 60 * 24)  # Convert seconds to days
+        days = int(seconds_since_install / (60 * 60 * 24))  # Convert seconds to days and truncate to integer
         return days
 
     # pro api key

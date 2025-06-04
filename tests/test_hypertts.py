@@ -585,7 +585,7 @@ yoyo
         with patch('datetime.datetime', wraps=datetime) as patched_datetime:
             patched_datetime.now.return_value = datetime.fromtimestamp(one_day_ago + 86400)  # +1 day in seconds
             days = config_with_recent_install.days_since_install()
-            self.assertAlmostEqual(days, 1.0, places=1)
+            self.assertEqual(days, 1)
             
         # Test with an older installation (30 days ago)
         thirty_days_ago = (datetime.now() - timedelta(days=30)).timestamp()
@@ -595,4 +595,4 @@ yoyo
         with patch('datetime.datetime', wraps=datetime) as patched_datetime:
             patched_datetime.now.return_value = datetime.fromtimestamp(thirty_days_ago + 86400 * 30)  # +30 days in seconds
             days = config_with_older_install.days_since_install()
-            self.assertAlmostEqual(days, 30.0, places=1)
+            self.assertEqual(days, 30)
