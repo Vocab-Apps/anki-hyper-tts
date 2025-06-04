@@ -32,28 +32,66 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         explanation.setFont(font)
         layout.addWidget(explanation)
         
-        # Style for the buttons
+        # Style for the buttons with depth and shadows
         button_style = """
             QPushButton {
-                border: 2px solid palette(mid);
-                border-radius: 5px;
+                border: 1px solid #c0c0c0;
+                border-radius: 8px;
                 padding: 20px;
-                background-color: palette(window);
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #f8f8f8, stop: 1 #e8e8e8);
                 text-align: left;
                 min-height: 80px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin: 2px;
             }
             QPushButton:hover {
-                border-color: palette(highlight);
-                background-color: rgba(palette(highlight), 0.1);
+                border: 1px solid #a0a0a0;
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #ffffff, stop: 1 #f0f0f0);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
             }
             QPushButton:pressed {
-                background-color: rgba(palette(highlight), 0.2);
+                border: 1px solid #808080;
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #e0e0e0, stop: 1 #d0d0d0);
+                box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin: 3px 1px 1px 3px;
             }
         """
         
-        # Trial button
+        # Trial button with enhanced green styling
+        trial_button_style = """
+            QPushButton {
+                border: 1px solid #4a7c59;
+                border-radius: 8px;
+                padding: 20px;
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #6fa86f, stop: 1 #5a8a5a);
+                text-align: left;
+                min-height: 80px;
+                color: white;
+                font-weight: bold;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+                margin: 2px;
+            }
+            QPushButton:hover {
+                border: 1px solid #3a6c49;
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #7fb87f, stop: 1 #6a9a6a);
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+            }
+            QPushButton:pressed {
+                border: 1px solid #2a5c39;
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #5a8a5a, stop: 1 #4a7a4a);
+                box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+                margin: 3px 1px 1px 3px;
+            }
+        """
+        
         self.trial_button = aqt.qt.QPushButton()
-        self.trial_button.setStyleSheet(button_style + self.hypertts.anki_utils.get_green_stylesheet())
+        self.trial_button.setStyleSheet(trial_button_style)
         self.trial_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.TRIAL))
         
         trial_layout = aqt.qt.QVBoxLayout()
@@ -62,10 +100,10 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         font.setPointSize(font.pointSize() + 2)
         font.setBold(True)
         trial_title.setFont(font)
-        trial_title.setStyleSheet('border: none; background-color: transparent;')
+        trial_title.setStyleSheet('border: none; background-color: transparent; color: white;')
         
         trial_description = aqt.qt.QLabel('Get access to premium voices and features with a free trial')
-        trial_description.setStyleSheet('border: none; background-color: transparent; color: palette(mid);')
+        trial_description.setStyleSheet('border: none; background-color: transparent; color: rgba(255, 255, 255, 0.9);')
         
         trial_layout.addWidget(trial_title)
         trial_layout.addWidget(trial_description)
