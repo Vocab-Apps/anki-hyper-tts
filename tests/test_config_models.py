@@ -564,6 +564,9 @@ class ConfigModelsTests(unittest.TestCase):
 
 
     def test_configuration(self):
+        # exclude these from comparison
+        keys_to_remove = ['install_time', 'display_introduction_message', 'trial_registration_step']
+
         hypertts_instance = get_hypertts_instance()
 
         configuration = config_models.Configuration()
@@ -590,7 +593,8 @@ class ConfigModelsTests(unittest.TestCase):
         }
 
         actual_output = config_models.serialize_configuration(configuration)
-        del actual_output['display_introduction_message']
+        for key in keys_to_remove:
+            del actual_output[key]
         assert actual_output == expected_output
 
         deserialized_configuration = hypertts_instance.deserialize_configuration(config_models.serialize_configuration(configuration))
@@ -649,7 +653,8 @@ class ConfigModelsTests(unittest.TestCase):
         }
 
         actual_output = config_models.serialize_configuration(configuration)
-        del actual_output['display_introduction_message']        
+        for key in keys_to_remove:
+            del actual_output[key]
         assert actual_output == expected_output
 
         # now try to deserialize float
