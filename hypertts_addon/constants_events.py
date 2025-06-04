@@ -17,6 +17,7 @@ class EventContext(enum.Enum):
     voice_selection = enum.auto()
     choose_easy_advanced = enum.auto()
     servicemanager = enum.auto()
+    services_configuration = enum.auto()
 
 # events
 class Event(enum.Enum):
