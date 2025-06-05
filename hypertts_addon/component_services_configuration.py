@@ -114,7 +114,6 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         trial_title = aqt.qt.QLabel('Free trial for HyperTTS Pro (recommended)')
         font = trial_title.font()
         font.setPointSize(font.pointSize() + 2)
-        font.setBold(True)
         trial_title.setFont(font)
         trial_title.setStyleSheet('border: none; background-color: transparent; color: white;')
         
@@ -132,7 +131,9 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         
         free_layout = aqt.qt.QVBoxLayout()
         free_title = aqt.qt.QLabel('Enable Free Services only')
-        free_title.setFont(font)
+        free_font = free_title.font()
+        free_font.setPointSize(free_font.pointSize() + 2)
+        free_title.setFont(free_font)
         free_title.setStyleSheet('border: none; background-color: transparent;')
         
         free_description = aqt.qt.QLabel('Use only free text-to-speech services')
@@ -148,7 +149,9 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         
         manual_layout = aqt.qt.QVBoxLayout()
         manual_title = aqt.qt.QLabel('Manually configure services')
-        manual_title.setFont(font)
+        manual_font = manual_title.font()
+        manual_font.setPointSize(manual_font.pointSize() + 2)
+        manual_title.setFont(manual_font)
         manual_title.setStyleSheet('border: none; background-color: transparent;')
         
         manual_description = aqt.qt.QLabel('Configure services yourself with your own API keys')
