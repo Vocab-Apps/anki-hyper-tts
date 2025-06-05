@@ -136,7 +136,6 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         free_title.setStyleSheet('border: none; background-color: transparent;')
         
         free_description = aqt.qt.QLabel('Use only free text-to-speech services')
-        free_description.setStyleSheet('border: none; background-color: transparent; color: palette(mid);')
         
         free_layout.addWidget(free_title)
         free_layout.addWidget(free_description)
@@ -153,7 +152,6 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         manual_title.setStyleSheet('border: none; background-color: transparent;')
         
         manual_description = aqt.qt.QLabel('Configure services yourself with your own API keys')
-        manual_description.setStyleSheet('border: none; background-color: transparent; color: palette(mid);')
         
         manual_layout.addWidget(manual_title)
         manual_layout.addWidget(manual_description)
