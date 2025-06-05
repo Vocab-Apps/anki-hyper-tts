@@ -126,8 +126,8 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         trial_recommended.setStyleSheet('border: none; background-color: transparent; color: rgba(255, 255, 255, 0.9); font-style: italic;')
         
         trial_layout.addWidget(trial_title)
-        trial_layout.addWidget(trial_recommended)
         trial_layout.addWidget(trial_description)
+        trial_layout.addWidget(trial_recommended)
         self.trial_button.setLayout(trial_layout)
         
         # Free services button
