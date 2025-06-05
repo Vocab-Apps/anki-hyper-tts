@@ -30,7 +30,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         layout.addLayout(header_layout)
         
         # Add explanation label at top
-        explanation = aqt.qt.QLabel("Choose how you'd like to configure HyperTTS services:")
+        explanation = aqt.qt.QLabel("Configure HyperTTS services")
         explanation.setWordWrap(True)
         explanation.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
         explanation.setStyleSheet('border: none; background-color: transparent;')
@@ -38,6 +38,16 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         font.setPointSize(14)
         explanation.setFont(font)
         layout.addWidget(explanation)
+        
+        # Add smaller description text
+        description = aqt.qt.QLabel("In order to generate audio using HyperTTS, you need to enable TTS services. Choose from one of the options below.")
+        description.setWordWrap(True)
+        description.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        description.setStyleSheet('border: none; background-color: transparent; color: palette(mid);')
+        desc_font = description.font()
+        desc_font.setPointSize(desc_font.pointSize() - 1)
+        description.setFont(desc_font)
+        layout.addWidget(description)
         
         # Style for the buttons with depth and shadows
         button_style = """
