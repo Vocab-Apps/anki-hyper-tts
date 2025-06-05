@@ -30,7 +30,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         layout.addLayout(header_layout)
         
         # Add explanation label at top
-        explanation = aqt.qt.QLabel("Configure HyperTTS services")
+        explanation = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_TITLE)
         explanation.setWordWrap(True)
         explanation.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignLeft)
         explanation.setStyleSheet('border: none; background-color: transparent;')
@@ -40,9 +40,10 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         layout.addWidget(explanation)
         
         # Add smaller description text
-        description = aqt.qt.QLabel("In order to generate audio using HyperTTS, you need to enable TTS services. Choose from one of the options below.")
+        description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_DESCRIPTION)
         description.setWordWrap(True)
         description.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        description.setStyleSheet('border: none; background-color: transparent; color: palette(dark);')
         desc_font = description.font()
         desc_font.setPointSize(desc_font.pointSize() - 1)
         description.setFont(desc_font)
@@ -111,13 +112,13 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.trial_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.TRIAL))
         
         trial_layout = aqt.qt.QVBoxLayout()
-        trial_title = aqt.qt.QLabel('Free trial for HyperTTS Pro (recommended)')
+        trial_title = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_TITLE)
         font = trial_title.font()
         font.setPointSize(font.pointSize() + 4)
         trial_title.setFont(font)
         trial_title.setStyleSheet('border: none; background-color: transparent; color: white;')
         
-        trial_description = aqt.qt.QLabel('Get access to premium voices and features with a free trial')
+        trial_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION)
         trial_description.setStyleSheet('border: none; background-color: transparent; color: rgba(255, 255, 255, 0.9);')
         
         trial_layout.addWidget(trial_title)
@@ -130,13 +131,13 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.free_services_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.FREE_SERVICES))
         
         free_layout = aqt.qt.QVBoxLayout()
-        free_title = aqt.qt.QLabel('Enable Free Services only')
+        free_title = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_FREE_TITLE)
         free_font = free_title.font()
         free_font.setPointSize(free_font.pointSize() + 4)
         free_title.setFont(free_font)
         free_title.setStyleSheet('border: none; background-color: transparent;')
         
-        free_description = aqt.qt.QLabel('Use only free text-to-speech services')
+        free_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION)
         
         free_layout.addWidget(free_title)
         free_layout.addWidget(free_description)
@@ -148,13 +149,13 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.manual_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.MANUAL_CONFIGURATION))
         
         manual_layout = aqt.qt.QVBoxLayout()
-        manual_title = aqt.qt.QLabel('Manually configure services')
+        manual_title = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE)
         manual_font = manual_title.font()
         manual_font.setPointSize(manual_font.pointSize() + 4)
         manual_title.setFont(manual_font)
         manual_title.setStyleSheet('border: none; background-color: transparent;')
         
-        manual_description = aqt.qt.QLabel('Configure services yourself with your own API keys')
+        manual_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION)
         
         manual_layout.addWidget(manual_title)
         manual_layout.addWidget(manual_description)

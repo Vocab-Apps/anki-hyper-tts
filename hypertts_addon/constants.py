@@ -250,6 +250,15 @@ GUI_TEXT_SHORTCUTS_EDITOR_PREVIEW_AUDIO = """Preview Audio for a note using the 
 
 GUI_TEXT_ERROR_HANDLING_REALTIME_TTS = """How to display errors during Realtime TTS"""
 
+GUI_TEXT_SERVICES_CONFIG_TITLE = """Configure HyperTTS services"""
+GUI_TEXT_SERVICES_CONFIG_DESCRIPTION = """In order to generate audio using HyperTTS, you need to enable TTS services. Choose from one of the options below."""
+GUI_TEXT_SERVICES_CONFIG_TRIAL_TITLE = """Free trial for HyperTTS Pro (recommended)"""
+GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION = """Get access to premium voices and features with a free trial"""
+GUI_TEXT_SERVICES_CONFIG_FREE_TITLE = """Enable Free Services only"""
+GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION = """Use only free text-to-speech services"""
+GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE = """Manually configure services"""
+GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION = """Configure services yourself with your own API keys"""
+
 GRAPHICS_PRO_BANNER = 'hypertts_pro_banner.png'
 GRAPHICS_LITE_BANNER = 'hypertts_lite_banner.png'
 GRAPHICS_SERVICE_COMPATIBLE = 'hypertts_service_compatible_banner.png'
