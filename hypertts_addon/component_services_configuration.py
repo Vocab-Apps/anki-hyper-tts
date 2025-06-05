@@ -76,14 +76,14 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
             }
         """
         
-        # Trial button with enhanced purple styling
+        # Trial button with enhanced blue/purple styling
         trial_button_style = """
             QPushButton {
-                border: 1px solid #6a4c93;
+                border: 1px solid #5a65c7;
                 border-radius: 8px;
                 padding: 20px;
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                    stop: 0 #8e6bb1, stop: 1 #6a4c93);
+                background: qlineargradient(x1: 0.342, y1: 0, x2: 0.658, y2: 1,
+                    stop: 0 #6975dd, stop: 1 #7355b0);
                 text-align: left;
                 min-height: 80px;
                 color: white;
@@ -92,15 +92,15 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
                 margin: 2px;
             }
             QPushButton:hover {
-                border: 1px solid #5a3c83;
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                    stop: 0 #9e7bc1, stop: 1 #7a5ca3);
+                border: 1px solid #4a55b7;
+                background: qlineargradient(x1: 0.342, y1: 0, x2: 0.658, y2: 1,
+                    stop: 0 #7985ed, stop: 1 #8365c0);
                 box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
             }
             QPushButton:pressed {
-                border: 1px solid #4a2c73;
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                    stop: 0 #7a5ca3, stop: 1 #5a3c83);
+                border: 1px solid #3a45a7;
+                background: qlineargradient(x1: 0.342, y1: 0, x2: 0.658, y2: 1,
+                    stop: 0 #5965cd, stop: 1 #6345a0);
                 box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
                 margin: 3px 1px 1px 3px;
             }
