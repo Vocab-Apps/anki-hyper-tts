@@ -121,7 +121,11 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         trial_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION)
         trial_description.setStyleSheet('border: none; background-color: transparent; color: rgba(255, 255, 255, 0.9);')
         
+        trial_recommended = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_RECOMMENDED)
+        trial_recommended.setStyleSheet('border: none; background-color: transparent; color: rgba(255, 255, 255, 0.9); font-style: italic;')
+        
         trial_layout.addWidget(trial_title)
+        trial_layout.addWidget(trial_recommended)
         trial_layout.addWidget(trial_description)
         self.trial_button.setLayout(trial_layout)
         

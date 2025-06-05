@@ -252,8 +252,11 @@ GUI_TEXT_ERROR_HANDLING_REALTIME_TTS = """How to display errors during Realtime 
 
 GUI_TEXT_SERVICES_CONFIG_TITLE = """Configure HyperTTS services"""
 GUI_TEXT_SERVICES_CONFIG_DESCRIPTION = """In order to generate audio using HyperTTS, you need to enable TTS services. Choose from one of the options below."""
-GUI_TEXT_SERVICES_CONFIG_TRIAL_TITLE = """Free trial for HyperTTS Pro (recommended)"""
-GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION = """Get access to premium voices and features with a free trial"""
+GUI_TEXT_SERVICES_CONFIG_TRIAL_TITLE = """Free trial for HyperTTS Pro"""
+GUI_TEXT_SERVICES_CONFIG_TRIAL_RECOMMENDED = """This is the recommended option"""
+GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION = """• Access to Premium TTS services such as Azure, Google, ElevenLabs, OpenAI, Amazon.
+• Highest audio quality possible.
+• Immediate access after signing up with your email."""
 GUI_TEXT_SERVICES_CONFIG_FREE_TITLE = """Enable Free Services only"""
 GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION = """Use only free text-to-speech services"""
 GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE = """Manually configure services"""
