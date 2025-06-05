@@ -86,7 +86,6 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
                 background: qlineargradient(x1: 0.342, y1: 0, x2: 0.658, y2: 1,
                     stop: 0 #6975dd, stop: 1 #7355b0);
                 text-align: left;
-                min-height: 80px;
                 color: white;
                 font-weight: bold;
                 box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
