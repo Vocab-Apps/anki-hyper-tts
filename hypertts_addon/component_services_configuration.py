@@ -1,6 +1,7 @@
 import aqt.qt
 from . import config_models
 from . import constants
+from . import gui_utils
 from . import logging_utils
 from . import constants_events
 from .constants_events import Event, EventMode
@@ -22,6 +23,12 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.setWindowTitle(constants.TITLE_PREFIX + 'Configure Services')
         layout = aqt.qt.QVBoxLayout()
 
+        # Add HyperTTS header
+        header_layout = aqt.qt.QHBoxLayout()
+        header_layout.addStretch()
+        header_layout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
+        layout.addLayout(header_layout)
+        
         # Add explanation label at top
         explanation = aqt.qt.QLabel("Choose how you'd like to configure HyperTTS services:")
         explanation.setWordWrap(True)
