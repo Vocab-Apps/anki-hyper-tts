@@ -32,7 +32,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         # Add explanation label at top
         explanation = aqt.qt.QLabel("Configure HyperTTS services")
         explanation.setWordWrap(True)
-        explanation.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        explanation.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignLeft)
         explanation.setStyleSheet('border: none; background-color: transparent;')
         font = explanation.font()
         font.setPointSize(14)
