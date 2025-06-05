@@ -43,7 +43,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         description = aqt.qt.QLabel("In order to generate audio using HyperTTS, you need to enable TTS services. Choose from one of the options below.")
         description.setWordWrap(True)
         description.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
-        description.setStyleSheet('border: none; background-color: transparent; color: palette(mid);')
+        description.setStyleSheet('border: none; background-color: transparent; color: palette(dark);')
         desc_font = description.font()
         desc_font.setPointSize(desc_font.pointSize() - 1)
         description.setFont(desc_font)
