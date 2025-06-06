@@ -86,7 +86,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
                 padding: 0px;
                 background: #f8f8f8;
                 text-align: left;
-                min-height: 120px;
+                min-height: 150px;
                 box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
                 margin: 2px;
             }
@@ -141,13 +141,16 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         """)
         trial_body_layout = aqt.qt.QVBoxLayout()
         trial_body_layout.setContentsMargins(15, 10, 15, 15)
+        trial_body_layout.setSpacing(8)
         
         trial_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION)
         trial_description.setWordWrap(True)
         trial_description.setStyleSheet('border: none; background-color: transparent; color: #333333;')
+        trial_description.setSizePolicy(aqt.qt.QSizePolicy.Policy.Expanding, aqt.qt.QSizePolicy.Policy.Expanding)
         
         trial_recommended = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_RECOMMENDED)
         trial_recommended.setStyleSheet('border: none; background-color: transparent; color: #666666; font-style: italic;')
+        trial_recommended.setSizePolicy(aqt.qt.QSizePolicy.Policy.Expanding, aqt.qt.QSizePolicy.Policy.Minimum)
         
         trial_body_layout.addWidget(trial_description)
         trial_body_layout.addWidget(trial_recommended)
