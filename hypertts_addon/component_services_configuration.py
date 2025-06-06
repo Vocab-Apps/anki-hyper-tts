@@ -199,12 +199,17 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         """)
         free_body_layout = aqt.qt.QVBoxLayout()
         free_body_layout.setContentsMargins(15, 10, 15, 15)
+        free_body_layout.setSpacing(8)
         
         free_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION)
         free_description.setWordWrap(True)
         free_description.setStyleSheet('border: none; background-color: transparent; color: #333333;')
         
+        free_recommended = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_FREE_RECOMMENDED)
+        free_recommended.setStyleSheet('border: none; background-color: transparent; color: #666666; font-style: italic;')
+        
         free_body_layout.addWidget(free_description)
+        free_body_layout.addWidget(free_recommended)
         free_body.setLayout(free_body_layout)
         
         free_layout.addWidget(free_header)
@@ -250,12 +255,17 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         """)
         manual_body_layout = aqt.qt.QVBoxLayout()
         manual_body_layout.setContentsMargins(15, 10, 15, 15)
+        manual_body_layout.setSpacing(8)
         
         manual_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION)
         manual_description.setWordWrap(True)
         manual_description.setStyleSheet('border: none; background-color: transparent; color: #333333;')
         
+        manual_recommended = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_RECOMMENDED)
+        manual_recommended.setStyleSheet('border: none; background-color: transparent; color: #666666; font-style: italic;')
+        
         manual_body_layout.addWidget(manual_description)
+        manual_body_layout.addWidget(manual_recommended)
         manual_body.setLayout(manual_body_layout)
         
         manual_layout.addWidget(manual_header)
