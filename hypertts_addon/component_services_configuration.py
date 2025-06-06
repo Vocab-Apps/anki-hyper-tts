@@ -78,31 +78,26 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
             }
         """
         
-        # Trial button with enhanced blue/purple styling
+        # Trial button with purple outline and structured layout
         trial_button_style = """
             QPushButton {
-                border: 1px solid #5a65c7;
+                border: 3px solid #6975dd;
                 border-radius: 8px;
-                padding: 20px;
-                background: qlineargradient(x1: 0.342, y1: 0, x2: 0.658, y2: 1,
-                    stop: 0 #6975dd, stop: 1 #7355b0);
+                padding: 0px;
+                background: #f8f8f8;
                 text-align: left;
                 min-height: 120px;
-                color: white;
-                font-weight: bold;
                 box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
                 margin: 2px;
             }
             QPushButton:hover {
-                border: 1px solid #4a55b7;
-                background: qlineargradient(x1: 0.342, y1: 0, x2: 0.658, y2: 1,
-                    stop: 0 #7985ed, stop: 1 #8365c0);
+                border: 3px solid #7985ed;
+                background: #ffffff;
                 box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
             }
             QPushButton:pressed {
-                border: 1px solid #3a45a7;
-                background: qlineargradient(x1: 0.342, y1: 0, x2: 0.658, y2: 1,
-                    stop: 0 #5965cd, stop: 1 #6345a0);
+                border: 3px solid #5965cd;
+                background: #f0f0f0;
                 box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
                 margin: 3px 1px 1px 3px;
             }
@@ -113,22 +108,55 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.trial_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.TRIAL))
         
         trial_layout = aqt.qt.QVBoxLayout()
+        trial_layout.setContentsMargins(0, 0, 0, 0)
+        trial_layout.setSpacing(0)
+        
+        # Header with gradient background
+        trial_header = aqt.qt.QWidget()
+        trial_header.setStyleSheet("""
+            QWidget {
+                background: qlineargradient(x1: 0.342, y1: 0, x2: 0.658, y2: 1,
+                    stop: 0 #6975dd, stop: 1 #7355b0);
+                border-radius: 5px 5px 0px 0px;
+                padding: 15px;
+            }
+        """)
+        trial_header_layout = aqt.qt.QVBoxLayout()
+        trial_header_layout.setContentsMargins(15, 15, 15, 15)
+        
         trial_title = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_TITLE)
         font = trial_title.font()
         font.setPointSize(font.pointSize() + 4)
         trial_title.setFont(font)
         trial_title.setStyleSheet('border: none; background-color: transparent; color: white;')
+        trial_header_layout.addWidget(trial_title)
+        trial_header.setLayout(trial_header_layout)
+        
+        # Body with light gray background
+        trial_body = aqt.qt.QWidget()
+        trial_body.setStyleSheet("""
+            QWidget {
+                background: #f8f8f8;
+                border-radius: 0px 0px 5px 5px;
+                padding: 15px;
+            }
+        """)
+        trial_body_layout = aqt.qt.QVBoxLayout()
+        trial_body_layout.setContentsMargins(15, 15, 15, 15)
         
         trial_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION)
         trial_description.setWordWrap(True)
-        trial_description.setStyleSheet('border: none; background-color: transparent; color: rgba(255, 255, 255, 0.9);')
+        trial_description.setStyleSheet('border: none; background-color: transparent; color: #333333;')
         
         trial_recommended = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_RECOMMENDED)
-        trial_recommended.setStyleSheet('border: none; background-color: transparent; color: rgba(255, 255, 255, 0.9); font-style: italic;')
+        trial_recommended.setStyleSheet('border: none; background-color: transparent; color: #666666; font-style: italic;')
         
-        trial_layout.addWidget(trial_title)
-        trial_layout.addWidget(trial_description)
-        trial_layout.addWidget(trial_recommended)
+        trial_body_layout.addWidget(trial_description)
+        trial_body_layout.addWidget(trial_recommended)
+        trial_body.setLayout(trial_body_layout)
+        
+        trial_layout.addWidget(trial_header)
+        trial_layout.addWidget(trial_body)
         self.trial_button.setLayout(trial_layout)
         
         # Free services button
@@ -137,17 +165,51 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.free_services_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.FREE_SERVICES))
         
         free_layout = aqt.qt.QVBoxLayout()
+        free_layout.setContentsMargins(0, 0, 0, 0)
+        free_layout.setSpacing(0)
+        
+        # Header with gradient background
+        free_header = aqt.qt.QWidget()
+        free_header.setStyleSheet("""
+            QWidget {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #f8f8f8, stop: 1 #e8e8e8);
+                border-radius: 5px 5px 0px 0px;
+                padding: 15px;
+            }
+        """)
+        free_header_layout = aqt.qt.QVBoxLayout()
+        free_header_layout.setContentsMargins(15, 15, 15, 15)
+        
         free_title = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_FREE_TITLE)
         free_font = free_title.font()
         free_font.setPointSize(free_font.pointSize() + 4)
         free_title.setFont(free_font)
-        free_title.setStyleSheet('border: none; background-color: transparent;')
+        free_title.setStyleSheet('border: none; background-color: transparent; color: #333333;')
+        free_header_layout.addWidget(free_title)
+        free_header.setLayout(free_header_layout)
+        
+        # Body with light gray background
+        free_body = aqt.qt.QWidget()
+        free_body.setStyleSheet("""
+            QWidget {
+                background: #f8f8f8;
+                border-radius: 0px 0px 5px 5px;
+                padding: 15px;
+            }
+        """)
+        free_body_layout = aqt.qt.QVBoxLayout()
+        free_body_layout.setContentsMargins(15, 15, 15, 15)
         
         free_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION)
         free_description.setWordWrap(True)
+        free_description.setStyleSheet('border: none; background-color: transparent; color: #333333;')
         
-        free_layout.addWidget(free_title)
-        free_layout.addWidget(free_description)
+        free_body_layout.addWidget(free_description)
+        free_body.setLayout(free_body_layout)
+        
+        free_layout.addWidget(free_header)
+        free_layout.addWidget(free_body)
         self.free_services_button.setLayout(free_layout)
         
         # Manual configuration button
@@ -156,17 +218,51 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.manual_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.MANUAL_CONFIGURATION))
         
         manual_layout = aqt.qt.QVBoxLayout()
+        manual_layout.setContentsMargins(0, 0, 0, 0)
+        manual_layout.setSpacing(0)
+        
+        # Header with gradient background
+        manual_header = aqt.qt.QWidget()
+        manual_header.setStyleSheet("""
+            QWidget {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #f8f8f8, stop: 1 #e8e8e8);
+                border-radius: 5px 5px 0px 0px;
+                padding: 15px;
+            }
+        """)
+        manual_header_layout = aqt.qt.QVBoxLayout()
+        manual_header_layout.setContentsMargins(15, 15, 15, 15)
+        
         manual_title = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE)
         manual_font = manual_title.font()
         manual_font.setPointSize(manual_font.pointSize() + 4)
         manual_title.setFont(manual_font)
-        manual_title.setStyleSheet('border: none; background-color: transparent;')
+        manual_title.setStyleSheet('border: none; background-color: transparent; color: #333333;')
+        manual_header_layout.addWidget(manual_title)
+        manual_header.setLayout(manual_header_layout)
+        
+        # Body with light gray background
+        manual_body = aqt.qt.QWidget()
+        manual_body.setStyleSheet("""
+            QWidget {
+                background: #f8f8f8;
+                border-radius: 0px 0px 5px 5px;
+                padding: 15px;
+            }
+        """)
+        manual_body_layout = aqt.qt.QVBoxLayout()
+        manual_body_layout.setContentsMargins(15, 15, 15, 15)
         
         manual_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION)
         manual_description.setWordWrap(True)
+        manual_description.setStyleSheet('border: none; background-color: transparent; color: #333333;')
         
-        manual_layout.addWidget(manual_title)
-        manual_layout.addWidget(manual_description)
+        manual_body_layout.addWidget(manual_description)
+        manual_body.setLayout(manual_body_layout)
+        
+        manual_layout.addWidget(manual_header)
+        manual_layout.addWidget(manual_body)
         self.manual_button.setLayout(manual_layout)
         
         # Add buttons to main layout
