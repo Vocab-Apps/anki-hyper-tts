@@ -12969,97 +12969,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Adina - Teen Girl (English v1)',
-            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Adina - Teen Girl (Flash v2)',
-            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_flash_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Adina - Teen Girl (Flash v2.5)',
-            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US, languages.AudioLanguage.ja_JP, languages.AudioLanguage.zh_CN, languages.AudioLanguage.de_DE, languages.AudioLanguage.hi_IN, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ko_KR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.it_IT, languages.AudioLanguage.es_ES, languages.AudioLanguage.ru_RU, languages.AudioLanguage.id_ID, languages.AudioLanguage.nl_NL, languages.AudioLanguage.tr_TR, languages.AudioLanguage.fil_PH, languages.AudioLanguage.pl_PL, languages.AudioLanguage.sv_SE, languages.AudioLanguage.bg_BG, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ar_XA, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.el_GR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.hr_HR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.sk_SK, languages.AudioLanguage.da_DK, languages.AudioLanguage.ta_IN, languages.AudioLanguage.uk_UA, languages.AudioLanguage.hu_HU, languages.AudioLanguage.nb_NO, languages.AudioLanguage.vi_VN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Adina - Teen Girl (Multilingual v1)',
-            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US, languages.AudioLanguage.de_DE, languages.AudioLanguage.pl_PL, languages.AudioLanguage.es_ES, languages.AudioLanguage.it_IT, languages.AudioLanguage.fr_FR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.hi_IN, languages.AudioLanguage.ar_XA
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Adina - Teen Girl (Multilingual v2)',
-            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US, languages.AudioLanguage.ja_JP, languages.AudioLanguage.zh_CN, languages.AudioLanguage.de_DE, languages.AudioLanguage.hi_IN, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ko_KR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.it_IT, languages.AudioLanguage.es_ES, languages.AudioLanguage.id_ID, languages.AudioLanguage.nl_NL, languages.AudioLanguage.tr_TR, languages.AudioLanguage.fil_PH, languages.AudioLanguage.pl_PL, languages.AudioLanguage.sv_SE, languages.AudioLanguage.bg_BG, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ar_XA, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.el_GR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.hr_HR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.sk_SK, languages.AudioLanguage.da_DK, languages.AudioLanguage.ta_IN, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ru_RU
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Adina - Teen Girl (Turbo v2)',
-            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_turbo_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Adina - Teen Girl (Turbo v2.5)',
-            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US, languages.AudioLanguage.ja_JP, languages.AudioLanguage.zh_CN, languages.AudioLanguage.de_DE, languages.AudioLanguage.hi_IN, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ko_KR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.it_IT, languages.AudioLanguage.es_ES, languages.AudioLanguage.ru_RU, languages.AudioLanguage.id_ID, languages.AudioLanguage.nl_NL, languages.AudioLanguage.tr_TR, languages.AudioLanguage.fil_PH, languages.AudioLanguage.pl_PL, languages.AudioLanguage.sv_SE, languages.AudioLanguage.bg_BG, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ar_XA, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.el_GR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.hr_HR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.sk_SK, languages.AudioLanguage.da_DK, languages.AudioLanguage.ta_IN, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.nb_NO, languages.AudioLanguage.hu_HU
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Alice (English v1)',
             voice_key={'voice_id': 'Xb7hH8MSUJpSbSDYk0k2', 'model_id': 'eleven_monolingual_v1'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
@@ -13088,7 +12997,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Alice (Flash v2.5)',
             voice_key={'voice_id': 'Xb7hH8MSUJpSbSDYk0k2', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -13101,7 +13010,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Alice (Multilingual v1)',
             voice_key={'voice_id': 'Xb7hH8MSUJpSbSDYk0k2', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -13114,7 +13023,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Alice (Multilingual v2)',
             voice_key={'voice_id': 'Xb7hH8MSUJpSbSDYk0k2', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -13140,7 +13049,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Alice (Turbo v2.5)',
             voice_key={'voice_id': 'Xb7hH8MSUJpSbSDYk0k2', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -13179,7 +13088,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Aria (Flash v2.5)',
             voice_key={'voice_id': '9BWtsMINqrJLrRacOk9x', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -13192,7 +13101,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Aria (Multilingual v1)',
             voice_key={'voice_id': '9BWtsMINqrJLrRacOk9x', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -13205,7 +13114,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Aria (Multilingual v2)',
             voice_key={'voice_id': '9BWtsMINqrJLrRacOk9x', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -13231,7 +13140,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Aria (Turbo v2.5)',
             voice_key={'voice_id': '9BWtsMINqrJLrRacOk9x', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -13270,7 +13179,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Bill (Flash v2.5)',
             voice_key={'voice_id': 'pqHfZKP75CvOlQylNhV4', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13283,7 +13192,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Bill (Multilingual v1)',
             voice_key={'voice_id': 'pqHfZKP75CvOlQylNhV4', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13296,7 +13205,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Bill (Multilingual v2)',
             voice_key={'voice_id': 'pqHfZKP75CvOlQylNhV4', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13322,7 +13231,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Bill (Turbo v2.5)',
             voice_key={'voice_id': 'pqHfZKP75CvOlQylNhV4', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13361,7 +13270,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Brian (Flash v2.5)',
             voice_key={'voice_id': 'nPczCjzI2devNBz1zQrb', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13374,7 +13283,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Brian (Multilingual v1)',
             voice_key={'voice_id': 'nPczCjzI2devNBz1zQrb', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13387,7 +13296,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Brian (Multilingual v2)',
             voice_key={'voice_id': 'nPczCjzI2devNBz1zQrb', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13413,7 +13322,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Brian (Turbo v2.5)',
             voice_key={'voice_id': 'nPczCjzI2devNBz1zQrb', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13452,7 +13361,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Callum (Flash v2.5)',
             voice_key={'voice_id': 'N2lVS1w4EtoT3dr4eOWO', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13465,7 +13374,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Callum (Multilingual v1)',
             voice_key={'voice_id': 'N2lVS1w4EtoT3dr4eOWO', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13478,7 +13387,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Callum (Multilingual v2)',
             voice_key={'voice_id': 'N2lVS1w4EtoT3dr4eOWO', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13504,7 +13413,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Callum (Turbo v2.5)',
             voice_key={'voice_id': 'N2lVS1w4EtoT3dr4eOWO', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13543,7 +13452,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Charlie (Flash v2.5)',
             voice_key={'voice_id': 'IKne3meq5aSn9XLyUdCD', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13556,7 +13465,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Charlie (Multilingual v1)',
             voice_key={'voice_id': 'IKne3meq5aSn9XLyUdCD', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13569,7 +13478,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Charlie (Multilingual v2)',
             voice_key={'voice_id': 'IKne3meq5aSn9XLyUdCD', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13595,7 +13504,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Charlie (Turbo v2.5)',
             voice_key={'voice_id': 'IKne3meq5aSn9XLyUdCD', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13634,7 +13543,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Charlotte (Flash v2.5)',
             voice_key={'voice_id': 'XB0fDUnXU5powFXDhCwa', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -13647,7 +13556,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Charlotte (Multilingual v1)',
             voice_key={'voice_id': 'XB0fDUnXU5powFXDhCwa', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -13660,7 +13569,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Charlotte (Multilingual v2)',
             voice_key={'voice_id': 'XB0fDUnXU5powFXDhCwa', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -13686,7 +13595,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Charlotte (Turbo v2.5)',
             voice_key={'voice_id': 'XB0fDUnXU5powFXDhCwa', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -13725,7 +13634,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Chris (Flash v2.5)',
             voice_key={'voice_id': 'iP95p4xoKVk53GoZ742B', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13738,7 +13647,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Chris (Multilingual v1)',
             voice_key={'voice_id': 'iP95p4xoKVk53GoZ742B', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13751,7 +13660,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Chris (Multilingual v2)',
             voice_key={'voice_id': 'iP95p4xoKVk53GoZ742B', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13777,7 +13686,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Chris (Turbo v2.5)',
             voice_key={'voice_id': 'iP95p4xoKVk53GoZ742B', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13816,7 +13725,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Daniel (Flash v2.5)',
             voice_key={'voice_id': 'onwK4e9ZLuTAKqWW03F9', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13829,7 +13738,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Daniel (Multilingual v1)',
             voice_key={'voice_id': 'onwK4e9ZLuTAKqWW03F9', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13842,7 +13751,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Daniel (Multilingual v2)',
             voice_key={'voice_id': 'onwK4e9ZLuTAKqWW03F9', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13868,7 +13777,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Daniel (Turbo v2.5)',
             voice_key={'voice_id': 'onwK4e9ZLuTAKqWW03F9', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13907,7 +13816,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Eric (Flash v2.5)',
             voice_key={'voice_id': 'cjVigY5qzO86Huf0OWal', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13920,7 +13829,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Eric (Multilingual v1)',
             voice_key={'voice_id': 'cjVigY5qzO86Huf0OWal', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13933,7 +13842,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Eric (Multilingual v2)',
             voice_key={'voice_id': 'cjVigY5qzO86Huf0OWal', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13959,7 +13868,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Eric (Turbo v2.5)',
             voice_key={'voice_id': 'cjVigY5qzO86Huf0OWal', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -13998,7 +13907,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='George (Flash v2.5)',
             voice_key={'voice_id': 'JBFqnCBsd6RMkjVDRZzb', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14011,7 +13920,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='George (Multilingual v1)',
             voice_key={'voice_id': 'JBFqnCBsd6RMkjVDRZzb', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14024,7 +13933,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='George (Multilingual v2)',
             voice_key={'voice_id': 'JBFqnCBsd6RMkjVDRZzb', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14050,7 +13959,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='George (Turbo v2.5)',
             voice_key={'voice_id': 'JBFqnCBsd6RMkjVDRZzb', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14089,7 +13998,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Jessica (Flash v2.5)',
             voice_key={'voice_id': 'cgSgspJ2msm6clMCkdW9', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14102,7 +14011,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Jessica (Multilingual v1)',
             voice_key={'voice_id': 'cgSgspJ2msm6clMCkdW9', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14115,7 +14024,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Jessica (Multilingual v2)',
             voice_key={'voice_id': 'cgSgspJ2msm6clMCkdW9', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14141,7 +14050,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Jessica (Turbo v2.5)',
             voice_key={'voice_id': 'cgSgspJ2msm6clMCkdW9', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14180,7 +14089,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Laura (Flash v2.5)',
             voice_key={'voice_id': 'FGY2WhTYpPnrIDTdsKH5', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14193,7 +14102,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Laura (Multilingual v1)',
             voice_key={'voice_id': 'FGY2WhTYpPnrIDTdsKH5', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14206,7 +14115,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Laura (Multilingual v2)',
             voice_key={'voice_id': 'FGY2WhTYpPnrIDTdsKH5', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14232,7 +14141,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Laura (Turbo v2.5)',
             voice_key={'voice_id': 'FGY2WhTYpPnrIDTdsKH5', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14271,7 +14180,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Liam (Flash v2.5)',
             voice_key={'voice_id': 'TX3LPaxmHKxFdv7VOQHJ', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14284,7 +14193,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Liam (Multilingual v1)',
             voice_key={'voice_id': 'TX3LPaxmHKxFdv7VOQHJ', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14297,7 +14206,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Liam (Multilingual v2)',
             voice_key={'voice_id': 'TX3LPaxmHKxFdv7VOQHJ', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14323,7 +14232,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Liam (Turbo v2.5)',
             voice_key={'voice_id': 'TX3LPaxmHKxFdv7VOQHJ', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14362,7 +14271,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Lily (Flash v2.5)',
             voice_key={'voice_id': 'pFZP5JQG7iQjIQuC4Bku', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14375,7 +14284,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Lily (Multilingual v1)',
             voice_key={'voice_id': 'pFZP5JQG7iQjIQuC4Bku', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14388,7 +14297,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Lily (Multilingual v2)',
             voice_key={'voice_id': 'pFZP5JQG7iQjIQuC4Bku', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14414,7 +14323,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Lily (Turbo v2.5)',
             voice_key={'voice_id': 'pFZP5JQG7iQjIQuC4Bku', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14453,7 +14362,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Matilda (Flash v2.5)',
             voice_key={'voice_id': 'XrExE9yKIg1WjnnlVkGX', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14466,7 +14375,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Matilda (Multilingual v1)',
             voice_key={'voice_id': 'XrExE9yKIg1WjnnlVkGX', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14479,7 +14388,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Matilda (Multilingual v2)',
             voice_key={'voice_id': 'XrExE9yKIg1WjnnlVkGX', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14505,7 +14414,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Matilda (Turbo v2.5)',
             voice_key={'voice_id': 'XrExE9yKIg1WjnnlVkGX', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14544,7 +14453,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='River (Flash v2.5)',
             voice_key={'voice_id': 'SAz9YHcvj6GT2YYXdXww', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14557,7 +14466,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='River (Multilingual v1)',
             voice_key={'voice_id': 'SAz9YHcvj6GT2YYXdXww', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14570,7 +14479,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='River (Multilingual v2)',
             voice_key={'voice_id': 'SAz9YHcvj6GT2YYXdXww', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14596,98 +14505,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='River (Turbo v2.5)',
             voice_key={'voice_id': 'SAz9YHcvj6GT2YYXdXww', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US, languages.AudioLanguage.ja_JP, languages.AudioLanguage.zh_CN, languages.AudioLanguage.de_DE, languages.AudioLanguage.hi_IN, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ko_KR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.it_IT, languages.AudioLanguage.es_ES, languages.AudioLanguage.ru_RU, languages.AudioLanguage.id_ID, languages.AudioLanguage.nl_NL, languages.AudioLanguage.tr_TR, languages.AudioLanguage.fil_PH, languages.AudioLanguage.pl_PL, languages.AudioLanguage.sv_SE, languages.AudioLanguage.bg_BG, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ar_XA, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.el_GR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.hr_HR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.sk_SK, languages.AudioLanguage.da_DK, languages.AudioLanguage.ta_IN, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.nb_NO, languages.AudioLanguage.hu_HU
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Roger (English v1)',
-            voice_key={'voice_id': 'CwhRBWXzGAHq8TQ4Fs17', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Roger (Flash v2)',
-            voice_key={'voice_id': 'CwhRBWXzGAHq8TQ4Fs17', 'model_id': 'eleven_flash_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Roger (Flash v2.5)',
-            voice_key={'voice_id': 'CwhRBWXzGAHq8TQ4Fs17', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US, languages.AudioLanguage.ja_JP, languages.AudioLanguage.zh_CN, languages.AudioLanguage.de_DE, languages.AudioLanguage.hi_IN, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ko_KR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.it_IT, languages.AudioLanguage.es_ES, languages.AudioLanguage.ru_RU, languages.AudioLanguage.id_ID, languages.AudioLanguage.nl_NL, languages.AudioLanguage.tr_TR, languages.AudioLanguage.fil_PH, languages.AudioLanguage.pl_PL, languages.AudioLanguage.sv_SE, languages.AudioLanguage.bg_BG, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ar_XA, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.el_GR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.hr_HR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.sk_SK, languages.AudioLanguage.da_DK, languages.AudioLanguage.ta_IN, languages.AudioLanguage.uk_UA, languages.AudioLanguage.hu_HU, languages.AudioLanguage.nb_NO, languages.AudioLanguage.vi_VN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Roger (Multilingual v1)',
-            voice_key={'voice_id': 'CwhRBWXzGAHq8TQ4Fs17', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US, languages.AudioLanguage.de_DE, languages.AudioLanguage.pl_PL, languages.AudioLanguage.es_ES, languages.AudioLanguage.it_IT, languages.AudioLanguage.fr_FR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.hi_IN, languages.AudioLanguage.ar_XA
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Roger (Multilingual v2)',
-            voice_key={'voice_id': 'CwhRBWXzGAHq8TQ4Fs17', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US, languages.AudioLanguage.ja_JP, languages.AudioLanguage.zh_CN, languages.AudioLanguage.de_DE, languages.AudioLanguage.hi_IN, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ko_KR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.it_IT, languages.AudioLanguage.es_ES, languages.AudioLanguage.id_ID, languages.AudioLanguage.nl_NL, languages.AudioLanguage.tr_TR, languages.AudioLanguage.fil_PH, languages.AudioLanguage.pl_PL, languages.AudioLanguage.sv_SE, languages.AudioLanguage.bg_BG, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ar_XA, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.el_GR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.hr_HR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.sk_SK, languages.AudioLanguage.da_DK, languages.AudioLanguage.ta_IN, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ru_RU
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Roger (Turbo v2)',
-            voice_key={'voice_id': 'CwhRBWXzGAHq8TQ4Fs17', 'model_id': 'eleven_turbo_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Roger (Turbo v2.5)',
-            voice_key={'voice_id': 'CwhRBWXzGAHq8TQ4Fs17', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14726,7 +14544,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Sarah (Flash v2.5)',
             voice_key={'voice_id': 'EXAVITQu4vr4xnSDxMaL', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14739,7 +14557,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Sarah (Multilingual v1)',
             voice_key={'voice_id': 'EXAVITQu4vr4xnSDxMaL', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14752,7 +14570,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Sarah (Multilingual v2)',
             voice_key={'voice_id': 'EXAVITQu4vr4xnSDxMaL', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14778,7 +14596,98 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Sarah (Turbo v2.5)',
             voice_key={'voice_id': 'EXAVITQu4vr4xnSDxMaL', 'model_id': 'eleven_turbo_v2_5'},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
+            service='ElevenLabs',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US, languages.AudioLanguage.ja_JP, languages.AudioLanguage.zh_CN, languages.AudioLanguage.de_DE, languages.AudioLanguage.hi_IN, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ko_KR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.it_IT, languages.AudioLanguage.es_ES, languages.AudioLanguage.ru_RU, languages.AudioLanguage.id_ID, languages.AudioLanguage.nl_NL, languages.AudioLanguage.tr_TR, languages.AudioLanguage.fil_PH, languages.AudioLanguage.pl_PL, languages.AudioLanguage.sv_SE, languages.AudioLanguage.bg_BG, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ar_XA, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.el_GR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.hr_HR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.sk_SK, languages.AudioLanguage.da_DK, languages.AudioLanguage.ta_IN, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.nb_NO, languages.AudioLanguage.hu_HU
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Teen Girl - Chicadi (English v1)',
+            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_monolingual_v1'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            service='ElevenLabs',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Teen Girl - Chicadi (Flash v2)',
+            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_flash_v2'},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            service='ElevenLabs',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Teen Girl - Chicadi (Flash v2.5)',
+            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_flash_v2_5'},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
+            service='ElevenLabs',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US, languages.AudioLanguage.ja_JP, languages.AudioLanguage.zh_CN, languages.AudioLanguage.de_DE, languages.AudioLanguage.hi_IN, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ko_KR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.it_IT, languages.AudioLanguage.es_ES, languages.AudioLanguage.ru_RU, languages.AudioLanguage.id_ID, languages.AudioLanguage.nl_NL, languages.AudioLanguage.tr_TR, languages.AudioLanguage.fil_PH, languages.AudioLanguage.pl_PL, languages.AudioLanguage.sv_SE, languages.AudioLanguage.bg_BG, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ar_XA, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.el_GR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.hr_HR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.sk_SK, languages.AudioLanguage.da_DK, languages.AudioLanguage.ta_IN, languages.AudioLanguage.uk_UA, languages.AudioLanguage.hu_HU, languages.AudioLanguage.nb_NO, languages.AudioLanguage.vi_VN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Teen Girl - Chicadi (Multilingual v1)',
+            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_multilingual_v1'},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
+            service='ElevenLabs',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US, languages.AudioLanguage.de_DE, languages.AudioLanguage.pl_PL, languages.AudioLanguage.es_ES, languages.AudioLanguage.it_IT, languages.AudioLanguage.fr_FR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.hi_IN, languages.AudioLanguage.ar_XA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Teen Girl - Chicadi (Multilingual v2)',
+            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_multilingual_v2'},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
+            service='ElevenLabs',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US, languages.AudioLanguage.ja_JP, languages.AudioLanguage.zh_CN, languages.AudioLanguage.de_DE, languages.AudioLanguage.hi_IN, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ko_KR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.it_IT, languages.AudioLanguage.es_ES, languages.AudioLanguage.id_ID, languages.AudioLanguage.nl_NL, languages.AudioLanguage.tr_TR, languages.AudioLanguage.fil_PH, languages.AudioLanguage.pl_PL, languages.AudioLanguage.sv_SE, languages.AudioLanguage.bg_BG, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ar_XA, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.el_GR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.hr_HR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.sk_SK, languages.AudioLanguage.da_DK, languages.AudioLanguage.ta_IN, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ru_RU
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Teen Girl - Chicadi (Turbo v2)',
+            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_turbo_v2'},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            service='ElevenLabs',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Teen Girl - Chicadi (Turbo v2.5)',
+            voice_key={'voice_id': 'umKoJK6tP1ALjO0zo1EE', 'model_id': 'eleven_turbo_v2_5'},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -14817,7 +14726,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Will (Flash v2.5)',
             voice_key={'voice_id': 'bIHbv24MWmeRgasZH58o', 'model_id': 'eleven_flash_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'hu', 'no', 'vi'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14830,7 +14739,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Will (Multilingual v1)',
             voice_key={'voice_id': 'bIHbv24MWmeRgasZH58o', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'de', 'pl', 'es', 'it', 'fr', 'pt', 'hi', 'ar'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14843,7 +14752,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Will (Multilingual v2)',
             voice_key={'voice_id': 'bIHbv24MWmeRgasZH58o', 'model_id': 'eleven_multilingual_v2'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'ru'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14869,7 +14778,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Will (Turbo v2.5)',
             voice_key={'voice_id': 'bIHbv24MWmeRgasZH58o', 'model_id': 'eleven_turbo_v2_5'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}},
+            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'format': {'type': 'list', 'values': ['mp3'], 'default': 'mp3'}, 'language_code': {'type': 'list', 'values': ['', 'en', 'ja', 'zh', 'de', 'hi', 'fr', 'ko', 'pt', 'it', 'es', 'ru', 'id', 'nl', 'tr', 'fil', 'pl', 'sv', 'bg', 'ro', 'ar', 'cs', 'el', 'fi', 'hr', 'ms', 'sk', 'da', 'ta', 'uk', 'vi', 'no', 'hu'], 'default': ''}},
             service='ElevenLabs',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -14877,7 +14786,7 @@ VOICE_LIST = [
             ],
             service_fee=constants.ServiceFee.paid
         )
-, 
+,
 
         voice.TtsVoice_v3(
             name='af-ANY',
