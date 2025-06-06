@@ -21,6 +21,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
 
     def setupUi(self):
         self.setWindowTitle(constants.TITLE_PREFIX + 'Configure Services')
+        self.setMinimumWidth(500)
         layout = aqt.qt.QVBoxLayout()
 
         # Add HyperTTS header
