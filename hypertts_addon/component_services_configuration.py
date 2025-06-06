@@ -118,11 +118,10 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
                 background: qlineargradient(x1: 0.342, y1: 0, x2: 0.658, y2: 1,
                     stop: 0 #6975dd, stop: 1 #7355b0);
                 border-radius: 5px 5px 0px 0px;
-                padding: 15px;
             }
         """)
         trial_header_layout = aqt.qt.QVBoxLayout()
-        trial_header_layout.setContentsMargins(15, 15, 15, 15)
+        trial_header_layout.setContentsMargins(15, 10, 15, 10)
         
         trial_title = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_TITLE)
         font = trial_title.font()
@@ -138,11 +137,10 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
             QWidget {
                 background: #f8f8f8;
                 border-radius: 0px 0px 5px 5px;
-                padding: 15px;
             }
         """)
         trial_body_layout = aqt.qt.QVBoxLayout()
-        trial_body_layout.setContentsMargins(15, 15, 15, 15)
+        trial_body_layout.setContentsMargins(15, 10, 15, 15)
         
         trial_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION)
         trial_description.setWordWrap(True)
@@ -175,11 +173,10 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
                 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                     stop: 0 #f8f8f8, stop: 1 #e8e8e8);
                 border-radius: 5px 5px 0px 0px;
-                padding: 15px;
             }
         """)
         free_header_layout = aqt.qt.QVBoxLayout()
-        free_header_layout.setContentsMargins(15, 15, 15, 15)
+        free_header_layout.setContentsMargins(15, 10, 15, 10)
         
         free_title = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_FREE_TITLE)
         free_font = free_title.font()
@@ -195,11 +192,10 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
             QWidget {
                 background: #f8f8f8;
                 border-radius: 0px 0px 5px 5px;
-                padding: 15px;
             }
         """)
         free_body_layout = aqt.qt.QVBoxLayout()
-        free_body_layout.setContentsMargins(15, 15, 15, 15)
+        free_body_layout.setContentsMargins(15, 10, 15, 15)
         
         free_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION)
         free_description.setWordWrap(True)
@@ -228,11 +224,10 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
                 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                     stop: 0 #f8f8f8, stop: 1 #e8e8e8);
                 border-radius: 5px 5px 0px 0px;
-                padding: 15px;
             }
         """)
         manual_header_layout = aqt.qt.QVBoxLayout()
-        manual_header_layout.setContentsMargins(15, 15, 15, 15)
+        manual_header_layout.setContentsMargins(15, 10, 15, 10)
         
         manual_title = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE)
         manual_font = manual_title.font()
@@ -248,11 +243,10 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
             QWidget {
                 background: #f8f8f8;
                 border-radius: 0px 0px 5px 5px;
-                padding: 15px;
             }
         """)
         manual_body_layout = aqt.qt.QVBoxLayout()
-        manual_body_layout.setContentsMargins(15, 15, 15, 15)
+        manual_body_layout.setContentsMargins(15, 10, 15, 15)
         
         manual_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION)
         manual_description.setWordWrap(True)
