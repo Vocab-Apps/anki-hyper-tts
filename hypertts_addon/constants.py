@@ -258,7 +258,8 @@ GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION = """• Access to Premium TTS servic
 • Highest audio quality possible.
 • Immediate access after signing up with your email."""
 GUI_TEXT_SERVICES_CONFIG_FREE_TITLE = """Enable Free Services only"""
-GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION = """Use only free text-to-speech services"""
+GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION = """• Free online services such as Google Translate
+• Local services running on your OS such as Windows SAPI, MacOSX"""
 GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE = """Manually configure services"""
 GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION = """Configure services yourself with your own API keys"""
 

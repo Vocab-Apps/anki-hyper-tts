@@ -143,6 +143,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         free_title.setStyleSheet('border: none; background-color: transparent;')
         
         free_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION)
+        free_description.setWordWrap(True)
         
         free_layout.addWidget(free_title)
         free_layout.addWidget(free_description)
