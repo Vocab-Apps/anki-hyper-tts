@@ -163,6 +163,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         manual_title.setStyleSheet('border: none; background-color: transparent;')
         
         manual_description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION)
+        manual_description.setWordWrap(True)
         
         manual_layout.addWidget(manual_title)
         manual_layout.addWidget(manual_description)

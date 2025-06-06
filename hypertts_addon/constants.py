@@ -261,7 +261,8 @@ GUI_TEXT_SERVICES_CONFIG_FREE_TITLE = """Enable Free Services only"""
 GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION = """• Free online services such as Google Translate
 • Local services running on your OS such as Windows SAPI, MacOSX"""
 GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE = """Manually configure services"""
-GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION = """Configure services yourself with your own API keys"""
+GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION = """• Choose exactly which services to enable
+• Use your own API Keys with cloud services such as Azure, Google, AWS, OpenAI, ElevenLabs"""
 
 GRAPHICS_PRO_BANNER = 'hypertts_pro_banner.png'
 GRAPHICS_LITE_BANNER = 'hypertts_lite_banner.png'
