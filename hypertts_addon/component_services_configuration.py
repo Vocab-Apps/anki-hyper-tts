@@ -80,22 +80,17 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         
         # Trial button with purple outline and HTML content
         trial_button_style = """
-            QPushButton {
+            QLabel {
                 border: 3px solid #6975dd;
                 border-radius: 8px;
                 padding: 0px;
                 background: #ffffff;
-                text-align: left;
                 min-height: 160px;
                 margin: 2px;
             }
-            QPushButton:hover {
+            QLabel:hover {
                 border: 3px solid #7985ed;
                 background: #f8f8f8;
-            }
-            QPushButton:pressed {
-                border: 3px solid #5965cd;
-                background: #f0f0f0;
             }
         """
         
@@ -109,29 +104,25 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         </div>
         """
         
-        self.trial_button = aqt.qt.QPushButton()
+        self.trial_button = aqt.qt.QLabel()
         self.trial_button.setStyleSheet(trial_button_style)
         self.trial_button.setText(trial_html)
-        self.trial_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.TRIAL))
+        self.trial_button.setWordWrap(True)
+        self.trial_button.mousePressEvent = lambda event: self.choose_mode(config_models.ServicesConfigurationMode.TRIAL)
         
         # Free services button with grey outline and HTML content
         free_button_style = """
-            QPushButton {
+            QLabel {
                 border: 3px solid #c0c0c0;
                 border-radius: 8px;
                 padding: 0px;
                 background: #ffffff;
-                text-align: left;
                 min-height: 140px;
                 margin: 2px;
             }
-            QPushButton:hover {
+            QLabel:hover {
                 border: 3px solid #a0a0a0;
                 background: #f8f8f8;
-            }
-            QPushButton:pressed {
-                border: 3px solid #808080;
-                background: #f0f0f0;
             }
         """
         
@@ -145,29 +136,25 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         </div>
         """
         
-        self.free_services_button = aqt.qt.QPushButton()
+        self.free_services_button = aqt.qt.QLabel()
         self.free_services_button.setStyleSheet(free_button_style)
         self.free_services_button.setText(free_html)
-        self.free_services_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.FREE_SERVICES))
+        self.free_services_button.setWordWrap(True)
+        self.free_services_button.mousePressEvent = lambda event: self.choose_mode(config_models.ServicesConfigurationMode.FREE_SERVICES)
         
         # Manual configuration button with grey outline and HTML content
         manual_button_style = """
-            QPushButton {
+            QLabel {
                 border: 3px solid #c0c0c0;
                 border-radius: 8px;
                 padding: 0px;
                 background: #ffffff;
-                text-align: left;
                 min-height: 140px;
                 margin: 2px;
             }
-            QPushButton:hover {
+            QLabel:hover {
                 border: 3px solid #a0a0a0;
                 background: #f8f8f8;
-            }
-            QPushButton:pressed {
-                border: 3px solid #808080;
-                background: #f0f0f0;
             }
         """
         
@@ -181,10 +168,11 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         </div>
         """
         
-        self.manual_button = aqt.qt.QPushButton()
+        self.manual_button = aqt.qt.QLabel()
         self.manual_button.setStyleSheet(manual_button_style)
         self.manual_button.setText(manual_html)
-        self.manual_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.MANUAL_CONFIGURATION))
+        self.manual_button.setWordWrap(True)
+        self.manual_button.mousePressEvent = lambda event: self.choose_mode(config_models.ServicesConfigurationMode.MANUAL_CONFIGURATION)
         
         # Add buttons to main layout
         layout.addWidget(self.trial_button)
