@@ -112,7 +112,6 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.trial_button = aqt.qt.QPushButton()
         self.trial_button.setStyleSheet(trial_button_style)
         self.trial_button.setText(trial_html)
-        self.trial_button.setTextFormat(aqt.qt.Qt.TextFormat.RichText)
         self.trial_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.TRIAL))
         
         # Free services button with grey outline and HTML content
@@ -149,7 +148,6 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.free_services_button = aqt.qt.QPushButton()
         self.free_services_button.setStyleSheet(free_button_style)
         self.free_services_button.setText(free_html)
-        self.free_services_button.setTextFormat(aqt.qt.Qt.TextFormat.RichText)
         self.free_services_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.FREE_SERVICES))
         
         # Manual configuration button with grey outline and HTML content
@@ -186,7 +184,6 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.manual_button = aqt.qt.QPushButton()
         self.manual_button.setStyleSheet(manual_button_style)
         self.manual_button.setText(manual_html)
-        self.manual_button.setTextFormat(aqt.qt.Qt.TextFormat.RichText)
         self.manual_button.clicked.connect(lambda: self.choose_mode(config_models.ServicesConfigurationMode.MANUAL_CONFIGURATION))
         
         # Add buttons to main layout
