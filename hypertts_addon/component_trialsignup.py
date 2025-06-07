@@ -46,25 +46,29 @@ class TrialSignup(component_common.ConfigComponentBase):
         description_label.setWordWrap(True)
         global_vlayout.addWidget(description_label)
         
+        # Create groupbox for the form
+        groupbox = aqt.qt.QGroupBox()
+        form_layout = aqt.qt.QVBoxLayout()
+        
         # Email input
         email_label = aqt.qt.QLabel("<b>Email:</b>")
-        global_vlayout.addWidget(email_label)
+        form_layout.addWidget(email_label)
         self.trial_email_input = aqt.qt.QLineEdit()
         self.trial_email_input.setPlaceholderText("Enter your email (no disposable email addresses)")
-        global_vlayout.addWidget(self.trial_email_input)
+        form_layout.addWidget(self.trial_email_input)
         
         # Password input
         password_label = aqt.qt.QLabel("<b>Password:</b>")
-        global_vlayout.addWidget(password_label)
+        form_layout.addWidget(password_label)
         self.trial_password_input = aqt.qt.QLineEdit()
         self.trial_password_input.setPlaceholderText("Choose a password")
         self.trial_password_input.setEchoMode(aqt.qt.QLineEdit.EchoMode.Password)
-        global_vlayout.addWidget(self.trial_password_input)
+        form_layout.addWidget(self.trial_password_input)
         
         # Validation label for showing results/errors
         self.trial_validation_label = aqt.qt.QLabel()
         self.trial_validation_label.setWordWrap(True)
-        global_vlayout.addWidget(self.trial_validation_label)
+        form_layout.addWidget(self.trial_validation_label)
         
         # Button
         self.signup_button = aqt.qt.QPushButton('Sign Up for Trial')
@@ -76,7 +80,10 @@ class TrialSignup(component_common.ConfigComponentBase):
         font_large.setPointSize(12)
         self.signup_button.setFont(font_large)
         
-        global_vlayout.addWidget(self.signup_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        form_layout.addWidget(self.signup_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        
+        groupbox.setLayout(form_layout)
+        global_vlayout.addWidget(groupbox)
         global_vlayout.addStretch()
         
         # Wire events
