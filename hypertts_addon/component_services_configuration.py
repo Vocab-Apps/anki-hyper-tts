@@ -43,7 +43,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         # Add smaller description text
         description = aqt.qt.QLabel(constants.GUI_TEXT_SERVICES_CONFIG_DESCRIPTION)
         description.setWordWrap(True)
-        description.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        description.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignLeft)
         description.setStyleSheet('border: none; background-color: transparent; color: palette(dark);')
         desc_font = description.font()
         desc_font.setPointSize(desc_font.pointSize() - 1)
