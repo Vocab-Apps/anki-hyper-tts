@@ -50,34 +50,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         description.setFont(desc_font)
         layout.addWidget(description)
         
-        # Style for the buttons with depth and shadows
-        button_style = """
-            QPushButton {
-                border: 1px solid #c0c0c0;
-                border-radius: 8px;
-                padding: 20px;
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                    stop: 0 #f8f8f8, stop: 1 #e8e8e8);
-                text-align: left;
-                min-height: 80px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                margin: 2px;
-            }
-            QPushButton:hover {
-                border: 1px solid #a0a0a0;
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                    stop: 0 #ffffff, stop: 1 #f0f0f0);
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-            }
-            QPushButton:pressed {
-                border: 1px solid #808080;
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                    stop: 0 #e0e0e0, stop: 1 #d0d0d0);
-                box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-                margin: 3px 1px 1px 3px;
-            }
-        """
-        
+       
         # Common styles
         h3_style = "margin: 0; font-size: 18px;"
         
