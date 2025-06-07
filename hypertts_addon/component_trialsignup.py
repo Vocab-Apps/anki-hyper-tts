@@ -31,34 +31,40 @@ class TrialSignup(component_common.ConfigComponentBase):
         self.model_change_callback(self.get_model())
 
     def draw(self, global_vlayout):
-        groupbox = aqt.qt.QGroupBox('HyperTTS Pro Trial Signup')
-        
-        vlayout = aqt.qt.QVBoxLayout()
+        # Add title label
+        title_label = aqt.qt.QLabel("Sign up for HyperTTS Pro Trial")
+        title_label.setWordWrap(True)
+        title_label.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignLeft)
+        title_label.setStyleSheet('border: none; background-color: transparent;')
+        font = title_label.font()
+        font.setPointSize(14)
+        title_label.setFont(font)
+        global_vlayout.addWidget(title_label)
         
         # Description label
         description_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL)
         description_label.setWordWrap(True)
-        vlayout.addWidget(description_label)
+        global_vlayout.addWidget(description_label)
         
         # Email input
         email_label = aqt.qt.QLabel("Email:")
-        vlayout.addWidget(email_label)
+        global_vlayout.addWidget(email_label)
         self.trial_email_input = aqt.qt.QLineEdit()
         self.trial_email_input.setPlaceholderText("Enter your email (no disposable email addresses)")
-        vlayout.addWidget(self.trial_email_input)
+        global_vlayout.addWidget(self.trial_email_input)
         
         # Password input
         password_label = aqt.qt.QLabel("Password:")
-        vlayout.addWidget(password_label)
+        global_vlayout.addWidget(password_label)
         self.trial_password_input = aqt.qt.QLineEdit()
         self.trial_password_input.setPlaceholderText("Choose a password")
         self.trial_password_input.setEchoMode(aqt.qt.QLineEdit.EchoMode.Password)
-        vlayout.addWidget(self.trial_password_input)
+        global_vlayout.addWidget(self.trial_password_input)
         
         # Validation label for showing results/errors
         self.trial_validation_label = aqt.qt.QLabel()
         self.trial_validation_label.setWordWrap(True)
-        vlayout.addWidget(self.trial_validation_label)
+        global_vlayout.addWidget(self.trial_validation_label)
         
         # Buttons
         button_layout = aqt.qt.QHBoxLayout()
@@ -72,16 +78,12 @@ class TrialSignup(component_common.ConfigComponentBase):
         self.clear_button = aqt.qt.QPushButton('Clear')
         button_layout.addWidget(self.clear_button)
         
-        vlayout.addLayout(button_layout)
-        vlayout.addStretch()
-        
-        groupbox.setLayout(vlayout)
+        global_vlayout.addLayout(button_layout)
+        global_vlayout.addStretch()
         
         # Wire events
         self.signup_button.pressed.connect(self.signup_button_pressed)
         self.clear_button.pressed.connect(self.clear_button_pressed)
-        
-        global_vlayout.addWidget(groupbox)
 
     @sc.event(Event.click_free_trial_ok)
     def signup_button_pressed(self):
