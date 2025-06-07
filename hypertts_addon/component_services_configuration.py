@@ -72,11 +72,11 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         trial_button_style = common_button_style + """
             QLabel {
                 border: 3px solid #6975dd;
-                background: #e8e8e8;
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #a5afee, stop: 1 #a088d5);
             }
             QLabel:hover {
                 border: 3px solid #7985ed;
-                background: #f0f0f0;
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5bfff, stop: 1 #b098e5);
             }
         """
         
