@@ -42,6 +42,10 @@ items = [
         'name': 'test services configuration',
         'command': 'HYPERTTS_SERVICES_CONFIG_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_services_configuration_manual -s -rPP'
     },
+    {
+        'name': 'test trial signup',
+        'command': 'HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_trial_signup_manual -s -rPP'
+    },
 
 
 ]
