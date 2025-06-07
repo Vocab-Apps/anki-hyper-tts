@@ -233,8 +233,7 @@ GUI_TEXT_HYPERTTS_PRO_BUY_PLAN = """Subscribe to HyperTTS Pro. Get access in 5mn
 GUI_TEXT_HYPERTTS_PRO_ENTER_API_KEY = """Enter HyperTTS Pro / AwesomeTTS Plus / Language Tools API Key."""
 
 GUI_TEXT_HYPERTTS_PRO_ENABLED = """<b>HyperTTS Pro Enabled</b>"""
-GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL = """Enter your email to get trial access instantly. """\
-"""Try all <b>1200 premium voices, 60+ languages</b>. Trial quota of 50,000 characters."""
+GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL = """<i>Enter your email and choose a password to get instant access to premium TTS services such as Azure, Google, ElevenLabs, OpenAI, Amazon, Forvo. 7 day trial limited to 50k characters.</i>"""
 
 GUI_TEXT_HYPERTTS_PRO_TRIAL_CONFIRM_EMAIL = """<b>IMPORTANT</b>: You must confirm your email address before you can use the service. """\
 """The email subject should be <b>Please Confirm Your Email Address</b> and sender: <b>Vocab.Ai</b>."""
