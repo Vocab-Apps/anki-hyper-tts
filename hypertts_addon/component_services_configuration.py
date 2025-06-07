@@ -59,7 +59,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
                 padding: 0px;
                 padding-left: 15px;
                 padding-right: 15px;
-                background: #ffffff;
+                background: #e8e8e8;
                 min-height: 160px;
                 margin: 2px;
             }
@@ -72,11 +72,11 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         trial_button_style = common_button_style + """
             QLabel {
                 border: 3px solid #6975dd;
-                background: #ffffff;
+                background: #e8e8e8;
             }
             QLabel:hover {
                 border: 3px solid #7985ed;
-                background: #f8f8f8;
+                background: #f0f0f0;
             }
         """
         
@@ -100,11 +100,11 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         free_button_style = common_button_style + """
             QLabel {
                 border: 3px solid #c0c0c0;
-                background: #ffffff;
+                background: #e8e8e8;
             }
             QLabel:hover {
                 border: 3px solid #a0a0a0;
-                background: #f8f8f8;
+                background: #f0f0f0;
             }
         """
         
@@ -128,11 +128,11 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         manual_button_style = common_button_style + """
             QLabel {
                 border: 3px solid #c0c0c0;
-                background: #ffffff;
+                background: #e8e8e8;
             }
             QLabel:hover {
                 border: 3px solid #a0a0a0;
-                background: #f8f8f8;
+                background: #f0f0f0;
             }
         """
         
