@@ -96,34 +96,6 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.trial_button.setWordWrap(True)
         self.trial_button.mousePressEvent = lambda event: self.choose_mode(config_models.ServicesConfigurationMode.TRIAL)
         
-        # Free services button with grey outline and HTML content
-        free_button_style = common_button_style + """
-            QLabel {
-                border: 3px solid #c0c0c0;
-                background: #e8e8e8;
-            }
-            QLabel:hover {
-                border: 3px solid #a0a0a0;
-                background: #f0f0f0;
-            }
-        """
-        
-        free_html = f"""
-        <div>
-            <h3>{constants.GUI_TEXT_SERVICES_CONFIG_FREE_TITLE}</h3>
-        </div>
-        <div>
-            <p>{constants.GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION}</p>
-            <p><i>{constants.GUI_TEXT_SERVICES_CONFIG_FREE_RECOMMENDED}</i></p>
-        </div>
-        """
-        
-        self.free_services_button = aqt.qt.QLabel()
-        self.free_services_button.setStyleSheet(free_button_style)
-        self.free_services_button.setText(free_html)
-        self.free_services_button.setWordWrap(True)
-        self.free_services_button.mousePressEvent = lambda event: self.choose_mode(config_models.ServicesConfigurationMode.FREE_SERVICES)
-        
         # Manual configuration button with grey outline and HTML content
         manual_button_style = common_button_style + """
             QLabel {
@@ -154,7 +126,6 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         
         # Add buttons to main layout
         layout.addWidget(self.trial_button)
-        layout.addWidget(self.free_services_button)
         layout.addWidget(self.manual_button)
         
         # Cancel button

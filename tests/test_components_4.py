@@ -54,18 +54,6 @@ def test_services_configuration_default_trial(qtbot):
     result = component_services_configuration.show_services_configuration_dialog(hypertts_instance)
     assert result == config_models.ServicesConfigurationMode.TRIAL
 
-def test_services_configuration_select_free_services(qtbot):
-    """Test selecting Free Services mode"""
-    config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-
-    def dialog_input_sequence(dialog):    
-        # click the free services button
-        qtbot.mouseClick(dialog.free_services_button, aqt.qt.Qt.MouseButton.LeftButton)
-
-    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_SERVICES_CONFIGURATION] = dialog_input_sequence
-    result = component_services_configuration.show_services_configuration_dialog(hypertts_instance)
-    assert result == config_models.ServicesConfigurationMode.FREE_SERVICES
 
 def test_services_configuration_select_manual(qtbot):
     """Test selecting Manual Configuration mode"""

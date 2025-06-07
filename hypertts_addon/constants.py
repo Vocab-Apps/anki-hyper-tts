@@ -257,12 +257,9 @@ GUI_TEXT_SERVICES_CONFIG_DESCRIPTION = """In order to generate audio using Hyper
 GUI_TEXT_SERVICES_CONFIG_TRIAL_TITLE = """Free trial for HyperTTS Pro"""
 GUI_TEXT_SERVICES_CONFIG_TRIAL_RECOMMENDED = """This is the recommended option. 7 day trial with 50k character quota."""
 GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION = """<ul><li>Access to Premium TTS services such as Azure, Google, ElevenLabs, OpenAI, Amazon, Forvo.</li><li>Highest audio quality possible.</li><li>Immediate access after signing up with your email.</li></ul>"""
-GUI_TEXT_SERVICES_CONFIG_FREE_TITLE = """Enable Free Services only"""
-GUI_TEXT_SERVICES_CONFIG_FREE_RECOMMENDED = """Use this if you only want free services."""
-GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION = """<ul><li>Free online services such as Google Translate</li><li>Local services running on your OS such as Windows SAPI, MacOSX</li></ul>"""
 GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE = """Manually configure services"""
-GUI_TEXT_SERVICES_CONFIG_MANUAL_RECOMMENDED = """If you are technically proficient and have your own API keys for Google/Azure/others."""
-GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION = """<ul><li>Choose exactly which services to enable</li><li>Use your own API Keys with cloud services such as Azure, Google, AWS, OpenAI, ElevenLabs</li></ul>"""
+GUI_TEXT_SERVICES_CONFIG_MANUAL_RECOMMENDED = """Use this if you want to configure services yourself."""
+GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION = """<ul><li>Free online services such as Google Translate</li><li>Local services running on your OS such as Windows SAPI, MacOSX</li><li>Use your own API Keys with cloud services such as Azure, Google, AWS, OpenAI, ElevenLabs</li></ul>"""
 
 GRAPHICS_PRO_BANNER = 'hypertts_pro_banner.png'
 GRAPHICS_LITE_BANNER = 'hypertts_lite_banner.png'
