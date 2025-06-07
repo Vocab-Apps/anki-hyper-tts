@@ -123,20 +123,8 @@ def test_trial_signup_manual(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     
-    model_changes = []
-    def model_change_callback(model):
-        model_changes.append(model)
-    
-    component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
-    
-    # Create a test dialog to hold the component
-    dialog = gui_testing_utils.EmptyDialog()
-    vlayout = aqt.qt.QVBoxLayout()
-    component.draw(vlayout)
-    dialog.setLayout(vlayout)
-    
     if os.environ.get('HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG', 'no') == 'yes':
-        dialog.exec()
+        component_trialsignup.show_trial_signup_dialog(hypertts_instance)
 
 def test_trial_signup_component_initialization(qtbot):
     """Test that the trial signup component initializes correctly"""
