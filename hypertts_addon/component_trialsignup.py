@@ -134,3 +134,59 @@ class TrialSignup(component_common.ConfigComponentBase):
         
         self.model = trial_signup_result
         self.report_model_change()
+
+
+class TrialSignupDialog(aqt.qt.QDialog):
+    """Dialog for HyperTTS Pro trial signup"""
+    def __init__(self, hypertts):
+        super(aqt.qt.QDialog, self).__init__()
+        self.hypertts = hypertts
+        self.trial_signup_component = None
+        self.setupUi()
+
+    def setupUi(self):
+        self.setWindowTitle(constants.TITLE_PREFIX + 'HyperTTS Pro Trial Signup')
+        self.setMinimumWidth(500)
+        layout = aqt.qt.QVBoxLayout()
+
+        # Add HyperTTS header
+        header_layout = aqt.qt.QHBoxLayout()
+        header_layout.addStretch()
+        header_layout.addLayout(gui_utils.get_hypertts_label_header(self.hypertts.hypertts_pro_enabled()))
+        layout.addLayout(header_layout)
+
+        # Create trial signup component
+        def model_change_callback(model):
+            # Handle model changes if needed
+            pass
+
+        self.trial_signup_component = TrialSignup(self.hypertts, model_change_callback)
+        self.trial_signup_component.draw(layout)
+
+        # Close button
+        self.close_button = aqt.qt.QPushButton('Close')
+        self.close_button.clicked.connect(self.accept)
+        
+        layout.addStretch()
+        layout.addWidget(self.close_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
+
+        self.setLayout(layout)
+
+    def get_trial_result(self):
+        """Get the trial signup result"""
+        if self.trial_signup_component:
+            return self.trial_signup_component.get_model()
+        return None
+
+
+@sc.event(Event.open)
+def show_trial_signup_dialog(hypertts) -> config_models.TrialRequestReponse:
+    """Show dialog for HyperTTS Pro trial signup
+    Returns:
+        TrialRequestReponse with signup result, or None if user cancelled
+    """
+    dialog = TrialSignupDialog(hypertts)
+    result = dialog.exec()
+    if result == aqt.qt.QDialog.DialogCode.Accepted:
+        return dialog.get_trial_result()
+    return None
