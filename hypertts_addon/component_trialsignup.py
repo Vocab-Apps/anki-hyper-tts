@@ -155,8 +155,8 @@ class TrialSignupDialog(aqt.qt.QDialog):
         self.trial_signup_component = TrialSignup(self.hypertts, model_change_callback)
         self.trial_signup_component.draw(layout)
 
-        # Close button
-        self.close_button = aqt.qt.QPushButton('Close')
+        # Cancel button
+        self.close_button = aqt.qt.QPushButton('Cancel')
         self.close_button.clicked.connect(self.accept)
         
         layout.addStretch()
