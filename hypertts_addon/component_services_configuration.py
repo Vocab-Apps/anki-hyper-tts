@@ -52,7 +52,6 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         
        
         # Common styles
-        h3_style = "margin: 0; font-size: 18px;"
         
         common_button_style = """
             QLabel {
@@ -63,6 +62,9 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
                 background: #ffffff;
                 min-height: 160px;
                 margin: 2px;
+            }
+            h3 {
+                font-size: 18px;
             }
 """
 
@@ -80,7 +82,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         
         trial_html = f"""
         <div>
-            <h3 style="{h3_style} font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">{constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_TITLE}</h3>
+            <h3>{constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_TITLE}</h3>
         </div>
         <div>
             <p>{constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION}</p>
@@ -108,7 +110,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         
         free_html = f"""
         <div>
-            <h3 style="{h3_style}">{constants.GUI_TEXT_SERVICES_CONFIG_FREE_TITLE}</h3>
+            <h3>{constants.GUI_TEXT_SERVICES_CONFIG_FREE_TITLE}</h3>
         </div>
         <div>
             <p>{constants.GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION}</p>
@@ -136,7 +138,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         
         manual_html = f"""
         <div>
-            <h3 style="{h3_style}">{constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE}</h3>
+            <h3>{constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE}</h3>
         </div>
         <div>
             <p>{constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION}</p>
