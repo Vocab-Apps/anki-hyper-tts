@@ -54,15 +54,23 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         # Common styles
         h3_style = "margin: 0; font-size: 18px;"
         
-        # Trial button with purple outline and HTML content
-        trial_button_style = """
+        common_button_style = """
             QLabel {
-                border: 3px solid #6975dd;
                 border-radius: 8px;
                 padding: 0px;
+                padding-left: 15px;
+                padding-right: 15px;
                 background: #ffffff;
                 min-height: 160px;
                 margin: 2px;
+            }
+"""
+
+        # Trial button with purple outline and HTML content
+        trial_button_style = common_button_style + """
+            QLabel {
+                border: 3px solid #6975dd;
+                background: #ffffff;
             }
             QLabel:hover {
                 border: 3px solid #7985ed;
@@ -87,14 +95,10 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.trial_button.mousePressEvent = lambda event: self.choose_mode(config_models.ServicesConfigurationMode.TRIAL)
         
         # Free services button with grey outline and HTML content
-        free_button_style = """
+        free_button_style = common_button_style + """
             QLabel {
                 border: 3px solid #c0c0c0;
-                border-radius: 8px;
-                padding: 0px;
                 background: #ffffff;
-                min-height: 140px;
-                margin: 2px;
             }
             QLabel:hover {
                 border: 3px solid #a0a0a0;
@@ -119,14 +123,10 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.free_services_button.mousePressEvent = lambda event: self.choose_mode(config_models.ServicesConfigurationMode.FREE_SERVICES)
         
         # Manual configuration button with grey outline and HTML content
-        manual_button_style = """
+        manual_button_style = common_button_style + """
             QLabel {
                 border: 3px solid #c0c0c0;
-                border-radius: 8px;
-                padding: 0px;
                 background: #ffffff;
-                min-height: 140px;
-                margin: 2px;
             }
             QLabel:hover {
                 border: 3px solid #a0a0a0;
