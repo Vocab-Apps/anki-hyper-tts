@@ -66,24 +66,18 @@ class TrialSignup(component_common.ConfigComponentBase):
         self.trial_validation_label.setWordWrap(True)
         global_vlayout.addWidget(self.trial_validation_label)
         
-        # Buttons
-        button_layout = aqt.qt.QHBoxLayout()
+        # Button
         self.signup_button = aqt.qt.QPushButton('Sign Up for Trial')
         self.signup_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
         font_large = aqt.qt.QFont()
         font_large.setBold(True)
         self.signup_button.setFont(font_large)
-        button_layout.addWidget(self.signup_button)
         
-        self.clear_button = aqt.qt.QPushButton('Clear')
-        button_layout.addWidget(self.clear_button)
-        
-        global_vlayout.addLayout(button_layout)
+        global_vlayout.addWidget(self.signup_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
         global_vlayout.addStretch()
         
         # Wire events
         self.signup_button.pressed.connect(self.signup_button_pressed)
-        self.clear_button.pressed.connect(self.clear_button_pressed)
 
     @sc.event(Event.click_free_trial_ok)
     def signup_button_pressed(self):
@@ -105,13 +99,6 @@ class TrialSignup(component_common.ConfigComponentBase):
         self.password = password
         self.hypertts.anki_utils.run_in_background(self.trial_signup_task, self.trial_signup_task_done)
 
-    def clear_button_pressed(self):
-        self.trial_email_input.clear()
-        self.trial_password_input.clear()
-        self.trial_validation_label.clear()
-        self.signup_button.setEnabled(True)
-        self.model = config_models.TrialRequestReponse(success=False, error=None, api_key=None)
-        self.report_model_change()
 
     def trial_signup_task(self):
         client_uuid = self.hypertts.get_client_uuid()

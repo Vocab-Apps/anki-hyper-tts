@@ -168,7 +168,6 @@ def test_trial_signup_component_draw(qtbot):
     assert hasattr(component, 'trial_password_input')
     assert hasattr(component, 'trial_validation_label')
     assert hasattr(component, 'signup_button')
-    assert hasattr(component, 'clear_button')
 
 def test_trial_signup_validation_empty_email(qtbot):
     """Test validation when email is empty"""
@@ -222,40 +221,3 @@ def test_trial_signup_validation_empty_password(qtbot):
     # Check validation message
     assert "Please enter a password" in component.trial_validation_label.text()
 
-def test_trial_signup_clear_button(qtbot):
-    """Test that the clear button works correctly"""
-    config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-    
-    model_changes = []
-    def model_change_callback(model):
-        model_changes.append(model)
-    
-    component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
-    
-    # Create a test dialog to hold the component
-    dialog = gui_testing_utils.EmptyDialog()
-    vlayout = aqt.qt.QVBoxLayout()
-    component.draw(vlayout)
-    dialog.setLayout(vlayout)
-    
-    # Set some values
-    component.trial_email_input.setText("test@example.com")
-    component.trial_password_input.setText("testpassword")
-    component.trial_validation_label.setText("Some error message")
-    
-    # Click clear button
-    qtbot.mouseClick(component.clear_button, aqt.qt.Qt.MouseButton.LeftButton)
-    
-    # Check that fields are cleared
-    assert component.trial_email_input.text() == ""
-    assert component.trial_password_input.text() == ""
-    assert component.trial_validation_label.text() == ""
-    assert component.signup_button.isEnabled() == True
-    
-    # Check that model change was reported
-    assert len(model_changes) > 0
-    latest_model = model_changes[-1]
-    assert latest_model.success == False
-    assert latest_model.error == None
-    assert latest_model.api_key == None
