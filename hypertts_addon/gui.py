@@ -27,6 +27,7 @@ from . import component_configuration
 from . import component_preferences
 from . import component_easy
 from . import component_choose_easy_advanced
+from . import component_services_configuration
 from . import text_utils
 from . import ttsplayer
 from . import logging_utils
@@ -95,6 +96,11 @@ def launch_configuration_dialog(hypertts):
         dialog = ConfigurationDialog(hypertts)
         dialog.setupUi()
         dialog.exec()
+
+def launch_services_configuration(hypertts):
+    with hypertts.error_manager.get_single_action_context('Launching Services Configuration Dialog'):
+        logger.info('launch_services_configuration')
+        result: config_models.ServicesConfigurationMode = component_services_configuration.show_services_configuration_dialog(hypertts)
 
 def launch_preferences_dialog(hypertts):
     with hypertts.error_manager.get_single_action_context('Launching Preferences Dialog'):
@@ -366,7 +372,7 @@ def init(hypertts):
             return (True, None)
         elif cmd.startswith('hypertts:configure_services'):
             stats.event_global(constants_events.Event.click_welcome_configure_services)
-            launch_configuration_dialog(hypertts)
+            launch_services_configuration(hypertts)
             return (True, None)
         elif cmd.startswith('hypertts:how_to_add_audio'):
             stats.event_global(constants_events.Event.click_welcome_add_audio)
