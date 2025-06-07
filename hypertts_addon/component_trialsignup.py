@@ -72,7 +72,24 @@ class TrialSignup(component_common.ConfigComponentBase):
         
         # Button
         self.signup_button = aqt.qt.QPushButton('Sign Up for Trial')
-        self.signup_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        purple_gradient_style = """
+            QPushButton {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6975dd, stop: 1 #7355b0);
+                border: none;
+                border-radius: 4px;
+                color: white;
+            }
+            QPushButton:hover {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #7985ed, stop: 1 #8365c0);
+            }
+            QPushButton:pressed {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #5965cd, stop: 1 #6345a0);
+            }
+            QPushButton:disabled {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #9999aa, stop: 1 #888899);
+            }
+        """
+        self.signup_button.setStyleSheet(purple_gradient_style)
         self.signup_button.setMinimumHeight(50)
         self.signup_button.setMinimumWidth(200)
         font_large = aqt.qt.QFont()
