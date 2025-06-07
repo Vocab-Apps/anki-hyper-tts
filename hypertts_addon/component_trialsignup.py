@@ -73,7 +73,7 @@ class TrialSignup(component_common.ConfigComponentBase):
         self.signup_button.setMinimumWidth(200)
         font_large = aqt.qt.QFont()
         font_large.setBold(True)
-        font_large.setPointSize(16)
+        font_large.setPointSize(12)
         self.signup_button.setFont(font_large)
         
         global_vlayout.addWidget(self.signup_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
