@@ -86,7 +86,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         </div>
         <div>
             <p>{constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION}</p>
-            <p>{constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_RECOMMENDED}</p>
+            <p><i>{constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_RECOMMENDED}</i></p>
         </div>
         """
         
@@ -114,7 +114,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         </div>
         <div>
             <p>{constants.GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION}</p>
-            <p>{constants.GUI_TEXT_SERVICES_CONFIG_FREE_RECOMMENDED}</p>
+            <p><i>{constants.GUI_TEXT_SERVICES_CONFIG_FREE_RECOMMENDED}</i></p>
         </div>
         """
         
@@ -142,7 +142,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         </div>
         <div>
             <p>{constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION}</p>
-            <p>{constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_RECOMMENDED}</p>
+            <p><i>{constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_RECOMMENDED}</i></p>
         </div>
         """
         
