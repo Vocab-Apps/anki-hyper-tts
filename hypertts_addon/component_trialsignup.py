@@ -69,8 +69,11 @@ class TrialSignup(component_common.ConfigComponentBase):
         # Button
         self.signup_button = aqt.qt.QPushButton('Sign Up for Trial')
         self.signup_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        self.signup_button.setMinimumHeight(50)
+        self.signup_button.setMinimumWidth(200)
         font_large = aqt.qt.QFont()
         font_large.setBold(True)
+        font_large.setPointSize(16)
         self.signup_button.setFont(font_large)
         
         global_vlayout.addWidget(self.signup_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
