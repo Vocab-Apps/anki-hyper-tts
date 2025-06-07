@@ -47,14 +47,14 @@ class TrialSignup(component_common.ConfigComponentBase):
         global_vlayout.addWidget(description_label)
         
         # Email input
-        email_label = aqt.qt.QLabel("Email:")
+        email_label = aqt.qt.QLabel("<b>Email:</b>")
         global_vlayout.addWidget(email_label)
         self.trial_email_input = aqt.qt.QLineEdit()
         self.trial_email_input.setPlaceholderText("Enter your email (no disposable email addresses)")
         global_vlayout.addWidget(self.trial_email_input)
         
         # Password input
-        password_label = aqt.qt.QLabel("Password:")
+        password_label = aqt.qt.QLabel("<b>Password:</b>")
         global_vlayout.addWidget(password_label)
         self.trial_password_input = aqt.qt.QLineEdit()
         self.trial_password_input.setPlaceholderText("Choose a password")
