@@ -99,8 +99,8 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
             <h3 style="margin: 0; font-size: 16px; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">{constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_TITLE}</h3>
         </div>
         <div style="background: #f8f8f8; padding: 15px; border-radius: 0px 0px 5px 5px;">
-            <p style="color: #333333; margin: 0 0 10px 0;">{constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION}</p>
-            <p style="color: #666666; margin: 0; font-style: italic;">{constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_RECOMMENDED}</p>
+            <p style="margin: 0 0 10px 0;">{constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION}</p>
+            <p style="margin: 0; font-style: italic;">{constants.GUI_TEXT_SERVICES_CONFIG_TRIAL_RECOMMENDED}</p>
         </div>
         """
         
@@ -128,11 +128,11 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         
         free_html = f"""
         <div style="background: linear-gradient(0deg, #f8f8f8, #e8e8e8); padding: 15px; border-radius: 5px 5px 0px 0px;">
-            <h3 style="color: #333333; margin: 0; font-size: 16px;">{constants.GUI_TEXT_SERVICES_CONFIG_FREE_TITLE}</h3>
+            <h3 style="margin: 0; font-size: 16px;">{constants.GUI_TEXT_SERVICES_CONFIG_FREE_TITLE}</h3>
         </div>
         <div style="background: #f8f8f8; padding: 15px; border-radius: 0px 0px 5px 5px;">
-            <p style="color: #333333; margin: 0 0 10px 0;">{constants.GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION}</p>
-            <p style="color: #666666; margin: 0; font-style: italic;">{constants.GUI_TEXT_SERVICES_CONFIG_FREE_RECOMMENDED}</p>
+            <p style="margin: 0 0 10px 0;">{constants.GUI_TEXT_SERVICES_CONFIG_FREE_DESCRIPTION}</p>
+            <p style="margin: 0; font-style: italic;">{constants.GUI_TEXT_SERVICES_CONFIG_FREE_RECOMMENDED}</p>
         </div>
         """
         
@@ -160,11 +160,11 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         
         manual_html = f"""
         <div style="background: linear-gradient(0deg, #f8f8f8, #e8e8e8); padding: 15px; border-radius: 5px 5px 0px 0px;">
-            <h3 style="color: #333333; margin: 0; font-size: 16px;">{constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE}</h3>
+            <h3 style="margin: 0; font-size: 16px;">{constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE}</h3>
         </div>
         <div style="background: #f8f8f8; padding: 15px; border-radius: 0px 0px 5px 5px;">
-            <p style="color: #333333; margin: 0 0 10px 0;">{constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION}</p>
-            <p style="color: #666666; margin: 0; font-style: italic;">{constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_RECOMMENDED}</p>
+            <p style="margin: 0 0 10px 0;">{constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION}</p>
+            <p style="margin: 0; font-style: italic;">{constants.GUI_TEXT_SERVICES_CONFIG_MANUAL_RECOMMENDED}</p>
         </div>
         """
         
