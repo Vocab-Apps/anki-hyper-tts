@@ -28,6 +28,7 @@ from . import component_preferences
 from . import component_easy
 from . import component_choose_easy_advanced
 from . import component_services_configuration
+from . import component_trialsignup
 from . import text_utils
 from . import ttsplayer
 from . import logging_utils
@@ -97,10 +98,21 @@ def launch_configuration_dialog(hypertts):
         dialog.setupUi()
         dialog.exec()
 
+def launch_trial_signup_dialog(hypertts):
+    # this dialog asks the user to sign up for a trial
+    with hypertts.error_manager.get_single_action_context('Launching Trial Signup Dialog'):
+        logger.info('launch_trial_signup_dialog')
+        component_trialsignup.show_trial_signup_dialog(hypertts)
+
 def launch_services_configuration(hypertts):
+    # this dialog asks the user to choose between trial and manual configuration
     with hypertts.error_manager.get_single_action_context('Launching Services Configuration Dialog'):
         logger.info('launch_services_configuration')
         result: config_models.ServicesConfigurationMode = component_services_configuration.show_services_configuration_dialog(hypertts)
+        if result == config_models.ServicesConfigurationMode.TRIAL:
+            launch_trial_signup_dialog(hypertts)
+        elif result == config_models.ServicesConfigurationMode.MANUAL_CONFIGURATION:
+            launch_configuration_dialog(hypertts)
 
 def launch_preferences_dialog(hypertts):
     with hypertts.error_manager.get_single_action_context('Launching Preferences Dialog'):
