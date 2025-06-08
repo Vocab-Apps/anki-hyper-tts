@@ -130,6 +130,9 @@ def test_trial_signup_manual_step_2(qtbot):
         component.trial_email_input.setText("valid@email.com")
         component.trial_password_input.setText("passw@rd1")
         
+        # Click the signup button
+        qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
         if os.environ.get('HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG', 'no') == 'yes':
             dialog.exec()
     
