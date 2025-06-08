@@ -220,6 +220,12 @@ def test_trial_signup_successful_saves_api_key(qtbot):
     
     component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
     
+    # Create a test dialog to hold the component and draw it
+    dialog = gui_testing_utils.EmptyDialog()
+    vlayout = aqt.qt.QVBoxLayout()
+    component.draw(vlayout)
+    dialog.setLayout(vlayout)
+    
     # Create a successful trial response
     successful_response = config_models.TrialRequestReponse(
         success=True,
