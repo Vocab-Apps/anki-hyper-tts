@@ -214,6 +214,16 @@ def test_trial_signup_successful_saves_api_key(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     
+    # Mock the CloudLanguageTools to return a successful trial response
+    def mock_request_trial_key(email, password, client_uuid):
+        return config_models.TrialRequestReponse(
+            success=True,
+            api_key="trial_key",
+            error=None
+        )
+    
+    hypertts_instance.service_manager.cloudlanguagetools.request_trial_key = mock_request_trial_key
+    
     model_changes = []
     def model_change_callback(model):
         model_changes.append(model)
@@ -226,22 +236,19 @@ def test_trial_signup_successful_saves_api_key(qtbot):
     component.draw(vlayout)
     dialog.setLayout(vlayout)
     
-    # Create a successful trial response
-    successful_response = config_models.TrialRequestReponse(
-        success=True,
-        api_key="test-api-key-12345",
-        error=None
-    )
+    # Enter email and password
+    component.trial_email_input.setText("valid@email.com")
+    component.trial_password_input.setText("passw@rd1")
     
-    # Call the update method directly with successful response
-    component.trial_signup_update(successful_response)
+    # Click signup button to trigger the trial signup
+    qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
     
     # Verify the API key was saved to configuration
     configuration = hypertts_instance.get_configuration()
-    assert configuration.hypertts_pro_api_key == "test-api-key-12345"
+    assert configuration.hypertts_pro_api_key == "trial_key"
     assert configuration.use_vocabai_api == True
     
     # Verify the model was updated
     assert component.get_model().success == True
-    assert component.get_model().api_key == "test-api-key-12345"
+    assert component.get_model().api_key == "trial_key"
 
