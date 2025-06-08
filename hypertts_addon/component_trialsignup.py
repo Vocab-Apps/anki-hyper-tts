@@ -149,7 +149,7 @@ class TrialSignup(component_common.ConfigComponentBase):
         form_layout = aqt.qt.QVBoxLayout()
         
         # Description label
-        self.verification_description_label = aqt.qt.QLabel()
+        self.verification_description_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFICATION_DESCRIPTION)
         self.verification_description_label.setWordWrap(True)
         form_layout.addWidget(self.verification_description_label)
         
@@ -222,12 +222,7 @@ class TrialSignup(component_common.ConfigComponentBase):
 
     def show_verification_screen(self):
         """Switch to the email verification screen"""
-        self.verification_description_label.setText(
-            f'<b>Success!</b> Trial account created for {self.email}.<br><br>'
-            'Please check your email (subject: <b>Please Confirm Your Email Address</b> sender: <b>Vocab.Ai</b>) for a verification link. You must verify your email '
-            'before you can use HyperTTS Pro services.'
-        )
-        self.verification_status_label.setText('')
+        self.verification_status_label.setText(f'<b>Success!</b> Trial account created for {self.email}.')
         self.stacked_widget.setCurrentIndex(1)
 
     @sc.event(Event.click_free_trial_ok)
