@@ -186,7 +186,7 @@ class TrialSignup(component_common.ConfigComponentBase):
         self.signup_button.setEnabled(True)
         
         if trial_signup_result.success == False:
-            self.trial_validation_label.setText(trial_signup_result.error)
+            self.trial_validation_label.setText(f'<b>Error:</b> {trial_signup_result.error}')
         else:
             # Save the API key to configuration
             self.hypertts.save_hypertts_pro_api_key(trial_signup_result.api_key)
