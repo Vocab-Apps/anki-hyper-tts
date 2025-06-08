@@ -798,6 +798,13 @@ class HyperTTS():
     def get_configuration(self) -> config_models.Configuration:
         return self.deserialize_configuration(self.config.get(constants.CONFIG_CONFIGURATION, {}))
 
+    def save_hypertts_pro_api_key(self, api_key: str):
+        """saves the HyperTTS Pro API key to the configuration"""
+        configuration = self.get_configuration()
+        configuration.hypertts_pro_api_key = api_key
+        configuration.use_vocabai_api = True
+        self.save_configuration(configuration)
+
     def hypertts_pro_enabled(self):
         return self.get_configuration().hypertts_pro_api_key_set()
 
