@@ -123,6 +123,7 @@ DIALOG_ID_PRESET_MAPPING_RULES = 'preset_mapping_rules'
 DIALOG_ID_EASY = 'easy'
 DIALOG_ID_CHDOOSE_EASY_ADVANCED = 'choose_easy_advanced'
 DIALOG_ID_SERVICES_CONFIGURATION = 'services_configuration'
+DIALOG_ID_TRIAL_SIGNUP = 'trial_signup'
 
 TTS_TAG_VOICE = 'HyperTTS'
 TTS_TAG_HYPERTTS_PRESET = 'hypertts_preset'

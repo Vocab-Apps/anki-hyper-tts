@@ -322,7 +322,5 @@ def show_trial_signup_dialog(hypertts) -> config_models.TrialRequestReponse:
         TrialRequestReponse with signup result, or None if user cancelled
     """
     dialog = TrialSignupDialog(hypertts)
-    result = dialog.exec()
-    if result == aqt.qt.QDialog.DialogCode.Accepted:
-        return dialog.get_trial_result()
-    return None
+    hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_TRIAL_SIGNUP)
+    return dialog.get_trial_result()

@@ -119,95 +119,70 @@ def test_trial_signup_component_initialization(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     
-    model_changes = []
-    def model_change_callback(model):
-        model_changes.append(model)
+    def dialog_input_sequence(dialog):
+        # Just test initialization, don't interact with dialog
+        pass
     
-    component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
+    result = component_trialsignup.show_trial_signup_dialog(hypertts_instance)
     
-    # Test initial model
-    model = component.get_model()
-    assert model.success == False
-    assert model.error == None
-    assert model.api_key == None
+    # Should return None since we didn't interact with the dialog
+    assert result is None
 
 def test_trial_signup_component_draw(qtbot):
     """Test that the trial signup component draws correctly"""
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     
-    model_changes = []
-    def model_change_callback(model):
-        model_changes.append(model)
+    def dialog_input_sequence(dialog):
+        # Verify UI elements exist
+        assert hasattr(dialog.trial_signup_component, 'trial_email_input')
+        assert hasattr(dialog.trial_signup_component, 'trial_password_input')
+        assert hasattr(dialog.trial_signup_component, 'trial_validation_label')
+        assert hasattr(dialog.trial_signup_component, 'signup_button')
     
-    component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
-    
-    # Create a test dialog to hold the component
-    dialog = gui_testing_utils.EmptyDialog()
-    vlayout = aqt.qt.QVBoxLayout()
-    
-    # Draw the component
-    component.draw(vlayout)
-    
-    dialog.setLayout(vlayout)
-    
-    # Verify UI elements exist
-    assert hasattr(component, 'trial_email_input')
-    assert hasattr(component, 'trial_password_input')
-    assert hasattr(component, 'trial_validation_label')
-    assert hasattr(component, 'signup_button')
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
+    component_trialsignup.show_trial_signup_dialog(hypertts_instance)
 
 def test_trial_signup_validation_empty_email(qtbot):
     """Test validation when email is empty"""
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     
-    model_changes = []
-    def model_change_callback(model):
-        model_changes.append(model)
+    def dialog_input_sequence(dialog):
+        component = dialog.trial_signup_component
+        
+        # Set password but leave email empty
+        component.trial_password_input.setText("testpassword")
+        
+        # Click signup button
+        qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
+        # Check validation message
+        assert "Please enter an email address" in component.trial_validation_label.text()
     
-    component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
-    
-    # Create a test dialog to hold the component
-    dialog = gui_testing_utils.EmptyDialog()
-    vlayout = aqt.qt.QVBoxLayout()
-    component.draw(vlayout)
-    dialog.setLayout(vlayout)
-    
-    # Set password but leave email empty
-    component.trial_password_input.setText("testpassword")
-    
-    # Click signup button
-    qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
-    
-    # Check validation message
-    assert "Please enter an email address" in component.trial_validation_label.text()
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
+    component_trialsignup.show_trial_signup_dialog(hypertts_instance)
 
 def test_trial_signup_validation_empty_password(qtbot):
     """Test validation when password is empty"""
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     
-    model_changes = []
-    def model_change_callback(model):
-        model_changes.append(model)
+    def dialog_input_sequence(dialog):
+        component = dialog.trial_signup_component
+        
+        # Set email but leave password empty
+        component.trial_email_input.setText("test@example.com")
+        
+        # Click signup button
+        qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
+        # Check validation message
+        assert "Please enter a password" in component.trial_validation_label.text()
     
-    component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
-    
-    # Create a test dialog to hold the component
-    dialog = gui_testing_utils.EmptyDialog()
-    vlayout = aqt.qt.QVBoxLayout()
-    component.draw(vlayout)
-    dialog.setLayout(vlayout)
-    
-    # Set email but leave password empty
-    component.trial_email_input.setText("test@example.com")
-    
-    # Click signup button
-    qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
-    
-    # Check validation message
-    assert "Please enter a password" in component.trial_validation_label.text()
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
+    component_trialsignup.show_trial_signup_dialog(hypertts_instance)
 
 def test_trial_signup_successful_saves_api_key(qtbot):
     """Test that successful trial signup saves the API key to configuration"""
@@ -224,40 +199,34 @@ def test_trial_signup_successful_saves_api_key(qtbot):
     
     hypertts_instance.service_manager.cloudlanguagetools.request_trial_key = mock_request_trial_key
     
-    model_changes = []
-    def model_change_callback(model):
-        model_changes.append(model)
+    def dialog_input_sequence(dialog):
+        component = dialog.trial_signup_component
+        
+        # Enter email and password
+        component.trial_email_input.setText("valid@email.com")
+        component.trial_password_input.setText("passw@rd1")
+        
+        # Click signup button to trigger the trial signup
+        qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
+        # Verify the API key was saved to configuration
+        configuration = hypertts_instance.get_configuration()
+        assert configuration.hypertts_pro_api_key == "trial_key"
+        assert configuration.use_vocabai_api == True
+        
+        # Verify the configuration was written to storage
+        assert hypertts_instance.anki_utils.written_config is not None
+        assert 'configuration' in hypertts_instance.anki_utils.written_config
+        written_config = hypertts_instance.anki_utils.written_config['configuration']
+        assert written_config['hypertts_pro_api_key'] == "trial_key"
+        assert written_config['use_vocabai_api'] == True
+        
+        # Verify the model was updated
+        assert component.get_model().success == True
+        assert component.get_model().api_key == "trial_key"
     
-    component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
-    
-    # Create a test dialog to hold the component and draw it
-    dialog = gui_testing_utils.EmptyDialog()
-    vlayout = aqt.qt.QVBoxLayout()
-    component.draw(vlayout)
-    dialog.setLayout(vlayout)
-    
-    # Enter email and password
-    component.trial_email_input.setText("valid@email.com")
-    component.trial_password_input.setText("passw@rd1")
-    
-    # Click signup button to trigger the trial signup
-    qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
-    
-    # Verify the API key was saved to configuration
-    configuration = hypertts_instance.get_configuration()
-    assert configuration.hypertts_pro_api_key == "trial_key"
-    assert configuration.use_vocabai_api == True
-    
-    # Verify the configuration was written to storage
-    assert hypertts_instance.anki_utils.written_config is not None
-    assert 'configuration' in hypertts_instance.anki_utils.written_config
-    written_config = hypertts_instance.anki_utils.written_config['configuration']
-    assert written_config['hypertts_pro_api_key'] == "trial_key"
-    assert written_config['use_vocabai_api'] == True
-    
-    # Verify the model was updated
-    assert component.get_model().success == True
-    assert component.get_model().api_key == "trial_key"
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
+    component_trialsignup.show_trial_signup_dialog(hypertts_instance)
 
 def test_trial_signup_email_verification_screen(qtbot):
     """Test that successful trial signup shows email verification screen"""
@@ -274,38 +243,32 @@ def test_trial_signup_email_verification_screen(qtbot):
     
     hypertts_instance.service_manager.cloudlanguagetools.request_trial_key = mock_request_trial_key
     
-    model_changes = []
-    def model_change_callback(model):
-        model_changes.append(model)
+    def dialog_input_sequence(dialog):
+        component = dialog.trial_signup_component
+        
+        # Verify we start on signup screen (index 0)
+        assert component.stacked_widget.currentIndex() == 0
+        
+        # Enter email and password
+        component.trial_email_input.setText("test@example.com")
+        component.trial_password_input.setText("password123")
+        
+        # Click signup button to trigger the trial signup
+        qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
+        # Verify we switched to verification screen (index 1)
+        assert component.stacked_widget.currentIndex() == 1
+        
+        # Verify verification screen elements exist
+        assert hasattr(component, 'verification_description_label')
+        assert hasattr(component, 'verification_status_label')
+        assert hasattr(component, 'check_status_button')
+        
+        # Verify description contains the email
+        assert "test@example.com" in component.verification_description_label.text()
     
-    component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
-    
-    # Create a test dialog to hold the component and draw it
-    dialog = gui_testing_utils.EmptyDialog()
-    vlayout = aqt.qt.QVBoxLayout()
-    component.draw(vlayout)
-    dialog.setLayout(vlayout)
-    
-    # Verify we start on signup screen (index 0)
-    assert component.stacked_widget.currentIndex() == 0
-    
-    # Enter email and password
-    component.trial_email_input.setText("test@example.com")
-    component.trial_password_input.setText("password123")
-    
-    # Click signup button to trigger the trial signup
-    qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
-    
-    # Verify we switched to verification screen (index 1)
-    assert component.stacked_widget.currentIndex() == 1
-    
-    # Verify verification screen elements exist
-    assert hasattr(component, 'verification_description_label')
-    assert hasattr(component, 'verification_status_label')
-    assert hasattr(component, 'check_status_button')
-    
-    # Verify description contains the email
-    assert "test@example.com" in component.verification_description_label.text()
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
+    component_trialsignup.show_trial_signup_dialog(hypertts_instance)
 
 def test_trial_signup_check_verification_status(qtbot):
     """Test checking email verification status"""
@@ -326,26 +289,20 @@ def test_trial_signup_check_verification_status(qtbot):
     hypertts_instance.service_manager.cloudlanguagetools.request_trial_key = mock_request_trial_key
     hypertts_instance.service_manager.cloudlanguagetools.check_email_verification_status = mock_check_email_verification_status
     
-    model_changes = []
-    def model_change_callback(model):
-        model_changes.append(model)
+    def dialog_input_sequence(dialog):
+        component = dialog.trial_signup_component
+        
+        # Complete signup first to get to verification screen
+        component.trial_email_input.setText("test@example.com")
+        component.trial_password_input.setText("password123")
+        qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
+        # Now test the check status functionality
+        qtbot.mouseClick(component.check_status_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
+        # Verify the status message shows email is verified
+        assert "Email verified!" in component.verification_status_label.text()
     
-    component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
-    
-    # Create a test dialog to hold the component and draw it
-    dialog = gui_testing_utils.EmptyDialog()
-    vlayout = aqt.qt.QVBoxLayout()
-    component.draw(vlayout)
-    dialog.setLayout(vlayout)
-    
-    # Complete signup first to get to verification screen
-    component.trial_email_input.setText("test@example.com")
-    component.trial_password_input.setText("password123")
-    qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
-    
-    # Now test the check status functionality
-    qtbot.mouseClick(component.check_status_button, aqt.qt.Qt.MouseButton.LeftButton)
-    
-    # Verify the status message shows email is verified
-    assert "Email verified!" in component.verification_status_label.text()
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
+    component_trialsignup.show_trial_signup_dialog(hypertts_instance)
 
