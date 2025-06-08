@@ -259,3 +259,93 @@ def test_trial_signup_successful_saves_api_key(qtbot):
     assert component.get_model().success == True
     assert component.get_model().api_key == "trial_key"
 
+def test_trial_signup_email_verification_screen(qtbot):
+    """Test that successful trial signup shows email verification screen"""
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    
+    # Mock the CloudLanguageTools to return a successful trial response
+    def mock_request_trial_key(email, password, client_uuid):
+        return config_models.TrialRequestReponse(
+            success=True,
+            api_key="trial_key",
+            error=None
+        )
+    
+    hypertts_instance.service_manager.cloudlanguagetools.request_trial_key = mock_request_trial_key
+    
+    model_changes = []
+    def model_change_callback(model):
+        model_changes.append(model)
+    
+    component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
+    
+    # Create a test dialog to hold the component and draw it
+    dialog = gui_testing_utils.EmptyDialog()
+    vlayout = aqt.qt.QVBoxLayout()
+    component.draw(vlayout)
+    dialog.setLayout(vlayout)
+    
+    # Verify we start on signup screen (index 0)
+    assert component.stacked_widget.currentIndex() == 0
+    
+    # Enter email and password
+    component.trial_email_input.setText("test@example.com")
+    component.trial_password_input.setText("password123")
+    
+    # Click signup button to trigger the trial signup
+    qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
+    
+    # Verify we switched to verification screen (index 1)
+    assert component.stacked_widget.currentIndex() == 1
+    
+    # Verify verification screen elements exist
+    assert hasattr(component, 'verification_description_label')
+    assert hasattr(component, 'verification_status_label')
+    assert hasattr(component, 'check_status_button')
+    
+    # Verify description contains the email
+    assert "test@example.com" in component.verification_description_label.text()
+
+def test_trial_signup_check_verification_status(qtbot):
+    """Test checking email verification status"""
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    
+    # Mock the CloudLanguageTools methods
+    def mock_request_trial_key(email, password, client_uuid):
+        return config_models.TrialRequestReponse(
+            success=True,
+            api_key="trial_key",
+            error=None
+        )
+    
+    def mock_check_email_verification_status(email):
+        return True  # Email is verified
+    
+    hypertts_instance.service_manager.cloudlanguagetools.request_trial_key = mock_request_trial_key
+    hypertts_instance.service_manager.cloudlanguagetools.check_email_verification_status = mock_check_email_verification_status
+    
+    model_changes = []
+    def model_change_callback(model):
+        model_changes.append(model)
+    
+    component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
+    
+    # Create a test dialog to hold the component and draw it
+    dialog = gui_testing_utils.EmptyDialog()
+    vlayout = aqt.qt.QVBoxLayout()
+    component.draw(vlayout)
+    dialog.setLayout(vlayout)
+    
+    # Complete signup first to get to verification screen
+    component.trial_email_input.setText("test@example.com")
+    component.trial_password_input.setText("password123")
+    qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
+    
+    # Now test the check status functionality
+    qtbot.mouseClick(component.check_status_button, aqt.qt.Qt.MouseButton.LeftButton)
+    
+    # Verify the status message shows email is verified
+    assert "Email verified!" in component.verification_status_label.text()
+

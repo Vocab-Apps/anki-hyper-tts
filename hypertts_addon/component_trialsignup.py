@@ -20,6 +20,7 @@ class TrialSignup(component_common.ConfigComponentBase):
         self.hypertts = hypertts
         self.model_change_callback = model_change_callback
         self.model = config_models.TrialRequestReponse(success=False, error=None, api_key=None)
+        self.email = None
 
     def get_model(self):
         return self.model
@@ -31,6 +32,26 @@ class TrialSignup(component_common.ConfigComponentBase):
         self.model_change_callback(self.get_model())
 
     def draw(self, global_vlayout):
+        # Create stacked widget to switch between signup and verification screens
+        self.stacked_widget = aqt.qt.QStackedWidget()
+        
+        # Create signup screen
+        self.signup_widget = self.create_signup_screen()
+        self.stacked_widget.addWidget(self.signup_widget)
+        
+        # Create verification screen
+        self.verification_widget = self.create_verification_screen()
+        self.stacked_widget.addWidget(self.verification_widget)
+        
+        # Start with signup screen
+        self.stacked_widget.setCurrentIndex(0)
+        
+        global_vlayout.addWidget(self.stacked_widget)
+
+    def create_signup_screen(self):
+        signup_widget = aqt.qt.QWidget()
+        vlayout = aqt.qt.QVBoxLayout()
+        
         # Add title label
         title_label = aqt.qt.QLabel("Sign up for HyperTTS Pro Trial")
         title_label.setWordWrap(True)
@@ -39,12 +60,12 @@ class TrialSignup(component_common.ConfigComponentBase):
         font = title_label.font()
         font.setPointSize(14)
         title_label.setFont(font)
-        global_vlayout.addWidget(title_label)
+        vlayout.addWidget(title_label)
         
         # Description label
         description_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL)
         description_label.setWordWrap(True)
-        global_vlayout.addWidget(description_label)
+        vlayout.addWidget(description_label)
         
         # Create groupbox for the form
         groupbox = aqt.qt.QGroupBox()
@@ -100,11 +121,52 @@ class TrialSignup(component_common.ConfigComponentBase):
         form_layout.addWidget(self.signup_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
         
         groupbox.setLayout(form_layout)
-        global_vlayout.addWidget(groupbox)
-        global_vlayout.addStretch()
+        vlayout.addWidget(groupbox)
+        vlayout.addStretch()
         
         # Wire events
         self.signup_button.pressed.connect(self.signup_button_pressed)
+        
+        signup_widget.setLayout(vlayout)
+        return signup_widget
+
+    def create_verification_screen(self):
+        verification_widget = aqt.qt.QWidget()
+        vlayout = aqt.qt.QVBoxLayout()
+        
+        # Title label
+        title_label = aqt.qt.QLabel("Email Verification Required")
+        title_label.setWordWrap(True)
+        title_label.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignLeft)
+        title_label.setStyleSheet('border: none; background-color: transparent;')
+        font = title_label.font()
+        font.setPointSize(14)
+        title_label.setFont(font)
+        vlayout.addWidget(title_label)
+        
+        # Description label
+        self.verification_description_label = aqt.qt.QLabel()
+        self.verification_description_label.setWordWrap(True)
+        vlayout.addWidget(self.verification_description_label)
+        
+        # Status label
+        self.verification_status_label = aqt.qt.QLabel()
+        self.verification_status_label.setWordWrap(True)
+        vlayout.addWidget(self.verification_status_label)
+        
+        # Check status button
+        self.check_status_button = aqt.qt.QPushButton('Check Status')
+        self.check_status_button.setMinimumHeight(40)
+        self.check_status_button.setMinimumWidth(150)
+        vlayout.addWidget(self.check_status_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        
+        vlayout.addStretch()
+        
+        # Wire events
+        self.check_status_button.pressed.connect(self.check_status_button_pressed)
+        
+        verification_widget.setLayout(vlayout)
+        return verification_widget
 
     @sc.event(Event.click_free_trial_ok)
     def signup_button_pressed(self):
@@ -144,14 +206,48 @@ class TrialSignup(component_common.ConfigComponentBase):
         if trial_signup_result.success == False:
             self.trial_validation_label.setText(trial_signup_result.error)
         else:
-            self.trial_validation_label.setText('<b>Success!</b> Trial account created. Please check your email for confirmation.')
             # Save the API key to configuration
             self.hypertts.save_hypertts_pro_api_key(trial_signup_result.api_key)
-            # Show info message about email confirmation
-            self.hypertts.anki_utils.info_message(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_CONFIRM_EMAIL, None)
+            # Switch to verification screen
+            self.show_verification_screen()
         
         self.model = trial_signup_result
         self.report_model_change()
+
+    def show_verification_screen(self):
+        """Switch to the email verification screen"""
+        self.verification_description_label.setText(
+            f'<b>Success!</b> Trial account created for {self.email}.<br><br>'
+            'Please check your email for a verification link. You must verify your email '
+            'before you can use HyperTTS Pro services.'
+        )
+        self.verification_status_label.setText('')
+        self.stacked_widget.setCurrentIndex(1)
+
+    @sc.event(Event.click_free_trial_ok)
+    def check_status_button_pressed(self):
+        self.verification_status_label.setText('Checking verification status...')
+        self.check_status_button.setEnabled(False)
+        
+        self.hypertts.anki_utils.run_in_background(self.check_verification_task, self.check_verification_task_done)
+
+    def check_verification_task(self):
+        return self.hypertts.service_manager.cloudlanguagetools.check_email_verification_status(self.email)
+
+    def check_verification_task_done(self, result):
+        with self.hypertts.error_manager.get_single_action_context('Checking email verification status'):
+            verification_status = result.result()
+            logger.debug(f'verification_status: {verification_status}')
+            self.hypertts.anki_utils.run_on_main(lambda: self.check_verification_update(verification_status))
+
+    def check_verification_update(self, verification_status: bool):
+        logger.info(f'verification_status: {verification_status}')
+        self.check_status_button.setEnabled(True)
+        
+        if verification_status:
+            self.verification_status_label.setText('<b>Email verified!</b> You can now use HyperTTS Pro services.')
+        else:
+            self.verification_status_label.setText('Email not yet verified. Please check your email and click the verification link.')
 
 
 class TrialSignupDialog(aqt.qt.QDialog):
