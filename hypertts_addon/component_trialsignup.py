@@ -160,6 +160,24 @@ class TrialSignup(component_common.ConfigComponentBase):
         
         # Check status button
         self.check_status_button = aqt.qt.QPushButton('Check Status')
+        purple_gradient_style = """
+            QPushButton {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6975dd, stop: 1 #7355b0);
+                border: none;
+                border-radius: 4px;
+                color: white;
+            }
+            QPushButton:hover {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #7985ed, stop: 1 #8365c0);
+            }
+            QPushButton:pressed {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #5965cd, stop: 1 #6345a0);
+            }
+            QPushButton:disabled {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #9999aa, stop: 1 #888899);
+            }
+        """
+        self.check_status_button.setStyleSheet(purple_gradient_style)
         self.check_status_button.setMinimumHeight(40)
         self.check_status_button.setMinimumWidth(150)
         form_layout.addWidget(self.check_status_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
