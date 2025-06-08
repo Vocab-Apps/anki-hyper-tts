@@ -106,12 +106,30 @@ def test_services_configuration_manual(qtbot):
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_SERVICES_CONFIGURATION] = dialog_input_sequence
     component_services_configuration.show_services_configuration_dialog(hypertts_instance)
 
-def test_trial_signup_manual(qtbot):
-    # HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_trial_signup_manual -s -rPP
+def test_trial_signup_manual_step_1(qtbot):
+    # HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_trial_signup_manual_step_1 -s -rPP
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     
     def dialog_input_sequence(dialog):
+        if os.environ.get('HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG', 'no') == 'yes':
+            dialog.exec()
+    
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
+    component_trialsignup.show_trial_signup_dialog(hypertts_instance)
+
+def test_trial_signup_manual_step_2(qtbot):
+    # HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_trial_signup_manual_step_2 -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    
+    def dialog_input_sequence(dialog):
+        component = dialog.trial_signup_component
+        
+        # Pre-fill the email and password fields
+        component.trial_email_input.setText("valid@email.com")
+        component.trial_password_input.setText("passw@rd1")
+        
         if os.environ.get('HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG', 'no') == 'yes':
             dialog.exec()
     
