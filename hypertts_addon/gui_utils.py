@@ -93,6 +93,33 @@ def get_graphics_path(filename):
     root_dir = os.path.join(current_dir, os.pardir)
     return os.path.join(root_dir, 'graphics', filename)
 
+def configure_purple_button(button, min_height=50, min_width=200, font_size=12):
+    """Configure a button with purple gradient styling"""
+    purple_gradient_style = f"""
+        QPushButton {{
+            background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 {constants.COLOR_GRADIENT_PURPLE_START}, stop: 1 {constants.COLOR_GRADIENT_PURPLE_END});
+            border: none;
+            border-radius: 4px;
+            color: white;
+        }}
+        QPushButton:hover {{
+            background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 {constants.COLOR_GRADIENT_PURPLE_HOVER_START}, stop: 1 {constants.COLOR_GRADIENT_PURPLE_HOVER_END});
+        }}
+        QPushButton:pressed {{
+            background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 {constants.COLOR_GRADIENT_PURPLE_PRESSED_START}, stop: 1 {constants.COLOR_GRADIENT_PURPLE_PRESSED_END});
+        }}
+        QPushButton:disabled {{
+            background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 {constants.COLOR_GRADIENT_PURPLE_DISABLED_START}, stop: 1 {constants.COLOR_GRADIENT_PURPLE_DISABLED_END});
+        }}
+    """
+    button.setStyleSheet(purple_gradient_style)
+    button.setMinimumHeight(min_height)
+    button.setMinimumWidth(min_width)
+    font_large = aqt.qt.QFont()
+    font_large.setBold(True)
+    font_large.setPointSize(font_size)
+    button.setFont(font_large)
+
 def get_hypertts_label_header(hypertts_pro_enabled):
     hlayout = aqt.qt.QHBoxLayout()
     if hypertts_pro_enabled:

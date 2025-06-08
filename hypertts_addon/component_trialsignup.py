@@ -93,30 +93,7 @@ class TrialSignup(component_common.ConfigComponentBase):
         
         # Button
         self.signup_button = aqt.qt.QPushButton('Sign Up for Trial')
-        purple_gradient_style = """
-            QPushButton {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6975dd, stop: 1 #7355b0);
-                border: none;
-                border-radius: 4px;
-                color: white;
-            }
-            QPushButton:hover {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #7985ed, stop: 1 #8365c0);
-            }
-            QPushButton:pressed {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #5965cd, stop: 1 #6345a0);
-            }
-            QPushButton:disabled {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #9999aa, stop: 1 #888899);
-            }
-        """
-        self.signup_button.setStyleSheet(purple_gradient_style)
-        self.signup_button.setMinimumHeight(50)
-        self.signup_button.setMinimumWidth(200)
-        font_large = aqt.qt.QFont()
-        font_large.setBold(True)
-        font_large.setPointSize(12)
-        self.signup_button.setFont(font_large)
+        gui_utils.configure_purple_button(self.signup_button)
         
         form_layout.addWidget(self.signup_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
         
@@ -160,26 +137,7 @@ class TrialSignup(component_common.ConfigComponentBase):
         
         # Check status button
         self.check_status_button = aqt.qt.QPushButton('Check Status')
-        purple_gradient_style = """
-            QPushButton {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6975dd, stop: 1 #7355b0);
-                border: none;
-                border-radius: 4px;
-                color: white;
-            }
-            QPushButton:hover {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #7985ed, stop: 1 #8365c0);
-            }
-            QPushButton:pressed {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #5965cd, stop: 1 #6345a0);
-            }
-            QPushButton:disabled {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #9999aa, stop: 1 #888899);
-            }
-        """
-        self.check_status_button.setStyleSheet(purple_gradient_style)
-        self.check_status_button.setMinimumHeight(40)
-        self.check_status_button.setMinimumWidth(150)
+        gui_utils.configure_purple_button(self.check_status_button, min_height=40, min_width=150)
         form_layout.addWidget(self.check_status_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
         
         groupbox.setLayout(form_layout)
