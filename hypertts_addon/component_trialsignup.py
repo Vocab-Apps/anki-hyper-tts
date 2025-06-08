@@ -145,6 +145,8 @@ class TrialSignup(component_common.ConfigComponentBase):
             self.trial_validation_label.setText(trial_signup_result.error)
         else:
             self.trial_validation_label.setText('<b>Success!</b> Trial account created. Please check your email for confirmation.')
+            # Save the API key to configuration
+            self.hypertts.save_hypertts_pro_api_key(trial_signup_result.api_key)
             # Show info message about email confirmation
             self.hypertts.anki_utils.info_message(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_CONFIRM_EMAIL, None)
         

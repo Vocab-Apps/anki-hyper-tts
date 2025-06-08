@@ -209,3 +209,33 @@ def test_trial_signup_validation_empty_password(qtbot):
     # Check validation message
     assert "Please enter a password" in component.trial_validation_label.text()
 
+def test_trial_signup_successful_saves_api_key(qtbot):
+    """Test that successful trial signup saves the API key to configuration"""
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    
+    model_changes = []
+    def model_change_callback(model):
+        model_changes.append(model)
+    
+    component = component_trialsignup.TrialSignup(hypertts_instance, model_change_callback)
+    
+    # Create a successful trial response
+    successful_response = config_models.TrialRequestReponse(
+        success=True,
+        api_key="test-api-key-12345",
+        error=None
+    )
+    
+    # Call the update method directly with successful response
+    component.trial_signup_update(successful_response)
+    
+    # Verify the API key was saved to configuration
+    configuration = hypertts_instance.get_configuration()
+    assert configuration.hypertts_pro_api_key == "test-api-key-12345"
+    assert configuration.use_vocabai_api == True
+    
+    # Verify the model was updated
+    assert component.get_model().success == True
+    assert component.get_model().api_key == "test-api-key-12345"
+
