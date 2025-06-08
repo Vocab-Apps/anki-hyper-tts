@@ -374,7 +374,7 @@ class MockAnkiUtils():
         logger.critical(exception, exc_info=True)
 
     def extract_sound_tag_audio_full_path(self, sound_tag):
-        filename = re.match('.*\[sound:([^\]]+)\]', sound_tag).groups()[0]
+        filename = re.match(r'.*\[sound:([^\]]+)\]', sound_tag).groups()[0]
         return os.path.join(self.get_user_files_dir(), filename)
 
     def extract_mock_tts_audio(self, full_path):
