@@ -121,11 +121,16 @@ class TrialSignup(component_common.ConfigComponentBase):
         title_label.setFont(font)
         vlayout.addWidget(title_label)
         
+        # Description label
+        description_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFY_EMAIL)
+        description_label.setWordWrap(True)
+        vlayout.addWidget(description_label)
+        
         # Create groupbox for the verification content
         groupbox = aqt.qt.QGroupBox()
         form_layout = aqt.qt.QVBoxLayout()
         
-        # Description label
+        # Detailed description label
         self.verification_description_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFICATION_DESCRIPTION)
         self.verification_description_label.setWordWrap(True)
         form_layout.addWidget(self.verification_description_label)
