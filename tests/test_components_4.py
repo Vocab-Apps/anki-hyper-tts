@@ -320,8 +320,8 @@ def test_trial_signup_email_verification_screen(qtbot):
         assert hasattr(component, 'verification_status_label')
         assert hasattr(component, 'check_status_button')
         
-        # Verify description contains the email
-        assert "test@example.com" in component.verification_description_label.text()
+        # Verify description 
+        assert "Please check your email" in component.verification_description_label.text()
     
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
     component_trialsignup.show_trial_signup_dialog(hypertts_instance)

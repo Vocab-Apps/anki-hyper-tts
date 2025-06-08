@@ -203,9 +203,6 @@ class TrialSignup(component_common.ConfigComponentBase):
 
     def show_verification_screen(self):
         """Switch to the email verification screen"""
-        # Update the description to include the user's email
-        description_with_email = f'<b>Success!</b> Trial account created for {self.email}.<br><br>' + constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFICATION_DESCRIPTION
-        self.verification_description_label.setText(description_with_email)
         self.verification_status_label.setText('')
         self.stacked_widget.setCurrentIndex(1)
 
