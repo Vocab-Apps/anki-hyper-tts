@@ -224,7 +224,7 @@ class TrialSignup(component_common.ConfigComponentBase):
         """Switch to the email verification screen"""
         self.verification_description_label.setText(
             f'<b>Success!</b> Trial account created for {self.email}.<br><br>'
-            'Please check your email for a verification link. You must verify your email '
+            'Please check your email (subject: <b>Please Confirm Your Email Address</b> sender: <b>Vocab.Ai</b>) for a verification link. You must verify your email '
             'before you can use HyperTTS Pro services.'
         )
         self.verification_status_label.setText('')
