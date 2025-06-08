@@ -209,6 +209,37 @@ def test_trial_signup_validation_empty_password(qtbot):
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
     component_trialsignup.show_trial_signup_dialog(hypertts_instance)
 
+def test_trial_signup_bad_email(qtbot):
+    """Test validation with bad email address"""
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    
+    # Mock the CloudLanguageTools to return an error for bad email
+    def mock_request_trial_key(email, password, client_uuid):
+        return config_models.TrialRequestReponse(
+            success=False,
+            api_key=None,
+            error="error: invalid email"
+        )
+    
+    hypertts_instance.service_manager.cloudlanguagetools.request_trial_key = mock_request_trial_key
+    
+    def dialog_input_sequence(dialog):
+        component = dialog.trial_signup_component
+        
+        # Enter bad email and password
+        component.trial_email_input.setText("no@spam.com")
+        component.trial_password_input.setText("passw@rd1")
+        
+        # Click signup button
+        qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
+        
+        # Check validation message
+        assert "error: invalid email" in component.trial_validation_label.text()
+    
+    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
+    component_trialsignup.show_trial_signup_dialog(hypertts_instance)
+
 def test_trial_signup_successful_saves_api_key(qtbot):
     """Test that successful trial signup saves the API key to configuration"""
     config_gen = testing_utils.TestConfigGenerator()
