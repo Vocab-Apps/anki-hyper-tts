@@ -156,7 +156,7 @@ class CloudLanguageTools():
     def check_email_verification_status(self, email) -> bool:
         logger.info(f'checking email verification status for email {email}')
         
-        response = requests.get(self.vocabai_api_base_url + '/register_trial',
+        response = requests.get(self.vocabai_api_base_url + '/check_email_verification',
                                headers=self.get_request_headers())
         
         if response.status_code != 200:
