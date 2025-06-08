@@ -153,6 +153,19 @@ class CloudLanguageTools():
         data['password'] = password
         return data
 
+    def check_email_verification_status(self, email) -> bool:
+        logger.info(f'checking email verification status for email {email}')
+        
+        response = requests.get(self.vocabai_api_base_url + '/register_trial',
+                               headers=self.get_trial_request_headers())
+        
+        if response.status_code != 200:
+            error_message = f"Status code: {response.status_code} ({response.content})"
+            raise errors.RequestError(email, None, error_message)
+        
+        data = json.loads(response.content)
+        return data['email_verified']
+
     def request_trial_key(self, email, password, client_uuid) -> config_models.TrialRequestReponse:
         logger.info(f'requesting trial key for email {email}')
         
