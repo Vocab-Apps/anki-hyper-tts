@@ -278,6 +278,7 @@ class TrialSignupDialog(aqt.qt.QDialog):
         super(aqt.qt.QDialog, self).__init__()
         self.hypertts = hypertts
         self.trial_signup_component = None
+        self.accepted_result = False
         self.setupUi()
 
     def setupUi(self):
@@ -294,14 +295,15 @@ class TrialSignupDialog(aqt.qt.QDialog):
         # Create trial signup component
         def model_change_callback(model):
             # Handle model changes if needed
-            pass
+            if model and model.success:
+                self.accepted_result = True
 
         self.trial_signup_component = TrialSignup(self.hypertts, model_change_callback)
         self.trial_signup_component.draw(layout)
 
         # Cancel button
         self.close_button = aqt.qt.QPushButton('Cancel')
-        self.close_button.clicked.connect(self.accept)
+        self.close_button.clicked.connect(self.reject)
         
         layout.addStretch()
         layout.addWidget(self.close_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
@@ -310,7 +312,7 @@ class TrialSignupDialog(aqt.qt.QDialog):
 
     def get_trial_result(self):
         """Get the trial signup result"""
-        if self.trial_signup_component:
+        if self.trial_signup_component and self.accepted_result:
             return self.trial_signup_component.get_model()
         return None
 
