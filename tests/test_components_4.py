@@ -219,7 +219,7 @@ def test_trial_signup_bad_email(qtbot):
         return config_models.TrialRequestReponse(
             success=False,
             api_key=None,
-            error="error: invalid email"
+            error="invalid email"
         )
     
     hypertts_instance.service_manager.cloudlanguagetools.request_trial_key = mock_request_trial_key
@@ -235,7 +235,7 @@ def test_trial_signup_bad_email(qtbot):
         qtbot.mouseClick(component.signup_button, aqt.qt.Qt.MouseButton.LeftButton)
         
         # Check validation message
-        assert "error: invalid email" in component.trial_validation_label.text()
+        assert "<b>Error:</b> invalid email" in component.trial_validation_label.text()
     
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
     component_trialsignup.show_trial_signup_dialog(hypertts_instance)
