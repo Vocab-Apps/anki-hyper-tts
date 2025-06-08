@@ -248,6 +248,13 @@ def test_trial_signup_successful_saves_api_key(qtbot):
     assert configuration.hypertts_pro_api_key == "trial_key"
     assert configuration.use_vocabai_api == True
     
+    # Verify the configuration was written to storage
+    assert hypertts_instance.anki_utils.written_config is not None
+    assert 'configuration' in hypertts_instance.anki_utils.written_config
+    written_config = hypertts_instance.anki_utils.written_config['configuration']
+    assert written_config['hypertts_pro_api_key'] == "trial_key"
+    assert written_config['use_vocabai_api'] == True
+    
     # Verify the model was updated
     assert component.get_model().success == True
     assert component.get_model().api_key == "trial_key"
