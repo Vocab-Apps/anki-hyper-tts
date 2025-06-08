@@ -144,22 +144,28 @@ class TrialSignup(component_common.ConfigComponentBase):
         title_label.setFont(font)
         vlayout.addWidget(title_label)
         
+        # Create groupbox for the verification content
+        groupbox = aqt.qt.QGroupBox()
+        form_layout = aqt.qt.QVBoxLayout()
+        
         # Description label
         self.verification_description_label = aqt.qt.QLabel()
         self.verification_description_label.setWordWrap(True)
-        vlayout.addWidget(self.verification_description_label)
+        form_layout.addWidget(self.verification_description_label)
         
         # Status label
         self.verification_status_label = aqt.qt.QLabel()
         self.verification_status_label.setWordWrap(True)
-        vlayout.addWidget(self.verification_status_label)
+        form_layout.addWidget(self.verification_status_label)
         
         # Check status button
         self.check_status_button = aqt.qt.QPushButton('Check Status')
         self.check_status_button.setMinimumHeight(40)
         self.check_status_button.setMinimumWidth(150)
-        vlayout.addWidget(self.check_status_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        form_layout.addWidget(self.check_status_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
         
+        groupbox.setLayout(form_layout)
+        vlayout.addWidget(groupbox)
         vlayout.addStretch()
         
         # Wire events
