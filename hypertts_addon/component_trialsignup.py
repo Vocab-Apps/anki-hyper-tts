@@ -229,7 +229,7 @@ class TrialSignup(component_common.ConfigComponentBase):
         if verification_status:
             self.verification_status_label.setText('<b>Email verified!</b> You can now use HyperTTS Pro services.')
         else:
-            self.verification_status_label.setText('Email not yet verified. Please check your email and click the verification link.')
+            self.verification_status_label.setText('Email not yet verified. Please check your email (including spam folder) and click the verification link.')
 
 
 class TrialSignupDialog(aqt.qt.QDialog):
