@@ -136,7 +136,7 @@ class TrialSignup(component_common.ConfigComponentBase):
         form_layout.addWidget(self.verification_description_label)
         
         # Status label
-        self.verification_status_label = aqt.qt.QLabel()
+        self.verification_status_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFICATION_INITIAL_STATUS)
         self.verification_status_label.setWordWrap(True)
         form_layout.addWidget(self.verification_status_label)
         

@@ -250,7 +250,10 @@ GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFY_EMAIL = """<i>You have to verify your email b
 GUI_TEXT_HYPERTTS_PRO_TRIAL_CONFIRM_EMAIL = """<b>IMPORTANT</b>: You must confirm your email address before you can use the service. """\
 """The email subject should be <b>Please Confirm Your Email Address</b> and sender: <b>Vocab.Ai</b>."""
 
-GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFICATION_DESCRIPTION = """Please check your email (subject: <b>Please Confirm Your Email Address</b> sender: <b>Vocab.Ai</b>) and click the verification link. You must verify your email before you can use HyperTTS Pro services."""
+GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFICATION_DESCRIPTION = """Please check your email (subject: <b>Please Confirm Your Email Address</b>"""\
+""" sender: <b>Vocab.Ai</b>) and click the verification link. You must verify your email before you can use HyperTTS Pro services."""
+
+GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFICATION_INITIAL_STATUS = """If you don't see the email, please check your spam folder. Once you've clicked the verify link, press the <b>Check Status</b> button below."""
 
 GUI_TEXT_REALTIME_SINGLE_NOTE = """Please select a single note to add Realtime Audio"""
 GUI_TEXT_REALTIME_CHOOSE_TEMPLATE = """Choose card template"""
