@@ -1,6 +1,8 @@
 import sys
 import aqt.qt
 import pprint
+import webbrowser
+
 
 from . import component_common
 from . import constants
@@ -280,9 +282,9 @@ class TrialSignup(component_common.ConfigComponentBase):
 
     def how_to_add_audio_button_pressed(self):
         """Open the How to Add Audio guide in browser"""
-        import webbrowser
         user_uuid = self.hypertts.get_client_uuid()
         url = gui_utils.get_vocab_ai_url('tips/hypertts-adding-audio', 'deckbrowser_welcome', user_uuid)
+        logger.info(f'opening url: {url}')
         webbrowser.open(url)
 
 
