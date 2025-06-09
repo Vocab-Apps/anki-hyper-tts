@@ -280,6 +280,9 @@ def test_trial_signup_successful_saves_api_key(qtbot):
         # Verify the model was updated
         assert component.get_model().success == True
         assert component.get_model().api_key == "trial_key"
+        
+        # Verify the cloudlanguagetools config contains the trial API key
+        assert hypertts_instance.service_manager.cloudlanguagetools.config['api_key'] == "trial_key"
     
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
     component_trialsignup.show_trial_signup_dialog(hypertts_instance)
