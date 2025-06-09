@@ -356,8 +356,8 @@ def test_trial_signup_check_verification_status(qtbot):
         # Now test the check status functionality
         qtbot.mouseClick(component.check_status_button, aqt.qt.Qt.MouseButton.LeftButton)
         
-        # Verify the status message shows email is verified
-        assert "Email verified!" in component.verification_status_label.text()
+        # Verify we switched to verified screen (index 2)
+        assert component.stacked_widget.currentIndex() == 2
     
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
     component_trialsignup.show_trial_signup_dialog(hypertts_instance)
