@@ -43,6 +43,10 @@ class TrialSignup(component_common.ConfigComponentBase):
         self.verification_widget = self.create_verification_screen()
         self.stacked_widget.addWidget(self.verification_widget)
         
+        # Create verified screen
+        self.verified_widget = self.create_verified_screen()
+        self.stacked_widget.addWidget(self.verified_widget)
+        
         # Start with signup screen
         self.stacked_widget.setCurrentIndex(0)
         
@@ -155,6 +159,44 @@ class TrialSignup(component_common.ConfigComponentBase):
         verification_widget.setLayout(vlayout)
         return verification_widget
 
+    def create_verified_screen(self):
+        verified_widget = aqt.qt.QWidget()
+        vlayout = aqt.qt.QVBoxLayout()
+        
+        # Title label
+        title_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFIED_TITLE)
+        title_label.setWordWrap(True)
+        title_label.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignLeft)
+        title_label.setStyleSheet('border: none; background-color: transparent;')
+        font = title_label.font()
+        font.setPointSize(14)
+        title_label.setFont(font)
+        vlayout.addWidget(title_label)
+        
+        # Create groupbox for the verified content
+        groupbox = aqt.qt.QGroupBox()
+        form_layout = aqt.qt.QVBoxLayout()
+        
+        # Description label
+        description_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFIED_DESCRIPTION)
+        description_label.setWordWrap(True)
+        form_layout.addWidget(description_label)
+        
+        # How to Add Audio button
+        self.how_to_add_audio_button = aqt.qt.QPushButton('How to Add Audio')
+        gui_utils.configure_purple_button(self.how_to_add_audio_button, min_height=40, min_width=200)
+        form_layout.addWidget(self.how_to_add_audio_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        
+        groupbox.setLayout(form_layout)
+        vlayout.addWidget(groupbox)
+        vlayout.addStretch()
+        
+        # Wire events
+        self.how_to_add_audio_button.pressed.connect(self.how_to_add_audio_button_pressed)
+        
+        verified_widget.setLayout(vlayout)
+        return verified_widget
+
     @sc.event(Event.click_free_trial_ok)
     def signup_button_pressed(self):
         email = self.trial_email_input.text().strip()
@@ -227,9 +269,21 @@ class TrialSignup(component_common.ConfigComponentBase):
         self.check_status_button.setEnabled(True)
         
         if verification_status:
-            self.verification_status_label.setText('<b>Email verified!</b> You can now use HyperTTS Pro services.')
+            # Switch to verified screen
+            self.show_verified_screen()
         else:
             self.verification_status_label.setText('Email not yet verified. Please check your email (including spam folder) and click the verification link.')
+
+    def show_verified_screen(self):
+        """Switch to the verified email screen"""
+        self.stacked_widget.setCurrentIndex(2)
+
+    def how_to_add_audio_button_pressed(self):
+        """Open the How to Add Audio guide in browser"""
+        import webbrowser
+        user_uuid = self.hypertts.get_client_uuid()
+        url = f"https://www.vocab.ai/tips/hypertts-adding-audio?utm_source=hypertts&utm_medium=addon&utm_campaign=deckbrowser_welcome&distinct_id={user_uuid}"
+        webbrowser.open(url)
 
 
 class TrialSignupDialog(aqt.qt.QDialog):
@@ -261,8 +315,8 @@ class TrialSignupDialog(aqt.qt.QDialog):
         self.trial_signup_component = TrialSignup(self.hypertts, model_change_callback)
         self.trial_signup_component.draw(layout)
 
-        # Cancel button
-        self.close_button = aqt.qt.QPushButton('Cancel')
+        # Close button
+        self.close_button = aqt.qt.QPushButton('Close')
         self.close_button.clicked.connect(self.reject)
         
         layout.addStretch()
