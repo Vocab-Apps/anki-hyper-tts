@@ -120,6 +120,26 @@ def configure_purple_button(button, min_height=50, min_width=200, font_size=12):
     font_large.setPointSize(font_size)
     button.setFont(font_large)
 
+def get_vocab_ai_url(url_path, utm_campaign, distinct_id=None):
+    """Generate a vocab.ai URL with UTM parameters
+    
+    Args:
+        url_path: Path after the domain (e.g., 'tips/hypertts-adding-audio')
+        utm_campaign: Campaign name for UTM tracking
+        distinct_id: Optional distinct ID for tracking
+    
+    Returns:
+        Complete URL with UTM parameters
+    """
+    base_url = f"https://www.vocab.ai/{url_path}"
+    utm_params = "utm_source=hypertts&utm_medium=addon"
+    utm_params += f"&utm_campaign={utm_campaign}"
+    
+    if distinct_id is not None:
+        utm_params += f"&distinct_id={distinct_id}"
+    
+    return f"{base_url}?{utm_params}"
+
 def get_hypertts_label_header(hypertts_pro_enabled):
     hlayout = aqt.qt.QHBoxLayout()
     if hypertts_pro_enabled:

@@ -282,7 +282,7 @@ class TrialSignup(component_common.ConfigComponentBase):
         """Open the How to Add Audio guide in browser"""
         import webbrowser
         user_uuid = self.hypertts.get_client_uuid()
-        url = f"https://www.vocab.ai/tips/hypertts-adding-audio?utm_source=hypertts&utm_medium=addon&utm_campaign=deckbrowser_welcome&distinct_id={user_uuid}"
+        url = gui_utils.get_vocab_ai_url('tips/hypertts-adding-audio', 'deckbrowser_welcome', user_uuid)
         webbrowser.open(url)
 
 
