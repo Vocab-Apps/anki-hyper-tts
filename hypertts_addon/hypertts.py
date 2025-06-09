@@ -805,6 +805,11 @@ class HyperTTS():
         configuration.use_vocabai_api = True
         self.save_configuration(configuration)
         # configure service_manager and cloudlanguagetools
+        self.reconfigure_service_manager()
+
+    def reconfigure_service_manager(self):
+        """reconfigures the service manager with the current configuration"""
+        configuration = self.get_configuration()
         self.service_manager.configure(configuration)
 
     def hypertts_pro_enabled(self):
