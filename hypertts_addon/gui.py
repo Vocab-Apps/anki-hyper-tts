@@ -309,6 +309,9 @@ def init(hypertts):
 
     def on_deck_browser_will_render_content(deck_browser, content):
         if should_show_welcome_message(hypertts):
+            configuration = hypertts.get_configuration()
+            trial_step = configuration.trial_registration_step
+            
             # Check if night mode is enabled
             night_mode = hypertts.anki_utils.night_mode_enabled()
             
@@ -316,6 +319,14 @@ def init(hypertts):
             bg_color = "#2f2f31" if night_mode else "white"
             border_color = "#555555" if night_mode else "#cccccc"
             text_color = "#ffffff" if night_mode else "#000000"
+            
+            # Determine which buttons to show based on trial registration step
+            show_configure_services = trial_step == config_models.TrialRegistrationStep.new_install
+            show_add_audio = trial_step == config_models.TrialRegistrationStep.pending_add_audio
+            show_both = trial_step == config_models.TrialRegistrationStep.finished
+            
+            configure_services_style = "" if (show_configure_services or show_both) else "display: none;"
+            add_audio_style = "" if (show_add_audio or show_both) else "display: none;"
             
             welcome_html = f"""
             <div id="hypertts-welcome-message" style="margin: 1em 2em; padding: 1em; background-color: {bg_color}; border: 1px solid {border_color}; border-radius: 15px; color: {text_color};">
@@ -325,11 +336,11 @@ def init(hypertts):
                 </div>
                 <p><b class="important-gradient-text">Important</b>: you have to configure services before adding audio.</p>
                 <div style="text-align: center; margin-top: 10px;">
-                    <button id="hypertts-configure-services" class="hypertts-welcome-button" style="margin-right: 10px;">
+                    <button id="hypertts-configure-services" class="hypertts-welcome-button" style="margin-right: 10px; {configure_services_style}">
                         <div><b class="gradient-text" style="font-size: 1.2em;">Configure Services</b></div>
                         <div style="font-size: 0.8em;">Click here before adding audio</div>
                     </button>
-                    <button id="hypertts-how-to-add-audio" class="hypertts-welcome-button">
+                    <button id="hypertts-how-to-add-audio" class="hypertts-welcome-button" style="{add_audio_style}">
                         <div><b class="gradient-text" style="font-size: 1.2em;">Adding Audio</b></div>
                         <div style="font-size: 0.8em;">Click to learn how to add audio</div>
                     </button>
@@ -380,6 +391,10 @@ def init(hypertts):
         elif cmd.startswith('hypertts:configure_services'):
             stats.event_global(constants_events.Event.click_welcome_configure_services)
             launch_services_configuration(hypertts)
+            # Update trial registration step to pending_add_audio
+            configuration = hypertts.get_configuration()
+            configuration.trial_registration_step = config_models.TrialRegistrationStep.pending_add_audio
+            hypertts.save_configuration(configuration)
             return (True, None)
         elif cmd.startswith('hypertts:how_to_add_audio'):
             stats.event_global(constants_events.Event.click_welcome_add_audio)
