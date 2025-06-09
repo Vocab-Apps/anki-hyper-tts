@@ -256,7 +256,7 @@ GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFICATION_DESCRIPTION = """Please check your emai
 GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFICATION_INITIAL_STATUS = """If you don't see the email, please check your spam folder. Once you've clicked the verify link, press the <b>Check Status</b> button below."""
 
 GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFIED_TITLE = """Email Verified Successfully!"""
-GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFIED_DESCRIPTION = """<b>Congratulations!</b> Your email has been verified and you can now use HyperTTS Pro services. You can close this dialog and start adding audio to your notes."""
+GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFIED_DESCRIPTION = """<b>Congratulations!</b> Your email has been verified and you can now use HyperTTS Pro services. You can close this dialog and start adding audio to your notes. Check out the tutorial below to learn how to add audio."""
 
 GUI_TEXT_REALTIME_SINGLE_NOTE = """Please select a single note to add Realtime Audio"""
 GUI_TEXT_REALTIME_CHOOSE_TEMPLATE = """Choose card template"""
