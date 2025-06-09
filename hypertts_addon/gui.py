@@ -317,11 +317,6 @@ def init(hypertts):
             border_color = "#555555" if night_mode else "#cccccc"
             text_color = "#ffffff" if night_mode else "#000000"
             
-            # Get the user UUID for the help URL
-            configuration = hypertts.get_configuration()
-            user_uuid = configuration.user_uuid or ""
-            help_url = f"https://www.vocab.ai/tips/hypertts-adding-audio?utm_source=hypertts&utm_medium=addon&utm_campaign=deckbrowser_welcome&distinct_id={user_uuid}"
-            
             welcome_html = f"""
             <div id="hypertts-welcome-message" style="margin: 1em 2em; padding: 1em; background-color: {bg_color}; border: 1px solid {border_color}; border-radius: 15px; color: {text_color};">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
