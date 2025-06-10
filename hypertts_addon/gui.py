@@ -323,10 +323,9 @@ def init(hypertts):
             # Determine which buttons to show based on trial registration step
             show_configure_services = trial_step == config_models.TrialRegistrationStep.new_install
             show_add_audio = trial_step == config_models.TrialRegistrationStep.pending_add_audio
-            show_both = trial_step == config_models.TrialRegistrationStep.finished
             
-            configure_services_style = "" if (show_configure_services or show_both) else "display: none;"
-            add_audio_style = "" if (show_add_audio or show_both) else "display: none;"
+            configure_services_style = "" if show_configure_services else "display: none;"
+            add_audio_style = "" if show_add_audio else "display: none;"
             
             welcome_html = f"""
             <div id="hypertts-welcome-message" style="margin: 1em 2em; padding: 1em; background-color: {bg_color}; border: 1px solid {border_color}; border-radius: 15px; color: {text_color};">
