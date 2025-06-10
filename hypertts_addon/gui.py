@@ -379,7 +379,6 @@ def init(hypertts):
                     }});
                     document.getElementById('hypertts-configure-services').addEventListener('click', function() {{
                         pycmd('hypertts:configure_services');
-                        hideConfigureServicesShowAddAudio();
                     }});
                     document.getElementById('hypertts-how-to-add-audio').addEventListener('click', function() {{
                         pycmd('hypertts:how_to_add_audio');
@@ -406,10 +405,6 @@ def init(hypertts):
         elif cmd.startswith('hypertts:configure_services'):
             stats.event_global(constants_events.Event.click_welcome_configure_services)
             launch_services_configuration(hypertts)
-            # Update trial registration step to pending_add_audio
-            configuration = hypertts.get_configuration()
-            configuration.trial_registration_step = config_models.TrialRegistrationStep.pending_add_audio
-            hypertts.save_configuration(configuration)
             return (True, None)
         elif cmd.startswith('hypertts:how_to_add_audio'):
             stats.event_global(constants_events.Event.click_welcome_add_audio)
