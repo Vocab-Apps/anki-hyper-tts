@@ -364,16 +364,32 @@ def init(hypertts):
             </style>
             <script>
                 (function() {{
-                    document.getElementById('hypertts-welcome-close').addEventListener('click', function() {{
+                    function hideConfigureServicesShowAddAudio() {{
+                        document.getElementById('hypertts-configure-services').style.display = 'none';
+                        document.getElementById('hypertts-how-to-add-audio').style.display = '';
+                    }}
+                    
+                    function closeWelcomeMessage() {{
                         document.getElementById('hypertts-welcome-message').style.display = 'none';
                         pycmd('hypertts:welcome_closed');
+                    }}
+                    
+                    document.getElementById('hypertts-welcome-close').addEventListener('click', function() {{
+                        closeWelcomeMessage();
                     }});
                     document.getElementById('hypertts-configure-services').addEventListener('click', function() {{
                         pycmd('hypertts:configure_services');
+                        hideConfigureServicesShowAddAudio();
                     }});
                     document.getElementById('hypertts-how-to-add-audio').addEventListener('click', function() {{
                         pycmd('hypertts:how_to_add_audio');
                     }});
+                    
+                    // Make functions available globally if needed
+                    window.hyperTTSWelcome = {{
+                        hideConfigureServicesShowAddAudio: hideConfigureServicesShowAddAudio,
+                        closeWelcomeMessage: closeWelcomeMessage
+                    }};
                 }})();
             </script>
             """
