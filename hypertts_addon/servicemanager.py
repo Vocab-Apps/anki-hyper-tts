@@ -39,7 +39,9 @@ class ServiceManager():
         self.allow_test_services = allow_test_services
         self.cloudlanguagetools = cloudlanguagetools
 
-    def configure(self, configuration_model):
+    def configure(self, configuration_model) -> bool:
+        # will return true if at least one service is enabled
+        services_enabled_count = 0
         hypertts_pro_mode = configuration_model.hypertts_pro_api_key_set()
         for service_name, enabled in configuration_model.get_service_enabled_map().items():
             if not self.service_exists(service_name):
@@ -49,6 +51,8 @@ class ServiceManager():
             logger.info(f'configuring service {service_name}, hypertts_pro_mode: {hypertts_pro_mode}, clt_enabled: {service.cloudlanguagetools_enabled()}')
             if not (hypertts_pro_mode == True and service.cloudlanguagetools_enabled()):
                 service.enabled = enabled
+                if enabled:
+                    services_enabled_count += 1
                 # do we need to set configuration for this service ? only do so if the service is enabled
                 if enabled and service_name in configuration_model.get_service_config():
                     service_config = configuration_model.get_service_config()[service_name]
@@ -59,6 +63,8 @@ class ServiceManager():
             self.configure_cloudlanguagetools(configuration_model)
         else:
             self.cloudlanguagetools_enabled = False
+        
+        return services_enabled_count > 0
 
     def remove_non_existent_services(self, configuration_model):
         # remove non existent services from the service enabled map

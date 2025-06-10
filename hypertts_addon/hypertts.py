@@ -810,7 +810,10 @@ class HyperTTS():
     def reconfigure_service_manager(self):
         """reconfigures the service manager with the current configuration"""
         configuration = self.get_configuration()
-        self.service_manager.configure(configuration)
+        services_enabled = self.service_manager.configure(configuration)
+        if services_enabled:
+            # at least one service was enabled
+            self.anki_utils.broadcast_services_configured()
 
     def hypertts_pro_enabled(self):
         return self.get_configuration().hypertts_pro_api_key_set()

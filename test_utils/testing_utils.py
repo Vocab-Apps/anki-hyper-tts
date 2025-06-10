@@ -168,6 +168,10 @@ class MockAnkiUtils():
         self.clipboard_content = None
         self.clipboard_cleared = False
 
+        # broadcasts for deck browser webview
+        self.broadcast_audio_added_called = False
+        self.broadcast_services_configured_called = False
+
         # time
         self.current_time = datetime.datetime.now()
 
@@ -321,6 +325,14 @@ class MockAnkiUtils():
 
     def hide_loading_indicator(self, editor, field_index, original_field_value):
         self.hide_loading_indicator_called = True
+
+    def broadcast_audio_added(self):
+        # when audio has been added, we need to update the deck browser webview
+        self.broadcast_audio_added_called = True
+
+    def broadcast_services_configured(self):
+        # when services have been configured, we need to update the deck browser webview
+        self.broadcast_services_configured_called = True
 
     def ask_user(self, message, parent):
         # assume true

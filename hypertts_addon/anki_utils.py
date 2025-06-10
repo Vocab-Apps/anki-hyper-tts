@@ -302,6 +302,18 @@ class AnkiUtils():
         if editor != None and editor.web != None:
             editor.web.eval(js_command)
 
+    def broadcast_audio_added(self):
+        # when audio has been added, we need to update the deck browser webview
+        pass
+
+    def broadcast_services_configured(self):
+        # when services have been configured, we need to update the deck browser webview
+        pass
+
+    def send_deck_browser_webview_command(self, command):
+        if aqt.mw.deckBrowser and aqt.mw.deckBrowser.web:
+            aqt.mw.deckBrowser.web.eval(command)
+
     def display_dialog(self, dialog):
         return dialog.exec()
 
