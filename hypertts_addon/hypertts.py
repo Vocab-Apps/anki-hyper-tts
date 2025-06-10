@@ -811,6 +811,7 @@ class HyperTTS():
         """reconfigures the service manager with the current configuration"""
         configuration = self.get_configuration()
         services_enabled = self.service_manager.configure(configuration)
+        logger.debug(f'reconfigure_service_manager, services_enabled: {services_enabled}')
         if services_enabled:
             # at least one service was enabled
             self.anki_utils.broadcast_services_configured()
