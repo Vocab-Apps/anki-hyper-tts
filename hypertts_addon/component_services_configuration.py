@@ -68,16 +68,17 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
             }
 """
 
-        # Trial button with purple outline and HTML content
-        trial_button_style = common_button_style + """
-            QLabel {
-                border: 3px solid #6975dd;
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #a5afee, stop: 1 #a088d5);
-            }
-            QLabel:hover {
-                border: 3px solid #7985ed;
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5bfff, stop: 1 #b098e5);
-            }
+        # Trial button with purple gradient background and white text
+        trial_button_style = common_button_style + f"""
+            QLabel {{
+                border: 3px solid {constants.COLOR_GRADIENT_PURPLE_START};
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 {constants.COLOR_GRADIENT_PURPLE_START}, stop: 1 {constants.COLOR_GRADIENT_PURPLE_END});
+                color: white;
+            }}
+            QLabel:hover {{
+                border: 3px solid {constants.COLOR_GRADIENT_PURPLE_HOVER_START};
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 {constants.COLOR_GRADIENT_PURPLE_HOVER_START}, stop: 1 {constants.COLOR_GRADIENT_PURPLE_HOVER_END});
+            }}
         """
         
         trial_html = f"""
