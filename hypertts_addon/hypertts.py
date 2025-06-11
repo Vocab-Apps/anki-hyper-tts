@@ -150,6 +150,7 @@ class HyperTTS():
                 full_filename, audio_filename = self.generate_audio_write_file(processed_text, 
                     voice_with_options.voice_id, voice_with_options.options, audio_request_context)
                 logger.debug(f'finished generating audio file and write to file for {processed_text}')
+                self.config_register_added_audio()
                 return full_filename, audio_filename
             except errors.AudioNotFoundError as exc:
                 # try the next voice, as long as one is available
@@ -817,6 +818,14 @@ class HyperTTS():
         if services_enabled:
             # at least one service was enabled
             self.anki_utils.broadcast_services_configured()
+
+    def config_register_added_audio(self):
+        """registers that the user has added audio, so we can show the welcome screen"""
+        configuration = self.get_configuration()
+        if configuration.trial_registration_step == config_models.TrialRegistrationStep.pending_add_audio:
+            configuration.trial_registration_step = config_models.TrialRegistrationStep.finished
+            self.save_configuration(configuration)
+            self.anki_utils.run_on_main(self.anki_utils.broadcast_audio_added)
 
     def hypertts_pro_enabled(self):
         return self.get_configuration().hypertts_pro_api_key_set()
