@@ -305,7 +305,10 @@ def init(hypertts):
 
     def should_show_welcome_message(hypertts):
         configuration = hypertts.get_configuration()
-        return configuration.display_introduction_message
+        if configuration.display_introduction_message:
+            if configuration.trial_registration_step in [config_models.TrialRegistrationStep.new_install, config_models.TrialRegistrationStep.pending_add_audio]:
+                return True
+        return False
 
     def on_deck_browser_will_render_content(deck_browser, content):
         if should_show_welcome_message(hypertts):
