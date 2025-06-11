@@ -367,6 +367,23 @@ def init(hypertts):
                     cursor: pointer;
                 }}
                 
+                #hypertts-configure-services {{
+                    background: linear-gradient(to bottom, {constants.COLOR_GRADIENT_PURPLE_START}, {constants.COLOR_GRADIENT_PURPLE_END});
+                    border: none;
+                    border-radius: 4px;
+                    color: white;
+                    padding: 10px 20px;
+                    font-weight: bold;
+                }}
+                
+                #hypertts-configure-services:hover {{
+                    background: linear-gradient(to bottom, {constants.COLOR_GRADIENT_PURPLE_HOVER_START}, {constants.COLOR_GRADIENT_PURPLE_HOVER_END});
+                }}
+                
+                #hypertts-configure-services:active {{
+                    background: linear-gradient(to bottom, {constants.COLOR_GRADIENT_PURPLE_PRESSED_START}, {constants.COLOR_GRADIENT_PURPLE_PRESSED_END});
+                }}
+                
                 .gradient-text {{
                     background: linear-gradient(to right, #6975dd, #7355b0);
                     -webkit-background-clip: text;
