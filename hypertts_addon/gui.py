@@ -330,7 +330,6 @@ def init(hypertts):
             # Set initial visibility styles
             configure_services_style = "" if show_configure_services else "display: none;"
             add_audio_style = "" if show_add_audio else "display: none;"
-            important_text_style = "" if show_configure_services else "display: none;"
             
             welcome_html = f"""
             <div id="hypertts-welcome-message" style="margin: 1em 2em; padding: 1em; background-color: {bg_color}; border: 1px solid {border_color}; border-radius: 15px; color: {text_color};">
@@ -338,15 +337,16 @@ def init(hypertts):
                     <h3 style="margin: 0; text-align: center; flex-grow: 1;">HyperTTS - Add Audio to your Flashcards</h3>
                     <button id="hypertts-welcome-close" style="background: none; border: none; cursor: pointer; font-size: 1.2em; color: {text_color};">× Close</button>
                 </div>
-                <p id="hypertts-important-text" style="{important_text_style}"><b class="important-gradient-text">Important</b>: you have to configure services before adding audio.</p>
                 <div style="text-align: center; margin-top: 10px;">
                     <div id="hypertts-configure-services" style="{configure_services_style}">
+                        <p id="hypertts-important-text"><b class="important-gradient-text">Important</b>: you have to configure services before adding audio.</p>
                         <button class="hypertts-welcome-button">
                             <div><b style="font-size: 1.2em;">Configure Services</b></div>
                             <div style="font-size: 0.8em;">Click here before adding audio</div>
                         </button>
                     </div>
                     <div id="hypertts-how-to-add-audio" style="{add_audio_style}">
+                        <p>It looks like you haven't added audio yet.</p>
                         <button class="hypertts-welcome-button">
                             <div><b class="gradient-text" style="font-size: 1.2em;">Adding Audio</b></div>
                             <div style="font-size: 0.8em;">Click to learn how to add audio</div>
