@@ -340,14 +340,18 @@ def init(hypertts):
                 </div>
                 <p id="hypertts-important-text" style="{important_text_style}"><b class="important-gradient-text">Important</b>: you have to configure services before adding audio.</p>
                 <div style="text-align: center; margin-top: 10px;">
-                    <button id="hypertts-configure-services" class="hypertts-welcome-button" style="{configure_services_style}">
-                        <div><b style="font-size: 1.2em;">Configure Services</b></div>
-                        <div style="font-size: 0.8em;">Click here before adding audio</div>
-                    </button>
-                    <button id="hypertts-how-to-add-audio" class="hypertts-welcome-button" style="{add_audio_style}">
-                        <div><b class="gradient-text" style="font-size: 1.2em;">Adding Audio</b></div>
-                        <div style="font-size: 0.8em;">Click to learn how to add audio</div>
-                    </button>
+                    <div id="hypertts-configure-services" style="{configure_services_style}">
+                        <button class="hypertts-welcome-button">
+                            <div><b style="font-size: 1.2em;">Configure Services</b></div>
+                            <div style="font-size: 0.8em;">Click here before adding audio</div>
+                        </button>
+                    </div>
+                    <div id="hypertts-how-to-add-audio" style="{add_audio_style}">
+                        <button class="hypertts-welcome-button">
+                            <div><b class="gradient-text" style="font-size: 1.2em;">Adding Audio</b></div>
+                            <div style="font-size: 0.8em;">Click to learn how to add audio</div>
+                        </button>
+                    </div>
                 </div>
             </div>
             """
@@ -359,7 +363,7 @@ def init(hypertts):
                     cursor: pointer;
                 }}
                 
-                #hypertts-configure-services {{
+                #hypertts-configure-services button {{
                     background: linear-gradient(to bottom, {constants.COLOR_GRADIENT_PURPLE_START}, {constants.COLOR_GRADIENT_PURPLE_END});
                     border: none;
                     border-radius: 12px;
@@ -368,11 +372,11 @@ def init(hypertts):
                     font-weight: bold;
                 }}
                 
-                #hypertts-configure-services:hover {{
+                #hypertts-configure-services button:hover {{
                     background: linear-gradient(to bottom, {constants.COLOR_GRADIENT_PURPLE_HOVER_START}, {constants.COLOR_GRADIENT_PURPLE_HOVER_END});
                 }}
                 
-                #hypertts-configure-services:active {{
+                #hypertts-configure-services button:active {{
                     background: linear-gradient(to bottom, {constants.COLOR_GRADIENT_PURPLE_PRESSED_START}, {constants.COLOR_GRADIENT_PURPLE_PRESSED_END});
                 }}
                 
@@ -405,16 +409,16 @@ def init(hypertts):
                         closeWelcomeMessage();
                     }});
                     
-                    var configureServicesBtn = document.getElementById('hypertts-configure-services');
-                    if (configureServicesBtn) {{
-                        configureServicesBtn.addEventListener('click', function() {{
+                    var configureServicesDiv = document.getElementById('hypertts-configure-services');
+                    if (configureServicesDiv) {{
+                        configureServicesDiv.addEventListener('click', function() {{
                             pycmd('hypertts:configure_services');
                         }});
                     }}
                     
-                    var addAudioBtn = document.getElementById('hypertts-how-to-add-audio');
-                    if (addAudioBtn) {{
-                        addAudioBtn.addEventListener('click', function() {{
+                    var addAudioDiv = document.getElementById('hypertts-how-to-add-audio');
+                    if (addAudioDiv) {{
+                        addAudioDiv.addEventListener('click', function() {{
                             pycmd('hypertts:how_to_add_audio');
                         }});
                     }}
