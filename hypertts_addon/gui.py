@@ -337,7 +337,7 @@ def init(hypertts):
                 <p><b class="important-gradient-text">Important</b>: you have to configure services before adding audio.</p>
                 <div style="text-align: center; margin-top: 10px;">
                     <button id="hypertts-configure-services" class="hypertts-welcome-button">
-                        <div><b class="gradient-text" style="font-size: 1.2em;">Configure Services</b></div>
+                        <div><b style="font-size: 1.2em;">Configure Services</b></div>
                         <div style="font-size: 0.8em;">Click here before adding audio</div>
                     </button>
                 </div>
