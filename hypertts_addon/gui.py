@@ -351,6 +351,7 @@ def init(hypertts):
                 </div>
             </div>
             
+            
             welcome_html += f"""
             <style>
                 .hypertts-welcome-button {{
