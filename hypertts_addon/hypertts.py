@@ -803,6 +803,8 @@ class HyperTTS():
         configuration = self.get_configuration()
         configuration.hypertts_pro_api_key = api_key
         configuration.use_vocabai_api = True
+        if configuration.trial_registration_step == config_models.TrialRegistrationStep.new_install:
+            configuration.trial_registration_step = config_models.TrialRegistrationStep.pending_add_audio
         self.save_configuration(configuration)
         # configure service_manager and cloudlanguagetools
         self.reconfigure_service_manager()

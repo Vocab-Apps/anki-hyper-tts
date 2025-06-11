@@ -244,6 +244,10 @@ def test_trial_signup_successful_saves_api_key(qtbot):
     """Test that successful trial signup saves the API key to configuration"""
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    configuration = hypertts_instance.get_configuration()
+    configuration.new_install_settings()
+    hypertts_instance.save_configuration(configuration)
     
     # Mock the CloudLanguageTools to return a successful trial response
     def mock_request_trial_key(email, password, client_uuid):
@@ -276,6 +280,7 @@ def test_trial_signup_successful_saves_api_key(qtbot):
         written_config = hypertts_instance.anki_utils.written_config['configuration']
         assert written_config['hypertts_pro_api_key'] == "trial_key"
         assert written_config['use_vocabai_api'] == True
+        assert written_config['trial_registration_step'] == 'pending_add_audio'
         
         # Verify the model was updated
         assert component.get_model().success == True
