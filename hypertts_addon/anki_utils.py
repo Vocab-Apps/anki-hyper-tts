@@ -305,15 +305,16 @@ class AnkiUtils():
     def broadcast_audio_added(self):
         # when audio has been added, we need to update the deck browser webview
         logger.debug('broadcast_audio_added')
-        self.send_deck_browser_webview_command("closeWelcomeMessage();")
+        self.send_deck_browser_webview_command("window.hyperTTSWelcome.closeWelcomeMessage();")
 
     def broadcast_services_configured(self):
         # when services have been configured, we need to update the deck browser webview
         logger.debug('broadcast_services_configured')
-        self.send_deck_browser_webview_command("hideConfigureServicesShowAddAudio();")
+        self.send_deck_browser_webview_command("window.hyperTTSWelcome.hideConfigureServicesShowAddAudio();")
 
     def send_deck_browser_webview_command(self, command):
         if aqt.mw.deckBrowser and aqt.mw.deckBrowser.web:
+            logger.debug(f'sending command to deck browser webview: {command}')
             aqt.mw.deckBrowser.web.eval(command)
 
     def display_dialog(self, dialog):

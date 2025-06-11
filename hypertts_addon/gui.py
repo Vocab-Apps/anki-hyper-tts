@@ -365,6 +365,7 @@ def init(hypertts):
             <script>
                 (function() {{
                     function hideConfigureServicesShowAddAudio() {{
+                        console.log('hideConfigureServicesShowAddAudio');
                         document.getElementById('hypertts-configure-services').style.display = 'none';
                         document.getElementById('hypertts-how-to-add-audio').style.display = '';
                     }}
