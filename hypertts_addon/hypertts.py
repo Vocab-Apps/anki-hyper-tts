@@ -824,6 +824,7 @@ class HyperTTS():
         configuration = self.get_configuration()
         if configuration.trial_registration_step == config_models.TrialRegistrationStep.pending_add_audio:
             configuration.trial_registration_step = config_models.TrialRegistrationStep.finished
+            configuration.display_introduction_message = False
             self.save_configuration(configuration)
             self.anki_utils.run_on_main(self.anki_utils.broadcast_audio_added)
 
