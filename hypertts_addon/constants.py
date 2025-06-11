@@ -251,7 +251,7 @@ GUI_TEXT_HYPERTTS_PRO_TRIAL_CONFIRM_EMAIL = """<b>IMPORTANT</b>: You must confir
 """The email subject should be <b>Please Confirm Your Email Address</b> and sender: <b>Vocab.Ai</b>."""
 
 GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFICATION_DESCRIPTION = """Please check your email (subject: <b>Please Confirm Your Email Address</b>"""\
-""" sender: <b>Vocab.Ai</b>) and click the verification link. You must verify your email before you can use HyperTTS Pro services."""
+""" sender: <b>Vocab.Ai</b>) and click the verification link. You must verify your email before you can use HyperTTS Pro services. Once you've clicked the link, press the <b>Check Status</b> button below to continue."""
 
 GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFICATION_INITIAL_STATUS = """If you don't see the email, please check your spam folder. Once you've clicked the verify link, press the <b>Check Status</b> button below."""
 
