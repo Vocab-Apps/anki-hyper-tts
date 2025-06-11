@@ -350,6 +350,7 @@ def init(hypertts):
                     </button>
                 </div>
             </div>
+            """
             
             
             welcome_html += f"""
