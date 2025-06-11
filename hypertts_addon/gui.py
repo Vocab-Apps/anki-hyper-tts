@@ -348,7 +348,7 @@ def init(hypertts):
                     <div id="hypertts-how-to-add-audio" style="{add_audio_style}">
                         <p>It looks like you haven't added audio yet.</p>
                         <button class="hypertts-welcome-button">
-                            <div><b class="gradient-text" style="font-size: 1.2em;">Adding Audio</b></div>
+                            <div><b style="font-size: 1.2em;">Adding Audio</b></div>
                             <div style="font-size: 0.8em;">Click to learn how to add audio</div>
                         </button>
                     </div>
@@ -363,7 +363,8 @@ def init(hypertts):
                     cursor: pointer;
                 }}
                 
-                #hypertts-configure-services button {{
+                #hypertts-configure-services button,
+                #hypertts-how-to-add-audio button {{
                     background: linear-gradient(to bottom, {constants.COLOR_GRADIENT_PURPLE_START}, {constants.COLOR_GRADIENT_PURPLE_END});
                     border: none;
                     border-radius: 12px;
@@ -372,11 +373,13 @@ def init(hypertts):
                     font-weight: bold;
                 }}
                 
-                #hypertts-configure-services button:hover {{
+                #hypertts-configure-services button:hover,
+                #hypertts-how-to-add-audio button:hover {{
                     background: linear-gradient(to bottom, {constants.COLOR_GRADIENT_PURPLE_HOVER_START}, {constants.COLOR_GRADIENT_PURPLE_HOVER_END});
                 }}
                 
-                #hypertts-configure-services button:active {{
+                #hypertts-configure-services button:active,
+                #hypertts-how-to-add-audio button:active {{
                     background: linear-gradient(to bottom, {constants.COLOR_GRADIENT_PURPLE_PRESSED_START}, {constants.COLOR_GRADIENT_PURPLE_PRESSED_END});
                 }}
                 
