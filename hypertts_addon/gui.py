@@ -370,7 +370,7 @@ def init(hypertts):
                 #hypertts-configure-services {{
                     background: linear-gradient(to bottom, {constants.COLOR_GRADIENT_PURPLE_START}, {constants.COLOR_GRADIENT_PURPLE_END});
                     border: none;
-                    border-radius: 4px;
+                    border-radius: 12px;
                     color: white;
                     padding: 10px 20px;
                     font-weight: bold;
