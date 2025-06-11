@@ -327,10 +327,8 @@ def init(hypertts):
             show_configure_services = trial_step == config_models.TrialRegistrationStep.new_install
             show_add_audio = trial_step == config_models.TrialRegistrationStep.pending_add_audio
             
-            configure_services_style = "" if show_configure_services else "display: none;"
-            add_audio_style = "" if show_add_audio else "display: none;"
-            
-            welcome_html = f"""
+            if show_configure_services:
+                welcome_html = f"""
             <div id="hypertts-welcome-message" style="margin: 1em 2em; padding: 1em; background-color: {bg_color}; border: 1px solid {border_color}; border-radius: 15px; color: {text_color};">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h3 style="margin: 0; text-align: center; flex-grow: 1;">HyperTTS - Add Audio to your Flashcards</h3>
@@ -338,16 +336,32 @@ def init(hypertts):
                 </div>
                 <p><b class="important-gradient-text">Important</b>: you have to configure services before adding audio.</p>
                 <div style="text-align: center; margin-top: 10px;">
-                    <button id="hypertts-configure-services" class="hypertts-welcome-button" style="margin-right: 10px; {configure_services_style}">
+                    <button id="hypertts-configure-services" class="hypertts-welcome-button">
                         <div><b class="gradient-text" style="font-size: 1.2em;">Configure Services</b></div>
                         <div style="font-size: 0.8em;">Click here before adding audio</div>
                     </button>
-                    <button id="hypertts-how-to-add-audio" class="hypertts-welcome-button" style="{add_audio_style}">
+                </div>
+            </div>
+                """
+            elif show_add_audio:
+                welcome_html = f"""
+            <div id="hypertts-welcome-message" style="margin: 1em 2em; padding: 1em; background-color: {bg_color}; border: 1px solid {border_color}; border-radius: 15px; color: {text_color};">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; text-align: center; flex-grow: 1;">HyperTTS - Add Audio to your Flashcards</h3>
+                    <button id="hypertts-welcome-close" style="background: none; border: none; cursor: pointer; font-size: 1.2em; color: {text_color};">× Close</button>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <button id="hypertts-how-to-add-audio" class="hypertts-welcome-button">
                         <div><b class="gradient-text" style="font-size: 1.2em;">Adding Audio</b></div>
                         <div style="font-size: 0.8em;">Click to learn how to add audio</div>
                     </button>
                 </div>
             </div>
+                """
+            else:
+                welcome_html = ""
+            
+            welcome_html += f"""
             <style>
                 .hypertts-welcome-button {{
                     cursor: pointer;
@@ -380,12 +394,20 @@ def init(hypertts):
                     document.getElementById('hypertts-welcome-close').addEventListener('click', function() {{
                         closeWelcomeMessage();
                     }});
-                    document.getElementById('hypertts-configure-services').addEventListener('click', function() {{
-                        pycmd('hypertts:configure_services');
-                    }});
-                    document.getElementById('hypertts-how-to-add-audio').addEventListener('click', function() {{
-                        pycmd('hypertts:how_to_add_audio');
-                    }});
+                    
+                    var configureServicesBtn = document.getElementById('hypertts-configure-services');
+                    if (configureServicesBtn) {{
+                        configureServicesBtn.addEventListener('click', function() {{
+                            pycmd('hypertts:configure_services');
+                        }});
+                    }}
+                    
+                    var addAudioBtn = document.getElementById('hypertts-how-to-add-audio');
+                    if (addAudioBtn) {{
+                        addAudioBtn.addEventListener('click', function() {{
+                            pycmd('hypertts:how_to_add_audio');
+                        }});
+                    }}
                     
                     // Make functions available globally if needed
                     window.hyperTTSWelcome = {{
