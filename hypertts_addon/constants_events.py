@@ -3,7 +3,7 @@ import enum
 # events reporting
 # ================
 
-PREFIX = 'anki_addon_v1'
+PREFIX = 'anki_addon_v2'
 ADDON = 'hypertts'
 
 GENERATE_MAX_EVENTS = 5
@@ -13,6 +13,7 @@ class EventContext(enum.Enum):
     addon = enum.auto()
     services = enum.auto()
     hyperttspro = enum.auto()
+    trial_signup = enum.auto()
     generate = enum.auto()
     voice_selection = enum.auto()
     choose_easy_advanced = enum.auto()
@@ -33,11 +34,16 @@ class Event(enum.Enum):
     click_disable_all_services = enum.auto()
     click_enable_free_services = enum.auto()
     click_free_trial = enum.auto()
-    click_enter_api_key = enum.auto()
+    click_enter_api_key = enum.auto() # to be replaced
     click_sign_up = enum.auto()
-    click_free_trial_ok = enum.auto()
+    click_free_trial_ok = enum.auto() # to be replaced
     click_welcome_configure_services = enum.auto()
     click_welcome_add_audio = enum.auto()
+    # trial related
+    click_trial_signup = enum.auto()
+    trial_signup_error = enum.auto()
+    trial_signup_success = enum.auto()
+    click_email_verification_status = enum.auto()
     # backend
     get_tts_audio = enum.auto()
     error = enum.auto()

@@ -15,7 +15,7 @@ from . import stats
 
 logger = logging_utils.get_child_logger(__name__)
 
-sc = stats.StatsContext(constants_events.EventContext.hyperttspro)
+sc = stats.StatsContext(constants_events.EventContext.trial_signup)
 
 class TrialSignup(component_common.ConfigComponentBase):
     def __init__(self, hypertts, model_change_callback):
@@ -199,7 +199,7 @@ class TrialSignup(component_common.ConfigComponentBase):
         verified_widget.setLayout(vlayout)
         return verified_widget
 
-    @sc.event(Event.click_free_trial_ok)
+    @sc.event(Event.click_trial_signup)
     def signup_button_pressed(self):
         email = self.trial_email_input.text().strip()
         password = self.trial_password_input.text().strip()
@@ -235,22 +235,30 @@ class TrialSignup(component_common.ConfigComponentBase):
         self.signup_button.setEnabled(True)
         
         if trial_signup_result.success == False:
-            self.trial_validation_label.setText(f'<b>Error:</b> {trial_signup_result.error}')
+            self.trial_signup_error(trial_signup_result)
         else:
-            # Save the API key to configuration
-            self.hypertts.save_hypertts_pro_api_key(trial_signup_result.api_key)
-            # Switch to verification screen
-            self.show_verification_screen()
+            self.trial_signup_success(trial_signup_result)
         
         self.model = trial_signup_result
         self.report_model_change()
+
+    @sc.event(Event.trial_signup_error)
+    def trial_signup_error(self, trial_signup_result: config_models.TrialRequestReponse):
+        self.trial_validation_label.setText(f'<b>Error:</b> {trial_signup_result.error}')
+
+    @sc.event(Event.trial_signup_success)
+    def trial_signup_success(self, trial_signup_result: config_models.TrialRequestReponse):
+        # Save the API key to configuration
+        self.hypertts.save_hypertts_pro_api_key(trial_signup_result.api_key)
+        # Switch to verification screen
+        self.show_verification_screen()
 
     def show_verification_screen(self):
         """Switch to the email verification screen"""
         self.verification_status_label.setText('')
         self.stacked_widget.setCurrentIndex(1)
 
-    @sc.event(Event.click_free_trial_ok)
+    @sc.event(Event.click_email_verification_status)
     def check_status_button_pressed(self):
         self.verification_status_label.setText('Checking verification status...')
         self.check_status_button.setEnabled(False)
