@@ -451,7 +451,7 @@ def init(hypertts):
         elif cmd.startswith('hypertts:how_to_add_audio'):
             stats.event_global(constants_events.Event.click_welcome_add_audio)
             configuration = hypertts.get_configuration()
-            user_uuid = configuration.user_uuid or ""
+            user_uuid = configuration.user_uuid
             help_url = gui_utils.get_vocab_ai_url('tips/hypertts-adding-audio', 'deckbrowser_welcome', user_uuid)
             aqt.utils.openLink(help_url)
             return (True, None)
