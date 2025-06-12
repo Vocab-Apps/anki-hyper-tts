@@ -167,7 +167,8 @@ else:
                                                        configuration.user_uuid,
                                                        {
                                                            'hypertts_days_since_install': configuration.days_since_install(),
-                                                           'hypertts_trial_registration_step': configuration.trial_registration_step.name
+                                                           'hypertts_trial_registration_step': configuration.trial_registration_step.name,
+                                                           'hypertts_pro': configuration.hypertts_pro_api_key_set()
                                                        })
         stats.event_global(constants_events.Event.open)
         if first_install:
