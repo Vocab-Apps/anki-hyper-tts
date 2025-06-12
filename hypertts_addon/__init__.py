@@ -40,6 +40,14 @@ def get_configuration() -> tuple[config_models.Configuration, bool]:
 
     return config, first_install
 
+def save_configuration(configuration: config_models.Configuration) -> None:
+    """
+    Save the configuration to the addon config.
+    """
+    addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
+    addon_config[constants.CONFIG_CONFIGURATION] = config_models.serialize_configuration(configuration)
+    aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, addon_config)
+
 if hasattr(sys, '_pytest_mode'):
     # called from within a test run
     pass
@@ -93,6 +101,7 @@ else:
 
     # get or create user_uuid
     configuration, first_install = get_configuration()
+    save_configuration(configuration)
 
     # setup sentry crash reporting
     # ============================
@@ -154,7 +163,11 @@ else:
     from . import stats
     from . import constants_events
     if not hasattr(sys, '_pytest_mode') and enable_stats_error_reporting:
-        sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, configuration.user_uuid)
+        sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, 
+                                                       configuration.user_uuid,
+                                                       {
+                                                           'hypertts_days_since_install': configuration.days_since_install()
+                                                       })
         stats.event_global(constants_events.Event.open)
         if first_install:
             stats.event_global(constants_events.Event.install)

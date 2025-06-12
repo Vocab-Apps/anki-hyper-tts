@@ -14,10 +14,11 @@ logger = logging_utils.get_child_logger(__name__)
 class StatsGlobal:
     CAPTURE_URL = "https://st.vocab.ai/capture/"
 
-    def __init__(self, anki_utils, user_uuid):
+    def __init__(self, anki_utils, user_uuid, user_properties):
         self.anki_utils = anki_utils
         self.api_key = os.environ.get('STATS_API_KEY', 'phc_c9ijDJMNO8n7kzxPNlxwuiKIAlNcYhzeq7pa6aQYq9G')
         self.user_uuid = user_uuid
+        self.user_properties = user_properties
 
     def publish(self, 
                 context: constants_events.EventContext, 
@@ -61,7 +62,8 @@ class StatsGlobal:
             payload['properties']['$set'] = {
                 'anki_version': anki.version,
                 'hypertts_addon_version': version.ANKI_HYPER_TTS_VERSION,
-                'hypertts_addon_user': True
+                'hypertts_addon_user': True,
+                **self.user_properties
             }
         try:
             response = requests.post(self.CAPTURE_URL, 
