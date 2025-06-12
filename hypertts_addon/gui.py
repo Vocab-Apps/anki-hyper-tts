@@ -454,6 +454,7 @@ def init(hypertts):
             user_uuid = configuration.user_uuid
             help_url = gui_utils.get_vocab_ai_url('tips/hypertts-adding-audio', 'deckbrowser_welcome', user_uuid)
             aqt.utils.openLink(help_url)
+            logger.info(f'opening url: {help_url}')
             return (True, None)
         return handled
     
