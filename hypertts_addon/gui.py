@@ -452,7 +452,7 @@ def init(hypertts):
             stats.event_global(constants_events.Event.click_welcome_add_audio)
             configuration = hypertts.get_configuration()
             user_uuid = configuration.user_uuid or ""
-            help_url = f"https://www.vocab.ai/tips/hypertts-adding-audio?utm_source=hypertts&utm_medium=addon&utm_campaign=deckbrowser_welcome&distinct_id={user_uuid}"
+            help_url = gui_utils.get_vocab_ai_url('tips/hypertts-adding-audio', 'deckbrowser_welcome', user_uuid)
             aqt.utils.openLink(help_url)
             return (True, None)
         return handled
