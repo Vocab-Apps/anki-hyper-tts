@@ -280,14 +280,23 @@ class TrialSignup(component_common.ConfigComponentBase):
         
         if verification_status:
             # Switch to verified screen
-            self.show_verified_screen()
+            self.email_verification_success()
         else:
-            self.verification_status_label.setText('Email not yet verified. Please check your email (including spam folder) and click the verification link.')
+            self.email_verification_failure()
+
+    @sc.event(Event.email_verification_success)
+    def email_verification_success(self):
+        self.show_verified_screen()
+
+    @sc.event(Event.email_verification_failure)
+    def email_verification_failure(self):
+        self.verification_status_label.setText('Email not yet verified. Please check your email (including spam folder) and click the verification link.')
 
     def show_verified_screen(self):
         """Switch to the verified email screen"""
         self.stacked_widget.setCurrentIndex(2)
 
+    @sc.event(Event.click_how_to_add_audio)
     def how_to_add_audio_button_pressed(self):
         """Open the How to Add Audio guide in browser"""
         user_uuid = self.hypertts.get_client_uuid()

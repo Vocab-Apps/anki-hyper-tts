@@ -44,6 +44,9 @@ class Event(enum.Enum):
     trial_signup_error = enum.auto()
     trial_signup_success = enum.auto()
     click_email_verification_status = enum.auto()
+    email_verification_success = enum.auto()
+    email_verification_failure = enum.auto()
+    click_how_to_add_audio = enum.auto()
     # backend
     get_tts_audio = enum.auto()
     error = enum.auto()
