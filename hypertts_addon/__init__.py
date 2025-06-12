@@ -92,22 +92,7 @@ else:
     # - default help screens to off
 
     # get or create user_uuid
-    first_install = False
-    config_configuration = addon_config.get(constants.CONFIG_CONFIGURATION, {})
-    user_uuid = config_configuration.get('user_uuid', None)
-    if user_uuid != None:
-        user_id = user_uuid
-    else:
-        user_uuid = uuid.uuid4().hex
-        config_configuration['user_uuid'] = user_uuid
-        # first install, display introduction message, but not for existing users
-        config_configuration['display_introduction_message'] = True
-        addon_config[constants.CONFIG_CONFIGURATION] = config_configuration
-        aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, addon_config)
-        user_id = user_uuid
-        # check if legacy unique_id exists
-        if 'unique_id' not in addon_config:
-            first_install = True
+    configuration, first_install = get_configuration()
 
     # setup sentry crash reporting
     # ============================
@@ -134,7 +119,7 @@ else:
             before_send=sentry_utils.sentry_filter,
             before_send_transaction=sentry_utils.filter_transactions
         )
-        sentry_sdk.set_user({"id": user_id})
+        sentry_sdk.set_user({"id": configuration.user_uuid})
         sentry_sdk.set_tag("anki_version", anki.version)
     else:
         logger.info(f'disabling crash reporting')
@@ -169,7 +154,7 @@ else:
     from . import stats
     from . import constants_events
     if not hasattr(sys, '_pytest_mode') and enable_stats_error_reporting:
-        sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, user_uuid)
+        sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, configuration.user_uuid)
         stats.event_global(constants_events.Event.open)
         if first_install:
             stats.event_global(constants_events.Event.install)
