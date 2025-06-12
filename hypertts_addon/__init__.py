@@ -166,7 +166,8 @@ else:
         sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, 
                                                        configuration.user_uuid,
                                                        {
-                                                           'hypertts_days_since_install': configuration.days_since_install()
+                                                           'hypertts_days_since_install': configuration.days_since_install(),
+                                                           'hypertts_trial_registration_step': configuration.trial_registration_step.name
                                                        })
         stats.event_global(constants_events.Event.open)
         if first_install:
