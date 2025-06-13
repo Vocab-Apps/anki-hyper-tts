@@ -106,7 +106,8 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
             }
             QLabel:hover {
                 border: 3px solid palette(dark);
-                background: palette(light);
+                background: palette(alternate-base);
+                color: palette(text);
             }
         """
         
