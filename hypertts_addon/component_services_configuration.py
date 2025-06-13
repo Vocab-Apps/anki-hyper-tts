@@ -100,12 +100,13 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         # Manual configuration button with grey outline and HTML content
         manual_button_style = common_button_style + """
             QLabel {
-                border: 3px solid #c0c0c0;
-                background: #e8e8e8;
+                border: 3px solid palette(mid);
+                background: palette(button);
+                color: palette(button-text);
             }
             QLabel:hover {
-                border: 3px solid #a0a0a0;
-                background: #f0f0f0;
+                border: 3px solid palette(dark);
+                background: palette(light);
             }
         """
         
