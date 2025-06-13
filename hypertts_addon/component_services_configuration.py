@@ -52,6 +52,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         
        
         # Common styles
+        border_width = "2px"
         
         common_button_style = """
             QLabel {
@@ -71,12 +72,12 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         # Trial button with purple gradient background and white text
         trial_button_style = common_button_style + f"""
             QLabel {{
-                border: 3px solid {constants.COLOR_GRADIENT_PURPLE_START};
+                border: {border_width} solid {constants.COLOR_GRADIENT_PURPLE_START};
                 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 {constants.COLOR_GRADIENT_PURPLE_START}, stop: 1 {constants.COLOR_GRADIENT_PURPLE_END});
                 color: white;
             }}
             QLabel:hover {{
-                border: 3px solid {constants.COLOR_GRADIENT_PURPLE_END};
+                border: {border_width} solid {constants.COLOR_GRADIENT_PURPLE_END};
                 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 {constants.COLOR_GRADIENT_PURPLE_HOVER_START}, stop: 1 {constants.COLOR_GRADIENT_PURPLE_HOVER_END});
             }}
         """
@@ -100,12 +101,12 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         # Manual configuration button with grey outline and HTML content
         manual_button_style = common_button_style + f"""
             QLabel {{
-                border: 3px solid palette(mid);
+                border: {border_width} solid palette(mid);
                 background: palette(button);
                 color: palette(button-text);
             }}
             QLabel:hover {{
-                border: 3px solid {constants.COLOR_GRADIENT_PURPLE_END};
+                border: {border_width} solid {constants.COLOR_GRADIENT_PURPLE_END};
                 background: palette(alternate-base);
                 color: palette(text);
             }}
