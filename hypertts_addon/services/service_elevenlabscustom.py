@@ -35,7 +35,8 @@ VOICE_OPTIONS = {
 GENDER_MAP = {
     'male': constants.Gender.Male,
     'female': constants.Gender.Female,
-    'non-binary': constants.Gender.Any
+    'non-binary': constants.Gender.Any,
+    'neutral': constants.Gender.Any
 }
 
 """For custom voices user customer's own API keys"""

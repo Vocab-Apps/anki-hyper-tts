@@ -10,6 +10,13 @@ from hypertts_addon import options
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
+GENDER_MAP = {
+    'male': constants.Gender.Male,
+    'female': constants.Gender.Female,
+    'non-binary': constants.Gender.Any,
+    'neutral': constants.Gender.Any
+}
+
 class ElevenLabs(service.ServiceBase):
     CONFIG_API_KEY = 'api_key'
 
