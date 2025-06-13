@@ -76,7 +76,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
                 color: white;
             }}
             QLabel:hover {{
-                border: 3px solid {constants.COLOR_GRADIENT_PURPLE_HOVER_START};
+                border: 3px solid {constants.COLOR_GRADIENT_PURPLE_END};
                 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 {constants.COLOR_GRADIENT_PURPLE_HOVER_START}, stop: 1 {constants.COLOR_GRADIENT_PURPLE_HOVER_END});
             }}
         """
@@ -98,17 +98,17 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         self.trial_button.mousePressEvent = lambda event: self.choose_mode(config_models.ServicesConfigurationMode.TRIAL)
         
         # Manual configuration button with grey outline and HTML content
-        manual_button_style = common_button_style + """
-            QLabel {
+        manual_button_style = common_button_style + f"""
+            QLabel {{
                 border: 3px solid palette(mid);
                 background: palette(button);
                 color: palette(button-text);
-            }
-            QLabel:hover {
-                border: 3px solid palette(dark);
+            }}
+            QLabel:hover {{
+                border: 3px solid {constants.COLOR_GRADIENT_PURPLE_END};
                 background: palette(alternate-base);
                 color: palette(text);
-            }
+            }}
         """
         
         manual_html = f"""
