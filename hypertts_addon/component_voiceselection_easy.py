@@ -7,6 +7,7 @@ from . import constants_events
 from .constants_events import Event, EventMode
 from . import stats
 from . import logging_utils
+from . import voice as voice_module
 
 logger = logging_utils.get_child_logger(__name__)
 
@@ -86,3 +87,19 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
 
         # OK to report changes after this
         self.enable_model_change_callback = True
+
+    def pick_default_voice(self):
+        # no preset loaded, pick a reasonable default voice which should work for most users
+        # otherwise the voice will default to Forvo which is confusing for many people
+        logger.info('pick_default_voice called, setting default voice to JennyMultilingualNeural')
+        voice_id = voice_module.TtsVoiceId_v3(
+            voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (en-US, JennyMultilingualNeural)'}, 
+            service='Azure')
+        try:
+            voice = self.hypertts.service_manager.locate_voice(voice_id)
+            voice_index = self.voice_list.index(voice)
+            self.voices_combobox.setCurrentIndex(voice_index)
+        except ValueError as e:
+            logger.warning(f'Voice not found: {voice_id}: {e}')
+        except errors.VoiceIdNotFound as e:
+            logger.warning(f'VoiceId not found: {voice_id}: {e}')

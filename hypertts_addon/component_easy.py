@@ -314,6 +314,9 @@ class EasyDialog(aqt.qt.QDialog):
     def load_preset(self, preset_id:str):
         self.easy_component.load_preset(preset_id)
 
+    def pick_default_voice(self):
+        self.easy_component.voice_selection.pick_default_voice()
+
     def close(self):
         self.closed = True
         self.accept()
@@ -343,4 +346,8 @@ def create_dialog_editor(hypertts, deck_note_type: config_models.DeckNoteType, e
     if preset_id != None:
         logger.info(f'loading preset_id {preset_id}')
         dialog.load_preset(preset_id)
+    else:
+        # no voice selected, pick a default voice
+        logger.info('no preset_id found, using default voice')
+        dialog.pick_default_voice()
     hypertts.anki_utils.wait_for_dialog_input(dialog, constants.DIALOG_ID_EASY)
