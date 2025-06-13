@@ -7,47 +7,6 @@ import re
 import pprint
 import json
 
-from hypertts_addon import constants
-from hypertts_addon import config_models
-
-def get_configuration_dict() -> dict:
-    """
-    return the `configuration` key of the addon config.
-    """
-    addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
-    config_configuration = addon_config.get(constants.CONFIG_CONFIGURATION, {})
-    return config_configuration
-
-def generate_user_uuid() -> str:
-    """
-    Generate a new user UUID.
-    """
-    return uuid.uuid4().hex
-
-def get_configuration() -> tuple[config_models.Configuration, bool]:
-    """
-    Returns the configuration for the addon, in config_models.Configuration type.
-    """
-    config_dict: dict = get_configuration_dict()
-    config: config_models.Configuration = config_models.deserialize_configuration(config_dict)
-    first_install = False
-    if config.user_uuid == None:
-        # first install
-        first_install = True
-        config.user_uuid = generate_user_uuid()
-        # enable welcome messages and features
-        config.new_install_settings()
-
-    return config, first_install
-
-def save_configuration(configuration: config_models.Configuration) -> None:
-    """
-    Save the configuration to the addon config.
-    """
-    addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
-    addon_config[constants.CONFIG_CONFIGURATION] = config_models.serialize_configuration(configuration)
-    aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, addon_config)
-
 if hasattr(sys, '_pytest_mode'):
     # called from within a test run
     pass
@@ -63,6 +22,7 @@ else:
 
     # need to declare upfront whether we're doing crash reporting
     # ============================================================
+    from hypertts_addon import constants
     addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
     enable_stats_error_reporting = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
         get('error_handling', {}).get('error_stats_reporting', True)
@@ -100,6 +60,46 @@ else:
     # - default help screens to off
 
     # get or create user_uuid
+    from . import config_models
+
+    def get_configuration_dict() -> dict:
+        """
+        return the `configuration` key of the addon config.
+        """
+        addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
+        config_configuration = addon_config.get(constants.CONFIG_CONFIGURATION, {})
+        return config_configuration
+
+    def generate_user_uuid() -> str:
+        """
+        Generate a new user UUID.
+        """
+        return uuid.uuid4().hex
+
+    def get_configuration() -> tuple[config_models.Configuration, bool]:
+        """
+        Returns the configuration for the addon, in config_models.Configuration type.
+        """
+        config_dict: dict = get_configuration_dict()
+        config: config_models.Configuration = config_models.deserialize_configuration(config_dict)
+        first_install = False
+        if config.user_uuid == None:
+            # first install
+            first_install = True
+            config.user_uuid = generate_user_uuid()
+            # enable welcome messages and features
+            config.new_install_settings()
+
+        return config, first_install
+
+    def save_configuration(configuration: config_models.Configuration) -> None:
+        """
+        Save the configuration to the addon config.
+        """
+        addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
+        addon_config[constants.CONFIG_CONFIGURATION] = config_models.serialize_configuration(configuration)
+        aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, addon_config)
+
     configuration, first_install = get_configuration()
     save_configuration(configuration)
 
