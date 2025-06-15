@@ -5,6 +5,120 @@ from .. import constants
 from .. import languages
 from .. import voice
 
+RESEMBLE_SUPPORTED_LANGUAGES = [
+    languages.AudioLanguage.af_ZA,
+    languages.AudioLanguage.am_ET,
+    languages.AudioLanguage.ar_AE,
+    languages.AudioLanguage.ar_EG,
+    languages.AudioLanguage.ar_IQ,
+    languages.AudioLanguage.ar_KW,
+    languages.AudioLanguage.ar_MA,
+    languages.AudioLanguage.ar_QA,
+    languages.AudioLanguage.ar_SA,
+    languages.AudioLanguage.az_AZ,
+    languages.AudioLanguage.bg_BG,
+    languages.AudioLanguage.bn_BD,
+    languages.AudioLanguage.bn_IN,
+    languages.AudioLanguage.bs_BA,
+    languages.AudioLanguage.ca_ES,
+    languages.AudioLanguage.zh_CN,
+    languages.AudioLanguage.cs_CZ,
+    languages.AudioLanguage.da_DK,
+    languages.AudioLanguage.de_DE,
+    languages.AudioLanguage.el_GR,
+    languages.AudioLanguage.en_AU,
+    languages.AudioLanguage.en_CA,
+    languages.AudioLanguage.en_GB,
+    languages.AudioLanguage.en_HK,
+    languages.AudioLanguage.en_IE,
+    languages.AudioLanguage.en_IN,
+    languages.AudioLanguage.en_KE,
+    languages.AudioLanguage.en_NZ,
+    languages.AudioLanguage.en_SG,
+    languages.AudioLanguage.en_US,
+    languages.AudioLanguage.en_ZA,
+    languages.AudioLanguage.es_AR,
+    languages.AudioLanguage.es_CL,
+    languages.AudioLanguage.es_CO,
+    languages.AudioLanguage.es_CR,
+    languages.AudioLanguage.es_CU,
+    languages.AudioLanguage.es_DO,
+    languages.AudioLanguage.es_EC,
+    languages.AudioLanguage.es_ES,
+    languages.AudioLanguage.es_MX,
+    languages.AudioLanguage.es_PE,
+    languages.AudioLanguage.es_PR,
+    languages.AudioLanguage.es_PY,
+    languages.AudioLanguage.es_US,
+    languages.AudioLanguage.es_VE,
+    languages.AudioLanguage.et_EE,
+    languages.AudioLanguage.eu_ES,
+    languages.AudioLanguage.fa_IR,
+    languages.AudioLanguage.fi_FI,
+    languages.AudioLanguage.fil_PH,
+    languages.AudioLanguage.fr_BE,
+    languages.AudioLanguage.fr_CA,
+    languages.AudioLanguage.fr_CH,
+    languages.AudioLanguage.fr_FR,
+    languages.AudioLanguage.ga_IE,
+    languages.AudioLanguage.gu_IN,
+    languages.AudioLanguage.he_IL,
+    languages.AudioLanguage.hi_IN,
+    languages.AudioLanguage.hr_HR,
+    languages.AudioLanguage.hu_HU,
+    languages.AudioLanguage.hy_AM,
+    languages.AudioLanguage.id_ID,
+    languages.AudioLanguage.is_IS,
+    languages.AudioLanguage.it_IT,
+    languages.AudioLanguage.ja_JP,
+    languages.AudioLanguage.jv_ID,
+    languages.AudioLanguage.kk_KZ,
+    languages.AudioLanguage.km_KH,
+    languages.AudioLanguage.kn_IN,
+    languages.AudioLanguage.ko_KR,
+    languages.AudioLanguage.lt_LT,
+    languages.AudioLanguage.lv_LV,
+    languages.AudioLanguage.ml_IN,
+    languages.AudioLanguage.mn_MN,
+    languages.AudioLanguage.mr_IN,
+    languages.AudioLanguage.ms_MY,
+    languages.AudioLanguage.mt_MT,
+    languages.AudioLanguage.my_MM,
+    languages.AudioLanguage.nb_NO,
+    languages.AudioLanguage.ne_NP,
+    languages.AudioLanguage.nl_BE,
+    languages.AudioLanguage.nl_NL,
+    languages.AudioLanguage.pa_IN,
+    languages.AudioLanguage.pl_PL,
+    languages.AudioLanguage.ps_AF,
+    languages.AudioLanguage.pt_BR,
+    languages.AudioLanguage.pt_PT,
+    languages.AudioLanguage.ro_RO,
+    languages.AudioLanguage.ru_RU,
+    languages.AudioLanguage.si_LK,
+    languages.AudioLanguage.sk_SK,
+    languages.AudioLanguage.sl_SI,
+    languages.AudioLanguage.so_SO,
+    languages.AudioLanguage.sq_AL,
+    languages.AudioLanguage.sr_RS,
+    languages.AudioLanguage.sv_SE,
+    languages.AudioLanguage.sw_KE,
+    languages.AudioLanguage.ta_IN,
+    languages.AudioLanguage.ta_LK,
+    languages.AudioLanguage.ta_MY,
+    languages.AudioLanguage.te_IN,
+    languages.AudioLanguage.th_TH,
+    languages.AudioLanguage.tr_TR,
+    languages.AudioLanguage.uk_UA,
+    languages.AudioLanguage.ur_PK,
+    languages.AudioLanguage.vi_VN,
+    languages.AudioLanguage.zh_CN,
+    languages.AudioLanguage.zh_HK,
+    languages.AudioLanguage.zh_TW,
+    languages.AudioLanguage.yue_CN,
+    languages.AudioLanguage.zu_ZA
+]
+
 VOICE_LIST = [
         
         voice.TtsVoice_v3(
@@ -35703,4 +35817,1399 @@ VOICE_LIST = [
             ],
             service_fee=constants.ServiceFee.paid
         )
+,
+    voice.TtsVoice_v3(
+
+            name='Primrose',
+            voice_key={'uuid': 'b6b59389'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Alex',
+            voice_key={'uuid': '41b99669'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Amelia',
+            voice_key={'uuid': 'ecbe5d97'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Charlotte',
+            voice_key={'uuid': '96b91cf9'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Ash',
+            voice_key={'uuid': 'ee322483'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Luna',
+            voice_key={'uuid': 'ae8223ca'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Aurora',
+            voice_key={'uuid': 'a72d9fca'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Cliff',
+            voice_key={'uuid': 'fcf8490c'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Orion',
+            voice_key={'uuid': 'aa8053cc'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Ember',
+            voice_key={'uuid': '55592656'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Sam',
+            voice_key={'uuid': '0f2f9a7e'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Tyler',
+            voice_key={'uuid': 'ff225977'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Vicky',
+            voice_key={'uuid': 'f453b918'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Olga',
+            voice_key={'uuid': '07c1d6b5'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Little Brittle',
+            voice_key={'uuid': '8a73f115'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Niki',
+            voice_key={'uuid': 'db37643c'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Little Ari',
+            voice_key={'uuid': '805adead'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Blade',
+            voice_key={'uuid': '8bedd793'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Rico',
+            voice_key={'uuid': '14ca34b3'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Arthur',
+            voice_key={'uuid': '9de11312'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Pete',
+            voice_key={'uuid': '1864fd63'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Tanja (Excited)',
+            voice_key={'uuid': '9a594e05'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Tanja',
+            voice_key={'uuid': 'adb84c77'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Annika',
+            voice_key={'uuid': 'b27f3cc0'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='John',
+            voice_key={'uuid': 'ac48daeb'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Matt Weller',
+            voice_key={'uuid': 'f4da4639'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Kessi',
+            voice_key={'uuid': '2211cb8c'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Ken',
+            voice_key={'uuid': '3dbfbf3d'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Brandy Sky',
+            voice_key={'uuid': '79e2f1dc'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Britney',
+            voice_key={'uuid': 'e57e23ff'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Brenley',
+            voice_key={'uuid': 'e6ec3ca4'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Hem',
+            voice_key={'uuid': 'b6edbe5f'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Kate',
+            voice_key={'uuid': '28b4cc5a'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Harry Robinson',
+            voice_key={'uuid': '3c36d67d'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='William (Whispering)',
+            voice_key={'uuid': 'e2180df0'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Maureen',
+            voice_key={'uuid': '7d94218f'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Chris Whiting',
+            voice_key={'uuid': '95b7560a'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Siobhan',
+            voice_key={'uuid': 'af72c1ac'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Lothar',
+            voice_key={'uuid': '78671217'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Tarkos',
+            voice_key={'uuid': '779842bf'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Katya',
+            voice_key={'uuid': 'c9ee13b4'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Helena',
+            voice_key={'uuid': 'ac948df2'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Connor',
+            voice_key={'uuid': 'a6131acf'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Julie Hoverson',
+            voice_key={'uuid': 'b119524c'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Justin (Meditative) (Legacy)',
+            voice_key={'uuid': '93ce0920'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Justin (Meditative)',
+            voice_key={'uuid': '2570000e'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Samantha (Legacy)',
+            voice_key={'uuid': '266bfae9'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Samantha',
+            voice_key={'uuid': 'e28236ee'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Olivia (Legacy)',
+            voice_key={'uuid': '405b58e3'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Olivia',
+            voice_key={'uuid': 'ef49f972'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Charles (Legacy)',
+            voice_key={'uuid': '4c6d3da5'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Charles',
+            voice_key={'uuid': 'd79a5198'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Seth (Legacy)',
+            voice_key={'uuid': 'a52c4efc'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Seth',
+            voice_key={'uuid': 'd3e61caf'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Melody (Legacy)',
+            voice_key={'uuid': '15be93bd'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Melody',
+            voice_key={'uuid': '1c49e774'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Primrose (Whispering) (Legacy)',
+            voice_key={'uuid': 'a56c5c6f'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Primrose (Whispering)',
+            voice_key={'uuid': '28fcdf76'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Primrose (Legacy)',
+            voice_key={'uuid': '7c8e47ca'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Primrose',
+            voice_key={'uuid': '33eecc17'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Beth (Legacy)',
+            voice_key={'uuid': '25c7823f'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Beth',
+            voice_key={'uuid': 'fa66d263'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Primrose (Winded) (Legacy)',
+            voice_key={'uuid': '6f9a77a4'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Primrose (Winded)',
+            voice_key={'uuid': '0097f246'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Vivian (Legacy)',
+            voice_key={'uuid': 'bed1044d'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Vivian',
+            voice_key={'uuid': '1ff0045f'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Justin (Legacy)',
+            voice_key={'uuid': 'b2d1bb75'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Justin',
+            voice_key={'uuid': '9d513c17'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Paula J',
+            voice_key={'uuid': '33e64cd2'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Willow II (Whispering)',
+            voice_key={'uuid': 'c815cd7a'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Ed Smart',
+            voice_key={'uuid': '0c755526'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='William (Whispering) (Legacy)',
+            voice_key={'uuid': '79eb7953'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='William (Whispering)',
+            voice_key={'uuid': 'f2906c4a'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Josh',
+            voice_key={'uuid': '987c99e9'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Liz',
+            voice_key={'uuid': '4884d94a'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Carl Bishop (Angry)',
+            voice_key={'uuid': 'f06cd770'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Austin',
+            voice_key={'uuid': '82a67e58'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Carl Bishop (Scared) (Legacy)',
+            voice_key={'uuid': '1dcf0222'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Beatrice Pendergast',
+            voice_key={'uuid': '00b1fd4e'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Tanja (Warm Word Weaver)',
+            voice_key={'uuid': 'abbbc383'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Richard Garifo',
+            voice_key={'uuid': '85ba84f2'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Karl Nordman',
+            voice_key={'uuid': 'da67f17e'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Gene Amore',
+            voice_key={'uuid': 'f2ea7aa0'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Robert',
+            voice_key={'uuid': '3e907bcc'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Tanja (Telephonic)',
+            voice_key={'uuid': '4f5a470b'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Adam Lofbomm',
+            voice_key={'uuid': '4e228dba'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='David',
+            voice_key={'uuid': '5bb13f03'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Carl Bishop',
+            voice_key={'uuid': '01bcc102'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Steve (Scared)',
+            voice_key={'uuid': 'aaa56e79'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Radio Nikole',
+            voice_key={'uuid': '19eae884'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Broadcast Joe',
+            voice_key={'uuid': '21e49584'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Mike',
+            voice_key={'uuid': '3a02dc40'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
+,
+    voice.TtsVoice_v3(
+
+            name='Deanna',
+            voice_key={'uuid': '0842fdf9'},
+            options={
+                'output_format': {'type': 'list', 'values': ['mp3', 'wav'], 'default': 'mp3'},
+                'sample_rate': {'type': 'list', 'values': ['8000', '16000', '22050', '32000', '44100'], 'default': '44100'},
+                'precision': {'type': 'list', 'values': ['MULAW', 'PCM_16', 'PCM_24', 'PCM_32'], 'default': 'PCM_32'}
+            },
+            service='ResembleAI',
+            gender=constants.Gender.Any,
+            audio_languages=RESEMBLE_SUPPORTED_LANGUAGES,
+            service_fee=constants.ServiceFee.paid
+    )
 ]
