@@ -43,6 +43,7 @@ class ElevenLabs(service.ServiceBase):
         api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
 
         voice_id = voice.voice_key['voice_id']
+        language_code = voice_options.get('language_code')
         url = f'https://api.elevenlabs.io/v1/text-to-speech/{voice_id}'
 
         headers = {
@@ -59,6 +60,9 @@ class ElevenLabs(service.ServiceBase):
                 "similarity_boost": voice_options.get('similarity_boost', voice.options['similarity_boost']['default'])
             }
         }
+
+        if language_code and language_code != voice.options['language_code']['default']:
+            data['language_code'] = language_code
 
         response = requests.post(url, json=data, headers=headers)
         if response.status_code != 200:
