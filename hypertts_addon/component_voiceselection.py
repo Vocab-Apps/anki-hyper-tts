@@ -404,7 +404,18 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 label = aqt.qt.QLabel(label_text)
                 self.voice_options_layout.addWidget(label, row, 0, 1, 1)
                 self.voice_options_layout.addWidget(widget, row, 1, 1, 1)
-                self.voice_options_widgets[widget_name] = widget                
+                self.voice_options_widgets[widget_name] = widget
+            elif option_type == options.ParameterType.text:
+                # create a text input field
+                widget = aqt.qt.QLineEdit()
+                widget.setObjectName(widget_name)
+                widget.setText(value.get('default', ''))
+                widget.textChanged.connect(get_set_option_lambda(voice, key))
+                label_text = f"""{key}"""
+                label = aqt.qt.QLabel(label_text)
+                self.voice_options_layout.addWidget(label, row, 0, 1, 1)
+                self.voice_options_layout.addWidget(widget, row, 1, 1, 1)
+                self.voice_options_widgets[widget_name] = widget
             else:
                 raise Exception(f"voice option type not supported: {value['type']}")
             row += 1

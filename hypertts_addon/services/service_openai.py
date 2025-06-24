@@ -51,6 +51,8 @@ class OpenAI(service.ServiceBase):
 
         # get voice options
         speed = voice_options.get('speed', voice.options['speed']['default'])
+        model = voice_options.get('model', voice.options['model']['default'])
+        instructions = voice_options.get('instructions', voice.options['instructions']['default'])
         audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
         audio_format = options.AudioFormat[audio_format_str]
         audio_format_map = {
@@ -60,12 +62,16 @@ class OpenAI(service.ServiceBase):
         response_format = audio_format_map[audio_format]
 
         data = {
-            "model": "tts-1",
+            "model": model,
             "input": source_text,
             "voice": voice.voice_key['name'],
             'response_format': response_format,
             'speed': speed
         }
+        
+        # Only add instructions if they are not empty
+        if instructions:
+            data['instructions'] = instructions
 
         response = requests.post(url, json=data, headers=headers)
         response.raise_for_status()

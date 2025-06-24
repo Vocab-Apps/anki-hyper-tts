@@ -26,6 +26,10 @@ VOICE_OPTIONS = {
             options.AudioFormat.mp3.name,
         ],
         'default': options.AudioFormat.mp3.name
+    },
+    'instructions': {
+        'type': options.ParameterType.text.name,
+        'default': 'Default instructions'
     }
 
 }

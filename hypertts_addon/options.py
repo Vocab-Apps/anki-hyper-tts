@@ -6,6 +6,7 @@ class ParameterType(enum.Enum):
     number = enum.auto() # floating point number
     number_int = enum.auto() # integer number
     list = enum.auto() # list of possible string values
+    text = enum.auto() # text input field
 
 class AudioFormat(enum.Enum):
     mp3 = enum.auto()

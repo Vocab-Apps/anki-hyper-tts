@@ -334,6 +334,44 @@ def test_voice_selection_format_ogg(qtbot):
     }
     assert voiceselection.serialize() == expected_output        
 
+def test_voice_selection_text_parameter(qtbot):
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+
+    testing_utils.voice_selection_voice_list_select('voice_a_2', 'ServiceA', voiceselection.voices_combobox)
+
+    # change text option
+    instructions_widget = dialog.findChild(aqt.qt.QLineEdit, "voice_option_instructions")
+    
+    # verify widget exists and is of correct type
+    assert instructions_widget is not None
+    assert isinstance(instructions_widget, aqt.qt.QLineEdit)
+    
+    # default should be 'Default instructions'
+    assert instructions_widget.text() == 'Default instructions'
+
+    instructions_widget.setText('Custom AI voice instructions')
+
+    expected_output = {
+        'voice_selection_mode': 'single',
+        'voice': {
+            'voice_id': {
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_2'}
+            },
+            'options': {
+                'instructions': 'Custom AI voice instructions'
+            }
+        }        
+    }
+    assert voiceselection.serialize() == expected_output        
+
 def test_voice_selection_random_1(qtbot):
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
