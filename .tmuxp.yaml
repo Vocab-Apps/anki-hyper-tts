@@ -10,7 +10,7 @@ windows:
 - window_name: hypertts
   focus: true
 - window_name: git
-- window_name: aider
+- window_name: ai
 - window_name: anki-log
   panes:
     - shell_command: tail -f ${LOGS_DIR}/anki.log
