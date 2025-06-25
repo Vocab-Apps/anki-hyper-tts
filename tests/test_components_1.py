@@ -299,6 +299,84 @@ def test_voice_selection_easy_load_model_disabled_service(qtbot):
     dialog.addChildWidget(voiceselection.draw())
     voiceselection.load_model(model) # should not throw an exception
 
+def test_voice_selection_easy_load_priority_model(qtbot):
+    """Test that VoiceSelectionEasy can handle priority voice selection models"""
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    # Create a priority voice selection model with multiple voices
+    priority_model = config_models.VoiceSelectionPriority()
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    
+    # Add at least two voices to the priority model
+    voice_a_1 = [x for x in voice_list if x.name == 'voice_a_1'][0]
+    voice_a_2 = [x for x in voice_list if x.name == 'voice_a_2'][0]
+    priority_model.add_voice(config_models.VoiceWithOptions(voice_a_1.voice_id, {}))
+    priority_model.add_voice(config_models.VoiceWithOptions(voice_a_2.voice_id, {}))
+
+    # Create voice selection easy component
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    voiceselection = component_voiceselection_easy.VoiceSelectionEasy(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+    
+    # Load the priority model - should not throw AttributeError
+    voiceselection.load_model(priority_model)
+    
+    # Verify the first voice from priority list is selected
+    selected_voice_text = voiceselection.voices_combobox.currentText()
+    assert 'voice_a_1' in selected_voice_text
+    assert 'ServiceA' in selected_voice_text
+
+def test_voice_selection_easy_load_random_model(qtbot):
+    """Test that VoiceSelectionEasy can handle random voice selection models"""
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    # Create a random voice selection model with multiple voices
+    random_model = config_models.VoiceSelectionRandom()
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    
+    # Add voices to the random model
+    voice_a_2 = [x for x in voice_list if x.name == 'voice_a_2'][0]
+    voice_a_3 = [x for x in voice_list if x.name == 'voice_a_3'][0]
+    random_model.add_voice(config_models.VoiceWithOptionsRandom(voice_a_2.voice_id, {}))
+    random_model.add_voice(config_models.VoiceWithOptionsRandom(voice_a_3.voice_id, {}))
+
+    # Create voice selection easy component
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    voiceselection = component_voiceselection_easy.VoiceSelectionEasy(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+    
+    # Load the random model - should not throw AttributeError
+    voiceselection.load_model(random_model)
+    
+    # Verify the first voice from random list is selected
+    selected_voice_text = voiceselection.voices_combobox.currentText()
+    assert 'voice_a_2' in selected_voice_text
+    assert 'ServiceA' in selected_voice_text
+
+def test_voice_selection_easy_load_empty_priority_model(qtbot):
+    """Test that VoiceSelectionEasy handles empty priority voice list gracefully"""
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    # Create an empty priority voice selection model
+    empty_priority_model = config_models.VoiceSelectionPriority()
+
+    # Create voice selection easy component
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    voiceselection = component_voiceselection_easy.VoiceSelectionEasy(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+    
+    # Load the empty priority model - should not throw exception
+    voiceselection.load_model(empty_priority_model)
+    
+    # Voice selection should remain at its default state
+    # (No assertion on selected voice since it should not change)
+
 def test_voice_selection_format_ogg(qtbot):
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
 

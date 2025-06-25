@@ -71,9 +71,27 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         self.enable_model_change_callback = False
         logger.info(f'load_model, model: {model}')
 
-        # here we need to select the correct voice, based on what the user has saved in their preset (single voice)
-        # we have access to the voice_id, but we need to locate the proper voice
-        voice_id = model.voice.voice_id
+        # Check if the model is a VoiceSelectionSingle
+        if not isinstance(model, config_models.VoiceSelectionSingle):
+            # Handle VoiceSelectionPriority or VoiceSelectionRandom by using the first voice
+            if isinstance(model, (config_models.VoiceSelectionPriority, config_models.VoiceSelectionRandom)):
+                if len(model.voice_list) > 0:
+                    # Use the first voice from the list
+                    first_voice = model.voice_list[0]
+                    voice_id = first_voice.voice_id
+                    logger.warning(f'VoiceSelectionEasy received {type(model).__name__} model, using first voice: {voice_id}')
+                else:
+                    logger.error(f'VoiceSelectionEasy received {type(model).__name__} model with empty voice list')
+                    self.enable_model_change_callback = True
+                    return
+            else:
+                logger.error(f'VoiceSelectionEasy cannot handle model type: {type(model).__name__}')
+                self.enable_model_change_callback = True
+                return
+        else:
+            # here we need to select the correct voice, based on what the user has saved in their preset (single voice)
+            # we have access to the voice_id, but we need to locate the proper voice
+            voice_id = model.voice.voice_id
         try:
             voice = self.hypertts.service_manager.locate_voice(voice_id)
             voice_index = self.voice_list.index(voice)
