@@ -372,6 +372,63 @@ def test_voice_selection_text_parameter(qtbot):
     }
     assert voiceselection.serialize() == expected_output        
 
+def test_voice_selection_text_parameter_load_model(qtbot):
+    """Test that text parameter is correctly deserialized and displayed in GUI"""
+    hypertts_instance = gui_testing_utils.get_hypertts_instance()
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    # Create a model with voice_a_2 selected and custom text options
+    model = config_models.VoiceSelectionSingle()
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_2 = [x for x in voice_list if x.name == 'voice_a_2'][0]
+    
+    # Set voice with custom instructions text
+    voice_options = {
+        'instructions': 'My custom AI instructions for testing',
+        'format': 'ogg_opus'
+    }
+    model.set_voice(config_models.VoiceWithOptions(voice_a_2.voice_id, voice_options))
+
+    # Create voice selection component and load model
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(voiceselection.draw())
+    voiceselection.load_model(model)
+
+    # Verify the correct voice is selected
+    selected_index = voiceselection.voices_combobox.currentIndex()
+    assert selected_index >= 0
+    selected_text = voiceselection.voices_combobox.currentText()
+    assert 'voice_a_2' in selected_text
+    assert 'ServiceA' in selected_text
+
+    # Verify text widget has the correct value
+    instructions_widget = dialog.findChild(aqt.qt.QLineEdit, "voice_option_instructions")
+    assert instructions_widget is not None
+    assert instructions_widget.text() == 'My custom AI instructions for testing'
+
+    # Verify format widget also has correct value
+    format_widget = dialog.findChild(aqt.qt.QComboBox, "voice_option_format")
+    assert format_widget.currentText() == 'ogg_opus'
+
+    # Verify the model serializes correctly
+    expected_output = {
+        'voice_selection_mode': 'single',
+        'voice': {
+            'voice_id': {
+                'service': 'ServiceA',
+                'voice_key': {'name': 'voice_2'}
+            },
+            'options': {
+                'instructions': 'My custom AI instructions for testing',
+                'format': 'ogg_opus'
+            }
+        }        
+    }
+    assert voiceselection.serialize() == expected_output
+
 def test_voice_selection_random_1(qtbot):
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
 

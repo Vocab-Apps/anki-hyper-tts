@@ -107,8 +107,14 @@ class VoiceSelection(component_common.ConfigComponentBase):
                     # qcombobox detected
                     voice_option_widget.setCurrentText(value)
                 else:
-                    # slider
-                    self.voice_options_widgets[widget_name].setValue(value)
+                    # check if it's a QLineEdit (has setText method)
+                    setTextFn = getattr(voice_option_widget, 'setText', None)
+                    if callable(setTextFn):
+                        # QLineEdit detected
+                        voice_option_widget.setText(value)
+                    else:
+                        # slider
+                        self.voice_options_widgets[widget_name].setValue(value)
         elif model.selection_mode == constants.VoiceSelectionMode.random:
             self.radio_button_random.setChecked(True)
             self.voice_selection_model = model
