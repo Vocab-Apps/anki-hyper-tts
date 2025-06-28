@@ -41012,7 +41012,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='alloy',
             voice_key={'name': 'alloy'},
-            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'tts-1-hd'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'gpt-4o-mini-tts'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='OpenAI',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -41025,7 +41025,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='ash',
             voice_key={'name': 'ash'},
-            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'tts-1-hd'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'gpt-4o-mini-tts'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='OpenAI',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -41051,7 +41051,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='coral',
             voice_key={'name': 'coral'},
-            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'tts-1-hd'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'gpt-4o-mini-tts'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='OpenAI',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -41064,7 +41064,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='echo',
             voice_key={'name': 'echo'},
-            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'tts-1-hd'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'gpt-4o-mini-tts'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='OpenAI',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -41077,7 +41077,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='fable',
             voice_key={'name': 'fable'},
-            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'tts-1-hd'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'gpt-4o-mini-tts'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='OpenAI',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -41090,7 +41090,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='nova',
             voice_key={'name': 'nova'},
-            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'tts-1-hd'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'gpt-4o-mini-tts'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='OpenAI',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -41103,7 +41103,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='onyx',
             voice_key={'name': 'onyx'},
-            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'tts-1-hd'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'gpt-4o-mini-tts'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='OpenAI',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -41116,7 +41116,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='sage',
             voice_key={'name': 'sage'},
-            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'tts-1-hd'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'gpt-4o-mini-tts'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='OpenAI',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -41129,7 +41129,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='shimmer',
             voice_key={'name': 'shimmer'},
-            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'tts-1-hd'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'speed': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}, 'instructions': {'type': 'text', 'default': ''}, 'model': {'type': 'list', 'values': ['gpt-4o-mini-tts', 'tts-1-hd', 'tts-1'], 'default': 'gpt-4o-mini-tts'}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='OpenAI',
             gender=constants.Gender.Female,
             audio_languages=[
