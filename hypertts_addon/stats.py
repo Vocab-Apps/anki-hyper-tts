@@ -48,35 +48,22 @@ class StatsGlobal:
                 event_properties: dict):
         logger.debug('publishing event')
         # in background thread
-        headers = {
-            "Content-Type": "application/json"
-        }
         if event_mode:
             event_properties['mode'] = event_mode.name
-        payload = {
-            "api_key": self.api_key,
-            "event": self.construct_event_name(context, event),
-            "distinct_id": self.user_uuid,
-            "properties": event_properties,
-        }
+        
         # for global events, add additional properties
         if context == constants_events.EventContext.addon:
-            payload['properties']['hypertts_addon_version'] = version.ANKI_HYPER_TTS_VERSION
-            payload['properties']['anki_version'] = anki.version
-            payload['properties']['$set'] = {
+            event_properties['hypertts_addon_version'] = version.ANKI_HYPER_TTS_VERSION
+            event_properties['anki_version'] = anki.version
+            event_properties['$set'] = {
                 'anki_version': anki.version,
                 'hypertts_addon_version': version.ANKI_HYPER_TTS_VERSION,
                 'hypertts_addon_user': True,
                 **self.user_properties
             }
-        try:
-            response = requests.post(self.CAPTURE_URL, 
-                    headers=headers, 
-                    data=json.dumps(payload), 
-                    timeout=constants.RequestTimeoutShort)
-            logger.debug(f'sent event: {context}:{event} ({event_mode}), status: {response.status_code}')
-        except Exception as e:
-            logger.warning(f'could not send event: {context}:{event} ({event_mode}): {e}')
+        
+        event_name = self.construct_event_name(context, event)
+        self.publish_posthog_event(event_name, event_properties)
     
     def publish_posthog_event(self, event_name: str, event_properties: dict):
         """
