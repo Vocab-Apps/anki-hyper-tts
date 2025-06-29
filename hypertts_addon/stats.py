@@ -81,6 +81,7 @@ class StatsGlobal:
     def load_feature_flags(self):
         """
         Load all feature flags from PostHog REST API and store them in self.feature_flags.
+        only supports multivariate flags which default to 'control'
         """
         try:
             headers = {
@@ -101,6 +102,7 @@ class StatsGlobal:
             
             if response.status_code == 200:
                 data = response.json()
+                logger.debug(f'Feature flags API response: \n{pprint.pformat(data)}')
                 flags = data.get('flags', {})
                 # Store feature flags with their variant values
                 self.feature_flags = {}
