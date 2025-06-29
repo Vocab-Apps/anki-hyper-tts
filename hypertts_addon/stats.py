@@ -269,5 +269,6 @@ def feature_flag_enabled(flag_key: str):
 def feature_flag_value(flag_key: str) -> str:
     # check if stats are enabled, default to control
     if hasattr(sys, '_hypertts_stats_global'):
-        return sys._hypertts_stats_global.get_feature_flag_value(flag_key)
+        if sys._hypertts_stats_global.get_feature_flag_enabled(flag_key):
+            return sys._hypertts_stats_global.get_feature_flag_value(flag_key)
     return constants_events.FEATURE_FLAG_DEFAULT_VALUE
