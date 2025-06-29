@@ -173,3 +173,5 @@ else:
         stats.event_global(constants_events.Event.open)
         if first_install:
             stats.event_global(constants_events.Event.install)
+        if configuration.enable_stats():
+            sys._hypertts_stats_global.init_load_background()

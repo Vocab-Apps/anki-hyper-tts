@@ -471,6 +471,13 @@ class Configuration:
         days = int(seconds_since_install / (60 * 60 * 24))  # Convert seconds to days and truncate to integer
         return days
 
+    def enable_stats(self) -> bool:
+        if self.days_since_install() < 14:
+            return True
+        if self.hypertts_pro_api_key_set():
+            return True
+        return False
+
     # service enabled / disabled
     # ==========================
 

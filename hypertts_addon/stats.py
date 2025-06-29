@@ -4,6 +4,7 @@ import requests
 import json
 import functools
 import anki
+import pprint
 
 from . import constants
 from . import constants_events
@@ -117,7 +118,8 @@ class StatsGlobal:
                             self.feature_flags[flag_key] = 'enabled'
                     else:
                         self.feature_flags[flag_key] = constants_events.FEATURE_FLAG_DEFAULT_VALUE
-                logger.debug(f'Loaded {len(self.feature_flags)} feature flags')
+                logger.debug(f'Loaded {len(self.feature_flags)} feature flags: '
+                             f'{pprint.pformat(self.feature_flags)} enabled: {pprint.pformat(self.feature_flags_enabled)}')
             else:
                 logger.warning(f'Feature flags API returned status {response.status_code}')
                 self.feature_flags = {}
@@ -139,6 +141,12 @@ class StatsGlobal:
             The variant value of the feature flag, or constants_events.FEATURE_FLAG_DEFAULT_VALUE if not found
         """
         return self.feature_flags.get(flag_key, constants_events.FEATURE_FLAG_DEFAULT_VALUE)
+    
+    def init_load_background(self):
+        """
+        Load feature flags in the background thread.
+        """
+        self.anki_utils.run_in_background(self.load_feature_flags, None)
 
 def event_global(event: constants_events.Event):
     if hasattr(sys, '_hypertts_stats_global'):
