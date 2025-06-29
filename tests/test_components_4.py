@@ -2,6 +2,7 @@ import sys
 import os
 import pprint
 import pytest
+from unittest.mock import patch
 
 import aqt.qt
 
@@ -38,6 +39,7 @@ from hypertts_addon import component_source_easy
 from hypertts_addon import component_choose_easy_advanced
 from hypertts_addon import component_services_configuration
 from hypertts_addon import component_trialsignup
+from hypertts_addon import stats
 
 logger = logging_utils.get_test_child_logger(__name__)
 
@@ -105,6 +107,22 @@ def test_services_configuration_manual(qtbot):
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_SERVICES_CONFIGURATION] = dialog_input_sequence
     component_services_configuration.show_services_configuration_dialog(hypertts_instance)
+
+def test_services_configuration_manual_enhanced_variant(qtbot):
+    # HYPERTTS_SERVICES_CONFIG_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_services_configuration_manual_enhanced_variant -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    def dialog_input_sequence(dialog):    
+        if os.environ.get('HYPERTTS_SERVICES_CONFIG_DIALOG_DEBUG', 'no') == 'yes':
+            dialog.exec()
+
+    # Mock the feature flag to return 'trial-incentive-1' for enhanced variant
+    with patch.object(stats, 'feature_flag_value') as mock_feature_flag:
+        mock_feature_flag.return_value = 'trial-incentive-1'
+        
+        hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_SERVICES_CONFIGURATION] = dialog_input_sequence
+        component_services_configuration.show_services_configuration_dialog(hypertts_instance)
 
 def test_trial_signup_manual_step_1(qtbot):
     # HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_trial_signup_manual_step_1 -s -rPP
