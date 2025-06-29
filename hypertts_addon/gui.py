@@ -351,8 +351,8 @@ def init(hypertts):
                 """
                 add_audio_content = f"""
                     <button class="hypertts-welcome-button large-variant-button">
-                        <div><b style="font-size: 1.4em;">Set Up HyperTTS Now</b></div>
-                        <div style="font-size: 0.9em;">Click here now to Add Audio Services</div>
+                        <div><b style="font-size: 1.4em;">Start Adding Audio Now</b></div>
+                        <div style="font-size: 0.9em;">Click here to learn how to add audio</div>
                     </button>
                 """
             else:
