@@ -11,6 +11,8 @@ GENERATE_MAX_EVENTS = 5
 # feature flags
 FEATURE_FLAG_DEFAULT_VALUE = 'control'
 
+STATS_DAYS_CUTOFF=14  # days after install to enable stats
+
 # contexts
 class EventContext(enum.Enum):
     addon = enum.auto()

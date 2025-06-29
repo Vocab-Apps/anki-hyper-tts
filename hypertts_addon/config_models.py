@@ -8,6 +8,7 @@ import enum
 from typing import List, Optional, Mapping, Any
 
 from . import constants
+from . import constants_events
 from . import voice
 from . import errors
 from . import logging_utils
@@ -472,7 +473,7 @@ class Configuration:
         return days
 
     def enable_stats(self) -> bool:
-        if self.days_since_install() < 14:
+        if self.days_since_install() < constants_events.STATS_DAYS_CUTOFF:
             return True
         if self.hypertts_pro_api_key_set():
             return True
