@@ -18,6 +18,7 @@ from typing import List, Tuple
 # addon imports
 from . import constants
 from . import constants_events
+from . import stats
 from . import config_models
 from . import errors
 from . import component_batch
@@ -336,6 +337,41 @@ def init(hypertts):
             configure_services_style = "" if show_configure_services else "display: none;"
             add_audio_style = "" if show_add_audio else "display: none;"
             
+            # Check feature flag for button variant
+            is_large_variant = stats.feature_flag_value('welcome-configure-services-button') == 'large-1'
+            
+            # Generate button content based on variant
+            if is_large_variant:
+                # Large variant: no warning text, larger buttons with urgent CTAs
+                configure_services_content = f"""
+                    <button class="hypertts-welcome-button large-variant-button">
+                        <div><b style="font-size: 1.4em;">Click Here Now to Configure Services</b></div>
+                        <div style="font-size: 0.9em;">Get started immediately</div>
+                    </button>
+                """
+                add_audio_content = f"""
+                    <button class="hypertts-welcome-button large-variant-button">
+                        <div><b style="font-size: 1.4em;">Click Here Now to Add Audio</b></div>
+                        <div style="font-size: 0.9em;">Start adding audio to your cards</div>
+                    </button>
+                """
+            else:
+                # Control variant: existing layout with warning text
+                configure_services_content = f"""
+                    <p id="hypertts-important-text"><b class="important-gradient-text">Important</b>: you have to configure services before adding audio.</p>
+                    <button class="hypertts-welcome-button">
+                        <div><b style="font-size: 1.2em;">Configure Services</b></div>
+                        <div style="font-size: 0.8em;">Click here before adding audio</div>
+                    </button>
+                """
+                add_audio_content = f"""
+                    <p>It looks like you haven't added audio yet.</p>
+                    <button class="hypertts-welcome-button">
+                        <div><b style="font-size: 1.2em;">Adding Audio</b></div>
+                        <div style="font-size: 0.8em;">Click to learn how to add audio</div>
+                    </button>
+                """
+            
             welcome_html = f"""
             <div id="hypertts-welcome-message" style="margin: 1em 2em; padding: 1em; background-color: {bg_color}; border: 1px solid {border_color}; border-radius: 15px; color: {text_color};">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -344,18 +380,10 @@ def init(hypertts):
                 </div>
                 <div style="text-align: center; margin-top: 10px;">
                     <div id="hypertts-configure-services" style="{configure_services_style}">
-                        <p id="hypertts-important-text"><b class="important-gradient-text">Important</b>: you have to configure services before adding audio.</p>
-                        <button class="hypertts-welcome-button">
-                            <div><b style="font-size: 1.2em;">Configure Services</b></div>
-                            <div style="font-size: 0.8em;">Click here before adding audio</div>
-                        </button>
+                        {configure_services_content}
                     </div>
                     <div id="hypertts-how-to-add-audio" style="{add_audio_style}">
-                        <p>It looks like you haven't added audio yet.</p>
-                        <button class="hypertts-welcome-button">
-                            <div><b style="font-size: 1.2em;">Adding Audio</b></div>
-                            <div style="font-size: 0.8em;">Click to learn how to add audio</div>
-                        </button>
+                        {add_audio_content}
                     </div>
                 </div>
             </div>
@@ -386,6 +414,25 @@ def init(hypertts):
                 #hypertts-configure-services button:active,
                 #hypertts-how-to-add-audio button:active {{
                     background: linear-gradient(to bottom, {constants.COLOR_GRADIENT_PURPLE_PRESSED_START}, {constants.COLOR_GRADIENT_PURPLE_PRESSED_END});
+                }}
+                
+                .large-variant-button {{
+                    padding: 15px 30px !important;
+                    font-size: 1.1em !important;
+                    border-radius: 15px !important;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                    transform: scale(1.05);
+                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                }}
+                
+                .large-variant-button:hover {{
+                    transform: scale(1.08) !important;
+                    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3) !important;
+                }}
+                
+                .large-variant-button:active {{
+                    transform: scale(1.02) !important;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
                 }}
                 
                 .gradient-text {{
