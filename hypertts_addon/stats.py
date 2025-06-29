@@ -16,13 +16,14 @@ class StatsGlobal:
     BASE_URL = "https://st.vocab.ai"
     CAPTURE_URL = f"{BASE_URL}/capture/"
 
-    def __init__(self, anki_utils, user_uuid, user_properties):
+    def __init__(self, anki_utils, user_uuid, user_properties, first_install):
         self.anki_utils = anki_utils
         self.api_key = os.environ.get('STATS_API_KEY', 'phc_c9ijDJMNO8n7kzxPNlxwuiKIAlNcYhzeq7pa6aQYq9G')
         self.user_uuid = user_uuid
         self.user_properties = user_properties
         self.feature_flags = {}
         self.feature_flags_enabled = {}
+        self.first_install = first_install
 
     def publish(self, 
                 context: constants_events.EventContext, 
@@ -114,7 +115,7 @@ class StatsGlobal:
                 f"{self.BASE_URL}/flags?v=2",
                 headers=headers,
                 data=json.dumps(payload),
-                timeout=10
+                timeout=constants.RequestTimeoutShort
             )
             
             if response.status_code == 200:
@@ -140,13 +141,6 @@ class StatsGlobal:
                 logger.debug(f'Loaded {len(self.feature_flags)} feature flags: '
                              f'{pprint.pformat(self.feature_flags)} enabled: {pprint.pformat(self.feature_flags_enabled)}')
                 
-                # Report $feature_flag_called for each enabled feature flag
-                for flag_key, is_enabled in self.feature_flags_enabled.items():
-                    if is_enabled:
-                        self.publish_posthog_event('$feature_flag_called', {
-                            '$feature_flag': flag_key,
-                            '$feature_flag_response': self.feature_flags.get(flag_key)
-                        })
             else:
                 logger.warning(f'Feature flags API returned status {response.status_code}')
                 self.feature_flags = {}
@@ -157,6 +151,16 @@ class StatsGlobal:
             self.feature_flags = {}
             self.feature_flags_enabled = {}
     
+    def report_feature_flags(self):
+        # Report $feature_flag_called for each enabled feature flag
+        logger.debug(f'reporting feature flags')
+        for flag_key, is_enabled in self.feature_flags_enabled.items():
+            if is_enabled:
+                self.publish_posthog_event('$feature_flag_called', {
+                    '$feature_flag': flag_key,
+                    '$feature_flag_response': self.feature_flags.get(flag_key)
+                })
+
     def get_feature_flag_value(self, flag_key: str) -> str:
         """
         Get the value of a feature flag.
@@ -194,11 +198,24 @@ class StatsGlobal:
         """
         return event_context in [constants_events.EventContext.addon, constants_events.EventContext.trial_signup]
     
-    def init_load_background(self):
-        """
-        Load feature flags in the background thread.
-        """
-        self.anki_utils.run_in_background(self.load_feature_flags, None)
+    def init_load(self):
+        # this function runs in the main thread
+        # needs to be as fast as possible
+        # first, load the feature flags syncronously
+        self.load_feature_flags()
+        # but after that, everything should be asynchronous
+        self.anki_utils.run_in_background(self.load_background, None)
+
+    def load_background(self):
+        # report the feature flags we are using
+        self.report_feature_flags()
+        # report the install and open events
+        if self.first_install:
+            self.publish_event(constants_events.EventContext.addon, constants_events.Event.install, None, {})
+        self.publish_event(constants_events.EventContext.addon, constants_events.Event.open, None, {})
+
+
+
 
 def event_global(event: constants_events.Event):
     if hasattr(sys, '_hypertts_stats_global'):

@@ -164,15 +164,12 @@ else:
     from . import constants_events
     if not hasattr(sys, '_pytest_mode') and enable_stats_error_reporting:
         if configuration.enable_stats():
+            # initialize stats global object
             sys._hypertts_stats_global = stats.StatsGlobal(ankiutils, 
                                                         configuration.user_uuid,
                                                         {
                                                             'hypertts_days_since_install': configuration.days_since_install(),
                                                             'hypertts_trial_registration_step': configuration.trial_registration_step.name,
                                                             'hypertts_pro': configuration.hypertts_pro_api_key_set()
-                                                        })
-
-            sys._hypertts_stats_global.init_load_background()
-            stats.event_global(constants_events.Event.open)
-            if first_install:
-                stats.event_global(constants_events.Event.install)
+                                                        },
+                                                        first_install)

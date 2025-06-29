@@ -311,6 +311,11 @@ def init(hypertts):
         return False
 
     def on_deck_browser_will_render_content(deck_browser, content):
+        # initialize stats
+        if hasattr(sys, '_hypertts_stats_global'):
+            # load required data
+            sys._hypertts_stats_global.init_load()
+
         if should_show_welcome_message(hypertts):
             configuration = hypertts.get_configuration()
             trial_step = configuration.trial_registration_step
@@ -435,6 +440,7 @@ def init(hypertts):
             </script>
             """
             content.stats += welcome_html
+            logger.debug('deck browser will render content, added welcome message')
     
     aqt.gui_hooks.deck_browser_will_render_content.append(on_deck_browser_will_render_content)
     
