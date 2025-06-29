@@ -62,6 +62,12 @@ class StatsGlobal:
                 **self.user_properties
             }
         
+        # Add feature flags if needed for this event context
+        if self.should_include_feature_flags(context, event):
+            for flag_key, flag_value in self.feature_flags.items():
+                if self.feature_flags_enabled.get(flag_key, False):
+                    event_properties[f'$feature/{flag_key}'] = flag_value
+        
         event_name = self.construct_event_name(context, event)
         self.publish_posthog_event(event_name, event_properties)
     
@@ -174,6 +180,19 @@ class StatsGlobal:
             True if the feature flag is enabled, False otherwise
         """
         return self.feature_flags_enabled.get(flag_key, False)
+    
+    def should_include_feature_flags(self, event_context: constants_events.EventContext, event: constants_events.Event) -> bool:
+        """
+        Determine if feature flags should be included for this event.
+        
+        Args:
+            event_context: The context of the event
+            event: The event type
+            
+        Returns:
+            True if feature flags should be included, False otherwise
+        """
+        return event_context in [constants_events.EventContext.addon, constants_events.EventContext.trial_signup]
     
     def init_load_background(self):
         """
