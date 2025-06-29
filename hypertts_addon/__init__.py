@@ -170,8 +170,8 @@ else:
                                                            'hypertts_trial_registration_step': configuration.trial_registration_step.name,
                                                            'hypertts_pro': configuration.hypertts_pro_api_key_set()
                                                        })
+        if configuration.enable_stats():
+            sys._hypertts_stats_global.init_load_background()
         stats.event_global(constants_events.Event.open)
         if first_install:
             stats.event_global(constants_events.Event.install)
-        if configuration.enable_stats():
-            sys._hypertts_stats_global.init_load_background()
