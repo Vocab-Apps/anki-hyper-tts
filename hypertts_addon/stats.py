@@ -20,6 +20,8 @@ class StatsGlobal:
         self.api_key = os.environ.get('STATS_API_KEY', 'phc_c9ijDJMNO8n7kzxPNlxwuiKIAlNcYhzeq7pa6aQYq9G')
         self.user_uuid = user_uuid
         self.user_properties = user_properties
+        self.feature_flags = {}
+        self.feature_flags_enabled = {}
 
     def publish(self, 
                 context: constants_events.EventContext, 
@@ -75,15 +77,9 @@ class StatsGlobal:
         except Exception as e:
             logger.warning(f'could not send event: {context}:{event} ({event_mode}): {e}')
 
-    def evaluate_feature_flag(self, flag_key: str) -> str:
+    def load_feature_flags(self):
         """
-        Evaluate a feature flag using PostHog REST API.
-        
-        Args:
-            flag_key: The key of the feature flag to evaluate
-            
-        Returns:
-            The string value of the feature flag, or constants_events.FEATURE_FLAG_DEFAULT_VALUE on any error
+        Load all feature flags from PostHog REST API and store them in self.feature_flags.
         """
         try:
             headers = {
@@ -99,20 +95,50 @@ class StatsGlobal:
                 f"{self.BASE_URL}/flags?v=2",
                 headers=headers,
                 data=json.dumps(payload),
-                timeout=2.5
+                timeout=10
             )
             
             if response.status_code == 200:
-                data = response.json() 
-                feature_flags = data.get('featureFlags', {})
-                return str(feature_flags.get(flag_key, constants_events.FEATURE_FLAG_DEFAULT_VALUE))
+                data = response.json()
+                flags = data.get('flags', {})
+                # Store feature flags with their variant values
+                self.feature_flags = {}
+                self.feature_flags_enabled = {}
+                for flag_key, flag_data in flags.items():
+                    is_enabled = flag_data.get('enabled', False)
+                    self.feature_flags_enabled[flag_key] = is_enabled
+                    
+                    if is_enabled:
+                        # Use variant if available, otherwise use string representation of enabled state
+                        variant = flag_data.get('variant')
+                        if variant is not None:
+                            self.feature_flags[flag_key] = str(variant)
+                        else:
+                            self.feature_flags[flag_key] = 'enabled'
+                    else:
+                        self.feature_flags[flag_key] = constants_events.FEATURE_FLAG_DEFAULT_VALUE
+                logger.debug(f'Loaded {len(self.feature_flags)} feature flags')
             else:
-                logger.warning(f'Feature flag API returned status {response.status_code}')
-                return constants_events.FEATURE_FLAG_DEFAULT_VALUE
+                logger.warning(f'Feature flags API returned status {response.status_code}')
+                self.feature_flags = {}
+                self.feature_flags_enabled = {}
                 
         except Exception as e:
-            logger.warning(f'Error evaluating feature flag {flag_key}: {e}')
-            return constants_events.FEATURE_FLAG_DEFAULT_VALUE
+            logger.error(f'Error loading feature flags: {e}')
+            self.feature_flags = {}
+            self.feature_flags_enabled = {}
+    
+    def get_feature_flag_value(self, flag_key: str) -> str:
+        """
+        Get the value of a feature flag.
+        
+        Args:
+            flag_key: The key of the feature flag
+            
+        Returns:
+            The variant value of the feature flag, or constants_events.FEATURE_FLAG_DEFAULT_VALUE if not found
+        """
+        return self.feature_flags.get(flag_key, constants_events.FEATURE_FLAG_DEFAULT_VALUE)
 
 def event_global(event: constants_events.Event):
     if hasattr(sys, '_hypertts_stats_global'):
