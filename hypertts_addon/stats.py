@@ -143,6 +143,18 @@ class StatsGlobal:
             The variant value of the feature flag, or constants_events.FEATURE_FLAG_DEFAULT_VALUE if not found
         """
         return self.feature_flags.get(flag_key, constants_events.FEATURE_FLAG_DEFAULT_VALUE)
+
+    def get_feature_flag_enabled(self, flag_key: str) -> bool:
+        """
+        Check if a feature flag is enabled.
+        
+        Args:
+            flag_key: The key of the feature flag
+            
+        Returns:
+            True if the feature flag is enabled, False otherwise
+        """
+        return self.feature_flags_enabled.get(flag_key, False)
     
     def init_load_background(self):
         """
@@ -193,3 +205,14 @@ class StatsContext:
                    properties: dict = {}):
         send_event(self.context, event, event_mode, properties)
 
+def feature_flag_enabled(flag_key: str):
+    # check if stats are enabled, default to False
+    if hasattr(sys, '_hypertts_stats_global'):
+        return sys._hypertts_stats_global.get_feature_flag_enabled(flag_key)
+    return False
+
+def feature_flag_value(flag_key: str) -> str:
+    # check if stats are enabled, default to control
+    if hasattr(sys, '_hypertts_stats_global'):
+        return sys._hypertts_stats_global.get_feature_flag_value(flag_key)
+    return constants_events.FEATURE_FLAG_DEFAULT_VALUE
