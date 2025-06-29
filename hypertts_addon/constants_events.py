@@ -8,6 +8,9 @@ ADDON = 'hypertts'
 
 GENERATE_MAX_EVENTS = 5
 
+# feature flags
+FEATURE_FLAG_DEFAULT_VALUE = 'control'
+
 # contexts
 class EventContext(enum.Enum):
     addon = enum.auto()

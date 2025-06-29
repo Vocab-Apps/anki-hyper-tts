@@ -12,7 +12,8 @@ from . import version
 logger = logging_utils.get_child_logger(__name__)
 
 class StatsGlobal:
-    CAPTURE_URL = "https://st.vocab.ai/capture/"
+    BASE_URL = "https://st.vocab.ai"
+    CAPTURE_URL = f"{BASE_URL}/capture/"
 
     def __init__(self, anki_utils, user_uuid, user_properties):
         self.anki_utils = anki_utils
@@ -73,6 +74,45 @@ class StatsGlobal:
             logger.debug(f'sent event: {context}:{event} ({event_mode}), status: {response.status_code}')
         except Exception as e:
             logger.warning(f'could not send event: {context}:{event} ({event_mode}): {e}')
+
+    def evaluate_feature_flag(self, flag_key: str) -> str:
+        """
+        Evaluate a feature flag using PostHog REST API.
+        
+        Args:
+            flag_key: The key of the feature flag to evaluate
+            
+        Returns:
+            The string value of the feature flag, or constants_events.FEATURE_FLAG_DEFAULT_VALUE on any error
+        """
+        try:
+            headers = {
+                "Content-Type": "application/json"
+            }
+            
+            payload = {
+                "api_key": self.api_key,
+                "distinct_id": self.user_uuid
+            }
+            
+            response = requests.post(
+                f"{self.BASE_URL}/flags?v=2",
+                headers=headers,
+                data=json.dumps(payload),
+                timeout=2.5
+            )
+            
+            if response.status_code == 200:
+                data = response.json() 
+                feature_flags = data.get('featureFlags', {})
+                return str(feature_flags.get(flag_key, constants_events.FEATURE_FLAG_DEFAULT_VALUE))
+            else:
+                logger.warning(f'Feature flag API returned status {response.status_code}')
+                return constants_events.FEATURE_FLAG_DEFAULT_VALUE
+                
+        except Exception as e:
+            logger.warning(f'Error evaluating feature flag {flag_key}: {e}')
+            return constants_events.FEATURE_FLAG_DEFAULT_VALUE
 
 def event_global(event: constants_events.Event):
     if hasattr(sys, '_hypertts_stats_global'):
