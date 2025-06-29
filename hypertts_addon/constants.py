@@ -278,6 +278,16 @@ GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE = """Manually configure services"""
 GUI_TEXT_SERVICES_CONFIG_MANUAL_RECOMMENDED = """Use this if you want to configure services yourself, use free services or use your own API keys."""
 GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION = """<ul><li>Free online services such as Google Translate</li><li>Local services running on your OS such as Windows SAPI, MacOSX</li><li>Use your own API Keys with cloud services such as Azure, Google, AWS, OpenAI, ElevenLabs</li></ul>"""
 
+# Enhanced variants for trial incentive experiment
+GUI_TEXT_SERVICES_CONFIG_ENHANCED_TITLE = """Get Started with HyperTTS - Choose Your Path"""
+GUI_TEXT_SERVICES_CONFIG_ENHANCED_DESCRIPTION = """Ready to add amazing audio to your flashcards? Pick the option that works best for you."""
+GUI_TEXT_SERVICES_CONFIG_ENHANCED_TRIAL_TITLE = """Start Free Trial (Recommended & Simplest)"""
+GUI_TEXT_SERVICES_CONFIG_ENHANCED_TRIAL_RECOMMENDED = """Most popular choice - Join 10,000+ users who chose this option!"""
+GUI_TEXT_SERVICES_CONFIG_ENHANCED_TRIAL_DESCRIPTION = """<p><strong>Get instant access to premium voices in just 2 clicks:</strong></p><ul><li><strong>Premium AI voices:</strong> Azure, ElevenLabs, OpenAI, Google, Amazon</li><li><strong>Studio-quality audio</strong> - sounds natural and professional</li><li><strong>50,000 characters included</strong> (enough for ~5,000 flashcards)</li><li><strong>No setup required</strong> - works immediately after signup</li></ul>"""
+GUI_TEXT_SERVICES_CONFIG_ENHANCED_MANUAL_TITLE = """Manual Setup (For Advanced Users)"""
+GUI_TEXT_SERVICES_CONFIG_ENHANCED_MANUAL_RECOMMENDED = """Choose this if you prefer to configure everything yourself."""
+GUI_TEXT_SERVICES_CONFIG_ENHANCED_MANUAL_DESCRIPTION = """<ul><li>Free services (Google Translate, Windows SAPI, MacOS)</li><li>Use your own API keys with cloud services</li><li>Full control over configuration</li><li><em>Note: Requires technical setup and may have limited voice options</em></li></ul>"""
+
 GRAPHICS_PRO_BANNER = 'hypertts_pro_banner.png'
 GRAPHICS_LITE_BANNER = 'hypertts_lite_banner.png'
 GRAPHICS_SERVICE_COMPATIBLE = 'hypertts_service_compatible_banner.png'
