@@ -77,6 +77,30 @@ class StatsGlobal:
             logger.debug(f'sent event: {context}:{event} ({event_mode}), status: {response.status_code}')
         except Exception as e:
             logger.warning(f'could not send event: {context}:{event} ({event_mode}): {e}')
+    
+    def publish_posthog_event(self, event_name: str, event_properties: dict):
+        """
+        Publish a standard PostHog event (e.g., $feature_flag_called).
+        This method sends events directly without the custom prefix.
+        """
+        headers = {
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "api_key": self.api_key,
+            "event": event_name,
+            "distinct_id": self.user_uuid,
+            "properties": event_properties,
+        }
+        try:
+            logger.debug(f'sending posthog event: {event_name}, properties: {pprint.pformat(event_properties)}')
+            response = requests.post(self.CAPTURE_URL, 
+                    headers=headers, 
+                    data=json.dumps(payload), 
+                    timeout=constants.RequestTimeoutShort)
+            logger.debug(f'sent posthog event: {event_name}, status: {response.status_code}')
+        except Exception as e:
+            logger.warning(f'could not send posthog event: {event_name}: {e}')
 
     def load_feature_flags(self):
         """
@@ -122,6 +146,14 @@ class StatsGlobal:
                         self.feature_flags[flag_key] = constants_events.FEATURE_FLAG_DEFAULT_VALUE
                 logger.debug(f'Loaded {len(self.feature_flags)} feature flags: '
                              f'{pprint.pformat(self.feature_flags)} enabled: {pprint.pformat(self.feature_flags_enabled)}')
+                
+                # Report $feature_flag_called for each enabled feature flag
+                for flag_key, is_enabled in self.feature_flags_enabled.items():
+                    if is_enabled:
+                        self.publish_posthog_event('$feature_flag_called', {
+                            '$feature_flag': flag_key,
+                            '$feature_flag_response': self.feature_flags.get(flag_key)
+                        })
             else:
                 logger.warning(f'Feature flags API returned status {response.status_code}')
                 self.feature_flags = {}
