@@ -345,14 +345,14 @@ def init(hypertts):
                 # Large variant: no warning text, larger buttons with urgent CTAs
                 configure_services_content = f"""
                     <button class="hypertts-welcome-button large-variant-button">
-                        <div><b style="font-size: 1.4em;">Click Here Now to Configure Services</b></div>
-                        <div style="font-size: 0.9em;">Get started immediately</div>
+                        <div><b style="font-size: 1.4em;">Set Up HyperTTS Now</b></div>
+                        <div style="font-size: 0.9em;">Click here now to Add Audio Services</div>
                     </button>
                 """
                 add_audio_content = f"""
                     <button class="hypertts-welcome-button large-variant-button">
-                        <div><b style="font-size: 1.4em;">Click Here Now to Add Audio</b></div>
-                        <div style="font-size: 0.9em;">Start adding audio to your cards</div>
+                        <div><b style="font-size: 1.4em;">Set Up HyperTTS Now</b></div>
+                        <div style="font-size: 0.9em;">Click here now to Add Audio Services</div>
                     </button>
                 """
             else:
