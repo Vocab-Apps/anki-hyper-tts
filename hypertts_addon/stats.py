@@ -148,7 +148,7 @@ class StatsGlobal:
                 self.feature_flags_enabled = {}
                 
         except Exception as e:
-            logger.error(f'Error loading feature flags: {e}')
+            logger.warning(f'Error loading feature flags: {e}')
             self.feature_flags = {}
             self.feature_flags_enabled = {}
     
