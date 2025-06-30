@@ -24,6 +24,7 @@ class StatsGlobal:
         self.feature_flags = {}
         self.feature_flags_enabled = {}
         self.first_install = first_install
+        self.init_done = False
 
     def publish(self, 
                 context: constants_events.EventContext, 
@@ -147,7 +148,7 @@ class StatsGlobal:
                 self.feature_flags_enabled = {}
                 
         except Exception as e:
-            logger.error(f'Error loading feature flags: {e}')
+            logger.warning(f'Error loading feature flags: {e}')
             self.feature_flags = {}
             self.feature_flags_enabled = {}
     
@@ -199,6 +200,10 @@ class StatsGlobal:
         return event_context in [constants_events.EventContext.addon, constants_events.EventContext.trial_signup]
     
     def init_load(self):
+        if self.init_done:
+            logger.debug('StatsGlobal already initialized, skipping load')
+            return
+        self.init_done = True
         # this function runs in the main thread
         # needs to be as fast as possible
         # first, load the feature flags syncronously
