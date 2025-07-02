@@ -87,6 +87,12 @@ class MissingDirectory(HyperTTSError):
         super().__init__(message)        
 
 
+class MissingGraphicsFile(HyperTTSError):
+    def __init__(self, filename):
+        message = f'Could not find graphics file {filename}. This is likely due to a corrupted installation. Please re-install HyperTTS from AnkiWeb.'
+        super().__init__(message)
+
+
 class RequestError(HyperTTSError):
     def __init__(self, source_text, voice, error_message):
         message = f'Could not request audio for [{source_text}]: {error_message} (voice: {voice})'

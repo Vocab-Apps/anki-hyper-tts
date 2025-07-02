@@ -4,6 +4,7 @@ import aqt.qt
 
 from . import version
 from . import constants
+from . import errors
 
 
 class NonAliasedImage(aqt.qt.QWidget):
@@ -91,7 +92,13 @@ def process_label_text(text):
 def get_graphics_path(filename):
     current_dir = os.path.dirname(__file__)
     root_dir = os.path.join(current_dir, os.pardir)
-    return os.path.join(root_dir, 'graphics', filename)
+    full_path = os.path.join(root_dir, 'graphics', filename)
+    
+    # Check if the file exists
+    if not os.path.exists(full_path):
+        raise errors.MissingGraphicsFile(filename)
+    
+    return full_path
 
 def configure_purple_button(button, min_height=50, min_width=200, font_size=12):
     """Configure a button with purple gradient styling"""
