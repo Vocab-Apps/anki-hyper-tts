@@ -795,6 +795,46 @@ class TTSTests(unittest.TestCase):
                           {},
                           context.AudioRequestContext(constants.AudioRequestReason.batch))
 
+    def test_duden_umlauts(self):
+        # pytest test_tts_services.py -k test_duden_umlauts
+        # Test for issue https://github.com/Vocab-Apps/anki-hyper-tts/issues/216
+        service_name = 'Duden'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
+        
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 1
+
+        # test german voice with umlauts
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.de_DE)
+        
+        # Test words with umlauts from the issue
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'schälen')
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'dünsten')
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'dämpfen')
+        
+        # Additional umlaut test cases
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'müde')
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'übersetzen')
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'Größe')
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'ärgern')
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'öffnen')
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'üblich')
+        
+        # Test capital umlauts
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'Äpfel')
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'Öl')
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'Über')
+
+        # Test compound words with umlauts
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'Frühstück')
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'Glückwunsch')
+        self.verify_audio_output(selected_voice, AudioLanguage.de_DE, 'Bürogebäude')
+
     def test_cambridge(self):
         service_name = 'Cambridge'
         if self.manager.get_service(service_name).enabled == False:
