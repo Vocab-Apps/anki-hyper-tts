@@ -159,6 +159,7 @@ class TTSTests(unittest.TestCase):
         self.manager.get_service('Cambridge').enabled = True
         self.manager.get_service('SpanishDict').enabled = True
         self.manager.get_service('NaverPapago').enabled = True
+        self.manager.get_service('Youdao').enabled = True
         if os.name == 'nt':
             logger.info('running on windows, enabling Windows service')
             self.manager.get_service('Windows').enabled = True
@@ -837,6 +838,39 @@ class TTSTests(unittest.TestCase):
                 logger.info(f'✓ Audio found for "{word}"')
             except errors.AudioNotFoundError:
                 logger.info(f'✗ No audio available for "{word}" on Duden (expected for some words)')
+
+    def test_youdao(self):
+        # pytest test_tts_services.py -k test_youdao
+        service_name = 'Youdao'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service == service_name]
+        
+        logger.info(f'found {len(service_voices)} voices for {service_name} services')
+        assert len(service_voices) >= 2  # UK and US English
+
+        # Test UK English voice
+        uk_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
+        self.verify_audio_output(uk_voice, AudioLanguage.en_GB, 'hello')
+        self.verify_audio_output(uk_voice, AudioLanguage.en_GB, 'vehicle')
+        self.verify_audio_output(uk_voice, AudioLanguage.en_GB, 'computer')
+        
+        # Test US English voice
+        us_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+        self.verify_audio_output(us_voice, AudioLanguage.en_US, 'hello')
+        self.verify_audio_output(us_voice, AudioLanguage.en_US, 'vehicle')
+        self.verify_audio_output(us_voice, AudioLanguage.en_US, 'technology')
+        
+        # Test error handling - very long word that likely doesn't exist
+        self.assertRaises(errors.AudioNotFoundError, 
+                          self.manager.get_tts_audio,
+                          'pneumonoultramicroscopicsilicovolcanoconiosisxxxyyy',
+                          us_voice,
+                          {},
+                          context.AudioRequestContext(constants.AudioRequestReason.batch))
 
     def test_cambridge(self):
         service_name = 'Cambridge'
