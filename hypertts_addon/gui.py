@@ -249,39 +249,40 @@ def init(hypertts):
                     hypertts.apply_all_mapping_rules(editor_context)
 
     def setup_editor_buttons(buttons, editor):
-        preferences = hypertts.get_preferences()
+        with hypertts.error_manager.get_single_action_context('Setting up HyperTTS editor buttons'):
+            preferences = hypertts.get_preferences()
 
-        add_audio_shortcut = ''
-        if preferences.keyboard_shortcuts.shortcut_editor_add_audio != None:
-            add_audio_shortcut = str(preferences.keyboard_shortcuts.shortcut_editor_add_audio)
-        preview_audio_shortcut = ''
-        if preferences.keyboard_shortcuts.shortcut_editor_preview_audio != None:
-            preview_audio_shortcut = str(preferences.keyboard_shortcuts.shortcut_editor_preview_audio)
+            add_audio_shortcut = ''
+            if preferences.keyboard_shortcuts.shortcut_editor_add_audio != None:
+                add_audio_shortcut = str(preferences.keyboard_shortcuts.shortcut_editor_add_audio)
+            preview_audio_shortcut = ''
+            if preferences.keyboard_shortcuts.shortcut_editor_preview_audio != None:
+                preview_audio_shortcut = str(preferences.keyboard_shortcuts.shortcut_editor_preview_audio)
 
-        new_button = editor.addButton(gui_utils.get_graphics_path('icon_speaker.png'),
-            'hypertts_add_audio',
-            run_hypertts_apply,
-            tip = f'HyperTTS: Add Audio to your note (based on your preset rules) {add_audio_shortcut}',
-            keys = preferences.keyboard_shortcuts.shortcut_editor_add_audio,
-            disables=False)
-        buttons.append(new_button)
+            new_button = editor.addButton(gui_utils.get_graphics_path('icon_speaker.png'),
+                'hypertts_add_audio',
+                run_hypertts_apply,
+                tip = f'HyperTTS: Add Audio to your note (based on your preset rules) {add_audio_shortcut}',
+                keys = preferences.keyboard_shortcuts.shortcut_editor_add_audio,
+                disables=False)
+            buttons.append(new_button)
 
-        new_button = editor.addButton(gui_utils.get_graphics_path('icon_play.png'),
-            'hypertts_preview_audio',
-            run_hypertts_preview,
-            tip = f'HyperTTS: Preview Audio (Hear the audio before adding it) {preview_audio_shortcut}',
-            keys = preferences.keyboard_shortcuts.shortcut_editor_preview_audio,
-            disables=False)
-        buttons.append(new_button)
+            new_button = editor.addButton(gui_utils.get_graphics_path('icon_play.png'),
+                'hypertts_preview_audio',
+                run_hypertts_preview,
+                tip = f'HyperTTS: Preview Audio (Hear the audio before adding it) {preview_audio_shortcut}',
+                keys = preferences.keyboard_shortcuts.shortcut_editor_preview_audio,
+                disables=False)
+            buttons.append(new_button)
 
-        new_button = editor.addButton(gui_utils.get_graphics_path('icon_settings.png'),
-            'hypertts_settings',
-            run_hypertts_settings,
-            tip = 'HyperTTS: Configure Preset Rules for this Note (do this before being able to add audio)',
-            disables=False)
-        buttons.append(new_button)        
+            new_button = editor.addButton(gui_utils.get_graphics_path('icon_settings.png'),
+                'hypertts_settings',
+                run_hypertts_settings,
+                tip = 'HyperTTS: Configure Preset Rules for this Note (do this before being able to add audio)',
+                disables=False)
+            buttons.append(new_button)        
 
-        return buttons
+            return buttons
 
     # anki tools menu
     action = aqt.qt.QAction(f'{constants.MENU_PREFIX} Services Configuration', aqt.mw)
