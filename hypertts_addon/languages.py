@@ -375,6 +375,7 @@ class AudioLanguage(enum.Enum):
     gl_ES = (Language.gl, "Galician (Spain)")
     gd_GB = (Language.gd, "Gaelic (UK)")
     gu_IN = (Language.gu, "Gujarati (India)")
+    ha_NG = (Language.ha, "Hausa (Nigeria)")
     he_IL = (Language.he, "Hebrew (Israel)")
     hi_IN = (Language.hi, "Hindi (India)")
     hr_HR = (Language.hr, "Croatian")
