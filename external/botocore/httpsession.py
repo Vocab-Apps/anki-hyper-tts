@@ -45,7 +45,7 @@ try:
         from urllib3.contrib.pyopenssl import (
             orig_util_SSLContext as SSLContext,
         )
-except ImportError:
+except (AttributeError, ImportError):
     from urllib3.util.ssl_ import SSLContext
 
 try:
@@ -217,7 +217,7 @@ class ProxyConfiguration:
     """Represents a proxy configuration dictionary and additional settings.
 
     This class represents a proxy configuration dictionary and provides utility
-    functions to retreive well structured proxy urls and proxy headers from the
+    functions to retrieve well structured proxy urls and proxy headers from the
     proxy configuration dictionary.
     """
 
@@ -335,7 +335,6 @@ class URLLib3Session:
 
     def _get_pool_manager_kwargs(self, **extra_kwargs):
         pool_manager_kwargs = {
-            'strict': True,
             'timeout': self._timeout,
             'maxsize': self._max_pool_connections,
             'ssl_context': self._get_ssl_context(),

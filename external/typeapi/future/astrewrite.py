@@ -11,10 +11,16 @@ from types import CodeType
 T_AST = t.TypeVar("T_AST", bound=ast.AST)
 
 
-def rewrite_expr(source: str, lookup_target: str) -> CodeType:
+def rewrite_expr_to_ast(source: str, lookup_target: str) -> "ast.Expression | ast.Module":
     expr = ast.parse(source, "<expr>", "eval")
     expr = DynamicLookupRewriter(lookup_target).visit(expr)
     ast.fix_missing_locations(expr)
+    assert isinstance(expr, (ast.Expression, ast.Module)), type(expr)
+    return expr
+
+
+def rewrite_expr(source: str, lookup_target: str) -> CodeType:
+    expr = rewrite_expr_to_ast(source, lookup_target)
     return t.cast(CodeType, compile(expr, "<expr>", "eval"))  # type: ignore[redundant-cast]  # Redundant in 3.7+
 
 
@@ -80,18 +86,6 @@ class DynamicLookupRewriter(ast.NodeTransformer):
             slice=ast.Index(value=ast.Constant(value=node.id)),
             ctx=node.ctx,
         )
-
-    if hasattr(ast, "NameConstant"):  # Deprecated in Python 3.8
-
-        def visit_NameConstant(self, node: ast.NameConstant) -> ast.AST:
-            return self.visit_Name(ast.Name(id=str(node.value), ctx=ast.Load()))
-
-    if hasattr(ast, "Constant"):  # Introduced in Python 3.8
-
-        def visit_Constant(self, node: ast.Constant) -> ast.AST:
-            if node.value in (None, True, False):
-                return self.visit_Name(ast.Name(id=str(node.value), ctx=ast.Load()))
-            return self.generic_visit(node)
 
     def visit_Assign(self, assign: ast.Assign) -> ast.AST:
         if len(assign.targets) == 1 and isinstance(assign.targets[0], ast.Name):

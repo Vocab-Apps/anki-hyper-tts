@@ -10,11 +10,6 @@ import comtypes
 import comtypes.automation
 import comtypes.typeinfo
 
-if sys.version_info >= (3, 0):
-    base_text_type = str
-else:
-    base_text_type = basestring
-
 
 class _frozen_attr_dict(dict):
     __slots__ = ()
@@ -74,10 +69,11 @@ class Constants(object):
         >>> 'FileAttribute' in c.alias  # as is `key in dict`
         True
     """
+
     __slots__ = ("alias", "consts", "enums", "tcomp")
 
     def __init__(self, obj):
-        if isinstance(obj, base_text_type):
+        if isinstance(obj, str):
             tlib = comtypes.typeinfo.LoadTypeLibEx(obj)
         else:
             obj = obj.QueryInterface(comtypes.automation.IDispatch)
@@ -122,7 +118,7 @@ class Constants(object):
                     # XXX is necessary warning? should use logging?
                     # import comtypes.tools
                     # if comtypes.tools.__warn_on_munge__:
-                    #     print("# Fixing keyword as VAR_CONST for %s" % name)
+                    #     print(f"# Fixing keyword as VAR_CONST for {name}")
                     name += "_"
                 members[name] = vdesc._.lpvarValue[0].value
         return _frozen_attr_dict(members)

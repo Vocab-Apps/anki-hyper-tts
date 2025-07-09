@@ -28,19 +28,36 @@ class MatchFullError(ValueError):
         return "could not consume whole string with regex {} (got until position {})".format(self.regex, self.endpos)
 
 
-def match_full(expr: t.Union[str, "Pattern"], string: str) -> t.Iterable["Match"]:
+def matchiter(expr: t.Union[str, "Pattern"], string: str, flags: int = 0) -> t.Iterable["Match"]:
     """
-    Matches *expr* from the start of *string* and expects that it can be matched throughout.
-    If it fails to consume the full string, a #MatchAllError will be raised.
+    Like #re.finditer(), but uses #re.match() instead of #re.search().
     """
 
     if isinstance(expr, str):
-        expr = re.compile(expr)
+        expr = re.compile(expr, flags)
 
-    offset = 0
-    while offset < len(string):
-        match = expr.match(string, offset)
+    start = 0
+    while True:
+        match = expr.match(string, start)
         if not match:
-            raise MatchFullError(expr, string, offset)
-        offset = match.end()
+            break
+        start = match.end()
         yield match
+
+
+def match_full(expr: t.Union[str, "Pattern"], string: str, flags: int = 0) -> t.Iterable["Match"]:
+    """
+    Like #matchiter(), but raises a #MatchAllError if the *expr* does not match any number of
+    times over the entire string from start to finish.
+    """
+
+    if isinstance(expr, str):
+        expr = re.compile(expr, flags)
+
+    end = 0
+    for match in matchiter(expr, string, flags):
+        yield match
+        end = match.end()
+
+    if end != len(string):
+        raise MatchFullError(expr, string, end)

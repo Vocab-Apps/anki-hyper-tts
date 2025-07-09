@@ -52,7 +52,6 @@ def get_type_hint_origin_or_none(hint: object) -> "Any | None":
         and hasattr(hint, "__orig_bases__")
         and getattr(hint, "__module__", None) in TYPING_MODULE_NAMES
     ):
-
         if hint.__name__ == "Annotated" and hint.__args__:  # type: ignore
             from typing_extensions import Annotated
 
@@ -383,5 +382,19 @@ def is_typed_dict(hint: Any) -> TypeGuard[TypedDictProtocol]:
 
 
 class HasGetitem(Protocol, Generic[T_contra, U_co]):
-    def __getitem__(self, __key: T_contra) -> U_co:
-        ...
+    def __getitem__(self, __key: T_contra) -> U_co: ...
+
+
+class NewTypeP(Protocol):
+    """
+    Protocol for objects returned by `typing.NewType`.
+    """
+
+    __name__: str
+    __supertype__: type
+
+
+def is_new_type(hint: Any) -> TypeGuard[NewTypeP]:
+    # NOTE: Starting with Python 3.10, `typing.NewType` is actually a class instead of a function, but it is
+    #       still typed as a function in Mypy until 3.12.
+    return hasattr(hint, "__name__") and hasattr(hint, "__supertype__")

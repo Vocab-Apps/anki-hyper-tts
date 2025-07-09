@@ -5,13 +5,12 @@ import decimal
 import enum
 import typing as t
 
+from nr.date import date_format, datetime_format, format_set, time_format
 from typeapi import AnnotatedTypeHint, ClassTypeHint, TypeHint
 
 from databind.core.utils import T, check_instance_of, check_not_none, check_subclass_of
 
 if t.TYPE_CHECKING:
-    from nr.date import date_format, datetime_format, format_set, time_format
-
     from databind.core.context import Context
     from databind.core.converter import Converter
     from databind.core.union import EntrypointUnionMembers, ImportUnionMembers, StaticUnionMembers, UnionMembers
@@ -581,8 +580,9 @@ class DateFormat(Setting):
             if isinstance(fmt, str):
                 if fmt.startswith("."):
                     yield self.__get_builtin_format(fmt)
-                yield type_.compile(fmt)  # type: ignore
-            elif type(fmt) == type_:
+                else:
+                    yield type_.compile(fmt)  # type: ignore
+            elif type(fmt) is type_:
                 yield fmt
             elif isinstance(fmt, format_set):
                 yield from getattr(fmt, type_.__name__ + "s")
@@ -620,7 +620,7 @@ class DateFormat(Setting):
         """Format a date/time value to a string.
 
         Arguments:
-          value: The date/time value to format (i.e. an instance of #datetime.date, #datetime.time or
+          dt: The date/time value to format (i.e. an instance of #datetime.date, #datetime.time or
             #datetime.datetime).
         Raises:
           ValueError: If no date format to format the type of *value* is available.
@@ -644,9 +644,10 @@ class DateFormat(Setting):
         raise self._formulate_parse_error(list(self.__iter_formats(format_t)), dt)
 
     @staticmethod
-    def _formulate_parse_error(formats: t.Sequence[t.Any], s: t.Any) -> ValueError:
+    def _formulate_parse_error(formats: t.Sequence[Formatter], s: t.Any) -> ValueError:
         return ValueError(
-            f'"{s}" does not match date formats ({len(formats)}):' + "".join(f"\n  | {x.format_str}" for x in formats)
+            f'"{s}" does not match date formats ({len(formats)}):'
+            + "".join(f"\n  | {str(x) if isinstance(x, format_set) else x.format_str}" for x in formats)
         )
 
 

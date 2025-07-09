@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Dict, Generic, List, Optional, Sequence, Tuple, TypeVar, Union
+from typing import Any, ClassVar, Dict, Generic, List, NewType, Optional, Sequence, Tuple, TypeVar, Union
 
 from pytest import mark
 from typing_extensions import Annotated, Literal, TypeAlias
@@ -35,7 +35,7 @@ def test__TypeHint__any() -> None:
 def test__TypeHint__int() -> None:
     hint = TypeHint(int)
     assert isinstance(hint, ClassTypeHint)
-    assert hint.hint == int
+    assert hint.hint is int
     assert hint.origin is None
     assert hint.type is int
     assert hint.args == ()
@@ -80,7 +80,7 @@ def test__TypeHint__list_specialized() -> None:
 
     hint_0 = hint[0]
     assert isinstance(hint_0, ClassTypeHint)
-    assert hint_0.type == int
+    assert hint_0.type is int
     assert hint_0.bases == (object,)
 
 
@@ -105,11 +105,11 @@ def test__TypeHint__union(is_at_least_3_10: bool) -> None:
 
     hint_0 = hint[0]
     assert isinstance(hint_0, ClassTypeHint)
-    assert hint_0.type == int
+    assert hint_0.type is int
 
     hint_1 = hint[1]
     assert isinstance(hint_1, ClassTypeHint)
-    assert hint_1.type == str
+    assert hint_1.type is str
 
 
 def test__UnionTypeHint__none_type() -> None:
@@ -151,7 +151,7 @@ def test__TypeHint__annotated() -> None:
 
     hint_0 = hint[0]
     assert isinstance(hint_0, ClassTypeHint)
-    assert hint_0.type == int
+    assert hint_0.type is int
 
 
 def test__TypeHint__custom_generic_class() -> None:
@@ -263,6 +263,58 @@ def test__TypeHint__from_future_syntax_ForwardRef_union() -> None:
     assert hint.parameters == ()
 
 
+def test__TypeHint__from_newtype() -> None:
+    MyInt = NewType("MyInt", int)
+    hint = TypeHint(MyInt)
+    assert isinstance(hint, ClassTypeHint)
+    assert hint.args == ()
+    assert hint.bases == (object,)
+    assert hint.origin is None
+    assert hint.type is int
+    assert hint.hint is MyInt
+
+
+def test__TypeHint__from_generic_with_unbound_typevar() -> None:
+    """
+    Inheriting from a generic base class without parameterizing it is not valid and databind cannot handle the
+    case correctly. The `TypeHint.bases` will appear as the bases' bases (that is because `__orig_bases__` is not
+    set on the new subclass and instead it reads the attribute from the parent).
+    """
+
+    T = TypeVar("T")
+    U = TypeVar("U")
+
+    class Base(Generic[T]):
+        a: int
+
+    class Incorrect(Base):  # type: ignore[type-arg]
+        b: str
+
+    class Correct(Base[U]):
+        b: str
+
+    hint = TypeHint(Base)
+    assert isinstance(hint, ClassTypeHint)
+    assert hint.type == Base
+    assert hint.bases == (Generic[T],)
+    assert hint.origin is None
+    assert "__orig_bases__" in vars(Base)
+
+    hint = TypeHint(Incorrect)
+    assert isinstance(hint, ClassTypeHint)
+    assert hint.type == Incorrect
+    assert hint.bases == (Generic[T],)  # Note how this is not (Base,)
+    assert hint.origin is None
+    assert "__orig_bases__" not in vars(Incorrect)
+
+    hint = TypeHint(Correct)
+    assert isinstance(hint, ClassTypeHint)
+    assert hint.type == Correct
+    assert hint.bases == (Base[U],)  # type: ignore[valid-type]
+    assert hint.origin is None
+    assert "__orig_bases__" in vars(Correct)
+
+
 def test__ClassTypeHint__parametrize() -> None:
     """This method tests the infusion of type parameters into other types.
 
@@ -297,7 +349,7 @@ def test__ClassTypeHint__parametrize() -> None:
 
     member1_hint = field_types["member1"]
     assert isinstance(member1_hint, ClassTypeHint)
-    assert member1_hint.hint == int
+    assert member1_hint.hint is int
     assert member1_hint.type is int
 
     member2_hint = field_types["member2"]
@@ -443,7 +495,7 @@ def test__TypeHint__native_tuple_type() -> None:
     hint = TypeHint(tuple)
     assert isinstance(hint, ClassTypeHint), hint
     assert len(hint) == 0
-    assert hint.hint == tuple
+    assert hint.hint is tuple
     assert hint.origin is None
     assert hint.args == ()
     assert hint.parameters == ()
@@ -453,7 +505,7 @@ def test__TypeHint__native_tuple_type() -> None:
     assert isinstance(hint, TupleTypeHint), hint
     assert len(hint) == 1
     assert hint.hint == Tuple[Any, ...]
-    assert hint.origin == tuple
+    assert hint.origin is tuple
     assert hint.args == (Any,)
     assert hint.parameters == ()
     assert hint.repeated
@@ -465,7 +517,7 @@ def test__TypeHint__empty_tuple() -> None:
     assert isinstance(hint, TupleTypeHint), hint
     assert len(hint) == 0
     assert hint.hint == Tuple[()]
-    assert hint.origin == tuple
+    assert hint.origin is tuple
     assert hint.args == ()
     assert hint.parameters == ()
     assert not hint.repeated
@@ -476,7 +528,7 @@ def test__TypeHint__single_item() -> None:
     assert isinstance(hint, TupleTypeHint), hint
     assert len(hint) == 1
     assert hint.hint == Tuple[int]
-    assert hint.origin == tuple
+    assert hint.origin is tuple
     assert hint.args == (int,)
     assert hint.parameters == ()
     assert not hint.repeated
@@ -487,7 +539,7 @@ def test__TypeHint__two_items() -> None:
     assert isinstance(hint, TupleTypeHint), hint
     assert len(hint) == 2
     assert hint.hint == Tuple[int, str]
-    assert hint.origin == tuple
+    assert hint.origin is tuple
     assert hint.args == (int, str)
     assert hint.parameters == ()
     assert not hint.repeated
@@ -498,7 +550,7 @@ def test__TypeHint__repeated() -> None:
     assert isinstance(hint, TupleTypeHint), hint
     assert len(hint) == 1
     assert hint.hint == Tuple[int, ...]
-    assert hint.origin == tuple
+    assert hint.origin is tuple
     assert hint.args == (int,)
     assert hint.parameters == ()
     assert hint.repeated

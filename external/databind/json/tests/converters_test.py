@@ -9,6 +9,8 @@ from collections import namedtuple
 
 import pytest
 import typing_extensions as te
+from nr.date import duration
+
 from databind.core.context import Context, Direction
 from databind.core.converter import ConversionError, Converter, NoMatchingConverter
 from databind.core.mapper import ObjectMapper
@@ -22,8 +24,6 @@ from databind.core.settings import (  # noqa: F401
     Strict,
     Union,
 )
-from nr.date import duration
-
 from databind.json.converters import (
     AnyConverter,
     CollectionConverter,
@@ -77,6 +77,10 @@ def test_plain_datatype_converter(direction: Direction) -> None:
         assert mapper.convert(direction, "42", int) == 42
         with pytest.raises(ConversionError):
             mapper.convert(direction, "foobar", int)
+
+    # None should behave the same in both cases
+    assert mapper.convert(direction, None, type(None)) is None
+    assert mapper.convert(direction, None, None) is None
 
 
 @pytest.mark.parametrize("direction", (Direction.SERIALIZE, Direction.DESERIALIZE))

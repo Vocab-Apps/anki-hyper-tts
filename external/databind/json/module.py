@@ -2,7 +2,6 @@ from typing import Iterator
 
 from databind.core.context import Context
 from databind.core.converter import Converter, Module
-
 from databind.json.settings import JsonConverter
 
 

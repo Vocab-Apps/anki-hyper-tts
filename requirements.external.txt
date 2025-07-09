@@ -6,3 +6,4 @@ espeakng
 gtts
 sentry_sdk
 cachetools
+py-machineid

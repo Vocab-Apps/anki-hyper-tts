@@ -1,9 +1,3 @@
-# In Python 3.6, we get a warning about an unused ignore later in the file, but not in other versions of Python.
-# Let's ignore that warning for the whole file, there doesn't seem to be a better way to have Mypy ignore the unused
-# ignore comment.
-
-# mypy: no-warn-unused-ignores
-
 import dataclasses
 import typing as t
 

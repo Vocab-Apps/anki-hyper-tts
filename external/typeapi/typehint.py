@@ -29,6 +29,7 @@ from .utils import (
     get_type_hint_origin_or_none,
     get_type_hint_original_bases,
     get_type_hint_parameters,
+    is_new_type,
     type_repr,
 )
 
@@ -90,7 +91,7 @@ class _TypeHintMeta(abc.ABCMeta):
             return AnnotatedTypeHint(hint, source)
         elif isinstance(hint, TypeVar):
             return TypeVarTypeHint(hint, source)
-        elif origin == tuple:
+        elif origin is tuple:
             return TupleTypeHint(hint, source)
 
         elif origin is None and type(hint).__name__ == "_TypeAliasBase":  # Python 3.6
@@ -172,7 +173,7 @@ class TypeHint(object, metaclass=_TypeHintMeta):
         return self._source
 
     def __eq__(self, other: object) -> bool:
-        if type(self) != type(other):
+        if type(self) is not type(other):
             return False
         assert isinstance(other, TypeHint)
         return (self.hint, self.origin, self.args, self.parameters) == (
@@ -190,12 +191,10 @@ class TypeHint(object, metaclass=_TypeHintMeta):
         return len(self.args)
 
     @overload
-    def __getitem__(self, __index: int) -> "TypeHint":
-        ...
+    def __getitem__(self, __index: int) -> "TypeHint": ...
 
     @overload
-    def __getitem__(self, __slice: slice) -> List["TypeHint"]:
-        ...
+    def __getitem__(self, __slice: slice) -> List["TypeHint"]: ...
 
     def __getitem__(self, index: "int | slice") -> "TypeHint | List[TypeHint]":
         if isinstance(index, int):
@@ -255,6 +254,15 @@ class TypeHint(object, metaclass=_TypeHintMeta):
             return self
 
     def get_context(self) -> HasGetitem[str, Any]:
+        """Return the context for this type hint in which forward references must be evaluated.
+
+        The context is derived from the `source` attribute, which can be either a `ModuleType`, `Mapping` or
+        `type`. In case of a `type`, the context is composed of the class scope (to resolve class-level members)
+        and the scope of the module that contains the type (looked up in `sys.modules`).
+
+        Raises RuntimeError: If `source` is `None` or has not one of the three supported types.
+        """
+
         if self.source is None:
             raise RuntimeError(
                 f"Missing context for {self}.evaluate(), the type hint has no `.source` "
@@ -274,12 +282,15 @@ class TypeHint(object, metaclass=_TypeHintMeta):
 
 
 class ClassTypeHint(TypeHint):
+    """Represents a real, possibly parameterized, type. For example `int`, `list`, `list[int]` or `list[T]`."""
+
     def __init__(self, hint: object, source: "Any | None" = None) -> None:
         super().__init__(hint, source)
-        assert isinstance(self.hint, type) or isinstance(self.origin, type), (
-            "ClassTypeHint must be initialized from a real type or a generic that points to a real type. "
-            f'Got "{self.hint!r}" with origin "{self.origin}"'
-        )
+        if not is_new_type(hint):
+            assert isinstance(self.hint, type) or isinstance(self.origin, type), (
+                "ClassTypeHint must be initialized from a real type or a generic that points to a real type. "
+                f'Got "{self.hint!r}" with origin "{self.origin}"'
+            )
 
     def parameterize(self, parameter_map: Mapping[object, Any]) -> "TypeHint":
         if self.type is Generic:  # type: ignore[comparison-overlap]
@@ -288,10 +299,14 @@ class ClassTypeHint(TypeHint):
 
     @property
     def type(self) -> type:
+        """Returns the concrepte type."""
+
         if isinstance(self.origin, type):
             return self.origin
         if isinstance(self.hint, type):
             return self.hint
+        if is_new_type(self.hint):
+            return self.hint.__supertype__
         assert False, "ClassTypeHint not initialized from a real type or a generic that points to a real type."
 
     @property
@@ -304,6 +319,27 @@ class ClassTypeHint(TypeHint):
         return get_type_hint_original_bases(self.type) or self.type.__bases__
 
     def get_parameter_map(self) -> Dict[Any, Any]:
+        """
+        Returns a dictionary that maps generic parameters to their values.
+
+            >>> TypeHint(List[int]).type
+            <class 'list'>
+            >>> TypeHint(List[int]).args
+            (<class 'int'>,)
+
+            # NOTE(@niklas): This is a bug for built-in types, but it's not that big of a deal because we don't
+            #       usually need to recursively expand forward references in these types.
+            >>> TypeHint(List[int]).parameters
+            ()
+            >>> TypeHint(List[int]).get_parameter_map()
+            {}
+
+            >>> T = TypeVar("T")
+            >>> class A(Generic[T]): pass
+            >>> TypeHint(A[int]).get_parameter_map()
+            {~T: <class 'int'>}
+        """
+
         if not self.args:
             return {}
         # We need to look at the parameters of the original, un-parameterized type. That's why we can't
@@ -347,6 +383,8 @@ class ClassTypeHint(TypeHint):
 
 
 class UnionTypeHint(TypeHint):
+    """Represents a union of types, e.g. `typing.Union[A, B]` or `A | B`."""
+
     def has_none_type(self) -> bool:
         return NoneType in self._args
 
@@ -359,6 +397,8 @@ class UnionTypeHint(TypeHint):
 
 
 class LiteralTypeHint(TypeHint):
+    """Represents a literal type hint, e.g. `Literal["a", 42]`."""
+
     @property
     def args(self) -> Tuple[Any, ...]:
         return ()
@@ -371,10 +411,19 @@ class LiteralTypeHint(TypeHint):
 
     @property
     def values(self) -> Tuple[Any, ...]:
+        """
+        Returns the values of the literal.
+
+            >>> TypeHint(Literal["a", 42]).values
+            ('a', 42)
+        """
+
         return self._args
 
 
 class AnnotatedTypeHint(TypeHint):
+    """Represents the `Annotated` type hint."""
+
     @property
     def args(self) -> Tuple[Any, ...]:
         return (self._args[0],)
@@ -389,14 +438,31 @@ class AnnotatedTypeHint(TypeHint):
 
     @property
     def type(self) -> Any:
+        """
+        Returns the wrapped type of the annotation. It's common to wrap the result in a `TypeHint` to recursively
+        introspect the wrapped type.
+
+            >>> TypeHint(Annotated[int, "foobar"]).type
+            <class 'int'>
+        """
+
         return self._args[0]
 
     @property
     def metadata(self) -> Tuple[Any, ...]:
+        """
+        Returns the metadata, i.e. all the parameters after the wrapped type.
+
+            >>> TypeHint(Annotated[int, "foobar"]).metadata
+            ('foobar',)
+        """
+
         return self._args[1:]
 
 
 class TypeVarTypeHint(TypeHint):
+    """Represents a `TypeVar` type hint."""
+
     @property
     def hint(self) -> TypeVar:
         assert isinstance(self._hint, TypeVar)
@@ -410,26 +476,67 @@ class TypeVarTypeHint(TypeHint):
 
     @property
     def name(self) -> str:
+        """
+        Returns the name of the type variable.
+
+            >>> TypeHint(TypeVar("T")).name
+            'T'
+        """
+
         return self.hint.__name__
 
     @property
     def covariant(self) -> bool:
+        """
+        Returns whether the TypeVar is covariant.
+
+            >>> TypeHint(TypeVar("T")).covariant
+            False
+            >>> TypeHint(TypeVar("T", covariant=True)).covariant
+            True
+        """
+
         return self.hint.__covariant__
 
     @property
     def contravariant(self) -> bool:
+        """
+        Returns whether the TypeVar is contravariant.
+
+            >>> TypeHint(TypeVar("T")).contravariant
+            False
+            >>> TypeHint(TypeVar("T", contravariant=True)).contravariant
+            True
+        """
+
         return self.hint.__contravariant__
 
     @property
     def constraints(self) -> "Tuple[Any, ...]":
+        """
+        Returns the constraints of the TypeVar.
+
+            >>> TypeHint(TypeVar("T", int, str)).constraints
+            (<class 'int'>, <class 'str'>)
+        """
+
         return self.hint.__constraints__
 
     @property
     def bound(self) -> Any:
+        """
+        Returns what the TypeVar is bound to.
+
+            >>> TypeHint(TypeVar("T", bound=str)).bound
+            <class 'str'>
+        """
+
         return self.hint.__bound__
 
 
 class ForwardRefTypeHint(TypeHint):
+    """Represents a forward reference, i.e. a string in the type annotation or an explicit `ForwardRef`."""
+
     def __init__(self, hint: object, source: "Any | None") -> None:
         super().__init__(hint, source)
         if isinstance(self._hint, str):
@@ -443,48 +550,39 @@ class ForwardRefTypeHint(TypeHint):
 
     def parameterize(self, parameter_map: Mapping[object, Any]) -> TypeHint:
         raise RuntimeError(
-            "ForwardRef cannot be parameterized. Ensure that your type hint is fully "
-            "evaluated before parameterization."
+            "ForwardRef cannot be parameterized. Ensure that your type hint is fully evaluated before parameterization."
         )
 
     def evaluate(self, context: "HasGetitem[str, Any] | None" = None) -> TypeHint:
-        from .future.astrewrite import rewrite_expr
-        from .future.fake import FakeHint, FakeProvider
+        from .future.fake import FakeProvider
 
         if context is None:
             context = self.get_context()
 
-        code = rewrite_expr(self.expr, "__dict__")
-        scope = {"__dict__": FakeProvider(context)}
-        hint = eval(code, scope, {})
-
-        assert isinstance(hint, FakeHint), (self.expr, FakeHint)
-        hint = hint.evaluate()
-
-        # # Even though eval expects a Mapping, we know for forward references that we'll only
-        # # need to have __getitem__() as they are pure expressions.
-        # retyped_context = cast(Mapping[str, Any], FakeProvider(context))
-
-        # if IS_PYTHON_AT_LAST_3_6:
-        #     hint = eval(code, scope, {})
-        # elif IS_PYTHON_AT_LAST_3_8:
-        #     # Mypy doesn't know about the third arg
-        #     hint = self.ref._evaluate(scope, {})  # type: ignore[arg-type]
-        # else:
-        #     hint = self.ref._evaluate(scope, {}, set())  # type: ignore[arg-type,call-arg]
-
+        hint = FakeProvider(context).execute(self.expr).evaluate()
         return TypeHint(hint).evaluate(context)
 
     @property
     def hint(self) -> "ForwardRef | str":
+        """Returns the original type hint."""
         return self._hint  # type: ignore
 
     @property
     def ref(self) -> ForwardRef:
+        """Same as `hint`, but returns it as a `ForwardRef` always."""
         return self._forward_ref
 
     @property
     def expr(self) -> str:
+        """
+        Returns the expression of the forward reference.
+
+            >>> TypeHint(ForwardRef("Foobar")).expr
+            'Foobar'
+            >>> TypeHint(TypeHint(List["Foobar"]).args[0]).expr
+            'Foobar'
+        """
+
         return self._forward_ref.__forward_arg__
 
 
@@ -498,7 +596,7 @@ class TupleTypeHint(ClassTypeHint):
         super().__init__(hint, source)
         if self._args == ((),):
             self._args = ()
-        elif self._args == () and self._hint == tuple:
+        elif self._args == () and self._hint is tuple:
             raise ValueError("TupleTypeHint can only represent a parameterized tuple.")
         if ... in self._args:
             assert self._args[-1] == ..., "Tuple Ellipsis not as last arg"
@@ -527,10 +625,14 @@ class TupleTypeHint(ClassTypeHint):
 
 
 class TypeAliasTypeHint(TypeHint):
+    """Represents a `TypeAlias` type hint."""
+
     pass
 
 
 class ClassVarTypeHint(TypeHint):
+    """Represents a `ClassVar` type hint."""
+
     def __init__(self, hint: object, source: "Any | None" = None) -> None:
         super().__init__(hint, source)
         if hasattr(self.hint, "__type__"):  # Python <3.10? (Maybe lower)

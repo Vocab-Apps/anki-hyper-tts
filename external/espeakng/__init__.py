@@ -1,252 +1,120 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
-
-#
-# Copyright 2017 Guenter Bartsch
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
-# import logging
+# An eSpeak NG TTS binding for Python3.
+# Copyright (C) 2016-2020 Sayak Brahmachari.
+##
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License Version 3 as published by
+# the Free Software Foundation.
+##
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+##
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import os
+import platform
 import subprocess
-import tempfile
-
-class ESpeakNG(object):
-
-    def __init__(self, 
-                 volume      =         100, 
-                 audio_dev   =        None,
-                 word_gap    =          -1, # ms
-                 capitals    =           0, # indicate capital letters with: 1=sound, 2=the word "capitals", higher values indicate a pitch increase (try -k20).
-                 line_length =           0, # Line length. If not zero, consider lines less than this length as end-of-clause
-                 pitch       =          50, # 0-99
-                 speed       =         175, # approx. words per minute 
-                 voice       = 'english-us'):
 
 
-        self._volume      = volume  
-        self._audio_dev   = audio_dev  
-        self._word_gap    = word_gap   
-        self._capitals    = capitals   
-        self._line_length = line_length
-        self._pitch       = pitch      
-        self._speed       = speed      
-        self._voice       = voice      
-
-    def _espeak_exe(self, args, sync=False):
-        cmd = ['espeak-ng', 
-               '-a', str(self._volume),
-               '-k', str(self._capitals), 
-               '-l', str(self._line_length), 
-               '-p', str(self._pitch), 
-               '-s', str(self._speed), 
-               '-v', self._voice, 
-               '-b', '1', # UTF8 text encoding 
-               ]
-
-        if self._word_gap>=0:
-            cmd.extend(['-g', str(self._word_gap)])
-
-        cmd.extend(args)
-
-        # logging.debug('espeakng: executing %s' % repr(cmd))
-        # logging.debug(f"commandline: {' '.join(cmd)}")
-
-        # '-w', f.name, s
-
-        p = subprocess.Popen(cmd,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.STDOUT)
-
-        res = iter(p.stdout.readline, b'')
-        if not sync:
-            p.stdout.close()
-            if p.stderr:
-                p.stderr.close()
-            if p.stdin:
-                p.stdin.close()
-            return res
-
-        res2 = []
-        for line in res:
-            res2.append(line)
-
-        p.stdout.close()
-        if p.stderr:
-            p.stderr.close()
-        if p.stdin:
-            p.stdin.close()
-        p.wait()
-
-        return res2
-
-    def say(self, txt, sync=False):
-
-        txte = txt.encode('utf8')
-
-        args = []
-
-        if self._audio_dev:
-            args.extend(['-d', self._audio_dev])
-
-        args.append(txte)
-
-        return self._espeak_exe(args, sync=sync)
-
-    def synth_wav(self, txt, fmt='txt'):
-
-        wav = None
-
-        with tempfile.NamedTemporaryFile() as f:
+class SpeechError(Exception):
+    pass
 
 
-            if fmt == 'xs':
-                txt = '[[' + txt + ']]'
-            elif fmt != 'txt':
-                raise Exception ('unknown format: %s' % fmt)
+class SpeechParameterError(SpeechError):
+    def __init__(self, param, val, limits):
+        super().__init__("Parameter {} is out of range: {} -> ({}-{}).".format(
+            param, val, limits[0], limits[1]))
 
-            txte = txt.encode('utf8')
 
-            args = ['-w', f.name, txte]
+class Speaker:
+    """
+    Speaker class for differentiating different speech properties.
+    """
 
-            self._espeak_exe(args, sync=True)
+    def __init__(self, voice="en", **kwargs):
+        self.prevproc = None
+        Speaker.validate_parameters(kwargs)
+        self.voice = kwargs.get("voice", "en")
+        self.wpm = kwargs.get("wpm", 175)  # 80-500 (175)
+        self.pitch = kwargs.get("pitch", 50)  # 0-99  (50)
+        self.amplitude = kwargs.get("amplitude", 100)  # 0-200 (100)
+        # The (additional) length of the pause,
+        self.wordgap = kwargs.get("wordgap", 0)
+        # in units of 10 mS (at the default speed of 170 wpm)
 
-            f.seek(0)
-            wav = f.read()
+        self.executable = "espeak-ng"
 
-            # logging.debug('read %s, got %d bytes.' % (f.name, len(wav)))
+    @staticmethod
+    def validate_parameters(kwargs):
+        limits = {
+            "wpm": (80, 500),
+            "pitch": (0, 99),
+            "amplitude": (0, 200),
+            "wordgap": (0, None),
+        }
 
-        return wav
+        for param in [key for key in limits.keys() if key in kwargs.keys()]:
+            if (kwargs[param] < limits[param][0]
+                    or limits[param][1] is not None
+                    and kwargs[param] > limits[param][1]):
+                raise SpeechParameterError(param, kwargs[param], limits[param])
 
-    def g2p(self, txt, ipa=None, tie=None):
+    @staticmethod
+    def list_voices():
+        return ["af","sq","am","ar","an","hy","hyw","as","az","ba","cu","eu","be","bn","bpy","bs","bg","my","ca","chr","yue","hak","haw","cmn","hr","cs","da","nl","en-us","en","en-029","en-gb-x-gbclan","en-gb-x-rp","en-gb-scotland","en-gb-x-gbcwmd","eo","et","fa","fa-latn","fi","fr-be","fr","fr-ch","ga","gd","ka","de","grc","el","kl","gn","gu","ht","he","hi","hu","is","id","ia","io","it","ja","kn","kok","ko","ku","kk","ky","la","lb","ltg","lv","lfn","lt","jbo","mi","mk","ms","ml","mt","mr","nci","ne","nb","nog","or","om","pap","py","pl","pt-br","qdb","qu","quc","qya","pt","pa","piqd","ro","ru","ru-lv","uk","sjn","sr","tn","sd","shn","si","sk","sl","smj","es","es-419","sw","sv","ta","th","tk","tt","te","tr","ug","ur","uz","vi-vn-x-central","vi","vi-vn-x-south","cy"]
 
-        args = ['-q']
+    def generate_command(self, phrase, export_path="", **kwargs):
+        Speaker.validate_parameters(kwargs)
+        cmd = [
+            self.executable,
+            "-v",
+            kwargs.get("voice", self.voice),
+            "-s",
+            kwargs.get("wpm", self.wpm),
+            "-p",
+            kwargs.get("pitch", self.pitch),
+            "-a",
+            kwargs.get("amplitude", self.amplitude),
+            "-g",
+            kwargs.get("wordgap", self.wordgap),
+        ]
+        if export_path:
+            cmd += ['-w', os.path.join(os.getcwd(), export_path)]
+        cmd.append(phrase)
+        cmd = [str(x) for x in cmd]
+        return cmd
 
-        if ipa:
-            args.append('--ipa=%s' % ipa)
+    def say(self, phrase, wait4prev=False, export_path="", **kwargs):
+        cmd = self.generate_command(phrase, export_path, **kwargs)
+        if self.prevproc:
+            if wait4prev:
+                self.prevproc.wait()
+            else:
+                self.prevproc.terminate()
+        if platform.system() == "Windows":
+            si = subprocess.STARTUPINFO()
+            si.dwFlags |= subprocess.SW_HIDE | subprocess.STARTF_USESHOWWINDOW
+            self.prevproc = subprocess.Popen(cmd,
+                                             cwd=os.path.dirname(
+                                                 os.path.abspath(__file__)),
+                                             startupinfo=si)
         else:
-            args.append('-x')
-        
-        if tie:
-            args.append('--tie=%s' % tie)
+            self.prevproc = subprocess.Popen(cmd,
+                                             cwd=os.path.dirname(
+                                                 os.path.abspath(__file__)))
+        print(cmd)
 
-        args.append(txt)
+    def is_talking(self):
+        if self.prevproc and self.prevproc.poll() == None:
+            return True
+        else:
+            return False
 
-        phonemes = u''
+    def wait(self):
+        if self.prevproc:
+            self.prevproc.wait()
 
-        for line in self._espeak_exe(args, sync=True):
-
-            # logging.debug(u'line: %s' % repr(line))
-            
-            phonemes += line.decode('utf8').strip()
-
-        return phonemes
-
-    @property
-    def voices(self):
-
-        res = self._espeak_exe(['--voices'], sync=True)
-
-        # logging.debug ('espeakng: voices: %s' % res)
-
-        # ['Pty', 'Language', 'Age/Gender', 'VoiceName', 'File', 'Other', 'Languages']
-
-        voices = []
-
-        first = True
-        for v in res:
-            if first:
-                first=False
-                continue
-            parts = v.decode('utf8').split()
-
-            if len(parts)<5:
-                continue
-
-            age_parts = parts[2].split('/')
-            if len(age_parts) != 2:
-                continue
-
-            voice = {
-                        'pty'        : parts[0],
-                        'language'   : parts[1],
-                        'age'        : age_parts[0],
-                        'gender'     : age_parts[1],
-                        'voice_name' : parts[3],
-                        'file'       : parts[4],
-                    }
-
-            # logging.debug ('espeakng: voices: parts= %s %s -> %s' % (len(parts), repr(parts), repr(voice)))
-            voices.append(voice)
-
-        return voices
-
-    @property
-    def volume(self):
-        return self._volume
-    @volume.setter
-    def volume(self, v):
-        self._volume = v
-
-    @property
-    def audio_dev(self):
-        return self._audio_dev  
-    @audio_dev.setter
-    def audio_dev(self, v):
-        self._audio_dev   = v
-
-    @property
-    def word_gap(self):
-        return self._word_gap
-    @word_gap.setter
-    def word_gap(self, v):
-        self._word_gap    = v
-
-    @property
-    def capitals(self):
-        return self._capitals
-    @capitals.setter
-    def capitals(self, v):
-        self._capitals    = v
-
-    @property
-    def line_length(self):
-        return self._line_length
-    @line_length.setter
-    def line_length(self, v):
-        self._line_length = v
-
-    @property
-    def pitch(self):
-        return self._pitch
-    @pitch.setter
-    def pitch(self, v):
-        self._pitch = v
-
-    @property
-    def speed(self):
-        return self._speed
-    @speed.setter
-    def speed(self, v):
-        self._speed = v
-
-    @property
-    def voice(self):
-        return self._voice
-    @voice.setter
-    def voice(self, v):
-        self._voice = v
-
-    @property
-    def samplerate(self):
-        return self._samplerate
+    def quiet(self):
+        if self.prevproc:
+            self.prevproc.terminate()

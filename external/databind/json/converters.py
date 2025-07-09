@@ -2,8 +2,18 @@ import base64
 import datetime
 import decimal
 import enum
-import types
 import typing as t
+
+from typeapi import (
+    AnnotatedTypeHint,
+    ClassTypeHint,
+    LiteralTypeHint,
+    TupleTypeHint,
+    TypeHint,
+    UnionTypeHint,
+    get_annotations,
+    type_repr,
+)
 
 from databind.core import (
     Alias,
@@ -24,16 +34,6 @@ from databind.core import (
     convert_to_schema,
     get_annotation_setting,
     get_fields_expanded,
-)
-from typeapi import (
-    AnnotatedTypeHint,
-    ClassTypeHint,
-    LiteralTypeHint,
-    TupleTypeHint,
-    TypeHint,
-    UnionTypeHint,
-    get_annotations,
-    type_repr,
 )
 
 T = t.TypeVar("T")
@@ -167,7 +167,6 @@ class CollectionConverter(Converter):
             try:
                 return python_type(values)
             except TypeError:
-                assert not isinstance(values, types.GeneratorType), (type(values), python_type)
                 # We assume that the native list is an appropriate placeholder for whatever specific Collection type
                 # was chosen in the value's datatype.
                 return values
@@ -193,11 +192,13 @@ class DatetimeConverter(Converter):
         datefmt = ctx.get_setting(DateFormat) or (
             self.DEFAULT_DATE_FMT
             if date_type == datetime.date
-            else self.DEFAULT_TIME_FMT
-            if date_type == datetime.time
-            else self.DEFAULT_DATETIME_FMT
-            if date_type == datetime.datetime
-            else None
+            else (
+                self.DEFAULT_TIME_FMT
+                if date_type == datetime.time
+                else self.DEFAULT_DATETIME_FMT
+                if date_type == datetime.datetime
+                else None
+            )
         )
         assert datefmt is not None
 
@@ -372,7 +373,7 @@ class OptionalConverter(Converter):
 
 
 class PlainDatatypeConverter(Converter):
-    """A converter for the plain datatypes #bool, #bytes, #int, #str and #float.
+    """A converter for the plain datatypes #bool, #bytes, #int, #str, #float and #null.
 
     Arguments:
       direction (Direction): The direction in which to convert (serialize or deserialize).
@@ -393,6 +394,7 @@ class PlainDatatypeConverter(Converter):
         (int, float): float,
         (float, int): _int_lossless,
         (bool, bool): bool,
+        (type(None), type(None)): lambda x: x,
     }
 
     # Used only during deserialization if the #fieldinfo.strict is disabled.
@@ -405,6 +407,7 @@ class PlainDatatypeConverter(Converter):
             (int, str): str,
             (float, str): str,
             (bool, str): str,
+            (type(None), type(None)): lambda x: x,
         }
     )
 
@@ -427,7 +430,6 @@ class PlainDatatypeConverter(Converter):
         )
         adapters = self._strict_adapters if strict.enabled else self._nonstrict_adapters
         adapter = adapters.get((source_type, target_type))
-
         if adapter is None:
             raise ConversionError.expected(self, ctx, target_type, source_type)
 

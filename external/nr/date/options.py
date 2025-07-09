@@ -91,7 +91,6 @@ class NumericFormatOption(IFormatOption):
 
 @dataclass
 class TimezoneFormatOption(IFormatOption):
-
     regex: str = r"(?:Z|[-+]\d{2}(?::?\d{2})?)"
 
     def parse_string(self, s: str) -> datetime.tzinfo:

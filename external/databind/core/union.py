@@ -3,13 +3,22 @@
 import abc
 import dataclasses
 import importlib
+import sys
 import types
 import typing as t
 
-import pkg_resources
 from typeapi import ClassTypeHint, TypeHint
 
 from databind.core.utils import T
+
+if sys.version_info[:2] < (3, 10):
+    from pkg_resources import EntryPoint, iter_entry_points
+else:
+    from importlib.metadata import EntryPoint, entry_points
+
+    def iter_entry_points(group: str) -> t.Iterator[EntryPoint]:
+        return iter(entry_points(group=group))
+
 
 __all__ = ["UnionMembers", "StaticUnionMembers", "EntrypointUnionMembers", "ImportUnionMembers", "ChainUnionMembers"]
 
@@ -126,13 +135,13 @@ class EntrypointUnionMembers(UnionMembers):
     group: str
 
     def __post_init__(self) -> None:
-        self._entrypoints_cache: t.Optional[t.Dict[str, pkg_resources.EntryPoint]] = None
+        self._entrypoints_cache: t.Optional[t.Dict[str, EntryPoint]] = None
 
     @property
-    def _entrypoints(self) -> t.Dict[str, pkg_resources.EntryPoint]:
+    def _entrypoints(self) -> t.Dict[str, EntryPoint]:
         if self._entrypoints_cache is None:
             self._entrypoints_cache = {}
-            for ep in pkg_resources.iter_entry_points(self.group):
+            for ep in iter_entry_points(self.group):
                 self._entrypoints_cache[ep.name] = ep
         return self._entrypoints_cache
 

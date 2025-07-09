@@ -124,6 +124,7 @@ def get_annotations(
         locals = obj_locals
 
     return_value = {
-        key: value if not isinstance(value, str) else eval(value, globals, locals) for key, value in ann.items()  # type: ignore[arg-type] # noqa
+        key: value if not isinstance(value, str) else eval(value, globals, locals)
+        for key, value in ann.items()  # type: ignore[arg-type] # noqa
     }
     return return_value

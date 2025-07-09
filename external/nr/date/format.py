@@ -69,7 +69,6 @@ class _datetime_format:
 
 @dataclass
 class date_format(_datetime_format):
-
     __repr__ = _datetime_format.__repr__
 
     def __post_init__(self) -> None:
@@ -93,7 +92,6 @@ class date_format(_datetime_format):
 
 @dataclass
 class time_format(_datetime_format):
-
     __repr__ = _datetime_format.__repr__
 
     def __post_init__(self) -> None:
