@@ -10,6 +10,7 @@ pytest-qt
 coverage
 azure-cognitiveservices-speech
 pydub
+audioop-lts
 python-magic
 openai
 urllib3<2
