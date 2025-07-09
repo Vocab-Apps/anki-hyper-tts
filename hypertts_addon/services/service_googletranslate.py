@@ -19,6 +19,8 @@ LANGUAGE_KEY_MAP = {
     'is': lang.is_IS,
     'iw': lang.he_IL,
     'pt': lang.pt_PT,
+    'pt-PT': lang.pt_PT,
+    'fr-CA': lang.fr_CA,
     'sr': lang.sr_RS,
     'zh-CN': lang.zh_CN,
     'zh': lang.zh_CN,
