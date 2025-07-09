@@ -16,7 +16,7 @@ class StatsGlobal:
     BASE_URL = "https://st.vocab.ai"
     CAPTURE_URL = f"{BASE_URL}/capture/"
 
-    def __init__(self, anki_utils, user_uuid, user_properties, first_install):
+    def __init__(self, anki_utils, user_uuid, user_properties, first_install, hypertts_pro: bool):
         self.anki_utils = anki_utils
         self.api_key = os.environ.get('STATS_API_KEY', 'phc_c9ijDJMNO8n7kzxPNlxwuiKIAlNcYhzeq7pa6aQYq9G')
         self.user_uuid = user_uuid
@@ -24,6 +24,7 @@ class StatsGlobal:
         self.feature_flags = {}
         self.feature_flags_enabled = {}
         self.first_install = first_install
+        self.hypertts_pro = hypertts_pro
         self.init_done = False
 
     def publish(self, 
@@ -207,13 +208,15 @@ class StatsGlobal:
         # this function runs in the main thread
         # needs to be as fast as possible
         # first, load the feature flags syncronously
-        self.load_feature_flags()
+        if not self.hypertts_pro: # don't load them if we are in pro mode
+            self.load_feature_flags()
         # but after that, everything should be asynchronous
         self.anki_utils.run_in_background(self.load_background, None)
 
     def load_background(self):
         # report the feature flags we are using
-        self.report_feature_flags()
+        if not self.hypertts_pro: # don't report them if we are in pro mode
+            self.report_feature_flags()
         # report the install and open events
         if self.first_install:
             self.publish_event(constants_events.EventContext.addon, constants_events.Event.install, None, {})

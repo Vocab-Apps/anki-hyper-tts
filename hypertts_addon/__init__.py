@@ -172,4 +172,6 @@ else:
                                                             'hypertts_trial_registration_step': configuration.trial_registration_step.name,
                                                             'hypertts_pro': configuration.hypertts_pro_api_key_set()
                                                         },
-                                                        first_install)
+                                                        first_install,
+                                                        configuration.hypertts_pro_api_key_set()
+                                                        )
