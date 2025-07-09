@@ -26,21 +26,21 @@ class Youdao(service.ServiceBase):
     def service_fee(self) -> constants.ServiceFee:
         return constants.ServiceFee.free
 
-    def build_voice(self, name, audio_language, voice_key, voice_type):
+    def build_voice(self, name, audio_language, voice_type):
         return voice.TtsVoice_v3(
             name=name,
             gender=constants.Gender.Male,
             audio_languages=[audio_language],
             service=self.name,
-            voice_key=voice_key,
+            voice_key={'type': voice_type},
             options={'type': voice_type},
             service_fee=self.service_fee
         )
 
     def voice_list(self):
         return [
-            self.build_voice('UK English', languages.AudioLanguage.en_GB, 'en_uk', 1),
-            self.build_voice('US English', languages.AudioLanguage.en_US, 'en_us', 2),
+            self.build_voice('UK English', languages.AudioLanguage.en_GB, 1),
+            self.build_voice('US English', languages.AudioLanguage.en_US, 2),
         ]
 
     def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
@@ -49,8 +49,7 @@ class Youdao(service.ServiceBase):
         }
 
         # Get the type parameter from voice options
-        voice_type = voice.options.get('type', 2)  # Default to US pronunciation
-        
+        voice_type = voice.voice_key['type']
         # Build the API URL with parameters
         params = {
             'audio': source_text,
