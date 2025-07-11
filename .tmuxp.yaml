@@ -1,7 +1,7 @@
 session_name: hypertts
 start_directory: ./ # load session relative to config location (project root).
 shell_command_before:
-  - source ${PYTHON_ENV_DIR}/anki-hyper-tts/bin/activate
+  - source ${PYTHON_ENV_DIR}/anki-hyper-tts-3.13/bin/activate
   - source .bash_aliases
   - source ${SECRETS_DIR}/hypertts/hypertts_tests.sh
   - eval "$(register-python-argcomplete pytest)"
@@ -9,9 +9,9 @@ shell_command_before:
 windows:
 - window_name: hypertts
   focus: true
-- window_name: hypertts-3.13
+- window_name: hypertts-3.9
   panes:
-    - shell_command: source ${PYTHON_ENV_DIR}/anki-hyper-tts-3.13/bin/activate
+    - shell_command: source ${PYTHON_ENV_DIR}/anki-hyper-tts-3.9/bin/activate
 - window_name: git
 - window_name: ai
 - window_name: anki-log
