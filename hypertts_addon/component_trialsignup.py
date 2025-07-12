@@ -58,8 +58,16 @@ class TrialSignup(component_common.ConfigComponentBase):
         signup_widget = aqt.qt.QWidget()
         vlayout = aqt.qt.QVBoxLayout()
         
+        # Check feature flag for alternate variant
+        is_variant_alternate_1 = stats.feature_flag_value('trial-signup-screen') == 'alternate-1'
+        
         # Add title label
-        title_label = aqt.qt.QLabel("Sign up for HyperTTS Pro Trial")
+        if is_variant_alternate_1:
+            title_text = constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_TITLE
+        else:
+            title_text = "Sign up for HyperTTS Pro Trial"
+        
+        title_label = aqt.qt.QLabel(title_text)
         title_label.setWordWrap(True)
         title_label.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignLeft)
         title_label.setStyleSheet('border: none; background-color: transparent;')
@@ -67,6 +75,13 @@ class TrialSignup(component_common.ConfigComponentBase):
         font.setPointSize(14)
         title_label.setFont(font)
         vlayout.addWidget(title_label)
+        
+        # Add benefits section for variant
+        if is_variant_alternate_1:
+            benefits_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_BENEFITS)
+            benefits_label.setWordWrap(True)
+            benefits_label.setStyleSheet('border: none; background-color: transparent;')
+            vlayout.addWidget(benefits_label)
         
         # Description label
         description_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL)
@@ -98,10 +113,22 @@ class TrialSignup(component_common.ConfigComponentBase):
         form_layout.addWidget(self.trial_validation_label)
         
         # Button
-        self.signup_button = aqt.qt.QPushButton('Sign Up for Trial')
+        if is_variant_alternate_1:
+            button_text = constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_BUTTON
+        else:
+            button_text = 'Sign Up for Trial'
+        
+        self.signup_button = aqt.qt.QPushButton(button_text)
         gui_utils.configure_purple_button(self.signup_button)
         
         form_layout.addWidget(self.signup_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        
+        # Add privacy text for variant
+        if is_variant_alternate_1:
+            privacy_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_PRIVACY)
+            privacy_label.setWordWrap(True)
+            privacy_label.setStyleSheet('border: none; background-color: transparent;')
+            form_layout.addWidget(privacy_label)
         
         groupbox.setLayout(form_layout)
         vlayout.addWidget(groupbox)
@@ -319,6 +346,9 @@ class TrialSignupDialog(aqt.qt.QDialog):
         self.setMinimumWidth(500)
         layout = aqt.qt.QVBoxLayout()
 
+        # Check feature flag for alternate variant
+        is_variant_alternate_1 = stats.feature_flag_value('trial-signup-screen') == 'alternate-1'
+
         # Add HyperTTS header
         header_layout = aqt.qt.QHBoxLayout()
         header_layout.addStretch()
@@ -334,12 +364,15 @@ class TrialSignupDialog(aqt.qt.QDialog):
         self.trial_signup_component = TrialSignup(self.hypertts, model_change_callback)
         self.trial_signup_component.draw(layout)
 
-        # Close button
-        self.close_button = aqt.qt.QPushButton('Close')
-        self.close_button.clicked.connect(self.reject)
-        
-        layout.addStretch()
-        layout.addWidget(self.close_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        # Close button - only show if not in variant
+        if not is_variant_alternate_1:
+            self.close_button = aqt.qt.QPushButton('Close')
+            self.close_button.clicked.connect(self.reject)
+            
+            layout.addStretch()
+            layout.addWidget(self.close_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
+        else:
+            layout.addStretch()
 
         self.setLayout(layout)
 

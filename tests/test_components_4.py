@@ -157,6 +157,22 @@ def test_trial_signup_manual_step_2(qtbot):
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
     component_trialsignup.show_trial_signup_dialog(hypertts_instance)
 
+def test_trial_signup_manual_alternate_variant(qtbot):
+    # HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_trial_signup_manual_alternate_variant -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    
+    def dialog_input_sequence(dialog):    
+        if os.environ.get('HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG', 'no') == 'yes':
+            dialog.exec()
+    
+    # Mock the feature flag to return 'alternate-1' for alternate variant
+    with patch.object(stats, 'feature_flag_value') as mock_feature_flag:
+        mock_feature_flag.return_value = 'alternate-1'
+        
+        hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_TRIAL_SIGNUP] = dialog_input_sequence
+        component_trialsignup.show_trial_signup_dialog(hypertts_instance)
+
 def test_trial_signup_component_initialization(qtbot):
     """Test that the trial signup component initializes correctly"""
     config_gen = testing_utils.TestConfigGenerator()

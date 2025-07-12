@@ -258,6 +258,16 @@ GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFICATION_INITIAL_STATUS = """If you don't see th
 GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFIED_TITLE = """Email Verified Successfully!"""
 GUI_TEXT_HYPERTTS_PRO_TRIAL_VERIFIED_DESCRIPTION = """<b>Congratulations!</b> Your email has been verified and you can now use HyperTTS Pro services. You can close this dialog and start adding audio to your notes. Check out the tutorial below to learn how to add audio."""
 
+# Trial signup screen variant constants
+GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_TITLE = """Add realistic audio to your cards in 30 seconds.<br/>Free 7-day trial · No credit card"""
+GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_BENEFITS = """<p style="margin-top: 10px; margin-bottom: 15px;">
+✓ 1200+ lifelike voices in 60+ languages<br/>
+✓ Works inside Anki with one click<br/>
+✓ Keep everything you create, even after the trial
+</p>"""
+GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_BUTTON = """Start Adding Audio"""
+GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_PRIVACY = """<p style="text-align: center; color: palette(dark); font-size: small; margin-top: 10px;">Completely free trial. Your email stays private</p>"""
+
 GUI_TEXT_REALTIME_SINGLE_NOTE = """Please select a single note to add Realtime Audio"""
 GUI_TEXT_REALTIME_CHOOSE_TEMPLATE = """Choose card template"""
 GUI_TEXT_REALTIME_REMOVED_TAG = """Removed TTS Tag. Realtime audio will not play anymore."""
