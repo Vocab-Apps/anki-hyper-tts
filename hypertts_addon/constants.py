@@ -266,7 +266,7 @@ GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_BENEFITS = """<p style="margin-top: 10px; 
 ✓ Keep everything you create, even after the trial
 </p>"""
 GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_BUTTON = """Start Adding Audio"""
-GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_PRIVACY = """<p style="text-align: center; color: palette(dark); font-size: small; margin-top: 10px;">Free 7-day trial, limited to 50k characters. No obligation to sign up. Your info is private.</p>"""
+GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_PRIVACY = """<p style="text-align: center; color: palette(dark); font-size: small; margin-top: 10px;">Free 7-day trial, limited to 50k characters. No obligation to subscribe. Your info is private.</p>"""
 
 GUI_TEXT_REALTIME_SINGLE_NOTE = """Please select a single note to add Realtime Audio"""
 GUI_TEXT_REALTIME_CHOOSE_TEMPLATE = """Choose card template"""
