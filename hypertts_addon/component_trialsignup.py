@@ -114,9 +114,6 @@ class TrialSignup(component_common.ConfigComponentBase):
         # Validation label for showing results/errors
         self.trial_validation_label = aqt.qt.QLabel()
         self.trial_validation_label.setWordWrap(True)
-        if is_variant_alternate_1:
-            # Reduce spacing for variant by setting smaller margins
-            self.trial_validation_label.setContentsMargins(0, -5, 0, -5)
         form_layout.addWidget(self.trial_validation_label)
         
         # Button
