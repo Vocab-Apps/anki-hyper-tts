@@ -144,8 +144,6 @@ class TrialSignup(component_common.ConfigComponentBase):
             privacy_label.setStyleSheet('border: none; background-color: transparent;')
             vlayout.addWidget(privacy_label)
         
-        vlayout.addStretch()
-        
         # Wire events
         self.signup_button.pressed.connect(self.signup_button_pressed)
         
