@@ -127,15 +127,16 @@ class TrialSignup(component_common.ConfigComponentBase):
         
         form_layout.addWidget(self.signup_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
         
-        # Add privacy text for variant
+        groupbox.setLayout(form_layout)
+        vlayout.addWidget(groupbox)
+        
+        # Add privacy text for variant - outside the groupbox
         if is_variant_alternate_1:
             privacy_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_ALTERNATE_PRIVACY)
             privacy_label.setWordWrap(True)
             privacy_label.setStyleSheet('border: none; background-color: transparent;')
-            form_layout.addWidget(privacy_label)
+            vlayout.addWidget(privacy_label)
         
-        groupbox.setLayout(form_layout)
-        vlayout.addWidget(groupbox)
         vlayout.addStretch()
         
         # Wire events
