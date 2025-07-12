@@ -4,7 +4,7 @@
 set -eoux pipefail
 
 cd /home/luc/code/python/anki-hyper-tts
-source /home/luc/python-env/anki-hyper-tts/bin/activate
+source /home/luc/python-env/anki-hyper-tts-3.13/bin/activate
 
 # run with all arguments passed in
 exec script -q -c "$*" --flush --log-out /volatile_home/luc/logs/anki.log
