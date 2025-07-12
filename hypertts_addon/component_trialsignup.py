@@ -83,10 +83,11 @@ class TrialSignup(component_common.ConfigComponentBase):
             benefits_label.setStyleSheet('border: none; background-color: transparent;')
             vlayout.addWidget(benefits_label)
         
-        # Description label
-        description_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL)
-        description_label.setWordWrap(True)
-        vlayout.addWidget(description_label)
+        # Description label - only show if not in variant
+        if not is_variant_alternate_1:
+            description_label = aqt.qt.QLabel(constants.GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL)
+            description_label.setWordWrap(True)
+            vlayout.addWidget(description_label)
         
         # Create groupbox for the form
         groupbox = aqt.qt.QGroupBox()
@@ -96,7 +97,10 @@ class TrialSignup(component_common.ConfigComponentBase):
         email_label = aqt.qt.QLabel("<b>Email:</b>")
         form_layout.addWidget(email_label)
         self.trial_email_input = aqt.qt.QLineEdit()
-        self.trial_email_input.setPlaceholderText("Enter your email (no disposable email addresses)")
+        if is_variant_alternate_1:
+            self.trial_email_input.setPlaceholderText("Enter your email")
+        else:
+            self.trial_email_input.setPlaceholderText("Enter your email (no disposable email addresses)")
         form_layout.addWidget(self.trial_email_input)
         
         # Password input
