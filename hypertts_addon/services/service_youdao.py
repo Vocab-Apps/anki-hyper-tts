@@ -33,7 +33,7 @@ class Youdao(service.ServiceBase):
             audio_languages=[audio_language],
             service=self.name,
             voice_key={'type': voice_type},
-            options={'type': voice_type},
+            options={},
             service_fee=self.service_fee
         )
 
