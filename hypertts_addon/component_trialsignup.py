@@ -388,6 +388,12 @@ class TrialSignupDialog(aqt.qt.QDialog):
         if self.trial_signup_component and self.accepted_result:
             return self.trial_signup_component.get_model()
         return None
+    
+    def closeEvent(self, event):
+        """Handle dialog close event"""
+        if not self.accepted_result:
+            sc.send_event(Event.close)
+        super().closeEvent(event)
 
 
 @sc.event(Event.open)
