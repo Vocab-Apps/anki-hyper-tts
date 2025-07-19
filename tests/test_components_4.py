@@ -70,19 +70,6 @@ def test_services_configuration_select_manual(qtbot):
     result = component_services_configuration.show_services_configuration_dialog(hypertts_instance)
     assert result == config_models.ServicesConfigurationMode.MANUAL_CONFIGURATION
 
-def test_services_configuration_cancel(qtbot):
-    """Test canceling the services configuration dialog"""
-    config_gen = testing_utils.TestConfigGenerator()
-    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
-
-    def dialog_input_sequence(dialog):    
-        # click Cancel
-        qtbot.mouseClick(dialog.cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
-
-    hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_SERVICES_CONFIGURATION] = dialog_input_sequence
-    result = component_services_configuration.show_services_configuration_dialog(hypertts_instance)
-    assert result == None
-
 def test_services_configuration_close(qtbot):
     """Test closing the services configuration dialog"""
     config_gen = testing_utils.TestConfigGenerator()

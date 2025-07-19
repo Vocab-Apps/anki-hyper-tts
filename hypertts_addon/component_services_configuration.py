@@ -153,12 +153,7 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         layout.addSpacing(5)
         layout.addWidget(self.manual_button)
         
-        # Cancel button
-        self.cancel_button = aqt.qt.QPushButton('Cancel')
-        self.cancel_button.clicked.connect(self.reject)
-        
         layout.addStretch()
-        layout.addWidget(self.cancel_button, alignment=aqt.qt.Qt.AlignmentFlag.AlignCenter)
 
         self.setLayout(layout)
 
