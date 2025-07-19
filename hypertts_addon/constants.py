@@ -279,15 +279,6 @@ GUI_TEXT_SHORTCUTS_EDITOR_PREVIEW_AUDIO = """Preview Audio for a note using the 
 
 GUI_TEXT_ERROR_HANDLING_REALTIME_TTS = """How to display errors during Realtime TTS"""
 
-GUI_TEXT_SERVICES_CONFIG_TITLE = """Configure HyperTTS services"""
-GUI_TEXT_SERVICES_CONFIG_DESCRIPTION = """In order to generate audio using HyperTTS, you need to enable TTS services. Choose from one of the options below."""
-GUI_TEXT_SERVICES_CONFIG_TRIAL_TITLE = """Free trial for HyperTTS Pro"""
-GUI_TEXT_SERVICES_CONFIG_TRIAL_RECOMMENDED = """This is the recommended option. 7 day trial with 50k character quota."""
-GUI_TEXT_SERVICES_CONFIG_TRIAL_DESCRIPTION = """<ul><li>Access to Premium TTS services such as Azure, Google, ElevenLabs, OpenAI, Amazon, Forvo.</li><li>Highest audio quality possible.</li><li>Immediate access after signing up with your email.</li></ul>"""
-GUI_TEXT_SERVICES_CONFIG_MANUAL_TITLE = """Manually configure services"""
-GUI_TEXT_SERVICES_CONFIG_MANUAL_RECOMMENDED = """Use this if you want to configure services yourself, use free services or use your own API keys."""
-GUI_TEXT_SERVICES_CONFIG_MANUAL_DESCRIPTION = """<ul><li>Free online services such as Google Translate</li><li>Local services running on your OS such as Windows SAPI, MacOSX</li><li>Use your own API Keys with cloud services such as Azure, Google, AWS, OpenAI, ElevenLabs</li></ul>"""
-
 # Enhanced variants for trial incentive experiment
 GUI_TEXT_SERVICES_CONFIG_ENHANCED_TITLE = """Get Started with HyperTTS - Choose Your Path"""
 GUI_TEXT_SERVICES_CONFIG_ENHANCED_DESCRIPTION = """Ready to add amazing audio to your flashcards? Pick the option that works best for you."""
