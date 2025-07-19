@@ -166,6 +166,12 @@ class ServicesConfigurationDialog(aqt.qt.QDialog):
         logger.debug(f'User selected mode: {mode}')
         self.chosen_mode = mode
         self.accept()
+    
+    def closeEvent(self, event):
+        """Handle dialog close event"""
+        if self.chosen_mode is None:
+            sc.send_event(Event.close)
+        super().closeEvent(event)
 
 @sc.event(Event.open)
 def show_services_configuration_dialog(hypertts) -> config_models.ServicesConfigurationMode:
