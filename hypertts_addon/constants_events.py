@@ -40,6 +40,7 @@ class Event(enum.Enum):
     click_enable_free_services = enum.auto()
     click_free_trial = enum.auto()
     click_enter_api_key = enum.auto() # to be replaced
+    click_remove_api_key = enum.auto()
     click_sign_up = enum.auto()
     click_free_trial_ok = enum.auto() # to be replaced
     click_welcome_configure_services = enum.auto()

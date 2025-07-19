@@ -226,6 +226,7 @@ class HyperTTSPro(component_common.ConfigComponentBase):
     def action_cancel_button_pressed(self):
         self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_BUTTONS)
 
+    @sc.event(Event.click_remove_api_key)
     def remove_api_key_button_pressed(self):
         self.model.clear_api_key()
         self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_BUTTONS)
