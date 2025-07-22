@@ -272,7 +272,10 @@ class AnkiUtils():
 
     def play_sound(self, filename):
         # play files one after another
-        aqt.sound.av_player.insert_file(filename)
+        # Ensure sound playback happens on the main thread
+        # note: running on background thread seems to have been the cause of these issues:
+        # https://github.com/Vocab-Apps/anki-hyper-tts/issues/278
+        self.run_on_main(lambda: aqt.sound.av_player.insert_file(filename))
 
     def show_progress_bar(self, message):
         aqt.mw.progress.start(immediate=True, label=f'{constants.MENU_PREFIX} {message}')
