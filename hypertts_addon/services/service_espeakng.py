@@ -3,6 +3,7 @@ import os
 import hashlib
 import aqt.sound
 import tempfile
+import subprocess
 import espeakng
 from typing import List
 
@@ -71,25 +72,25 @@ class ESpeakNg(service.ServiceBase):
 
         try:
             result = []
-            esng = espeakng.ESpeakNG()
-            for espeakng_voice in esng.voices:
-                # logger.debug(espeakng_voice)
-                voice_name = espeakng_voice['voice_name']
-                gender = gender_map[espeakng_voice['gender']]
-                espeakng_language = espeakng_voice['language']
-                audio_language = self.get_audio_language(espeakng_language)
+            # Get available voices from Speaker.list_voices()
+            available_voices = espeakng.Speaker.list_voices()
+            
+            for voice_code in available_voices:
+                # Create a simple voice entry for each available voice
+                # Since we don't have gender info from the new API, default to Male
+                audio_language = self.get_audio_language(voice_code)
                 if audio_language is not None:
                     result.append(voice.TtsVoice_v3(
-                        name=voice_name,
-                        gender=gender,
+                        name=voice_code,
+                        gender=constants.Gender.Male,  # Default gender
                         audio_languages=[audio_language],
                         service=self.name,
-                        voice_key=espeakng_language,
+                        voice_key=voice_code,
                         options={},
                         service_fee=self.service_fee
                     ))
                 else:
-                    logger.warning(f'language not recognized: {espeakng_language}, {espeakng_voice}')
+                    logger.warning(f'language not recognized: {voice_code}')
             return result
 
         except Exception as e:
@@ -99,24 +100,45 @@ class ESpeakNg(service.ServiceBase):
 
     def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
 
-        esng = espeakng.ESpeakNG()
-        esng.voice = voice.voice_key
-        wavs = esng.synth_wav(source_text)
-
+        # Create a temporary wav file
         fh, wav_temp_file_name = tempfile.mkstemp(prefix='hyper_tts_espeakng', suffix='.wav')
-        f = open(wav_temp_file_name, 'wb')
-        f.write(wavs)
-        f.close()
+        os.close(fh)  # Close the file handle
 
+        # Use espeak-ng directly with subprocess
+        cmd = [
+            'espeak-ng',
+            '-v', voice.voice_key,
+            '-w', wav_temp_file_name,
+            source_text
+        ]
+        
+        try:
+            subprocess.run(cmd, check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            logger.error(f"espeak-ng failed: {e.stderr}")
+            raise errors.RequestError(f"espeak-ng failed: {e.stderr}")
+
+        # Check if the wav file was created
+        if not os.path.exists(wav_temp_file_name):
+            raise errors.RequestError(f"espeak-ng did not create output file")
+
+        # Convert wav to mp3
         fh, mp3_temp_file_name = tempfile.mkstemp(prefix='hyper_tts_espeakng', suffix='.mp3') 
-        aqt.sound._encode_mp3(wav_temp_file_name, mp3_temp_file_name)
+        os.close(fh)
+        
+        try:
+            aqt.sound._encode_mp3(wav_temp_file_name, mp3_temp_file_name)
+        finally:
+            # Always remove the wav file if it exists
+            if os.path.exists(wav_temp_file_name):
+                os.remove(wav_temp_file_name)
 
         # read final mp3 file
         f = open(mp3_temp_file_name, 'rb')
         content = f.read()
         f.close()        
 
-        # remove temporary files (wav sound already removed)
+        # remove temporary mp3 file
         os.remove(mp3_temp_file_name)
 
         return content
