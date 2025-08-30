@@ -613,6 +613,43 @@ class TTSTests(unittest.TestCase):
         voice_options = {}
         self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'Hello world', voice_options=voice_options)
 
+    def test_elevenlabs_unsupported_language_code_error(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_elevenlabs_unsupported_language_code_error'
+        service_name = 'ElevenLabs'
+        
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service == service_name and AudioLanguage.en_US in voice.audio_languages]
+        
+        # Find a monolingual voice (which doesn't support language_code)
+        monolingual_voice = None
+        for voice in service_voices:
+            if 'monolingual' in voice.voice_key['model_id']:
+                monolingual_voice = voice
+                break
+        
+        if monolingual_voice is None:
+            raise unittest.SkipTest('No ElevenLabs monolingual voice found for error testing')
+        
+        logger.info(f'Testing language_code error with monolingual voice: {monolingual_voice.name} using model: {monolingual_voice.voice_key["model_id"]}')
+        
+        # Test with language_code provided to a model that doesn't support it
+        voice_options = {'language_code': 'en'}
+        
+        # This should raise a RequestError with a meaningful message
+        exception_caught = False
+        try:
+            self.manager.get_tts_audio('Hello world', monolingual_voice, voice_options, 
+                context.AudioRequestContext(constants.AudioRequestReason.batch))
+        except errors.RequestError as e:
+            exception_caught = True
+            error_message = str(e)
+            # Verify the error message contains information about language_code not being supported
+            self.assertIn('language code parameter', error_message.lower())
+            self.assertIn('does not support', error_message.lower())
+            logger.info(f'Got expected error message: {error_message}')
+        
+        self.assertTrue(exception_caught, 'Expected RequestError was not raised when using language_code with monolingual model')
+
     def test_openai_english(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_openai_english'
         service_name = 'OpenAI'
