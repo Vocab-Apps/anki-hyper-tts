@@ -544,6 +544,75 @@ class TTSTests(unittest.TestCase):
         # pick a random en_US voice
         self.random_voice_test(service_name, AudioLanguage.en_US, 'This is the first sentence')
 
+    def test_elevenlabs_with_language_code(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_elevenlabs_with_language_code'
+        service_name = 'ElevenLabs'
+        
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service == service_name and AudioLanguage.en_US in voice.audio_languages]
+        
+        # Find voices that use Turbo v2.5 or Flash v2.5 models (which support language_code)
+        compatible_voices = [voice for voice in service_voices 
+                           if voice.voice_key['model_id'] in ['eleven_turbo_v2_5', 'eleven_flash_v2_5']]
+        
+        if len(compatible_voices) == 0:
+            raise unittest.SkipTest('No ElevenLabs voices with Turbo v2.5 or Flash v2.5 models found')
+        
+        # Pick a random voice from the compatible ones
+        selected_voice = random.choice(compatible_voices)
+        
+        logger.info(f'Testing language_code with voice: {selected_voice.name} using model: {selected_voice.voice_key["model_id"]}')
+        
+        # Test with English language code
+        voice_options = {'language_code': 'en'}
+        self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'Hello world', voice_options=voice_options)
+        
+        # Test with empty language code (should be omitted from request)
+        voice_options = {'language_code': ''}
+        self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'Hello world', voice_options=voice_options)
+        
+        # Test without language_code option (should use default)
+        voice_options = {}
+        self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'Hello world', voice_options=voice_options)
+
+    def test_elevenlabs_custom_with_language_code(self):
+        # pytest test_tts_services.py  -k 'TTSTests and test_elevenlabs_custom_with_language_code'
+        service_name = 'ElevenLabsCustom'
+        
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+        
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service == service_name and AudioLanguage.en_US in voice.audio_languages]
+        
+        if len(service_voices) == 0:
+            raise unittest.SkipTest('No ElevenLabsCustom voices found')
+        
+        # Find voices that use Turbo v2.5 or Flash v2.5 models (which support language_code)
+        compatible_voices = [voice for voice in service_voices 
+                           if voice.voice_key['model_id'] in ['eleven_turbo_v2_5', 'eleven_flash_v2_5']]
+        
+        if len(compatible_voices) == 0:
+            raise unittest.SkipTest('No ElevenLabsCustom voices with Turbo v2.5 or Flash v2.5 models found')
+        
+        # Pick a random voice from the compatible ones
+        selected_voice = random.choice(compatible_voices)
+        
+        logger.info(f'Testing ElevenLabsCustom language_code with voice: {selected_voice.name} using model: {selected_voice.voice_key["model_id"]}')
+        
+        # Test with English language code
+        voice_options = {'language_code': 'en'}
+        self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'Hello world', voice_options=voice_options)
+        
+        # Test with empty language code (should be omitted from request)
+        voice_options = {'language_code': ''}
+        self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'Hello world', voice_options=voice_options)
+        
+        # Test without language_code option (should use default)
+        voice_options = {}
+        self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'Hello world', voice_options=voice_options)
+
     def test_openai_english(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_openai_english'
         service_name = 'OpenAI'

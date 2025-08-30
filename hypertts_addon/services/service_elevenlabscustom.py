@@ -173,6 +173,11 @@ class ElevenLabsCustom(service.ServiceBase):
                 "similarity_boost": voice_options.get('similarity_boost', voice.options['similarity_boost']['default'])
             }
         }
+        
+        # Add language_code if provided and not empty
+        language_code = voice_options.get('language_code', voice.options.get('language_code', {}).get('default', ''))
+        if language_code:
+            data['language_code'] = language_code
 
         response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)
         if response.status_code != 200:
