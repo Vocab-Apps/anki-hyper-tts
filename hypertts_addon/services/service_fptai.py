@@ -1,12 +1,15 @@
 import sys
+import os
+import json
+import tempfile
 import requests
-import time
-
+import aqt.sound
 
 from hypertts_addon import voice
 from hypertts_addon import service
 from hypertts_addon import errors
 from hypertts_addon import constants
+from hypertts_addon import languages
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
@@ -33,46 +36,98 @@ class FptAi(service.ServiceBase):
             self.CONFIG_API_KEY: str,
         }
 
+    def build_voice(self, name, gender, voice_id, region):
+        return voice.TtsVoice_v3(
+            name=f'{name} ({region})',
+            gender=gender,
+            audio_languages=[languages.AudioLanguage.vi_VN],
+            service=self.name,
+            voice_key={'voice_id': voice_id},
+            options={},
+            service_fee=self.service_fee
+        )
+
     def voice_list(self):
-        return self.basic_voice_list()
+        # Vietnamese voices from FPT.AI
+        return [
+            # North voices
+            self.build_voice('Le Minh', constants.Gender.Male, 'std_leminh', 'North'),
+            self.build_voice('Ban Mai', constants.Gender.Female, 'std_banmai', 'North'),
+            self.build_voice('Thu Minh', constants.Gender.Female, 'std_thuminh', 'North'),
+            self.build_voice('Huy Phong', constants.Gender.Male, 'std_huyphong', 'North'),
+            self.build_voice('Minh Quan', constants.Gender.Male, 'std_minhquan', 'North'),
+            # South voices
+            self.build_voice('Kim Ngan', constants.Gender.Female, 'std_kimngan', 'South'),
+            self.build_voice('Ha Tieu Mai', constants.Gender.Female, 'std_hatieumai', 'South'),
+            self.build_voice('Gia Huy', constants.Gender.Male, 'std_giahuy', 'South'),
+            # Center voice
+            self.build_voice('Ngoc Lam', constants.Gender.Female, 'std_ngoclam', 'Center'),
+        ]
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
         api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
 
-        api_url = "https://api.fpt.ai/hmi/tts/v5"
-        body = source_text
-        headers = {
-            'api_key': api_key,
-            'voice': voice.voice_key['voice_id'],
-            'Cache-Control': 'no-cache',
-            'format': 'mp3',
+        api_url = "https://mkp-api.fptcloud.com/v1/audio/speech"
+        
+        # Prepare request data
+        data = {
+            'model': 'FPT.AI-VITs',
+            'input': source_text,
+            'voice': voice.voice_key['voice_id']
         }
+        
+        # Add optional speed parameter if provided
         if 'speed' in options:
-            headers['speed'] = str(options.get('speed'))
-        response = requests.post(api_url, headers=headers, data=body.encode('utf-8'), 
-            timeout=constants.RequestTimeout)
+            speed = float(options.get('speed', 1.0))
+            # Clamp speed to valid range (0.5 to 2.0)
+            speed = max(0.5, min(2.0, speed))
+            data['speed'] = speed
+        
+        headers = {
+            'Authorization': f'Bearer {api_key}',
+            'Content-Type': 'application/json',
+        }
+        
+        logger.debug(f'Sending request to FPT.AI API with data: {data}')
+        
+        response = requests.post(
+            api_url, 
+            headers=headers, 
+            json=data,
+            timeout=constants.RequestTimeout
+        )
 
         if response.status_code == 200:
-            response_data = response.json()
-            async_url = response_data['async']
-            logger.debug(f'received async_url: {async_url}')
-
-            # wait until the audio is available
-            audio_available = False
-            total_tries = 7
-            max_tries = total_tries
-            wait_time = 0.2
-            while max_tries > 0:
-                time.sleep(wait_time)
-                logger.debug(f'checking whether audio is available on {async_url}')
-                response = requests.get(async_url, allow_redirects=True, timeout=constants.RequestTimeout)
-                if response.status_code == 200 and len(response.content) > 0:
-                    return response.content
-                wait_time = wait_time * 2
-                max_tries -= 1            
+            # The new API returns WAV audio directly
+            wav_audio = response.content
             
-            error_message = f'could not retrieve audio after {total_tries} tries (url {async_url})'
-            raise errors.RequestError(source_text, voice, error_message)
-
-        error_message = f'could not retrieve FPT.AI audio: {response.content}'
+            # Convert WAV to MP3 using Anki's built-in converter
+            # Create temporary files for conversion
+            fh_wav, wav_temp_file = tempfile.mkstemp(prefix='hypertts_fptai_', suffix='.wav')
+            fh_mp3, mp3_temp_file = tempfile.mkstemp(prefix='hypertts_fptai_', suffix='.mp3')
+            
+            try:
+                # Write WAV data to temp file
+                os.write(fh_wav, wav_audio)
+                os.close(fh_wav)
+                os.close(fh_mp3)
+                
+                # Convert WAV to MP3
+                aqt.sound._encode_mp3(wav_temp_file, mp3_temp_file)
+                
+                # Read the MP3 data
+                with open(mp3_temp_file, 'rb') as f:
+                    mp3_audio = f.read()
+                
+                return mp3_audio
+            finally:
+                # Clean up temp files
+                if os.path.exists(wav_temp_file):
+                    os.remove(wav_temp_file)
+                if os.path.exists(mp3_temp_file):
+                    os.remove(mp3_temp_file)
+        
+        # Handle error responses
+        error_message = f'FPT.AI API error (status {response.status_code}): {response.text}'
+        logger.error(error_message)
         raise errors.RequestError(source_text, voice, error_message)
