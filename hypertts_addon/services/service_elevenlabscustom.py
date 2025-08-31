@@ -14,7 +14,8 @@ from hypertts_addon import options
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
-DEFAULT_STABILITY = 0.75
+# elevenlabs v3 requires discrete values for stability
+DEFAULT_STABILITY = 0.5
 DEFAULT_SIMILARITY_BOOST = 0.75
 
 VOICE_OPTIONS = {
@@ -29,6 +30,10 @@ VOICE_OPTIONS = {
         'min': 0.0,
         'max': 1.0,
         'default': DEFAULT_SIMILARITY_BOOST
+    },
+    'language_code' : {
+        'type': options.ParameterType.text.name,
+        'default': ''
     },
 }
 
