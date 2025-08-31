@@ -80,7 +80,11 @@ class ElevenLabsCustom(service.ServiceBase):
             'pt': languages.AudioLanguage.pt_PT,
             'en-uk': languages.AudioLanguage.en_GB,
             'zh': languages.AudioLanguage.zh_CN,
-            'id': languages.AudioLanguage.id_ID
+            'id': languages.AudioLanguage.id_ID,
+            'as': languages.AudioLanguage.as_IN, # Assamese
+            'is': languages.AudioLanguage.is_IS, # Icelandic,
+            'jv': languages.AudioLanguage.jv_ID, # Javanese,
+            'sr': languages.AudioLanguage.sr_RS, # Serbian
         }
         if language_id in override_map:
             return override_map[language_id]
