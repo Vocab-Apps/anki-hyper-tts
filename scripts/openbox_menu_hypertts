@@ -50,10 +50,6 @@ items = [
         'name': 'test trial signup step 2',
         'command': 'HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_trial_signup_manual_step_2 -s -rPP'
     },
-    {
-        'name': 'test trial signup alternate variant',
-        'command': 'HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_trial_signup_manual_alternate_variant -s -rPP'
-    },
 
 
 ]
