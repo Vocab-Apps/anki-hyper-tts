@@ -132,3 +132,87 @@ def test_strip_brackets(qtbot):
     assert text_utils.process_text('word1 [word2] word3 [word4]', text_processing) == 'word1  word3 '
     assert text_utils.process_text('word1 {word2} word3 {word4}', text_processing) == 'word1  word3 '
     assert text_utils.process_text('word1 <word2> word3 <word4>', text_processing) == 'word1  word3 '
+
+
+def test_strip_sound_tags(qtbot):
+    """Test that sound tags are always stripped during text processing"""
+    text_processing = config_models.TextProcessing()
+    
+    # Basic sound tag removal
+    assert text_utils.process_text('Hello [sound:test.mp3]', text_processing) == 'Hello'
+    assert text_utils.process_text('[sound:test.mp3] Hello', text_processing) == 'Hello'
+    assert text_utils.process_text('Hello [sound:test.mp3] World', text_processing) == 'Hello  World'
+    
+    # Multiple sound tags
+    assert text_utils.process_text('[sound:first.mp3] Hello [sound:second.mp3]', text_processing) == 'Hello'
+    assert text_utils.process_text('Text [sound:a.mp3] with [sound:b.mp3] multiple [sound:c.mp3] tags', text_processing) == 'Text  with  multiple  tags'
+    
+    # Complex filename in sound tag
+    assert text_utils.process_text('Test [sound:hypertts-4f299a66baeb457f5d7f8d5db347857d29cbe927cde694320c1c36c9.mp3]', text_processing) == 'Test'
+    
+    # Japanese text with sound tag (from the GitHub issue)
+    japanese_text = 'ここで一旦、区切ります。 続けて説明します。 [sound:hypertts-4f299a66baeb457f5d7f8d5db347857d29cbe927cde694320c1c36c9.mp3]'
+    expected_japanese = 'ここで一旦、区切ります。 続けて説明します。'
+    assert text_utils.process_text(japanese_text, text_processing) == expected_japanese
+    
+    # Sound tags with different extensions
+    assert text_utils.process_text('Audio [sound:file.ogg] formats', text_processing) == 'Audio  formats'
+    assert text_utils.process_text('Audio [sound:file.wav] formats', text_processing) == 'Audio  formats'
+    
+    # Edge cases - malformed tags (should not be stripped)
+    assert text_utils.process_text('[sound:missing_bracket', text_processing) == '[sound:missing_bracket'
+    assert text_utils.process_text('sound:not_a_tag.mp3]', text_processing) == 'sound:not_a_tag.mp3]'
+    assert text_utils.process_text('[sound missing colon]', text_processing) == '[sound missing colon]'
+    
+    # Sound tags are stripped even when other text processing is disabled
+    text_processing.html_to_text_line = False
+    text_processing.ssml_convert_characters = False
+    assert text_utils.process_text('Hello [sound:test.mp3] <b>World</b>', text_processing) == 'Hello  <b>World</b>'
+    
+    # Sound tags with brackets processing enabled
+    text_processing.strip_brackets = True
+    # Note: strip_brackets removes (comment) and [bracket] and leaves spaces
+    assert text_utils.process_text('Hello [sound:test.mp3] (comment)', text_processing) == 'Hello  '
+    assert text_utils.process_text('Hello [bracket] [sound:test.mp3]', text_processing) == 'Hello '
+    
+    # Test with text replacement rules
+    text_processing = config_models.TextProcessing()
+    rule = config_models.TextReplacementRule(constants.TextReplacementRuleType.Simple)
+    rule.source = 'Hello'
+    rule.target = 'Hi'
+    text_processing.add_text_replacement_rule(rule)
+    
+    # Sound tags should be stripped regardless of replacement rules
+    assert text_utils.process_text('Hello [sound:test.mp3] World', text_processing) == 'Hi  World'
+    
+    # Test that strip_sound_tag is called as part of process_text_rules
+    text_processing = config_models.TextProcessing()
+    text_with_sound = 'Text [sound:audio.mp3] content'
+    # Using process_text_rules directly
+    processed = text_utils.process_text_rules(text_with_sound, text_processing)
+    assert processed == 'Text  content'
+
+
+def test_strip_sound_tag_function(qtbot):
+    """Test the strip_sound_tag function directly"""
+    # Basic cases
+    assert text_utils.strip_sound_tag('[sound:test.mp3]') == ''
+    assert text_utils.strip_sound_tag('Hello [sound:test.mp3]') == 'Hello'
+    assert text_utils.strip_sound_tag('[sound:test.mp3] Hello') == 'Hello'
+    assert text_utils.strip_sound_tag('Hello [sound:test.mp3] World') == 'Hello  World'
+    
+    # Multiple tags
+    assert text_utils.strip_sound_tag('[sound:a.mp3][sound:b.mp3]') == ''
+    assert text_utils.strip_sound_tag('A [sound:1.mp3] B [sound:2.mp3] C') == 'A  B  C'
+    
+    # Complex filenames
+    assert text_utils.strip_sound_tag('[sound:file-with-dashes.mp3]') == ''
+    assert text_utils.strip_sound_tag('[sound:file_with_underscores.mp3]') == ''
+    assert text_utils.strip_sound_tag('[sound:file.with.dots.mp3]') == ''
+    assert text_utils.strip_sound_tag('[sound:日本語.mp3]') == ''
+    
+    # Edge cases
+    assert text_utils.strip_sound_tag('') == ''
+    assert text_utils.strip_sound_tag('No sound tags here') == 'No sound tags here'
+    assert text_utils.strip_sound_tag('[not a sound tag]') == '[not a sound tag]'
+    assert text_utils.strip_sound_tag('[sound:] empty') == '[sound:] empty'  # Empty sound tag (malformed)

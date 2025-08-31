@@ -178,7 +178,6 @@ class ComponentEasySource(component_common.ConfigComponentBase):
         if source_text != None:
             text_processing_model = config_models.get_easy_mode_source_default_text_processing()
             source_text = text_utils.process_text(source_text, text_processing_model)
-            source_text = text_utils.strip_sound_tag(source_text)
 
         self.source_text_edit.setPlainText(source_text)
 

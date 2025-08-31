@@ -63,6 +63,8 @@ def strip_brackets(text):
     return text
 
 def process_text_rules(text, text_processing_model):
+    # Always strip sound tags first - they should never be pronounced
+    text = strip_sound_tag(text)
     if text_processing_model.html_to_text_line:
         text = strip_html(text)
     if text_processing_model.strip_brackets:
