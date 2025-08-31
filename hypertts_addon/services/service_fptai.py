@@ -36,33 +36,8 @@ class FptAi(service.ServiceBase):
             self.CONFIG_API_KEY: str,
         }
 
-    def build_voice(self, name, gender, voice_id, region):
-        return voice.TtsVoice_v3(
-            name=f'{name} ({region})',
-            gender=gender,
-            audio_languages=[languages.AudioLanguage.vi_VN],
-            service=self.name,
-            voice_key={'voice_id': voice_id},
-            options={},
-            service_fee=self.service_fee
-        )
-
     def voice_list(self):
-        # Vietnamese voices from FPT.AI
-        return [
-            # North voices
-            self.build_voice('Le Minh', constants.Gender.Male, 'std_leminh', 'North'),
-            self.build_voice('Ban Mai', constants.Gender.Female, 'std_banmai', 'North'),
-            self.build_voice('Thu Minh', constants.Gender.Female, 'std_thuminh', 'North'),
-            self.build_voice('Huy Phong', constants.Gender.Male, 'std_huyphong', 'North'),
-            self.build_voice('Minh Quan', constants.Gender.Male, 'std_minhquan', 'North'),
-            # South voices
-            self.build_voice('Kim Ngan', constants.Gender.Female, 'std_kimngan', 'South'),
-            self.build_voice('Ha Tieu Mai', constants.Gender.Female, 'std_hatieumai', 'South'),
-            self.build_voice('Gia Huy', constants.Gender.Male, 'std_giahuy', 'South'),
-            # Center voice
-            self.build_voice('Ngoc Lam', constants.Gender.Female, 'std_ngoclam', 'Center'),
-        ]
+        return self.basic_voice_list()
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, options):
         api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
