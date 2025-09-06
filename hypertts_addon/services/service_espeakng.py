@@ -114,7 +114,7 @@ class ESpeakNg(service.ServiceBase):
         
         try:
             subprocess.run(cmd, check=True, capture_output=True, text=True)
-        except subprocess.CalledProcessError as e:
+        except Exception as e:
             logger.warning(f"espeak-ng failed: {e.stderr}")
             raise errors.RequestError(f"espeak-ng failed: {e.stderr}")
 
