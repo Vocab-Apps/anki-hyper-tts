@@ -115,7 +115,7 @@ class ESpeakNg(service.ServiceBase):
         try:
             subprocess.run(cmd, check=True, capture_output=True, text=True)
         except subprocess.CalledProcessError as e:
-            logger.error(f"espeak-ng failed: {e.stderr}")
+            logger.warning(f"espeak-ng failed: {e.stderr}")
             raise errors.RequestError(f"espeak-ng failed: {e.stderr}")
 
         # Check if the wav file was created
