@@ -272,10 +272,7 @@ class TextProcessing(component_common.ConfigComponentBase):
     def set_text_processing_rules_widget_state(self):
         self.html_to_text_line_checkbox.setChecked(self.model.html_to_text_line)
         self.strip_brackets_checkbox.setChecked(self.model.strip_brackets)
-        if hasattr(self.model, 'strip_cloze'):
-            self.strip_cloze_checkbox.setChecked(self.model.strip_cloze)
-        else:
-            self.strip_cloze_checkbox.setChecked(False)
+        self.strip_cloze_checkbox.setChecked(self.model.strip_cloze)
         self.ssml_convert_characters_checkbox.setChecked(self.model.ssml_convert_characters)
         self.run_replace_rules_after_checkbox.setChecked(self.model.run_replace_rules_after)
 

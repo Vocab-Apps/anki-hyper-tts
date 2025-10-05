@@ -74,7 +74,7 @@ def strip_cloze_markers(text):
 def process_text_rules(text, text_processing_model):
     # Always strip sound tags first - they should never be pronounced
     text = strip_sound_tag(text)
-    if hasattr(text_processing_model, 'strip_cloze') and text_processing_model.strip_cloze:
+    if text_processing_model.strip_cloze:
         text = strip_cloze_markers(text)
     if text_processing_model.html_to_text_line:
         text = strip_html(text)
