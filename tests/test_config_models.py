@@ -566,6 +566,62 @@ class ConfigModelsTests(unittest.TestCase):
         }
         assert hypertts_instance.deserialize_text_processing(text_processing.serialize()).serialize() == expected_output
 
+    def test_deserialize_text_processing_missing_strip_cloze(self):
+        """Test deserializing text processing without strip_cloze field - should default to False"""
+        hypertts_instance = get_hypertts_instance()
+        
+        # Create input data without strip_cloze field
+        input_data = {
+            'html_to_text_line': True,
+            'strip_brackets': False,
+            'run_replace_rules_after': True,
+            'ssml_convert_characters': True,
+            'ignore_case': False,
+            'text_replacement_rules': []
+        }
+        
+        # Deserialize and check that strip_cloze defaults to False
+        deserialized = hypertts_instance.deserialize_text_processing(input_data)
+        assert deserialized.strip_cloze == False
+
+    def test_deserialize_text_processing_strip_cloze_true(self):
+        """Test deserializing text processing with strip_cloze = True"""
+        hypertts_instance = get_hypertts_instance()
+        
+        # Create input data with strip_cloze = True
+        input_data = {
+            'html_to_text_line': True,
+            'strip_brackets': False,
+            'strip_cloze': True,
+            'run_replace_rules_after': True,
+            'ssml_convert_characters': True,
+            'ignore_case': False,
+            'text_replacement_rules': []
+        }
+        
+        # Deserialize and check that strip_cloze is True
+        deserialized = hypertts_instance.deserialize_text_processing(input_data)
+        assert deserialized.strip_cloze == True
+
+    def test_deserialize_text_processing_strip_cloze_false(self):
+        """Test deserializing text processing with strip_cloze = False"""
+        hypertts_instance = get_hypertts_instance()
+        
+        # Create input data with strip_cloze = False
+        input_data = {
+            'html_to_text_line': True,
+            'strip_brackets': False,
+            'strip_cloze': False,
+            'run_replace_rules_after': True,
+            'ssml_convert_characters': True,
+            'ignore_case': False,
+            'text_replacement_rules': []
+        }
+        
+        # Deserialize and check that strip_cloze is False
+        deserialized = hypertts_instance.deserialize_text_processing(input_data)
+        assert deserialized.strip_cloze == False
+
 
     def test_configuration(self):
         # exclude these from comparison
