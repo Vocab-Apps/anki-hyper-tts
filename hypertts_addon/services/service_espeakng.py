@@ -71,6 +71,13 @@ class ESpeakNg(service.ServiceBase):
         }
 
         try:
+            # First check if espeak-ng is available
+            try:
+                subprocess.run(['espeak-ng', '--version'], check=True, capture_output=True, text=True)
+            except (subprocess.CalledProcessError, FileNotFoundError):
+                logger.warning('espeak-ng executable not found')
+                return []
+            
             result = []
             # Get available voices from Speaker.list_voices()
             available_voices = espeakng.Speaker.list_voices()
