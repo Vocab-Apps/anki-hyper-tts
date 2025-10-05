@@ -403,6 +403,7 @@ class ConfigModelsTests(unittest.TestCase):
             'text_processing': {
                 'html_to_text_line': True,
                 'strip_brackets': False,
+                'strip_cloze': False,
                 'run_replace_rules_after': True,
                 'ssml_convert_characters': True,
                 'ignore_case': False,
@@ -507,6 +508,7 @@ class ConfigModelsTests(unittest.TestCase):
         expected_output = {
             'html_to_text_line': True,
             'strip_brackets': False,
+            'strip_cloze': False,
             'run_replace_rules_after': True,
             'ssml_convert_characters': True,
             'ignore_case': False,
@@ -531,6 +533,7 @@ class ConfigModelsTests(unittest.TestCase):
         expected_output = {
             'html_to_text_line': True,
             'strip_brackets': False,
+            'strip_cloze': False,
             'run_replace_rules_after': True,
             'ssml_convert_characters': True,
             'ignore_case': False,
@@ -549,6 +552,7 @@ class ConfigModelsTests(unittest.TestCase):
         expected_output = {
             'html_to_text_line': True,
             'strip_brackets': True,
+            'strip_cloze': False,
             'run_replace_rules_after': True,
             'ssml_convert_characters': True,        
             'ignore_case': False,
@@ -722,6 +726,7 @@ class ConfigModelsTests(unittest.TestCase):
             'text_processing': {
                 'html_to_text_line': True,
                 'strip_brackets': False,
+                'strip_cloze': False,
                 'run_replace_rules_after': True,
                 'ssml_convert_characters': True,
                 'ignore_case': False,
@@ -861,6 +866,7 @@ class ConfigModelsTests(unittest.TestCase):
                 'text_processing': {
                     'html_to_text_line': True,
                     'strip_brackets': False,
+                    'strip_cloze': False,
                     'run_replace_rules_after': True,
                     'ssml_convert_characters': True,
                     'ignore_case': False,   
@@ -1070,6 +1076,7 @@ class ConfigModelsTests(unittest.TestCase):
                     'text_processing': {
                         'html_to_text_line': True,
                         'strip_brackets': False,
+                        'strip_cloze': False,
                         'run_replace_rules_after': True,
                         'ssml_convert_characters': True,
                         'ignore_case': False,
@@ -1133,6 +1140,7 @@ class ConfigModelsTests(unittest.TestCase):
                 "run_replace_rules_after": true,
                 "ssml_convert_characters": true,
                 "strip_brackets": false,
+                "strip_cloze": false,
                 "text_replacement_rules": []
             },
             "uuid": "1f8ae532-c1e0-4467-8220-9394f523ff17",
@@ -1172,6 +1180,7 @@ class ConfigModelsTests(unittest.TestCase):
                 "run_replace_rules_after": true,
                 "ssml_convert_characters": true,
                 "strip_brackets": false,
+                "strip_cloze": false,
                 "text_replacement_rules": []
             },
             "uuid": "79b2715e-9871-4b4f-9a5b-8bd5ac89d689",
@@ -1229,6 +1238,7 @@ class ConfigModelsTests(unittest.TestCase):
                 "run_replace_rules_after": true,
                 "ssml_convert_characters": true,
                 "strip_brackets": false,
+                "strip_cloze": false,
                 "text_replacement_rules": []
             },
             "uuid": "a82dec0d-f140-42f1-b635-89ff1dad4262",
@@ -1280,6 +1290,7 @@ class ConfigModelsTests(unittest.TestCase):
                     "run_replace_rules_after": true,
                     "ssml_convert_characters": true,
                     "strip_brackets": false,
+                    "strip_cloze": false,
                     "text_replacement_rules": []
                 },
                 "voice_selection": {
@@ -1345,6 +1356,7 @@ class ConfigModelsTests(unittest.TestCase):
                 "run_replace_rules_after": true,
                 "ssml_convert_characters": true,
                 "strip_brackets": false,
+                "strip_cloze": false,
                 "text_replacement_rules": []
             },
             "uuid": "1f8ae532-c1e0-4467-8220-9394f523ff17",
@@ -1381,6 +1393,7 @@ class ConfigModelsTests(unittest.TestCase):
                 "run_replace_rules_after": true,
                 "ssml_convert_characters": true,
                 "strip_brackets": false,
+                "strip_cloze": false,
                 "text_replacement_rules": []
             },
             "uuid": "79b2715e-9871-4b4f-9a5b-8bd5ac89d689",
@@ -1431,6 +1444,7 @@ class ConfigModelsTests(unittest.TestCase):
                 "run_replace_rules_after": true,
                 "ssml_convert_characters": true,
                 "strip_brackets": false,
+                "strip_cloze": false,
                 "text_replacement_rules": []
             },
             "uuid": "a82dec0d-f140-42f1-b635-89ff1dad4262",
@@ -1476,6 +1490,7 @@ class ConfigModelsTests(unittest.TestCase):
                     "run_replace_rules_after": true,
                     "ssml_convert_characters": true,
                     "strip_brackets": false,
+                    "strip_cloze": false,
                     "text_replacement_rules": []
                 },
                 "voice_selection": {
@@ -1538,6 +1553,7 @@ class ConfigModelsTests(unittest.TestCase):
                     "run_replace_rules_after": true,
                     "ssml_convert_characters": true,
                     "strip_brackets": false,
+                    "strip_cloze": false,
                     "text_replacement_rules": []
                 },
                 "voice_selection": {
@@ -1587,6 +1603,7 @@ class ConfigModelsTests(unittest.TestCase):
                     "run_replace_rules_after": true,
                     "ssml_convert_characters": true,
                     "strip_brackets": false,
+                    "strip_cloze": false,
                     "text_replacement_rules": []
                 },
                 "voice_selection": {
@@ -1658,6 +1675,7 @@ class ConfigModelsTests(unittest.TestCase):
                     "run_replace_rules_after": true,
                     "ssml_convert_characters": true,
                     "strip_brackets": false,
+                    "strip_cloze": false,
                     "text_replacement_rules": []
                 },
                 "voice_selection": {
@@ -1699,6 +1717,7 @@ class ConfigModelsTests(unittest.TestCase):
                     "run_replace_rules_after": true,
                     "ssml_convert_characters": true,
                     "strip_brackets": false,
+                    "strip_cloze": false,
                     "text_replacement_rules": []
                 },
                 "voice_selection": {
