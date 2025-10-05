@@ -134,6 +134,51 @@ def test_strip_brackets(qtbot):
     assert text_utils.process_text('word1 <word2> word3 <word4>', text_processing) == 'word1  word3 '
 
 
+def test_strip_cloze_markers(qtbot):
+    """Test that cloze deletion markers are properly stripped"""
+    text_processing = config_models.TextProcessing()
+    text_processing.strip_cloze = False
+    
+    # Cloze markers should remain when strip_cloze is False
+    assert text_utils.process_text('This {{c1::is}} a test', text_processing) == 'This {{c1::is}} a test'
+    
+    # Enable cloze stripping
+    text_processing.strip_cloze = True
+    
+    # Basic cloze removal
+    assert text_utils.process_text('This {{c1::is}} a test', text_processing) == 'This is a test'
+    assert text_utils.process_text('{{c1::Hello}} world', text_processing) == 'Hello world'
+    assert text_utils.process_text('Test {{c2::sentence}}', text_processing) == 'Test sentence'
+    
+    # Multiple cloze deletions
+    assert text_utils.process_text('This {{c1::is}} an {{c2::example}} sentence', text_processing) == 'This is an example sentence'
+    assert text_utils.process_text('{{c1::First}} {{c2::Second}} {{c3::Third}}', text_processing) == 'First Second Third'
+    
+    # Cloze with hints
+    assert text_utils.process_text('I {{c1::am eating::eat}} an apple', text_processing) == 'I am eating an apple'
+    assert text_utils.process_text('She {{c2::is running::run}} fast', text_processing) == 'She is running fast'
+    assert text_utils.process_text('{{c1::Paris::Capital of France}} is beautiful', text_processing) == 'Paris is beautiful'
+    
+    # Complex sentences with multiple clozes and hints
+    assert text_utils.process_text('I {{c1::am eating::eat}} an {{c2::apple::fruit}} right now', text_processing) == 'I am eating an apple right now'
+    
+    # Edge cases
+    assert text_utils.process_text('No cloze here', text_processing) == 'No cloze here'
+    assert text_utils.process_text('', text_processing) == ''
+    
+    # Interaction with other text processing options
+    text_processing.html_to_text_line = True
+    assert text_utils.process_text('<b>This</b> {{c1::is}} a test', text_processing) == 'This is a test'
+    
+    text_processing.strip_brackets = True
+    text_processing.html_to_text_line = False
+    assert text_utils.process_text('This {{c1::is}} a (test)', text_processing) == 'This is a '
+    
+    # Cloze with special characters in the content
+    assert text_utils.process_text('The answer is {{c1::x + y = z}}', text_processing) == 'The answer is x + y = z'
+    assert text_utils.process_text('{{c1::C++}} is a language', text_processing) == 'C++ is a language'
+
+
 def test_strip_sound_tags(qtbot):
     """Test that sound tags are always stripped during text processing"""
     text_processing = config_models.TextProcessing()

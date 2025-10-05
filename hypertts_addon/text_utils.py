@@ -62,9 +62,20 @@ def strip_brackets(text):
     text = re.sub(r'\<[^\>]*\>', '', text)
     return text
 
+def strip_cloze_markers(text):
+    """Remove Anki cloze deletion markers from text.
+    Handles patterns like {{c1::text}} and {{c1::text::hint}}
+    """
+    # Pattern matches {{c<number>::content}} or {{c<number>::content::hint}}
+    # Captures just the content part, ignoring the hint if present
+    pattern = r'\{\{c\d+::([^:}]+)(?:::[^}]+)?\}\}'
+    return re.sub(pattern, r'\1', text)
+
 def process_text_rules(text, text_processing_model):
     # Always strip sound tags first - they should never be pronounced
     text = strip_sound_tag(text)
+    if hasattr(text_processing_model, 'strip_cloze') and text_processing_model.strip_cloze:
+        text = strip_cloze_markers(text)
     if text_processing_model.html_to_text_line:
         text = strip_html(text)
     if text_processing_model.strip_brackets:

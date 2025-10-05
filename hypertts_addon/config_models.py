@@ -344,6 +344,7 @@ class TextProcessing(ConfigModelBase):
         self._text_replacement_rules = []
         self.html_to_text_line = constants.TEXT_PROCESSING_DEFAULT_HTMLTOTEXTLINE
         self.strip_brackets = constants.TEXT_PROCESSING_DEFAULT_STRIP_BRACKETS
+        self.strip_cloze = constants.TEXT_PROCESSING_DEFAULT_STRIP_CLOZE
         self.ssml_convert_characters = constants.TEXT_PROCESSING_DEFAULT_SSML_CHARACTERS
         self.run_replace_rules_after = constants.TEXT_PROCESSING_DEFAULT_REPLACE_AFTER
         self.ignore_case = constants.TEXT_PROCESSING_DEFAULT_IGNORE_CASE
@@ -369,6 +370,7 @@ class TextProcessing(ConfigModelBase):
         return {
             'html_to_text_line': self.html_to_text_line,
             'strip_brackets': self.strip_brackets,
+            'strip_cloze': self.strip_cloze,
             'ssml_convert_characters': self.ssml_convert_characters,
             'run_replace_rules_after': self.run_replace_rules_after,
             'ignore_case': self.ignore_case,

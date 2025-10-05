@@ -2222,6 +2222,14 @@ def test_text_processing(qtbot):
     assert model_change_callback.model.strip_brackets == True
     text_processing.strip_brackets_checkbox.setChecked(False)
     assert model_change_callback.model.strip_brackets == False
+    
+    # test strip_cloze checkbox
+    assert text_processing.strip_cloze_checkbox.isChecked() == False
+    text_processing.strip_cloze_checkbox.setChecked(True)
+    assert model_change_callback.model.strip_cloze == True
+    text_processing.strip_cloze_checkbox.setChecked(False)
+    assert model_change_callback.model.strip_cloze == False
+    
     # ignore case
     text_processing.ignore_case_checkbox.setChecked(True)
     assert model_change_callback.model.ignore_case == True
@@ -2247,6 +2255,7 @@ def test_text_processing(qtbot):
 
     text_processing.html_to_text_line = False
     text_processing.strip_brackets = True
+    text_processing.strip_cloze = True
     text_processing.ssml_convert_characters = True
     text_processing.run_replace_rules_after = False
 
@@ -2284,6 +2293,7 @@ def test_text_processing(qtbot):
 
     assert text_processing_component.html_to_text_line_checkbox.isChecked() == False
     assert text_processing_component.strip_brackets_checkbox.isChecked() == True
+    assert text_processing_component.strip_cloze_checkbox.isChecked() == True
     assert text_processing_component.ssml_convert_characters_checkbox.isChecked() == True
     assert text_processing_component.run_replace_rules_after_checkbox.isChecked() == False
 
