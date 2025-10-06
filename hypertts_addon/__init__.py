@@ -113,9 +113,10 @@ else:
         from . import version
         from . import sentry_utils
 
+        production_sample_rate = 0.025 if configuration.hypertts_pro_api_key_set() else 0.01
         traces_sample_rate_map = {
             'development': 1.0,
-            'production': 0.021
+            'production': production_sample_rate
         }
 
         # need to create an anki-hyper-tts project in sentry.io first
