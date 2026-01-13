@@ -1,5 +1,6 @@
 import sys
 import os
+import io
 import logging
 import inspect
 
@@ -79,12 +80,21 @@ class SentryLogger():
         self.send_event(logging.CRITICAL, msg)
 
 def get_stream_handler():
-    handler = logging.StreamHandler(stream=sys.stdout)
+    # Wrap stdout to handle encoding errors gracefully on Windows (cp1252)
+    # This prevents UnicodeEncodeError when logging non-ASCII characters
+    wrapped_stdout = io.TextIOWrapper(
+        sys.stdout.buffer,
+        encoding=sys.stdout.encoding,
+        errors='backslashreplace',
+        line_buffering=True
+    )
+    handler = logging.StreamHandler(stream=wrapped_stdout)
     handler.setFormatter(logging.Formatter(fmt='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(name)s: %(message)s', datefmt='%H:%M:%S'))
     return handler
 
 def get_file_handler(filename):
-    handler = logging.FileHandler(filename)
+    # Use UTF-8 encoding to properly handle all Unicode characters
+    handler = logging.FileHandler(filename, encoding='utf-8')
     handler.setFormatter(logging.Formatter(fmt='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(name)s: %(message)s', datefmt='%H:%M:%S'))
     return handler    
 
