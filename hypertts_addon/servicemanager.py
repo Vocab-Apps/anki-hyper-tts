@@ -39,7 +39,7 @@ class ServiceManager():
         self.allow_test_services = allow_test_services
         self.cloudlanguagetools = cloudlanguagetools
 
-    def configure(self, configuration_model) -> bool:
+    def configure(self, configuration_model, disable_ssl_verification: bool = False) -> bool:
         # will return true if at least one service is enabled
         return_value = False
         hypertts_pro_mode = configuration_model.hypertts_pro_api_key_set()
@@ -59,14 +59,14 @@ class ServiceManager():
                     service_config = configuration_model.get_service_config()[service_name]
                     service.configure(service_config)
         # if we enable cloudlanguagetools, it may force some services to enabled
-        self.cloudlanguagetools.configure(configuration_model)
+        self.cloudlanguagetools.configure(configuration_model, disable_ssl_verification)
         if hypertts_pro_mode:
             self.configure_cloudlanguagetools(configuration_model)
             # all hypertts pro services enabled
             return_value = True
         else:
             self.cloudlanguagetools_enabled = False
-        
+
         return return_value
 
     def remove_non_existent_services(self, configuration_model):

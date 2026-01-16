@@ -434,8 +434,9 @@ class MockCloudLanguageTools():
 
         self.account_info_called = False
 
-    def configure(self, config):
+    def configure(self, config, disable_ssl_verification: bool = False):
         self.config = config
+        self.disable_ssl_verification = disable_ssl_verification
 
     def account_info(self, api_key) -> config_models.HyperTTSProAccountConfig:
         logger.debug(f'account_info called with api_key: {api_key}')
