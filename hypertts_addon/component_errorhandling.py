@@ -25,6 +25,8 @@ class ErrorHandling(component_common.ConfigComponentBase):
 
         self.error_stats_reporting = aqt.qt.QCheckBox('Send anonymous usage statistics and error reports to help improve HyperTTS')
 
+        self.disable_ssl_verification = aqt.qt.QCheckBox('Disable SSL certificate verification (not recommended)')
+
     def get_model(self):
         return self.model
 
@@ -33,6 +35,7 @@ class ErrorHandling(component_common.ConfigComponentBase):
         self.propagate_model_change = False
         self.realtime_tts_errors_dialog_type.setCurrentText(self.model.realtime_tts_errors_dialog_type.name)
         self.error_stats_reporting.setChecked(self.model.error_stats_reporting)
+        self.disable_ssl_verification.setChecked(self.model.disable_ssl_verification)
         self.propagate_model_change = True
 
     def notify_model_update(self):
@@ -65,11 +68,22 @@ class ErrorHandling(component_common.ConfigComponentBase):
         reporting_groupbox.setLayout(reporting_vlayout)
         layout.addWidget(reporting_groupbox)
 
+        # Network Connection group
+        network_groupbox = aqt.qt.QGroupBox('Network Connection')
+        network_vlayout = aqt.qt.QVBoxLayout()
+        ssl_description = aqt.qt.QLabel('Only disable SSL verification if you are behind a corporate proxy or firewall that intercepts HTTPS connections.')
+        ssl_description.setWordWrap(True)
+        network_vlayout.addWidget(ssl_description)
+        network_vlayout.addWidget(self.disable_ssl_verification)
+        network_groupbox.setLayout(network_vlayout)
+        layout.addWidget(network_groupbox)
+
         layout.addStretch()
 
         # wire events
         self.realtime_tts_errors_dialog_type.currentIndexChanged.connect(self.realtime_tts_errors_dialog_type_changed)
         self.error_stats_reporting.stateChanged.connect(self.error_stats_reporting_changed)
+        self.disable_ssl_verification.stateChanged.connect(self.disable_ssl_verification_changed)
 
         return layout_widget
 
@@ -81,5 +95,10 @@ class ErrorHandling(component_common.ConfigComponentBase):
     def error_stats_reporting_changed(self, state):
         logger.info(f'error_stats_reporting_changed {state}')
         self.model.error_stats_reporting = bool(state)
+        self.notify_model_update()
+
+    def disable_ssl_verification_changed(self, state):
+        logger.info(f'disable_ssl_verification_changed {state}')
+        self.model.disable_ssl_verification = bool(state)
         self.notify_model_update()
 

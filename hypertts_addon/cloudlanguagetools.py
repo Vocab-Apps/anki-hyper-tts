@@ -20,11 +20,15 @@ class CloudLanguageTools():
     def __init__(self):
         self.clt_api_base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_BASE_URL', constants.CLOUDLANGUAGETOOLS_API_BASE_URL)
         self.vocabai_api_base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_VOCABAI_BASE_URL', constants.VOCABAI_API_BASE_URL)
+        self.disable_ssl_verification = False
         logger.info(f'using CLT API base URL: {self.clt_api_base_url}')
         logger.info(f'using VocabAi API base URL: {self.vocabai_api_base_url}')
 
-    def configure(self, config: config_models.Configuration):
+    def configure(self, config: config_models.Configuration, disable_ssl_verification: bool = False):
         self.config = config
+        self.disable_ssl_verification = disable_ssl_verification
+        if self.disable_ssl_verification:
+            logger.warning('SSL verification is disabled for cloud language tools connections')
 
     def get_request_headers(self):
         if self.config.use_vocabai_api:
@@ -51,6 +55,10 @@ class CloudLanguageTools():
             return self.vocabai_api_base_url
         else:
             return self.clt_api_base_url
+
+    def get_verify_ssl(self):
+        """Returns the SSL verification setting for requests. Returns True (verify SSL) by default."""
+        return not self.disable_ssl_verification
 
     def get_tts_audio(self, source_text, voice, options, audio_request_context):
         if hasattr(sys, '_sentry_crash_reporting'):
@@ -90,7 +98,7 @@ class CloudLanguageTools():
         headers = self.get_request_headers()
         logger.debug(f'get_tts_audio: headers: {headers} data: {data}')
         response = requests.post(full_url, json=data, headers=self.get_request_headers(),
-            timeout=constants.RequestTimeout)
+            timeout=constants.RequestTimeout, verify=self.get_verify_ssl())
 
         if response.status_code == 200:
             return response.content
@@ -105,7 +113,8 @@ class CloudLanguageTools():
         logger.debug(f'verifying API key on vocabai API')
         response = requests.get(self.vocabai_api_base_url + '/account', headers={
                 'Authorization': f'Api-Key {api_key}',
-                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'}
+                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'},
+            verify=self.get_verify_ssl()
         )
         logger.debug(f'vocabai API result: {response.json()}')
         if response.status_code == 200:
@@ -119,7 +128,8 @@ class CloudLanguageTools():
 
         # now try to get account data on CLT API
         logger.debug(f'verifying API key on CLT API')
-        response = requests.get(self.clt_api_base_url + '/account', headers={'api_key': api_key})
+        response = requests.get(self.clt_api_base_url + '/account', headers={'api_key': api_key},
+            verify=self.get_verify_ssl())
         logger.debug(f'CLT API result: {response.json()}')
         if response.status_code == 200:
             # API key is valid on CLT API
@@ -155,9 +165,10 @@ class CloudLanguageTools():
 
     def check_email_verification_status(self, email) -> bool:
         logger.info(f'checking email verification status for email {email}')
-        
+
         response = requests.get(self.vocabai_api_base_url + '/check_email_verification',
-                               headers=self.get_request_headers())
+                               headers=self.get_request_headers(),
+                               verify=self.get_verify_ssl())
         
         if response.status_code != 200:
             error_message = f"Status code: {response.status_code} ({response.content})"
@@ -168,11 +179,12 @@ class CloudLanguageTools():
 
     def request_trial_key(self, email, password, client_uuid) -> config_models.TrialRequestReponse:
         logger.info(f'requesting trial key for email {email}')
-        
+
         data = self.build_trial_key_request_data(email, password, client_uuid)
-        response = requests.post(self.vocabai_api_base_url + '/register_trial', 
+        response = requests.post(self.vocabai_api_base_url + '/register_trial',
                                  json=data,
-                                 headers=self.get_trial_request_headers())
+                                 headers=self.get_trial_request_headers(),
+                                 verify=self.get_verify_ssl())
         data = json.loads(response.content)
         logger.info(f'retrieved {data}, status_code: {response.status_code}')
 
