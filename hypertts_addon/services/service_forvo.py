@@ -105,6 +105,10 @@ class Forvo(service.ServiceBase):
                 raise errors.AudioNotFoundError(source_text, voice)
             audio_url = items[0]['pathmp3']
             audio_request = requests.get(audio_url, headers=headers, timeout=constants.RequestTimeout)
+            content_type = audio_request.headers.get('Content-Type', '')
+            if content_type != 'audio/mpeg':
+                logger.error(f'Forvo: unexpected content type from audio request: {content_type}, url: {audio_url}')
+                raise errors.RequestError(source_text, voice, f'Unexpected content type from Forvo: {content_type}')
             return audio_request.content
 
         error_message = f'status_code: {response.status_code} response: {response.content}'
