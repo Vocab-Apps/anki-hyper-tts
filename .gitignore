@@ -21,3 +21,4 @@ generated_audio.ogg
 .aider*
 .cache/
 .pki/
+.venv/

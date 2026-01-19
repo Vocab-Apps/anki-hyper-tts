@@ -453,9 +453,11 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # check filtering by gender
         if self.genders_combobox.currentIndex() != 0:
             gender = self.genders[self.genders_combobox.currentIndex() - 2]
-            voice_list = [voice for voice in voice_list if voice.gender == gender]
+            voice_list = [voice for voice in voice_list if voice.gender == gender or voice.gender == constants.Gender.Any]
             logger.debug(f'filtered by gender {gender}, voice count: {len(voice_list)}')
         def voice_sort_key(voice):
+            if voice.name == 'System Default':
+                return ""
             return str(voice)
         # sort
         voice_list.sort(key=voice_sort_key)
