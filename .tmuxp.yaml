@@ -9,9 +9,9 @@ shell_command_before:
 windows:
 - window_name: hypertts
   focus: true
-- window_name: hypertts-3.9
+- window_name: hypertts-3.14
   panes:
-    - shell_command: source ${PYTHON_ENV_DIR}/anki-hyper-tts-3.9/bin/activate
+    - shell_command: source ${PYTHON_ENV_DIR}/anki-hyper-tts-3.14/bin/activate    
 - window_name: git
 - window_name: ai
 - window_name: anki-log
