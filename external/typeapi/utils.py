@@ -1,4 +1,5 @@
 import collections
+import inspect
 import sys
 import types
 import typing
@@ -16,6 +17,7 @@ IS_PYTHON_AT_LAST_3_8 = sys.version_info[:2] <= (3, 8)
 IS_PYTHON_AT_LEAST_3_7 = sys.version_info[:2] >= (3, 7)
 IS_PYTHON_AT_LEAST_3_9 = sys.version_info[:2] >= (3, 9)
 IS_PYTHON_AT_LEAST_3_10 = sys.version_info[:2] >= (3, 10)
+IS_PYTHON_AT_LAST_3_14 = sys.version_info[:2] >= (3, 14)
 TYPING_MODULE_NAMES = frozenset(["typing", "typing_extensions", "collections.abc"])
 T_contra = TypeVar("T_contra", contravariant=True)
 U_co = TypeVar("U_co", covariant=True)
@@ -44,6 +46,11 @@ def get_type_hint_origin_or_none(hint: object) -> "Any | None":
     """
 
     hint_origin = getattr(hint, "__origin__", None)
+
+    # With Python 3.14, the `__origin__` field on typing classes is a getset_descriptor; but we must treat it
+    # as if the type hint has no origin. For completeness, we ignore any kind of descriptor.
+    if IS_PYTHON_AT_LAST_3_14 and is_any_descriptor(hint_origin):
+        hint_origin = None
 
     # In Python 3.6, List[int].__origin__ points to List; but we can look for
     # the Python native type in its __bases__.
@@ -117,6 +124,8 @@ def get_type_hint_args(hint: object) -> Tuple[Any, ...]:
     """
 
     hint_args = getattr(hint, "__args__", None) or ()
+    if IS_PYTHON_AT_LAST_3_14 and is_any_descriptor(hint_args):
+        hint_args = ()
 
     # In Python 3.7 and 3.8, generics like List and Tuple have a "_special"
     # but their __args__ contain type vars. For consistent results across
@@ -152,6 +161,8 @@ def get_type_hint_parameters(hint: object) -> Tuple[Any, ...]:
     """
 
     hint_params = getattr(hint, "__parameters__", None) or ()
+    if IS_PYTHON_AT_LAST_3_14 and is_any_descriptor(hint_params):
+        hint_params = ()
 
     # In Python 3.9+, special generic aliases like List and Tuple don't store
     # their type variables as parameters anymore; we try to restore those.
@@ -271,7 +282,7 @@ _TYPEVARS_CACHE = {
 }
 
 
-def type_repr(obj: Any) -> str:
+def _type_repr_pre_3_14(obj: Any) -> str:
     """#typing._type_repr() stolen from Python 3.8."""
 
     if (getattr(obj, "__module__", None) or getattr(type(obj), "__module__", None)) in TYPING_MODULE_NAMES or hasattr(
@@ -290,6 +301,12 @@ def type_repr(obj: Any) -> str:
     if isinstance(obj, FunctionType):
         return obj.__name__
     return repr(obj)
+
+
+if sys.version_info[:2] >= (3, 14):  # Can't use IS_PYTHON_AT_LEAST_3_14 because Mypy won't recognize it
+    from annotationlib import type_repr
+else:
+    type_repr = _type_repr_pre_3_14
 
 
 def get_annotations(
@@ -398,3 +415,12 @@ def is_new_type(hint: Any) -> TypeGuard[NewTypeP]:
     # NOTE: Starting with Python 3.10, `typing.NewType` is actually a class instead of a function, but it is
     #       still typed as a function in Mypy until 3.12.
     return hasattr(hint, "__name__") and hasattr(hint, "__supertype__")
+
+
+def is_any_descriptor(value: Any) -> bool:
+    return (
+        inspect.isdatadescriptor(value)
+        or inspect.ismethoddescriptor(value)
+        or inspect.isgetsetdescriptor(value)
+        or inspect.ismethoddescriptor(value)
+    )

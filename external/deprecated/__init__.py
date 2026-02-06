@@ -7,9 +7,10 @@ Python ``@deprecated`` decorator to deprecate old python classes, functions or m
 
 """
 
-__version__ = "1.2.18"
+__version__ = "1.3.1"
 __author__ = u"Laurent LAPORTE <laurent.laporte.pro@gmail.com>"
-__date__ = "2025-01-27"
+__date__ = "2025-10-30"
 __credits__ = "(c) Laurent LAPORTE"
 
 from deprecated.classic import deprecated
+from deprecated.params import deprecated_params
