@@ -2779,7 +2779,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Aarti Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-IN-Aarti:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -2896,7 +2896,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Ada Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-GB-Ada:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -2922,7 +2922,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Adam Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Adam:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -3065,7 +3065,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Alessio Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'it-IT-Alessio:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -3143,7 +3143,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Alloy Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Alloy:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -3403,7 +3403,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Andrew Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Andrew:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -3416,7 +3416,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Andrew Dragon HD Omni Latest (NeuralHD)',
             voice_key={'name': 'en-US-Andrew:DragonHDOmniLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -3442,7 +3442,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Andrew2 Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Andrew2:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -3455,7 +3455,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Andrew3 Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Andrew3:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -3611,7 +3611,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Aria Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Aria:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -3650,7 +3650,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Arjun Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-IN-Arjun:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -3780,7 +3780,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Ava & Andrew MultiTalker Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-MultiTalker-Ava-Andrew:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Any,
             audio_languages=[
@@ -3793,7 +3793,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Ava & Steffan MultiTalker Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-MultiTalker-Ava-Steffan:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Any,
             audio_languages=[
@@ -3819,7 +3819,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Ava Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Ava:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -3845,7 +3845,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Ava3 Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Ava3:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -4092,7 +4092,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Bree Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Bree:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -4131,7 +4131,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Brian Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Brian:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -4170,7 +4170,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Caleb Dragon HD Omni Latest (NeuralHD)',
             voice_key={'name': 'en-US-Caleb:DragonHDOmniLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -4560,7 +4560,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Dana Dragon HD Omni Latest (NeuralHD)',
             voice_key={'name': 'en-US-Dana:DragonHDOmniLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -4651,7 +4651,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Davis Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Davis:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -5067,7 +5067,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Emma Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Emma:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -5093,7 +5093,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Emma2 Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Emma2:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -5353,7 +5353,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Florian Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'de-DE-Florian:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -5873,7 +5873,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Hyunsu Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'ko-KR-Hyunsu:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -6029,7 +6029,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Isabella Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'it-IT-Isabella:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -6185,7 +6185,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Jane Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Jane:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -6250,7 +6250,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Jenny Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Jenny:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -6315,7 +6315,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Jimmie Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'en-US-Jimmie:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -6848,7 +6848,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Lewis Dragon HD Omni Latest (NeuralHD)',
             voice_key={'name': 'en-US-Lewis:DragonHDOmniLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -7095,7 +7095,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Macerio Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'pt-BR-Macerio:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -7342,7 +7342,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Masaru Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'ja-JP-Masaru:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -7420,7 +7420,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Meera Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-IN-Meera:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -7563,7 +7563,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Multitalker Set1 Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Multitalker-Set1:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Any,
             audio_languages=[
@@ -7615,7 +7615,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Nanami Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'ja-JP-Nanami:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -7914,7 +7914,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Nova Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Nova:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -7992,7 +7992,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Ollie Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-GB-Ollie:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -8187,7 +8187,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Phoebe Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Phoebe:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -8200,7 +8200,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Phoebe Dragon HD Omni Latest (NeuralHD)',
             voice_key={'name': 'en-US-Phoebe:DragonHDOmniLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -8460,7 +8460,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Remy Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'fr-FR-Remy:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -8850,7 +8850,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Seraphina Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'de-DE-Seraphina:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -8876,7 +8876,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Serena Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Serena:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -9123,7 +9123,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Steffan Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-US-Steffan:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -9188,7 +9188,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='SunHi Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'ko-KR-SunHi:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -9253,7 +9253,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Sylvie Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'fr-CA-Sylvie:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -9396,7 +9396,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Thalita Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'pt-BR-Thalita:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -9461,7 +9461,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Thierry Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'fr-CA-Thierry:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -9513,7 +9513,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Tiana Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'en-US-Tiana:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -9591,7 +9591,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Tristan Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'es-ES-Tristan:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -9604,7 +9604,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Tristan Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'es-MX-Tristan:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -9643,7 +9643,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Tyler Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'en-US-Tyler:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -9799,7 +9799,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Vivienne Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'fr-FR-Vivienne:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -9929,7 +9929,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Xiaochen Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'zh-CN-Xiaochen:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -9942,7 +9942,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Xiaochen Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'zh-CN-Xiaochen:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -9981,7 +9981,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Xiaochen&Yunhan Multitalker Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'zh-CN-Multitalker-Xiaochen-Yunhan:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Any,
             audio_languages=[
@@ -10085,7 +10085,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Xiaoshuang Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'zh-CN-Xiaoshuang:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -10150,7 +10150,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Xiaoxiao Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'zh-CN-Xiaoxiao:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -10189,7 +10189,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Xiaoxiao2 Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'zh-CN-Xiaoxiao2:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -10228,7 +10228,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Xiaoyou Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'zh-CN-Xiaoyou:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -10267,7 +10267,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Xiaoyu Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'zh-CN-Xiaoyu:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -10293,7 +10293,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Xiaoyue Dragon HD Omni Latest (NeuralHD)',
             voice_key={'name': 'zh-CN-Xiaoyue:DragonHDOmniLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -10332,7 +10332,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Ximena Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'es-ES-Ximena:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -10345,7 +10345,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Ximena Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'es-MX-Ximena:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -10527,7 +10527,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Yunfan Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'zh-CN-Yunfan:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -10605,7 +10605,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Yunqi Dragon HD Omni Latest (NeuralHD)',
             voice_key={'name': 'zh-CN-Yunqi:DragonHDOmniLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -10657,7 +10657,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Yunxia Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'zh-CN-Yunxia:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -10696,7 +10696,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Yunxiao Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'zh-CN-Yunxiao:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -10735,7 +10735,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Yunye Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'zh-CN-Yunye:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -10761,7 +10761,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Yunyi Dragon HD Flash Latest (Neural)',
             voice_key={'name': 'zh-CN-Yunyi:DragonHDFlashLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -10878,7 +10878,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='ava Dragon HD Omni Latest (NeuralHD)',
             voice_key={'name': 'en-us-ava:DragonHDOmniLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
