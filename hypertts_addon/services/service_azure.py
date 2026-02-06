@@ -134,8 +134,16 @@ class Azure(service.ServiceBase):
             'User-Agent': 'anki-hyper-tts'
         }
 
+        voice_params_str = ""
+        # Handle Dragon HD Omni voice params
+        voice_params = [ voice_options.get('temperature'), voice_options.get('top_p'), voice_options.get('top_k'), voice_options.get('cfg_scale') ]
+        voice_params = [ str(p) for p in voice_params if p is not None ] # Don't include unset params
+        if len(voice_params) > 0:
+            joined = ';'.join(voice_params)
+            voice_params_str = f' parameters="{joined}"'
+
         ssml_str = f"""<speak version="1.0" xmlns="https://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="en-US">
-<voice name="{voice_name}"><prosody rate="{rate:0.1f}" pitch="{pitch:+.0f}Hz" >{source_text}</prosody></voice>
+<voice name="{voice_name}"{voice_params_str}><prosody rate="{rate:0.1f}" pitch="{pitch:+.0f}Hz" >{source_text}</prosody></voice>
 </speak>""".replace('\n', '')
         
         body = ssml_str.encode(encoding='utf-8')
