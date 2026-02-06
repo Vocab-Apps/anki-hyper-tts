@@ -443,7 +443,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # check filtering by language
         if self.languages_combobox.currentIndex() != 0:
             language = self.languages[self.languages_combobox.currentIndex() - 2]
-            voice_list = [voice for voice in voice_list if language in voice.languages]
+            voice_list = [voice for voice in voice_list if language in voice.language_list]
             logger.debug(f'filtered by language {language}, voice count: {len(voice_list)}')
         # check filtering by service
         if self.services_combobox.currentIndex() != 0:
