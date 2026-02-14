@@ -614,6 +614,8 @@ class KeyboardShortcuts:
 class ErrorHandling:
     realtime_tts_errors_dialog_type: constants.ErrorDialogType = constants.ErrorDialogType.Dialog
     error_stats_reporting: bool = True
+    # Network Connection settings
+    disable_ssl_verification: bool = False
 
 @dataclass
 class Preferences:

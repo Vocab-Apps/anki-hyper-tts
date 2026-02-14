@@ -140,7 +140,7 @@ class TtsVoice_v3:
         return list(set(audio_language.lang for audio_language in self.audio_languages))
 
     @functools.cached_property
-    def languages(self) -> List[languages.Language]:
+    def language_list(self) -> List[languages.Language]:
         return self.get_languages()
     
 

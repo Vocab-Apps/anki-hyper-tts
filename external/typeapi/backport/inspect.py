@@ -59,16 +59,28 @@ def get_annotations(
         although if obj is a wrapped function (using
         functools.update_wrapper()) it is first unwrapped.
     """
-    if isinstance(obj, type):
-        # class
-        obj_dict = getattr(obj, "__dict__", None)
-        if obj_dict and hasattr(obj_dict, "get"):
-            ann = obj_dict.get("__annotations__", None)
-            if isinstance(ann, types.GetSetDescriptorType):
-                ann = None
-        else:
-            ann = None
 
+    ann: Any = None
+
+    if sys.version_info[:2] >= (3, 14):
+        from annotationlib import Format
+        from annotationlib import get_annotations as _get_annotations
+
+        ann = _get_annotations(obj, format=Format.VALUE, eval_str=False)
+    else:
+        if isinstance(obj, type):
+            # class
+            obj_dict = getattr(obj, "__dict__", None)
+            if obj_dict and hasattr(obj_dict, "get"):
+                ann = obj_dict.get("__annotations__", None)
+                if isinstance(ann, types.GetSetDescriptorType):
+                    ann = None
+        else:
+            ann = getattr(obj, "__annotations__", None)
+
+    # Determine the scope in which the annotations are to be evaluated.
+
+    if isinstance(obj, type):
         obj_globals = None
         module_name = getattr(obj, "__module__", None)
         if module_name:
@@ -78,8 +90,6 @@ def get_annotations(
         obj_locals = dict(vars(obj))
         unwrap = obj
     elif isinstance(obj, types.ModuleType):
-        # module
-        ann = getattr(obj, "__annotations__", None)
         obj_globals = getattr(obj, "__dict__")
         obj_locals = None
         unwrap = None
@@ -87,7 +97,6 @@ def get_annotations(
         # this includes types.Function, types.BuiltinFunctionType,
         # types.BuiltinMethodType, functools.partial, functools.singledispatch,
         # "class funclike" from Lib/test/test_inspect... on and on it goes.
-        ann = getattr(obj, "__annotations__", None)
         obj_globals = getattr(obj, "__globals__", None)
         obj_locals = None
         unwrap = obj

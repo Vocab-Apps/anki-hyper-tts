@@ -957,7 +957,8 @@ class ConfigModelsTests(unittest.TestCase):
             },
             'error_handling': {
                 'realtime_tts_errors_dialog_type': 'Dialog',
-                'error_stats_reporting': True
+                'error_stats_reporting': True,
+                'disable_ssl_verification': False
             }
         }
         self.assertEqual(config_models.serialize_preferences(preferences), expected_output)
@@ -971,7 +972,7 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(preferences_1.error_handling.realtime_tts_errors_dialog_type, constants.ErrorDialogType.Dialog)
         self.assertEqual(preferences_1.keyboard_shortcuts.shortcut_editor_add_audio, None)
         self.assertEqual(preferences_1.keyboard_shortcuts.shortcut_editor_preview_audio, None)
-        self.assertEqual(config_models.serialize_preferences(preferences_1), 
+        self.assertEqual(config_models.serialize_preferences(preferences_1),
         {
             'keyboard_shortcuts': {
                 'shortcut_editor_add_audio': None,
@@ -979,8 +980,9 @@ class ConfigModelsTests(unittest.TestCase):
             },
             'error_handling': {
                 'realtime_tts_errors_dialog_type': 'Dialog',
-                'error_stats_reporting': True
-            }                           
+                'error_stats_reporting': True,
+                'disable_ssl_verification': False
+            }
         })
 
         preferences_config = {
@@ -993,7 +995,7 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(preferences.keyboard_shortcuts.shortcut_editor_add_audio, 'Ctrl+T')
         self.assertEqual(preferences.keyboard_shortcuts.shortcut_editor_preview_audio, None)
         self.assertEqual(preferences.error_handling.realtime_tts_errors_dialog_type, constants.ErrorDialogType.Dialog)
-        self.assertEqual(config_models.serialize_preferences(preferences), 
+        self.assertEqual(config_models.serialize_preferences(preferences),
         {
             'keyboard_shortcuts': {
                 'shortcut_editor_add_audio': 'Ctrl+T',
@@ -1001,8 +1003,9 @@ class ConfigModelsTests(unittest.TestCase):
             },
             'error_handling': {
                 'realtime_tts_errors_dialog_type': 'Dialog',
-                'error_stats_reporting': True
-            }                           
+                'error_stats_reporting': True,
+                'disable_ssl_verification': False
+            }
         })        
 
     def test_preset_mapping_rules(self):

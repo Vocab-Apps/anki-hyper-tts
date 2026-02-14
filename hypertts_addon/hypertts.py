@@ -813,7 +813,9 @@ class HyperTTS():
     def reconfigure_service_manager(self):
         """reconfigures the service manager with the current configuration"""
         configuration = self.get_configuration()
-        services_enabled = self.service_manager.configure(configuration)
+        preferences = self.get_preferences()
+        disable_ssl_verification = preferences.error_handling.disable_ssl_verification
+        services_enabled = self.service_manager.configure(configuration, disable_ssl_verification)
         logger.debug(f'reconfigure_service_manager, services_enabled: {services_enabled}')
         if services_enabled:
             # at least one service was enabled
@@ -845,6 +847,8 @@ class HyperTTS():
     def save_preferences(self, preferences_model):
         self.config[constants.CONFIG_PREFERENCES] = config_models.serialize_preferences(preferences_model)
         self.anki_utils.write_config(self.config)
+        # reconfigure service manager to apply new SSL settings
+        self.reconfigure_service_manager()
 
     # deserialization routines for loading from config
     # ================================================

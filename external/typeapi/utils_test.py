@@ -1,6 +1,7 @@
 # type: ignore
 
 import collections.abc
+import inspect
 import sys
 import typing as t
 from typing import Any, Dict, Generic, List, Mapping, MutableMapping, Optional, TypeVar, Union
@@ -9,6 +10,7 @@ import pytest
 import typing_extensions
 
 from typeapi.utils import (
+    IS_PYTHON_AT_LAST_3_14,
     IS_PYTHON_AT_LEAST_3_7,
     IS_PYTHON_AT_LEAST_3_9,
     ForwardRef,
@@ -292,6 +294,8 @@ def test__typing_Union__introspection():
     if sys.version_info[:2] <= (3, 6):
         assert Union.__origin__ is None
         assert Union[int, str].__origin__ is Union
+    elif IS_PYTHON_AT_LAST_3_14:
+        assert inspect.isgetsetdescriptor(Union.__origin__)
     else:
         assert not hasattr(Union, "__origin__")
         assert Union[int, str].__origin__ is Union
@@ -304,6 +308,9 @@ def test__typing_Union__introspection():
     if sys.version_info[:2] <= (3, 6):
         assert Union.__args__ is None
         assert Union.__parameters__ is None
+    elif IS_PYTHON_AT_LAST_3_14:
+        assert inspect.ismemberdescriptor(Union.__args__)
+        assert inspect.isgetsetdescriptor(Union.__parameters__)
     else:
         assert not hasattr(Union, "__args__")
         assert not hasattr(Union, "__parameters__")
@@ -451,9 +458,13 @@ def test__get_annotations__can_evaluate_future_type_hints() -> None:
     annotations = get_annotations(A)
     assert annotations == {"a": Optional[str]}
 
+    if IS_PYTHON_AT_LAST_3_14:
+        # from typing import Union
+        assert type(annotations["a"]) is Union
+
     # NOTE(@NiklasRosenstein): Even though `str | None` is of type `types.UnionType` in Python 3.10+,
     #   our fake evaluation will still return legacy type hints.
-    if IS_PYTHON_AT_LEAST_3_9:
+    elif IS_PYTHON_AT_LEAST_3_9:
         from typing import _UnionGenericAlias  # type: ignore
 
         assert type(annotations["a"]) is _UnionGenericAlias
