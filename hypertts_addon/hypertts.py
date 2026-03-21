@@ -114,15 +114,13 @@ class HyperTTS():
     def get_note_audio(self, batch, note, audio_request_context, text_override):
         source_text = self.get_source_text(note, batch.source, text_override)
         processed_text = text_utils.process_text(source_text, batch.text_processing)
-        if len(processed_text) == 0:
-            raise errors.SourceTextEmpty()        
+        text_utils.check_length(processed_text)
         return self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)
 
     def get_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
         source_text = text
         processed_text = text_utils.process_text(source_text, realtime_model.text_processing)
-        if len(processed_text) == 0:
-            raise errors.SourceTextEmpty()
+        text_utils.check_length(processed_text)
         return self.get_audio_file(processed_text, realtime_model.voice_selection, context.AudioRequestContext(constants.AudioRequestReason.realtime))
 
     def get_audio_file(self, processed_text, voice_selection, audio_request_context):
@@ -316,8 +314,7 @@ class HyperTTS():
     def process_text(self, source_text, batch_text_processing):
         processed_text = text_utils.process_text(source_text, batch_text_processing)
         # logger.info(f'before text processing: [{source_text}], after text processing: [{processed_text}]')
-        if len(processed_text) == 0:
-            raise errors.SourceTextEmpty()
+        text_utils.check_length(processed_text)
         return processed_text
 
     # sound generation
@@ -342,8 +339,7 @@ class HyperTTS():
 
     def play_sound(self, source_text, voice_id, options):
         logger.info(f'playing audio for {source_text}')
-        if source_text == None or len(source_text) == 0:
-            raise errors.SourceTextEmpty()        
+        text_utils.check_length(source_text)        
         full_filename, audio_filename = self.generate_audio_write_file(source_text, voice_id, options, context.AudioRequestContext(constants.AudioRequestReason.preview))
         self.anki_utils.play_sound(full_filename)
 

@@ -160,6 +160,10 @@ yoyo
         self.assertRaises(errors.SourceTextEmpty, hypertts_instance.play_sound, source_text, None, None)
         source_text = None
         self.assertRaises(errors.SourceTextEmpty, hypertts_instance.play_sound, source_text, None, None)
+        source_text = '  '
+        self.assertRaises(errors.SourceTextEmpty, hypertts_instance.play_sound, source_text, None, None)
+        source_text = ' \t\n '
+        self.assertRaises(errors.SourceTextEmpty, hypertts_instance.play_sound, source_text, None, None)
 
 
     def test_preview_all_mapping_rules_1(self):
