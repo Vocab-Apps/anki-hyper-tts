@@ -143,8 +143,8 @@ class Azure(service.ServiceBase):
         response = requests.post(constructed_url, headers=headers, data=body, timeout=constants.RequestTimeout)
         if response.status_code != 200:
             error_message = f'status code {response.status_code}: {response.reason}'
-            # Log 429 (Quota Exceeded) as warning, other errors as error
-            if response.status_code == 429:
+            # Log 401 (Unauthorized) and 429 (Quota Exceeded) as warning, other errors as error
+            if response.status_code in (401, 429):
                 logger.warning(error_message)
             else:
                 logger.error(error_message)
