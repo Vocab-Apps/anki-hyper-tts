@@ -261,3 +261,15 @@ def test_strip_sound_tag_function(qtbot):
     assert text_utils.strip_sound_tag('No sound tags here') == 'No sound tags here'
     assert text_utils.strip_sound_tag('[not a sound tag]') == '[not a sound tag]'
     assert text_utils.strip_sound_tag('[sound:] empty') == '[sound:] empty'  # Empty sound tag (malformed)
+
+def test_check_length(qtbot):
+    # valid text should not raise
+    text_utils.check_length('hello')
+    text_utils.check_length('  hello  ')
+
+    # empty, whitespace-only, and None should raise SourceTextEmpty
+    import pytest
+    pytest.raises(errors.SourceTextEmpty, text_utils.check_length, '')
+    pytest.raises(errors.SourceTextEmpty, text_utils.check_length, '  ')
+    pytest.raises(errors.SourceTextEmpty, text_utils.check_length, ' \t\n ')
+    pytest.raises(errors.SourceTextEmpty, text_utils.check_length, None)

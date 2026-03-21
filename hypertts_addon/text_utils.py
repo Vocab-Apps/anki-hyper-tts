@@ -117,6 +117,10 @@ def process_text_replacement_rule(input_text, rule, text_processing_model):
     except Exception as e:
         raise errors.TextReplacementError(input_text, rule.source, rule.target, str(e))
 
+def check_length(text):
+    if text is None or len(text.strip()) == 0:
+        raise errors.SourceTextEmpty()
+
 def strip_sound_tag(field_value):
     field_value = re.sub(r'\[sound:[^\]]+\]', '', field_value)
     return field_value.strip()
