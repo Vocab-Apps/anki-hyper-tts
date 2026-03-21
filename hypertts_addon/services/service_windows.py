@@ -134,6 +134,7 @@ LCIDS = {
 	"1158": "qut_GT",
 	"1159": "rw_RW",
 	"1160": "wo_SN",
+	"9": "en_US",
 	"1164": "gbz_AF",
 	"2049": "ar_IQ",
 	"2052": "zh_CN",
@@ -286,7 +287,11 @@ class Windows(service.ServiceBase):
                             options=options
                         ))
                     else:
-                        logger.error(f'unknown language: {lang}, could not process voice [{name}]')
+                        raw_langs = sapi_voice.GetAttribute("language")
+                        raw_gender = sapi_voice.GetAttribute("gender")
+                        raw_age = sapi_voice.GetAttribute("age")
+                        raw_vendor = sapi_voice.GetAttribute("vendor")
+                        logger.error(f'unknown language: {lang}, could not process voice [{name}] raw_langs: [{raw_langs}] gender: [{raw_gender}] age: [{raw_age}] vendor: [{raw_vendor}]')
 
             return result
 
