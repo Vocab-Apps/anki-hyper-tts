@@ -68,12 +68,15 @@ class Google(service.ServiceBase):
             input = input_text
 
 
+        audio_config = {
+            "audioEncoding": audio_format_map[audio_format],
+            "speakingRate": voice_options.get('speaking_rate', voice.options['speaking_rate']['default']),
+        }
+        if 'pitch' in voice_options:
+            audio_config["pitch"] = voice_options['pitch']
+
         payload = {
-            "audioConfig": {
-                "audioEncoding": audio_format_map[audio_format],
-                "pitch": voice_options.get('pitch', voice.options['pitch']['default']),
-                "speakingRate": voice_options.get('speaking_rate', voice.options['speaking_rate']['default']),
-            },
+            "audioConfig": audio_config,
             "input": input,
             "voice": {
                 "languageCode": voice.voice_key['language_code'],
