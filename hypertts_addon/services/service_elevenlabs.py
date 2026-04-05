@@ -45,21 +45,30 @@ class ElevenLabs(service.ServiceBase):
         voice_id = voice.voice_key['voice_id']
         url = f'https://api.elevenlabs.io/v1/text-to-speech/{voice_id}'
 
+        # Handle audio format
+        audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, voice.options.get(options.AUDIO_FORMAT_PARAMETER, {}).get('default', 'mp3'))
+        if audio_format_str == 'ogg_opus':
+            url += '?output_format=opus_48000_192'
+
         headers = {
-            "Accept": "application/json",
+            "Accept": "audio/mpeg",
             "xi-api-key": api_key
         }
-        headers['Accept'] = "audio/mpeg"
+
+        use_speaker_boost_str = voice_options.get('use_speaker_boost', voice.options.get('use_speaker_boost', {}).get('default', 'false'))
 
         data = {
             "text": source_text,
             "model_id": voice.voice_key['model_id'],
             "voice_settings": {
                 "stability": voice_options.get('stability', voice.options['stability']['default']),
-                "similarity_boost": voice_options.get('similarity_boost', voice.options['similarity_boost']['default'])
+                "similarity_boost": voice_options.get('similarity_boost', voice.options['similarity_boost']['default']),
+                "style": voice_options.get('style', voice.options.get('style', {}).get('default', 0.0)),
+                "speed": voice_options.get('speed', voice.options.get('speed', {}).get('default', 1.0)),
+                "use_speaker_boost": use_speaker_boost_str == 'true'
             }
         }
-        
+
         # Add language_code if provided and not empty
         language_code = voice_options.get('language_code', voice.options.get('language_code', {}).get('default', ''))
         if language_code:

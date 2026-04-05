@@ -445,6 +445,34 @@ class TTSTests(unittest.TestCase):
             exception_caught = True
         assert exception_caught
 
+    def test_azure_dragonhd_parameters(self):
+        # pytest test_tts_services.py -k 'TTSTests and test_azure_dragonhd_parameters'
+        service_name = 'Azure'
+        voice_list = self.manager.full_voice_list()
+        dragonhd_voices = [v for v in voice_list if v.service == service_name
+                           and 'DragonHD' in v.voice_key.get('name', '')
+                           and AudioLanguage.en_US in v.audio_languages]
+        if len(dragonhd_voices) == 0:
+            raise unittest.SkipTest('No Azure DragonHD voices found')
+        selected_voice = random.choice(dragonhd_voices)
+        self.verify_audio_output(selected_voice, AudioLanguage.en_US, self.ENGLISH_INPUT_TEXT,
+                                 voice_options={'temperature': 0.5, 'top_p': 0.5})
+
+    def test_azure_style(self):
+        # pytest test_tts_services.py -k 'TTSTests and test_azure_style'
+        service_name = 'Azure'
+        voice_list = self.manager.full_voice_list()
+        style_voices = [v for v in voice_list if v.service == service_name
+                        and 'style' in v.options
+                        and len(v.options['style'].get('values', [])) > 1
+                        and AudioLanguage.en_US in v.audio_languages]
+        if len(style_voices) == 0:
+            raise unittest.SkipTest('No Azure voices with style found')
+        selected_voice = random.choice(style_voices)
+        styles = [s for s in selected_voice.options['style']['values'] if s != '']
+        voice_options = {'style': styles[0], 'styledegree': 1.5}
+        self.verify_audio_output(selected_voice, AudioLanguage.en_US, self.ENGLISH_INPUT_TEXT, voice_options=voice_options)
+
     def test_amazon(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_amazon'
         service_name = 'Amazon'
@@ -506,6 +534,28 @@ class TTSTests(unittest.TestCase):
 
         # pick a random en_US voice
         self.random_voice_test(service_name, AudioLanguage.en_US, 'This is the first sentence')
+
+    def test_elevenlabs_with_voice_settings(self):
+        # pytest test_tts_services.py -k 'TTSTests and test_elevenlabs_with_voice_settings'
+        service_name = 'ElevenLabs'
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service == service_name and AudioLanguage.en_US in voice.audio_languages]
+        assert len(service_voices) > 0
+        selected_voice = random.choice(service_voices)
+        voice_options = {'style': 0.5, 'speed': 0.9, 'use_speaker_boost': 'true'}
+        self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'This is the first sentence', voice_options=voice_options)
+
+    def test_elevenlabs_ogg_format(self):
+        # pytest test_tts_services.py -k 'TTSTests and test_elevenlabs_ogg_format'
+        service_name = 'ElevenLabs'
+        voice_list = self.manager.full_voice_list()
+        service_voices = [voice for voice in voice_list if voice.service == service_name
+                          and AudioLanguage.en_US in voice.audio_languages
+                          and 'format' in voice.options]
+        if not service_voices:
+            raise unittest.SkipTest('No ElevenLabs voices with format option found')
+        selected_voice = random.choice(service_voices)
+        self.verify_audio_output(selected_voice, AudioLanguage.en_US, 'This is the first sentence', voice_options={'format': 'ogg_opus'})
 
     def test_elevenlabs_english_all_voices_alice(self):
         # pytest test_tts_services.py  -k 'TTSTests and test_elevenlabs_english_all_voices_alice'

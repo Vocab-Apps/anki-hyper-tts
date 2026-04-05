@@ -124,6 +124,33 @@ class Azure(service.ServiceBase):
             options.AudioFormat.ogg_opus: 'ogg-48khz-16bit-mono-opus'
         }
 
+        # DragonHD parameters
+        parameters_attr = ''
+        if 'DragonHD' in voice_name:
+            dragonhd_defaults = {'temperature': 0.7, 'top_p': 0.7, 'top_k': 22, 'cfg_scale': 1.4}
+            param_parts = []
+            for param_name, default_val in dragonhd_defaults.items():
+                val = voice_options.get(param_name, voice.options.get(param_name, {}).get('default', default_val))
+                if val != default_val:
+                    param_parts.append(f'{param_name}={val}')
+            if param_parts:
+                parameters_attr = f' parameters="{";".join(param_parts)}"'
+
+        # Style / role express-as wrapper
+        style_val = voice_options.get('style', voice.options.get('style', {}).get('default', ''))
+        express_as_open = ''
+        express_as_close = ''
+        if style_val:
+            styledegree_val = voice_options.get('styledegree', voice.options.get('styledegree', {}).get('default', 1.0))
+            role_val = voice_options.get('role', voice.options.get('role', {}).get('default', ''))
+            express_as_open = f'<mstts:express-as style="{style_val}"'
+            if styledegree_val != 1.0:
+                express_as_open += f' styledegree="{styledegree_val}"'
+            if role_val:
+                express_as_open += f' role="{role_val}"'
+            express_as_open += '>'
+            express_as_close = '</mstts:express-as>'
+
         base_url = f'https://{region}.tts.speech.microsoft.com/'
         url_path = 'cognitiveservices/v1'
         constructed_url = base_url + url_path
@@ -135,7 +162,7 @@ class Azure(service.ServiceBase):
         }
 
         ssml_str = f"""<speak version="1.0" xmlns="https://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="en-US">
-<voice name="{voice_name}"><prosody rate="{rate:0.1f}" pitch="{pitch:+.0f}Hz" >{source_text}</prosody></voice>
+<voice name="{voice_name}"{parameters_attr}>{express_as_open}<prosody rate="{rate:0.1f}" pitch="{pitch:+.0f}Hz" >{source_text}</prosody>{express_as_close}</voice>
 </speak>""".replace('\n', '')
         
         body = ssml_str.encode(encoding='utf-8')
