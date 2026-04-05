@@ -213,6 +213,7 @@ class Language(enum.Enum):
     ur = ("Urdu")
     uz = ("Uzbek")
     vi = ("Vietnamese")
+    wo = ("Wolof")
     xh = ("Xhosa")
     yi = ("Yiddish")
     yo = ("Yoruba")
