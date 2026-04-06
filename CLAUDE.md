@@ -94,4 +94,4 @@ The `package.sh` script handles:
 - Tests are excluded from the `external/` directory
 - Coverage reporting is available
 - pytest-xdist enables parallel test execution
-- test for TTS services should be inside @tests/test_tts_services.py
+- test for TTS services should be inside @tests/test_tts_services/ (per-service test files inheriting from base.py)
