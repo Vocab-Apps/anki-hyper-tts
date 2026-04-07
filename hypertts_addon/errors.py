@@ -5,6 +5,57 @@ from . import constants
 
 logger = logging.getLogger(__name__)
 
+# Exception class hierarchy
+# =========================
+#
+# HyperTTSError (base for all known exceptions)
+# |
+# +-- CollectionNotOpen                  Anki collection/profile not loaded
+# +-- FieldNotFoundError                 Generic field not found on note
+# +-- SourceFieldNotFoundError           Source field missing from note during batch processing
+# +-- TargetFieldNotFoundError           Target field missing from note during audio processing
+# +-- FieldEmptyError                    Field exists but contains no text
+# +-- SourceTextEmpty                    Processed source text is empty/whitespace
+# +-- TextReplacementError               Regex or simple text replacement rule failed
+# |
+# +-- ServiceRequestError                Base for service call errors (carries source_text, voice, error_message)
+# |   +-- PermanentError                 Non-retryable service failures (4xx, auth, quota)
+# |   |   +-- AudioNotFoundError         Audio unavailable for a specific text/voice pair (web scrapers, VocabAI 404)
+# |   |   +-- AudioNotFoundAnyVoiceError Audio unavailable across all voices in priority mode
+# |   +-- TransientError                 Retryable service failures
+# |       +-- RateLimitRetryAfterError   429 with Retry-After header
+# |       +-- TimeoutError               HTTP request timed out
+# |       +-- UnknownServiceError        Unexpected/unclassified service error
+# |
+# +-- VoiceNotFound                      Voice object not in available voices
+# +-- VoiceIdNotFound                    Voice ID not found in service manager
+# +-- PresetNotFound                     Preset ID missing from config
+# +-- RealtimePresetNotFound             Realtime preset settings key missing from config
+# +-- MissingDirectory                   User files directory for audio storage doesn't exist
+# +-- MissingGraphicsFile                UI graphics file missing (corrupted installation)
+# +-- RequestError                       Legacy service request error (non-retry-aware services)
+# +-- NoVoiceSelected                    Single voice mode but no voice picked
+# +-- NoVoicesAvailable                  No TTS services configured at all
+# +-- NoVoicesAdded                      Priority/random mode with empty voice list
+# +-- NoNotesSelected                    Batch operation with no notes selected
+# +-- NoNotesSelectedPreview             Preview attempted with no notes selected
+# +-- NoPresetMappingRulesDefined        No preset mapping rules configured for editor integration
+# +-- NoResultVar                        Advanced template missing 'result' variable assignment
+# +-- TemplateExpansionError             Template (simple or advanced) failed to expand
+# +-- TTSTagProcessingError              Could not extract preset from TTS tag on note
+# |
+# +-- ModelValidationError               Base for config model validation
+# |   +-- PresetNameNotSet               Batch preset name blank
+# |   +-- SourceFieldNotSet              Source field not chosen (simple mode)
+# |   +-- SourceFieldTypeNotSet          Realtime source field type not chosen
+# |   +-- SourceTemplateNotSet           Source template not provided (template mode)
+# |   +-- TargetFieldNotSet              Target field not chosen
+# |   +-- VoiceSelectionNotSet           Voice selection not configured (realtime)
+# |   +-- TextProcessingNotSet           Text processing not configured (realtime)
+# |   +-- NoVoiceSet                     Single voice selection with no voice assigned
+# |
+# +-- MissingServiceConfiguration        Required service config key (e.g. API key) not set
+
 # all known exceptions inherit from this one
 class HyperTTSError(Exception):
     pass
