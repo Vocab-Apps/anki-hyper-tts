@@ -41,8 +41,8 @@ class TestForvo(TTSTests):
         assert len(candidates) == 1
         forvo_portuguese_portugal_voice = candidates[0]
 
-        # should return not found
-        self.assertRaises(errors.AudioNotFoundError, self.verify_audio_output, forvo_portuguese_portugal_voice, AudioLanguage.pt_BR, source_text)
+        # should return not found (AudioNotFoundError in direct mode, PermanentError in CLT mode)
+        self.assertRaises(errors.PermanentError, self.verify_audio_output, forvo_portuguese_portugal_voice, AudioLanguage.pt_BR, source_text)
 
 
         # locate forvo portuguese-brazil voice

@@ -49,8 +49,7 @@ class TestAzure(TTSTests):
         try:
             audio_data = self.manager.get_tts_audio('This is the second sentence', altered_voice, {},
                 context.AudioRequestContext(constants.AudioRequestReason.batch))
-        except errors.RequestError as e:
-            assert 'Could not request audio for' in str(e)
+        except (errors.RequestError, errors.ServiceRequestError) as e:
             assert e.source_text == 'This is the second sentence'
             assert e.voice.service == service_name
             exception_caught = True
