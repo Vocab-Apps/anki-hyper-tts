@@ -2,6 +2,7 @@ from re import sub
 import sys
 import os
 import importlib
+import time
 import typing
 import requests
 import pprint
@@ -194,7 +195,7 @@ class ServiceManager():
         event_count = COUNT_BY_BATCH_UUID.get(audio_request_context.batch_uuid, 0)
         if event_count < constants_events.GENERATE_MAX_EVENTS:
             stats.send_event_bg(constants_events.EventContext.servicemanager,
-                                constants_events.Event.get_tts_audio, 
+                                constants_events.Event.get_tts_audio,
                                 None,
                                 {
                                     'use_clt': use_clt,
@@ -206,13 +207,43 @@ class ServiceManager():
             event_count += 1
             COUNT_BY_BATCH_UUID[audio_request_context.batch_uuid] = event_count
 
-        if use_clt:
-            logger.debug(f'voice: {voice}, using cloudlanguagetools')
-            return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)
-        else:
-            service = self.services[voice.service]
-            logger.debug(f'voice: {voice}, using service {service.name}')
-            return service.get_tts_audio(source_text, voice, options)
+        if not use_clt:
+            service_instance = self.services[voice.service]
+
+        delays = [1, 2, 4]
+        audio_request_context.retry_count = 0
+
+        while True:
+            try:
+                if use_clt:
+                    logger.debug(f'voice: {voice}, using cloudlanguagetools')
+                    return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)
+                else:
+                    logger.debug(f'voice: {voice}, using service {service_instance.name}')
+                    try:
+                        return service_instance.get_tts_audio(source_text, voice, options)
+                    except requests.exceptions.Timeout:
+                        raise errors.TimeoutError(source_text, voice, 'HTTP request timed out')
+                    except errors.HyperTTSError:
+                        raise
+                    except Exception as e:
+                        logger.exception(f'Unhandled exception in service {voice.service}')
+                        raise errors.UnknownServiceError(source_text, voice, str(e))
+            except errors.PermanentError:
+                raise
+            except errors.TransientError as e:
+                if audio_request_context.retry_count >= audio_request_context.retry_max:
+                    raise
+
+                if isinstance(e, errors.RateLimitRetryAfterError):
+                    delay = e.retry_after
+                else:
+                    delay = delays[min(audio_request_context.retry_count, len(delays) - 1)]
+
+                logger.warning(f'Transient error (attempt {audio_request_context.retry_count + 1}/{audio_request_context.retry_max}), '
+                               f'retrying in {delay}s: {e}')
+                time.sleep(delay)
+                audio_request_context.increment_retry_count()
 
     def full_voice_list(self, single_service_name=None) -> typing.List[voice_module.TtsVoice_v3]:
         full_list = []

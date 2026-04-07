@@ -45,18 +45,44 @@ class TextReplacementError(HyperTTSError):
         message = f'Could not process text replacement (pattern: {pattern}, replacement: {replacement}, text: {text}): {error_msg}'
         super().__init__(message)
 
-class AudioNotFoundError(HyperTTSError):
-    def __init__(self, source_text, voice):
-        message = f'Audio not found for [{source_text}] (voice: {voice})'
+# Service request error hierarchy for retry logic
+# =================================================
+
+class ServiceRequestError(HyperTTSError):
+    def __init__(self, source_text, voice, error_message, message=None):
+        if message is None:
+            message = f'Service request error for [{source_text}]: {error_message} (voice: {voice})'
         super().__init__(message)
         self.source_text = source_text
         self.voice = voice
+        self.error_message = error_message
 
-class AudioNotFoundAnyVoiceError(HyperTTSError):
+class PermanentError(ServiceRequestError):
+    pass
+
+class TransientError(ServiceRequestError):
+    pass
+
+class RateLimitRetryAfterError(TransientError):
+    def __init__(self, source_text, voice, error_message, retry_after):
+        super().__init__(source_text, voice, error_message)
+        self.retry_after = retry_after
+
+class TimeoutError(TransientError):
+    pass
+
+class UnknownServiceError(TransientError):
+    pass
+
+class AudioNotFoundError(PermanentError):
+    def __init__(self, source_text, voice):
+        message = f'Audio not found for [{source_text}] (voice: {voice})'
+        super().__init__(source_text, voice, 'Audio not found', message=message)
+
+class AudioNotFoundAnyVoiceError(PermanentError):
     def __init__(self, source_text):
         message = f'Audio not found in any voices for [{source_text}]'
-        super().__init__(message)
-        self.source_text = source_text
+        super().__init__(source_text, None, 'Audio not found in any voices', message=message)
 
 class VoiceNotFound(HyperTTSError):
     def __init__(self, voice_data):

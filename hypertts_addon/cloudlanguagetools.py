@@ -67,38 +67,96 @@ class CloudLanguageTools():
                 "api_key": self.config.hypertts_pro_api_key,
             })
 
-        # query cloud language tools API
         if self.config.use_vocabai_api:
-            url_path = '/audio'
-            # api V4
-            data = {
-                'text': source_text,
-                'service': voice.service,
-                'request_mode': audio_request_context.get_request_mode().name,
-                'client': constants.CLIENT_NAME,
-                'client_version': version.ANKI_HYPER_TTS_VERSION,
-                'client_uuid': self.config.user_uuid,
-                'batch_uuid': audio_request_context.get_batch_uuid_str(),
-                'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,
-                'voice_key': voice.voice_key,
-                'options': options
-            }            
+            return self._get_tts_audio_vocabai(source_text, voice, options, audio_request_context)
         else:
-            url_path = '/audio_v2'
-            data = {
-                'text': source_text,
-                'service': voice.service,
-                'request_mode': audio_request_context.get_request_mode().name,
-                'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,
-                'voice_key': voice.voice_key,
-                'options': options
-            }
-        full_url = self.get_base_url() + url_path
+            return self._get_tts_audio_clt(source_text, voice, options, audio_request_context)
+
+    def _get_tts_audio_vocabai(self, source_text, voice, options, audio_request_context):
+        # API v5
+        base_url = self.get_base_url().replace('/v4', '/v5')
+        full_url = base_url + '/audio'
+        data = {
+            'text': source_text,
+            'service': voice.service,
+            'request_mode': audio_request_context.get_request_mode().name,
+            'client': constants.CLIENT_NAME,
+            'client_version': version.ANKI_HYPER_TTS_VERSION,
+            'client_uuid': self.config.user_uuid,
+            'batch_uuid': audio_request_context.get_batch_uuid_str(),
+            'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,
+            'voice_key': voice.voice_key,
+            'options': options,
+            'retry_count': audio_request_context.retry_count,
+            'retry_max': audio_request_context.retry_max,
+        }
         logger.info(f'request url: {full_url}, data: {data}')
         headers = self.get_request_headers()
         logger.debug(f'get_tts_audio: headers: {headers} data: {data}')
-        response = requests.post(full_url, json=data, headers=self.get_request_headers(),
-            timeout=constants.RequestTimeout, verify=self.get_verify_ssl())
+
+        try:
+            response = requests.post(full_url, json=data, headers=headers,
+                timeout=constants.RequestTimeout, verify=self.get_verify_ssl())
+        except requests.exceptions.Timeout:
+            raise errors.TimeoutError(source_text, voice, 'HTTP request timed out')
+
+        if response.status_code == 200:
+            return response.content
+        elif response.status_code == 400:
+            try:
+                response_data = response.json()
+            except Exception:
+                raise errors.PermanentError(source_text, voice, f'Bad request: {response.content}')
+            if 'error' in response_data:
+                raise errors.PermanentError(source_text, voice, response_data['error'])
+            else:
+                raise errors.PermanentError(source_text, voice, str(response_data))
+        elif response.status_code == 403:
+            try:
+                response_data = response.json()
+                detail = response_data.get('detail', 'Forbidden')
+            except Exception:
+                detail = 'Forbidden'
+            raise errors.PermanentError(source_text, voice, detail)
+        elif response.status_code == 503:
+            try:
+                response_data = response.json()
+                retry_after = response_data.get('retry_after', 30)
+                error_msg = response_data.get('error', 'rate limited')
+            except Exception:
+                retry_after = 30
+                error_msg = 'rate limited'
+            raise errors.RateLimitRetryAfterError(source_text, voice, error_msg, retry_after)
+        elif response.status_code == 504:
+            try:
+                response_data = response.json()
+                error_msg = response_data.get('error', 'temporary failure')
+            except Exception:
+                error_msg = 'temporary failure'
+            raise errors.TransientError(source_text, voice, error_msg)
+        else:
+            error_message = f"Status code: {response.status_code} ({response.content})"
+            raise errors.UnknownServiceError(source_text, voice, error_message)
+
+    def _get_tts_audio_clt(self, source_text, voice, options, audio_request_context):
+        full_url = self.get_base_url() + '/audio_v2'
+        data = {
+            'text': source_text,
+            'service': voice.service,
+            'request_mode': audio_request_context.get_request_mode().name,
+            'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,
+            'voice_key': voice.voice_key,
+            'options': options
+        }
+        logger.info(f'request url: {full_url}, data: {data}')
+        headers = self.get_request_headers()
+        logger.debug(f'get_tts_audio: headers: {headers} data: {data}')
+
+        try:
+            response = requests.post(full_url, json=data, headers=headers,
+                timeout=constants.RequestTimeout, verify=self.get_verify_ssl())
+        except requests.exceptions.Timeout:
+            raise errors.TimeoutError(source_text, voice, 'HTTP request timed out')
 
         if response.status_code == 200:
             return response.content
@@ -106,7 +164,7 @@ class CloudLanguageTools():
             raise errors.AudioNotFoundError(source_text, voice)
         else:
             error_message = f"Status code: {response.status_code} ({response.content})"
-            raise errors.RequestError(source_text, voice, error_message)    
+            raise errors.UnknownServiceError(source_text, voice, error_message)    
 
     def account_info(self, api_key):
         # try to get account data on vocabai first
