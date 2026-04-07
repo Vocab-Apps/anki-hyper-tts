@@ -174,6 +174,13 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         self.assertEqual(cm.exception.error_message, 'temporary failure')
 
     @mock.patch('requests.post')
+    def test_404_audio_not_found(self, mock_post):
+        mock_post.return_value = mock.Mock(status_code=404)
+        with self.assertRaises(errors.AudioNotFoundError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertEqual(cm.exception.source_text, 'bonjour')
+
+    @mock.patch('requests.post')
     def test_timeout(self, mock_post):
         mock_post.side_effect = requests.exceptions.Timeout('timed out')
         with self.assertRaises(errors.TimeoutError):

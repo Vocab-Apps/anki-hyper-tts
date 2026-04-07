@@ -127,6 +127,8 @@ class CloudLanguageTools():
                 retry_after = 30
                 error_msg = 'rate limited'
             raise errors.RateLimitRetryAfterError(source_text, voice, error_msg, retry_after)
+        elif response.status_code == 404:
+            raise errors.AudioNotFoundError(source_text, voice)
         elif response.status_code == 504:
             try:
                 response_data = response.json()
