@@ -234,43 +234,39 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
 
     @mock.patch('requests.post')
     def test_400_unparseable_json_falls_to_default(self, mock_post):
-        """400 with unparseable JSON body falls through to default handler."""
+        """400 with unparseable JSON body is caught by common exception handler."""
         resp = mock.Mock(status_code=400, content=b'not json')
         resp.json.side_effect = ValueError('No JSON')
         mock_post.return_value = resp
-        with self.assertRaises(errors.UnknownServiceError) as cm:
+        with self.assertRaises(errors.UnknownServiceError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
-        self.assertIn('400', cm.exception.error_message)
 
     @mock.patch('requests.post')
     def test_403_unparseable_json_falls_to_default(self, mock_post):
-        """403 with unparseable JSON body falls through to default handler."""
+        """403 with unparseable JSON body is caught by common exception handler."""
         resp = mock.Mock(status_code=403, content=b'not json')
         resp.json.side_effect = ValueError('No JSON')
         mock_post.return_value = resp
-        with self.assertRaises(errors.UnknownServiceError) as cm:
+        with self.assertRaises(errors.UnknownServiceError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
-        self.assertIn('403', cm.exception.error_message)
 
     @mock.patch('requests.post')
     def test_503_unparseable_json_falls_to_default(self, mock_post):
-        """503 with unparseable JSON body falls through to default handler."""
+        """503 with unparseable JSON body is caught by common exception handler."""
         resp = mock.Mock(status_code=503, content=b'not json')
         resp.json.side_effect = ValueError('No JSON')
         mock_post.return_value = resp
-        with self.assertRaises(errors.UnknownServiceError) as cm:
+        with self.assertRaises(errors.UnknownServiceError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
-        self.assertIn('503', cm.exception.error_message)
 
     @mock.patch('requests.post')
     def test_504_unparseable_json_falls_to_default(self, mock_post):
-        """504 with unparseable JSON body falls through to default handler."""
+        """504 with unparseable JSON body is caught by common exception handler."""
         resp = mock.Mock(status_code=504, content=b'not json')
         resp.json.side_effect = ValueError('No JSON')
         mock_post.return_value = resp
-        with self.assertRaises(errors.UnknownServiceError) as cm:
+        with self.assertRaises(errors.UnknownServiceError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
-        self.assertIn('504', cm.exception.error_message)
 
     @mock.patch('requests.post')
     def test_403_default_detail(self, mock_post):

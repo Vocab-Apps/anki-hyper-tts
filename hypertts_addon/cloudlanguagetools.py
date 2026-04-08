@@ -132,9 +132,15 @@ class CloudLanguageTools():
                 logger.exception(f'Unhandled VocabAI API error: {error_message}')
                 raise errors.UnknownServiceError(source_text, voice, error_message)
 
+        except errors.HyperTTSError:
+            # we need to let the exceptions created by parsing the payload through, 
+            # since they have the correct error type and message
+            raise
         except requests.exceptions.Timeout:
             raise errors.TimeoutError(source_text, voice, 'HTTP request timed out')
         except Exception as e:
+            # eventually we should not have any exceptions coming through here
+            # for now, classify them as unknown service errors, which is a TransientError
             logger.exception(f'Unexpected error during VocabAI HTTP request: {e}')
             raise errors.UnknownServiceError(source_text, voice, str(e))
 
