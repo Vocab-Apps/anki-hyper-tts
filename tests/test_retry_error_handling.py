@@ -166,11 +166,11 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
     def test_503_rate_limit(self, mock_post):
         mock_post.return_value = mock.Mock(
             status_code=503,
-            json=lambda: {'error': 'rate limited', 'retry_after': 30}
+            json=lambda: {'error': 'rate limited', 'retry_after': 32}
         )
         with self.assertRaises(errors.RateLimitRetryAfterError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
-        self.assertEqual(cm.exception.retry_after, 30)
+        self.assertEqual(cm.exception.retry_after, 32)
 
     @mock.patch('requests.post')
     def test_504_transient(self, mock_post):
