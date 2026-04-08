@@ -282,6 +282,8 @@ class MissingServiceConfiguration(HyperTTSError):
 # these ActionContext objects implement the "with " interface and help catch exceptions
 
 class SingleActionContext():
+    TRANSIENT_HINT = 'This error may be temporary. Please try again.'
+
     def __init__(self, error_manager, action):
         self.error_manager = error_manager
         self.action = action
@@ -292,7 +294,8 @@ class SingleActionContext():
     def __exit__(self, exception_type, exception_value, traceback):
         if exception_value != None:
             if isinstance(exception_value, HyperTTSError):
-                self.error_manager.report_single_exception(exception_value, self.action)
+                suffix = self.TRANSIENT_HINT if isinstance(exception_value, TransientError) else None
+                self.error_manager.report_single_exception(exception_value, self.action, suffix=suffix)
             else:
                 self.error_manager.report_unknown_exception_interactive(exception_value, self.action)
             return True
@@ -310,11 +313,12 @@ class SingleActionContextConfigurable():
     def __exit__(self, exception_type, exception_value, traceback):
         if exception_value != None:
             if isinstance(exception_value, HyperTTSError):
-                self.error_manager.report_single_exception_dialog_type(exception_value, self.action, self.error_dialog_type)
+                suffix = SingleActionContext.TRANSIENT_HINT if isinstance(exception_value, TransientError) else None
+                self.error_manager.report_single_exception_dialog_type(exception_value, self.action, self.error_dialog_type, suffix=suffix)
             else:
                 self.error_manager.report_unknown_exception_interactive(exception_value, self.action)
             return True
-        return False        
+        return False
 
 class BatchActionContext():
     def __init__(self, batch_error_manager, note_id):
@@ -395,14 +399,14 @@ class ErrorManager():
     def __init__(self, anki_utils):
         self.anki_utils = anki_utils
 
-    def report_single_exception(self, exception, action):
-        self.anki_utils.report_known_exception_interactive_dialog(exception, action)
+    def report_single_exception(self, exception, action, suffix=None):
+        self.anki_utils.report_known_exception_interactive_dialog(exception, action, suffix=suffix)
 
-    def report_single_exception_dialog_type(self, exception, action, error_dialog_type: constants.ErrorDialogType):
+    def report_single_exception_dialog_type(self, exception, action, error_dialog_type: constants.ErrorDialogType, suffix=None):
         if error_dialog_type == constants.ErrorDialogType.Dialog:
-            self.anki_utils.report_known_exception_interactive_dialog(exception, action)
+            self.anki_utils.report_known_exception_interactive_dialog(exception, action, suffix=suffix)
         elif error_dialog_type == constants.ErrorDialogType.Tooltip:
-            self.anki_utils.report_known_exception_interactive_tooltip(exception, action)
+            self.anki_utils.report_known_exception_interactive_tooltip(exception, action, suffix=suffix)
         elif error_dialog_type == constants.ErrorDialogType.Nothing:
             pass
         else:

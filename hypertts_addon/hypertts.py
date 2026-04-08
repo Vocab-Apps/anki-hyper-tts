@@ -7,6 +7,7 @@ import hashlib
 import random
 import copy
 import json
+import time
 from typing import List, Dict
 import pprint
 
@@ -59,18 +60,36 @@ class HyperTTS():
 
             audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.batch)
             
+            delays = [1, 2, 4]
+            retry_max = 3
+
             for note_id in note_id_list:
                 with batch_status.get_note_action_context(note_id, False) as note_action_context:
                     note = self.anki_utils.get_note_by_id(note_id)
-                    # process note
-                    source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, False,
-                        audio_request_context, None, anki_collection)
+                    audio_request_context.retry_count = 0
+                    for attempt in range(retry_max + 1):
+                        try:
+                            source_text, processed_text, sound_file, full_filename = self.process_note_audio(batch, note, False,
+                                audio_request_context, None, anki_collection)
+                            break
+                        except errors.TransientError as e:
+                            if attempt >= retry_max:
+                                raise
+                            if isinstance(e, errors.RateLimitRetryAfterError):
+                                delay = e.retry_after
+                            else:
+                                delay = delays[min(attempt, len(delays) - 1)]
+                            logger.warning(f'Transient error on note {note_id} (attempt {attempt + 1}/{retry_max}), '
+                                           f'retrying in {delay}s: {e}')
+                            note_action_context.set_status(constants.BatchNoteStatus.Retrying)
+                            time.sleep(delay)
+                            audio_request_context.increment_retry_count()
                     # update note action context
                     note_action_context.set_source_text(source_text)
                     note_action_context.set_processed_text(processed_text)
                     note_action_context.set_sound(sound_file)
-                    note_action_context.set_status(constants.BatchNoteStatus.Done)                    
-                    
+                    note_action_context.set_status(constants.BatchNoteStatus.Done)
+
                     modified_notes.append(note)
                 if batch_status.must_continue == False:
                     logger.info('batch_status execution interrupted')

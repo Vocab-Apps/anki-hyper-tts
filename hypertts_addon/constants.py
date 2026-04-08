@@ -56,6 +56,7 @@ class VoiceSelectionMode(enum.Enum):
 class BatchNoteStatus(enum.Enum):
     Waiting = enum.auto()
     Processing = enum.auto()
+    Retrying = enum.auto()
     Done = enum.auto()
     Error = enum.auto()
     OK = enum.auto()

@@ -324,7 +324,8 @@ class TestCloudLanguageToolsCLTErrorMapping(unittest.TestCase):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
 
-class TestServiceManagerRetry(unittest.TestCase):
+class TestServiceManagerNoRetry(unittest.TestCase):
+    """Verify that ServiceManager no longer retries — errors propagate directly."""
 
     def _make_service_manager(self, mock_clt):
         """Create a minimal ServiceManager with a mock CloudLanguageTools."""
@@ -333,31 +334,21 @@ class TestServiceManagerRetry(unittest.TestCase):
         manager.cloudlanguagetools = mock_clt
         manager.use_cloud_language_tools = mock.Mock(return_value=True)
         manager.services = {}
-        # Bind the real implementation
         manager.get_tts_audio_implementation = servicemanager.ServiceManager.get_tts_audio_implementation.__get__(manager)
         manager._get_tts_audio_service = servicemanager.ServiceManager._get_tts_audio_service.__get__(manager)
         return manager
 
-    @mock.patch('time.sleep')
-    def test_retry_on_transient_error_then_success(self, mock_sleep):
+    def test_transient_error_propagates(self):
         voice = make_mock_voice()
         ctx = make_mock_context()
         mock_clt = mock.Mock()
-        mock_clt.get_tts_audio.side_effect = [
-            errors.TransientError('text', voice, 'temp fail'),
-            errors.TransientError('text', voice, 'temp fail'),
-            b'audio_data',
-        ]
+        mock_clt.get_tts_audio.side_effect = errors.TransientError('text', voice, 'temp fail')
         manager = self._make_service_manager(mock_clt)
-        result = manager.get_tts_audio_implementation('text', voice, {}, ctx)
-        self.assertEqual(result, b'audio_data')
-        self.assertEqual(mock_clt.get_tts_audio.call_count, 3)
-        self.assertEqual(ctx.retry_count, 2)
-        mock_sleep.assert_any_call(1)
-        mock_sleep.assert_any_call(2)
+        with self.assertRaises(errors.TransientError):
+            manager.get_tts_audio_implementation('text', voice, {}, ctx)
+        self.assertEqual(mock_clt.get_tts_audio.call_count, 1)
 
-    @mock.patch('time.sleep')
-    def test_permanent_error_not_retried(self, mock_sleep):
+    def test_permanent_error_propagates(self):
         voice = make_mock_voice()
         ctx = make_mock_context()
         mock_clt = mock.Mock()
@@ -366,58 +357,8 @@ class TestServiceManagerRetry(unittest.TestCase):
         with self.assertRaises(errors.PermanentError):
             manager.get_tts_audio_implementation('text', voice, {}, ctx)
         self.assertEqual(mock_clt.get_tts_audio.call_count, 1)
-        mock_sleep.assert_not_called()
 
-    @mock.patch('time.sleep')
-    def test_transient_error_exhausts_retries(self, mock_sleep):
-        voice = make_mock_voice()
-        ctx = make_mock_context()
-        ctx.retry_max = 2
-        mock_clt = mock.Mock()
-        mock_clt.get_tts_audio.side_effect = errors.TransientError('text', voice, 'fail')
-        manager = self._make_service_manager(mock_clt)
-        with self.assertRaises(errors.TransientError):
-            manager.get_tts_audio_implementation('text', voice, {}, ctx)
-        # initial attempt + 2 retries = 3 calls
-        self.assertEqual(mock_clt.get_tts_audio.call_count, 3)
-        self.assertEqual(ctx.retry_count, 2)
-
-    @mock.patch('time.sleep')
-    def test_rate_limit_uses_retry_after(self, mock_sleep):
-        voice = make_mock_voice()
-        ctx = make_mock_context()
-        mock_clt = mock.Mock()
-        mock_clt.get_tts_audio.side_effect = [
-            errors.RateLimitRetryAfterError('text', voice, 'rate limited', 15),
-            b'audio_data',
-        ]
-        manager = self._make_service_manager(mock_clt)
-        result = manager.get_tts_audio_implementation('text', voice, {}, ctx)
-        self.assertEqual(result, b'audio_data')
-        mock_sleep.assert_called_once_with(15)
-
-    @mock.patch('time.sleep')
-    def test_exponential_backoff_delays(self, mock_sleep):
-        voice = make_mock_voice()
-        ctx = make_mock_context()
-        mock_clt = mock.Mock()
-        mock_clt.get_tts_audio.side_effect = [
-            errors.TransientError('text', voice, 'fail'),
-            errors.TransientError('text', voice, 'fail'),
-            errors.TransientError('text', voice, 'fail'),
-            b'audio_data',
-        ]
-        manager = self._make_service_manager(mock_clt)
-        result = manager.get_tts_audio_implementation('text', voice, {}, ctx)
-        self.assertEqual(result, b'audio_data')
-        self.assertEqual(mock_sleep.call_args_list, [
-            mock.call(1),
-            mock.call(2),
-            mock.call(4),
-        ])
-
-    @mock.patch('time.sleep')
-    def test_audio_not_found_not_retried(self, mock_sleep):
+    def test_audio_not_found_propagates(self):
         voice = make_mock_voice()
         ctx = make_mock_context()
         mock_clt = mock.Mock()
@@ -426,26 +367,15 @@ class TestServiceManagerRetry(unittest.TestCase):
         with self.assertRaises(errors.AudioNotFoundError):
             manager.get_tts_audio_implementation('text', voice, {}, ctx)
         self.assertEqual(mock_clt.get_tts_audio.call_count, 1)
-        mock_sleep.assert_not_called()
 
-    @mock.patch('time.sleep')
-    def test_retry_count_passed_to_clt(self, mock_sleep):
-        """Verify retry_count in context is updated before each CLT call."""
+    def test_success(self):
         voice = make_mock_voice()
         ctx = make_mock_context()
-        retry_counts_seen = []
-
-        def capture_retry_count(source_text, v, opts, arc):
-            retry_counts_seen.append(arc.retry_count)
-            if len(retry_counts_seen) < 3:
-                raise errors.TransientError(source_text, v, 'fail')
-            return b'audio'
-
         mock_clt = mock.Mock()
-        mock_clt.get_tts_audio.side_effect = capture_retry_count
+        mock_clt.get_tts_audio.return_value = b'audio_data'
         manager = self._make_service_manager(mock_clt)
-        manager.get_tts_audio_implementation('text', voice, {}, ctx)
-        self.assertEqual(retry_counts_seen, [0, 1, 2])
+        result = manager.get_tts_audio_implementation('text', voice, {}, ctx)
+        self.assertEqual(result, b'audio_data')
 
 
 class TestServiceManagerDirectServiceErrorWrapping(unittest.TestCase):
@@ -460,8 +390,7 @@ class TestServiceManagerDirectServiceErrorWrapping(unittest.TestCase):
         manager._get_tts_audio_service = servicemanager.ServiceManager._get_tts_audio_service.__get__(manager)
         return manager
 
-    @mock.patch('time.sleep')
-    def test_timeout_translated(self, mock_sleep):
+    def test_timeout_translated(self):
         voice = make_mock_voice()
         voice.service = 'TestService'
         ctx = make_mock_context()
@@ -472,8 +401,7 @@ class TestServiceManagerDirectServiceErrorWrapping(unittest.TestCase):
         with self.assertRaises(errors.TimeoutError):
             manager.get_tts_audio_implementation('text', voice, {}, ctx)
 
-    @mock.patch('time.sleep')
-    def test_generic_exception_translated_to_unknown(self, mock_sleep):
+    def test_generic_exception_translated_to_unknown(self):
         voice = make_mock_voice()
         voice.service = 'TestService'
         ctx = make_mock_context()
@@ -484,8 +412,7 @@ class TestServiceManagerDirectServiceErrorWrapping(unittest.TestCase):
         with self.assertRaises(errors.UnknownServiceError):
             manager.get_tts_audio_implementation('text', voice, {}, ctx)
 
-    @mock.patch('time.sleep')
-    def test_hypertts_error_passed_through(self, mock_sleep):
+    def test_hypertts_error_passed_through(self):
         voice = make_mock_voice()
         voice.service = 'TestService'
         ctx = make_mock_context()
@@ -496,8 +423,7 @@ class TestServiceManagerDirectServiceErrorWrapping(unittest.TestCase):
         with self.assertRaises(errors.RequestError):
             manager.get_tts_audio_implementation('text', voice, {}, ctx)
 
-    @mock.patch('time.sleep')
-    def test_direct_service_success(self, mock_sleep):
+    def test_direct_service_success(self):
         voice = make_mock_voice()
         voice.service = 'TestService'
         ctx = make_mock_context()
@@ -508,22 +434,18 @@ class TestServiceManagerDirectServiceErrorWrapping(unittest.TestCase):
         result = manager.get_tts_audio_implementation('text', voice, {}, ctx)
         self.assertEqual(result, b'audio_data')
 
-    @mock.patch('time.sleep')
-    def test_direct_service_retry_on_timeout(self, mock_sleep):
+    def test_timeout_propagates_no_retry(self):
+        """Timeout is translated to TimeoutError and propagates (no retry in servicemanager)."""
         voice = make_mock_voice()
         voice.service = 'TestService'
         ctx = make_mock_context()
         mock_service = mock.Mock()
         mock_service.name = 'TestService'
-        mock_service.get_tts_audio.side_effect = [
-            requests.exceptions.Timeout('timed out'),
-            b'audio_data',
-        ]
+        mock_service.get_tts_audio.side_effect = requests.exceptions.Timeout('timed out')
         manager = self._make_service_manager_direct(mock_service)
-        result = manager.get_tts_audio_implementation('text', voice, {}, ctx)
-        self.assertEqual(result, b'audio_data')
-        self.assertEqual(mock_service.get_tts_audio.call_count, 2)
-        mock_sleep.assert_called_once_with(1)
+        with self.assertRaises(errors.TimeoutError):
+            manager.get_tts_audio_implementation('text', voice, {}, ctx)
+        self.assertEqual(mock_service.get_tts_audio.call_count, 1)
 
 
 class TestAudioRequestContext(unittest.TestCase):

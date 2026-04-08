@@ -2,7 +2,7 @@ from re import sub
 import sys
 import os
 import importlib
-import time
+
 import typing
 import requests
 import pprint
@@ -207,35 +207,13 @@ class ServiceManager():
             event_count += 1
             COUNT_BY_BATCH_UUID[audio_request_context.batch_uuid] = event_count
 
-        if not use_clt:
+        if use_clt:
+            logger.debug(f'voice: {voice}, using cloudlanguagetools')
+            return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)
+        else:
             service_instance = self.services[voice.service]
-
-        delays = [1, 2, 4]
-        audio_request_context.retry_count = 0
-
-        while True:
-            try:
-                if use_clt:
-                    logger.debug(f'voice: {voice}, using cloudlanguagetools')
-                    return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)
-                else:
-                    logger.debug(f'voice: {voice}, using service {service_instance.name}')
-                    return self._get_tts_audio_service(service_instance, source_text, voice, options)
-            except errors.PermanentError:
-                raise
-            except errors.TransientError as e:
-                if audio_request_context.retry_count >= audio_request_context.retry_max:
-                    raise
-
-                if isinstance(e, errors.RateLimitRetryAfterError):
-                    delay = e.retry_after
-                else:
-                    delay = delays[min(audio_request_context.retry_count, len(delays) - 1)]
-
-                logger.warning(f'Transient error (attempt {audio_request_context.retry_count + 1}/{audio_request_context.retry_max}), '
-                               f'retrying in {delay}s: {e}')
-                time.sleep(delay)
-                audio_request_context.increment_retry_count()
+            logger.debug(f'voice: {voice}, using service {service_instance.name}')
+            return self._get_tts_audio_service(service_instance, source_text, voice, options)
 
     # Raises only subclasses of:
     #   PermanentError  – non-retryable
