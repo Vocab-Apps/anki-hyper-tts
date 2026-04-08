@@ -220,15 +220,7 @@ class ServiceManager():
                     return self.cloudlanguagetools.get_tts_audio(source_text, voice, options, audio_request_context)
                 else:
                     logger.debug(f'voice: {voice}, using service {service_instance.name}')
-                    try:
-                        return service_instance.get_tts_audio(source_text, voice, options)
-                    except requests.exceptions.Timeout:
-                        raise errors.TimeoutError(source_text, voice, 'HTTP request timed out')
-                    except errors.HyperTTSError:
-                        raise
-                    except Exception as e:
-                        logger.exception(f'Unhandled exception in service {voice.service}')
-                        raise errors.UnknownServiceError(source_text, voice, str(e))
+                    return self._get_tts_audio_service(service_instance, source_text, voice, options)
             except errors.PermanentError:
                 raise
             except errors.TransientError as e:
@@ -244,6 +236,20 @@ class ServiceManager():
                                f'retrying in {delay}s: {e}')
                 time.sleep(delay)
                 audio_request_context.increment_retry_count()
+
+    # Raises only subclasses of:
+    #   PermanentError  – non-retryable
+    #   TransientError  – retryable (timeout, unknown)
+    def _get_tts_audio_service(self, service_instance, source_text, voice, options):
+        try:
+            return service_instance.get_tts_audio(source_text, voice, options)
+        except errors.HyperTTSError:
+            raise
+        except requests.exceptions.Timeout:
+            raise errors.TimeoutError(source_text, voice, 'HTTP request timed out')
+        except Exception as e:
+            logger.exception(f'Unhandled exception in service {voice.service}')
+            raise errors.UnknownServiceError(source_text, voice, str(e))
 
     def full_voice_list(self, single_service_name=None) -> typing.List[voice_module.TtsVoice_v3]:
         full_list = []

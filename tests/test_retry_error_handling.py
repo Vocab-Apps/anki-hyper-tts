@@ -335,6 +335,7 @@ class TestServiceManagerRetry(unittest.TestCase):
         manager.services = {}
         # Bind the real implementation
         manager.get_tts_audio_implementation = servicemanager.ServiceManager.get_tts_audio_implementation.__get__(manager)
+        manager._get_tts_audio_service = servicemanager.ServiceManager._get_tts_audio_service.__get__(manager)
         return manager
 
     @mock.patch('time.sleep')
@@ -456,6 +457,7 @@ class TestServiceManagerDirectServiceErrorWrapping(unittest.TestCase):
         manager.use_cloud_language_tools = mock.Mock(return_value=False)
         manager.services = {'TestService': mock_service}
         manager.get_tts_audio_implementation = servicemanager.ServiceManager.get_tts_audio_implementation.__get__(manager)
+        manager._get_tts_audio_service = servicemanager.ServiceManager._get_tts_audio_service.__get__(manager)
         return manager
 
     @mock.patch('time.sleep')
