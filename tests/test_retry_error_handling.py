@@ -81,6 +81,14 @@ class TestErrorHierarchy(unittest.TestCase):
         e = errors.AudioNotFoundAnyVoiceError('hello')
         self.assertIn('Audio not found in any voices for [hello]', str(e))
 
+    def test_permission_error_is_permanent(self):
+        voice = make_mock_voice()
+        e = errors.PermissionError('text', voice, 'Forbidden')
+        self.assertIsInstance(e, errors.PermanentError)
+        self.assertIsInstance(e, errors.ServiceRequestError)
+        self.assertIsInstance(e, errors.HyperTTSError)
+        self.assertEqual(e.error_message, 'Forbidden')
+
     def test_service_request_error_attributes(self):
         voice = make_mock_voice()
         e = errors.ServiceRequestError('text', voice, 'some error')
@@ -149,8 +157,9 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
             status_code=403,
             json=lambda: {'detail': 'insufficient character credit'}
         )
-        with self.assertRaises(errors.PermanentError) as cm:
+        with self.assertRaises(errors.PermissionError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertIsInstance(cm.exception, errors.PermanentError)
         self.assertIn('insufficient character credit', cm.exception.error_message)
 
     @mock.patch('requests.post')
@@ -213,6 +222,66 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         data = call_args[1].get('json', call_args[0][1] if len(call_args[0]) > 1 else None)
         self.assertEqual(data['retry_count'], 1)
         self.assertEqual(data['retry_max'], 3)
+
+
+    @mock.patch('requests.post')
+    def test_non_timeout_request_exception(self, mock_post):
+        """Non-Timeout exception from requests.post is logged and raised as UnknownServiceError."""
+        mock_post.side_effect = requests.exceptions.ConnectionError('connection refused')
+        with self.assertRaises(errors.UnknownServiceError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertIn('connection refused', cm.exception.error_message)
+
+    @mock.patch('requests.post')
+    def test_400_unparseable_json_falls_to_default(self, mock_post):
+        """400 with unparseable JSON body falls through to default handler."""
+        resp = mock.Mock(status_code=400, content=b'not json')
+        resp.json.side_effect = ValueError('No JSON')
+        mock_post.return_value = resp
+        with self.assertRaises(errors.UnknownServiceError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertIn('400', cm.exception.error_message)
+
+    @mock.patch('requests.post')
+    def test_403_unparseable_json_falls_to_default(self, mock_post):
+        """403 with unparseable JSON body falls through to default handler."""
+        resp = mock.Mock(status_code=403, content=b'not json')
+        resp.json.side_effect = ValueError('No JSON')
+        mock_post.return_value = resp
+        with self.assertRaises(errors.UnknownServiceError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertIn('403', cm.exception.error_message)
+
+    @mock.patch('requests.post')
+    def test_503_unparseable_json_falls_to_default(self, mock_post):
+        """503 with unparseable JSON body falls through to default handler."""
+        resp = mock.Mock(status_code=503, content=b'not json')
+        resp.json.side_effect = ValueError('No JSON')
+        mock_post.return_value = resp
+        with self.assertRaises(errors.UnknownServiceError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertIn('503', cm.exception.error_message)
+
+    @mock.patch('requests.post')
+    def test_504_unparseable_json_falls_to_default(self, mock_post):
+        """504 with unparseable JSON body falls through to default handler."""
+        resp = mock.Mock(status_code=504, content=b'not json')
+        resp.json.side_effect = ValueError('No JSON')
+        mock_post.return_value = resp
+        with self.assertRaises(errors.UnknownServiceError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertIn('504', cm.exception.error_message)
+
+    @mock.patch('requests.post')
+    def test_403_default_detail(self, mock_post):
+        """403 with JSON but no 'detail' key uses 'Forbidden' as default."""
+        mock_post.return_value = mock.Mock(
+            status_code=403,
+            json=lambda: {'other_key': 'value'}
+        )
+        with self.assertRaises(errors.PermissionError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertEqual(cm.exception.error_message, 'Forbidden')
 
 
 class TestCloudLanguageToolsCLTErrorMapping(unittest.TestCase):

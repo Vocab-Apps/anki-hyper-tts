@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 # |
 # +-- ServiceRequestError                Base for service call errors (carries source_text, voice, error_message)
 # |   +-- PermanentError                 Non-retryable service failures (4xx, auth, quota)
+# |   |   +-- PermissionError            Authentication/authorization failures (403)
 # |   |   +-- AudioNotFoundError         Audio unavailable for a specific text/voice pair (web scrapers, VocabAI 404)
 # |   |   +-- AudioNotFoundAnyVoiceError Audio unavailable across all voices in priority mode
 # |   +-- TransientError                 Retryable service failures
@@ -123,6 +124,9 @@ class TimeoutError(TransientError):
     pass
 
 class UnknownServiceError(TransientError):
+    pass
+
+class PermissionError(PermanentError):
     pass
 
 class AudioNotFoundError(PermanentError):
