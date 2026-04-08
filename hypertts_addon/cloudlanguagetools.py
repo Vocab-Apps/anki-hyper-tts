@@ -101,8 +101,10 @@ class CloudLanguageTools():
             raise errors.TimeoutError(source_text, voice, 'HTTP request timed out')
 
         if response.status_code == 200:
+            # success
             return response.content
         elif response.status_code == 400:
+            # unknown error
             try:
                 response_data = response.json()
             except Exception:
@@ -112,6 +114,7 @@ class CloudLanguageTools():
             else:
                 raise errors.PermanentError(source_text, voice, str(response_data))
         elif response.status_code == 403:
+            # authentication issue
             try:
                 response_data = response.json()
                 detail = response_data.get('detail', 'Forbidden')
