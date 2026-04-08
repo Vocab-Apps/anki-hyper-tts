@@ -60,6 +60,9 @@ class CloudLanguageTools():
         """Returns the SSL verification setting for requests. Returns True (verify SSL) by default."""
         return not self.disable_ssl_verification
 
+    # Raises only subclasses of:
+    #   PermanentError  – non-retryable (400, 403, 404)
+    #   TransientError  – retryable (503, 504, timeout, unknown)
     def get_tts_audio(self, source_text, voice, options, audio_request_context):
         if hasattr(sys, '_sentry_crash_reporting'):
             sentry_sdk.set_user({"id": f'api_key:{self.config.hypertts_pro_api_key}'})
