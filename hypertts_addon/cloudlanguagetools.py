@@ -126,11 +126,11 @@ class CloudLanguageTools():
                 # transient error without specific retry-after
                 error_msg = response_data.get('error', 'temporary failure')
                 raise errors.TransientError(source_text, voice, error_msg)
-            else:
-                # default: log full details and raise
-                error_message = f"Status code: {response.status_code} ({response.content})"
-                logger.exception(f'Unhandled VocabAI API error: {error_message}')
-                raise errors.UnknownServiceError(source_text, voice, error_message)
+
+            # default: log full details and raise
+            error_message = f"Status code: {response.status_code} ({response.content})"
+            logger.exception(f'Unhandled VocabAI API error: {error_message}')
+            raise errors.UnknownServiceError(source_text, voice, error_message)
 
         except errors.HyperTTSError:
             # we need to let the exceptions created by parsing the payload through, 
