@@ -334,17 +334,17 @@ class AnkiUtils():
                                 'error_message': error_message
                             })
 
-    def report_known_exception_interactive_dialog(self, exception, action, suffix=None):
+    def report_known_exception_interactive_dialog(self, exception, action):
         error_message = f'Encountered an error while {action}: {str(exception)}'
-        if suffix:
-            error_message = f'{error_message}<br/>{suffix}'
+        if getattr(exception, 'retryable', False):
+            error_message = f'{error_message}<br/>This error may be temporary. Please try again.'
         self.critical_message(error_message, None)
         self.report_error_event(error_message)
 
-    def report_known_exception_interactive_tooltip(self, exception, action, suffix=None):
+    def report_known_exception_interactive_tooltip(self, exception, action):
         error_message = f'Encountered an error while {action}: {str(exception)}'
-        if suffix:
-            error_message = f'{error_message} ({suffix})'
+        if getattr(exception, 'retryable', False):
+            error_message = f'{error_message} (This error may be temporary. Please try again.)'
         self.tooltip_message(error_message)
         self.report_error_event(error_message)
 

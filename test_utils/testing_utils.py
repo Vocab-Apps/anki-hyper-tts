@@ -360,14 +360,14 @@ class MockAnkiUtils():
         self.last_exception_dialog_type = None
         self.last_exception_is_known = None
 
-    def report_known_exception_interactive_dialog(self, exception, action, suffix=None):
+    def report_known_exception_interactive_dialog(self, exception, action):
         self.last_exception = exception
         self.last_action = action
         self.last_exception_dialog_type = 'dialog'
         self.last_exception_is_known = True
         logger.error(f'during {action}: {str(exception)}')
 
-    def report_known_exception_interactive_tooltip(self, exception, action, suffix=None):
+    def report_known_exception_interactive_tooltip(self, exception, action):
         self.last_exception = exception
         self.last_action = action
         self.last_exception_dialog_type = 'tooltip'

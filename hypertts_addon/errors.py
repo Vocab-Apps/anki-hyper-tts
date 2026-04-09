@@ -110,10 +110,10 @@ class ServiceRequestError(HyperTTSError):
         self.error_message = error_message
 
 class PermanentError(ServiceRequestError):
-    pass
+    retryable = False
 
 class TransientError(ServiceRequestError):
-    pass
+    retryable = True
 
 class RateLimitRetryAfterError(TransientError):
     def __init__(self, source_text, voice, error_message, retry_after):
@@ -282,8 +282,6 @@ class MissingServiceConfiguration(HyperTTSError):
 # these ActionContext objects implement the "with " interface and help catch exceptions
 
 class SingleActionContext():
-    TRANSIENT_HINT = 'This error may be temporary. Please try again.'
-
     def __init__(self, error_manager, action):
         self.error_manager = error_manager
         self.action = action
@@ -294,8 +292,7 @@ class SingleActionContext():
     def __exit__(self, exception_type, exception_value, traceback):
         if exception_value != None:
             if isinstance(exception_value, HyperTTSError):
-                suffix = self.TRANSIENT_HINT if isinstance(exception_value, TransientError) else None
-                self.error_manager.report_single_exception(exception_value, self.action, suffix=suffix)
+                self.error_manager.report_single_exception(exception_value, self.action)
             else:
                 self.error_manager.report_unknown_exception_interactive(exception_value, self.action)
             return True
@@ -313,8 +310,7 @@ class SingleActionContextConfigurable():
     def __exit__(self, exception_type, exception_value, traceback):
         if exception_value != None:
             if isinstance(exception_value, HyperTTSError):
-                suffix = SingleActionContext.TRANSIENT_HINT if isinstance(exception_value, TransientError) else None
-                self.error_manager.report_single_exception_dialog_type(exception_value, self.action, self.error_dialog_type, suffix=suffix)
+                self.error_manager.report_single_exception_dialog_type(exception_value, self.action, self.error_dialog_type)
             else:
                 self.error_manager.report_unknown_exception_interactive(exception_value, self.action)
             return True
@@ -399,14 +395,14 @@ class ErrorManager():
     def __init__(self, anki_utils):
         self.anki_utils = anki_utils
 
-    def report_single_exception(self, exception, action, suffix=None):
-        self.anki_utils.report_known_exception_interactive_dialog(exception, action, suffix=suffix)
+    def report_single_exception(self, exception, action):
+        self.anki_utils.report_known_exception_interactive_dialog(exception, action)
 
-    def report_single_exception_dialog_type(self, exception, action, error_dialog_type: constants.ErrorDialogType, suffix=None):
+    def report_single_exception_dialog_type(self, exception, action, error_dialog_type: constants.ErrorDialogType):
         if error_dialog_type == constants.ErrorDialogType.Dialog:
-            self.anki_utils.report_known_exception_interactive_dialog(exception, action, suffix=suffix)
+            self.anki_utils.report_known_exception_interactive_dialog(exception, action)
         elif error_dialog_type == constants.ErrorDialogType.Tooltip:
-            self.anki_utils.report_known_exception_interactive_tooltip(exception, action, suffix=suffix)
+            self.anki_utils.report_known_exception_interactive_tooltip(exception, action)
         elif error_dialog_type == constants.ErrorDialogType.Nothing:
             pass
         else:
