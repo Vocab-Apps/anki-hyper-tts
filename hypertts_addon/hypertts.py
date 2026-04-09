@@ -60,8 +60,8 @@ class HyperTTS():
 
             audio_request_context = context.AudioRequestContext(constants.AudioRequestReason.batch)
             
-            delays = [1, 2, 4]
-            retry_max = 3
+            delays = constants.BATCH_RETRY_DELAYS
+            retry_max = constants.BATCH_RETRY_MAX
 
             for note_id in note_id_list:
                 with batch_status.get_note_action_context(note_id, False) as note_action_context:

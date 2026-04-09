@@ -13,6 +13,9 @@ CLIENT_NAME='anki-hyper-tts'
 RequestTimeout = 20 # 20 seconds max
 RequestTimeoutShort = 3
 
+BATCH_RETRY_DELAYS = [1, 2, 4]
+BATCH_RETRY_MAX = 3
+
 CLOUDLANGUAGETOOLS_API_BASE_URL = 'https://cloudlanguagetools-api.vocab.ai'
 VOCABAI_API_BASE_URL = 'https://app.vocab.ai/languagetools-api/v4'
 
