@@ -185,8 +185,8 @@ class CloudLanguageTools():
                 'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'},
             verify=self.get_verify_ssl()
         )
-        logger.debug(f'vocabai API result: {response.json()}')
         if response.status_code == 200:
+            logger.debug(f'vocabai API result: {response.json()}')
             # API key is valid on vocab API
             return config_models.HyperTTSProAccountConfig(
                 api_key=api_key,
