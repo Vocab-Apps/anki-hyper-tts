@@ -17,7 +17,7 @@ BATCH_RETRY_DELAYS = [1, 2, 4]
 BATCH_RETRY_MAX = 3
 
 CLOUDLANGUAGETOOLS_API_BASE_URL = 'https://cloudlanguagetools-api.vocab.ai'
-VOCABAI_API_BASE_URL = 'https://app.vocab.ai/languagetools-api/v4'
+VOCABAI_API_BASE_URL = 'https://app.vocab.ai'
 
 class ServiceType(enum.Enum):
     dictionary = ("Dictionary, contains recordings of words.")

@@ -56,6 +56,9 @@ class CloudLanguageTools():
         else:
             return self.clt_api_base_url
 
+    def get_vocabai_url(self, path):
+        return self.get_base_url() + f'/languagetools-api/v5/{path}'
+
     def get_verify_ssl(self):
         """Returns the SSL verification setting for requests. Returns True (verify SSL) by default."""
         return not self.disable_ssl_verification
@@ -77,8 +80,7 @@ class CloudLanguageTools():
 
     def _get_tts_audio_vocabai(self, source_text, voice, options, audio_request_context):
         # API v5
-        base_url = self.get_base_url().replace('/v4', '/v5')
-        full_url = base_url + '/audio'
+        full_url = self.get_vocabai_url('audio')
         data = {
             'text': source_text,
             'service': voice.service,
@@ -178,7 +180,7 @@ class CloudLanguageTools():
     def account_info(self, api_key):
         # try to get account data on vocabai first
         logger.debug(f'verifying API key on vocabai API')
-        response = requests.get(self.vocabai_api_base_url + '/account', headers={
+        response = requests.get(self.get_vocabai_url('account'), headers={
                 'Authorization': f'Api-Key {api_key}',
                 'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'},
             verify=self.get_verify_ssl()
@@ -233,7 +235,7 @@ class CloudLanguageTools():
     def check_email_verification_status(self, email) -> bool:
         logger.info(f'checking email verification status for email {email}')
 
-        response = requests.get(self.vocabai_api_base_url + '/check_email_verification',
+        response = requests.get(self.get_vocabai_url('check_email_verification'),
                                headers=self.get_request_headers(),
                                verify=self.get_verify_ssl())
         
@@ -248,7 +250,7 @@ class CloudLanguageTools():
         logger.info(f'requesting trial key for email {email}')
 
         data = self.build_trial_key_request_data(email, password, client_uuid)
-        response = requests.post(self.vocabai_api_base_url + '/register_trial',
+        response = requests.post(self.get_vocabai_url('register_trial'),
                                  json=data,
                                  headers=self.get_trial_request_headers(),
                                  verify=self.get_verify_ssl())
