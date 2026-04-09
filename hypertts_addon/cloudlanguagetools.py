@@ -95,16 +95,17 @@ class CloudLanguageTools():
             'retry_count': audio_request_context.retry_count,
             'retry_max': audio_request_context.retry_max,
         }
-        logger.info(f'request url: {full_url}, data: {data}')
+        logger.info(f'_get_tts_audio_vocabai: request url: {full_url}, data: {data}')
         headers = self.get_request_headers()
-        logger.debug(f'get_tts_audio: headers: {headers} data: {data}')
+        logger.debug(f'_get_tts_audio_vocabai: headers: {headers} data: {data}')
 
         try:
             response = requests.post(full_url, json=data, headers=headers,
                 timeout=constants.RequestTimeout, verify=self.get_verify_ssl())
+            logger.info(f'_get_tts_audio_vocabai: response status_code: {response.status_code}')
 
             if response.status_code == 200:
-                # success 
+                # success
                 return response.content
 
             if response.status_code == 404:
@@ -159,13 +160,14 @@ class CloudLanguageTools():
             'voice_key': voice.voice_key,
             'options': options
         }
-        logger.info(f'request url: {full_url}, data: {data}')
+        logger.info(f'_get_tts_audio_clt: request url: {full_url}, data: {data}')
         headers = self.get_request_headers()
-        logger.debug(f'get_tts_audio: headers: {headers} data: {data}')
+        logger.debug(f'_get_tts_audio_clt: headers: {headers} data: {data}')
 
         try:
             response = requests.post(full_url, json=data, headers=headers,
                 timeout=constants.RequestTimeout, verify=self.get_verify_ssl())
+            logger.info(f'_get_tts_audio_clt: response status_code: {response.status_code}')
         except requests.exceptions.Timeout:
             raise errors.TimeoutError(source_text, voice, 'HTTP request timed out')
 
@@ -179,12 +181,14 @@ class CloudLanguageTools():
 
     def account_info(self, api_key):
         # try to get account data on vocabai first
-        logger.debug(f'verifying API key on vocabai API')
-        response = requests.get(self.get_vocabai_url('account'), headers={
+        vocabai_url = self.get_vocabai_url('account')
+        logger.info(f'account_info: request url: {vocabai_url}, data: None')
+        response = requests.get(vocabai_url, headers={
                 'Authorization': f'Api-Key {api_key}',
                 'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'},
             verify=self.get_verify_ssl()
         )
+        logger.info(f'account_info: response status_code: {response.status_code}')
         if response.status_code == 200:
             logger.debug(f'vocabai API result: {response.json()}')
             # API key is valid on vocab API
@@ -196,10 +200,11 @@ class CloudLanguageTools():
             )
 
         # now try to get account data on CLT API
-        logger.debug(f'verifying API key on CLT API')
-        response = requests.get(self.clt_api_base_url + '/account', headers={'api_key': api_key},
+        clt_url = self.clt_api_base_url + '/account'
+        logger.info(f'account_info: request url: {clt_url}, data: None')
+        response = requests.get(clt_url, headers={'api_key': api_key},
             verify=self.get_verify_ssl())
-        logger.debug(f'CLT API result: {response.json()}')
+        logger.info(f'account_info: response status_code: {response.status_code}')
         if response.status_code == 200:
             # API key is valid on CLT API
             # check if there are errors
@@ -233,12 +238,14 @@ class CloudLanguageTools():
         return data
 
     def check_email_verification_status(self, email) -> bool:
-        logger.info(f'checking email verification status for email {email}')
+        url = self.get_vocabai_url('check_email_verification')
+        logger.info(f'check_email_verification_status: request url: {url}, data: None')
 
-        response = requests.get(self.get_vocabai_url('check_email_verification'),
+        response = requests.get(url,
                                headers=self.get_request_headers(),
                                verify=self.get_verify_ssl())
-        
+        logger.info(f'check_email_verification_status: response status_code: {response.status_code}')
+
         if response.status_code != 200:
             error_message = f"Status code: {response.status_code} ({response.content})"
             raise errors.RequestError(email, None, error_message)
@@ -247,15 +254,15 @@ class CloudLanguageTools():
         return data['email_verified']
 
     def request_trial_key(self, email, password, client_uuid) -> config_models.TrialRequestReponse:
-        logger.info(f'requesting trial key for email {email}')
-
+        url = self.get_vocabai_url('register_trial')
         data = self.build_trial_key_request_data(email, password, client_uuid)
-        response = requests.post(self.get_vocabai_url('register_trial'),
+        logger.info(f'request_trial_key: request url: {url}, data: {data}')
+        response = requests.post(url,
                                  json=data,
                                  headers=self.get_trial_request_headers(),
                                  verify=self.get_verify_ssl())
+        logger.info(f'request_trial_key: response status_code: {response.status_code}')
         data = json.loads(response.content)
-        logger.info(f'retrieved {data}, status_code: {response.status_code}')
 
         if response.status_code == 201:
             # trial key was successfully created
