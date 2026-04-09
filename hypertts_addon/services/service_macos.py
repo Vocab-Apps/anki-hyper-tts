@@ -543,6 +543,6 @@ class MacOS(service.ServiceBase):
             with open(mp3_temp_audio_file.name, 'rb') as audio_file:
                 audio = audio_file.read()
                 return audio
-        except:
-            logger.exception(f'could not generate audio with service {self.name}')
+        except Exception as e:
+            logger.error(e, exc_info=True)
             raise

@@ -148,7 +148,7 @@ class CloudLanguageTools():
 
             # default: log full details and raise
             error_message = f"Status code: {response.status_code} ({response.content})"
-            logger.exception(f'Unhandled VocabAI API error: {error_message}')
+            logger.error(error_message, exc_info=True)
             raise errors.UnknownServiceError(source_text, voice, error_message)
 
         except errors.HyperTTSError:
@@ -160,7 +160,7 @@ class CloudLanguageTools():
         except Exception as e:
             # eventually we should not have any exceptions coming through here
             # for now, classify them as unknown service errors, which is a TransientError
-            logger.exception(f'Unexpected error during VocabAI HTTP request: {e}')
+            logger.error(e, exc_info=True)
             raise errors.UnknownServiceError(source_text, voice, str(e))
 
     def _get_tts_audio_clt(self, source_text, voice, options, audio_request_context):
@@ -194,7 +194,7 @@ class CloudLanguageTools():
         except requests.exceptions.Timeout:
             raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
         except Exception as e:
-            logger.exception(f'Unexpected error during CLT HTTP request: {e}')
+            logger.error(e, exc_info=True)
             raise errors.UnknownServiceError(source_text, voice, str(e))
 
     def account_info(self, api_key):

@@ -226,7 +226,7 @@ class ServiceManager():
         except requests.exceptions.Timeout:
             raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
         except Exception as e:
-            logger.exception(f'Unhandled exception in service {voice.service}')
+            logger.error(e, exc_info=True)
             raise errors.UnknownServiceError(source_text, voice, str(e))
 
     def full_voice_list(self, single_service_name=None) -> typing.List[voice_module.TtsVoice_v3]:
