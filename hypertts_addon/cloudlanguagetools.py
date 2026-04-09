@@ -57,7 +57,11 @@ class CloudLanguageTools():
             return self.clt_api_base_url
 
     def get_vocabai_url(self, path):
-        return self.get_base_url() + f'/languagetools-api/v5/{path}'
+        if self.config.vocabai_api_url_override != None:
+            base_url = self.config.vocabai_api_url_override
+        else:
+            base_url = self.vocabai_api_base_url
+        return base_url + f'/languagetools-api/v5/{path}'
 
     def get_verify_ssl(self):
         """Returns the SSL verification setting for requests. Returns True (verify SSL) by default."""
