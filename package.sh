@@ -13,6 +13,12 @@ if [ -z "$2" ]; then
   exit 1
 fi
 
+CURRENT_BRANCH=$(git branch --show-current)
+if [ "$CURRENT_BRANCH" != "main" ]; then
+  echo "Error: must be on branch 'main' to release (currently on '$CURRENT_BRANCH')"
+  exit 1
+fi
+
 BUMP_TYPE=$1 # major, minor or patch
 # check that the bump type is valid
 if [ "$BUMP_TYPE" != "major" ] && [ "$BUMP_TYPE" != "minor" ] && [ "$BUMP_TYPE" != "patch" ]; then
