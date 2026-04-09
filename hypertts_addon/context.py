@@ -8,7 +8,7 @@ class AudioRequestContext():
         self.audio_request_reason = audio_request_reason
         self.batch_uuid = uuid.uuid4()
         self.retry_count = 0
-        self.retry_max = 3
+        self.retry_max = constants.BATCH_RETRY_MAX
 
     def get_request_mode(self) -> constants.RequestMode:
         request_mode_map = {

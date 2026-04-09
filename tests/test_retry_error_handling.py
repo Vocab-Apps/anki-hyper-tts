@@ -1,5 +1,6 @@
 import unittest
 from unittest import mock
+import datetime
 import requests.exceptions
 
 import sys
@@ -9,8 +10,11 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from hypertts_addon import errors
 from hypertts_addon import context
 from hypertts_addon import constants
+from hypertts_addon import config_models
+from hypertts_addon import batch_status
 from hypertts_addon import cloudlanguagetools as clt_module
 from hypertts_addon import voice as voice_module
+from test_utils import testing_utils
 
 
 def make_mock_voice():
@@ -50,7 +54,7 @@ class TestErrorHierarchy(unittest.TestCase):
         self.assertEqual(e.retry_after, 30)
 
     def test_timeout_error(self):
-        e = errors.TimeoutError('text', None, 'timed out')
+        e = errors.ServiceTimeoutError('text', None, 'timed out')
         self.assertIsInstance(e, errors.TransientError)
 
     def test_unknown_service_error(self):
@@ -83,7 +87,7 @@ class TestErrorHierarchy(unittest.TestCase):
 
     def test_permission_error_is_permanent(self):
         voice = make_mock_voice()
-        e = errors.PermissionError('text', voice, 'Forbidden')
+        e = errors.ServicePermissionError('text', voice, 'Forbidden')
         self.assertIsInstance(e, errors.PermanentError)
         self.assertIsInstance(e, errors.ServiceRequestError)
         self.assertIsInstance(e, errors.HyperTTSError)
@@ -157,7 +161,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
             status_code=403,
             json=lambda: {'detail': 'insufficient character credit'}
         )
-        with self.assertRaises(errors.PermissionError) as cm:
+        with self.assertRaises(errors.ServicePermissionError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertIsInstance(cm.exception, errors.PermanentError)
         self.assertIn('insufficient character credit', cm.exception.error_message)
@@ -192,7 +196,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
     @mock.patch('requests.post')
     def test_timeout(self, mock_post):
         mock_post.side_effect = requests.exceptions.Timeout('timed out')
-        with self.assertRaises(errors.TimeoutError):
+        with self.assertRaises(errors.ServiceTimeoutError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
     @mock.patch('requests.post')
@@ -233,39 +237,41 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         self.assertIn('connection refused', cm.exception.error_message)
 
     @mock.patch('requests.post')
-    def test_400_unparseable_json_falls_to_default(self, mock_post):
-        """400 with unparseable JSON body is caught by common exception handler."""
+    def test_400_unparseable_json_raises_permanent(self, mock_post):
+        """400 with unparseable JSON body raises PermanentError."""
         resp = mock.Mock(status_code=400, content=b'not json')
         resp.json.side_effect = ValueError('No JSON')
         mock_post.return_value = resp
-        with self.assertRaises(errors.UnknownServiceError):
+        with self.assertRaises(errors.PermanentError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
     @mock.patch('requests.post')
-    def test_403_unparseable_json_falls_to_default(self, mock_post):
-        """403 with unparseable JSON body is caught by common exception handler."""
+    def test_403_unparseable_json_raises_permission(self, mock_post):
+        """403 with unparseable JSON body raises ServicePermissionError."""
         resp = mock.Mock(status_code=403, content=b'not json')
         resp.json.side_effect = ValueError('No JSON')
         mock_post.return_value = resp
-        with self.assertRaises(errors.UnknownServiceError):
+        with self.assertRaises(errors.ServicePermissionError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertEqual(cm.exception.error_message, 'Forbidden')
 
     @mock.patch('requests.post')
-    def test_503_unparseable_json_falls_to_default(self, mock_post):
-        """503 with unparseable JSON body is caught by common exception handler."""
+    def test_503_unparseable_json_raises_rate_limit(self, mock_post):
+        """503 with unparseable JSON body raises RateLimitRetryAfterError with defaults."""
         resp = mock.Mock(status_code=503, content=b'not json')
         resp.json.side_effect = ValueError('No JSON')
         mock_post.return_value = resp
-        with self.assertRaises(errors.UnknownServiceError):
+        with self.assertRaises(errors.RateLimitRetryAfterError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertEqual(cm.exception.retry_after, 30)
 
     @mock.patch('requests.post')
-    def test_504_unparseable_json_falls_to_default(self, mock_post):
-        """504 with unparseable JSON body is caught by common exception handler."""
+    def test_504_unparseable_json_raises_transient(self, mock_post):
+        """504 with unparseable JSON body raises TransientError."""
         resp = mock.Mock(status_code=504, content=b'not json')
         resp.json.side_effect = ValueError('No JSON')
         mock_post.return_value = resp
-        with self.assertRaises(errors.UnknownServiceError):
+        with self.assertRaises(errors.TransientError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
     @mock.patch('requests.post')
@@ -275,7 +281,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
             status_code=403,
             json=lambda: {'other_key': 'value'}
         )
-        with self.assertRaises(errors.PermissionError) as cm:
+        with self.assertRaises(errors.ServicePermissionError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertEqual(cm.exception.error_message, 'Forbidden')
 
@@ -320,8 +326,16 @@ class TestCloudLanguageToolsCLTErrorMapping(unittest.TestCase):
     @mock.patch('requests.post')
     def test_timeout(self, mock_post):
         mock_post.side_effect = requests.exceptions.Timeout('timed out')
-        with self.assertRaises(errors.TimeoutError):
+        with self.assertRaises(errors.ServiceTimeoutError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+
+    @mock.patch('requests.post')
+    def test_connection_error(self, mock_post):
+        """Non-Timeout exception from requests.post is wrapped as UnknownServiceError."""
+        mock_post.side_effect = requests.exceptions.ConnectionError('connection refused')
+        with self.assertRaises(errors.UnknownServiceError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertIn('connection refused', cm.exception.error_message)
 
 
 class TestServiceManagerNoRetry(unittest.TestCase):
@@ -398,7 +412,7 @@ class TestServiceManagerDirectServiceErrorWrapping(unittest.TestCase):
         mock_service.name = 'TestService'
         mock_service.get_tts_audio.side_effect = requests.exceptions.Timeout('timed out')
         manager = self._make_service_manager_direct(mock_service)
-        with self.assertRaises(errors.TimeoutError):
+        with self.assertRaises(errors.ServiceTimeoutError):
             manager.get_tts_audio_implementation('text', voice, {}, ctx)
 
     def test_generic_exception_translated_to_unknown(self):
@@ -443,7 +457,7 @@ class TestServiceManagerDirectServiceErrorWrapping(unittest.TestCase):
         mock_service.name = 'TestService'
         mock_service.get_tts_audio.side_effect = requests.exceptions.Timeout('timed out')
         manager = self._make_service_manager_direct(mock_service)
-        with self.assertRaises(errors.TimeoutError):
+        with self.assertRaises(errors.ServiceTimeoutError):
             manager.get_tts_audio_implementation('text', voice, {}, ctx)
         self.assertEqual(mock_service.get_tts_audio.call_count, 1)
 
@@ -461,6 +475,145 @@ class TestAudioRequestContext(unittest.TestCase):
         self.assertEqual(ctx.retry_count, 1)
         ctx.increment_retry_count()
         self.assertEqual(ctx.retry_count, 2)
+
+
+class MockBatchStatusListener():
+    def __init__(self, anki_utils):
+        self.anki_utils = anki_utils
+    def batch_start(self):
+        pass
+    def batch_end(self, completed):
+        pass
+    def batch_change(self, note_id, row, total_count, start_time, current_time):
+        pass
+
+
+def _make_batch_fixtures():
+    """Build HyperTTS instance, batch config, note list, and batch_status for retry tests."""
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    mock_collection = testing_utils.MockCollection()
+    hypertts_instance.anki_utils.current_time = datetime.datetime.now()
+
+    voice_list = hypertts_instance.service_manager.full_voice_list()
+    voice_a_1 = [v for v in voice_list if v.name == 'voice_a_1'][0].voice_id
+
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
+
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
+    batch.set_source(config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese'))
+    batch.set_target(config_models.BatchTarget('Sound', False, True))
+    batch.set_voice_selection(single)
+    batch.set_text_processing(config_models.TextProcessing())
+
+    note_id_list = [config_gen.note_id_1]
+    listener = MockBatchStatusListener(hypertts_instance.anki_utils)
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, note_id_list, listener)
+
+    return hypertts_instance, batch, note_id_list, batch_status_obj, mock_collection
+
+
+def test_batch_retry_transient_then_success(qtbot):
+    """Transient error on first attempt, success on second — note marked Done."""
+    hypertts_instance, batch, note_id_list, batch_status_obj, mock_collection = _make_batch_fixtures()
+
+    call_count = [0]
+    original = hypertts_instance.process_note_audio
+
+    def mock_process(batch_arg, note, add_mode, audio_request_context, text_override, anki_collection):
+        call_count[0] += 1
+        if call_count[0] == 1:
+            raise errors.TransientError('老人家', make_mock_voice(), 'temp fail')
+        return original(batch_arg, note, add_mode, audio_request_context, text_override, anki_collection)
+
+    with mock.patch.object(hypertts_instance, 'process_note_audio', side_effect=mock_process):
+        with mock.patch('time.sleep') as mock_sleep:
+            hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, mock_collection)
+
+    assert call_count[0] == 2
+    assert batch_status_obj[0].status == constants.BatchNoteStatus.Done
+    assert batch_status_obj[0].error is None
+    mock_sleep.assert_called_once()
+
+
+def test_batch_retry_exhausted(qtbot):
+    """All retries exhausted — note marked Error."""
+    hypertts_instance, batch, note_id_list, batch_status_obj, mock_collection = _make_batch_fixtures()
+
+    voice = make_mock_voice()
+
+    def mock_process(batch_arg, note, add_mode, audio_request_context, text_override, anki_collection):
+        raise errors.TransientError('老人家', voice, 'always fails')
+
+    with mock.patch.object(hypertts_instance, 'process_note_audio', side_effect=mock_process):
+        with mock.patch('time.sleep'):
+            hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, mock_collection)
+
+    assert batch_status_obj[0].status == constants.BatchNoteStatus.Error
+    assert batch_status_obj[0].error is not None
+
+
+def test_batch_retry_rate_limit_uses_retry_after(qtbot):
+    """RateLimitRetryAfterError uses retry_after value as sleep delay."""
+    hypertts_instance, batch, note_id_list, batch_status_obj, mock_collection = _make_batch_fixtures()
+
+    call_count = [0]
+    original = hypertts_instance.process_note_audio
+
+    def mock_process(batch_arg, note, add_mode, audio_request_context, text_override, anki_collection):
+        call_count[0] += 1
+        if call_count[0] == 1:
+            raise errors.RateLimitRetryAfterError('老人家', make_mock_voice(), 'rate limited', 42)
+        return original(batch_arg, note, add_mode, audio_request_context, text_override, anki_collection)
+
+    with mock.patch.object(hypertts_instance, 'process_note_audio', side_effect=mock_process):
+        with mock.patch('time.sleep') as mock_sleep:
+            hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, mock_collection)
+
+    assert call_count[0] == 2
+    mock_sleep.assert_called_once_with(42)
+    assert batch_status_obj[0].status == constants.BatchNoteStatus.Done
+
+
+def test_batch_no_retry_on_permanent_error(qtbot):
+    """PermanentError on first attempt — no retry, error propagates immediately."""
+    hypertts_instance, batch, note_id_list, batch_status_obj, mock_collection = _make_batch_fixtures()
+
+    call_count = [0]
+
+    def mock_process(batch_arg, note, add_mode, audio_request_context, text_override, anki_collection):
+        call_count[0] += 1
+        raise errors.PermanentError('老人家', make_mock_voice(), 'permanent fail')
+
+    with mock.patch.object(hypertts_instance, 'process_note_audio', side_effect=mock_process):
+        with mock.patch('time.sleep') as mock_sleep:
+            hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, mock_collection)
+
+    assert call_count[0] == 1
+    mock_sleep.assert_not_called()
+    assert batch_status_obj[0].status == constants.BatchNoteStatus.Error
+
+
+def test_batch_retry_increments_retry_count(qtbot):
+    """retry_count on AudioRequestContext increments correctly across attempts."""
+    hypertts_instance, batch, note_id_list, batch_status_obj, mock_collection = _make_batch_fixtures()
+
+    observed_retry_counts = []
+    original = hypertts_instance.process_note_audio
+
+    def mock_process(batch_arg, note, add_mode, audio_request_context, text_override, anki_collection):
+        observed_retry_counts.append(audio_request_context.retry_count)
+        if len(observed_retry_counts) <= 2:
+            raise errors.TransientError('老人家', make_mock_voice(), 'temp fail')
+        return original(batch_arg, note, add_mode, audio_request_context, text_override, anki_collection)
+
+    with mock.patch.object(hypertts_instance, 'process_note_audio', side_effect=mock_process):
+        with mock.patch('time.sleep'):
+            hypertts_instance.process_batch_audio(note_id_list, batch, batch_status_obj, mock_collection)
+
+    assert observed_retry_counts == [0, 1, 2]
+    assert batch_status_obj[0].status == constants.BatchNoteStatus.Done
 
 
 if __name__ == '__main__':

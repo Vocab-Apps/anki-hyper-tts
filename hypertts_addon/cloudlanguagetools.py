@@ -116,25 +116,34 @@ class CloudLanguageTools():
                 # not found (for example on Forvo)
                 raise errors.AudioNotFoundError(source_text, voice)
 
-            # extract response JSON
-            response_data = response.json()
+            # try to extract response JSON; fall back to raw content
+            try:
+                response_data = response.json()
+            except (ValueError, Exception):
+                response_data = None
 
             if response.status_code == 400:
-                if 'error' in response_data:
-                    raise errors.PermanentError(source_text, voice, response_data['error'])
-                raise errors.PermanentError(source_text, voice, str(response_data))
+                if response_data is not None:
+                    if 'error' in response_data:
+                        raise errors.PermanentError(source_text, voice, response_data['error'])
+                    raise errors.PermanentError(source_text, voice, str(response_data))
+                raise errors.PermanentError(source_text, voice, str(response.content))
             elif response.status_code == 403:
                 # permission issue
-                detail = response_data.get('detail', 'Forbidden')
-                raise errors.PermissionError(source_text, voice, detail)
+                detail = response_data.get('detail', 'Forbidden') if response_data else 'Forbidden'
+                raise errors.ServicePermissionError(source_text, voice, detail)
             elif response.status_code == 503:
                 # transient error with retry-after in seconds
-                retry_after = response_data.get('retry_after', 30)
-                error_msg = response_data.get('error', 'rate limited')
+                if response_data:
+                    retry_after = response_data.get('retry_after', 30)
+                    error_msg = response_data.get('error', 'rate limited')
+                else:
+                    retry_after = 30
+                    error_msg = 'rate limited'
                 raise errors.RateLimitRetryAfterError(source_text, voice, error_msg, retry_after)
             elif response.status_code == 504:
                 # transient error without specific retry-after
-                error_msg = response_data.get('error', 'temporary failure')
+                error_msg = response_data.get('error', 'temporary failure') if response_data else 'temporary failure'
                 raise errors.TransientError(source_text, voice, error_msg)
 
             # default: log full details and raise
@@ -147,7 +156,7 @@ class CloudLanguageTools():
             # since they have the correct error type and message
             raise
         except requests.exceptions.Timeout:
-            raise errors.TimeoutError(source_text, voice, 'HTTP request timed out')
+            raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
         except Exception as e:
             # eventually we should not have any exceptions coming through here
             # for now, classify them as unknown service errors, which is a TransientError
@@ -172,16 +181,21 @@ class CloudLanguageTools():
             response = requests.post(full_url, json=data, headers=headers,
                 timeout=constants.RequestTimeout, verify=self.get_verify_ssl())
             logger.info(f'_get_tts_audio_clt: response status_code: {response.status_code}')
-        except requests.exceptions.Timeout:
-            raise errors.TimeoutError(source_text, voice, 'HTTP request timed out')
 
-        if response.status_code == 200:
-            return response.content
-        elif response.status_code == 404:
-            raise errors.AudioNotFoundError(source_text, voice)
-        else:
-            error_message = f"Status code: {response.status_code} ({response.content})"
-            raise errors.UnknownServiceError(source_text, voice, error_message)    
+            if response.status_code == 200:
+                return response.content
+            elif response.status_code == 404:
+                raise errors.AudioNotFoundError(source_text, voice)
+            else:
+                error_message = f"Status code: {response.status_code} ({response.content})"
+                raise errors.UnknownServiceError(source_text, voice, error_message)
+        except errors.HyperTTSError:
+            raise
+        except requests.exceptions.Timeout:
+            raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
+        except Exception as e:
+            logger.exception(f'Unexpected error during CLT HTTP request: {e}')
+            raise errors.UnknownServiceError(source_text, voice, str(e))
 
     def account_info(self, api_key):
         # try to get account data on vocabai first

@@ -224,7 +224,7 @@ class ServiceManager():
         except errors.HyperTTSError:
             raise
         except requests.exceptions.Timeout:
-            raise errors.TimeoutError(source_text, voice, 'HTTP request timed out')
+            raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
         except Exception as e:
             logger.exception(f'Unhandled exception in service {voice.service}')
             raise errors.UnknownServiceError(source_text, voice, str(e))
