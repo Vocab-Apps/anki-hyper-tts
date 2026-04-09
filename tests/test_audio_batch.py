@@ -333,7 +333,7 @@ def test_simple_error_handling_not_found(qtbot):
     # verify batch error manager stats
     # verify per-note status
     assert batch_status_obj[0].sound_file == None
-    assert str(batch_status_obj[0].error) == f'Audio not found for [老人家] (voice: {voice_b_notfound})'
+    assert str(batch_status_obj[0].error) == f'Service request error for [老人家]: Audio not found (voice: {voice_b_notfound})'
 
 
 
@@ -850,4 +850,4 @@ def test_priority_voices_not_found(qtbot):
     assert 'Sound' not in note_1.set_values 
 
     # make sure we got a AudioNotFoundError in the batch error manager
-    assert str(batch_status_obj[0].error) == 'Audio not found in any voices for [老人家]'
+    assert str(batch_status_obj[0].error) == 'Service request error for [老人家]: Audio not found in any voices (voice: None)'

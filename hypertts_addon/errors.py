@@ -101,9 +101,8 @@ class TextReplacementError(HyperTTSError):
 # =================================================
 
 class ServiceRequestError(HyperTTSError):
-    def __init__(self, source_text, voice, error_message, message=None):
-        if message is None:
-            message = f'Service request error for [{source_text}]: {error_message} (voice: {voice})'
+    def __init__(self, source_text, voice, error_message):
+        message = f'Service request error for [{source_text}]: {error_message} (voice: {voice})'
         super().__init__(message)
         self.source_text = source_text
         self.voice = voice
@@ -131,13 +130,11 @@ class PermissionError(PermanentError):
 
 class AudioNotFoundError(PermanentError):
     def __init__(self, source_text, voice):
-        message = f'Audio not found for [{source_text}] (voice: {voice})'
-        super().__init__(source_text, voice, 'Audio not found', message=message)
+        super().__init__(source_text, voice, 'Audio not found')
 
 class AudioNotFoundAnyVoiceError(PermanentError):
     def __init__(self, source_text):
-        message = f'Audio not found in any voices for [{source_text}]'
-        super().__init__(source_text, None, 'Audio not found in any voices', message=message)
+        super().__init__(source_text, None, 'Audio not found in any voices')
 
 class VoiceNotFound(HyperTTSError):
     def __init__(self, voice_data):

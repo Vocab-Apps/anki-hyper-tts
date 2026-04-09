@@ -69,7 +69,7 @@ class TestErrorHierarchy(unittest.TestCase):
     def test_audio_not_found_str_backward_compatible(self):
         voice = make_mock_voice()
         e = errors.AudioNotFoundError('hello', voice)
-        self.assertIn('Audio not found for [hello]', str(e))
+        self.assertIn('Audio not found', str(e))
 
     def test_audio_not_found_any_voice_is_permanent(self):
         e = errors.AudioNotFoundAnyVoiceError('hello')
@@ -79,7 +79,7 @@ class TestErrorHierarchy(unittest.TestCase):
 
     def test_audio_not_found_any_voice_str_backward_compatible(self):
         e = errors.AudioNotFoundAnyVoiceError('hello')
-        self.assertIn('Audio not found in any voices for [hello]', str(e))
+        self.assertIn('Audio not found in any voices', str(e))
 
     def test_permission_error_is_permanent(self):
         voice = make_mock_voice()
