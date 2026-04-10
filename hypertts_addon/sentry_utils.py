@@ -19,6 +19,16 @@ def sentry_filter(event, hint):
     if 'logger' in event:
         logger_name = event.get('logger', '')
         if logger_name.startswith('hypertts'):
+            # Group log-based events by call site (file + line) instead of message content
+            # This prevents f-string messages with different variable values from creating separate issues
+            extra = event.get('extra', {})
+            log_location = extra.get('log_location', None)
+            if log_location:
+                event['fingerprint'] = [
+                    logger_name,
+                    log_location.get('filename', ''),
+                    str(log_location.get('line_number', ''))
+                ]
             return event
             
     # check if there's an exception object directly in the event
