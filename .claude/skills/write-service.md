@@ -210,14 +210,45 @@ speed = voice_options.get('speed', voice.options['speed']['default'])
 
 ### Error Handling
 
+Services should only raise exceptions derived from `PermanentError` (non-retryable) or `TransientError` (retryable). The `ServiceManager._get_tts_audio_service` method wraps service calls and automatically catches:
+- `requests.exceptions.Timeout` → converted to `ServiceTimeoutError` (transient)
+- Any other unhandled exception → converted to `UnknownServiceError` (transient)
+
+So you do **not** need to catch HTTP timeouts or unknown exceptions yourself. Only raise explicit errors when you can classify them:
+
 ```python
 from hypertts_addon import errors
 
-# API or network errors
-raise errors.RequestError(source_text, voice, 'API returned 500')
+# --- PermanentError (non-retryable) ---
 
-# Dictionary services only — word not found
+# Dictionary services — word not found in dictionary
 raise errors.AudioNotFoundError(source_text, voice)
+
+# Authentication/permission failures (e.g. invalid API key, 401/403)
+raise errors.ServicePermissionError(source_text, voice, 'Invalid API key')
+
+# Any other non-retryable error
+raise errors.PermanentError(source_text, voice, 'Unsupported voice format')
+
+# --- TransientError (retryable) ---
+
+# Rate limiting with a Retry-After header
+raise errors.RateLimitRetryAfterError(source_text, voice, 'Rate limited', retry_after=30)
+
+# Any other retryable error
+raise errors.TransientError(source_text, voice, 'Server returned 503')
+```
+
+The full hierarchy:
+```
+ServiceRequestError(source_text, voice, error_message)
+├── PermanentError          (retryable = False)
+│   ├── AudioNotFoundError  — word not found (dictionary services)
+│   └── ServicePermissionError — auth/permission failures
+└── TransientError          (retryable = True)
+    ├── ServiceTimeoutError — auto-caught from requests.exceptions.Timeout
+    ├── UnknownServiceError — auto-caught from unhandled exceptions
+    └── RateLimitRetryAfterError(retry_after=N) — rate limiting
 ```
 
 ## Complete Example: TTS Service with API Key
@@ -288,8 +319,10 @@ class ExampleTTS(service.ServiceBase):
             headers={'Authorization': f'Bearer {api_key}'},
             timeout=30,
         )
+        if response.status_code == 401:
+            raise errors.ServicePermissionError(source_text, voice, 'Invalid API key')
         if response.status_code != 200:
-            raise errors.RequestError(source_text, voice, f'HTTP {response.status_code}: {response.text}')
+            raise errors.PermanentError(source_text, voice, f'HTTP {response.status_code}: {response.text}')
         return response.content
 ```
 
