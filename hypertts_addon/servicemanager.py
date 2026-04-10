@@ -225,6 +225,8 @@ class ServiceManager():
             raise
         except requests.exceptions.Timeout:
             raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
+        except requests.exceptions.ConnectionError as e:
+            raise errors.ServiceConnectionError(source_text, voice, str(e))
         except Exception as e:
             logger.error(e, exc_info=True)
             raise errors.UnknownServiceError(source_text, voice, str(e))

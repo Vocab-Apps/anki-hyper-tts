@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 # |   +-- TransientError                 Retryable service failures
 # |       +-- RateLimitRetryAfterError   429 with Retry-After header
 # |       +-- ServiceTimeoutError         HTTP request timed out
+# |       +-- ServiceConnectionError     Failed to connect (DNS, refused, network unreachable)
 # |       +-- UnknownServiceError        Unexpected/unclassified service error
 # |
 # +-- VoiceNotFound                      Voice object not in available voices
@@ -120,6 +121,9 @@ class RateLimitRetryAfterError(TransientError):
         self.retry_after = retry_after
 
 class ServiceTimeoutError(TransientError):
+    pass
+
+class ServiceConnectionError(TransientError):
     pass
 
 class UnknownServiceError(TransientError):

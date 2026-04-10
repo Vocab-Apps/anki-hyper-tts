@@ -415,6 +415,18 @@ class TestServiceManagerDirectServiceErrorWrapping(unittest.TestCase):
         with self.assertRaises(errors.ServiceTimeoutError):
             manager.get_tts_audio_implementation('text', voice, {}, ctx)
 
+    def test_connection_error_translated(self):
+        voice = make_mock_voice()
+        voice.service = 'TestService'
+        ctx = make_mock_context()
+        mock_service = mock.Mock()
+        mock_service.name = 'TestService'
+        mock_service.get_tts_audio.side_effect = requests.exceptions.ConnectionError('connection refused')
+        manager = self._make_service_manager_direct(mock_service)
+        with self.assertRaises(errors.ServiceConnectionError) as cm:
+            manager.get_tts_audio_implementation('text', voice, {}, ctx)
+        self.assertIn('connection refused', cm.exception.error_message)
+
     def test_generic_exception_translated_to_unknown(self):
         voice = make_mock_voice()
         voice.service = 'TestService'
