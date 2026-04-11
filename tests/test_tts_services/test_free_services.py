@@ -65,6 +65,9 @@ class TestFreeServices(TTSTests):
         self.random_voice_test(service_name, languages.AudioLanguage.en_GB, 'successful')
 
         # pick a random en_GB voice
+        self.random_voice_test(service_name, languages.AudioLanguage.en_GB, 'House')
+
+        # pick a random en_GB voice
         self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'successful')
 
 

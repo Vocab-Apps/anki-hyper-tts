@@ -46,7 +46,7 @@ class Oxford(service.ServiceBase):
         headers = {
 		    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0'
         }
-        url = self.URL_BASE + source_text
+        url = self.URL_BASE + source_text.lower()
         logger.debug(f'loading url: {url}')
         response = requests.get(url, headers=headers)
         logger.debug(f'response.status_code: {response.status_code}')
