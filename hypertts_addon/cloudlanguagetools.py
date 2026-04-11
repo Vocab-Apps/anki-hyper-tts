@@ -157,6 +157,8 @@ class CloudLanguageTools():
             raise
         except requests.exceptions.Timeout:
             raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
+        except requests.exceptions.ConnectionError as e:
+            raise errors.ServiceConnectionError(source_text, voice, str(e))
         except Exception as e:
             # eventually we should not have any exceptions coming through here
             # for now, classify them as unknown service errors, which is a TransientError
@@ -193,6 +195,8 @@ class CloudLanguageTools():
             raise
         except requests.exceptions.Timeout:
             raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
+        except requests.exceptions.ConnectionError as e:
+            raise errors.ServiceConnectionError(source_text, voice, str(e))
         except Exception as e:
             logger.error(e, exc_info=True)
             raise errors.UnknownServiceError(source_text, voice, str(e))

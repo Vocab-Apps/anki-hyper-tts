@@ -61,6 +61,10 @@ class TestErrorHierarchy(unittest.TestCase):
         e = errors.UnknownServiceError('text', None, 'unknown')
         self.assertIsInstance(e, errors.TransientError)
 
+    def test_connection_error(self):
+        e = errors.ServiceConnectionError('text', None, 'connection refused')
+        self.assertIsInstance(e, errors.TransientError)
+
     def test_audio_not_found_is_permanent(self):
         voice = make_mock_voice()
         e = errors.AudioNotFoundError('hello', voice)
@@ -229,12 +233,20 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
 
 
     @mock.patch('requests.post')
-    def test_non_timeout_request_exception(self, mock_post):
-        """Non-Timeout exception from requests.post is logged and raised as UnknownServiceError."""
+    def test_connection_error_request_exception(self, mock_post):
+        """ConnectionError from requests.post is raised as ServiceConnectionError."""
         mock_post.side_effect = requests.exceptions.ConnectionError('connection refused')
-        with self.assertRaises(errors.UnknownServiceError) as cm:
+        with self.assertRaises(errors.ServiceConnectionError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertIn('connection refused', cm.exception.error_message)
+
+    @mock.patch('requests.post')
+    def test_non_timeout_request_exception(self, mock_post):
+        """Non-Timeout/non-ConnectionError exception from requests.post is raised as UnknownServiceError."""
+        mock_post.side_effect = requests.exceptions.ChunkedEncodingError('broken stream')
+        with self.assertRaises(errors.UnknownServiceError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertIn('broken stream', cm.exception.error_message)
 
     @mock.patch('requests.post')
     def test_400_unparseable_json_raises_permanent(self, mock_post):
@@ -331,9 +343,9 @@ class TestCloudLanguageToolsCLTErrorMapping(unittest.TestCase):
 
     @mock.patch('requests.post')
     def test_connection_error(self, mock_post):
-        """Non-Timeout exception from requests.post is wrapped as UnknownServiceError."""
+        """ConnectionError from requests.post is wrapped as ServiceConnectionError."""
         mock_post.side_effect = requests.exceptions.ConnectionError('connection refused')
-        with self.assertRaises(errors.UnknownServiceError) as cm:
+        with self.assertRaises(errors.ServiceConnectionError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertIn('connection refused', cm.exception.error_message)
 
