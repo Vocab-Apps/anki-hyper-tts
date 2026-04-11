@@ -2,6 +2,7 @@ import sys
 import os
 import json
 import unittest
+from unittest.mock import MagicMock, patch
 
 from test_utils import testing_utils
 
@@ -262,8 +263,41 @@ class ServiceManagerTests(unittest.TestCase):
         assert audio_result_dict['source_text'] == 'test sentence 123'
         assert audio_result_dict['voice']['voice_key'] == {'name': 'voice_1'}
 
+    def test_sentry_fingerprint_includes_service(self):
+        """Exceptions from different services must produce different Sentry fingerprints."""
+        self.manager.init_services()
+        self.manager.get_service('ServiceB').enabled = True
+        voice_list = self.manager.full_voice_list()
+
+        notfound_voice = [v for v in voice_list if v.service == 'ServiceB' and v.name == 'notfound'][0]
+
+        mock_scope = MagicMock()
+        mock_transaction = MagicMock()
+        mock_transaction.__enter__ = MagicMock(return_value=mock_transaction)
+        mock_transaction.__exit__ = MagicMock(return_value=False)
+
+        mock_sentry = MagicMock()
+        mock_scope_ctx = MagicMock()
+        mock_scope_ctx.__enter__ = MagicMock(return_value=mock_scope)
+        mock_scope_ctx.__exit__ = MagicMock(return_value=False)
+        mock_sentry.new_scope.return_value = mock_scope_ctx
+        mock_sentry.start_transaction.return_value = mock_transaction
+
+        # inject mock sentry_sdk into the servicemanager module namespace
+        servicemanager.sentry_sdk = mock_sentry
+        try:
+            audio_context = context.AudioRequestContext(constants.AudioRequestReason.batch)
+            with self.assertRaises(errors.AudioNotFoundError):
+                self.manager.get_tts_audio_instrumented('hello', notfound_voice, {}, audio_context)
+
+            # verify fingerprint was set with service name
+            assert mock_scope.fingerprint == ['{{ default }}', 'ServiceB']
+            mock_sentry.capture_exception.assert_called_once()
+        finally:
+            del servicemanager.sentry_sdk
+
     def test_services_configuration(self):
-        self.manager.init_services()    
+        self.manager.init_services()
 
         service_a_options = self.manager.service_configuration_options('ServiceA')
         assert service_a_options == {'api_key': str, 'region': ['us', 'europe'], 'delay': int, 'demo_key': bool}

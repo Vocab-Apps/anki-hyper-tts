@@ -205,6 +205,9 @@ class ServiceManager():
                         'exception_type': type(e).__name__,
                         'error_retryable': getattr(e, 'retryable', None)
                     })
+                    # group by default fingerprint + service so that the same
+                    # exception type from different services creates separate issues
+                    sentry_scope.fingerprint = ['{{ default }}', voice.service]
                     # this the only place we capture audio request exceptions
                     sentry_sdk.capture_exception(e)
                     # let the caller handle the exception as well (e.g. for retry logic)
