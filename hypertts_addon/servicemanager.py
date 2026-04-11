@@ -167,26 +167,49 @@ class ServiceManager():
             return self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)
 
     def get_tts_audio_instrumented(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):
-        transaction_name = f'{voice.service}'
-        if self.use_cloud_language_tools(voice):
-            transaction_name = f'cloudlanguagetools_{voice.service}'
-        sentry_sdk.set_tag('clt.audio_request_reason', audio_request_context.get_audio_request_reason_tag())
-        raise_exception = None
-        with sentry_sdk.start_transaction(op="audio", name=transaction_name) as transaction:
-            try:
-                result_audio = self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)
-                transaction.status = 'ok'
-                return result_audio
-            except Exception as e:
-                transaction.status = 'invalid_argument'
-                sentry_sdk.set_context("audio_request", {
-                    'text': source_text,
-                    'voice': str(voice),
-                    'error': str(e)
-                })
-                raise_exception = e
-        if raise_exception != None:
-            raise raise_exception
+        with sentry_sdk.new_scope() as sentry_scope:
+            # inside this scope, we can set tags and context which will get unwound when this scope closes
+            sentry_scope.set_context("audio_voice", {
+                'name': voice.name,
+                'voice_key': voice.voice_key,
+                'service': voice.service
+            })
+            sentry_scope.set_context("audio_options", options)
+            sentry_scope.set_context("audio_request_context", {
+                'reason': audio_request_context.get_audio_request_reason_tag(),
+                'batch_uuid': audio_request_context.get_batch_uuid_str(),
+                'retry_count': audio_request_context.retry_count,
+                'retry_max': audio_request_context.retry_max,
+            })
+            use_clt = self.use_cloud_language_tools(voice)
+            sentry_scope.set_tags({
+                'hypertts_pro': use_clt,
+                'audio_service': voice.service,
+                'audio_request_reason': audio_request_context.audio_request_reason.name,
+                'final_attempt': audio_request_context.is_final_attempt()
+            })
+
+            transaction_name = f'{voice.service}'
+            if use_clt:
+                transaction_name = f'cloudlanguagetools_{voice.service}'
+            with sentry_sdk.start_transaction(op="audio", name=transaction_name) as transaction:
+                try:
+                    result_audio = self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)
+                    return result_audio
+                except Exception as e:
+                    sentry_sdk.set_tags({
+                        'exception_type': type(e).__name__,
+                        'error_retryable': e.retryable
+                    })
+                    sentry_sdk.set_context("exception_type", {
+                        'exception_type': type(e).__name__,
+                        'error_retryable': e.retryable
+                    })
+                    # this the only place we capture audio request exceptions
+                    sentry_sdk.capture_exception(e)
+                    # let the caller handle the exception as well (e.g. for retry logic)
+                    raise e
+
 
     def get_tts_audio_implementation(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):
         logger.debug(f'get_tts_audio_implementation for voice: {voice}, source_text: {source_text}')
@@ -228,7 +251,6 @@ class ServiceManager():
         except requests.exceptions.ConnectionError as e:
             raise errors.ServiceConnectionError(source_text, voice, str(e))
         except Exception as e:
-            logger.error(e, exc_info=True)
             raise errors.UnknownServiceError(source_text, voice, str(e))
 
     def full_voice_list(self, single_service_name=None) -> typing.List[voice_module.TtsVoice_v3]:

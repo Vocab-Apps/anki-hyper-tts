@@ -28,3 +28,6 @@ class AudioRequestContext():
 
     def increment_retry_count(self):
         self.retry_count += 1
+
+    def is_final_attempt(self):
+        return self.retry_count >= self.retry_max
