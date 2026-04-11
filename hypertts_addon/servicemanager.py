@@ -208,7 +208,7 @@ class ServiceManager():
                     # this the only place we capture audio request exceptions
                     sentry_sdk.capture_exception(e)
                     # let the caller handle the exception as well (e.g. for retry logic)
-                    raise e
+                    raise
 
 
     def get_tts_audio_implementation(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):
