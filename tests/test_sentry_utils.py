@@ -13,6 +13,7 @@ def load_json_file(filepath):
         return json.load(f)
 
 def test_sentry_filter():
+    sentry_utils.reset_rate_limits()
     # test valid events
     valid_events_dir = os.path.join('tests', 'test_data_sentry', 'valid_events')
     for filename in os.listdir(valid_events_dir):
@@ -75,3 +76,133 @@ def test_sentry_filter():
             result = sentry_utils.sentry_filter(event, {})
             assert result is None, f"Invalid event {filename} was accepted"
             logger.info(f'confirmed invalid exception reject {filepath}')
+
+
+def _make_exception_event(user_id, exc_type, filename, function):
+    """Helper to build a minimal exception event for rate limit tests."""
+    return {
+        'user': {'id': user_id},
+        'exception': {
+            'values': [{
+                'type': exc_type,
+                'value': f'test {exc_type}',
+                'stacktrace': {
+                    'frames': [{
+                        'filename': filename,
+                        'function': function,
+                        'lineno': 42,
+                    }]
+                }
+            }]
+        }
+    }
+
+
+def _make_logger_event(user_id, logger_name, message, log_location=None):
+    """Helper to build a minimal logger event for rate limit tests."""
+    event = {
+        'user': {'id': user_id},
+        'logger': logger_name,
+        'message': message,
+    }
+    if log_location:
+        event['extra'] = {'log_location': log_location}
+    return event
+
+
+def test_exception_rate_limit_basic():
+    """Same exception event sent 6 times: first 5 accepted, 6th dropped."""
+    sentry_utils.reset_rate_limits()
+    event = _make_exception_event('user_a', 'AudioNotFoundError',
+                                  'hypertts_addon/services/service_duden.py', 'get_tts_audio')
+    for i in range(5):
+        result = sentry_utils.sentry_filter(event, {})
+        assert result is not None, f"Event {i+1} should be accepted"
+    result = sentry_utils.sentry_filter(event, {})
+    assert result is None, "Event 6 should be dropped"
+
+
+def test_exception_rate_limit_different_types():
+    """Different exception types are tracked independently."""
+    sentry_utils.reset_rate_limits()
+    event_a = _make_exception_event('user_a', 'RuntimeError',
+                                    'hypertts_addon/gui.py', 'launch')
+    event_b = _make_exception_event('user_a', 'AudioNotFoundError',
+                                    'hypertts_addon/gui.py', 'launch')
+    for i in range(5):
+        assert sentry_utils.sentry_filter(event_a, {}) is not None
+    # RuntimeError exhausted, but AudioNotFoundError still available
+    assert sentry_utils.sentry_filter(event_a, {}) is None
+    assert sentry_utils.sentry_filter(event_b, {}) is not None
+
+
+def test_exception_rate_limit_different_users():
+    """Different users are tracked independently."""
+    sentry_utils.reset_rate_limits()
+    event_a = _make_exception_event('user_a', 'RuntimeError',
+                                    'hypertts_addon/gui.py', 'launch')
+    event_b = _make_exception_event('user_b', 'RuntimeError',
+                                    'hypertts_addon/gui.py', 'launch')
+    for i in range(5):
+        assert sentry_utils.sentry_filter(event_a, {}) is not None
+    # user_a exhausted
+    assert sentry_utils.sentry_filter(event_a, {}) is None
+    # user_b still has quota
+    for i in range(5):
+        assert sentry_utils.sentry_filter(event_b, {}) is not None
+    assert sentry_utils.sentry_filter(event_b, {}) is None
+
+
+def test_logger_rate_limit():
+    """Logger events with log_location are rate-limited at 5."""
+    sentry_utils.reset_rate_limits()
+    event = _make_logger_event('user_a', 'hypertts.service_azure',
+                               'status code 429: Too Many Requests',
+                               log_location={'filename': 'service_azure.py', 'line_number': 134})
+    for i in range(5):
+        result = sentry_utils.sentry_filter(event, {})
+        assert result is not None, f"Logger event {i+1} should be accepted"
+    assert sentry_utils.sentry_filter(event, {}) is None, "Logger event 6 should be dropped"
+
+
+def test_rate_limit_different_locations():
+    """Same exception type from different code locations tracked separately."""
+    sentry_utils.reset_rate_limits()
+    event_a = _make_exception_event('user_a', 'RuntimeError',
+                                    'hypertts_addon/services/service_azure.py', 'get_audio')
+    event_b = _make_exception_event('user_a', 'RuntimeError',
+                                    'hypertts_addon/services/service_duden.py', 'get_audio')
+    for i in range(5):
+        assert sentry_utils.sentry_filter(event_a, {}) is not None
+    assert sentry_utils.sentry_filter(event_a, {}) is None
+    # Different location still has quota
+    for i in range(5):
+        assert sentry_utils.sentry_filter(event_b, {}) is not None
+    assert sentry_utils.sentry_filter(event_b, {}) is None
+
+
+def test_rate_limit_reset():
+    """reset_rate_limits() clears counters, allowing 5 more."""
+    sentry_utils.reset_rate_limits()
+    event = _make_exception_event('user_a', 'RuntimeError',
+                                  'hypertts_addon/gui.py', 'launch')
+    for i in range(5):
+        assert sentry_utils.sentry_filter(event, {}) is not None
+    assert sentry_utils.sentry_filter(event, {}) is None
+
+    sentry_utils.reset_rate_limits()
+    for i in range(5):
+        assert sentry_utils.sentry_filter(event, {}) is not None
+    assert sentry_utils.sentry_filter(event, {}) is None
+
+
+def test_rate_limit_with_real_event():
+    """Load runtime_error.json and verify rate limiting with real event data."""
+    sentry_utils.reset_rate_limits()
+    filepath = os.path.join('tests', 'test_data_sentry', 'valid_events', 'runtime_error.json')
+    event = load_json_file(filepath)
+    for i in range(5):
+        result = sentry_utils.sentry_filter(event, {})
+        assert result is not None, f"Real event {i+1} should be accepted"
+    result = sentry_utils.sentry_filter(event, {})
+    assert result is None, "Real event 6 should be dropped"
