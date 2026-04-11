@@ -197,13 +197,13 @@ class ServiceManager():
                     result_audio = self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)
                     return result_audio
                 except Exception as e:
-                    sentry_sdk.set_tags({
+                    sentry_scope.set_tags({
                         'exception_type': type(e).__name__,
-                        'error_retryable': e.retryable
+                        'error_retryable': getattr(e, 'retryable', None)
                     })
-                    sentry_sdk.set_context("exception_type", {
+                    sentry_scope.set_context("exception_type", {
                         'exception_type': type(e).__name__,
-                        'error_retryable': e.retryable
+                        'error_retryable': getattr(e, 'retryable', None)
                     })
                     # this the only place we capture audio request exceptions
                     sentry_sdk.capture_exception(e)
