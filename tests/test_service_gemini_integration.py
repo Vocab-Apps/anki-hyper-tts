@@ -34,12 +34,12 @@ class GeminiIntegrationTests(unittest.TestCase):
 
         gemini.enabled = True
         gemini_voices = manager.full_voice_list(single_service_name='Gemini')
-        kore_taiwan_voice = next(
+        kore_locale_voice = next(
             voice_entry for voice_entry in gemini_voices
             if voice_entry.name == 'Kore' and voice_entry.voice_key['language_code'] == 'cmn-tw'
         )
 
-        serialized_voice_id = voice.serialize_voice_id_v3(kore_taiwan_voice.voice_id)
+        serialized_voice_id = voice.serialize_voice_id_v3(kore_locale_voice.voice_id)
         self.assertEqual(
             serialized_voice_id,
             {
@@ -65,4 +65,4 @@ class GeminiIntegrationTests(unittest.TestCase):
             manager.locate_voice(legacy_language_voice_id).voice_key,
             {'voice_name': 'Kore', 'language_code': 'en-us'},
         )
-        self.assertEqual(kore_taiwan_voice.audio_languages, [languages.AudioLanguage.zh_TW])
+        self.assertEqual(kore_locale_voice.audio_languages, [languages.AudioLanguage.zh_TW])

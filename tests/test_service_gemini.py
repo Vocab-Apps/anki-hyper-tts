@@ -32,7 +32,7 @@ class TestGeminiService(unittest.TestCase):
         }
         return success_response
 
-    def test_voice_list_contains_expected_catalog_and_taiwan_locale(self):
+    def test_voice_list_contains_expected_catalog_and_explicit_locale(self):
         voice_list = self.service.voice_list()
 
         self.assertEqual(
@@ -47,7 +47,7 @@ class TestGeminiService(unittest.TestCase):
         self.assertEqual(self.service.configuration_options(), {'project_id': str})
         self.assertEqual(self.service.configuration_display_name(), 'Gemini (Cloud TTS)')
         self.assertIn('Cloud Text-to-Speech Gemini-TTS', self.service.configuration_description())
-        self.assertIn('Taiwan Mandarin', self.service.configuration_description())
+        self.assertIn('explicit locale selection', self.service.configuration_description())
 
     def test_normalize_voice_key_accepts_legacy_name_and_language_formats(self):
         self.assertEqual(
@@ -68,12 +68,12 @@ class TestGeminiService(unittest.TestCase):
     def test_build_payload_uses_selected_model_voice_and_locale(self):
         model, payload = self.service.build_payload('你好', self.voice, {
             'model': 'gemini-2.5-pro-tts',
-            'instructions': 'Speak naturally in Taiwan Mandarin.',
+            'instructions': 'Speak naturally.',
         })
 
         self.assertEqual(model, 'gemini-2.5-pro-tts')
         self.assertEqual(payload['input']['text'], '你好')
-        self.assertEqual(payload['input']['prompt'], 'Speak naturally in Taiwan Mandarin.')
+        self.assertEqual(payload['input']['prompt'], 'Speak naturally.')
         self.assertEqual(payload['voice']['languageCode'], 'cmn-tw')
         self.assertEqual(payload['voice']['name'], 'Kore')
         self.assertEqual(payload['voice']['modelName'], 'gemini-2.5-pro-tts')

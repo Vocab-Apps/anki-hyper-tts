@@ -69,7 +69,7 @@ VOICE_NAMES = [
 ]
 
 # Locale list kept deliberately focused to the set already exposed by HyperTTS,
-# plus Taiwan Mandarin, while matching Cloud Gemini-TTS locale codes.
+# while matching Cloud Gemini-TTS locale codes.
 SUPPORTED_VOICE_LOCALES = [
     (languages.AudioLanguage.en_US, 'en-us'),
     (languages.AudioLanguage.en_IN, 'en-in'),
@@ -139,8 +139,8 @@ class Gemini(service.ServiceBase):
 
     def configuration_description(self):
         return (
-            'paid, text-to-speech. Google Cloud Text-to-Speech Gemini-TTS with explicit locale selection, '
-            'including Taiwan Mandarin. Requires a Google Cloud project and gcloud authentication.'
+            'paid, text-to-speech. Google Cloud Text-to-Speech Gemini-TTS with explicit locale selection. '
+            'Requires a Google Cloud project and gcloud authentication.'
         )
 
     def configure(self, config):
