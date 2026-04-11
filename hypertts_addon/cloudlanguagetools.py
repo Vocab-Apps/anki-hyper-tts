@@ -71,12 +71,6 @@ class CloudLanguageTools():
     #   PermanentError  – non-retryable (400, 403, 404)
     #   TransientError  – retryable (503, 504, timeout, unknown)
     def get_tts_audio(self, source_text, voice, options, audio_request_context):
-        if hasattr(sys, '_sentry_crash_reporting'):
-            sentry_sdk.set_user({"id": f'api_key:{self.config.hypertts_pro_api_key}'})
-            sentry_sdk.set_context("user", {
-                "api_key": self.config.hypertts_pro_api_key,
-            })
-
         if self.config.use_vocabai_api:
             return self._get_tts_audio_vocabai(source_text, voice, options, audio_request_context)
         else:
