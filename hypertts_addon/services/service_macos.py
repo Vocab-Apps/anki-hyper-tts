@@ -5,7 +5,6 @@ import subprocess
 import hashlib
 import platform
 import tempfile
-import aqt.sound
 from typing import List
 
 from hypertts_addon import voice
@@ -537,7 +536,7 @@ class MacOS(service.ServiceBase):
             subprocess.check_call(arg_list)
 
             mp3_temp_audio_file = tempfile.NamedTemporaryFile(suffix='.mp3', prefix='hypertts_macos')
-            aqt.sound._encode_mp3(temp_audio_file.name, mp3_temp_audio_file.name)
+            service.encode_mp3(temp_audio_file.name, mp3_temp_audio_file.name)
 
             logger.debug(f'opening {mp3_temp_audio_file.name} to read in contents')
             with open(mp3_temp_audio_file.name, 'rb') as audio_file:

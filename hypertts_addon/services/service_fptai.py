@@ -3,7 +3,6 @@ import os
 import json
 import tempfile
 import requests
-import aqt.sound
 
 from hypertts_addon import voice
 from hypertts_addon import service
@@ -88,7 +87,7 @@ class FptAi(service.ServiceBase):
                 os.close(fh_mp3)
                 
                 # Convert WAV to MP3
-                aqt.sound._encode_mp3(wav_temp_file, mp3_temp_file)
+                service.encode_mp3(wav_temp_file, mp3_temp_file)
                 
                 # Read the MP3 data
                 with open(mp3_temp_file, 'rb') as f:

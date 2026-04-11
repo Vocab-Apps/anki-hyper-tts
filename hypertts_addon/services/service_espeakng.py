@@ -1,7 +1,6 @@
 import sys
 import os
 import hashlib
-import aqt.sound
 import tempfile
 import subprocess
 import espeakng
@@ -134,7 +133,7 @@ class ESpeakNg(service.ServiceBase):
         os.close(fh)
         
         try:
-            aqt.sound._encode_mp3(wav_temp_file_name, mp3_temp_file_name)
+            service.encode_mp3(wav_temp_file_name, mp3_temp_file_name)
         finally:
             # Always remove the wav file if it exists
             if os.path.exists(wav_temp_file_name):

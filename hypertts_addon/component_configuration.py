@@ -205,13 +205,14 @@ class Configuration(component_common.ConfigComponentBase):
         logger.info(f'draw_service {service.name}')
         
         def get_service_header_label(service):
-            header_label = gui_utils.get_service_header_label(service.name)
+            header_label = gui_utils.get_service_header_label(service.configuration_display_name())
             return header_label        
 
         def get_service_description_label(service):
-            service_description = f'{service.service_fee.name}, {service.service_type.description}'
+            service_description = service.configuration_description()
             service_description_label = aqt.qt.QLabel(service_description)
             service_description_label.setMargin(0)
+            service_description_label.setWordWrap(True)
             return service_description_label            
 
         combined_service_vlayout = aqt.qt.QVBoxLayout()

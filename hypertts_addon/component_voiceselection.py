@@ -146,9 +146,79 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice_id, {}))
 
     def populate_combobox(self, combobox, items):
+        combobox.clear()
         combobox.addItem(constants.LABEL_FILTER_ALL)
         combobox.insertSeparator(1)
         combobox.addItems(items)
+
+    def get_selected_filter_value(self, combobox, values):
+        current_index = combobox.currentIndex()
+        value_index = current_index - 2
+        if current_index <= 1 or value_index < 0 or value_index >= len(values):
+            return None
+        return values[value_index]
+
+    def get_selected_audio_language(self):
+        return self.get_selected_filter_value(
+            self.audio_languages_combobox,
+            getattr(self, 'visible_audio_languages', self.audio_languages),
+        )
+
+    def get_selected_language(self):
+        return self.get_selected_filter_value(self.languages_combobox, self.languages)
+
+    def get_selected_service(self):
+        return self.get_selected_filter_value(self.services_combobox, self.services)
+
+    def get_selected_gender(self):
+        return self.get_selected_filter_value(self.genders_combobox, self.genders)
+
+    def get_voice_list_for_audio_language_filter(self):
+        voice_list = self.voice_list
+
+        language = self.get_selected_language()
+        if language is not None:
+            voice_list = [voice for voice in voice_list if language in voice.language_list]
+
+        service = self.get_selected_service()
+        if service is not None:
+            voice_list = [voice for voice in voice_list if voice.service == service]
+
+        gender = self.get_selected_gender()
+        if gender is not None:
+            voice_list = [voice for voice in voice_list if voice.gender == gender]
+
+        return voice_list
+
+    def refresh_audio_languages_combobox(self):
+        selected_audio_language = self.get_selected_audio_language()
+        selected_language = self.get_selected_language()
+
+        visible_audio_languages = set()
+        for voice in self.get_voice_list_for_audio_language_filter():
+            for audio_language in voice.audio_languages:
+                if selected_language is None or audio_language.lang == selected_language:
+                    visible_audio_languages.add(audio_language)
+
+        def get_audio_language_name(entry):
+            return entry.audio_lang_name
+
+        self.visible_audio_languages = sorted(list(visible_audio_languages), key=get_audio_language_name)
+        self.populate_combobox(
+            self.audio_languages_combobox,
+            [audio_lang.audio_lang_name for audio_lang in self.visible_audio_languages],
+        )
+
+        if selected_audio_language in self.visible_audio_languages:
+            selected_index = self.visible_audio_languages.index(selected_audio_language) + 2
+            self.audio_languages_combobox.setCurrentIndex(selected_index)
+        else:
+            self.audio_languages_combobox.setCurrentIndex(0)
+
+    def filter_controls_changed(self, current_index):
+        with aqt.qt.QSignalBlocker(self.audio_languages_combobox):
+            self.refresh_audio_languages_combobox()
+        self.filter_and_draw_voices(current_index)
 
     def draw(self): # return scrollarea
         # filters:
@@ -170,10 +240,10 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
         self.get_voices()
 
-        self.populate_combobox(self.audio_languages_combobox, [audio_lang.audio_lang_name for audio_lang in self.audio_languages])
         self.populate_combobox(self.languages_combobox, [language.lang_name for language in self.languages])
         self.populate_combobox(self.services_combobox, self.services)
         self.populate_combobox(self.genders_combobox, [gender.name for gender in self.genders])
+        self.refresh_audio_languages_combobox()
 
 
         # grid layout for filters
@@ -272,9 +342,9 @@ class VoiceSelection(component_common.ConfigComponentBase):
         # ===============
 
         self.audio_languages_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
-        self.languages_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
-        self.services_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
-        self.genders_combobox.currentIndexChanged.connect(self.filter_and_draw_voices)
+        self.languages_combobox.currentIndexChanged.connect(self.filter_controls_changed)
+        self.services_combobox.currentIndexChanged.connect(self.filter_controls_changed)
+        self.genders_combobox.currentIndexChanged.connect(self.filter_controls_changed)
 
         self.voices_combobox.currentIndexChanged.connect(self.voice_selected)
 
@@ -436,23 +506,23 @@ class VoiceSelection(component_common.ConfigComponentBase):
         voice_list = self.voice_list
         logger.debug(f'initial voice count: {len(voice_list)}')
         # check filtering by audio language
-        if self.audio_languages_combobox.currentIndex() != 0:
-            audio_language = self.audio_languages[self.audio_languages_combobox.currentIndex() - 2]
+        audio_language = self.get_selected_audio_language()
+        if audio_language is not None:
             voice_list = [voice for voice in voice_list if audio_language in voice.audio_languages]
             logger.debug(f'filtered by audio_language {audio_language}, voice count: {len(voice_list)}')
         # check filtering by language
-        if self.languages_combobox.currentIndex() != 0:
-            language = self.languages[self.languages_combobox.currentIndex() - 2]
+        language = self.get_selected_language()
+        if language is not None:
             voice_list = [voice for voice in voice_list if language in voice.language_list]
             logger.debug(f'filtered by language {language}, voice count: {len(voice_list)}')
         # check filtering by service
-        if self.services_combobox.currentIndex() != 0:
-            service = self.services[self.services_combobox.currentIndex() - 2]
+        service = self.get_selected_service()
+        if service is not None:
             voice_list = [voice for voice in voice_list if voice.service == service] 
             logger.debug(f'filtered by service {service}, voice count: {len(voice_list)}')
         # check filtering by gender
-        if self.genders_combobox.currentIndex() != 0:
-            gender = self.genders[self.genders_combobox.currentIndex() - 2]
+        gender = self.get_selected_gender()
+        if gender is not None:
             voice_list = [voice for voice in voice_list if voice.gender == gender]
             logger.debug(f'filtered by gender {gender}, voice count: {len(voice_list)}')
         def voice_sort_key(voice):

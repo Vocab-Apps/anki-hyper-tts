@@ -82,6 +82,12 @@ class ServiceBase(abc.ABC):
     def configuration_options(self):
         return {}
 
+    def configuration_display_name(self):
+        return self.name
+
+    def configuration_description(self):
+        return f'{self.service_fee.name}, {self.service_type.description}'
+
     def configure(self, config):
         self._config = config
 
@@ -94,3 +100,14 @@ class ServiceBase(abc.ABC):
     def get_configuration_value_optional(self, key, default_value):
         return self._config.get(key, default_value)
 
+    def normalize_voice_key(self, voice_key):
+        return voice_key
+
+    def matches_voice_key(self, requested_voice_key, candidate_voice_key):
+        return self.normalize_voice_key(requested_voice_key) == self.normalize_voice_key(candidate_voice_key)
+
+
+def encode_mp3(input_path, output_path):
+    import aqt.sound
+
+    aqt.sound._encode_mp3(input_path, output_path)

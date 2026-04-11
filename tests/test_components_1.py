@@ -41,6 +41,18 @@ from hypertts_addon import component_services_configuration
 logger = logging_utils.get_test_child_logger(__name__)
 
 
+def services_dir():
+    current_script_path = os.path.realpath(__file__)
+    current_script_dir = os.path.dirname(current_script_path)
+    root_dir = os.path.join(current_script_dir, '..')
+    hypertts_dir = os.path.join(root_dir, constants.DIR_HYPERTTS_ADDON)
+    return os.path.join(hypertts_dir, constants.DIR_SERVICES)
+
+
+def combobox_text_items(combobox):
+    return [combobox.itemText(i) for i in range(combobox.count()) if combobox.itemText(i)]
+
+
 def test_voice_selection_defaults_single(qtbot):
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
 
@@ -788,6 +800,62 @@ def test_voice_selection_filters(qtbot):
         assert voice.service == 'ServiceA'
 
     # dialog.exec()
+
+
+def test_voice_selection_multilingual_locales_follow_selected_language(qtbot):
+    anki_utils = testing_utils.MockAnkiUtils({})
+    manager = servicemanager.ServiceManager(
+        services_dir(),
+        f'{constants.DIR_HYPERTTS_ADDON}.{constants.DIR_SERVICES}',
+        False,
+    )
+    manager.init_services()
+
+    gemini = manager.get_service('Gemini')
+    gemini.enabled = True
+    gemini.configure({'project_id': 'fake-project'})
+
+    hypertts_instance = hypertts.HyperTTS(anki_utils, manager)
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    voiceselection = component_voiceselection.VoiceSelection(
+        hypertts_instance,
+        dialog,
+        model_change_callback.model_updated,
+    )
+    dialog.addChildWidget(voiceselection.draw())
+
+    assert combobox_text_items(voiceselection.services_combobox) == [
+        constants.LABEL_FILTER_ALL,
+        'Gemini',
+    ]
+
+    voiceselection.languages_combobox.setCurrentText(languages.Language.zh_cn.lang_name)
+
+    locale_items = combobox_text_items(voiceselection.audio_languages_combobox)
+    assert locale_items == [
+        constants.LABEL_FILTER_ALL,
+        languages.AudioLanguage.zh_CN.audio_lang_name,
+    ]
+
+    assert len(voiceselection.filtered_voice_list) > 0
+    for voice_entry in voiceselection.filtered_voice_list:
+        assert languages.Language.zh_cn in voice_entry.language_list
+
+    voiceselection.languages_combobox.setCurrentText(languages.Language.zh_tw.lang_name)
+
+    taiwan_locale_items = combobox_text_items(voiceselection.audio_languages_combobox)
+    assert taiwan_locale_items == [
+        constants.LABEL_FILTER_ALL,
+        languages.AudioLanguage.zh_TW.audio_lang_name,
+    ]
+
+    assert len(voiceselection.filtered_voice_list) > 0
+    for voice_entry in voiceselection.filtered_voice_list:
+        assert languages.Language.zh_tw in voice_entry.language_list
 
 def test_voice_selection_samples(qtbot):
     hypertts_instance = gui_testing_utils.get_hypertts_instance()
@@ -2913,4 +2981,3 @@ def test_batch_dialog_load_random(qtbot):
     component_batch.create_component_batch_browser_new_preset(hypertts_instance, note_id_list, 'my preset 1')
 
     # dialog.exec()
-

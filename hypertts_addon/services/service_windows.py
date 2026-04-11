@@ -1,7 +1,6 @@
 import sys
 import os
 import hashlib
-import aqt.sound
 from typing import List
 
 if os.name == 'nt':
@@ -391,7 +390,7 @@ class Windows(service.ServiceBase):
         
         # convert wav to mp3
         logger.debug(f'converting from {full_path_wav} to {full_path_mp3}')
-        aqt.sound._encode_mp3(full_path_wav, full_path_mp3)
+        service.encode_mp3(full_path_wav, full_path_mp3)
 
         # read filename contents
         f = open(full_path_mp3, 'rb')
@@ -403,4 +402,3 @@ class Windows(service.ServiceBase):
         os.remove(full_path_mp3)
 
         return content
-

@@ -249,6 +249,15 @@ class ServiceManager():
         voices = service_instance.voice_list()
         return voices
 
+    def _find_voice_match(self, service_instance, voice_list, voice_id: voice_module.TtsVoiceId_v3):
+        exact_matches = [voice for voice in voice_list if voice.get_voice_id() == voice_id]
+        if len(exact_matches) > 0:
+            return exact_matches
+
+        return [
+            voice for voice in voice_list
+            if service_instance.matches_voice_key(voice_id.voice_key, voice.voice_key)
+        ]
 
     def deserialize_voice(self, voice_data) -> voice_module.TtsVoice_v3:
         # avoid loading voice list for services we don't need, this is particularly important for ElevenLabsCustom which does
@@ -258,7 +267,8 @@ class ServiceManager():
         voice_id: voice_module.TttsVoiceId_v3 = voice_module.deserialize_voice_id_v3(voice_data)
 
         voice_list = self.full_voice_list(single_service_name=voice_id.service)
-        voice_subset = [voice for voice in voice_list if voice.get_voice_id() == voice_id]
+        service_instance = self.get_service(voice_id.service)
+        voice_subset = self._find_voice_match(service_instance, voice_list, voice_id)
         if len(voice_subset) == 0:
             raise errors.VoiceNotFound(voice_data)
         return voice_subset[0]
@@ -269,7 +279,8 @@ class ServiceManager():
         # convert from voice_id to actual voice
         voice_list = self.full_voice_list(single_service_name=voice_id.service)
         # logger.debug(pprint.pformat(voice_list))
-        voice_subset = [voice for voice in voice_list if voice.get_voice_id() == voice_id]
+        service_instance = self.get_service(voice_id.service)
+        voice_subset = self._find_voice_match(service_instance, voice_list, voice_id)
         if len(voice_subset) == 0:
             logger.warning(f'could not locate voice for voice_id: {voice_id!r}')
             raise errors.VoiceIdNotFound(voice_id)
