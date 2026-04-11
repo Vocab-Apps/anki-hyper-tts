@@ -3,6 +3,7 @@ import json
 import pprint
 import pytest
 
+from hypertts_addon import constants
 from hypertts_addon import sentry_utils
 from hypertts_addon import logging_utils
 
@@ -111,25 +112,27 @@ def _make_logger_event(user_id, logger_name, message, log_location=None):
 
 
 def test_exception_rate_limit_basic():
-    """Same exception event sent 6 times: first 5 accepted, 6th dropped."""
+    """Same exception event sent MAX+1 times: first MAX accepted, next dropped."""
     sentry_utils.reset_rate_limits()
+    limit = constants.MAX_SENTRY_EVENTS_PER_USER_PER_GROUP
     event = _make_exception_event('user_a', 'AudioNotFoundError',
                                   'hypertts_addon/services/service_duden.py', 'get_tts_audio')
-    for i in range(5):
+    for i in range(limit):
         result = sentry_utils.sentry_filter(event, {})
         assert result is not None, f"Event {i+1} should be accepted"
     result = sentry_utils.sentry_filter(event, {})
-    assert result is None, "Event 6 should be dropped"
+    assert result is None, f"Event {limit+1} should be dropped"
 
 
 def test_exception_rate_limit_different_types():
     """Different exception types are tracked independently."""
     sentry_utils.reset_rate_limits()
+    limit = constants.MAX_SENTRY_EVENTS_PER_USER_PER_GROUP
     event_a = _make_exception_event('user_a', 'RuntimeError',
                                     'hypertts_addon/gui.py', 'launch')
     event_b = _make_exception_event('user_a', 'AudioNotFoundError',
                                     'hypertts_addon/gui.py', 'launch')
-    for i in range(5):
+    for i in range(limit):
         assert sentry_utils.sentry_filter(event_a, {}) is not None
     # RuntimeError exhausted, but AudioNotFoundError still available
     assert sentry_utils.sentry_filter(event_a, {}) is None
@@ -139,59 +142,63 @@ def test_exception_rate_limit_different_types():
 def test_exception_rate_limit_different_users():
     """Different users are tracked independently."""
     sentry_utils.reset_rate_limits()
+    limit = constants.MAX_SENTRY_EVENTS_PER_USER_PER_GROUP
     event_a = _make_exception_event('user_a', 'RuntimeError',
                                     'hypertts_addon/gui.py', 'launch')
     event_b = _make_exception_event('user_b', 'RuntimeError',
                                     'hypertts_addon/gui.py', 'launch')
-    for i in range(5):
+    for i in range(limit):
         assert sentry_utils.sentry_filter(event_a, {}) is not None
     # user_a exhausted
     assert sentry_utils.sentry_filter(event_a, {}) is None
     # user_b still has quota
-    for i in range(5):
+    for i in range(limit):
         assert sentry_utils.sentry_filter(event_b, {}) is not None
     assert sentry_utils.sentry_filter(event_b, {}) is None
 
 
 def test_logger_rate_limit():
-    """Logger events with log_location are rate-limited at 5."""
+    """Logger events with log_location are rate-limited at MAX_SENTRY_EVENTS_PER_USER_PER_GROUP."""
     sentry_utils.reset_rate_limits()
+    limit = constants.MAX_SENTRY_EVENTS_PER_USER_PER_GROUP
     event = _make_logger_event('user_a', 'hypertts.service_azure',
                                'status code 429: Too Many Requests',
                                log_location={'filename': 'service_azure.py', 'line_number': 134})
-    for i in range(5):
+    for i in range(limit):
         result = sentry_utils.sentry_filter(event, {})
         assert result is not None, f"Logger event {i+1} should be accepted"
-    assert sentry_utils.sentry_filter(event, {}) is None, "Logger event 6 should be dropped"
+    assert sentry_utils.sentry_filter(event, {}) is None, f"Logger event {limit+1} should be dropped"
 
 
 def test_rate_limit_different_locations():
     """Same exception type from different code locations tracked separately."""
     sentry_utils.reset_rate_limits()
+    limit = constants.MAX_SENTRY_EVENTS_PER_USER_PER_GROUP
     event_a = _make_exception_event('user_a', 'RuntimeError',
                                     'hypertts_addon/services/service_azure.py', 'get_audio')
     event_b = _make_exception_event('user_a', 'RuntimeError',
                                     'hypertts_addon/services/service_duden.py', 'get_audio')
-    for i in range(5):
+    for i in range(limit):
         assert sentry_utils.sentry_filter(event_a, {}) is not None
     assert sentry_utils.sentry_filter(event_a, {}) is None
     # Different location still has quota
-    for i in range(5):
+    for i in range(limit):
         assert sentry_utils.sentry_filter(event_b, {}) is not None
     assert sentry_utils.sentry_filter(event_b, {}) is None
 
 
 def test_rate_limit_reset():
-    """reset_rate_limits() clears counters, allowing 5 more."""
+    """reset_rate_limits() clears counters, allowing MAX more."""
     sentry_utils.reset_rate_limits()
+    limit = constants.MAX_SENTRY_EVENTS_PER_USER_PER_GROUP
     event = _make_exception_event('user_a', 'RuntimeError',
                                   'hypertts_addon/gui.py', 'launch')
-    for i in range(5):
+    for i in range(limit):
         assert sentry_utils.sentry_filter(event, {}) is not None
     assert sentry_utils.sentry_filter(event, {}) is None
 
     sentry_utils.reset_rate_limits()
-    for i in range(5):
+    for i in range(limit):
         assert sentry_utils.sentry_filter(event, {}) is not None
     assert sentry_utils.sentry_filter(event, {}) is None
 
@@ -199,10 +206,11 @@ def test_rate_limit_reset():
 def test_rate_limit_with_real_event():
     """Load runtime_error.json and verify rate limiting with real event data."""
     sentry_utils.reset_rate_limits()
+    limit = constants.MAX_SENTRY_EVENTS_PER_USER_PER_GROUP
     filepath = os.path.join('tests', 'test_data_sentry', 'valid_events', 'runtime_error.json')
     event = load_json_file(filepath)
-    for i in range(5):
+    for i in range(limit):
         result = sentry_utils.sentry_filter(event, {})
         assert result is not None, f"Real event {i+1} should be accepted"
     result = sentry_utils.sentry_filter(event, {})
-    assert result is None, "Real event 6 should be dropped"
+    assert result is None, f"Real event {limit+1} should be dropped"

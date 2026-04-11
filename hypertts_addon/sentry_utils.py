@@ -3,7 +3,6 @@ import traceback
 
 from . import constants
 
-MAX_EVENTS_PER_USER_PER_GROUP = 5
 
 # Key: (user_id, group_key_tuple), Value: int count
 _event_counts = {}
@@ -53,7 +52,7 @@ def _apply_rate_limit(event):
     count = _event_counts.get(rate_limit_key, 0) + 1
     _event_counts[rate_limit_key] = count
 
-    if count > MAX_EVENTS_PER_USER_PER_GROUP:
+    if count > constants.MAX_SENTRY_EVENTS_PER_USER_PER_GROUP:
         return None
     return event
 
