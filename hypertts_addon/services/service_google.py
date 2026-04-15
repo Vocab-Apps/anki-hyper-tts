@@ -93,9 +93,9 @@ class Google(service.ServiceBase):
             timeout=constants.RequestTimeout)
         
         if response.status_code != 200:
+            logger.warning(f'HTTP {response.status_code}: {response.text}')
             data = response.json()
             error_message = data.get('error', {}).get('message', str(data))
-            logger.warning(error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
         data = response.json()
