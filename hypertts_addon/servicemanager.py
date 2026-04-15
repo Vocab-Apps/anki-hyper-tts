@@ -175,6 +175,9 @@ class ServiceManager():
                 'service': voice.service
             })
             sentry_scope.set_context("audio_options", options)
+            sentry_scope.set_context('audio_request': {
+                'text': source_text
+            })
             sentry_scope.set_context("audio_request_context", {
                 'reason': audio_request_context.get_audio_request_reason_tag(),
                 'batch_uuid': audio_request_context.get_batch_uuid_str(),
