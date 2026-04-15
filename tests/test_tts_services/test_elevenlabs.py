@@ -190,5 +190,110 @@ class TestElevenLabs(TTSTests):
         self.assertTrue(exception_caught, 'Expected RequestError was not raised when using language_code with monolingual model')
 
 
+class TestElevenLabsQuotaError(unittest.TestCase):
+    """Mock tests for ElevenLabs quota exceeded error handling."""
+
+    QUOTA_EXCEEDED_JSON = {
+        "detail": {
+            "status": "quota_exceeded",
+            "message": "This request exceeds your quota of 10000. You have 0 credits remaining, while 43 credits are required for this request."
+        }
+    }
+
+    def _make_mock_voice(self, service_name):
+        from hypertts_addon import voice as voice_module
+        return voice_module.TtsVoice_v3(
+            name='Test Voice',
+            voice_key={'voice_id': 'test_id', 'model_id': 'eleven_monolingual_v1'},
+            options={
+                'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5},
+                'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75},
+            },
+            service=service_name,
+            gender=constants.Gender.Male,
+            audio_languages=[AudioLanguage.en_US],
+            service_fee=constants.ServiceFee.paid,
+        )
+
+    def _make_quota_response(self):
+        from unittest.mock import MagicMock
+        mock_response = MagicMock()
+        mock_response.status_code = 401
+        mock_response.json.return_value = self.QUOTA_EXCEEDED_JSON
+        mock_response.text = '{"detail":{"status":"quota_exceeded","message":"This request exceeds your quota of 10000. You have 0 credits remaining, while 43 credits are required for this request."}}'
+        return mock_response
+
+    def _make_401_no_json_response(self):
+        from unittest.mock import MagicMock
+        mock_response = MagicMock()
+        mock_response.status_code = 401
+        mock_response.json.side_effect = ValueError("No JSON")
+        mock_response.text = 'Unauthorized'
+        return mock_response
+
+    def test_elevenlabs_quota_exceeded_raises_permission_error(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_elevenlabs_quota_exceeded_raises_permission_error'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabs import ElevenLabs
+
+        service = ElevenLabs()
+        service.configure({'api_key': 'fake_key'})
+        mock_voice = self._make_mock_voice('ElevenLabs')
+
+        with patch('hypertts_addon.services.service_elevenlabs.requests.post', return_value=self._make_quota_response()):
+            with self.assertRaises(errors.ServicePermissionError) as ctx:
+                service.get_tts_audio('Hello', mock_voice, {})
+            self.assertIn('Quota exceeded', ctx.exception.error_message)
+            self.assertIn('You have 0 credits remaining', ctx.exception.error_message)
+
+    def test_elevenlabscustom_quota_exceeded_raises_permission_error(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_elevenlabscustom_quota_exceeded_raises_permission_error'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabscustom import ElevenLabsCustom
+
+        service = ElevenLabsCustom()
+        service.configure({'api_key': 'fake_key'})
+        mock_voice = self._make_mock_voice('ElevenLabsCustom')
+
+        with patch('hypertts_addon.services.service_elevenlabscustom.requests.post', return_value=self._make_quota_response()):
+            with self.assertRaises(errors.ServicePermissionError) as ctx:
+                service.get_tts_audio('Hello', mock_voice, {})
+            self.assertIn('Quota exceeded', ctx.exception.error_message)
+            self.assertIn('You have 0 credits remaining', ctx.exception.error_message)
+
+    def test_elevenlabs_401_no_json_raises_permission_error(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_elevenlabs_401_no_json_raises_permission_error'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabs import ElevenLabs
+
+        service = ElevenLabs()
+        service.configure({'api_key': 'fake_key'})
+        mock_voice = self._make_mock_voice('ElevenLabs')
+
+        with patch('hypertts_addon.services.service_elevenlabs.requests.post', return_value=self._make_401_no_json_response()):
+            with self.assertRaises(errors.ServicePermissionError) as ctx:
+                service.get_tts_audio('Hello', mock_voice, {})
+            self.assertIn('401', ctx.exception.error_message)
+            self.assertIn('Unauthorized', ctx.exception.error_message)
+
+    def test_elevenlabs_other_error_raises_request_error(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_elevenlabs_other_error_raises_request_error'
+        from unittest.mock import patch, MagicMock
+        from hypertts_addon.services.service_elevenlabs import ElevenLabs
+
+        service = ElevenLabs()
+        service.configure({'api_key': 'fake_key'})
+        mock_voice = self._make_mock_voice('ElevenLabs')
+
+        mock_response = MagicMock()
+        mock_response.status_code = 500
+        mock_response.json.side_effect = ValueError("No JSON")
+        mock_response.text = 'Internal Server Error'
+
+        with patch('hypertts_addon.services.service_elevenlabs.requests.post', return_value=mock_response):
+            with self.assertRaises(errors.RequestError):
+                service.get_tts_audio('Hello', mock_voice, {})
+
+
 class TestElevenLabsCLT(TestElevenLabs):
     CONFIG_MODE = 'clt'
