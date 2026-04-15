@@ -63,14 +63,15 @@ class Cambridge(service.ServiceBase):
         logger.debug(f'wanted_class: [{wanted_class}]')
         
         # <span class="uk dpron-i ">
-        span_pronunciation_section = soup.find('span', {'class': wanted_class})
-        logger.debug(f'span_pronunciation_section: {span_pronunciation_section}')
-        if span_pronunciation_section != None:
+        # Some pages have multiple pronunciation spans, and the first one may not
+        # contain an audio source tag, so iterate through all matches.
+        for span_pronunciation_section in soup.find_all('span', {'class': wanted_class}):
+            logger.debug(f'span_pronunciation_section: {span_pronunciation_section}')
             source_tag = span_pronunciation_section.find('source', {'type': 'audio/mpeg'})
             if source_tag != None:
                 sound_url = self.WEBSITE + source_tag['src']
                 response = requests.get(sound_url, headers=headers)
-                return response.content                
+                return response.content
 
         # if we couldn't locate the source tag, raise notfound
         raise errors.AudioNotFoundError(source_text, voice)

@@ -175,7 +175,7 @@ class ServiceManager():
                 'service': voice.service
             })
             sentry_scope.set_context("audio_options", options)
-            sentry_scope.set_context('audio_request': {
+            sentry_scope.set_context('audio_request', {
                 'text': source_text
             })
             sentry_scope.set_context("audio_request_context", {

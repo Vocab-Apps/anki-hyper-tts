@@ -228,6 +228,11 @@ class TestFreeServices(TTSTests):
         # test american voice
         self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'vehicle')
 
+        # regression test for "dynamic" - first UK pronunciation span lacks audio source tag
+        # Fixes ANKI-HYPER-TTS-HFJ
+        self.random_voice_test(service_name, languages.AudioLanguage.en_GB, 'dynamic')
+        self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'dynamic')
+
         # test error handling
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_GB)
         self.assertRaises(errors.AudioNotFoundError,
