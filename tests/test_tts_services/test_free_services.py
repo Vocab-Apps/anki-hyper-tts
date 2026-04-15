@@ -260,5 +260,39 @@ class TestFreeServices(TTSTests):
         self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'vehicle')
 
 
+    def test_googletranslate_rate_limit(self):
+        # pytest tests/test_tts_services/ -k 'test_googletranslate_rate_limit'
+        # Fixes ANKI-HYPER-TTS-HGZ
+        from unittest.mock import patch, MagicMock
+        import gtts
+
+        service_name = 'GoogleTranslate'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list()
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+
+        # Create a mock 429 response
+        mock_response = MagicMock()
+        mock_response.status_code = 429
+        mock_response.reason = 'Too Many Requests'
+        mock_response.headers = {'Retry-After': '60'}
+
+        mock_tts = MagicMock()
+        gtts_error = gtts.gTTSError(response=mock_response, tts=mock_tts)
+
+        with patch('gtts.gTTS.write_to_fp', side_effect=gtts_error):
+            with self.assertRaises(errors.RateLimitRetryAfterError) as cm:
+                self.manager.get_tts_audio(
+                    'test',
+                    selected_voice,
+                    {},
+                    context.AudioRequestContext(constants.AudioRequestReason.batch))
+            self.assertEqual(cm.exception.retry_after, 60)
+            self.assertTrue(cm.exception.retryable)
+
+
 class TestFreeServicesCLT(TestFreeServices):
     CONFIG_MODE = 'clt'

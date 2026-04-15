@@ -95,6 +95,9 @@ class GoogleTranslate(service.ServiceBase):
             return buffer.getbuffer()
         except gtts.gTTSError as e:
             logger.warning(f'exception while retrieving sound for {source_text}: {e}')
+            if e.rsp is not None and e.rsp.status_code == 429:
+                retry_after = int(e.rsp.headers.get('Retry-After', 30))
+                raise errors.RateLimitRetryAfterError(source_text, voice, str(e), retry_after)
             # this error will be handled, and not reported as unusual
             raise errors.RequestError(source_text, voice, str(e))
 
