@@ -115,6 +115,9 @@ class PermanentError(ServiceRequestError):
 class TransientError(ServiceRequestError):
     retryable = True
 
+class RateLimitError(TransientError):
+    pass
+
 class RateLimitRetryAfterError(TransientError):
     def __init__(self, source_text, voice, error_message, retry_after):
         super().__init__(source_text, voice, error_message)

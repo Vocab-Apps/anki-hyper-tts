@@ -252,12 +252,12 @@ class ServiceManager():
             return service_instance.get_tts_audio(source_text, voice, options)
         except errors.HyperTTSError:
             raise
-        except requests.exceptions.Timeout:
-            raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
+        except requests.exceptions.Timeout as e:
+            raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out') from e
         except requests.exceptions.ConnectionError as e:
-            raise errors.ServiceConnectionError(source_text, voice, str(e))
+            raise errors.ServiceConnectionError(source_text, voice, str(e)) from e
         except Exception as e:
-            raise errors.UnknownServiceError(source_text, voice, str(e))
+            raise errors.UnknownServiceError(source_text, voice, str(e)) from e
 
     def full_voice_list(self, single_service_name=None) -> typing.List[voice_module.TtsVoice_v3]:
         full_list = []

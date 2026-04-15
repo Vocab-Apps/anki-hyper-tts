@@ -1,8 +1,13 @@
+import unittest
+import unittest.mock as mock
+
 import pytest
 
 from .base import TTSTests, logger
 from hypertts_addon import languages
+from hypertts_addon import errors
 from hypertts_addon.languages import AudioLanguage
+from hypertts_addon.services import service_openai
 
 
 class TestOpenAI(TTSTests):
@@ -29,3 +34,32 @@ class TestOpenAI(TTSTests):
 
 class TestOpenAICLT(TestOpenAI):
     CONFIG_MODE = 'clt'
+
+
+class TestOpenAIErrorHandling(unittest.TestCase):
+
+    def setUp(self):
+        self.service = service_openai.OpenAI()
+        self.service._config = {'api_key': 'fake_key'}
+        self.service.api_key = 'fake_key'
+
+        self.mock_voice = mock.Mock()
+        self.mock_voice.voice_key = {'name': 'alloy'}
+        self.mock_voice.options = {
+            'speed': {'default': 1.0},
+            'model': {'default': 'tts-1'},
+            'instructions': {'default': ''},
+        }
+
+    def test_openai_rate_limit_429(self):
+        # pytest tests/test_tts_services/test_openai.py -k 'test_openai_rate_limit_429'
+        mock_response = mock.Mock()
+        mock_response.status_code = 429
+        mock_response.text = 'Too Many Requests'
+
+        with mock.patch('requests.post', return_value=mock_response):
+            with self.assertRaises(errors.RateLimitError) as context:
+                self.service.get_tts_audio('hello', self.mock_voice, {})
+
+            self.assertIsInstance(context.exception, errors.TransientError)
+            self.assertIn('429', str(context.exception))
