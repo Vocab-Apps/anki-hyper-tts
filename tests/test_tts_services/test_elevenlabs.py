@@ -243,8 +243,8 @@ class TestElevenLabsQuotaError(unittest.TestCase):
         with patch('hypertts_addon.services.service_elevenlabs.requests.post', return_value=self._make_quota_response()):
             with self.assertRaises(errors.ServicePermissionError) as ctx:
                 service.get_tts_audio('Hello', mock_voice, {})
-            self.assertIn('Quota exceeded', ctx.exception.error_message)
-            self.assertIn('You have 0 credits remaining', ctx.exception.error_message)
+            self.assertIn('401', ctx.exception.error_message)
+            self.assertIn('quota_exceeded', ctx.exception.error_message)
 
     def test_elevenlabscustom_quota_exceeded_raises_permission_error(self):
         # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_elevenlabscustom_quota_exceeded_raises_permission_error'
@@ -258,8 +258,8 @@ class TestElevenLabsQuotaError(unittest.TestCase):
         with patch('hypertts_addon.services.service_elevenlabscustom.requests.post', return_value=self._make_quota_response()):
             with self.assertRaises(errors.ServicePermissionError) as ctx:
                 service.get_tts_audio('Hello', mock_voice, {})
-            self.assertIn('Quota exceeded', ctx.exception.error_message)
-            self.assertIn('You have 0 credits remaining', ctx.exception.error_message)
+            self.assertIn('401', ctx.exception.error_message)
+            self.assertIn('quota_exceeded', ctx.exception.error_message)
 
     def test_elevenlabs_401_no_json_raises_permission_error(self):
         # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_elevenlabs_401_no_json_raises_permission_error'
