@@ -86,10 +86,7 @@ class ElevenLabs(service.ServiceBase):
                 pass
 
             if response.status_code == 401:
-                if detail_message:
-                    error_message = f'{self.name}: Quota exceeded: {detail_message}'
-                else:
-                    error_message = f'{self.name}: error processing TTS request: {response.status_code} {response.text}'
+                error_message = f'{self.name}: error processing TTS request: {response.status_code} {response.text}'
                 logger.warning(error_message)
                 raise errors.ServicePermissionError(source_text, voice, error_message)
             else:
