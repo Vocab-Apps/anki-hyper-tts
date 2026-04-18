@@ -83,6 +83,9 @@ class TTSTests(unittest.TestCase):
         # google
         self.manager.get_service('Google').enabled = True
         self.manager.get_service('Google').configure({'api_key': os.environ['GOOGLE_SERVICES_KEY']})
+        # gemini (same Google Cloud API key as Google TTS)
+        self.manager.get_service('Gemini').enabled = True
+        self.manager.get_service('Gemini').configure({'api_key': os.environ['GEMINI_SERVICES_KEY']})
         # azure
         self.manager.get_service('Azure').enabled = True
         self.manager.get_service('Azure').configure({

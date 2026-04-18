@@ -21616,7 +21616,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Achernar (Soft)',
             voice_key={'name': 'Achernar'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21629,7 +21629,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Achird (Friendly)',
             voice_key={'name': 'Achird'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21642,7 +21642,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Algenib (Gravelly)',
             voice_key={'name': 'Algenib'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21655,7 +21655,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Algieba (Smooth)',
             voice_key={'name': 'Algieba'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21668,7 +21668,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Alnilam (Firm)',
             voice_key={'name': 'Alnilam'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21681,7 +21681,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Aoede (Breezy)',
             voice_key={'name': 'Aoede'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21694,7 +21694,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Autonoe (Bright)',
             voice_key={'name': 'Autonoe'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21707,7 +21707,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Callirrhoe (Easy-going)',
             voice_key={'name': 'Callirrhoe'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21720,7 +21720,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Charon (Informative)',
             voice_key={'name': 'Charon'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21733,7 +21733,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Despina (Smooth)',
             voice_key={'name': 'Despina'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21746,7 +21746,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Enceladus (Breathy)',
             voice_key={'name': 'Enceladus'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21759,7 +21759,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Erinome (Clear)',
             voice_key={'name': 'Erinome'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21772,7 +21772,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Fenrir (Excitable)',
             voice_key={'name': 'Fenrir'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21785,7 +21785,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Gacrux (Mature)',
             voice_key={'name': 'Gacrux'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21798,7 +21798,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Iapetus (Clear)',
             voice_key={'name': 'Iapetus'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21811,7 +21811,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Kore (Firm)',
             voice_key={'name': 'Kore'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21824,7 +21824,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Laomedeia (Upbeat)',
             voice_key={'name': 'Laomedeia'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21837,7 +21837,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Leda (Youthful)',
             voice_key={'name': 'Leda'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21850,7 +21850,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Orus (Firm)',
             voice_key={'name': 'Orus'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21863,7 +21863,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Puck (Upbeat)',
             voice_key={'name': 'Puck'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21876,7 +21876,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Pulcherrima (Forward)',
             voice_key={'name': 'Pulcherrima'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21889,7 +21889,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Rasalgethi (Informative)',
             voice_key={'name': 'Rasalgethi'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21902,7 +21902,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Sadachbia (Lively)',
             voice_key={'name': 'Sadachbia'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21915,7 +21915,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Sadaltager (Knowledgeable)',
             voice_key={'name': 'Sadaltager'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21928,7 +21928,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Schedar (Even)',
             voice_key={'name': 'Schedar'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21941,7 +21941,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Sulafat (Warm)',
             voice_key={'name': 'Sulafat'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21954,7 +21954,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Umbriel (Easy-going)',
             voice_key={'name': 'Umbriel'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -21967,7 +21967,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Vindemiatrix (Gentle)',
             voice_key={'name': 'Vindemiatrix'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21980,7 +21980,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Zephyr (Bright)',
             voice_key={'name': 'Zephyr'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -21993,7 +21993,7 @@ VOICE_LIST = [
         voice.TtsVoice_v3(
             name='Zubenelgenubi (Casual)',
             voice_key={'name': 'Zubenelgenubi'},
-            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-tts', 'gemini-2.5-pro-tts', 'gemini-2.5-flash-lite-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
+            options={'model': {'type': 'list', 'values': ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'], 'default': 'gemini-3.1-flash-tts-preview'}, 'language_code': {'type': 'text', 'default': 'en-US'}, 'prompt': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Gemini',
             gender=constants.Gender.Male,
             audio_languages=[
