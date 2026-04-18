@@ -88,10 +88,11 @@ class Gemini(service.ServiceBase):
         )
 
         if response.status_code == 429:
+            logger.warning(f'HTTP {response.status_code}, headers: {dict(response.headers)}, body: {response.text}')
             raise errors.RateLimitError(source_text, voice, f'Gemini rate limit: {response.status_code} {response.text}')
 
         if response.status_code != 200:
-            logger.warning(f'HTTP {response.status_code}: {response.text}')
+            logger.warning(f'HTTP {response.status_code}, headers: {dict(response.headers)}, body: {response.text}')
             data = response.json()
             error_message = data.get('error', {}).get('message', str(data))
             raise errors.RequestError(source_text, voice, error_message)
