@@ -56,12 +56,26 @@ class TestGemini(TTSTests):
             exception_caught = True
         assert exception_caught
 
-    def test_non_default_model(self):
+    def test_model_gemini_3_1_flash_tts_preview(self):
+        voice_list = self.manager.full_voice_list()
+        audio_language = languages.AudioLanguage.en_US
+        selected_voice = self.pick_random_voice(voice_list, self.SERVICE_NAME, audio_language)
+        self.verify_audio_output(selected_voice, audio_language, 'This is the first sentence',
+                                 voice_options={'model': 'gemini-3.1-flash-tts-preview'})
+
+    def test_model_gemini_2_5_flash_preview_tts(self):
         voice_list = self.manager.full_voice_list()
         audio_language = languages.AudioLanguage.en_US
         selected_voice = self.pick_random_voice(voice_list, self.SERVICE_NAME, audio_language)
         self.verify_audio_output(selected_voice, audio_language, 'This is the first sentence',
                                  voice_options={'model': 'gemini-2.5-flash-preview-tts'})
+
+    def test_model_gemini_2_5_pro_preview_tts(self):
+        voice_list = self.manager.full_voice_list()
+        audio_language = languages.AudioLanguage.en_US
+        selected_voice = self.pick_random_voice(voice_list, self.SERVICE_NAME, audio_language)
+        self.verify_audio_output(selected_voice, audio_language, 'This is the first sentence',
+                                 voice_options={'model': 'gemini-2.5-pro-preview-tts'})
 
     def test_prompt_style_control(self):
         # prompt (voice style control) — audio should still transcribe to the source text
