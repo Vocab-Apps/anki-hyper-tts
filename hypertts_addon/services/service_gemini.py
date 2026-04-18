@@ -3,8 +3,8 @@ import sys
 import wave
 import base64
 import tempfile
-import subprocess
 import requests
+import aqt.sound
 
 
 from hypertts_addon import voice
@@ -56,6 +56,10 @@ class Gemini(service.ServiceBase):
         audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
         audio_format = options.AudioFormat[audio_format_str]
 
+        if audio_format != options.AudioFormat.mp3:
+            raise errors.ServiceInputError(source_text, voice,
+                f'Gemini service only supports mp3 output; {audio_format.name} is not supported')
+
         text = f'{prompt}: {source_text}' if prompt else source_text
 
         payload = {
@@ -100,32 +104,26 @@ class Gemini(service.ServiceBase):
 
         pcm_bytes = base64.b64decode(encoded)
 
-        return self._encode_pcm(pcm_bytes, audio_format)
+        return self._encode_pcm_to_mp3(pcm_bytes)
 
-    def _encode_pcm(self, pcm_bytes, audio_format):
-        ext_map = {
-            options.AudioFormat.mp3: ('.mp3', ['-c:a', 'libmp3lame', '-q:a', '2']),
-            options.AudioFormat.ogg_opus: ('.ogg', ['-c:a', 'libopus']),
-        }
-        ext, codec_args = ext_map[audio_format]
-
+    def _encode_pcm_to_mp3(self, pcm_bytes):
+        # Gemini returns raw signed little-endian PCM at 24kHz / 16-bit / mono.
+        # Per PCM_TO_MP3.md: wrap the bytes in a WAV container via stdlib `wave`,
+        # then hand off to Anki's bundled `lame` via aqt.sound._encode_mp3.
         wav_fh, wav_path = tempfile.mkstemp(prefix='hypertts_gemini_', suffix='.wav')
         os.close(wav_fh)
-        out_fh, out_path = tempfile.mkstemp(prefix='hypertts_gemini_', suffix=ext)
-        os.close(out_fh)
+        mp3_fh, mp3_path = tempfile.mkstemp(prefix='hypertts_gemini_', suffix='.mp3')
+        os.close(mp3_fh)
         try:
             with wave.open(wav_path, 'wb') as w:
                 w.setnchannels(1)
                 w.setsampwidth(2)
                 w.setframerate(24000)
                 w.writeframes(pcm_bytes)
-            subprocess.run(
-                ['ffmpeg', '-y', '-i', wav_path, *codec_args, out_path],
-                check=True, capture_output=True,
-            )
-            with open(out_path, 'rb') as f:
+            aqt.sound._encode_mp3(wav_path, mp3_path)
+            with open(mp3_path, 'rb') as f:
                 return f.read()
         finally:
-            for p in (wav_path, out_path):
+            for p in (wav_path, mp3_path):
                 if os.path.exists(p):
                     os.remove(p)

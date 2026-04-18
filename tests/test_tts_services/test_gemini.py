@@ -35,11 +35,19 @@ class TestGemini(TTSTests):
         self.verify_audio_output(selected_voice, audio_language, 'おはようございます',
                                  voice_options={'language_code': 'ja-JP'})
 
-        # ogg_opus format
+        # ogg_opus format — not supported by Gemini service, should raise ServiceInputError
         audio_language = languages.AudioLanguage.en_US
         selected_voice = self.pick_random_voice(voice_list, service_name, audio_language)
-        self.verify_audio_output(selected_voice, audio_language, 'This is the first sentence',
-                                 voice_options={'format': 'ogg_opus'})
+        exception_caught = False
+        try:
+            self.manager.get_tts_audio('This is the first sentence', selected_voice,
+                {'format': 'ogg_opus'},
+                context.AudioRequestContext(constants.AudioRequestReason.batch))
+        except errors.ServiceInputError as e:
+            assert e.source_text == 'This is the first sentence'
+            assert e.voice.service == 'Gemini'
+            exception_caught = True
+        assert exception_caught
 
         # non-default model
         audio_language = languages.AudioLanguage.en_US
