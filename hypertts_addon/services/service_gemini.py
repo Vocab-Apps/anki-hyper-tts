@@ -15,6 +15,13 @@ from hypertts_addon import options
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
+# Gemini speech-generation REST API:
+#   https://ai.google.dev/gemini-api/docs/speech-generation#rest
+# Model catalogue (ListModels):
+#   https://ai.google.dev/api/models#method:-models.list
+# Prebuilt voice names and supported languages:
+#   https://ai.google.dev/gemini-api/docs/speech-generation#voices
+
 class Gemini(service.ServiceBase):
     CONFIG_API_KEY = 'api_key'
 
