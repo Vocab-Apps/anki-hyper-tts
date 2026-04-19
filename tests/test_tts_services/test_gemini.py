@@ -78,6 +78,8 @@ class TestGemini(TTSTests):
                                  voice_options={'model': 'gemini-2.5-pro-tts'})
 
     def test_model_gemini_2_5_flash_lite_preview_tts(self):
+        if self.CONFIG_MODE != 'clt':
+            pytest.skip('gemini-2.5-flash-lite-preview-tts is not available on the Gemini API (direct mode)')
         voice_list = self.manager.full_voice_list()
         audio_language = languages.AudioLanguage.en_US
         selected_voice = self.pick_random_voice(voice_list, self.SERVICE_NAME, audio_language)
