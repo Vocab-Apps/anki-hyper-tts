@@ -22,6 +22,16 @@ logger = logging_utils.get_child_logger(__name__)
 # Prebuilt voice names and supported languages:
 #   https://ai.google.dev/gemini-api/docs/speech-generation#voices
 
+# The model names exposed in voicelist.py follow the Google Cloud Text-to-Speech
+# API naming (e.g. 'gemini-2.5-flash-tts'), but this service calls the Gemini API
+# directly, which uses different IDs (e.g. 'gemini-2.5-flash-preview-tts', as
+# returned by ListModels). Translate voice-list names to Gemini API model IDs here.
+MODEL_NAME_MAP = {
+    'gemini-2.5-flash-tts': 'gemini-2.5-flash-preview-tts',
+    'gemini-2.5-pro-tts': 'gemini-2.5-pro-preview-tts',
+}
+
+
 class Gemini(service.ServiceBase):
     CONFIG_API_KEY = 'api_key'
 
@@ -51,6 +61,7 @@ class Gemini(service.ServiceBase):
         api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
 
         model = voice_options.get('model', voice.options['model']['default'])
+        api_model = MODEL_NAME_MAP.get(model, model)
         prompt = voice_options.get('prompt', voice.options['prompt']['default'])
 
         audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
@@ -72,13 +83,13 @@ class Gemini(service.ServiceBase):
                     }
                 }
             },
-            'model': model,
+            'model': api_model,
         }
 
         logger.debug(f'requesting audio with payload {payload}')
 
         response = requests.post(
-            f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
+            f'https://generativelanguage.googleapis.com/v1beta/models/{api_model}:generateContent',
             headers={
                 'x-goog-api-key': api_key,
                 'Content-Type': 'application/json',
