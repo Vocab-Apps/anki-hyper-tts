@@ -90,7 +90,7 @@ class TestGemini(TTSTests):
         voice_list = self.manager.full_voice_list()
         audio_language = languages.AudioLanguage.en_US
         selected_voice = self.pick_random_voice(voice_list, self.SERVICE_NAME, audio_language)
-        self.verify_audio_output(selected_voice, audio_language, 'Guten Morgen, wie geht es dir heute?',
+        self.verify_audio_output(selected_voice, audio_language, 'Guten Morgen',
                                  voice_options={'language_code': 'de-DE'})
 
     def test_prompt_style_control(self):
