@@ -1,5 +1,4 @@
 import os
-import sys
 import wave
 import base64
 import tempfile
@@ -7,7 +6,7 @@ import requests
 import aqt.sound
 
 
-from hypertts_addon import voice
+from hypertts_addon import voice as voice_module
 from hypertts_addon import service
 from hypertts_addon import errors
 from hypertts_addon import constants
@@ -57,12 +56,13 @@ class Gemini(service.ServiceBase):
     def voice_list(self):
         return self.basic_voice_list()
 
-    def get_tts_audio(self, source_text, voice: voice.VoiceBase, voice_options):
+    def get_tts_audio(self, source_text, voice: voice_module.VoiceBase, voice_options):
         api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
 
         model = voice_options.get('model', voice.options['model']['default'])
         api_model = MODEL_NAME_MAP.get(model, model)
         prompt = voice_options.get('prompt', voice.options['prompt']['default'])
+        language_code = voice_options.get('language_code', voice.options['language_code']['default'])
 
         audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
         audio_format = options.AudioFormat[audio_format_str]
@@ -73,15 +73,19 @@ class Gemini(service.ServiceBase):
 
         text = f'{prompt}: {source_text}' if prompt else source_text
 
+        speech_config = {
+            'voiceConfig': {
+                'prebuiltVoiceConfig': {'voiceName': voice.voice_key['name']}
+            }
+        }
+        if language_code:
+            speech_config['languageCode'] = language_code
+
         payload = {
             'contents': [{'parts': [{'text': text}]}],
             'generationConfig': {
                 'responseModalities': ['AUDIO'],
-                'speechConfig': {
-                    'voiceConfig': {
-                        'prebuiltVoiceConfig': {'voiceName': voice.voice_key['name']}
-                    }
-                }
+                'speechConfig': speech_config,
             },
             'model': api_model,
         }

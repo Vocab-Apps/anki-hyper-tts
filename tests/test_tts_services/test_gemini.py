@@ -86,6 +86,13 @@ class TestGemini(TTSTests):
         self.verify_audio_output(selected_voice, audio_language, 'This is the first sentence',
                                  voice_options={'model': 'gemini-2.5-flash-lite-preview-tts'})
 
+    def test_language_code_override(self):
+        voice_list = self.manager.full_voice_list()
+        audio_language = languages.AudioLanguage.en_US
+        selected_voice = self.pick_random_voice(voice_list, self.SERVICE_NAME, audio_language)
+        self.verify_audio_output(selected_voice, audio_language, 'Guten Morgen, wie geht es dir heute?',
+                                 voice_options={'language_code': 'de-DE'})
+
     def test_prompt_style_control(self):
         # prompt (voice style control) — audio should still transcribe to the source text
         voice_list = self.manager.full_voice_list()
