@@ -1,4 +1,6 @@
 import copy
+import json
+import unittest
 import pytest
 
 from .base import TTSTests, logger
@@ -7,6 +9,10 @@ from hypertts_addon import context
 from hypertts_addon import errors
 from hypertts_addon import languages
 from hypertts_addon import voice as voice_module
+from hypertts_addon.services.service_gemini import (
+    _extract_retry_after_seconds,
+    DEFAULT_RETRY_AFTER_SECONDS,
+)
 
 
 class TestGemini(TTSTests):
@@ -128,3 +134,40 @@ class TestGemini(TTSTests):
 
 class TestGeminiCLT(TestGemini):
     CONFIG_MODE = 'clt'
+
+
+class TestGeminiRetryAfterParsing(unittest.TestCase):
+
+    def _payload(self, details):
+        return json.dumps({'error': {'code': 429, 'status': 'RESOURCE_EXHAUSTED',
+                                     'message': 'rate limited', 'details': details}})
+
+    def test_parses_integer_seconds(self):
+        body = self._payload([
+            {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': []},
+            {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '25s'},
+        ])
+        self.assertEqual(_extract_retry_after_seconds(body), 25)
+
+    def test_parses_fractional_seconds_ceils(self):
+        body = self._payload([
+            {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '24.18243361s'},
+        ])
+        self.assertEqual(_extract_retry_after_seconds(body), 25)
+
+    def test_missing_retry_info_returns_default(self):
+        body = self._payload([
+            {'@type': 'type.googleapis.com/google.rpc.Help', 'links': []},
+        ])
+        self.assertEqual(_extract_retry_after_seconds(body), DEFAULT_RETRY_AFTER_SECONDS)
+
+    def test_missing_details_returns_default(self):
+        body = json.dumps({'error': {'code': 429, 'message': 'rate limited'}})
+        self.assertEqual(_extract_retry_after_seconds(body), DEFAULT_RETRY_AFTER_SECONDS)
+
+    def test_malformed_json_returns_default(self):
+        body = '<html><body>429 Too Many Requests</body></html>'
+        self.assertEqual(_extract_retry_after_seconds(body), DEFAULT_RETRY_AFTER_SECONDS)
+
+    def test_empty_string_returns_default(self):
+        self.assertEqual(_extract_retry_after_seconds(''), DEFAULT_RETRY_AFTER_SECONDS)

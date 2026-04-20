@@ -1,4 +1,6 @@
 import os
+import json
+import math
 import wave
 import base64
 import tempfile
@@ -29,6 +31,20 @@ MODEL_NAME_MAP = {
     'gemini-2.5-flash-tts': 'gemini-2.5-flash-preview-tts',
     'gemini-2.5-pro-tts': 'gemini-2.5-pro-preview-tts',
 }
+
+DEFAULT_RETRY_AFTER_SECONDS = 60
+
+
+def _extract_retry_after_seconds(response_text):
+    try:
+        data = json.loads(response_text)
+        for detail in data['error']['details']:
+            if detail.get('@type', '').endswith('google.rpc.RetryInfo'):
+                delay = detail['retryDelay']
+                return max(1, math.ceil(float(delay.rstrip('s'))))
+    except Exception:
+        pass
+    return DEFAULT_RETRY_AFTER_SECONDS
 
 
 class Gemini(service.ServiceBase):
@@ -104,7 +120,12 @@ class Gemini(service.ServiceBase):
 
         if response.status_code == 429:
             logger.warning(f'HTTP {response.status_code}, headers: {dict(response.headers)}, body: {response.text}')
-            raise errors.RateLimitError(source_text, voice, f'Gemini rate limit: {response.status_code} {response.text}')
+            retry_after = _extract_retry_after_seconds(response.text)
+            raise errors.RateLimitRetryAfterError(
+                source_text, voice,
+                f'Gemini rate limit: {response.status_code} {response.text}',
+                retry_after,
+            )
 
         if response.status_code != 200:
             logger.warning(f'HTTP {response.status_code}, headers: {dict(response.headers)}, body: {response.text}')
