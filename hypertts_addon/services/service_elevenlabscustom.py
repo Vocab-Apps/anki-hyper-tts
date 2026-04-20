@@ -112,6 +112,7 @@ class ElevenLabsCustom(service.ServiceBase):
             'is': languages.AudioLanguage.is_IS, # Icelandic,
             'jv': languages.AudioLanguage.jv_ID, # Javanese,
             'sr': languages.AudioLanguage.sr_RS, # Serbian
+            'sd': languages.AudioLanguage.sd_PK, # Sindhi
         }
         if language_id in override_map:
             return override_map[language_id]
@@ -178,7 +179,7 @@ class ElevenLabsCustom(service.ServiceBase):
                         service_fee=self.service_fee
                     ))
                 except Exception as e:
-                    logger.error(f'ElevenLabsCustom: error when processing voice {voice_entry}: {e}')
+                    logger.error(f'ElevenLabsCustom: error when processing voice {e}: {voice_entry}')
                     logger.error(e, exc_info=True)
 
         # logger.debug(pprint.pformat(result))
