@@ -1,6 +1,8 @@
 import copy
+import datetime
 import random
 import unittest
+from unittest import mock
 
 from .base import TTSTests, logger
 from hypertts_addon import constants
@@ -9,6 +11,7 @@ from hypertts_addon import errors
 from hypertts_addon import languages
 from hypertts_addon.languages import AudioLanguage
 from hypertts_addon import voice as voice_module
+from hypertts_addon.services import service_azure
 
 
 class TestAzure(TTSTests):
@@ -82,6 +85,31 @@ class TestAzure(TTSTests):
         styles = [s for s in selected_voice.options['style']['values'] if s != '']
         voice_options = {'style': styles[0], 'styledegree': 1.5}
         self.verify_audio_output(selected_voice, AudioLanguage.en_US, self.ENGLISH_INPUT_TEXT, voice_options=voice_options)
+
+
+    def test_azure_401_raises_permission_error(self):
+        # pytest tests/test_tts_services/ -k 'TestAzure and test_azure_401_raises_permission_error'
+        azure_service = service_azure.Azure()
+        azure_service.configure({'api_key': 'dummy_key', 'region': 'eastus'})
+        azure_service.access_token = 'dummy_token'
+        azure_service.access_token_timestamp = datetime.datetime.now()
+
+        azure_voices = [v for v in azure_service.voice_list() if AudioLanguage.en_US in v.audio_languages]
+        selected_voice = azure_voices[0]
+
+        mock_response = mock.Mock()
+        mock_response.status_code = 401
+        mock_response.reason = 'Unauthorized'
+        mock_response.text = '{"error": "Invalid subscription key"}'
+
+        with mock.patch('hypertts_addon.services.service_azure.requests.post', return_value=mock_response):
+            with self.assertRaises(errors.ServicePermissionError) as cm:
+                azure_service.get_tts_audio('hello', selected_voice, {})
+
+        self.assertEqual(cm.exception.source_text, 'hello')
+        self.assertEqual(cm.exception.voice.service, 'Azure')
+        self.assertIn('401', cm.exception.error_message)
+        self.assertIn('Invalid subscription key', cm.exception.error_message)
 
 
 class TestAzureCLT(TestAzure):
