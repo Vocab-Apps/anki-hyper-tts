@@ -97,7 +97,7 @@ class GoogleTranslate(service.ServiceBase):
             logger.warning(f'Google Translate error: {e}, headers: {e.rsp.headers}')
             if e.rsp is not None and e.rsp.status_code == 429:
                 retry_after = int(e.rsp.headers.get('Retry-After', 30))
-                raise errors.RateLimitRetryAfterError(source_text, voice, str(e), retry_after)
+                raise errors.RateLimitRetryAfterError(source_text, voice, str(e), retry_after) from e
             # this error will be handled, and not reported as unusual
-            raise errors.RequestError(source_text, voice, str(e))
+            raise errors.RequestError(source_text, voice, str(e)) from e
 
