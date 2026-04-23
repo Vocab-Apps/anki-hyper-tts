@@ -7,6 +7,7 @@ import typing
 import requests
 import pprint
 import functools
+import time
 
 
 from . import voice as voice_module
@@ -192,12 +193,41 @@ class ServiceManager():
                 'final_attempt': audio_request_context.is_final_attempt()
             })
 
+            metrics_attributes = {
+                "service": voice.service,
+                'hypertts_pro': use_clt
+            }
+
             transaction_name = f'{voice.service}'
             if use_clt:
                 transaction_name = f'cloudlanguagetools_{voice.service}'
             with sentry_sdk.start_transaction(op="audio", name=transaction_name) as transaction:
                 try:
+                    # audio request metrics
+                    sentry_sdk.metrics.count(
+                        "audio_request",
+                        1,
+                        attributes=metrics_attributes,
+                    )
+
+                    tts_start = time.time()
                     result_audio = self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)
+                    tts_duration_ms = (time.time() - tts_start) * 1000
+
+                    # success metrics
+                    sentry_sdk.metrics.count(
+                        "audio_request_success",
+                        1,
+                        attributes=metrics_attributes,
+                    )
+
+                    sentry_sdk.metrics.distribution(
+                        "audio_request_duration",
+                        tts_duration_ms,
+                        unit="millisecond",
+                        attributes=metrics_attributes,
+                    )
+
                     return result_audio
                 except Exception as e:
                     sentry_scope.set_tags({
@@ -213,6 +243,13 @@ class ServiceManager():
                     sentry_scope.fingerprint = ['{{ default }}', voice.service]
                     # this the only place we capture audio request exceptions
                     sentry_sdk.capture_exception(e)
+
+                    sentry_sdk.metrics.count(
+                        "audio_request_failure",
+                        1,
+                        attributes={**metrics_attributes, 'exception_type': type(e).__name__},
+                    )
+
                     # let the caller handle the exception as well (e.g. for retry logic)
                     raise
 
