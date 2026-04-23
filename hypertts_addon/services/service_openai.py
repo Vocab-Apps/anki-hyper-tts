@@ -75,6 +75,10 @@ class OpenAI(service.ServiceBase):
 
         response = requests.post(url, json=data, headers=headers)
 
+        if response.status_code != 200:
+            logger.warning(f'OpenAI response content: {response.text}')
+            logger.warning(f'OpenAI response status: {response.status_code} headers: {dict(response.headers)}')
+
         if response.status_code == 429:
             raise errors.RateLimitError(source_text, voice, f'OpenAI rate limit: {response.status_code} {response.text}')
 
