@@ -119,8 +119,9 @@ class Gemini(service.ServiceBase):
         )
 
         if response.status_code == 429:
-            logger.warning(f'HTTP {response.status_code}, headers: {dict(response.headers)}, body: {response.text}')
+            logger.warning(f'HTTP {response.status_code}, body: {response.text}')
             retry_after = _extract_retry_after_seconds(response.text)
+            logger.warning(f'retry_after: {retry_after}')
             raise errors.RateLimitRetryAfterError(
                 source_text, voice,
                 f'Gemini rate limit: {response.status_code} {response.text}',
