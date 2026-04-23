@@ -37,11 +37,11 @@ if TYPE_CHECKING:
     F = TypeVar("F", bound=Callable[..., Any])
 
 
-def _wrap_func(func):
-    # type: (F) -> F
+def _wrap_func(func: "F") -> "F":
     @functools.wraps(func)
-    def sentry_func(functionhandler, gcp_event, *args, **kwargs):
-        # type: (Any, Any, *Any, **Any) -> Any
+    def sentry_func(
+        functionhandler: "Any", gcp_event: "Any", *args: "Any", **kwargs: "Any"
+    ) -> "Any":
         client = sentry_sdk.get_client()
 
         integration = client.get_integration(GcpIntegration)
@@ -75,7 +75,12 @@ def _wrap_func(func):
                 ):
                     waiting_time = configured_time - TIMEOUT_WARNING_BUFFER
 
-                    timeout_thread = TimeoutThread(waiting_time, configured_time)
+                    timeout_thread = TimeoutThread(
+                        waiting_time,
+                        configured_time,
+                        isolation_scope=scope,
+                        current_scope=sentry_sdk.get_current_scope(),
+                    )
 
                     # Starting the thread to raise timeout warning exception
                     timeout_thread.start()
@@ -128,13 +133,11 @@ class GcpIntegration(Integration):
     identifier = "gcp"
     origin = f"auto.function.{identifier}"
 
-    def __init__(self, timeout_warning=False):
-        # type: (bool) -> None
+    def __init__(self, timeout_warning: bool = False) -> None:
         self.timeout_warning = timeout_warning
 
     @staticmethod
-    def setup_once():
-        # type: () -> None
+    def setup_once() -> None:
         import __main__ as gcp_functions
 
         if not hasattr(gcp_functions, "worker_v1"):
@@ -150,12 +153,10 @@ class GcpIntegration(Integration):
         )
 
 
-def _make_request_event_processor(gcp_event, configured_timeout, initial_time):
-    # type: (Any, Any, Any) -> EventProcessor
-
-    def event_processor(event, hint):
-        # type: (Event, Hint) -> Optional[Event]
-
+def _make_request_event_processor(
+    gcp_event: "Any", configured_timeout: "Any", initial_time: "Any"
+) -> "EventProcessor":
+    def event_processor(event: "Event", hint: "Hint") -> "Optional[Event]":
         final_time = datetime.now(timezone.utc)
         time_diff = final_time - initial_time
 
@@ -205,8 +206,7 @@ def _make_request_event_processor(gcp_event, configured_timeout, initial_time):
     return event_processor
 
 
-def _get_google_cloud_logs_url(final_time):
-    # type: (datetime) -> str
+def _get_google_cloud_logs_url(final_time: "datetime") -> str:
     """
     Generates a Google Cloud Logs console URL based on the environment variables
     Arguments:

@@ -3,7 +3,10 @@ from enum import Enum
 from typing import TYPE_CHECKING
 
 # up top to prevent circular import due to integration import
-DEFAULT_MAX_VALUE_LENGTH = 1024
+# This is more or less an arbitrary large-ish value for now, so that we allow
+# pretty long strings (like LLM prompts), but still have *some* upper limit
+# until we verify that removing the trimming completely is safe.
+DEFAULT_MAX_VALUE_LENGTH = 100_000
 
 DEFAULT_MAX_STACK_FRAMES = 100
 DEFAULT_ADD_FULL_STACK = False
@@ -18,6 +21,7 @@ class EndpointType(Enum):
     """
 
     ENVELOPE = "envelope"
+    OTLP_TRACES = "integration/otlp/v1/traces"
 
 
 class CompressionAlgo(Enum):
@@ -26,33 +30,34 @@ class CompressionAlgo(Enum):
 
 
 if TYPE_CHECKING:
+    from typing import (
+        AbstractSet,
+        Any,
+        Callable,
+        Dict,
+        List,
+        Optional,
+        Sequence,
+        Tuple,
+        Type,
+        Union,
+    )
+
+    from typing_extensions import Literal, TypedDict
+
     import sentry_sdk
-
-    from typing import Optional
-    from typing import Callable
-    from typing import Union
-    from typing import List
-    from typing import Type
-    from typing import Dict
-    from typing import Any
-    from typing import Sequence
-    from typing import Tuple
-    from typing_extensions import Literal
-    from typing_extensions import TypedDict
-
     from sentry_sdk._types import (
         BreadcrumbProcessor,
         ContinuousProfilerMode,
         Event,
         EventProcessor,
         Hint,
+        IgnoreSpansConfig,
         Log,
-        MeasurementUnit,
+        Metric,
         ProfilerMode,
         TracesSampler,
         TransactionProcessor,
-        MetricTags,
-        MetricValue,
     )
 
     # Experiments are feature flags to enable and disable certain unstable SDK
@@ -73,13 +78,14 @@ if TYPE_CHECKING:
             "transport_compression_algo": Optional[CompressionAlgo],
             "transport_num_pools": Optional[int],
             "transport_http2": Optional[bool],
-            "enable_metrics": Optional[bool],
-            "before_emit_metric": Optional[
-                Callable[[str, MetricValue, MeasurementUnit, MetricTags], bool]
-            ],
-            "metric_code_locations": Optional[bool],
+            "transport_async": Optional[bool],
             "enable_logs": Optional[bool],
             "before_send_log": Optional[Callable[[Log, Hint], Optional[Log]]],
+            "enable_metrics": Optional[bool],
+            "before_send_metric": Optional[Callable[[Metric, Hint], Optional[Metric]]],
+            "trace_lifecycle": Optional[Literal["static", "stream"]],
+            "ignore_spans": Optional[IgnoreSpansConfig],
+            "suppress_asgi_chained_exceptions": Optional[bool],
         },
         total=False,
     )
@@ -97,9 +103,24 @@ FALSE_VALUES = [
 ]
 
 
+class SPANTEMPLATE(str, Enum):
+    DEFAULT = "default"
+    AI_AGENT = "ai_agent"
+    AI_TOOL = "ai_tool"
+    AI_CHAT = "ai_chat"
+
+    def __str__(self) -> str:
+        return self.value
+
+
 class INSTRUMENTER:
     SENTRY = "sentry"
     OTEL = "otel"
+
+
+class SPANNAME:
+    DB_COMMIT = "COMMIT"
+    DB_ROLLBACK = "ROLLBACK"
 
 
 class SPANDATA:
@@ -110,70 +131,106 @@ class SPANDATA:
 
     AI_CITATIONS = "ai.citations"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     References or sources cited by the AI model in its response.
     Example: ["Smith et al. 2020", "Jones 2019"]
     """
 
     AI_DOCUMENTS = "ai.documents"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     Documents or content chunks used as context for the AI model.
     Example: ["doc1.txt", "doc2.pdf"]
     """
 
     AI_FINISH_REASON = "ai.finish_reason"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_RESPONSE_FINISH_REASONS instead.
+
     The reason why the model stopped generating.
     Example: "length"
     """
 
     AI_FREQUENCY_PENALTY = "ai.frequency_penalty"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_REQUEST_FREQUENCY_PENALTY instead.
+
     Used to reduce repetitiveness of generated tokens.
     Example: 0.5
     """
 
     AI_FUNCTION_CALL = "ai.function_call"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_RESPONSE_TOOL_CALLS instead.
+
     For an AI model call, the function that was called. This is deprecated for OpenAI, and replaced by tool_calls
     """
 
     AI_GENERATION_ID = "ai.generation_id"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_RESPONSE_ID instead.
+
     Unique identifier for the completion.
     Example: "gen_123abc"
     """
 
     AI_INPUT_MESSAGES = "ai.input_messages"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_REQUEST_MESSAGES instead.
+
     The input messages to an LLM call.
     Example: [{"role": "user", "message": "hello"}]
     """
 
     AI_LOGIT_BIAS = "ai.logit_bias"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     For an AI model call, the logit bias
     """
 
     AI_METADATA = "ai.metadata"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     Extra metadata passed to an AI pipeline step.
     Example: {"executed_function": "add_integers"}
     """
 
     AI_MODEL_ID = "ai.model_id"
     """
-    The unique descriptor of the model being execugted
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_REQUEST_MODEL or GEN_AI_RESPONSE_MODEL instead.
+
+    The unique descriptor of the model being executed.
     Example: gpt-4
     """
 
     AI_PIPELINE_NAME = "ai.pipeline.name"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_PIPELINE_NAME instead.
+
     Name of the AI pipeline or chain being executed.
     Example: "qa-pipeline"
     """
 
     AI_PREAMBLE = "ai.preamble"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     For an AI model call, the preamble parameter.
     Preambles are a part of the prompt used to adjust the model's overall behavior and conversation style.
     Example: "You are now a clown."
@@ -181,99 +238,150 @@ class SPANDATA:
 
     AI_PRESENCE_PENALTY = "ai.presence_penalty"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_REQUEST_PRESENCE_PENALTY instead.
+
     Used to reduce repetitiveness of generated tokens.
     Example: 0.5
     """
 
     AI_RAW_PROMPTING = "ai.raw_prompting"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     Minimize pre-processing done to the prompt sent to the LLM.
     Example: true
     """
 
     AI_RESPONSE_FORMAT = "ai.response_format"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     For an AI model call, the format of the response
     """
 
     AI_RESPONSES = "ai.responses"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_RESPONSE_TEXT instead.
+
     The responses to an AI model call. Always as a list.
     Example: ["hello", "world"]
     """
 
     AI_SEARCH_QUERIES = "ai.search_queries"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     Queries used to search for relevant context or documents.
     Example: ["climate change effects", "renewable energy"]
     """
 
     AI_SEARCH_REQUIRED = "ai.is_search_required"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     Boolean indicating if the model needs to perform a search.
     Example: true
     """
 
     AI_SEARCH_RESULTS = "ai.search_results"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     Results returned from search queries for context.
     Example: ["Result 1", "Result 2"]
     """
 
     AI_SEED = "ai.seed"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_REQUEST_SEED instead.
+
     The seed, ideally models given the same seed and same other parameters will produce the exact same output.
     Example: 123.45
     """
 
     AI_STREAMING = "ai.streaming"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_RESPONSE_STREAMING instead.
+
     Whether or not the AI model call's response was streamed back asynchronously
     Example: true
     """
 
     AI_TAGS = "ai.tags"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     Tags that describe an AI pipeline step.
     Example: {"executed_function": "add_integers"}
     """
 
     AI_TEMPERATURE = "ai.temperature"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_REQUEST_TEMPERATURE instead.
+
     For an AI model call, the temperature parameter. Temperature essentially means how random the output will be.
     Example: 0.5
     """
 
     AI_TEXTS = "ai.texts"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     Raw text inputs provided to the model.
     Example: ["What is machine learning?"]
     """
 
     AI_TOP_K = "ai.top_k"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_REQUEST_TOP_K instead.
+
     For an AI model call, the top_k parameter. Top_k essentially controls how random the output will be.
     Example: 35
     """
 
     AI_TOP_P = "ai.top_p"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_REQUEST_TOP_P instead.
+
     For an AI model call, the top_p parameter. Top_p essentially controls how random the output will be.
     Example: 0.5
     """
 
     AI_TOOL_CALLS = "ai.tool_calls"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_RESPONSE_TOOL_CALLS instead.
+
     For an AI model call, the function that was called. This is deprecated for OpenAI, and replaced by tool_calls
     """
 
     AI_TOOLS = "ai.tools"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_REQUEST_AVAILABLE_TOOLS instead.
+
     For an AI model call, the functions that are available
     """
 
     AI_WARNINGS = "ai.warnings"
     """
+    .. deprecated::
+        This attribute is deprecated. Use GEN_AI_* attributes instead.
+
     Warning messages generated during model execution.
     Example: ["Token limit exceeded"]
     """
@@ -360,10 +468,22 @@ class SPANDATA:
     Example: "ResearchAssistant"
     """
 
+    GEN_AI_CONVERSATION_ID = "gen_ai.conversation.id"
+    """
+    The unique identifier for the conversation/thread with the AI model.
+    Example: "conv_abc123"
+    """
+
     GEN_AI_CHOICE = "gen_ai.choice"
     """
     The model's response message.
     Example: "The weather in Paris is rainy and overcast, with temperatures around 57°F"
+    """
+
+    GEN_AI_EMBEDDINGS_INPUT = "gen_ai.embeddings.input"
+    """
+    The input to the embeddings operation.
+    Example: "Hello!"
     """
 
     GEN_AI_OPERATION_NAME = "gen_ai.operation.name"
@@ -372,10 +492,46 @@ class SPANDATA:
     Example: "chat"
     """
 
+    GEN_AI_PIPELINE_NAME = "gen_ai.pipeline.name"
+    """
+    Name of the AI pipeline or chain being executed.
+    Example: "qa-pipeline"
+    """
+
+    GEN_AI_RESPONSE_FINISH_REASONS = "gen_ai.response.finish_reasons"
+    """
+    The reason why the model stopped generating.
+    Example: "COMPLETE"
+    """
+
+    GEN_AI_RESPONSE_ID = "gen_ai.response.id"
+    """
+    Unique identifier for the completion.
+    Example: "gen_123abc"
+    """
+
+    GEN_AI_RESPONSE_MODEL = "gen_ai.response.model"
+    """
+    Exact model identifier used to generate the response
+    Example: gpt-4o-mini-2024-07-18
+    """
+
+    GEN_AI_RESPONSE_STREAMING = "gen_ai.response.streaming"
+    """
+    Whether or not the AI model call's response was streamed back asynchronously
+    Example: true
+    """
+
     GEN_AI_RESPONSE_TEXT = "gen_ai.response.text"
     """
     The model's response text messages.
     Example: ["The weather in Paris is rainy and overcast, with temperatures around 57°F", "The weather in London is sunny and warm, with temperatures around 65°F"]
+    """
+
+    GEN_AI_RESPONSE_TIME_TO_FIRST_TOKEN = "gen_ai.response.time_to_first_token"
+    """
+    The time it took to receive the first token from the model.
+    Example: 0.1
     """
 
     GEN_AI_RESPONSE_TOOL_CALLS = "gen_ai.response.tool_calls"
@@ -402,6 +558,12 @@ class SPANDATA:
     Example: 2048
     """
 
+    GEN_AI_SYSTEM_INSTRUCTIONS = "gen_ai.system_instructions"
+    """
+    The system instructions passed to the model.
+    Example: [{"type": "text", "text": "You are a helpful assistant."},{"type": "text", "text": "Be concise and clear."}]
+    """
+
     GEN_AI_REQUEST_MESSAGES = "gen_ai.request.messages"
     """
     The messages passed to the model. The "content" can be a string or an array of objects.
@@ -411,7 +573,7 @@ class SPANDATA:
     GEN_AI_REQUEST_MODEL = "gen_ai.request.model"
     """
     The model identifier being used for the request.
-    Example: "gpt-4-turbo-preview"
+    Example: "gpt-4-turbo"
     """
 
     GEN_AI_REQUEST_PRESENCE_PENALTY = "gen_ai.request.presence_penalty"
@@ -420,10 +582,22 @@ class SPANDATA:
     Example: 0.1
     """
 
+    GEN_AI_REQUEST_SEED = "gen_ai.request.seed"
+    """
+    The seed, ideally models given the same seed and same other parameters will produce the exact same output.
+    Example: "1234567890"
+    """
+
     GEN_AI_REQUEST_TEMPERATURE = "gen_ai.request.temperature"
     """
     The temperature parameter used to control randomness in the output.
     Example: 0.7
+    """
+
+    GEN_AI_REQUEST_TOP_K = "gen_ai.request.top_k"
+    """
+    Limits the model to only consider the K most likely next tokens, where K is an integer (e.g., top_k=20 means only the 20 highest probability tokens are considered).
+    Example: 35
     """
 
     GEN_AI_REQUEST_TOP_P = "gen_ai.request.top_p"
@@ -462,12 +636,6 @@ class SPANDATA:
     Example: "rainy, 57°F"
     """
 
-    GEN_AI_TOOL_TYPE = "gen_ai.tool.type"
-    """
-    The type of tool being used.
-    Example: "function"
-    """
-
     GEN_AI_USAGE_INPUT_TOKENS = "gen_ai.usage.input_tokens"
     """
     The number of tokens in the input.
@@ -478,6 +646,12 @@ class SPANDATA:
     """
     The number of cached tokens in the input.
     Example: 50
+    """
+
+    GEN_AI_USAGE_INPUT_TOKENS_CACHE_WRITE = "gen_ai.usage.input_tokens.cache_write"
+    """
+    The number of tokens written to the cache when processing the AI input (prompt).
+    Example: 100
     """
 
     GEN_AI_USAGE_OUTPUT_TOKENS = "gen_ai.usage.output_tokens"
@@ -566,6 +740,12 @@ class SPANDATA:
     Example: 6379
     """
 
+    NETWORK_TRANSPORT = "network.transport"
+    """
+    The transport protocol used for the network connection.
+    Example: "tcp", "udp", "unix"
+    """
+
     PROFILER_ID = "profiler_id"
     """
     Label identifying the profiler id that the span occurred in. This should be a string.
@@ -609,6 +789,90 @@ class SPANDATA:
     Example: "MainThread"
     """
 
+    MCP_TOOL_NAME = "mcp.tool.name"
+    """
+    The name of the MCP tool being called.
+    Example: "get_weather"
+    """
+
+    MCP_PROMPT_NAME = "mcp.prompt.name"
+    """
+    The name of the MCP prompt being retrieved.
+    Example: "code_review"
+    """
+
+    MCP_RESOURCE_URI = "mcp.resource.uri"
+    """
+    The URI of the MCP resource being accessed.
+    Example: "file:///path/to/resource"
+    """
+
+    MCP_METHOD_NAME = "mcp.method.name"
+    """
+    The MCP protocol method name being called.
+    Example: "tools/call", "prompts/get", "resources/read"
+    """
+
+    MCP_REQUEST_ID = "mcp.request.id"
+    """
+    The unique identifier for the MCP request.
+    Example: "req_123abc"
+    """
+
+    MCP_TOOL_RESULT_CONTENT = "mcp.tool.result.content"
+    """
+    The result/output content from an MCP tool execution.
+    Example: "The weather is sunny"
+    """
+
+    MCP_TOOL_RESULT_CONTENT_COUNT = "mcp.tool.result.content_count"
+    """
+    The number of items/keys in the MCP tool result.
+    Example: 5
+    """
+
+    MCP_TOOL_RESULT_IS_ERROR = "mcp.tool.result.is_error"
+    """
+    Whether the MCP tool execution resulted in an error.
+    Example: True
+    """
+
+    MCP_PROMPT_RESULT_MESSAGE_CONTENT = "mcp.prompt.result.message_content"
+    """
+    The message content from an MCP prompt retrieval.
+    Example: "Review the following code..."
+    """
+
+    MCP_PROMPT_RESULT_MESSAGE_ROLE = "mcp.prompt.result.message_role"
+    """
+    The role of the message in an MCP prompt retrieval (only set for single-message prompts).
+    Example: "user", "assistant", "system"
+    """
+
+    MCP_PROMPT_RESULT_MESSAGE_COUNT = "mcp.prompt.result.message_count"
+    """
+    The number of messages in an MCP prompt result.
+    Example: 1, 3
+    """
+
+    MCP_RESOURCE_PROTOCOL = "mcp.resource.protocol"
+    """
+    The protocol/scheme of the MCP resource URI.
+    Example: "file", "http", "https"
+    """
+
+    MCP_TRANSPORT = "mcp.transport"
+    """
+    The transport method used for MCP communication.
+    Example: "http", "sse", "stdio"
+    """
+
+    MCP_SESSION_ID = "mcp.session.id"
+    """
+    The session identifier for the MCP connection.
+    Example: "a1b2c3d4e5f6"
+    """
+
 
 class SPANSTATUS:
     """
@@ -649,9 +913,13 @@ class OP:
     FUNCTION_AWS = "function.aws"
     FUNCTION_GCP = "function.gcp"
     GEN_AI_CHAT = "gen_ai.chat"
+    GEN_AI_CREATE_AGENT = "gen_ai.create_agent"
+    GEN_AI_EMBEDDINGS = "gen_ai.embeddings"
     GEN_AI_EXECUTE_TOOL = "gen_ai.execute_tool"
+    GEN_AI_TEXT_COMPLETION = "gen_ai.text_completion"
     GEN_AI_HANDOFF = "gen_ai.handoff"
     GEN_AI_INVOKE_AGENT = "gen_ai.invoke_agent"
+    GEN_AI_RESPONSES = "gen_ai.responses"
     GRAPHQL_EXECUTE = "graphql.execute"
     GRAPHQL_MUTATION = "graphql.mutation"
     GRAPHQL_PARSE = "graphql.parse"
@@ -674,16 +942,9 @@ class OP:
     MIDDLEWARE_STARLITE = "middleware.starlite"
     MIDDLEWARE_STARLITE_RECEIVE = "middleware.starlite.receive"
     MIDDLEWARE_STARLITE_SEND = "middleware.starlite.send"
-    OPENAI_CHAT_COMPLETIONS_CREATE = "ai.chat_completions.create.openai"
-    OPENAI_EMBEDDINGS_CREATE = "ai.embeddings.create.openai"
     HUGGINGFACE_HUB_CHAT_COMPLETIONS_CREATE = (
         "ai.chat_completions.create.huggingface_hub"
     )
-    LANGCHAIN_PIPELINE = "ai.pipeline.langchain"
-    LANGCHAIN_RUN = "ai.run.langchain"
-    LANGCHAIN_TOOL = "ai.tool.langchain"
-    LANGCHAIN_AGENT = "ai.agent.langchain"
-    LANGCHAIN_CHAT_COMPLETIONS_CREATE = "ai.chat_completions.create.langchain"
     QUEUE_PROCESS = "queue.process"
     QUEUE_PUBLISH = "queue.publish"
     QUEUE_SUBMIT_ARQ = "queue.submit.arq"
@@ -695,6 +956,8 @@ class OP:
     QUEUE_TASK_HUEY = "queue.task.huey"
     QUEUE_SUBMIT_RAY = "queue.submit.ray"
     QUEUE_TASK_RAY = "queue.task.ray"
+    QUEUE_TASK_DRAMATIQ = "queue.task.dramatiq"
+    QUEUE_SUBMIT_DJANGO = "queue.submit.django"
     SUBPROCESS = "subprocess"
     SUBPROCESS_WAIT = "subprocess.wait"
     SUBPROCESS_COMMUNICATE = "subprocess.communicate"
@@ -704,79 +967,87 @@ class OP:
     WEBSOCKET_SERVER = "websocket.server"
     SOCKET_CONNECTION = "socket.connection"
     SOCKET_DNS = "socket.dns"
+    MCP_SERVER = "mcp.server"
 
 
 # This type exists to trick mypy and PyCharm into thinking `init` and `Client`
 # take these arguments (even though they take opaque **kwargs)
 class ClientConstructor:
-
     def __init__(
         self,
-        dsn=None,  # type: Optional[str]
+        dsn: "Optional[str]" = None,
         *,
-        max_breadcrumbs=DEFAULT_MAX_BREADCRUMBS,  # type: int
-        release=None,  # type: Optional[str]
-        environment=None,  # type: Optional[str]
-        server_name=None,  # type: Optional[str]
-        shutdown_timeout=2,  # type: float
-        integrations=[],  # type: Sequence[sentry_sdk.integrations.Integration]  # noqa: B006
-        in_app_include=[],  # type: List[str]  # noqa: B006
-        in_app_exclude=[],  # type: List[str]  # noqa: B006
-        default_integrations=True,  # type: bool
-        dist=None,  # type: Optional[str]
-        transport=None,  # type: Optional[Union[sentry_sdk.transport.Transport, Type[sentry_sdk.transport.Transport], Callable[[Event], None]]]
-        transport_queue_size=DEFAULT_QUEUE_SIZE,  # type: int
-        sample_rate=1.0,  # type: float
-        send_default_pii=None,  # type: Optional[bool]
-        http_proxy=None,  # type: Optional[str]
-        https_proxy=None,  # type: Optional[str]
-        ignore_errors=[],  # type: Sequence[Union[type, str]]  # noqa: B006
-        max_request_body_size="medium",  # type: str
-        socket_options=None,  # type: Optional[List[Tuple[int, int, int | bytes]]]
-        keep_alive=None,  # type: Optional[bool]
-        before_send=None,  # type: Optional[EventProcessor]
-        before_breadcrumb=None,  # type: Optional[BreadcrumbProcessor]
-        debug=None,  # type: Optional[bool]
-        attach_stacktrace=False,  # type: bool
-        ca_certs=None,  # type: Optional[str]
-        propagate_traces=True,  # type: bool
-        traces_sample_rate=None,  # type: Optional[float]
-        traces_sampler=None,  # type: Optional[TracesSampler]
-        profiles_sample_rate=None,  # type: Optional[float]
-        profiles_sampler=None,  # type: Optional[TracesSampler]
-        profiler_mode=None,  # type: Optional[ProfilerMode]
-        profile_lifecycle="manual",  # type: Literal["manual", "trace"]
-        profile_session_sample_rate=None,  # type: Optional[float]
-        auto_enabling_integrations=True,  # type: bool
-        disabled_integrations=None,  # type: Optional[Sequence[sentry_sdk.integrations.Integration]]
-        auto_session_tracking=True,  # type: bool
-        send_client_reports=True,  # type: bool
-        _experiments={},  # type: Experiments  # noqa: B006
-        proxy_headers=None,  # type: Optional[Dict[str, str]]
-        instrumenter=INSTRUMENTER.SENTRY,  # type: Optional[str]
-        before_send_transaction=None,  # type: Optional[TransactionProcessor]
-        project_root=None,  # type: Optional[str]
-        enable_tracing=None,  # type: Optional[bool]
-        include_local_variables=True,  # type: Optional[bool]
-        include_source_context=True,  # type: Optional[bool]
-        trace_propagation_targets=[  # noqa: B006
+        max_breadcrumbs: int = DEFAULT_MAX_BREADCRUMBS,
+        release: "Optional[str]" = None,
+        environment: "Optional[str]" = None,
+        server_name: "Optional[str]" = None,
+        shutdown_timeout: float = 2,
+        integrations: "Sequence[sentry_sdk.integrations.Integration]" = [],  # noqa: B006
+        in_app_include: "List[str]" = [],  # noqa: B006
+        in_app_exclude: "List[str]" = [],  # noqa: B006
+        default_integrations: bool = True,
+        dist: "Optional[str]" = None,
+        transport: "Optional[Union[sentry_sdk.transport.Transport, Type[sentry_sdk.transport.Transport], Callable[[Event], None]]]" = None,
+        transport_queue_size: int = DEFAULT_QUEUE_SIZE,
+        sample_rate: float = 1.0,
+        send_default_pii: "Optional[bool]" = None,
+        http_proxy: "Optional[str]" = None,
+        https_proxy: "Optional[str]" = None,
+        ignore_errors: "Sequence[Union[type, str]]" = [],  # noqa: B006
+        max_request_body_size: str = "medium",
+        socket_options: "Optional[List[Tuple[int, int, int | bytes]]]" = None,
+        keep_alive: "Optional[bool]" = None,
+        before_send: "Optional[EventProcessor]" = None,
+        before_breadcrumb: "Optional[BreadcrumbProcessor]" = None,
+        debug: "Optional[bool]" = None,
+        attach_stacktrace: bool = False,
+        ca_certs: "Optional[str]" = None,
+        propagate_traces: bool = True,
+        traces_sample_rate: "Optional[float]" = None,
+        traces_sampler: "Optional[TracesSampler]" = None,
+        profiles_sample_rate: "Optional[float]" = None,
+        profiles_sampler: "Optional[TracesSampler]" = None,
+        profiler_mode: "Optional[ProfilerMode]" = None,
+        profile_lifecycle: 'Literal["manual", "trace"]' = "manual",
+        profile_session_sample_rate: "Optional[float]" = None,
+        auto_enabling_integrations: bool = True,
+        disabled_integrations: "Optional[Sequence[sentry_sdk.integrations.Integration]]" = None,
+        auto_session_tracking: bool = True,
+        send_client_reports: bool = True,
+        _experiments: "Experiments" = {},  # noqa: B006
+        proxy_headers: "Optional[Dict[str, str]]" = None,
+        instrumenter: "Optional[str]" = INSTRUMENTER.SENTRY,
+        before_send_transaction: "Optional[TransactionProcessor]" = None,
+        project_root: "Optional[str]" = None,
+        enable_tracing: "Optional[bool]" = None,
+        include_local_variables: "Optional[bool]" = True,
+        include_source_context: "Optional[bool]" = True,
+        trace_propagation_targets: "Optional[Sequence[str]]" = [  # noqa: B006
             MATCH_ALL
-        ],  # type: Optional[Sequence[str]]
-        functions_to_trace=[],  # type: Sequence[Dict[str, str]]  # noqa: B006
-        event_scrubber=None,  # type: Optional[sentry_sdk.scrubber.EventScrubber]
-        max_value_length=DEFAULT_MAX_VALUE_LENGTH,  # type: int
-        enable_backpressure_handling=True,  # type: bool
-        error_sampler=None,  # type: Optional[Callable[[Event, Hint], Union[float, bool]]]
-        enable_db_query_source=True,  # type: bool
-        db_query_source_threshold_ms=100,  # type: int
-        spotlight=None,  # type: Optional[Union[bool, str]]
-        cert_file=None,  # type: Optional[str]
-        key_file=None,  # type: Optional[str]
-        custom_repr=None,  # type: Optional[Callable[..., Optional[str]]]
-        add_full_stack=DEFAULT_ADD_FULL_STACK,  # type: bool
-        max_stack_frames=DEFAULT_MAX_STACK_FRAMES,  # type: Optional[int]
-    ):
-        # type: (...) -> None
+        ],
+        functions_to_trace: "Sequence[Dict[str, str]]" = [],  # noqa: B006
+        event_scrubber: "Optional[sentry_sdk.scrubber.EventScrubber]" = None,
+        max_value_length: int = DEFAULT_MAX_VALUE_LENGTH,
+        enable_backpressure_handling: bool = True,
+        error_sampler: "Optional[Callable[[Event, Hint], Union[float, bool]]]" = None,
+        enable_db_query_source: bool = True,
+        db_query_source_threshold_ms: int = 100,
+        enable_http_request_source: bool = True,
+        http_request_source_threshold_ms: int = 100,
+        spotlight: "Optional[Union[bool, str]]" = None,
+        cert_file: "Optional[str]" = None,
+        key_file: "Optional[str]" = None,
+        custom_repr: "Optional[Callable[..., Optional[str]]]" = None,
+        add_full_stack: bool = DEFAULT_ADD_FULL_STACK,
+        max_stack_frames: "Optional[int]" = DEFAULT_MAX_STACK_FRAMES,
+        enable_logs: bool = False,
+        before_send_log: "Optional[Callable[[Log, Hint], Optional[Log]]]" = None,
+        trace_ignore_status_codes: "AbstractSet[int]" = frozenset(),
+        enable_metrics: bool = True,
+        before_send_metric: "Optional[Callable[[Metric, Hint], Optional[Metric]]]" = None,
+        org_id: "Optional[str]" = None,
+        strict_trace_continuation: bool = False,
+    ) -> None:
         """Initialize the Sentry SDK with the given parameters. All parameters described here can be used in a call to `sentry_sdk.init()`.
 
         :param dsn: The DSN tells the SDK where to send the events.
@@ -1121,6 +1392,13 @@ class ClientConstructor:
 
             The query location will be added to the query for queries slower than the specified threshold.
 
+        :param enable_http_request_source: When enabled, the source location will be added to outgoing HTTP requests.
+
+        :param http_request_source_threshold_ms: The threshold in milliseconds for adding the source location to an
+            outgoing HTTP request.
+
+            The request location will be added to the request for requests slower than the specified threshold.
+
         :param custom_repr: A custom `repr <https://docs.python.org/3/library/functions.html#repr>`_ function to run
             while serializing an object.
 
@@ -1145,7 +1423,6 @@ class ClientConstructor:
 
         :param profile_session_sample_rate:
 
-
         :param enable_tracing:
 
         :param propagate_traces:
@@ -1156,13 +1433,41 @@ class ClientConstructor:
 
         :param instrumenter:
 
+        :param enable_logs: Set `enable_logs` to True to enable the SDK to emit
+            Sentry logs. Defaults to False.
+
+        :param before_send_log: An optional function to modify or filter out logs
+            before they're sent to Sentry. Any modifications to the log in this
+            function will be retained. If the function returns None, the log will
+            not be sent to Sentry.
+
+        :param trace_ignore_status_codes: An optional property that disables tracing for
+            HTTP requests with certain status codes.
+
+            Requests are not traced if the status code is contained in the provided set.
+
+            If `trace_ignore_status_codes` is not provided, requests with any status code
+            may be traced.
+
+        :param strict_trace_continuation: If set to `True`, the SDK will only continue a trace if the `org_id` of the incoming trace found in the
+           `baggage` header matches the `org_id` of the current Sentry client and only if BOTH are present.
+
+            If set to `False`, consistency of `org_id` will only be enforced if both are present. If either are missing, the trace will be continued.
+
+            The client's organization ID is extracted from the DSN or can be set with the `org_id` option.
+            If the organization IDs do not match, the SDK will start a new trace instead of continuing the incoming one.
+            This is useful to prevent traces of unknown third-party services from being continued in your application.
+
+        :param org_id: An optional organization ID. The SDK will try to extract if from the DSN in most cases
+            but you can provide it explicitly for self-hosted and Relay setups. This value is used for
+            trace propagation and for features like `strict_trace_continuation`.
+
         :param _experiments:
         """
         pass
 
 
-def _get_default_options():
-    # type: () -> dict[str, Any]
+def _get_default_options() -> "dict[str, Any]":
     import inspect
 
     a = inspect.getfullargspec(ClientConstructor.__init__)
@@ -1181,4 +1486,4 @@ DEFAULT_OPTIONS = _get_default_options()
 del _get_default_options
 
 
-VERSION = "2.32.0"
+VERSION = "2.58.0"

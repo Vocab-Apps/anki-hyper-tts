@@ -11,7 +11,8 @@ from typing import TYPE_CHECKING, TypeVar
 # without introducing a hard dependency on `typing_extensions`
 # from: https://stackoverflow.com/a/71944042/300572
 if TYPE_CHECKING:
-    from typing import ParamSpec, Callable
+    from collections.abc import Iterator
+    from typing import Any, ParamSpec, Callable
 else:
     # Fake ParamSpec
     class ParamSpec:
@@ -29,7 +30,9 @@ else:
 
 
 try:
-    import clickhouse_driver  # type: ignore[import-not-found]
+    from clickhouse_driver import VERSION  # type: ignore[import-not-found]
+    from clickhouse_driver.client import Client  # type: ignore[import-not-found]
+    from clickhouse_driver.connection import Connection  # type: ignore[import-not-found]
 
 except ImportError:
     raise DidNotEnable("clickhouse-driver not installed.")
@@ -41,40 +44,32 @@ class ClickhouseDriverIntegration(Integration):
 
     @staticmethod
     def setup_once() -> None:
-        _check_minimum_version(ClickhouseDriverIntegration, clickhouse_driver.VERSION)
+        _check_minimum_version(ClickhouseDriverIntegration, VERSION)
 
         # Every query is done using the Connection's `send_query` function
-        clickhouse_driver.connection.Connection.send_query = _wrap_start(
-            clickhouse_driver.connection.Connection.send_query
-        )
+        Connection.send_query = _wrap_start(Connection.send_query)
 
         # If the query contains parameters then the send_data function is used to send those parameters to clickhouse
-        clickhouse_driver.client.Client.send_data = _wrap_send_data(
-            clickhouse_driver.client.Client.send_data
-        )
+        _wrap_send_data()
 
         # Every query ends either with the Client's `receive_end_of_query` (no result expected)
         # or its `receive_result` (result expected)
-        clickhouse_driver.client.Client.receive_end_of_query = _wrap_end(
-            clickhouse_driver.client.Client.receive_end_of_query
-        )
-        if hasattr(clickhouse_driver.client.Client, "receive_end_of_insert_query"):
+        Client.receive_end_of_query = _wrap_end(Client.receive_end_of_query)
+        if hasattr(Client, "receive_end_of_insert_query"):
             # In 0.2.7, insert queries are handled separately via `receive_end_of_insert_query`
-            clickhouse_driver.client.Client.receive_end_of_insert_query = _wrap_end(
-                clickhouse_driver.client.Client.receive_end_of_insert_query
+            Client.receive_end_of_insert_query = _wrap_end(
+                Client.receive_end_of_insert_query
             )
-        clickhouse_driver.client.Client.receive_result = _wrap_end(
-            clickhouse_driver.client.Client.receive_result
-        )
+        Client.receive_result = _wrap_end(Client.receive_result)
 
 
 P = ParamSpec("P")
 T = TypeVar("T")
 
 
-def _wrap_start(f: Callable[P, T]) -> Callable[P, T]:
+def _wrap_start(f: "Callable[P, T]") -> "Callable[P, T]":
     @ensure_integration_enabled(ClickhouseDriverIntegration, f)
-    def _inner(*args: P.args, **kwargs: P.kwargs) -> T:
+    def _inner(*args: "P.args", **kwargs: "P.kwargs") -> "T":
         connection = args[0]
         query = args[1]
         query_id = args[2] if len(args) > 2 else kwargs.get("query_id")
@@ -106,8 +101,8 @@ def _wrap_start(f: Callable[P, T]) -> Callable[P, T]:
     return _inner
 
 
-def _wrap_end(f: Callable[P, T]) -> Callable[P, T]:
-    def _inner_end(*args: P.args, **kwargs: P.kwargs) -> T:
+def _wrap_end(f: "Callable[P, T]") -> "Callable[P, T]":
+    def _inner_end(*args: "P.args", **kwargs: "P.kwargs") -> "T":
         res = f(*args, **kwargs)
         instance = args[0]
         span = getattr(instance.connection, "_sentry_span", None)  # type: ignore[attr-defined]
@@ -128,28 +123,47 @@ def _wrap_end(f: Callable[P, T]) -> Callable[P, T]:
     return _inner_end
 
 
-def _wrap_send_data(f: Callable[P, T]) -> Callable[P, T]:
-    def _inner_send_data(*args: P.args, **kwargs: P.kwargs) -> T:
-        instance = args[0]  # type: clickhouse_driver.client.Client
-        data = args[2]
-        span = getattr(instance.connection, "_sentry_span", None)
+def _wrap_send_data() -> None:
+    original_send_data = Client.send_data
+
+    def _inner_send_data(  # type: ignore[no-untyped-def] # clickhouse-driver does not type send_data
+        self, sample_block, data, types_check=False, columnar=False, *args, **kwargs
+    ):
+        span = getattr(self.connection, "_sentry_span", None)
 
         if span is not None:
-            _set_db_data(span, instance.connection)
+            _set_db_data(span, self.connection)
 
             if should_send_default_pii():
                 db_params = span._data.get("db.params", [])
-                db_params.extend(data)
+
+                if isinstance(data, (list, tuple)):
+                    db_params.extend(data)
+
+                else:  # data is a generic iterator
+                    orig_data = data
+
+                    # Wrap the generator to add items to db.params as they are yielded.
+                    # This allows us to send the params to Sentry without needing to allocate
+                    # memory for the entire generator at once.
+                    def wrapped_generator() -> "Iterator[Any]":
+                        for item in orig_data:
+                            db_params.append(item)
+                            yield item
+
+                    # Replace the original iterator with the wrapped one.
+                    data = wrapped_generator()
+
                 span.set_data("db.params", db_params)
 
-        return f(*args, **kwargs)
+        return original_send_data(
+            self, sample_block, data, types_check, columnar, *args, **kwargs
+        )
 
-    return _inner_send_data
+    Client.send_data = _inner_send_data
 
 
-def _set_db_data(
-    span: Span, connection: clickhouse_driver.connection.Connection
-) -> None:
+def _set_db_data(span: "Span", connection: "Connection") -> None:
     span.set_data(SPANDATA.DB_SYSTEM, "clickhouse")
     span.set_data(SPANDATA.SERVER_ADDRESS, connection.host)
     span.set_data(SPANDATA.SERVER_PORT, connection.port)

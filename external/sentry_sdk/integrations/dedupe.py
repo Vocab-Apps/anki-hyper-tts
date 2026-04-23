@@ -1,5 +1,7 @@
+import weakref
+
 import sentry_sdk
-from sentry_sdk.utils import ContextVar
+from sentry_sdk.utils import ContextVar, logger
 from sentry_sdk.integrations import Integration
 from sentry_sdk.scope import add_global_event_processor
 
@@ -14,16 +16,13 @@ if TYPE_CHECKING:
 class DedupeIntegration(Integration):
     identifier = "dedupe"
 
-    def __init__(self):
-        # type: () -> None
+    def __init__(self) -> None:
         self._last_seen = ContextVar("last-seen")
 
     @staticmethod
-    def setup_once():
-        # type: () -> None
+    def setup_once() -> None:
         @add_global_event_processor
-        def processor(event, hint):
-            # type: (Event, Optional[Hint]) -> Optional[Event]
+        def processor(event: "Event", hint: "Optional[Hint]") -> "Optional[Event]":
             if hint is None:
                 return event
 
@@ -35,15 +34,28 @@ class DedupeIntegration(Integration):
             if exc_info is None:
                 return event
 
+            last_seen = integration._last_seen.get(None)
+            if last_seen is not None:
+                # last_seen is either a weakref or the original instance
+                last_seen = (
+                    last_seen() if isinstance(last_seen, weakref.ref) else last_seen
+                )
+
             exc = exc_info[1]
-            if integration._last_seen.get(None) is exc:
+            if last_seen is exc:
+                logger.info("DedupeIntegration dropped duplicated error event %s", exc)
                 return None
-            integration._last_seen.set(exc)
+
+            # we can only weakref non builtin types
+            try:
+                integration._last_seen.set(weakref.ref(exc))
+            except TypeError:
+                integration._last_seen.set(exc)
+
             return event
 
     @staticmethod
-    def reset_last_seen():
-        # type: () -> None
+    def reset_last_seen() -> None:
         integration = sentry_sdk.get_client().get_integration(DedupeIntegration)
         if integration is None:
             return
