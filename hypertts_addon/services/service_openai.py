@@ -82,6 +82,9 @@ class OpenAI(service.ServiceBase):
         if response.status_code == 429:
             raise errors.RateLimitError(source_text, voice, f'OpenAI rate limit: {response.status_code} {response.text}')
 
+        if response.status_code == 401:
+            raise errors.ServicePermissionError(source_text, voice, f'OpenAI authentication failed: {response.status_code} {response.text}')
+
         response.raise_for_status()
 
         return response.content

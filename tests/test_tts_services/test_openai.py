@@ -56,6 +56,7 @@ class TestOpenAIErrorHandling(unittest.TestCase):
         mock_response = mock.Mock()
         mock_response.status_code = 429
         mock_response.text = 'Too Many Requests'
+        mock_response.headers = {}
 
         with mock.patch('requests.post', return_value=mock_response):
             with self.assertRaises(errors.RateLimitError) as context:
@@ -63,3 +64,17 @@ class TestOpenAIErrorHandling(unittest.TestCase):
 
             self.assertIsInstance(context.exception, errors.TransientError)
             self.assertIn('429', str(context.exception))
+
+    def test_openai_unauthorized_401(self):
+        # pytest tests/test_tts_services/test_openai.py -k 'test_openai_unauthorized_401'
+        mock_response = mock.Mock()
+        mock_response.status_code = 401
+        mock_response.text = 'Unauthorized'
+        mock_response.headers = {}
+
+        with mock.patch('requests.post', return_value=mock_response):
+            with self.assertRaises(errors.ServicePermissionError) as context:
+                self.service.get_tts_audio('hello', self.mock_voice, {})
+
+            self.assertIsInstance(context.exception, errors.PermanentError)
+            self.assertIn('401', str(context.exception))
