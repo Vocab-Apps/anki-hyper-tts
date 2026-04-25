@@ -101,4 +101,8 @@ class GoogleTranslate(service.ServiceBase):
                 raise errors.RateLimitRetryAfterError(source_text, voice, str(e), retry_after) from e
             # this error will be handled, and not reported as unusual
             raise errors.RequestError(source_text, voice, str(e)) from e
+        except AssertionError as e:
+            # gTTS raises AssertionError("No text to send to TTS API") when the
+            # tokenizer strips the input down to nothing (e.g. text like ",,,").
+            raise errors.ServiceInputError(source_text, voice, str(e)) from e
 

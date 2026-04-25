@@ -293,6 +293,34 @@ class TestFreeServices(TTSTests):
             self.assertEqual(cm.exception.retry_after, 60)
             self.assertTrue(cm.exception.retryable)
 
+    def test_googletranslate_no_text(self):
+        # pytest tests/test_tts_services/ -k 'test_googletranslate_no_text'
+        # Fixes ANKI-HYPER-TTS-J00
+        # gTTS raises AssertionError("No text to send to TTS API") when the
+        # tokenizer reduces the input to nothing (e.g. ",,,"). Verify we
+        # surface that as a non-retryable ServiceInputError.
+        from unittest.mock import patch
+
+        service_name = 'GoogleTranslate'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list()
+        selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+
+        assertion_error = AssertionError('No text to send to TTS API')
+
+        with patch('gtts.gTTS.write_to_fp', side_effect=assertion_error):
+            with self.assertRaises(errors.ServiceInputError) as cm:
+                self.manager.get_tts_audio(
+                    ',,,',
+                    selected_voice,
+                    {},
+                    context.AudioRequestContext(constants.AudioRequestReason.batch))
+            self.assertFalse(cm.exception.retryable)
+            self.assertIn('No text to send to TTS API', cm.exception.error_message)
+
 
 class TestFreeServicesCLT(TestFreeServices):
     CONFIG_MODE = 'clt'
