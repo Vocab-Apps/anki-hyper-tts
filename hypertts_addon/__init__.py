@@ -176,3 +176,13 @@ else:
                                                         first_install,
                                                         configuration.hypertts_pro_api_key_set()
                                                         )
+
+            sentry_sdk.metrics.count(
+                "startup",
+                1,
+                attributes={
+                    'anki_version': anki.version,
+                    'hypertts_version': version.ANKI_HYPER_TTS_VERSION,
+                    'hypertts_pro': configuration.hypertts_pro_api_key_set()
+                },
+            )
