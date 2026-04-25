@@ -28,6 +28,7 @@ logger = logging.getLogger(__name__)
 # |       +-- RateLimitRetryAfterError   429 with Retry-After header
 # |       +-- ServiceTimeoutError         HTTP request timed out
 # |       +-- ServiceConnectionError     Failed to connect (DNS, refused, network unreachable)
+# |       +-- ServiceGatewayError        Upstream gateway error (502 Bad Gateway)
 # |       +-- UnknownServiceError        Unexpected/unclassified service error
 # |
 # +-- VoiceNotFound                      Voice object not in available voices
@@ -128,6 +129,9 @@ class ServiceTimeoutError(TransientError):
     pass
 
 class ServiceConnectionError(TransientError):
+    pass
+
+class ServiceGatewayError(TransientError):
     pass
 
 class UnknownServiceError(TransientError):

@@ -69,7 +69,7 @@ class CloudLanguageTools():
 
     # Raises only subclasses of:
     #   PermanentError  – non-retryable (400, 403, 404)
-    #   TransientError  – retryable (503, 504, timeout, unknown)
+    #   TransientError  – retryable (502, 503, 504, timeout, unknown)
     def get_tts_audio(self, source_text, voice, options, audio_request_context):
         if self.config.use_vocabai_api:
             return self._get_tts_audio_vocabai(source_text, voice, options, audio_request_context)
@@ -126,6 +126,10 @@ class CloudLanguageTools():
                 # permission issue
                 detail = response_data.get('detail', 'Forbidden') if response_data else 'Forbidden'
                 raise errors.ServicePermissionError(source_text, voice, detail)
+            elif response.status_code == 502:
+                # upstream gateway error (e.g. Forvo returned a bad response)
+                error_msg = response_data.get('error', 'bad gateway') if response_data else 'bad gateway'
+                raise errors.ServiceGatewayError(source_text, voice, error_msg)
             elif response.status_code == 503:
                 # transient error with retry-after in seconds
                 if response_data:
@@ -180,6 +184,8 @@ class CloudLanguageTools():
                 return response.content
             elif response.status_code == 404:
                 raise errors.AudioNotFoundError(source_text, voice)
+            elif response.status_code == 502:
+                raise errors.ServiceGatewayError(source_text, voice, 'bad gateway')
             else:
                 error_message = f"Status code: {response.status_code} ({response.content})"
                 raise errors.UnknownServiceError(source_text, voice, error_message)

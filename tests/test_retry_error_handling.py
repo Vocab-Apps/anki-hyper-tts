@@ -65,6 +65,11 @@ class TestErrorHierarchy(unittest.TestCase):
         e = errors.ServiceConnectionError('text', None, 'connection refused')
         self.assertIsInstance(e, errors.TransientError)
 
+    def test_gateway_error(self):
+        e = errors.ServiceGatewayError('text', None, 'bad gateway')
+        self.assertIsInstance(e, errors.TransientError)
+        self.assertIsInstance(e, errors.ServiceRequestError)
+
     def test_audio_not_found_is_permanent(self):
         voice = make_mock_voice()
         e = errors.AudioNotFoundError('hello', voice)
@@ -206,11 +211,32 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
     @mock.patch('requests.post')
     def test_unknown_status_code(self, mock_post):
         mock_post.return_value = mock.Mock(
-            status_code=502,
-            content=b'bad gateway'
+            status_code=418,
+            content=b"i'm a teapot"
         )
         with self.assertRaises(errors.UnknownServiceError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+
+    @mock.patch('requests.post')
+    def test_502_bad_gateway(self, mock_post):
+        mock_post.return_value = mock.Mock(
+            status_code=502,
+            content=b'',
+            json=lambda: (_ for _ in ()).throw(ValueError('No JSON'))
+        )
+        with self.assertRaises(errors.ServiceGatewayError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertEqual(cm.exception.error_message, 'bad gateway')
+
+    @mock.patch('requests.post')
+    def test_502_bad_gateway_with_error_message(self, mock_post):
+        mock_post.return_value = mock.Mock(
+            status_code=502,
+            json=lambda: {'error': 'upstream Forvo unreachable'}
+        )
+        with self.assertRaises(errors.ServiceGatewayError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertEqual(cm.exception.error_message, 'upstream Forvo unreachable')
 
     @mock.patch('requests.post')
     def test_v5_url_used(self, mock_post):
@@ -333,6 +359,12 @@ class TestCloudLanguageToolsCLTErrorMapping(unittest.TestCase):
     def test_other_status_unknown_service_error(self, mock_post):
         mock_post.return_value = mock.Mock(status_code=500, content=b'error')
         with self.assertRaises(errors.UnknownServiceError):
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+
+    @mock.patch('requests.post')
+    def test_502_bad_gateway(self, mock_post):
+        mock_post.return_value = mock.Mock(status_code=502, content=b'')
+        with self.assertRaises(errors.ServiceGatewayError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
     @mock.patch('requests.post')
