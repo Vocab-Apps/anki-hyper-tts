@@ -223,7 +223,11 @@ class HyperTTS():
         logger.debug(f'about to call editor.set_note: {editor_context.note}')
         def get_set_note_lambda(editor, note):
             def editor_set_note():
-                editor.set_note(note)
+                # Guard against the editor being torn down while audio was generating
+                # on the background thread: set_note -> loadNote calls editor.web.evalWithCallback,
+                # which raises AttributeError if editor.web is None (Sentry ANKI-HYPER-TTS-DWP).
+                if editor is not None and editor.web is not None:
+                    editor.set_note(note)
             return editor_set_note
         self.anki_utils.run_on_main(get_set_note_lambda(editor_context.editor, editor_context.note))
         logger.debug('after set_note')
