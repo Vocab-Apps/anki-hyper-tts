@@ -168,21 +168,28 @@ def init(hypertts):
 
     def browerMenusInit(browser: aqt.browser.Browser):
         
+        def reset_browser_model(browser):
+            # required to make sound tags appear; guard against the browser being closed
+            # while the dialog was open — its QTableView gets torn down by Qt and reset()
+            # raises RuntimeError (Sentry ANKI-HYPER-TTS-GCS).
+            try:
+                browser.model.reset()
+            except RuntimeError as e:
+                logger.warning(f'browser.model.reset() failed, browser likely closed: {e}')
+
         def get_launch_dialog_browser_new_fn(hypertts, browser):
             def launch():
                 with hypertts.error_manager.get_single_action_context('Opening HyperTTS Dialog from Browser'):
                     component_batch.create_component_batch_browser_new_preset(hypertts, browser.selectedNotes(), hypertts.get_next_preset_name())
-                    # required to make sound tags appear
-                    browser.model.reset()
+                    reset_browser_model(browser)
             return launch
 
         def get_launch_dialog_browser_existing_fn(hypertts, browser, preset_id: str):
             def launch():
                 with hypertts.error_manager.get_single_action_context('Opening HyperTTS Dialog from Browser'):
                     component_batch.create_component_batch_browser_existing_preset(hypertts, browser.selectedNotes(), preset_id)
-                    # required to make sound tags appear
-                    browser.model.reset()
-            return launch            
+                    reset_browser_model(browser)
+            return launch
 
         def get_launch_realtime_dialog_browser_fn(hypertts, browser):
             def launch():
