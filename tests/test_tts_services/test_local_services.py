@@ -4,6 +4,7 @@ from .base import TTSTests, logger
 from hypertts_addon import constants
 from hypertts_addon import languages
 from hypertts_addon.languages import AudioLanguage
+from hypertts_addon.services.service_macos import MacOS
 
 
 class TestLocalServices(TTSTests):
@@ -515,6 +516,29 @@ Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-Engli
         # pick a random en_US voice with modified rate
         selected_voice = self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
         self.verify_audio_output(selected_voice, languages.AudioLanguage.en_US, 'this is the first sentence', voice_options={'rate': 170})
+
+    def test_macos_system_default(self):
+        # pytest tests/test_tts_services/ -k test_macos_system_default
+        service_name = 'MacOS'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        voice_list = self.manager.full_voice_list(service_name)
+        system_default_voices = [voice for voice in voice_list
+                                 if voice.service == service_name and voice.name == MacOS.SYSTEM_DEFAULT_VOICE_NAME]
+        self.assertEqual(len(system_default_voices), 1)
+
+        system_default_voice = system_default_voices[0]
+        self.assertEqual(system_default_voice.voice_key, {'name': MacOS.SYSTEM_DEFAULT_VOICE_NAME})
+        self.assertEqual(system_default_voice.gender, constants.Gender.Any)
+        self.assertIn(languages.AudioLanguage.en_US, system_default_voice.audio_languages)
+
+        self.verify_audio_output(
+            system_default_voice,
+            languages.AudioLanguage.en_US,
+            'this is the system default voice',
+        )
 
 
 

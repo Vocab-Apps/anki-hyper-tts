@@ -21,6 +21,8 @@ class MacOS(service.ServiceBase):
     DEFAULT_SPEECH_RATE=175
     MAX_SPEECH_RATE=220
 
+    SYSTEM_DEFAULT_VOICE_NAME = 'System Default'
+
     GENDER_MAP = {
     'Aasing (Enhanced)': constants.Gender.Male,
     'Agnes': constants.Gender.Female,
@@ -448,6 +450,18 @@ class MacOS(service.ServiceBase):
             raw_say_output=subprocess.check_output(["say", "-v", "?"])
             voice_list_from_say = raw_say_output.decode('utf-8')
             result = self.parse_voices(voice_list_from_say)
+
+            system_default_voice = voice.TtsVoice_v3(
+                name=self.SYSTEM_DEFAULT_VOICE_NAME,
+                gender=constants.Gender.Any,
+                audio_languages=list(languages.AudioLanguage),
+                service=self.name,
+                voice_key={'name': self.SYSTEM_DEFAULT_VOICE_NAME},
+                options=self.VOICE_OPTIONS,
+                service_fee=self.service_fee,
+            )
+            result.insert(0, system_default_voice)
+
             logger.debug(f'MacOS voice list = {result}')
         except subprocess.CalledProcessError as cpe:
             logger.error(f'could not get macos voicelist: {cpe}')
@@ -532,7 +546,10 @@ class MacOS(service.ServiceBase):
         try:
             voice_name = voice.voice_key['name']
             temp_audio_file = tempfile.NamedTemporaryFile(suffix='.aiff', prefix='hypertts_macos', delete=False)
-            arg_list = ['say', '-v', voice_name, '-r', str(rate), '-o', temp_audio_file.name, '--', source_text]
+            if voice_name == self.SYSTEM_DEFAULT_VOICE_NAME:
+                arg_list = ['say', '-r', str(rate), '-o', temp_audio_file.name, '--', source_text]
+            else:
+                arg_list = ['say', '-v', voice_name, '-r', str(rate), '-o', temp_audio_file.name, '--', source_text]
             logger.debug(f"calling 'say' with {arg_list}")
             subprocess.check_call(arg_list)
 
