@@ -232,7 +232,8 @@ class ServiceManager():
                 except Exception as e:
                     sentry_scope.set_tags({
                         'exception_type': type(e).__name__,
-                        'error_retryable': getattr(e, 'retryable', None)
+                        'error_retryable': getattr(e, 'retryable', None),
+                        'is_audio_request_exception': True
                     })
                     sentry_scope.set_context("exception_type", {
                         'exception_type': type(e).__name__,
