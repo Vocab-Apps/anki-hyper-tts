@@ -331,6 +331,12 @@ class Windows(service.ServiceBase):
                         ))
                     else:
                         raw_langs = sapi_voice.GetAttribute("language")
+                        # LCID 0x1000 (LOCALE_CUSTOM_UNSPECIFIED) is used by eSpeak-NG and similar engines
+                        # for custom locales that don't map to a real Microsoft language identifier; skip these.
+                        if "1000" in [c.strip() for c in raw_langs.split(";")]:
+                            raw_vendor = sapi_voice.GetAttribute("vendor")
+                            logger.warning(f'skipping voice [{name}] with custom locale LCID 1000, vendor: [{raw_vendor}]')
+                            continue
                         raw_gender = sapi_voice.GetAttribute("gender")
                         raw_age = sapi_voice.GetAttribute("age")
                         raw_vendor = sapi_voice.GetAttribute("vendor")
