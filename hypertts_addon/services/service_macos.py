@@ -451,6 +451,9 @@ class MacOS(service.ServiceBase):
             voice_list_from_say = raw_say_output.decode('utf-8')
             result = self.parse_voices(voice_list_from_say)
 
+            # Siri voices aren't listed by `say -v ?` and can only be invoked by calling `say` without -v,
+            # so expose a synthetic "System Default" voice that defers to whatever the user picked in
+            # System Settings. See https://github.com/Vocab-Apps/anki-hyper-tts/issues/327
             system_default_voice = voice.TtsVoice_v3(
                 name=self.SYSTEM_DEFAULT_VOICE_NAME,
                 gender=constants.Gender.Any,
