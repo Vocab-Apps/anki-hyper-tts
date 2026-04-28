@@ -132,6 +132,7 @@ else:
         )
         sentry_sdk.set_user({"id": configuration.user_uuid})
         sentry_sdk.set_tag("anki_version", anki.version)
+        sentry_sdk.set_tag("hypertts_pro_user", configuration.hypertts_pro_api_key_set())
     else:
         logger.info(f'disabling crash reporting')
 
