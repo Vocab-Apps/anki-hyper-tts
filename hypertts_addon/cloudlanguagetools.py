@@ -3,6 +3,7 @@ import os
 import requests
 import json
 import base64
+from typing import Optional
 
 from . import errors
 from . import version
@@ -247,6 +248,24 @@ class CloudLanguageTools():
             api_key=api_key,
             api_key_valid=False,
             api_key_error='API key not found')
+
+    def account_email_no_except(self, api_key) -> Optional[str]:
+        try:
+            url = self.get_vocabai_url('account')
+            response = requests.get(
+                url,
+                headers={
+                    'Authorization': f'Api-Key {api_key}',
+                    'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}',
+                },
+                timeout=constants.RequestTimeoutShort,
+                verify=self.get_verify_ssl(),
+            )
+            if response.status_code != 200:
+                return None
+            return response.json().get('email')
+        except Exception:
+            return None
 
 
     def build_trial_key_request_data(self, email, password, client_uuid):

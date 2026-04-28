@@ -31,6 +31,9 @@ from . import gui
 from . import preset_rules_status
 logger = logging_utils.get_child_logger(__name__)
 
+if hasattr(sys, '_sentry_crash_reporting'):
+    import sentry_sdk
+
 
 class HyperTTS():
     """
@@ -839,6 +842,37 @@ class HyperTTS():
         if services_enabled:
             # at least one service was enabled
             self.anki_utils.broadcast_services_configured()
+        self.schedule_sentry_email_update()
+
+    def schedule_sentry_email_update(self):
+        if not hasattr(sys, '_sentry_crash_reporting'):
+            return
+        if not self.hypertts_pro_enabled():
+            return
+
+        configuration = self.get_configuration()
+        user_uuid = configuration.user_uuid
+        api_key = configuration.hypertts_pro_api_key
+        clt = self.service_manager.cloudlanguagetools
+
+        def _lookup_email():
+            try:
+                return clt.account_email_no_except(api_key)
+            except Exception:
+                return None
+
+        def _apply_email(future):
+            try:
+                email = future.result()
+                if email is not None:
+                    sentry_sdk.set_user({"id": user_uuid, "email": email})
+            except Exception:
+                logger.exception('failed to apply sentry user email')
+
+        try:
+            self.anki_utils.run_in_background(_lookup_email, _apply_email)
+        except Exception:
+            logger.exception('failed to schedule sentry user email lookup')
 
     def config_register_added_audio(self):
         """registers that the user has added audio, so we can show the welcome screen"""
