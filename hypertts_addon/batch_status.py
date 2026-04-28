@@ -1,9 +1,13 @@
 import sys
+import time
 
 from . import constants
 from . import errors
 from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
+
+if hasattr(sys, '_sentry_crash_reporting'):
+    import sentry_sdk
 
 class NoteStatus():
     def __init__(self, note_id):
@@ -18,11 +22,15 @@ class BatchNoteActionContext():
     def __init__(self, batch_status, note_id):
         self.batch_status = batch_status
         self.note_id = note_id
+        self.start_time = None
 
     def __enter__(self):
+        self.start_time = time.monotonic()
         return self
 
     def __exit__(self, exception_type, exception_value, traceback):
+        duration_ms = (time.monotonic() - self.start_time) * 1000
+        self.batch_status._record_note_duration(duration_ms)
         if exception_value != None:
             if isinstance(exception_value, errors.HyperTTSError):
                 self.batch_status.report_known_error(self.note_id, exception_value)
@@ -31,7 +39,7 @@ class BatchNoteActionContext():
             self.batch_status.notify_change(self.note_id)
             return True
         self.batch_status.notify_change(self.note_id)
-        return False    
+        return False
 
     def set_sound(self, sound_file):
         self.batch_status.set_sound_file(self.note_id, sound_file)
@@ -45,21 +53,28 @@ class BatchNoteActionContext():
     def set_status(self, status):
         self.batch_status.set_status(self.note_id, status)
 
+    def record_retry(self, exception, sleep_duration):
+        self.batch_status._record_note_retry(exception, sleep_duration)
+
 class BatchRunningActionContext():
     def __init__(self, batch_status):
         self.batch_status = batch_status
+        self.start_time = None
 
     def __enter__(self):
         self.batch_status.task_running = True
         self.batch_status.must_continue = True
         self.batch_status.notify_start()
+        self.start_time = time.monotonic()
         return self
 
     def __exit__(self, exception_type, exception_value, traceback):
+        duration_ms = (time.monotonic() - self.start_time) * 1000
+        self.batch_status._record_batch_duration(duration_ms)
         self.batch_status.task_running = False
         completed = self.batch_status.must_continue
         self.batch_status.notify_end(completed)
-        return False        
+        return False
 
 class BatchStatus():
     def __init__(self, anki_utils, note_id_list, change_listener):
@@ -71,6 +86,7 @@ class BatchStatus():
         self.note_id_map = {}
         self.task_running = False
         self.must_continue = False
+        self._track_metrics = False
         i = 0
         for note_id in self.note_id_list:
             note_status = NoteStatus(note_id)
@@ -89,7 +105,8 @@ class BatchStatus():
     def __getitem__(self, array_index):
         return self.note_status_array[array_index]
 
-    def get_batch_running_action_context(self):
+    def get_batch_running_action_context(self, track_metrics=False):
+        self._track_metrics = track_metrics
         return BatchRunningActionContext(self)
 
     def get_note_action_context(self, note_id, blank_fields):
@@ -143,3 +160,35 @@ class BatchStatus():
 
     def notify_end(self, completed):
         self.change_listener.batch_end(completed)
+
+    # sentry metrics
+
+    def _record_note_duration(self, duration_ms):
+        if not self._track_metrics or not hasattr(sys, '_sentry_crash_reporting'):
+            return
+        sentry_sdk.metrics.distribution(
+            'batch_note_duration', duration_ms, unit='millisecond'
+        )
+
+    def _record_note_retry(self, exception, sleep_duration):
+        if not self._track_metrics or not hasattr(sys, '_sentry_crash_reporting'):
+            return
+        exception_type = type(exception).__name__
+        sentry_sdk.metrics.count(
+            'batch_note_retry', 1, tags={'exception_type': exception_type}
+        )
+        sentry_sdk.metrics.distribution(
+            'batch_note_retry_sleep', sleep_duration * 1000,
+            unit='millisecond', tags={'exception_type': exception_type}
+        )
+
+    def _record_batch_duration(self, duration_ms):
+        if not self._track_metrics or not hasattr(sys, '_sentry_crash_reporting'):
+            return
+        note_count = len(self.note_id_list)
+        sentry_sdk.metrics.distribution('batch_duration', duration_ms, unit='millisecond')
+        sentry_sdk.metrics.distribution('batch_note_count', note_count)
+        if note_count > 0:
+            sentry_sdk.metrics.distribution(
+                'batch_duration_per_note', duration_ms / note_count, unit='millisecond'
+            )

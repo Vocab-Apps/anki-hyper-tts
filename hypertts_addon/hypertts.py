@@ -57,7 +57,7 @@ class HyperTTS():
 
     def process_batch_audio(self, note_id_list, batch, batch_status, anki_collection):
         # for each note, generate audio
-        with batch_status.get_batch_running_action_context():
+        with batch_status.get_batch_running_action_context(track_metrics=True):
 
             modified_notes = []
 
@@ -85,6 +85,7 @@ class HyperTTS():
                             logger.warning(f'Transient error on note {note_id} (attempt {attempt + 1}/{retry_max}), '
                                            f'retrying in {delay}s: {e}')
                             note_action_context.set_status(constants.BatchNoteStatus.Retrying)
+                            note_action_context.record_retry(e, delay)
                             time.sleep(delay)
                             audio_request_context.increment_retry_count()
                     # update note action context
