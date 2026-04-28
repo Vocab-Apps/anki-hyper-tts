@@ -127,7 +127,8 @@ else:
             release=f'anki-hyper-tts@{version.ANKI_HYPER_TTS_VERSION}',
             environment=sentry_env,
             before_send=sentry_utils.sentry_filter,
-            before_send_transaction=sentry_utils.filter_transactions
+            before_send_transaction=sentry_utils.filter_transactions,
+            send_default_pii=True
         )
         sentry_sdk.set_user({"id": configuration.user_uuid})
         sentry_sdk.set_tag("anki_version", anki.version)
