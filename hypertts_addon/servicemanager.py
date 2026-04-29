@@ -201,7 +201,12 @@ class ServiceManager():
             transaction_name = f'{voice.service}'
             if use_clt:
                 transaction_name = f'cloudlanguagetools_{voice.service}'
-            with sentry_sdk.start_transaction(op="audio", name=transaction_name) as transaction:
+            current_txn = sentry_sdk.get_current_scope().transaction
+            if current_txn is not None:
+                cm = sentry_sdk.start_span(op="audio", description=transaction_name)
+            else:
+                cm = sentry_sdk.start_transaction(op="audio", name=transaction_name)
+            with cm as transaction:
                 try:
                     # audio request metrics
                     sentry_sdk.metrics.count(

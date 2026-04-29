@@ -23,14 +23,27 @@ class BatchNoteActionContext():
         self.batch_status = batch_status
         self.note_id = note_id
         self.start_time = None
+        self._txn_cm = None
+        self._txn = None
 
     def __enter__(self):
         self.start_time = time.monotonic()
+        if self.batch_status._track_metrics and hasattr(sys, '_sentry_crash_reporting'):
+            self._txn_cm = sentry_sdk.start_transaction(op="batch_note", name="batch_note")
+            self._txn = self._txn_cm.__enter__()
+            self._txn.set_tag("note_id", str(self.note_id))
         return self
 
     def __exit__(self, exception_type, exception_value, traceback):
         duration_ms = (time.monotonic() - self.start_time) * 1000
         self.batch_status._record_note_duration(duration_ms)
+        if self._txn is not None and exception_value is not None:
+            self._txn.set_status("internal_error")
+            self._txn.set_tag("exception_type", type(exception_value).__name__)
+            self._txn.set_tag("hypertts_error",
+                              isinstance(exception_value, errors.HyperTTSError))
+        if self._txn_cm is not None:
+            self._txn_cm.__exit__(exception_type, exception_value, traceback)
         if exception_value != None:
             if isinstance(exception_value, errors.HyperTTSError):
                 self.batch_status.report_known_error(self.note_id, exception_value)

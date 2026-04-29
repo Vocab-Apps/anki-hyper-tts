@@ -103,6 +103,6 @@ def sentry_filter(event, hint):
 # before_send_transaction
 def filter_transactions(event, hint):
     operation = event.get('contexts', {}).get('trace', {}).get('op', None)
-    if operation == 'audio':
+    if operation in ('audio', 'batch_note'):
         return event
-    return None    
+    return None
