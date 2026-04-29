@@ -74,7 +74,7 @@ class ElevenLabs(service.ServiceBase):
         if language_code:
             data['language_code'] = language_code
 
-        response = requests.post(url, json=data, headers=headers)
+        response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)
         if response.status_code != 200:
             detail_message = None
             try:

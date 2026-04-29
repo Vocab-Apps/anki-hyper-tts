@@ -82,7 +82,7 @@ class Azure(service.ServiceBase):
         headers = {
             'Ocp-Apim-Subscription-Key': subscription_key
         }
-        response = requests.post(fetch_token_url, headers=headers)
+        response = requests.post(fetch_token_url, headers=headers, timeout=constants.RequestTimeout)
         self.access_token = str(response.text)
         self.access_token_timestamp = datetime.datetime.now()
         logger.debug(f'requested access_token')

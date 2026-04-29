@@ -129,7 +129,7 @@ class NaverPapago(service.ServiceBase):
         }
         headers = self.generate_headers()
         logger.info(f'executing POST request on {url} with headers={headers}, data={params}')
-        response = requests.post(url, headers=headers, data=params)
+        response = requests.post(url, headers=headers, data=params, timeout=constants.RequestTimeout)
         if response.status_code != 200:
             raise errors.RequestError(source_text, voice, f'got status_code {response.status_code} from {url}: {response.content}')
 
@@ -143,7 +143,7 @@ class NaverPapago(service.ServiceBase):
         final_url = self.TRANSLATE_ENDPOINT + sound_id
         logger.info(f'final_url: {final_url}')
 
-        response = requests.get(final_url)
+        response = requests.get(final_url, timeout=constants.RequestTimeout)
         if response.status_code != 200:
             raise errors.RequestError(source_text, voice, f'got status_code {response.status_code} from {final_url}: {response.content}')
         return response.content

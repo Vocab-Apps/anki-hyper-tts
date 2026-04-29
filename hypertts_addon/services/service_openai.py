@@ -73,7 +73,7 @@ class OpenAI(service.ServiceBase):
         if instructions:
             data['instructions'] = instructions
 
-        response = requests.post(url, json=data, headers=headers)
+        response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)
 
         if response.status_code != 200:
             logger.warning(f'OpenAI response content: {response.text}')

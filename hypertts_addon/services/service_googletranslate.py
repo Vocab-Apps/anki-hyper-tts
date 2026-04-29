@@ -88,7 +88,7 @@ class GoogleTranslate(service.ServiceBase):
             time.sleep(throttle_seconds)
 
         try:
-            tts = gtts.gTTS(text=source_text, lang=voice.voice_key)
+            tts = gtts.gTTS(text=source_text, lang=voice.voice_key, timeout=constants.RequestTimeout)
             buffer = io.BytesIO()
             tts.write_to_fp(buffer)
 

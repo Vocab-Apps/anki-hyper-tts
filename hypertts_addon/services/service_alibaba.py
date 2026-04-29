@@ -79,7 +79,7 @@ class Alibaba(service.ServiceBase):
 
         params_str = f"Signature={signature}&{params_str}"
 
-        r = requests.get(f"http://nlsmeta.ap-southeast-1.aliyuncs.com/?{params_str}")
+        r = requests.get(f"http://nlsmeta.ap-southeast-1.aliyuncs.com/?{params_str}", timeout=constants.RequestTimeout)
         
         # API definition says any error will return non-200 RC
         if r.status_code != 200:

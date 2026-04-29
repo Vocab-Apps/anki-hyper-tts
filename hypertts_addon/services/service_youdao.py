@@ -59,7 +59,7 @@ class Youdao(service.ServiceBase):
         logger.info(f'Requesting Youdao audio for "{source_text}" with type={voice_type}')
         
         try:
-            response = requests.get(self.AUDIO_API_URL, params=params, headers=headers)
+            response = requests.get(self.AUDIO_API_URL, params=params, headers=headers, timeout=constants.RequestTimeout)
             
             # Check if we got a valid response
             if response.status_code == 200 and response.headers.get('Content-Type', '').startswith('audio/'):

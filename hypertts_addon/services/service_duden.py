@@ -64,7 +64,7 @@ class Duden(service.ServiceBase):
         encoded_text = urllib.parse.quote(url_text)
         full_url = self.SEARCH_URL + encoded_text
         logger.info(f'Requesting Duden URL: {full_url} (original text: {source_text})')
-        response = requests.get(full_url, headers=headers)
+        response = requests.get(full_url, headers=headers, timeout=constants.RequestTimeout)
 
         soup = bs4.BeautifulSoup(response.content, 'html.parser')
 
@@ -73,7 +73,7 @@ class Duden(service.ServiceBase):
         if pronunciation_button is not None:
             sound_url = pronunciation_button['data-href']
             logger.info(f'downloading url {sound_url}')
-            response = requests.get(sound_url, headers=headers)
+            response = requests.get(sound_url, headers=headers, timeout=constants.RequestTimeout)
             return response.content
         else:
             logger.warning(f'could not find audio for {source_text} (source tag not found)')

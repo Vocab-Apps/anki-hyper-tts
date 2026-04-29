@@ -52,6 +52,6 @@ class SpanishDict(service.ServiceBase):
 
         url = f'https://audio1.spanishdict.com/audio?lang={language}&text={source_text}'
         logger.debug(f'opening url {url}')
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=constants.RequestTimeout)
 
         return response.content

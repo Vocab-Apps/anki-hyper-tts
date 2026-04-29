@@ -48,7 +48,7 @@ class Oxford(service.ServiceBase):
         }
         url = self.URL_BASE + source_text.lower()
         logger.debug(f'loading url: {url}')
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=constants.RequestTimeout)
         logger.debug(f'response.status_code: {response.status_code}')
         
         soup = bs4.BeautifulSoup(response.content, 'html.parser')
@@ -66,8 +66,8 @@ class Oxford(service.ServiceBase):
         if div_pronunciation != None:
             sound_url = div_pronunciation['data-src-mp3']
             if sound_url != None:
-                response = requests.get(sound_url, headers=headers)
-                return response.content                
+                response = requests.get(sound_url, headers=headers, timeout=constants.RequestTimeout)
+                return response.content
 
         # if we couldn't locate the source tag, raise notfound
         raise errors.AudioNotFoundError(source_text, voice)
