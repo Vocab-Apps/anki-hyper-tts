@@ -33,12 +33,12 @@ logger = logging_utils.get_child_logger(__name__)
 
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
-    def _start_span(op, description=None):
-        return sentry_sdk.start_span(op=op, description=description)
+    def _start_span(op, name=None):
+        return sentry_sdk.start_span(op=op, name=name)
 else:
     import contextlib
     @contextlib.contextmanager
-    def _start_span(op, description=None):
+    def _start_span(op, name=None):
         yield None
 
 
@@ -75,7 +75,7 @@ class HyperTTS():
 
             for note_id in note_id_list:
                 with batch_status.get_note_action_context(note_id, False) as note_action_context:
-                    with _start_span(op="db.anki.note.fetch", description="get_note_by_id"):
+                    with _start_span(op="db.anki.note.fetch", name="get_note_by_id"):
                         note = self.anki_utils.get_note_by_id(note_id)
                     audio_request_context.retry_count = 0
                     for attempt in range(retry_max + 1):
@@ -94,7 +94,7 @@ class HyperTTS():
                                            f'retrying in {delay}s: {e}')
                             note_action_context.set_status(constants.BatchNoteStatus.Retrying)
                             note_action_context.record_retry(e, delay)
-                            with _start_span(op="batch.retry.sleep", description=f"attempt {attempt}") as span:
+                            with _start_span(op="batch.retry.sleep", name=f"attempt {attempt}") as span:
                                 if span is not None:
                                     span.set_data("delay_seconds", delay)
                                     span.set_data("exception_type", type(e).__name__)
@@ -117,7 +117,7 @@ class HyperTTS():
         if target_field not in note:
             raise errors.TargetFieldNotFoundError(target_field)
 
-        with _start_span(op="text.process", description="get_source_text+process_text"):
+        with _start_span(op="text.process", name="get_source_text+process_text"):
             source_text = self.get_source_text(note, batch.source, text_override)
             processed_text = self.process_text(source_text, batch.text_processing)
 
@@ -143,7 +143,7 @@ class HyperTTS():
         logger.debug(f'setting note[{target_field}] to {target_field_content}')
         note[target_field] = target_field_content
         if not add_mode:
-            with _start_span(op="db.anki.note.update", description="update_note"):
+            with _start_span(op="db.anki.note.update", name="update_note"):
                 anki_collection.update_note(note)
 
         return source_text, processed_text, sound_file, full_filename
@@ -453,7 +453,7 @@ class HyperTTS():
             format = options.AudioFormat[voice_options[options.AUDIO_FORMAT_PARAMETER]]
 
         # write to user files directory
-        with _start_span(op="cache.lookup", description="audio_file_cache_check") as span:
+        with _start_span(op="cache.lookup", name="audio_file_cache_check") as span:
             hash_str = self.get_hash_for_audio_request(source_text, voice_id, voice_options)
             audio_filename = self.get_audio_filename(hash_str, format)
             full_filename = self.get_full_audio_file_name(hash_str, format)
@@ -464,14 +464,14 @@ class HyperTTS():
         if not cache_hit:
 
             # get the voice which corresponds to the voice_id
-            with _start_span(op="voice.locate", description=str(voice_id)):
+            with _start_span(op="voice.locate", name=str(voice_id)):
                 voice = self.service_manager.locate_voice(voice_id)
             logger.info(f'located voice: {voice}')
 
             audio_data = self.service_manager.get_tts_audio(source_text, voice, voice_options, audio_request_context)
             logger.info(f'not found in cache, requesting')
             logger.debug(f'opening {full_filename}')
-            with _start_span(op="file.write", description="write_audio_to_user_files") as span:
+            with _start_span(op="file.write", name="write_audio_to_user_files") as span:
                 if span is not None:
                     span.set_data("bytes", len(audio_data))
                 f = open(full_filename, 'wb')
@@ -484,7 +484,7 @@ class HyperTTS():
         return full_filename, audio_filename
 
     def get_collection_sound_tag(self, full_filename, audio_filename):
-        with _start_span(op="db.anki.media.add", description="media_add_file"):
+        with _start_span(op="db.anki.media.add", name="media_add_file"):
             self.anki_utils.media_add_file(full_filename)
         return f'[sound:{audio_filename}]', audio_filename
 

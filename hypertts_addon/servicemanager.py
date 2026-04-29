@@ -203,7 +203,7 @@ class ServiceManager():
                 transaction_name = f'cloudlanguagetools_{voice.service}'
             current_txn = sentry_sdk.get_current_scope().transaction
             if current_txn is not None:
-                cm = sentry_sdk.start_span(op="audio", description=transaction_name)
+                cm = sentry_sdk.start_span(op="audio", name=transaction_name)
             else:
                 cm = sentry_sdk.start_transaction(op="audio", name=transaction_name)
             with cm as transaction:
