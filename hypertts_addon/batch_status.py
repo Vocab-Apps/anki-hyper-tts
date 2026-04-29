@@ -163,32 +163,38 @@ class BatchStatus():
 
     # sentry metrics
 
-    def _record_note_duration(self, duration_ms):
+    def _safe_record(self, fn):
         if not self._track_metrics or not hasattr(sys, '_sentry_crash_reporting'):
             return
-        sentry_sdk.metrics.distribution(
+        try:
+            fn()
+        except Exception:
+            logger.exception('failed to record sentry metric')
+
+    def _record_note_duration(self, duration_ms):
+        self._safe_record(lambda: sentry_sdk.metrics.distribution(
             'batch_note_duration', duration_ms, unit='millisecond'
-        )
+        ))
 
     def _record_note_retry(self, exception, sleep_duration):
-        if not self._track_metrics or not hasattr(sys, '_sentry_crash_reporting'):
-            return
         exception_type = type(exception).__name__
-        sentry_sdk.metrics.count(
-            'batch_note_retry', 1, attributes={'exception_type': exception_type}
-        )
-        sentry_sdk.metrics.distribution(
-            'batch_note_retry_sleep', sleep_duration * 1000,
-            unit='millisecond', attributes={'exception_type': exception_type}
-        )
+        def _record():
+            sentry_sdk.metrics.count(
+                'batch_note_retry', 1, attributes={'exception_type': exception_type}
+            )
+            sentry_sdk.metrics.distribution(
+                'batch_note_retry_sleep', sleep_duration * 1000,
+                unit='millisecond', attributes={'exception_type': exception_type}
+            )
+        self._safe_record(_record)
 
     def _record_batch_duration(self, duration_ms):
-        if not self._track_metrics or not hasattr(sys, '_sentry_crash_reporting'):
-            return
         note_count = len(self.note_id_list)
-        sentry_sdk.metrics.distribution('batch_duration', duration_ms, unit='millisecond')
-        sentry_sdk.metrics.distribution('batch_note_count', note_count)
-        if note_count > 0:
-            sentry_sdk.metrics.distribution(
-                'batch_duration_per_note', duration_ms / note_count, unit='millisecond'
-            )
+        def _record():
+            sentry_sdk.metrics.distribution('batch_duration', duration_ms, unit='millisecond')
+            sentry_sdk.metrics.distribution('batch_note_count', note_count)
+            if note_count > 0:
+                sentry_sdk.metrics.distribution(
+                    'batch_duration_per_note', duration_ms / note_count, unit='millisecond'
+                )
+        self._safe_record(_record)
