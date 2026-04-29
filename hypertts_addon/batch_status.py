@@ -175,11 +175,11 @@ class BatchStatus():
             return
         exception_type = type(exception).__name__
         sentry_sdk.metrics.count(
-            'batch_note_retry', 1, tags={'exception_type': exception_type}
+            'batch_note_retry', 1, attributes={'exception_type': exception_type}
         )
         sentry_sdk.metrics.distribution(
             'batch_note_retry_sleep', sleep_duration * 1000,
-            unit='millisecond', tags={'exception_type': exception_type}
+            unit='millisecond', attributes={'exception_type': exception_type}
         )
 
     def _record_batch_duration(self, duration_ms):
