@@ -169,7 +169,8 @@ class BatchStatus():
         try:
             fn()
         except Exception:
-            logger.exception('failed to record sentry metric')
+            # ignore
+            pass
 
     def _record_note_duration(self, duration_ms):
         self._safe_record(lambda: sentry_sdk.metrics.distribution(
