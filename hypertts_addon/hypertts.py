@@ -559,7 +559,7 @@ class HyperTTS():
     def extract_hypertts_preset(self, extra_args_array):
         subset = [x for x in extra_args_array if constants.TTS_TAG_HYPERTTS_PRESET in x]
         if len(subset) != 1:
-            logger.error(f'could not process TTS tag extra args: {extra_args_array}')
+            logger.warning(f'could not process TTS tag extra args: {extra_args_array}')
             raise errors.TTSTagProcessingError()
         array_entry = subset[0]
         components = array_entry.split('=')
