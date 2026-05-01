@@ -29,8 +29,11 @@ Call `mcp__sentry__search_issues` with:
 
 - `organizationSlug='language-tools'`
 - `projectSlugOrId='6170140'`
-- `naturalLanguageQuery="unresolved issues with tag is_audio_request_exception:True from the last 24 hours"`
+- `query='is:unresolved is_audio_request_exception:True lastSeen:-24h'`
 - `limit=100`
+
+The `is_audio_request_exception:True` tag filter is required — it scopes the search to audio
+request failures only (the same filter used in the Sentry UI URL for this triage workflow).
 
 Record each issue's shortId, title, and Sentry URL. If zero issues are returned, report
 "No unresolved audio-request issues in the last 24 hours" and stop.
