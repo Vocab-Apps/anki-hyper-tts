@@ -1,4 +1,5 @@
 ---
+name: sentry-audio-error-review
 description: "Review unresolved Sentry audio-request issues from the last 24 hours and report any whose exception_type looks mis-categorized against hypertts_addon/errors.py"
 user_invocable: true
 ---
