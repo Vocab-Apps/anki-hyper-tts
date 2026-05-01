@@ -112,6 +112,7 @@ else:
 
         from . import version
         from . import sentry_utils
+        from sentry_sdk.integrations.socket import SocketIntegration
 
         production_sample_rate = 0.025 if configuration.hypertts_pro_api_key_set() else 0.01
         traces_sample_rate_map = {
@@ -129,7 +130,10 @@ else:
             environment=sentry_env,
             before_send=sentry_utils.sentry_filter,
             before_send_transaction=sentry_utils.filter_transactions,
-            send_default_pii=True
+            send_default_pii=True,
+            integrations=[
+                SocketIntegration(),
+            ],
         )
         sentry_sdk.set_user({"id": configuration.user_uuid})
         sentry_sdk.set_tag("anki_version", anki.version)
