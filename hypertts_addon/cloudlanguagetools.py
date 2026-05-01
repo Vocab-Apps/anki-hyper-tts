@@ -16,6 +16,13 @@ logger = logging_utils.get_child_logger(__name__)
 
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
+    def _start_span(op, name=None):
+        return sentry_sdk.start_span(op=op, name=name)
+else:
+    import contextlib
+    @contextlib.contextmanager
+    def _start_span(op, name=None):
+        yield None
 
 class CloudLanguageTools():
     def __init__(self):
@@ -99,8 +106,9 @@ class CloudLanguageTools():
         logger.debug(f'_get_tts_audio_vocabai: headers: {headers} data: {data}')
 
         try:
-            response = requests.post(full_url, json=data, headers=headers,
-                timeout=constants.RequestTimeout, verify=self.get_verify_ssl())
+            with _start_span(op="http.request.wrapped", name=f"POST {full_url}"):
+                response = requests.post(full_url, json=data, headers=headers,
+                    timeout=constants.RequestTimeout, verify=self.get_verify_ssl())
             logger.info(f'_get_tts_audio_vocabai: response status_code: {response.status_code}')
 
             if response.status_code == 200:
