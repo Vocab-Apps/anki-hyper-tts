@@ -208,9 +208,9 @@ class StatsGlobal:
         self.init_done = True
         # this function runs in the main thread
         # needs to be as fast as possible
-        # first, load the feature flags syncronously
-        if not self.hypertts_pro: # don't load them if we are in pro mode
-            self.load_feature_flags()
+        # first, load the feature flags syncronously (for pro users too,
+        # so flags like sentry-full-reporting can opt them into full sampling)
+        self.load_feature_flags()
         # but after that, everything should be asynchronous
         self.anki_utils.run_in_background(self.load_background, None)
 
