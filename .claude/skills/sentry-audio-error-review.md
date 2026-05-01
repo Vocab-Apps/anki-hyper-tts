@@ -71,7 +71,7 @@ whether `exception_type` matches the evidence:
 Mis-categorization heuristic — flag an issue when **any** of these hold:
 
 - The evidence clearly matches a specific row above but `exception_type` is the catch-all
-  `UnknownServiceError` (or the legacy `RequestError`). A more specific class would have
+  `UnknownServiceError` or the legacy `RequestError`. A more specific class would have
   improved retry logic and grouping.
 - A permanent error (rows where Retryable=False) is currently tagged with a transient class,
   or vice versa — compare the table's Retryable column against the `error_retryable` tag.
@@ -80,6 +80,24 @@ Mis-categorization heuristic — flag an issue when **any** of these hold:
 
 Do **not** flag an issue when the categorization is correct or when there is insufficient
 evidence in the event to judge.
+
+**Do not flag generic `TransientError` (or generic `PermanentError`) when the retryable
+disposition is correct.** The base `TransientError` class is an acceptable categorization
+for any retryable error — refining it to the specific subclass (`ServiceGatewayError`,
+`ServiceTimeoutError`, etc.) is a nice-to-have, not a mis-categorization. Concretely, do
+**not** flag these patterns:
+
+- `TransientError` for `Gemini TTS error: 504 Deadline Exceeded` / `<Response [504]>`
+- `TransientError` for VocabAI `<Response [504]>` with body
+  `"timeout generating TTS audio for Watson: ... Read timed out."`
+- `TransientError` for VocabAI `<Response [504]>` with body
+  `"timeout generating TTS audio for VocalWare: ... Read timed out."`
+- `TransientError` for VocabAI `<Response [504]>` with body
+  `"Could not generate audio: CancellationReason.Error Timeout while synthesizing..."`
+
+Flagging is reserved for cases where the **retryable disposition itself is wrong** (a
+permanent error tagged transient or vice versa), or where the catch-all `UnknownServiceError`
+/ legacy `RequestError` is hiding a clear specific category.
 
 ## Step 4 — Report
 
