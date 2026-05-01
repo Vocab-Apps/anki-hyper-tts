@@ -123,7 +123,7 @@ else:
         sentry_env = os.environ.get('SENTRY_ENV', 'production')
         sentry_sdk.init(
             "https://a4170596966d47bb9f8fda74a9370bc7@o968582.ingest.sentry.io/6170140",
-            traces_sample_rate=traces_sample_rate_map[sentry_env],
+            traces_sampler=sentry_utils.make_traces_sampler(traces_sample_rate_map[sentry_env]),
             release=f'anki-hyper-tts@{version.ANKI_HYPER_TTS_VERSION}',
             environment=sentry_env,
             before_send=sentry_utils.sentry_filter,

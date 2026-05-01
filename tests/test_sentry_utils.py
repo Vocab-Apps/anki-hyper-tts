@@ -214,3 +214,20 @@ def test_rate_limit_with_real_event():
         assert result is not None, f"Real event {i+1} should be accepted"
     result = sentry_utils.sentry_filter(event, {})
     assert result is None, f"Real event {limit+1} should be dropped"
+
+
+def test_traces_sampler_uses_base_rate_when_flag_disabled(monkeypatch):
+    monkeypatch.setattr('hypertts_addon.stats.feature_flag_enabled', lambda key: False)
+    sampler = sentry_utils.make_traces_sampler(0.01)
+    assert sampler({}) == 0.01
+
+
+def test_traces_sampler_returns_full_when_flag_enabled(monkeypatch):
+    captured = []
+    def fake_flag(key):
+        captured.append(key)
+        return True
+    monkeypatch.setattr('hypertts_addon.stats.feature_flag_enabled', fake_flag)
+    sampler = sentry_utils.make_traces_sampler(0.01)
+    assert sampler({}) == 1.0
+    assert captured == ['sentry-full-reporting']

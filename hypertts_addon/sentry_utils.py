@@ -106,3 +106,12 @@ def filter_transactions(event, hint):
     if operation in ('audio', 'batch_note'):
         return event
     return None
+
+def make_traces_sampler(base_sample_rate: float):
+    def traces_sampler(sampling_context):
+        # lazy import: stats global is initialized after sentry_sdk.init
+        from . import stats
+        if stats.feature_flag_enabled('sentry-full-reporting'):
+            return 1.0
+        return base_sample_rate
+    return traces_sampler
