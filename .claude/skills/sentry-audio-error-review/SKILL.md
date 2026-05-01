@@ -29,11 +29,16 @@ Call `mcp__sentry__search_issues` with:
 
 - `organizationSlug='language-tools'`
 - `projectSlugOrId='6170140'`
-- `query='is:unresolved is_audio_request_exception:True lastSeen:-24h'`
+- `query='is:unresolved is_audio_request_exception:True lastSeen:-1d'`
 - `limit=100`
 
 The `is_audio_request_exception:True` tag filter is required — it scopes the search to audio
 request failures only (the same filter used in the Sentry UI URL for this triage workflow).
+
+Use `lastSeen:-1d`, **not** `lastSeen:-24h`. The two are semantically equivalent, but the
+embedded query-rewriter in the Sentry MCP normalizes the boolean tag value to lowercase
+(`is_audio_request_exception:true`) only on the `-24h` path, and the lowercase form returns
+zero results for this tag. The `-1d` form is preserved verbatim and works.
 
 Record each issue's shortId, title, and Sentry URL. If zero issues are returned, report
 "No unresolved audio-request issues in the last 24 hours" and stop.
