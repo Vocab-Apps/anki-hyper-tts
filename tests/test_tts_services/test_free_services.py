@@ -321,6 +321,127 @@ class TestFreeServices(TTSTests):
             self.assertFalse(cm.exception.retryable)
             self.assertIn('No text to send to TTS API', cm.exception.error_message)
 
+    def _googletranslate_voice(self):
+        service_name = 'GoogleTranslate'
+        if self.manager.get_service(service_name).enabled == False:
+            logger.warning(f'service {service_name} not enabled, skipping')
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+        voice_list = self.manager.full_voice_list()
+        return self.pick_random_voice(voice_list, service_name, languages.AudioLanguage.en_US)
+
+    def _raise_gtts_error_from(self, underlying):
+        # Mimic how gtts raises gTTSError inside an `except requests.exceptions.RequestException`
+        # block, so the underlying exception ends up in __context__.
+        from unittest.mock import MagicMock
+        import gtts
+        try:
+            raise underlying
+        except Exception:
+            raise gtts.gTTSError(tts=MagicMock())
+
+    def test_googletranslate_read_timeout(self):
+        # pytest tests/test_tts_services/ -k 'test_googletranslate_read_timeout'
+        # Fixes ANKI-HYPER-TTS-J9B: ReadTimeout in gtts must surface as ServiceTimeoutError, not the
+        # legacy RequestError catch-all.
+        from unittest.mock import patch
+        import requests
+
+        selected_voice = self._googletranslate_voice()
+        underlying = requests.exceptions.ReadTimeout('Read timed out. (read timeout=20)')
+
+        with patch('gtts.gTTS.write_to_fp', side_effect=lambda *a, **kw: self._raise_gtts_error_from(underlying)):
+            with self.assertRaises(errors.ServiceTimeoutError) as cm:
+                self.manager.get_tts_audio(
+                    'test',
+                    selected_voice,
+                    {},
+                    context.AudioRequestContext(constants.AudioRequestReason.batch))
+            self.assertTrue(cm.exception.retryable)
+
+    def test_googletranslate_connect_timeout(self):
+        # pytest tests/test_tts_services/ -k 'test_googletranslate_connect_timeout'
+        # Fixes ANKI-HYPER-TTS-J90: ConnectTimeout (subclass of both Timeout and ConnectionError)
+        # should be classified as ServiceTimeoutError, since Timeout is the more specific signal.
+        from unittest.mock import patch
+        import requests
+
+        selected_voice = self._googletranslate_voice()
+        underlying = requests.exceptions.ConnectTimeout('Connection to translate.google.com timed out.')
+
+        with patch('gtts.gTTS.write_to_fp', side_effect=lambda *a, **kw: self._raise_gtts_error_from(underlying)):
+            with self.assertRaises(errors.ServiceTimeoutError) as cm:
+                self.manager.get_tts_audio(
+                    'test',
+                    selected_voice,
+                    {},
+                    context.AudioRequestContext(constants.AudioRequestReason.batch))
+            self.assertTrue(cm.exception.retryable)
+
+    def test_googletranslate_connection_error(self):
+        # pytest tests/test_tts_services/ -k 'test_googletranslate_connection_error'
+        # Fixes ANKI-HYPER-TTS-J04: a "Network is unreachable" ConnectionError must surface as
+        # ServiceConnectionError, not the legacy RequestError catch-all.
+        from unittest.mock import patch
+        import requests
+
+        selected_voice = self._googletranslate_voice()
+        underlying = requests.exceptions.ConnectionError(
+            'HTTPSConnectionPool(host=\'translate.google.com\', port=443): '
+            'Failed to establish a new connection: [Errno 101] Network is unreachable'
+        )
+
+        with patch('gtts.gTTS.write_to_fp', side_effect=lambda *a, **kw: self._raise_gtts_error_from(underlying)):
+            with self.assertRaises(errors.ServiceConnectionError) as cm:
+                self.manager.get_tts_audio(
+                    'test',
+                    selected_voice,
+                    {},
+                    context.AudioRequestContext(constants.AudioRequestReason.batch))
+            self.assertTrue(cm.exception.retryable)
+
+    def test_googletranslate_gateway_error(self):
+        # pytest tests/test_tts_services/ -k 'test_googletranslate_gateway_error'
+        # 5xx upstream gateway responses (no Retry-After) should be ServiceGatewayError.
+        from unittest.mock import patch, MagicMock
+        import gtts
+
+        selected_voice = self._googletranslate_voice()
+        mock_response = MagicMock()
+        mock_response.status_code = 503
+        mock_response.reason = 'Service Unavailable'
+        mock_response.headers = {}
+
+        gtts_error = gtts.gTTSError(response=mock_response, tts=MagicMock())
+
+        with patch('gtts.gTTS.write_to_fp', side_effect=gtts_error):
+            with self.assertRaises(errors.ServiceGatewayError) as cm:
+                self.manager.get_tts_audio(
+                    'test',
+                    selected_voice,
+                    {},
+                    context.AudioRequestContext(constants.AudioRequestReason.batch))
+            self.assertTrue(cm.exception.retryable)
+
+    def test_googletranslate_unknown_error(self):
+        # pytest tests/test_tts_services/ -k 'test_googletranslate_unknown_error'
+        # gTTSError without an HTTP response and without a recognizable underlying requests
+        # exception should fall through to UnknownServiceError (transient catch-all), not the
+        # legacy RequestError.
+        from unittest.mock import patch, MagicMock
+        import gtts
+
+        selected_voice = self._googletranslate_voice()
+        gtts_error = gtts.gTTSError(tts=MagicMock())
+
+        with patch('gtts.gTTS.write_to_fp', side_effect=gtts_error):
+            with self.assertRaises(errors.UnknownServiceError) as cm:
+                self.manager.get_tts_audio(
+                    'test',
+                    selected_voice,
+                    {},
+                    context.AudioRequestContext(constants.AudioRequestReason.batch))
+            self.assertTrue(cm.exception.retryable)
+
 
 class TestFreeServicesCLT(TestFreeServices):
     CONFIG_MODE = 'clt'

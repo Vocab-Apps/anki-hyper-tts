@@ -2,6 +2,7 @@ import sys
 import time
 import gtts
 import io
+import requests
 from typing import List
 
 from hypertts_addon import voice
@@ -96,11 +97,20 @@ class GoogleTranslate(service.ServiceBase):
         except gtts.gTTSError as e:
             headers = e.rsp.headers if e.rsp is not None else None
             logger.warning(f'Google Translate error: {e}, headers: {headers}')
-            if e.rsp is not None and e.rsp.status_code == 429:
-                retry_after = int(e.rsp.headers.get('Retry-After', 30))
-                raise errors.RateLimitRetryAfterError(source_text, voice, str(e), retry_after) from e
-            # this error will be handled, and not reported as unusual
-            raise errors.RequestError(source_text, voice, str(e)) from e
+            if e.rsp is not None:
+                status_code = e.rsp.status_code
+                if status_code == 429:
+                    retry_after = int(e.rsp.headers.get('Retry-After', 30))
+                    raise errors.RateLimitRetryAfterError(source_text, voice, str(e), retry_after) from e
+                if status_code in (502, 503, 504):
+                    raise errors.ServiceGatewayError(source_text, voice, str(e)) from e
+            # gTTS wraps the underlying requests exception via implicit chaining
+            underlying = e.__cause__ or e.__context__
+            if isinstance(underlying, requests.exceptions.Timeout):
+                raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out') from e
+            if isinstance(underlying, requests.exceptions.ConnectionError):
+                raise errors.ServiceConnectionError(source_text, voice, str(e)) from e
+            raise errors.UnknownServiceError(source_text, voice, str(e)) from e
         except AssertionError as e:
             # gTTS raises AssertionError("No text to send to TTS API") when the
             # tokenizer strips the input down to nothing (e.g. text like ",,,").
