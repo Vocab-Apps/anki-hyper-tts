@@ -116,6 +116,7 @@ else:
         production_sample_rate = 0.025 if configuration.hypertts_pro_api_key_set() else 0.01
         traces_sample_rate_map = {
             'development': 1.0,
+            'qa': 1.0,
             'production': production_sample_rate
         }
 

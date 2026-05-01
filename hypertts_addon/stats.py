@@ -140,8 +140,9 @@ class StatsGlobal:
                             self.feature_flags[flag_key] = 'enabled'
                     else:
                         self.feature_flags[flag_key] = constants_events.FEATURE_FLAG_DEFAULT_VALUE
-                logger.debug(f'Loaded {len(self.feature_flags)} feature flags: '
-                             f'{pprint.pformat(self.feature_flags)} enabled: {pprint.pformat(self.feature_flags_enabled)}')
+                logger.info(f'Loaded {len(self.feature_flags)} feature flags, '
+                            f'enabled: {pprint.pformat(self.feature_flags_enabled)}, '
+                            f'values: {pprint.pformat(self.feature_flags)}')
                 
             else:
                 logger.warning(f'Feature flags API returned status {response.status_code}')
