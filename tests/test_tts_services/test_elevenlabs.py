@@ -200,6 +200,16 @@ class TestElevenLabsQuotaError(unittest.TestCase):
         }
     }
 
+    PAID_PLAN_REQUIRED_JSON = {
+        "detail": {
+            "type": "payment_required",
+            "code": "paid_plan_required",
+            "message": "Free users cannot use library voices via the API. Please upgrade your subscription to use this voice.",
+            "status": "payment_required"
+        }
+    }
+    PAID_PLAN_REQUIRED_TEXT = '{"detail":{"type":"payment_required","code":"paid_plan_required","message":"Free users cannot use library voices via the API. Please upgrade your subscription to use this voice.","status":"payment_required"}}'
+
     def _make_mock_voice(self, service_name):
         from hypertts_addon import voice as voice_module
         return voice_module.TtsVoice_v3(
@@ -229,6 +239,14 @@ class TestElevenLabsQuotaError(unittest.TestCase):
         mock_response.status_code = 401
         mock_response.json.side_effect = ValueError("No JSON")
         mock_response.text = 'Unauthorized'
+        return mock_response
+
+    def _make_paid_plan_required_response(self):
+        from unittest.mock import MagicMock
+        mock_response = MagicMock()
+        mock_response.status_code = 402
+        mock_response.json.return_value = self.PAID_PLAN_REQUIRED_JSON
+        mock_response.text = self.PAID_PLAN_REQUIRED_TEXT
         return mock_response
 
     def test_elevenlabs_quota_exceeded_raises_permission_error(self):
@@ -275,6 +293,36 @@ class TestElevenLabsQuotaError(unittest.TestCase):
                 service.get_tts_audio('Hello', mock_voice, {})
             self.assertIn('401', ctx.exception.error_message)
             self.assertIn('Unauthorized', ctx.exception.error_message)
+
+    def test_elevenlabs_paid_plan_required_raises_permission_error(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_elevenlabs_paid_plan_required_raises_permission_error'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabs import ElevenLabs
+
+        service = ElevenLabs()
+        service.configure({'api_key': 'fake_key'})
+        mock_voice = self._make_mock_voice('ElevenLabs')
+
+        with patch('hypertts_addon.services.service_elevenlabs.requests.post', return_value=self._make_paid_plan_required_response()):
+            with self.assertRaises(errors.ServicePermissionError) as ctx:
+                service.get_tts_audio('Hello', mock_voice, {})
+            self.assertIn('402', ctx.exception.error_message)
+            self.assertIn('paid_plan_required', ctx.exception.error_message)
+
+    def test_elevenlabscustom_paid_plan_required_raises_permission_error(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_elevenlabscustom_paid_plan_required_raises_permission_error'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabscustom import ElevenLabsCustom
+
+        service = ElevenLabsCustom()
+        service.configure({'api_key': 'fake_key'})
+        mock_voice = self._make_mock_voice('ElevenLabsCustom')
+
+        with patch('hypertts_addon.services.service_elevenlabscustom.requests.post', return_value=self._make_paid_plan_required_response()):
+            with self.assertRaises(errors.ServicePermissionError) as ctx:
+                service.get_tts_audio('Hello', mock_voice, {})
+            self.assertIn('402', ctx.exception.error_message)
+            self.assertIn('paid_plan_required', ctx.exception.error_message)
 
     def test_elevenlabs_other_error_raises_request_error(self):
         # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_elevenlabs_other_error_raises_request_error'

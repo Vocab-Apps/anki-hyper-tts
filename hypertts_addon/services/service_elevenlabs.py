@@ -76,22 +76,10 @@ class ElevenLabs(service.ServiceBase):
 
         response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)
         if response.status_code != 200:
-            detail_message = None
-            try:
-                error_json = response.json()
-                detail = error_json.get('detail', {})
-                if isinstance(detail, dict):
-                    detail_message = detail.get('message')
-            except (ValueError, AttributeError):
-                pass
-
-            if response.status_code == 401:
-                error_message = f'{self.name}: error processing TTS request: {response.status_code} {response.text}'
-                logger.warning(error_message)
+            error_message = f'{self.name}: error processing TTS request: {response.status_code} {response.text}'
+            logger.warning(error_message)
+            if response.status_code in (401, 402):
                 raise errors.ServicePermissionError(source_text, voice, error_message)
-            else:
-                error_message = f'{self.name}: error processing TTS request: {response.status_code} {response.text}'
-                logger.error(error_message)
-                raise errors.RequestError(source_text, voice, error_message)
+            raise errors.RequestError(source_text, voice, error_message)
 
         return response.content
