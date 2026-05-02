@@ -139,13 +139,13 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
     def tearDown(self):
         self.lang_patcher.stop()
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_200_success(self, mock_post):
         mock_post.return_value = mock.Mock(status_code=200, content=b'audio_data')
         result = self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertEqual(result, b'audio_data')
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_400_with_error_key(self, mock_post):
         mock_post.return_value = mock.Mock(
             status_code=400,
@@ -155,7 +155,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertEqual(cm.exception.error_message, 'invalid voice key')
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_400_validation_error(self, mock_post):
         mock_post.return_value = mock.Mock(
             status_code=400,
@@ -164,7 +164,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         with self.assertRaises(errors.PermanentError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_403_forbidden(self, mock_post):
         mock_post.return_value = mock.Mock(
             status_code=403,
@@ -175,7 +175,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         self.assertIsInstance(cm.exception, errors.PermanentError)
         self.assertIn('insufficient character credit', cm.exception.error_message)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_503_rate_limit(self, mock_post):
         mock_post.return_value = mock.Mock(
             status_code=503,
@@ -185,7 +185,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertEqual(cm.exception.retry_after, 32)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_504_transient(self, mock_post):
         mock_post.return_value = mock.Mock(
             status_code=504,
@@ -195,20 +195,20 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertEqual(cm.exception.error_message, 'temporary failure')
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_404_audio_not_found(self, mock_post):
         mock_post.return_value = mock.Mock(status_code=404)
         with self.assertRaises(errors.AudioNotFoundError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertEqual(cm.exception.source_text, 'bonjour')
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_timeout(self, mock_post):
         mock_post.side_effect = requests.exceptions.Timeout('timed out')
         with self.assertRaises(errors.ServiceTimeoutError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_unknown_status_code(self, mock_post):
         mock_post.return_value = mock.Mock(
             status_code=418,
@@ -217,7 +217,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         with self.assertRaises(errors.UnknownServiceError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_502_bad_gateway(self, mock_post):
         mock_post.return_value = mock.Mock(
             status_code=502,
@@ -228,7 +228,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertEqual(cm.exception.error_message, 'bad gateway')
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_502_bad_gateway_with_error_message(self, mock_post):
         mock_post.return_value = mock.Mock(
             status_code=502,
@@ -238,7 +238,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertEqual(cm.exception.error_message, 'upstream Forvo unreachable')
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_v5_url_used(self, mock_post):
         mock_post.return_value = mock.Mock(status_code=200, content=b'audio')
         self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
@@ -246,7 +246,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         url = call_args[1].get('url', call_args[0][0] if call_args[0] else None)
         self.assertIn('/v5/audio', url)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_retry_fields_in_request(self, mock_post):
         mock_post.return_value = mock.Mock(status_code=200, content=b'audio')
         self.ctx.retry_count = 1
@@ -258,7 +258,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         self.assertEqual(data['retry_max'], 3)
 
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_connection_error_request_exception(self, mock_post):
         """ConnectionError from requests.post is raised as ServiceConnectionError."""
         mock_post.side_effect = requests.exceptions.ConnectionError('connection refused')
@@ -266,7 +266,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertIn('connection refused', cm.exception.error_message)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_non_timeout_request_exception(self, mock_post):
         """Non-Timeout/non-ConnectionError exception from requests.post is raised as UnknownServiceError."""
         mock_post.side_effect = requests.exceptions.ChunkedEncodingError('broken stream')
@@ -274,7 +274,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertIn('broken stream', cm.exception.error_message)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_400_unparseable_json_raises_permanent(self, mock_post):
         """400 with unparseable JSON body raises PermanentError."""
         resp = mock.Mock(status_code=400, content=b'not json')
@@ -283,7 +283,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         with self.assertRaises(errors.PermanentError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_403_unparseable_json_raises_permission(self, mock_post):
         """403 with unparseable JSON body raises ServicePermissionError."""
         resp = mock.Mock(status_code=403, content=b'not json')
@@ -293,7 +293,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertEqual(cm.exception.error_message, 'Forbidden')
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_503_unparseable_json_raises_rate_limit(self, mock_post):
         """503 with unparseable JSON body raises RateLimitRetryAfterError with defaults."""
         resp = mock.Mock(status_code=503, content=b'not json')
@@ -303,7 +303,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertEqual(cm.exception.retry_after, 30)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_504_unparseable_json_raises_transient(self, mock_post):
         """504 with unparseable JSON body raises TransientError."""
         resp = mock.Mock(status_code=504, content=b'not json')
@@ -312,7 +312,7 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         with self.assertRaises(errors.TransientError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_403_default_detail(self, mock_post):
         """403 with JSON but no 'detail' key uses 'Forbidden' as default."""
         mock_post.return_value = mock.Mock(
@@ -343,37 +343,37 @@ class TestCloudLanguageToolsCLTErrorMapping(unittest.TestCase):
     def tearDown(self):
         self.lang_patcher.stop()
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_200_success(self, mock_post):
         mock_post.return_value = mock.Mock(status_code=200, content=b'audio_data')
         result = self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertEqual(result, b'audio_data')
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_404_audio_not_found(self, mock_post):
         mock_post.return_value = mock.Mock(status_code=404)
         with self.assertRaises(errors.AudioNotFoundError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_other_status_unknown_service_error(self, mock_post):
         mock_post.return_value = mock.Mock(status_code=500, content=b'error')
         with self.assertRaises(errors.UnknownServiceError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_502_bad_gateway(self, mock_post):
         mock_post.return_value = mock.Mock(status_code=502, content=b'')
         with self.assertRaises(errors.ServiceGatewayError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_timeout(self, mock_post):
         mock_post.side_effect = requests.exceptions.Timeout('timed out')
         with self.assertRaises(errors.ServiceTimeoutError):
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
 
-    @mock.patch('requests.post')
+    @mock.patch('requests.Session.post')
     def test_connection_error(self, mock_post):
         """ConnectionError from requests.post is wrapped as ServiceConnectionError."""
         mock_post.side_effect = requests.exceptions.ConnectionError('connection refused')

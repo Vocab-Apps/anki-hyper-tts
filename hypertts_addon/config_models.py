@@ -616,6 +616,7 @@ class ErrorHandling:
     error_stats_reporting: bool = True
     # Network Connection settings
     disable_ssl_verification: bool = False
+    ipv4_only: bool = False
 
 @dataclass
 class Preferences:

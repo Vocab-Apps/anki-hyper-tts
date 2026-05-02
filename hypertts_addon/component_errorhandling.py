@@ -27,6 +27,8 @@ class ErrorHandling(component_common.ConfigComponentBase):
 
         self.disable_ssl_verification = aqt.qt.QCheckBox('Disable SSL certificate verification (not recommended)')
 
+        self.ipv4_only = aqt.qt.QCheckBox('Force IPv4 only (try this if requests are very slow on networks with broken IPv6 routing — requires Anki restart)')
+
     def get_model(self):
         return self.model
 
@@ -36,6 +38,7 @@ class ErrorHandling(component_common.ConfigComponentBase):
         self.realtime_tts_errors_dialog_type.setCurrentText(self.model.realtime_tts_errors_dialog_type.name)
         self.error_stats_reporting.setChecked(self.model.error_stats_reporting)
         self.disable_ssl_verification.setChecked(self.model.disable_ssl_verification)
+        self.ipv4_only.setChecked(self.model.ipv4_only)
         self.propagate_model_change = True
 
     def notify_model_update(self):
@@ -75,6 +78,7 @@ class ErrorHandling(component_common.ConfigComponentBase):
         ssl_description.setWordWrap(True)
         network_vlayout.addWidget(ssl_description)
         network_vlayout.addWidget(self.disable_ssl_verification)
+        network_vlayout.addWidget(self.ipv4_only)
         network_groupbox.setLayout(network_vlayout)
         layout.addWidget(network_groupbox)
 
@@ -84,6 +88,7 @@ class ErrorHandling(component_common.ConfigComponentBase):
         self.realtime_tts_errors_dialog_type.currentIndexChanged.connect(self.realtime_tts_errors_dialog_type_changed)
         self.error_stats_reporting.stateChanged.connect(self.error_stats_reporting_changed)
         self.disable_ssl_verification.stateChanged.connect(self.disable_ssl_verification_changed)
+        self.ipv4_only.stateChanged.connect(self.ipv4_only_changed)
 
         return layout_widget
 
@@ -100,5 +105,10 @@ class ErrorHandling(component_common.ConfigComponentBase):
     def disable_ssl_verification_changed(self, state):
         logger.info(f'disable_ssl_verification_changed {state}')
         self.model.disable_ssl_verification = bool(state)
+        self.notify_model_update()
+
+    def ipv4_only_changed(self, state):
+        logger.info(f'ipv4_only_changed {state}')
+        self.model.ipv4_only = bool(state)
         self.notify_model_update()
 

@@ -26,6 +26,7 @@ class StatsGlobal:
         self.first_install = first_install
         self.hypertts_pro = hypertts_pro
         self.init_done = False
+        self.session = requests.Session()
 
     def publish(self, 
                 context: constants_events.EventContext, 
@@ -90,9 +91,9 @@ class StatsGlobal:
         }
         try:
             logger.debug(f'sending posthog event: {event_name}, properties: {pprint.pformat(event_properties)}')
-            response = requests.post(self.CAPTURE_URL, 
-                    headers=headers, 
-                    data=json.dumps(payload), 
+            response = self.session.post(self.CAPTURE_URL,
+                    headers=headers,
+                    data=json.dumps(payload),
                     timeout=constants.RequestTimeoutShort)
             logger.debug(f'sent posthog event: {event_name}, status: {response.status_code}')
         except Exception as e:
@@ -113,7 +114,7 @@ class StatsGlobal:
                 "distinct_id": self.user_uuid
             }
             
-            response = requests.post(
+            response = self.session.post(
                 f"{self.BASE_URL}/flags?v=2",
                 headers=headers,
                 data=json.dumps(payload),

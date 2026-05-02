@@ -26,6 +26,12 @@ else:
     addon_config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
     enable_stats_error_reporting = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
         get('error_handling', {}).get('error_stats_reporting', True)
+    ipv4_only = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
+        get('error_handling', {}).get('ipv4_only', False)
+    if ipv4_only:
+        import socket
+        import urllib3.util.connection as urllib3_cn
+        urllib3_cn.allowed_gai_family = lambda: socket.AF_INET
     if constants.ENABLE_SENTRY_CRASH_REPORTING and enable_stats_error_reporting:
         import sentry_sdk        
         # check version. some anki addons package an obsolete version of sentry_sdk

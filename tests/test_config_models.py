@@ -958,7 +958,8 @@ class ConfigModelsTests(unittest.TestCase):
             'error_handling': {
                 'realtime_tts_errors_dialog_type': 'Dialog',
                 'error_stats_reporting': True,
-                'disable_ssl_verification': False
+                'disable_ssl_verification': False,
+                'ipv4_only': False
             }
         }
         self.assertEqual(config_models.serialize_preferences(preferences), expected_output)
@@ -981,7 +982,8 @@ class ConfigModelsTests(unittest.TestCase):
             'error_handling': {
                 'realtime_tts_errors_dialog_type': 'Dialog',
                 'error_stats_reporting': True,
-                'disable_ssl_verification': False
+                'disable_ssl_verification': False,
+                'ipv4_only': False
             }
         })
 
@@ -1004,7 +1006,8 @@ class ConfigModelsTests(unittest.TestCase):
             'error_handling': {
                 'realtime_tts_errors_dialog_type': 'Dialog',
                 'error_stats_reporting': True,
-                'disable_ssl_verification': False
+                'disable_ssl_verification': False,
+                'ipv4_only': False
             }
         })        
 
