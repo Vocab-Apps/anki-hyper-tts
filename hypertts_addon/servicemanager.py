@@ -195,7 +195,8 @@ class ServiceManager():
 
             metrics_attributes = {
                 "service": voice.service,
-                'hypertts_pro': use_clt
+                'hypertts_pro': use_clt,
+                'reason': audio_request_context.get_audio_request_reason_tag()
             }
 
             transaction_name = f'{voice.service}'
