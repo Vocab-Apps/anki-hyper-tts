@@ -74,9 +74,9 @@ class ErrorHandling(component_common.ConfigComponentBase):
         # Network Connection group
         network_groupbox = aqt.qt.QGroupBox('Network Connection')
         network_vlayout = aqt.qt.QVBoxLayout()
-        ssl_description = aqt.qt.QLabel('Only disable SSL verification if you are behind a corporate proxy or firewall that intercepts HTTPS connections.')
-        ssl_description.setWordWrap(True)
-        network_vlayout.addWidget(ssl_description)
+        settings_description = aqt.qt.QLabel('The following settings may be required for people experiencing connection problems or slowness (for example, behind a corporate proxy or firewall, or on a network with broken IPv6 routing).')
+        settings_description.setWordWrap(True)
+        network_vlayout.addWidget(settings_description)
         network_vlayout.addWidget(self.disable_ssl_verification)
         network_vlayout.addWidget(self.ipv4_only)
         network_groupbox.setLayout(network_vlayout)
