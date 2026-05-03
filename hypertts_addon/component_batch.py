@@ -318,10 +318,13 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def choose_existing_preset(self, title):
         # returns preset_id if user chose a preset, None otherwise
         preset_list = self.hypertts.get_preset_list()
+        if len(preset_list) == 0:
+            self.hypertts.anki_utils.info_message('No presets are available. Please save a preset first.', self.dialog)
+            return None
         preset_name_list = [preset.name for preset in preset_list]
         chosen_preset_row, retvalue = self.hypertts.anki_utils.ask_user_choose_from_list(self.dialog, title, preset_name_list)
         logger.info(f'chosen preset row: {chosen_preset_row}, retvalue: {retvalue}')
-        if retvalue == 1:
+        if retvalue == 1 and chosen_preset_row is not None and 0 <= chosen_preset_row < len(preset_list):
             preset_id = preset_list[chosen_preset_row].id
             return preset_id
         return None

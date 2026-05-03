@@ -817,3 +817,85 @@ def test_easy_dialog_editor_6_default_add_then_select_diff_target_field(qtbot):
 
     hypertts_instance.anki_utils.dialog_input_fn_map[constants.DIALOG_ID_EASY] = easy_dialog_input_sequence_verify_selection_diff_target
     component_easy.create_dialog_editor(hypertts_instance, deck_note_type, editor_context_with_selection)
+
+
+# Tests for choose_existing_preset (regression: ANKI-HYPER-TTS-4MB)
+# =================================================================
+
+def _build_batch_component(hypertts_instance):
+    dialog = gui_testing_utils.build_empty_dialog()
+    return component_batch.ComponentBatch(hypertts_instance, dialog)
+
+
+def test_choose_existing_preset_no_presets_shows_info_message(qtbot):
+    # Regression for ANKI-HYPER-TTS-4MB: clicking Open/Duplicate with no presets
+    # configured used to crash with IndexError because the dialog still returned
+    # retvalue=1 with currentRow=-1. We now early-return and inform the user.
+    hypertts_instance, _, _ = gui_testing_utils.get_editor_context()
+    batch = _build_batch_component(hypertts_instance)
+
+    hypertts_instance.anki_utils.info_message_received = None
+    # Force a response that *would* cause IndexError if the early-return is missing
+    hypertts_instance.anki_utils.ask_user_choose_from_list_response = -1
+
+    result = batch.choose_existing_preset('Choose a preset to open')
+
+    assert result is None
+    assert hypertts_instance.anki_utils.info_message_received is not None
+    assert 'preset' in hypertts_instance.anki_utils.info_message_received.lower()
+
+
+def test_choose_existing_preset_valid_selection_returns_preset_id(qtbot):
+    hypertts_instance, _, _ = gui_testing_utils.get_editor_context()
+    hypertts_instance.config[constants.CONFIG_PRESETS] = {
+        'uuid_a': {'name': 'preset alpha'},
+        'uuid_b': {'name': 'preset beta'},
+    }
+    batch = _build_batch_component(hypertts_instance)
+
+    hypertts_instance.anki_utils.info_message_received = None
+    hypertts_instance.anki_utils.ask_user_choose_from_list_response_string = 'preset beta'
+
+    result = batch.choose_existing_preset('Choose a preset to open')
+
+    # get_preset_list sorts by name, so preset alpha=row 0, preset beta=row 1
+    assert result == 'uuid_b'
+    assert hypertts_instance.anki_utils.info_message_received is None
+
+
+def test_choose_existing_preset_user_cancels_returns_none(qtbot):
+    hypertts_instance, _, _ = gui_testing_utils.get_editor_context()
+    hypertts_instance.config[constants.CONFIG_PRESETS] = {
+        'uuid_a': {'name': 'preset alpha'},
+    }
+    batch = _build_batch_component(hypertts_instance)
+
+    # Simulate the user clicking Cancel on the chooser dialog (retvalue=0).
+    # We monkey-patch ask_user_choose_from_list because MockAnkiUtils always
+    # returns retvalue=1.
+    def cancelled_choice(parent, prompt, choices, startrow=0):
+        return 0, 0
+    hypertts_instance.anki_utils.ask_user_choose_from_list = cancelled_choice
+    hypertts_instance.anki_utils.info_message_received = None
+
+    result = batch.choose_existing_preset('Choose a preset to open')
+
+    assert result is None
+    # No info message expected for normal cancellation
+    assert hypertts_instance.anki_utils.info_message_received is None
+
+
+def test_choose_existing_preset_out_of_range_row_returns_none(qtbot):
+    # Defensive guard: even with a non-empty list, if Qt returns an invalid row
+    # (e.g., -1 because no item is current), we must not raise IndexError.
+    hypertts_instance, _, _ = gui_testing_utils.get_editor_context()
+    hypertts_instance.config[constants.CONFIG_PRESETS] = {
+        'uuid_a': {'name': 'preset alpha'},
+    }
+    batch = _build_batch_component(hypertts_instance)
+
+    hypertts_instance.anki_utils.ask_user_choose_from_list_response = -1
+
+    result = batch.choose_existing_preset('Choose a preset to open')
+
+    assert result is None
