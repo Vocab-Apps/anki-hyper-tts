@@ -479,7 +479,13 @@ class MacOS(service.ServiceBase):
             'en-scotland': 'en_GB',
         }
         lang_id = override_map.get(lang_id, lang_id)
-        return languages.AudioLanguage[lang_id]
+        if lang_id in languages.AudioLanguage.__members__:
+            return languages.AudioLanguage[lang_id]
+        # Some macOS voices report BCP 47 tags with extensions like
+        # 'en_GB_U_SD@sd=gbsct' (Fiona, Scottish English). Fall back to the
+        # base language_region form when the full tag is unknown.
+        base = '_'.join(lang_id.split('@', 1)[0].split('_')[:2])
+        return languages.AudioLanguage[base]
 
     def get_gender_from_name(self, name):
         # get gender from name, default to male for new voices

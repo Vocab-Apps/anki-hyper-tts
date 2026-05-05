@@ -491,9 +491,17 @@ Fiona               en-scotland # Hello, my name is Fiona. I am a Scottish-Engli
         self.assertEqual(eddy_french_canada_voice.voice_key, {'name': 'Eddy (French (Canada))'})
         self.assertEqual(eddy_french_canada_voice.audio_languages[0], languages.AudioLanguage.fr_CA)
 
+        # both legacy 'en-scotland' and the modern BCP 47 form 'en_GB_U_SD@sd=gbsct'
+        # appear in test data above; both should resolve to en_GB.
         fiona_voices = [voice for voice in voice_list if voice.name == 'Fiona']
-        self.assertEqual(len(fiona_voices), 1)
-        voice = fiona_voices[0]
+        self.assertEqual(len(fiona_voices), 2)
+        for voice in fiona_voices:
+            self.assertEqual(voice.gender, constants.Gender.Female)
+            self.assertEqual(voice.audio_languages[0], languages.AudioLanguage.en_GB)
+
+        fiona_enhanced_voices = [voice for voice in voice_list if voice.name == 'Fiona (Enhanced)']
+        self.assertEqual(len(fiona_enhanced_voices), 1)
+        voice = fiona_enhanced_voices[0]
         self.assertEqual(voice.gender, constants.Gender.Female)
         self.assertEqual(voice.audio_languages[0], languages.AudioLanguage.en_GB)
 
