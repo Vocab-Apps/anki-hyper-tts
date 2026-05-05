@@ -155,6 +155,8 @@ class HyperTTS():
         return self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)
 
     def get_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
+        if not realtime_model.side_enabled:
+            raise errors.TTSTagProcessingError()
         source_text = text
         processed_text = text_utils.process_text(source_text, realtime_model.text_processing)
         text_utils.check_length(processed_text)
