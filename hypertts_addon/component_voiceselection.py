@@ -101,6 +101,11 @@ class VoiceSelection(component_common.ConfigComponentBase):
             for key, value in model.voice.options.items():
                 widget_name = f'voice_option_{key}'
                 logger.info(f'setting value of {key} to {value}')
+                # the saved preset may contain options that the current voice no longer exposes
+                # (e.g. a service updated its schema and dropped 'pitch'); skip rather than crash.
+                if widget_name not in self.voice_options_widgets:
+                    logger.warning(f'voice option {key!r} no longer supported by voice {voice_id!r}, skipping')
+                    continue
                 voice_option_widget = self.voice_options_widgets[widget_name]
                 setCurrentTextFn = getattr(voice_option_widget, 'setCurrentText', None)
                 if callable(setCurrentTextFn):
