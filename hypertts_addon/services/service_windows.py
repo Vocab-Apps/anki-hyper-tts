@@ -5,13 +5,37 @@ import aqt.sound
 from typing import List
 
 if os.name == 'nt':
+    import shutil
     import comtypes.client  # Importing comtypes.client will make the gen subpackage
+
+    def _regenerate_comtypes_gen_cache():
+        # Wipe the comtypes generated-wrapper cache. The cache may live either
+        # inside the bundled comtypes/gen directory or in %APPDATA%\Python\...\
+        # comtypes_cache; _find_gen_dir() returns the writable one, and removing
+        # it makes the subsequent call return the alternate location.
+        for _ in range(2):
+            try:
+                gen_dir = comtypes.client._find_gen_dir()
+            except Exception:
+                break
+            try:
+                shutil.rmtree(gen_dir)
+            except OSError:
+                break
+        for modname in [m for m in list(sys.modules) if m.startswith('comtypes.gen')]:
+            del sys.modules[modname]
+        # Force regeneration of the SAPI wrappers in the (now-recreated) cache dir.
+        comtypes.client.CreateObject("SAPI.SpVoice")
+        comtypes.client.CreateObject("SAPI.SpFileStream")
+
     try:
         from comtypes.gen import SpeechLib  # comtypes
-    except ImportError:
-        # Generate the SpeechLib lib and any associated files
-        engine = comtypes.client.CreateObject("SAPI.SpVoice")
-        stream = comtypes.client.CreateObject("SAPI.SpFileStream")
+    except (ImportError, AttributeError):
+        # ImportError: SpeechLib wrapper missing (first run on this machine).
+        # AttributeError: cached wrapper is stale or partially written, e.g.
+        # references comtypes.gen.<stdole2-guid>.IDispatch which is not defined
+        # on the cached stdole2 module. Wipe the cache and regenerate.
+        _regenerate_comtypes_gen_cache()
         from comtypes.gen import SpeechLib
     import win32com.client
 
