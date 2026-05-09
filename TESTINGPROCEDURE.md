@@ -42,8 +42,8 @@ set PATH=C:\Users\Luc\AppData\Local\Programs\Anki;C:\Program Files\ffmpeg;%PATH%
 ### set tts keys
 ```
 created this way
-cat ~/secrets/cloudlanguagetools/post_deploy_tts_prod.sh | sed 's/export/set/g'
-cat ~/secrets/hypertts/hypertts_services_keys.sh
+cat ~/code/secrets/cloudlanguagetools/post_deploy_prod_vocabai_api.sh | sed 's/export/set/g'
+cat ~/code/secrets/hypertts/hypertts_services_keys.sh | sed 's/export/set/g'
 ```
 execute ~/secrets/hypertts/hypertts_windows.bat
 ## go to hypertts directory
