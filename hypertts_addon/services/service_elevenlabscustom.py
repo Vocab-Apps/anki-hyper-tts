@@ -130,12 +130,19 @@ class ElevenLabsCustom(service.ServiceBase):
 
     @cachetools.cached(cache=cachetools.TTLCache(maxsize=1, ttl=600))
     def voice_list_cached(self):
+        try:
+            return self._build_voice_list()
+        except Exception as e:
+            logger.warning(f'ElevenLabsCustom: failed to build voice list, returning empty list: {e}')
+            return []
+
+    def _build_voice_list(self):
         # get the list of models
         url = "https://api.elevenlabs.io/v1/models"
         response = requests.get(url, headers=self.get_headers(), timeout=constants.RequestTimeout)
         response.raise_for_status()
-        model_data = response.json()      
-        
+        model_data = response.json()
+
         # only retain models which can do text to speech
         model_data = [model for model in model_data if model['can_do_text_to_speech']]
 
@@ -143,7 +150,7 @@ class ElevenLabsCustom(service.ServiceBase):
         response = requests.get(url, headers=self.get_headers(), timeout=constants.RequestTimeout)
         response.raise_for_status()
         voice_data = response.json()['voices']
-        
+
         result = []
         for model in model_data:
             model_id = model['model_id']
