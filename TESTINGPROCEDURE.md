@@ -49,7 +49,7 @@ execute ~/secrets/hypertts/hypertts_windows.bat
 ## go to hypertts directory
 cd C:\dev\python\anki-hyper-tts
 ## then
-pytest test_tts_services.py  -k test_windows
+pytest tests/test_tts_services/test_local_services.py -k test_windows
 
 # Testing on MacOSX
 ## SSH Access (Scaleway)
