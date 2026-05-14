@@ -40,7 +40,7 @@ class Alibaba(service.ServiceBase):
         }
     
     # this process is described by https://www.alibabacloud.com/help/en/isi/getting-started/use-http-or-https-to-obtain-an-access-token?spm=a2c63.p38356.0.i1#topic-2572194
-    def refresh_token(self):
+    def refresh_token(self, source_text, voice):
         logger.info(f"refreshing token")
         params = {
             "AccessKeyId": self.get_configuration_value_mandatory(self.CONFIG_ACCESS_KEY_ID),
@@ -84,9 +84,11 @@ class Alibaba(service.ServiceBase):
         # API definition says any error will return non-200 RC
         if r.status_code != 200:
             logger.warning(f"Request to http://nlsmeta.ap-southeast-1.aliyuncs.com/?{params_str} failed:\n {r.text}")
-            return
-        
+            raise errors.RequestError(source_text, voice, f'Failed to refresh Alibaba access token (HTTP {r.status_code}): {r.text}')
+
         j = r.json()
+        if "Token" not in j:
+            raise errors.RequestError(source_text, voice, f'Failed to refresh Alibaba access token, no Token in response: {j}')
         self.access_token = j["Token"]
         logger.info(f"Got access token: {self.access_token}")
 
@@ -95,7 +97,7 @@ class Alibaba(service.ServiceBase):
 
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, voice_options):
         if not self.access_token or self.access_token["ExpireTime"] <= int(time.time()):
-            self.refresh_token()
+            self.refresh_token(source_text, voice)
 
         app_key = self.get_configuration_value_mandatory(self.CONFIG_APP_KEY)
         speed = int(voice_options.get('speed', voice.options['speed']['default']))
