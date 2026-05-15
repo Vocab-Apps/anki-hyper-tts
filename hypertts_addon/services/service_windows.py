@@ -1,20 +1,9 @@
 import sys
 import os
+import shutil
 import hashlib
 import aqt.sound
 from typing import List
-
-if os.name == 'nt':
-    import comtypes.client  # Importing comtypes.client will make the gen subpackage
-    try:
-        from comtypes.gen import SpeechLib  # comtypes
-    except ImportError:
-        # Generate the SpeechLib lib and any associated files
-        engine = comtypes.client.CreateObject("SAPI.SpVoice")
-        stream = comtypes.client.CreateObject("SAPI.SpFileStream")
-        from comtypes.gen import SpeechLib
-    import win32com.client
-
 
 from hypertts_addon import voice
 from hypertts_addon import service
@@ -23,6 +12,54 @@ from hypertts_addon import constants
 from hypertts_addon import languages
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
+
+# SAPI SpeechStreamFileMode enum value passed to SpFileStream.Open.
+# Vendored to avoid a runtime dependency on comtypes.gen, whose generated cache
+# is regularly corrupted on user machines (Sentry ANKI-HYPER-TTS-JCJ et al.).
+# Ref: https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ee125406(v=vs.85)
+SSFMCreateForWrite = 3
+
+_WINDOWS_TTS_READY = False
+
+
+def _purge_comtypes_gen_cache():
+    try:
+        import comtypes.client
+        gen_dir = comtypes.client.gen_dir
+        if gen_dir and os.path.isdir(gen_dir):
+            shutil.rmtree(gen_dir, ignore_errors=True)
+            os.makedirs(gen_dir, exist_ok=True)
+    except Exception as e:
+        logger.error(f'failed to purge comtypes gen cache: {e!r}')
+
+
+def _init_windows_tts():
+    global _WINDOWS_TTS_READY
+    if _WINDOWS_TTS_READY:
+        return True
+    try:
+        import comtypes.client
+        try:
+            from comtypes.gen import SpeechLib  # noqa: F401
+        except Exception as e:
+            logger.warning(f'comtypes.gen.SpeechLib import failed ({e!r}); purging gen cache and retrying')
+            _purge_comtypes_gen_cache()
+            comtypes.client.CreateObject("SAPI.SpVoice")
+            comtypes.client.CreateObject("SAPI.SpFileStream")
+            from comtypes.gen import SpeechLib  # noqa: F401
+        _WINDOWS_TTS_READY = True
+        return True
+    except Exception as e:
+        logger.error(f'Windows TTS unavailable: {e!r}', exc_info=True)
+        return False
+
+
+if os.name == 'nt':
+    try:
+        import win32com.client
+    except Exception as e:
+        logger.error(f'win32com.client import failed: {e!r}', exc_info=True)
+    _init_windows_tts()
 
 LCIDS = {
 	# Primary language IDs (language-neutral LCIDs reported by some SAPI voices)
@@ -387,7 +424,7 @@ class Windows(service.ServiceBase):
 
         logger.debug(f'opening stream')
         stream = win32com.client.Dispatch('SAPI.SPFileStream')
-        stream.Open(full_path_wav, comtypes.gen.SpeechLib.SSFMCreateForWrite)
+        stream.Open(full_path_wav, SSFMCreateForWrite)
         temp_stream = speaker.AudioOutputStream
         speaker.AudioOutputStream = stream
         speaker.Speak(source_text)
