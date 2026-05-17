@@ -298,6 +298,20 @@ class ServiceManager():
             raise
         except requests.exceptions.Timeout as e:
             raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out') from e
+        except requests.exceptions.InvalidHeader as e:
+            # requests raises InvalidHeader while *preparing* the request
+            # (before any network I/O) when a header value contains illegal
+            # characters. In practice this means the user pasted a malformed
+            # API key into the service configuration — e.g. an OpenAI key with
+            # an embedded newline and a trailing "ZAI_API_KEY=..." line ending
+            # up in the Authorization header (Sentry ANKI-HYPER-TTS-JR0). The
+            # identical request will keep failing until the user fixes the key,
+            # so this is a permanent configuration error. Previously it fell
+            # through to the generic handler below and was mis-classified as
+            # the retryable UnknownServiceError.
+            raise errors.ServicePermissionError(source_text, voice,
+                f'Invalid credential / request header — check your API key for '
+                f'stray whitespace or newlines: {e}') from e
         except requests.exceptions.ConnectionError as e:
             raise errors.ServiceConnectionError(source_text, voice, str(e)) from e
         except Exception as e:

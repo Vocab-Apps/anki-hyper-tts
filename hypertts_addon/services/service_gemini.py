@@ -34,6 +34,21 @@ MODEL_NAME_MAP = {
 
 DEFAULT_RETRY_AFTER_SECONDS = 60
 
+# Gemini can return HTTP 200 with *no audio* when it refuses to synthesize the
+# input. The refusal shows up either as a top-level promptFeedback.blockReason
+# or as a candidate finishReason that is not a normal completion. These are
+# permanent rejections of the specific input text — retrying the identical
+# request will always fail — so they must be raised as a permanent error, not
+# retried. See https://ai.google.dev/api/generate-content for the enums.
+GEMINI_BLOCK_FINISH_REASONS = {
+    'SAFETY',
+    'PROHIBITED_CONTENT',
+    'BLOCKLIST',
+    'SPII',
+    'RECITATION',
+    'IMAGE_SAFETY',
+}
+
 
 def _extract_retry_after_seconds(response_text):
     try:
@@ -135,6 +150,26 @@ class Gemini(service.ServiceBase):
             raise errors.RequestError(source_text, voice, error_message)
 
         data = response.json()
+
+        # Detect a content-policy refusal before trying to read the audio.
+        # Observed in the wild as a 200 response with body
+        # {'promptFeedback': {'blockReason': 'PROHIBITED_CONTENT'}, ...}
+        # (Sentry ANKI-HYPER-TTS-HT9). Previously this fell through to the
+        # generic KeyError handler below and was raised as the legacy,
+        # non-retry-aware RequestError, so it was endlessly retried and
+        # mis-grouped in triage. It is a permanent rejection of this input
+        # text, so raise the permanent ServiceInputError instead.
+        block_reason = data.get('promptFeedback', {}).get('blockReason')
+        if block_reason:
+            raise errors.ServiceInputError(source_text, voice,
+                f'Gemini refused to generate audio (blockReason: {block_reason}): {data}')
+        candidates = data.get('candidates') or []
+        if candidates:
+            finish_reason = candidates[0].get('finishReason')
+            if finish_reason in GEMINI_BLOCK_FINISH_REASONS:
+                raise errors.ServiceInputError(source_text, voice,
+                    f'Gemini refused to generate audio (finishReason: {finish_reason}): {data}')
+
         try:
             encoded = data['candidates'][0]['content']['parts'][0]['inlineData']['data']
         except (KeyError, IndexError):

@@ -96,6 +96,17 @@ class Google(service.ServiceBase):
             logger.warning(f'HTTP {response.status_code}: {response.text}')
             data = response.json()
             error_message = data.get('error', {}).get('message', str(data))
+            # Google Cloud Text-to-Speech returns HTTP 401 (UNAUTHENTICATED) or
+            # 403 (PERMISSION_DENIED) for problems the user must fix before any
+            # retry can succeed, e.g. "This API method requires billing to be
+            # enabled. Please enable billing on project #... then retry."
+            # (Sentry ANKI-HYPER-TTS-HHQ). These were previously raised as the
+            # legacy, non-retry-aware RequestError, which hid them from retry
+            # logic and from triage grouping. Map them to the permanent
+            # ServicePermissionError so they are correctly treated as
+            # non-retryable.
+            if response.status_code in (401, 403):
+                raise errors.ServicePermissionError(source_text, voice, error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
         data = response.json()

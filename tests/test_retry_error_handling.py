@@ -482,6 +482,25 @@ class TestServiceManagerDirectServiceErrorWrapping(unittest.TestCase):
         with self.assertRaises(errors.UnknownServiceError):
             manager.get_tts_audio_implementation('text', voice, {}, ctx)
 
+    def test_invalid_header_translated_to_permanent_permission_error(self):
+        """A malformed API key makes requests raise InvalidHeader before any
+        network I/O (Sentry ANKI-HYPER-TTS-JR0). This is a permanent config
+        problem and must NOT be classified as the retryable UnknownServiceError."""
+        voice = make_mock_voice()
+        voice.service = 'TestService'
+        ctx = make_mock_context()
+        mock_service = mock.Mock()
+        mock_service.name = 'TestService'
+        mock_service.get_tts_audio.side_effect = requests.exceptions.InvalidHeader(
+            "Invalid leading whitespace, reserved character(s), or return "
+            "character(s) in header value: 'Bearer sk-proj-xxx\\nZAI_API_KEY=yyy'")
+        manager = self._make_service_manager_direct(mock_service)
+        with self.assertRaises(errors.ServicePermissionError) as cm:
+            manager.get_tts_audio_implementation('text', voice, {}, ctx)
+        self.assertIsInstance(cm.exception, errors.PermanentError)
+        self.assertEqual(cm.exception.retryable, False)
+        self.assertIn('API key', cm.exception.error_message)
+
     def test_hypertts_error_passed_through(self):
         voice = make_mock_voice()
         voice.service = 'TestService'

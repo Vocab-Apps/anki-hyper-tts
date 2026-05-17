@@ -171,8 +171,34 @@ class Azure(service.ServiceBase):
         if response.status_code != 200:
             error_message = f'status code {response.status_code}: {response.reason}, response content: {response.text}'
             logger.warning(error_message)
-            if response.status_code == 401:
+            if response.status_code in (401, 403):
+                # authentication / authorization failure — non-retryable until
+                # the user fixes their subscription key or region
                 raise errors.ServicePermissionError(source_text, voice, error_message)
+            if response.status_code == 429:
+                # Azure returns HTTP 429 for two distinct situations (see Sentry
+                # ANKI-HYPER-TTS-HHA, response body "Quota Exceeded"):
+                #  - a transient per-second rate limit, which carries a
+                #    Retry-After header telling us when it is safe to retry ->
+                #    RateLimitRetryAfterError (retryable)
+                #  - the tier character quota being exhausted ("Quota
+                #    Exceeded", no Retry-After), which keeps failing until the
+                #    user upgrades or the monthly quota resets -> permanent
+                #    ServicePermissionError (same disposition as the existing
+                #    "insufficient character credit" cases)
+                # Both were previously raised as the legacy, non-retry-aware
+                # RequestError, degrading retry logic and triage grouping.
+                retry_after = response.headers.get('Retry-After')
+                if retry_after is not None:
+                    try:
+                        retry_after_seconds = max(1, int(float(retry_after)))
+                    except (TypeError, ValueError):
+                        retry_after_seconds = 60
+                    raise errors.RateLimitRetryAfterError(source_text, voice, error_message, retry_after_seconds)
+                raise errors.ServicePermissionError(source_text, voice, error_message)
+            if response.status_code in (502, 503, 504):
+                # upstream gateway / temporary server error — retryable
+                raise errors.ServiceGatewayError(source_text, voice, error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
         return response.content
