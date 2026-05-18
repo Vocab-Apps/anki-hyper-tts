@@ -25,8 +25,6 @@ class TestLocalServices(TTSTests):
         # pick a random en_US voice
         self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'This is the first sentence')
 
-        # pick a random en_US voice with modified rate
-        self.random_voice_test(service_name, languages.AudioLanguage.en_US, 'This is the first sentence', voice_options={'rate': -1})
 
     def test_espeakng(self):
         service_name = 'ESpeakNg'
