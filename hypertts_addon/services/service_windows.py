@@ -425,10 +425,13 @@ class Windows(service.ServiceBase):
         logger.debug(f'opening stream')
         stream = win32com.client.Dispatch('SAPI.SPFileStream')
         stream.Open(full_path_wav, SSFMCreateForWrite)
-        temp_stream = speaker.AudioOutputStream
+        # `speaker` is a fresh, function-local SpVoice, so there is no prior
+        # AudioOutputStream worth preserving. Reading the property getter
+        # before a stream has been explicitly set raises a SAPI COM error
+        # (com_error inner scode 0x8004503A), so assign our file stream
+        # directly instead of the save/restore dance.
         speaker.AudioOutputStream = stream
         speaker.Speak(source_text)
-        speaker.AudioOutputStream = temp_stream
         stream.close()
 
         logger.debug(f'closing stream')
