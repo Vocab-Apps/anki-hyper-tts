@@ -234,6 +234,12 @@ class ElevenLabsCustom(service.ServiceBase):
             logger.warning(error_message)
             if response.status_code in (401, 402):
                 raise errors.ServicePermissionError(source_text, voice, error_message)
+            if response.status_code == 400:
+                # ElevenLabs returns 400 for permanent input-validation failures
+                # like unsupported language_code, voice_id not found, model_id
+                # not compatible with language, etc. These should not be retried.
+                # Sentry ANKI-HYPER-TTS-HGT.
+                raise errors.ServiceInputError(source_text, voice, error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
         return response.content

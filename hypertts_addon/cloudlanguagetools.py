@@ -159,12 +159,18 @@ class CloudLanguageTools():
             raise errors.UnknownServiceError(source_text, voice, error_message)
 
         except errors.HyperTTSError:
-            # we need to let the exceptions created by parsing the payload through, 
+            # we need to let the exceptions created by parsing the payload through,
             # since they have the correct error type and message
             raise
         except requests.exceptions.Timeout:
             raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
-        except requests.exceptions.ConnectionError as e:
+        except (requests.exceptions.ConnectionError,
+                requests.exceptions.ChunkedEncodingError) as e:
+            # ChunkedEncodingError is raised when the connection drops mid-response
+            # (e.g. RST while streaming the body). It is a sibling of ConnectionError
+            # in requests, not a subclass, so it must be listed explicitly — otherwise
+            # it falls through to the generic handler and gets mis-tagged as
+            # UnknownServiceError (Sentry ANKI-HYPER-TTS-JM3).
             raise errors.ServiceConnectionError(source_text, voice, str(e))
         except Exception as e:
             # eventually we should not have any exceptions coming through here
@@ -203,7 +209,10 @@ class CloudLanguageTools():
             raise
         except requests.exceptions.Timeout:
             raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
-        except requests.exceptions.ConnectionError as e:
+        except (requests.exceptions.ConnectionError,
+                requests.exceptions.ChunkedEncodingError) as e:
+            # See _get_tts_audio_vocabai for why ChunkedEncodingError must be
+            # listed explicitly alongside ConnectionError.
             raise errors.ServiceConnectionError(source_text, voice, str(e))
         except Exception as e:
             logger.error(e, exc_info=True)

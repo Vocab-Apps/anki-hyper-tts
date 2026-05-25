@@ -267,12 +267,19 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         self.assertIn('connection refused', cm.exception.error_message)
 
     @mock.patch('requests.Session.post')
-    def test_non_timeout_request_exception(self, mock_post):
-        """Non-Timeout/non-ConnectionError exception from requests.post is raised as UnknownServiceError."""
-        mock_post.side_effect = requests.exceptions.ChunkedEncodingError('broken stream')
-        with self.assertRaises(errors.UnknownServiceError) as cm:
+    def test_chunked_encoding_error_is_connection_error(self, mock_post):
+        """ChunkedEncodingError (e.g. RST while streaming the body) is mapped to
+        ServiceConnectionError. Sentry ANKI-HYPER-TTS-JM3: requests raises this
+        as a sibling of ConnectionError, not a subclass, so before the fix it
+        slipped through to the generic Exception handler and was mis-tagged as
+        UnknownServiceError."""
+        mock_post.side_effect = requests.exceptions.ChunkedEncodingError(
+            "Connection broken: ConnectionResetError(54, 'Connection reset by peer')")
+        with self.assertRaises(errors.ServiceConnectionError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
-        self.assertIn('broken stream', cm.exception.error_message)
+        self.assertIn('Connection broken', cm.exception.error_message)
+        # confirm retryable disposition: it's a TransientError, not Permanent
+        self.assertIsInstance(cm.exception, errors.TransientError)
 
     @mock.patch('requests.Session.post')
     def test_400_unparseable_json_raises_permanent(self, mock_post):
@@ -380,6 +387,17 @@ class TestCloudLanguageToolsCLTErrorMapping(unittest.TestCase):
         with self.assertRaises(errors.ServiceConnectionError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertIn('connection refused', cm.exception.error_message)
+
+    @mock.patch('requests.Session.post')
+    def test_chunked_encoding_error_is_connection_error(self, mock_post):
+        """ChunkedEncodingError on the CLT path also maps to ServiceConnectionError
+        (same Sentry ANKI-HYPER-TTS-JM3 fix as the vocabai branch)."""
+        mock_post.side_effect = requests.exceptions.ChunkedEncodingError(
+            "Connection broken: ConnectionResetError(54, 'Connection reset by peer')")
+        with self.assertRaises(errors.ServiceConnectionError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertIsInstance(cm.exception, errors.TransientError)
+        self.assertIn('Connection broken', cm.exception.error_message)
 
 
 class TestServiceManagerNoRetry(unittest.TestCase):

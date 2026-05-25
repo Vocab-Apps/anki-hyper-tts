@@ -13,6 +13,7 @@ import unittest.mock as mock
 from hypertts_addon.services import service_azure
 from hypertts_addon.services import service_google
 from hypertts_addon.services import service_gemini
+from hypertts_addon.services import service_elevenlabscustom
 from hypertts_addon import logging_utils
 from hypertts_addon import errors
 
@@ -131,6 +132,21 @@ class TestGoogleErrorMapping(unittest.TestCase):
             self._call(401, {'error': {'message': 'API key not valid'}})
         self.assertEqual(ctx.exception.retryable, False)
 
+    def test_429_resource_exhausted_is_rate_limit(self):
+        # ANKI-HYPER-TTS-HHQ: Google Cloud TTS responds with HTTP 429 +
+        # "Resource has been exhausted (e.g. check quota)." when the per-minute
+        # quota is hit. Previously raised as legacy RequestError, which kept it
+        # out of the retry logic; now it's a transient RateLimitRetryAfterError.
+        message = 'Resource has been exhausted (e.g. check quota).'
+        with self.assertRaises(errors.RateLimitRetryAfterError) as ctx:
+            self._call(429, {'error': {'code': 429, 'status': 'RESOURCE_EXHAUSTED',
+                                       'message': message}})
+        self.assertIsInstance(ctx.exception, errors.TransientError)
+        self.assertEqual(ctx.exception.retryable, True)
+        self.assertEqual(ctx.exception.retry_after,
+                         service_google.GOOGLE_RATE_LIMIT_DEFAULT_RETRY_AFTER)
+        self.assertIn('Resource has been exhausted', ctx.exception.error_message)
+
     def test_other_status_still_legacy_request_error(self):
         with self.assertRaises(errors.RequestError):
             self._call(500, {'error': {'message': 'internal error'}})
@@ -176,11 +192,87 @@ class TestGeminiContentBlockMapping(unittest.TestCase):
         self.assertEqual(ctx.exception.retryable, False)
         self.assertIn('SAFETY', ctx.exception.error_message)
 
+    def test_candidate_finish_reason_other_is_input_error(self):
+        # ANKI-HYPER-TTS-HT9: Gemini 200 with `finishReason: 'OTHER'` and no
+        # `content` key on the candidate — observed consistently for the same
+        # input text across many users. Treated as a permanent refusal; was
+        # previously surfaced as legacy non-retry-aware RequestError.
+        body = {
+            'candidates': [{'finishReason': 'OTHER', 'index': 0}],
+            'usageMetadata': {'promptTokenCount': 3, 'totalTokenCount': 3},
+            'modelVersion': 'gemini-2.5-flash-preview-tts',
+        }
+        with self.assertRaises(errors.ServiceInputError) as ctx:
+            self._call(body)
+        self.assertIsInstance(ctx.exception, errors.PermanentError)
+        self.assertEqual(ctx.exception.retryable, False)
+        self.assertIn('OTHER', ctx.exception.error_message)
+
     def test_unexpected_empty_payload_still_legacy_request_error(self):
         # genuinely unexpected payload (not a content block) keeps the
         # previous behaviour so we still see it surface in triage
         with self.assertRaises(errors.RequestError):
             self._call({'unexpected': 'shape'})
+
+
+class TestElevenLabsCustomErrorMapping(unittest.TestCase):
+    """service_elevenlabscustom.get_tts_audio HTTP-status -> error mapping."""
+
+    def setUp(self):
+        self.service = service_elevenlabscustom.ElevenLabsCustom()
+        self.service._config = {'api_key': 'fake_api_key'}
+        self.voice = _make_voice(
+            options={
+                'stability': {'default': 0.5},
+                'similarity_boost': {'default': 0.75},
+                'style': {'default': 0.0},
+                'speed': {'default': 1.0},
+                'use_speaker_boost': {'default': 'false'},
+                'language_code': {'default': ''},
+                'format': {'default': 'mp3'},
+            },
+            voice_key={'voice_id': 'fake_voice_id', 'model_id': 'eleven_turbo_v2_5'})
+
+    def _call(self, status_code, text='', voice_options=None):
+        mock_response = mock.Mock()
+        mock_response.status_code = status_code
+        mock_response.text = text
+        with mock.patch('requests.post', return_value=mock_response):
+            return self.service.get_tts_audio(
+                'Test text', self.voice, voice_options if voice_options is not None else {})
+
+    def test_400_validation_error_is_input_error(self):
+        # ANKI-HYPER-TTS-HGT: HTTP 400 with
+        # {"detail":{"type":"validation_error","code":"invalid_parameters",
+        #  "message":"Model 'eleven_turbo_v2_5' does not support language_code 'ell'.",
+        #  "status":"unsupported_language", ...}}
+        # Permanent — retrying the same combination of model + language will
+        # always fail. Was previously legacy RequestError.
+        body = ('{"detail":{"type":"validation_error","code":"invalid_parameters",'
+                '"message":"Model \'eleven_turbo_v2_5\' does not support language_code \'ell\'.",'
+                '"status":"unsupported_language"}}')
+        with self.assertRaises(errors.ServiceInputError) as ctx:
+            self._call(400, text=body, voice_options={'language_code': 'ell'})
+        self.assertIsInstance(ctx.exception, errors.PermanentError)
+        self.assertEqual(ctx.exception.retryable, False)
+        self.assertIn('400', ctx.exception.error_message)
+        self.assertIn('unsupported_language', ctx.exception.error_message)
+
+    def test_401_is_permission_error(self):
+        with self.assertRaises(errors.ServicePermissionError) as ctx:
+            self._call(401, text='Unauthorized')
+        self.assertEqual(ctx.exception.retryable, False)
+
+    def test_402_is_permission_error(self):
+        with self.assertRaises(errors.ServicePermissionError) as ctx:
+            self._call(402, text='Payment Required')
+        self.assertEqual(ctx.exception.retryable, False)
+
+    def test_other_status_still_legacy_request_error(self):
+        # 5xx and unclassified codes still go through the legacy RequestError
+        # path so they remain visible in triage.
+        with self.assertRaises(errors.RequestError):
+            self._call(500, text='internal server error')
 
 
 if __name__ == '__main__':

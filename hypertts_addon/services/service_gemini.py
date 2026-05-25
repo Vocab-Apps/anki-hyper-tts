@@ -47,6 +47,12 @@ GEMINI_BLOCK_FINISH_REASONS = {
     'SPII',
     'RECITATION',
     'IMAGE_SAFETY',
+    # 'OTHER' is Gemini's catch-all terminal state. For TTS, observed events
+    # (Sentry ANKI-HYPER-TTS-HT9) consistently fail for the same input text
+    # with usageMetadata reporting tokens were consumed but no audio produced
+    # — i.e. the model refused this specific input. Treat as permanent so the
+    # batch processor stops retrying.
+    'OTHER',
 }
 
 
