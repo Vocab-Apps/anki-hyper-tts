@@ -385,7 +385,8 @@ class ConfigModelsTests(unittest.TestCase):
                 'text_and_sound_tag': False,
                 'remove_sound_tag': False,
                 'insert_location': 'AFTER',
-                'same_field': False
+                'same_field': False,
+                'transcript_field': None
             },
             'voice_selection': {
                 'voice_selection_mode': 'single',
@@ -452,7 +453,8 @@ class ConfigModelsTests(unittest.TestCase):
                     'text_and_sound_tag': text_and_sound_tag,
                     'remove_sound_tag': remove_sound_tag,
                     'insert_location': 'AFTER',
-                    'same_field': False
+                    'same_field': False,
+                    'transcript_field': None
                 }
                 assert batch_config.serialize()['target'] == expected_output
 
@@ -473,6 +475,7 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(batch_target.remove_sound_tag, True)
         self.assertEqual(batch_target.insert_location, config_models.InsertLocation.AFTER)
         self.assertEqual(batch_target.same_field, False)
+        self.assertEqual(batch_target.transcript_field, None)
 
 
     def test_batch_config_target_deserialize_schema_v4(self):
@@ -490,6 +493,7 @@ class ConfigModelsTests(unittest.TestCase):
         self.assertEqual(batch_target.remove_sound_tag, True)
         self.assertEqual(batch_target.insert_location, config_models.InsertLocation.CURSOR_LOCATION)
         self.assertEqual(batch_target.same_field, True)
+        self.assertEqual(batch_target.transcript_field, None)
 
 
     def test_text_processing(self):
@@ -764,7 +768,8 @@ class ConfigModelsTests(unittest.TestCase):
                 'text_and_sound_tag': False,
                 'remove_sound_tag': False,
                 'insert_location': 'AFTER',
-                'same_field': False
+                'same_field': False,
+                'transcript_field': None
             },
             'voice_selection': {
                 'voice_selection_mode': 'single',
