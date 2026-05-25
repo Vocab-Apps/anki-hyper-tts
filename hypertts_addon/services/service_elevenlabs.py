@@ -7,6 +7,7 @@ from hypertts_addon import service
 from hypertts_addon import errors
 from hypertts_addon import constants
 from hypertts_addon import options
+from hypertts_addon import transcription
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
@@ -39,11 +40,26 @@ class ElevenLabs(service.ServiceBase):
     def voice_list(self):
         return self.basic_voice_list()
 
+    def supports_tts_transcript(self):
+        return True
+
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, voice_options):
+        response = self.request_tts(source_text, voice, voice_options, False)
+        return response.content
+
+    def get_tts_audio_transcript(self, source_text, voice: voice.VoiceBase, voice_options):
+        response = self.request_tts(source_text, voice, voice_options, True)
+        response_data = response.json()
+        audio = transcription.decode_elevenlabs_audio(response_data)
+        segments = transcription.elevenlabs_alignment_to_segments(response_data)
+        return transcription.TtsAudioTranscript(audio, transcription.serialize_segments(segments))
+
+    def request_tts(self, source_text, voice: voice.VoiceBase, voice_options, with_timestamps):
         api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
 
         voice_id = voice.voice_key['voice_id']
-        url = f'https://api.elevenlabs.io/v1/text-to-speech/{voice_id}'
+        suffix = '/with-timestamps' if with_timestamps else ''
+        url = f'https://api.elevenlabs.io/v1/text-to-speech/{voice_id}{suffix}'
 
         # Handle audio format
         audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, voice.options.get(options.AUDIO_FORMAT_PARAMETER, {}).get('default', 'mp3'))
@@ -51,7 +67,7 @@ class ElevenLabs(service.ServiceBase):
             url += '?output_format=opus_48000_192'
 
         headers = {
-            "Accept": "audio/mpeg",
+            "Accept": "application/json" if with_timestamps else "audio/mpeg",
             "xi-api-key": api_key
         }
 
@@ -82,4 +98,4 @@ class ElevenLabs(service.ServiceBase):
                 raise errors.ServicePermissionError(source_text, voice, error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
-        return response.content
+        return response

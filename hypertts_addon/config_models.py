@@ -137,6 +137,7 @@ class BatchTarget():
     remove_sound_tag: bool = True
     insert_location: InsertLocation = InsertLocation.AFTER
     same_field: bool = False
+    transcript_field: Optional[str] = None
 
     def serialize(self):
         return serialize_batch_target(self)

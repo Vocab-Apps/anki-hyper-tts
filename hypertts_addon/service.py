@@ -70,6 +70,16 @@ class ServiceBase(abc.ABC):
     def get_tts_audio(self, source_text, voice: voice_module.TtsVoice_v3, options):
         pass
 
+    def supports_tts_transcript(self):
+        return False
+
+    def get_tts_audio_transcript(self, source_text, voice: voice_module.TtsVoice_v3, options):
+        raise errors.RequestError(
+            source_text,
+            voice,
+            f'{self.name}: transcript generation is not supported for voice {voice.name}'
+        )
+
 
     # some helper functions
     def basic_voice_list(self) -> typing.List[voice_module.TtsVoice_v3]:

@@ -121,7 +121,11 @@ class HyperTTS():
             source_text = self.get_source_text(note, batch.source, text_override)
             processed_text = self.process_text(source_text, batch.text_processing)
 
-        full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)
+        full_filename, audio_filename, transcript_json = self.get_note_audio_artifacts(
+            processed_text,
+            batch,
+            audio_request_context
+        )
         sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)
 
         target_field_content = note[target_field]
@@ -142,11 +146,31 @@ class HyperTTS():
 
         logger.debug(f'setting note[{target_field}] to {target_field_content}')
         note[target_field] = target_field_content
+        self.set_note_transcript(batch, note, transcript_json)
         if not add_mode:
             with _start_span(op="db.anki.note.update", name="update_note"):
                 anki_collection.update_note(note)
 
         return source_text, processed_text, sound_file, full_filename
+
+    def get_note_audio_artifacts(self, processed_text, batch, audio_request_context):
+        transcript_field = batch.target.transcript_field
+        if transcript_field == None or len(transcript_field) == 0:
+            full_filename, audio_filename = self.get_audio_file(
+                processed_text,
+                batch.voice_selection,
+                audio_request_context
+            )
+            return full_filename, audio_filename, None
+        return self.get_audio_file_transcript(processed_text, batch.voice_selection, audio_request_context)
+
+    def set_note_transcript(self, batch, note, transcript_json):
+        transcript_field = batch.target.transcript_field
+        if transcript_field == None or len(transcript_field) == 0:
+            return
+        if transcript_field not in note:
+            raise errors.TargetFieldNotFoundError(transcript_field)
+        note[transcript_field] = transcript_json
 
     def get_note_audio(self, batch, note, audio_request_context, text_override):
         source_text = self.get_source_text(note, batch.source, text_override)
@@ -163,6 +187,18 @@ class HyperTTS():
         return self.get_audio_file(processed_text, realtime_model.voice_selection, context.AudioRequestContext(constants.AudioRequestReason.realtime))
 
     def get_audio_file(self, processed_text, voice_selection, audio_request_context):
+        full_filename, audio_filename, _ = self.get_audio_file_optional_transcript(
+            processed_text,
+            voice_selection,
+            audio_request_context,
+            False
+        )
+        return full_filename, audio_filename
+
+    def get_audio_file_transcript(self, processed_text, voice_selection, audio_request_context):
+        return self.get_audio_file_optional_transcript(processed_text, voice_selection, audio_request_context, True)
+
+    def get_audio_file_optional_transcript(self, processed_text, voice_selection, audio_request_context, include_transcript):
         # sanity checks
         if voice_selection.selection_mode in [constants.VoiceSelectionMode.priority, constants.VoiceSelectionMode.random]:
             if len(voice_selection.voice_list) == 0:
@@ -184,11 +220,16 @@ class HyperTTS():
                 assert isinstance(voice_id, voice_module.TtsVoiceId_v3), \
                     f"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}, voice_with_options: {type(voice_with_options).__name__}"
 
-                full_filename, audio_filename = self.generate_audio_write_file(processed_text, 
-                    voice_with_options.voice_id, voice_with_options.options, audio_request_context)
+                full_filename, audio_filename, transcript_json = self.generate_audio_write_file(
+                    processed_text,
+                    voice_with_options.voice_id,
+                    voice_with_options.options,
+                    audio_request_context,
+                    include_transcript
+                )
                 logger.debug(f'finished generating audio file and write to file for {processed_text}')
                 self.config_register_added_audio()
-                return full_filename, audio_filename
+                return full_filename, audio_filename, transcript_json
             except errors.AudioNotFoundError as exc:
                 # try the next voice, as long as one is available
                 if not priority_mode:
@@ -448,7 +489,7 @@ class HyperTTS():
     # processing of sound tags / collection stuff
     # ===========================================
 
-    def generate_audio_write_file(self, source_text, voice_id: voice_module.TtsVoiceId_v3, voice_options, audio_request_context):
+    def generate_audio_write_file(self, source_text, voice_id: voice_module.TtsVoiceId_v3, voice_options, audio_request_context, include_transcript=False):
         assert isinstance(voice_id, voice_module.TtsVoiceId_v3), f"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}"
         format = options.AudioFormat.mp3 # default to mp3
         if options.AUDIO_FORMAT_PARAMETER in voice_options:
@@ -460,7 +501,7 @@ class HyperTTS():
             audio_filename = self.get_audio_filename(hash_str, format)
             full_filename = self.get_full_audio_file_name(hash_str, format)
             logger.info(f'requesting audio for hash {hash_str}, full filename {full_filename}')
-            cache_hit = os.path.exists(full_filename) and os.path.getsize(full_filename) > 0
+            cache_hit = os.path.exists(full_filename) and os.path.getsize(full_filename) > 0 and not include_transcript
             if span is not None:
                 span.set_data("cache_hit", cache_hit)
         if not cache_hit:
@@ -470,7 +511,13 @@ class HyperTTS():
                 voice = self.service_manager.locate_voice(voice_id)
             logger.info(f'located voice: {voice}')
 
-            audio_data = self.service_manager.get_tts_audio(source_text, voice, voice_options, audio_request_context)
+            audio_data, transcript_json = self.get_audio_data_transcript(
+                source_text,
+                voice,
+                voice_options,
+                audio_request_context,
+                include_transcript
+            )
             logger.info(f'not found in cache, requesting')
             logger.debug(f'opening {full_filename}')
             with _start_span(op="file.write", name="write_audio_to_user_files") as span:
@@ -482,8 +529,16 @@ class HyperTTS():
                 logger.debug(f'wrote audio data')
                 f.close()
         else:
+            transcript_json = None
             logger.info(f'file exists in cache')
-        return full_filename, audio_filename
+        return full_filename, audio_filename, transcript_json
+
+    def get_audio_data_transcript(self, source_text, voice, voice_options, audio_request_context, include_transcript):
+        if not include_transcript:
+            audio_data = self.service_manager.get_tts_audio(source_text, voice, voice_options, audio_request_context)
+            return audio_data, None
+        result = self.service_manager.get_tts_audio_transcript(source_text, voice, voice_options, audio_request_context)
+        return result.audio, result.transcript_json
 
     def get_collection_sound_tag(self, full_filename, audio_filename):
         with _start_span(op="db.anki.media.add", name="media_add_file"):

@@ -9,6 +9,7 @@ from hypertts_addon import service
 from hypertts_addon import errors
 from hypertts_addon import constants
 from hypertts_addon import options
+from hypertts_addon import transcription
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
@@ -41,7 +42,25 @@ class Google(service.ServiceBase):
     def voice_list(self):
         return self.basic_voice_list()
 
+    def supports_tts_transcript(self):
+        return True
+
     def get_tts_audio(self, source_text, voice: voice.VoiceBase, voice_options):
+        response_data = self.request_tts(source_text, voice, voice_options, None)
+        encoded = response_data['audioContent']
+        return base64.b64decode(encoded)
+
+    def get_tts_audio_transcript(self, source_text, voice: voice.VoiceBase, voice_options):
+        if 'Chirp' in voice.voice_key['name']:
+            error_message = f'{self.name}: transcript generation requires SSML, got Chirp voice {voice.voice_key["name"]}'
+            raise errors.RequestError(source_text, voice, error_message)
+        marked_text = transcription.build_marked_ssml(source_text)
+        response_data = self.request_tts(source_text, voice, voice_options, marked_text.ssml)
+        audio = base64.b64decode(response_data['audioContent'])
+        segments = transcription.google_timepoints_to_segments(marked_text.words, response_data.get('timepoints', []))
+        return transcription.TtsAudioTranscript(audio, transcription.serialize_segments(segments))
+
+    def request_tts(self, source_text, voice: voice.VoiceBase, voice_options, marked_ssml):
         # configuration options
         api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
         is_explorer_api_key = self.get_configuration_value_optional(self.CONFIG_EXPLORER_API_KEY, False)
@@ -57,9 +76,7 @@ class Google(service.ServiceBase):
             options.AudioFormat.ogg_opus: 'OGG_OPUS'
         }
 
-        input_ssml = {
-            "ssml": f"<speak>{source_text}</speak>"
-        }
+        input_ssml = {"ssml": marked_ssml or f"<speak>{source_text}</speak>"}
         input_text = {
             "text": source_text
         }
@@ -83,6 +100,8 @@ class Google(service.ServiceBase):
                 "name": voice.voice_key['name'],
             }
         }
+        if marked_ssml:
+            payload["enableTimePointing"] = ["SSML_MARK"]
 
         logger.debug(f'requesting audio with payload {payload}')
 
@@ -109,8 +128,4 @@ class Google(service.ServiceBase):
                 raise errors.ServicePermissionError(source_text, voice, error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
-        data = response.json()
-        encoded = data['audioContent']
-        audio_content = base64.b64decode(encoded)
-
-        return audio_content
+        return response.json()
