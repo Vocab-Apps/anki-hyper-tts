@@ -267,6 +267,7 @@ class ServiceManager():
 
         event_count = COUNT_BY_BATCH_UUID.get(audio_request_context.batch_uuid, 0)
         if event_count < constants_events.GENERATE_MAX_EVENTS:
+            audio_request_reason_name = audio_request_context.audio_request_reason.name
             stats.send_event_bg(constants_events.EventContext.servicemanager,
                                 constants_events.Event.get_tts_audio,
                                 None,
@@ -276,6 +277,9 @@ class ServiceManager():
                                     'service': voice.service,
                                     'voice_name': voice.name,
                                     'voice_key': voice.voice_key,
+                                    '$set': {
+                                        f'audio_request_mode_{audio_request_reason_name}': True,
+                                    },
                                 })
             event_count += 1
             COUNT_BY_BATCH_UUID[audio_request_context.batch_uuid] = event_count
