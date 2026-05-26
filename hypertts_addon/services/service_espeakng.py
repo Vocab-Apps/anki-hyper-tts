@@ -123,11 +123,11 @@ class ESpeakNg(service.ServiceBase):
             subprocess.run(cmd, check=True, capture_output=True, text=True)
         except Exception as e:
             logger.warning(f"espeak-ng failed: {e}")
-            raise errors.RequestError(f"espeak-ng failed: {e}")
+            raise errors.RequestError(source_text, voice, f"espeak-ng failed: {e}")
 
         # Check if the wav file was created
         if not os.path.exists(wav_temp_file_name):
-            raise errors.RequestError(f"espeak-ng did not create output file")
+            raise errors.RequestError(source_text, voice, f"espeak-ng did not create output file")
 
         # Convert wav to mp3
         fh, mp3_temp_file_name = tempfile.mkstemp(prefix='hyper_tts_espeakng', suffix='.mp3') 
