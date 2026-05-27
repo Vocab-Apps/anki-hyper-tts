@@ -15,6 +15,30 @@ from hypertts_addon import options
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
+# Polly ClientError codes that indicate a permanent problem with the request
+# input — retrying the identical SSML/text will keep failing until the user
+# fixes it. ANKI-HYPER-TTS-JY0: InvalidSsmlException from a nested <speak>
+# block with a Pinyin <phoneme> element.
+AMAZON_INPUT_ERROR_CODES = {
+    'InvalidSsmlException',
+    'TextLengthExceededException',
+    'LanguageNotSupportedException',
+    'InvalidSampleRateException',
+    'SsmlMarksNotSupportedForTextTypeException',
+    'MarksNotSupportedForFormatException',
+    'EngineNotSupportedException',
+}
+
+# Polly ClientError codes that indicate a permanent problem with the AWS
+# credentials. Retrying without re-configuring will keep failing.
+AMAZON_PERMISSION_ERROR_CODES = {
+    'AccessDeniedException',
+    'UnrecognizedClientException',
+    'InvalidSecurityTokenException',
+    'SignatureDoesNotMatch',
+}
+
+
 class Amazon(service.ServiceBase):
     CONFIG_ACCESS_KEY_ID = 'aws_access_key_id'
     CONFIG_SECRET_ACCESS_KEY = 'aws_secret_access_key'
@@ -116,15 +140,30 @@ class Amazon(service.ServiceBase):
         try:
             if voice.voice_key['engine'] in ['generative', 'long-form']:
                 logger.info(f'voice: {voice}, generating text format: {source_text}')
-                response = self.polly_client.synthesize_speech(Text=source_text, TextType="text", OutputFormat=audio_format_map[audio_format], VoiceId=voice.voice_key['voice_id'], Engine=voice.voice_key['engine'])            
+                response = self.polly_client.synthesize_speech(Text=source_text, TextType="text", OutputFormat=audio_format_map[audio_format], VoiceId=voice.voice_key['voice_id'], Engine=voice.voice_key['engine'])
             else:
                 logger.info(f'voice: {voice}, generating ssml format: {ssml_str}')
                 response = self.polly_client.synthesize_speech(Text=ssml_str, TextType="ssml", OutputFormat=audio_format_map[audio_format], VoiceId=voice.voice_key['voice_id'], Engine=voice.voice_key['engine'])
-        except (botocore.exceptions.BotoCoreError, botocore.exceptions.ClientError) as error:
-            raise errors.RequestError(source_text, voice, str(error))
+        except botocore.exceptions.ReadTimeoutError as error:
+            raise errors.ServiceTimeoutError(source_text, voice, str(error)) from error
+        except botocore.exceptions.ConnectTimeoutError as error:
+            raise errors.ServiceTimeoutError(source_text, voice, str(error)) from error
+        except botocore.exceptions.EndpointConnectionError as error:
+            raise errors.ServiceConnectionError(source_text, voice, str(error)) from error
+        except botocore.exceptions.ClientError as error:
+            code = error.response.get('Error', {}).get('Code', '')
+            message = str(error)
+            logger.warning(f'Amazon Polly ClientError ({code}): {message}')
+            if code in AMAZON_INPUT_ERROR_CODES:
+                raise errors.ServiceInputError(source_text, voice, message) from error
+            if code in AMAZON_PERMISSION_ERROR_CODES:
+                raise errors.ServicePermissionError(source_text, voice, message) from error
+            raise errors.UnknownServiceError(source_text, voice, message) from error
+        except botocore.exceptions.BotoCoreError as error:
+            raise errors.UnknownServiceError(source_text, voice, str(error)) from error
 
         if "AudioStream" in response:
             with contextlib.closing(response["AudioStream"]) as stream:
                 return stream.read()
 
-        raise errors.RequestError(source_text, voice, 'no audio stream')
+        raise errors.UnknownServiceError(source_text, voice, 'no audio stream')
