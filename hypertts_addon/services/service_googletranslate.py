@@ -19,7 +19,7 @@ LANGUAGE_KEY_MAP = {
     'id': lang.id_ID,
     'is': lang.is_IS,
     'iw': lang.he_IL,
-    'pt': lang.pt_PT,
+    'pt': lang.pt_BR,
     'pt-PT': lang.pt_PT,
     'fr-CA': lang.fr_CA,
     'sr': lang.sr_RS,
@@ -89,7 +89,13 @@ class GoogleTranslate(service.ServiceBase):
             time.sleep(throttle_seconds)
 
         try:
-            tts = gtts.gTTS(text=source_text, lang=voice.voice_key, timeout=constants.RequestTimeout)
+            # voice_key comes from gtts.lang.tts_langs(); disabling the second
+            # check prevents gTTS from collapsing locale tags like pt-PT to pt.
+            tts = gtts.gTTS(
+                text=source_text,
+                lang=voice.voice_key,
+                lang_check=False,
+                timeout=constants.RequestTimeout)
             buffer = io.BytesIO()
             tts.write_to_fp(buffer)
 
