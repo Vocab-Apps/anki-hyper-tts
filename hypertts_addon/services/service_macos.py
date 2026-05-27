@@ -467,8 +467,7 @@ class MacOS(service.ServiceBase):
 
             logger.debug(f'MacOS voice list = {result}')
         except subprocess.CalledProcessError as cpe:
-            logger.error(f'could not get macos voicelist: {cpe}')
-            logger.error(cpe, exc_info=True)
+            logger.error(f'could not get macos voicelist: {cpe!r}', exc_info=True)
             result = []
 
         return result
@@ -542,8 +541,7 @@ class MacOS(service.ServiceBase):
                 logger.debug(f'parsed voice: {parsed_voice}')
                 result.append(parsed_voice)
             except Exception as e:
-                logger.error(f'{self.name}: could not parse voice line: [{line}]')
-                logger.error(e, exc_info=True)
+                logger.error(f'{self.name}: could not parse voice line: [{line}]: {e!r}', exc_info=True)
 
         return result
 
@@ -570,5 +568,5 @@ class MacOS(service.ServiceBase):
                 audio = audio_file.read()
                 return audio
         except Exception as e:
-            logger.error(e, exc_info=True)
+            logger.error(f'macos get_tts_audio failed: {e!r}', exc_info=True)
             raise

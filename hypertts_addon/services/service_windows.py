@@ -382,8 +382,7 @@ class Windows(service.ServiceBase):
             return result
 
         except Exception as e:
-            logger.error(f'could not get voicelist: {e}')
-            logger.error(e, exc_info=True)
+            logger.error(f'could not get voicelist: {e!r}', exc_info=True)
 
         return []
 

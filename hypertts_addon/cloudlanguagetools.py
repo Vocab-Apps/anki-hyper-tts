@@ -215,7 +215,7 @@ class CloudLanguageTools():
             # listed explicitly alongside ConnectionError.
             raise errors.ServiceConnectionError(source_text, voice, str(e))
         except Exception as e:
-            logger.error(e, exc_info=True)
+            logger.error(f'cloudlanguagetools service error: {e!r}', exc_info=True)
             raise errors.UnknownServiceError(source_text, voice, str(e))
 
     def account_info(self, api_key):

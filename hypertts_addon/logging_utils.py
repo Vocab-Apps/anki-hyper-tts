@@ -69,12 +69,12 @@ class SentryLogger():
         self.send_event(logging.WARNING, msg)
 
     def error(self, msg, *args, **kwargs):
-        # check if exc_info=True was passed
-        exc_info = kwargs.get('exc_info', None)
-        if exc_info == True:
-            sentry_sdk.capture_exception(msg)
-        else:
-            self.send_event(logging.ERROR, msg)
+        if kwargs.get('exc_info'):
+            _, exception, _ = sys.exc_info()
+            if exception is not None:
+                sentry_sdk.capture_exception(exception)
+                return
+        self.send_event(logging.ERROR, msg)
 
     def critical(self, msg, *args, **kwargs):
         self.send_event(logging.CRITICAL, msg)
