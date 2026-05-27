@@ -6,7 +6,7 @@ import enum
 PREFIX = 'anki_addon_v2'
 ADDON = 'hypertts'
 
-GENERATE_MAX_EVENTS = 5
+GENERATE_MAX_EVENTS = 3
 
 # feature flags
 FEATURE_FLAG_DEFAULT_VALUE = 'control'
