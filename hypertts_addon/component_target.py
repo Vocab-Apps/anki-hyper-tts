@@ -31,6 +31,8 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.radio_button_keep_sound = aqt.qt.QRadioButton('Keep other sound tags (append)')
         self.remove_sound_group.addButton(self.radio_button_remove_sound)
         self.remove_sound_group.addButton(self.radio_button_keep_sound)
+        # searchable audio meta
+        self.checkbox_insert_audio_meta = aqt.qt.QCheckBox('Insert audio info')
 
 
     def get_model(self):
@@ -46,6 +48,7 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.radio_button_sound_only.setChecked(not self.batch_target_model.text_and_sound_tag)
         self.radio_button_remove_sound.setChecked(self.batch_target_model.remove_sound_tag)
         self.radio_button_keep_sound.setChecked(not self.batch_target_model.remove_sound_tag)
+        self.checkbox_insert_audio_meta.setChecked(self.batch_target_model.insert_audio_meta)
 
         # ensure model at the higher level gets updated
         # this is important for example if the target field doesn't exist in the field list, we want to make
@@ -87,15 +90,26 @@ class BatchTarget(component_common.ConfigComponentBase):
         # remove sound tag
         # ================
         groupbox = aqt.qt.QGroupBox('Existing Sound Tag Handling')
-        vlayout = aqt.qt.QVBoxLayout()        
+        vlayout = aqt.qt.QVBoxLayout()
         label = aqt.qt.QLabel(constants.GUI_TEXT_TARGET_REMOVE_SOUND_TAG)
         label.setWordWrap(True)
-        vlayout.addWidget(label)        
+        vlayout.addWidget(label)
         self.radio_button_remove_sound.setChecked(True)
         vlayout.addWidget(self.radio_button_remove_sound)
         vlayout.addWidget(self.radio_button_keep_sound)
         groupbox.setLayout(vlayout)
-        self.batch_target_layout.addWidget(groupbox)                
+        self.batch_target_layout.addWidget(groupbox)
+
+        # searchable audio meta
+        # =====================
+        groupbox = aqt.qt.QGroupBox('Searchable Audio Info')
+        vlayout = aqt.qt.QVBoxLayout()
+        label = aqt.qt.QLabel(constants.GUI_TEXT_TARGET_INSERT_AUDIO_META)
+        label.setWordWrap(True)
+        vlayout.addWidget(label)
+        vlayout.addWidget(self.checkbox_insert_audio_meta)
+        groupbox.setLayout(vlayout)
+        self.batch_target_layout.addWidget(groupbox)
 
         self.batch_target_layout.addStretch()
 
@@ -115,6 +129,7 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.radio_button_text_sound.toggled.connect(self.update_text_sound)
         self.radio_button_remove_sound.toggled.connect(self.update_remove_sound)
         self.radio_button_keep_sound.toggled.connect(self.update_remove_sound)
+        self.checkbox_insert_audio_meta.toggled.connect(self.update_insert_audio_meta)
 
     def update_text_sound(self):
         self.batch_target_model.text_and_sound_tag = self.radio_button_text_sound.isChecked()
@@ -122,6 +137,10 @@ class BatchTarget(component_common.ConfigComponentBase):
 
     def update_remove_sound(self):
         self.batch_target_model.remove_sound_tag = self.radio_button_remove_sound.isChecked()
+        self.notify_model_update()
+
+    def update_insert_audio_meta(self):
+        self.batch_target_model.insert_audio_meta = self.checkbox_insert_audio_meta.isChecked()
         self.notify_model_update()
 
     def update_field(self):

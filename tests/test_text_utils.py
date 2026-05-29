@@ -262,6 +262,28 @@ def test_strip_sound_tag_function(qtbot):
     assert text_utils.strip_sound_tag('[not a sound tag]') == '[not a sound tag]'
     assert text_utils.strip_sound_tag('[sound:] empty') == '[sound:] empty'  # Empty sound tag (malformed)
 
+def test_strip_hypertts_meta(qtbot):
+    """Test the strip_hypertts_meta function directly"""
+    span = '<span class="hypertts-meta" style="display:none">English (US), Female, Rachel (ElevenLabs)</span>'
+    assert text_utils.strip_hypertts_meta(span) == ''
+    assert text_utils.strip_hypertts_meta(f'[sound:a.mp3] {span}') == '[sound:a.mp3]'
+    assert text_utils.strip_hypertts_meta(f'{span} text') == 'text'
+
+    # multiple spans
+    assert text_utils.strip_hypertts_meta(f'{span}{span}') == ''
+
+    # content containing newlines is still stripped (regex uses re.DOTALL)
+    multiline_span = '<span class="hypertts-meta" style="display:none">first line\nsecond line</span>'
+    assert text_utils.strip_hypertts_meta(multiline_span) == ''
+
+    # does not strip other spans
+    other_span = '<span class="foo">bar</span>'
+    assert text_utils.strip_hypertts_meta(other_span) == other_span
+
+    # empty / no meta
+    assert text_utils.strip_hypertts_meta('') == ''
+    assert text_utils.strip_hypertts_meta('Hello world') == 'Hello world'
+
 def test_check_length(qtbot):
     # valid text should not raise
     text_utils.check_length('hello')

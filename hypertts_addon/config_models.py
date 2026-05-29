@@ -137,6 +137,7 @@ class BatchTarget():
     remove_sound_tag: bool = True
     insert_location: InsertLocation = InsertLocation.AFTER
     same_field: bool = False
+    insert_audio_meta: bool = False
 
     def serialize(self):
         return serialize_batch_target(self)
@@ -147,9 +148,10 @@ class BatchTarget():
 
     def __str__(self):
         return f'{self.target_field}'
-        
+
     def __repr__(self):
-        return f"BatchTarget(target_field={self.target_field}, text_and_sound_tag={self.text_and_sound_tag}, remove_sound_tag={self.remove_sound_tag})"
+        return (f"BatchTarget(target_field={self.target_field}, text_and_sound_tag={self.text_and_sound_tag}, "
+                f"remove_sound_tag={self.remove_sound_tag}, insert_audio_meta={self.insert_audio_meta})")
 
 def serialize_batch_target(batch_target):
     return databind.json.dump(batch_target, BatchTarget)

@@ -124,3 +124,7 @@ def check_length(text):
 def strip_sound_tag(field_value):
     field_value = re.sub(r'\[sound:[^\]]+\]', '', field_value)
     return field_value.strip()
+
+def strip_hypertts_meta(field_value):
+    field_value = re.sub(r'<span class="hypertts-meta"[^>]*>.*?</span>', '', field_value, flags=re.DOTALL)
+    return field_value.strip()

@@ -851,3 +851,90 @@ def test_priority_voices_not_found(qtbot):
 
     # make sure we got a AudioNotFoundError in the batch error manager
     assert str(batch_status_obj[0].error) == 'Service request error for [老人家]: Audio not found in any voices (voice: None)'
+
+
+# insert_audio_meta tests
+# =======================
+
+def run_simple_batch_meta(insert_audio_meta, text_and_sound_tag=True, prepopulate_field=None, note_id=None):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    voice_a_1 = get_default_voice_id(hypertts_instance)
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {}))
+
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
+    source = config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese')
+    target = config_models.BatchTarget(
+        target_field='Sound',
+        text_and_sound_tag=text_and_sound_tag,
+        remove_sound_tag=True,
+        insert_audio_meta=insert_audio_meta,
+    )
+
+    batch.set_source(source)
+    batch.set_target(target)
+    batch.set_voice_selection(single)
+    batch.set_text_processing(config_models.TextProcessing())
+
+    note_id = note_id or config_gen.note_id_1
+    if prepopulate_field is not None:
+        note = hypertts_instance.anki_utils.get_note_by_id(note_id)
+        # field_dict is the mock's underlying storage; __setitem__ writes to set_values, not field_dict
+        note.field_dict['Sound'] = prepopulate_field
+
+    listener = MockBatchStatusListener(hypertts_instance.anki_utils)
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, [note_id], listener)
+    hypertts_instance.process_batch_audio([note_id], batch, batch_status_obj, testing_utils.MockCollection())
+
+    note = hypertts_instance.anki_utils.get_note_by_id(note_id)
+    return note.set_values['Sound']
+
+
+def test_insert_audio_meta_disabled_by_default(qtbot):
+    sound_field = run_simple_batch_meta(insert_audio_meta=False)
+    assert 'hypertts-meta' not in sound_field
+    assert '[sound:' in sound_field
+
+
+def test_insert_audio_meta_enabled_appends_span(qtbot):
+    sound_field = run_simple_batch_meta(insert_audio_meta=True)
+    # voice_a_1 is built as: name='voice_a_1', gender=Male, language=fr_FR ('French (France)'), service='ServiceA'
+    expected_inner = 'French (France), Male, voice_a_1 (ServiceA)'
+    assert '[sound:' in sound_field
+    assert f'<span class="hypertts-meta" style="display:none">{expected_inner}</span>' in sound_field
+    # span must appear after the sound tag
+    assert sound_field.index('[sound:') < sound_field.index('<span class="hypertts-meta"')
+
+
+def test_insert_audio_meta_strips_stale_meta_on_regen(qtbot):
+    stale = '<span class="hypertts-meta" style="display:none">OLD: stale voice</span>'
+    sound_field = run_simple_batch_meta(
+        insert_audio_meta=True,
+        prepopulate_field=f'pre-existing text {stale}',
+    )
+    assert 'OLD: stale voice' not in sound_field
+    # exactly one meta span remains
+    assert sound_field.count('class="hypertts-meta"') == 1
+
+
+def test_insert_audio_meta_disabled_still_strips_stale_meta(qtbot):
+    # we own the hypertts-meta class, so regeneration cleans it up even when
+    # the user has the meta feature turned off
+    stale = '<span class="hypertts-meta" style="display:none">OLD: stale voice</span>'
+    sound_field = run_simple_batch_meta(
+        insert_audio_meta=False,
+        prepopulate_field=f'pre-existing text {stale}',
+    )
+    assert 'hypertts-meta' not in sound_field
+    assert 'OLD: stale voice' not in sound_field
+
+
+def test_insert_audio_meta_sound_only_mode_appends_span(qtbot):
+    # exercises the else branch of process_note_audio (sound-only, no text)
+    sound_field = run_simple_batch_meta(insert_audio_meta=True, text_and_sound_tag=False)
+    expected_inner = 'French (France), Male, voice_a_1 (ServiceA)'
+    assert '[sound:' in sound_field
+    assert f'<span class="hypertts-meta" style="display:none">{expected_inner}</span>' in sound_field
+    assert sound_field.index('[sound:') < sound_field.index('<span class="hypertts-meta"')

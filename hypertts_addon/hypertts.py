@@ -3,6 +3,7 @@
 import os
 import sys
 import re
+import html
 import hashlib
 import random
 import copy
@@ -121,7 +122,7 @@ class HyperTTS():
             source_text = self.get_source_text(note, batch.source, text_override)
             processed_text = self.process_text(source_text, batch.text_processing)
 
-        full_filename, audio_filename = self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)
+        full_filename, audio_filename, voice_with_options = self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)
         sound_tag, sound_file = self.get_collection_sound_tag(full_filename, audio_filename)
 
         target_field_content = note[target_field]
@@ -130,6 +131,9 @@ class HyperTTS():
         if batch.target.remove_sound_tag == True:
             target_field_content = text_utils.strip_sound_tag(target_field_content)
 
+        # always strip our own meta markers; we own this class and clean up on every regen
+        target_field_content = text_utils.strip_hypertts_meta(target_field_content)
+
         if batch.target.text_and_sound_tag == True:
             # user wants text and sound tag together, append the sound tag
             target_field_content = f'{target_field_content} {sound_tag}'
@@ -137,6 +141,9 @@ class HyperTTS():
             # user only wants sound tags
             target_field_content = self.keep_only_sound_tags(target_field_content)
             target_field_content = f'{target_field_content} {sound_tag}'
+
+        if batch.target.insert_audio_meta:
+            target_field_content = f'{target_field_content} {self.build_audio_meta_span(voice_with_options)}'
 
         target_field_content = target_field_content.strip()
 
@@ -152,7 +159,8 @@ class HyperTTS():
         source_text = self.get_source_text(note, batch.source, text_override)
         processed_text = text_utils.process_text(source_text, batch.text_processing)
         text_utils.check_length(processed_text)
-        return self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)
+        full_filename, audio_filename, _voice = self.get_audio_file(processed_text, batch.voice_selection, audio_request_context)
+        return full_filename, audio_filename
 
     def get_realtime_audio(self, realtime_model: config_models.RealtimeConfigSide, text):
         if not realtime_model.side_enabled:
@@ -160,7 +168,8 @@ class HyperTTS():
         source_text = text
         processed_text = text_utils.process_text(source_text, realtime_model.text_processing)
         text_utils.check_length(processed_text)
-        return self.get_audio_file(processed_text, realtime_model.voice_selection, context.AudioRequestContext(constants.AudioRequestReason.realtime))
+        full_filename, audio_filename, _voice = self.get_audio_file(processed_text, realtime_model.voice_selection, context.AudioRequestContext(constants.AudioRequestReason.realtime))
+        return full_filename, audio_filename
 
     def get_audio_file(self, processed_text, voice_selection, audio_request_context):
         # sanity checks
@@ -184,11 +193,11 @@ class HyperTTS():
                 assert isinstance(voice_id, voice_module.TtsVoiceId_v3), \
                     f"Expected voice_id to be TtsVoiceId_v3, got {type(voice_id).__name__}, voice_with_options: {type(voice_with_options).__name__}"
 
-                full_filename, audio_filename = self.generate_audio_write_file(processed_text, 
+                full_filename, audio_filename = self.generate_audio_write_file(processed_text,
                     voice_with_options.voice_id, voice_with_options.options, audio_request_context)
                 logger.debug(f'finished generating audio file and write to file for {processed_text}')
                 self.config_register_added_audio()
-                return full_filename, audio_filename
+                return full_filename, audio_filename, voice_with_options
             except errors.AudioNotFoundError as exc:
                 # try the next voice, as long as one is available
                 if not priority_mode:
@@ -489,6 +498,11 @@ class HyperTTS():
         with _start_span(op="db.anki.media.add", name="media_add_file"):
             self.anki_utils.media_add_file(full_filename)
         return f'[sound:{audio_filename}]', audio_filename
+
+    def build_audio_meta_span(self, voice_with_options: config_models.VoiceWithOptions) -> str:
+        voice = self.service_manager.locate_voice(voice_with_options.voice_id)
+        escaped = html.escape(str(voice), quote=False)
+        return f'<span class="hypertts-meta" style="display:none">{escaped}</span>'
 
     def get_full_audio_file_name(self, hash_str, format: options.AudioFormat):
         # return the absolute path of the audio file in the user_files directory
