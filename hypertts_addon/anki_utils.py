@@ -221,11 +221,20 @@ class AnkiUtils():
 
     def info_message(self, message, parent):
         message = self.restrict_message_length(message)
-        aqt.utils.showInfo(message, title=constants.ADDON_NAME, textFormat='rich', parent=parent)
+        try:
+            aqt.utils.showInfo(message, title=constants.ADDON_NAME, textFormat='rich', parent=parent)
+        except RuntimeError as e:
+            # the parent/main window may already be torn down (e.g. during shutdown), in which
+            # case showing a dialog raises "wrapped C/C++ object has been deleted" (Sentry
+            # ANKI-HYPER-TTS-JYQ). Don't let displaying a message raise a fresh exception.
+            logger.warning(f'could not show info message, UI likely torn down: {e}')
 
     def critical_message(self, message, parent):
         message = self.restrict_message_length(message)
-        aqt.utils.showCritical(message, title=constants.ADDON_NAME, parent=parent)
+        try:
+            aqt.utils.showCritical(message, title=constants.ADDON_NAME, parent=parent)
+        except RuntimeError as e:
+            logger.warning(f'could not show critical message, UI likely torn down: {e}')
 
     def tooltip_message(self, message):
         message = self.restrict_message_length(message)
