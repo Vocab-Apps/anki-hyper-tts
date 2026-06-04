@@ -399,6 +399,30 @@ class TestFreeServices(TTSTests):
                     context.AudioRequestContext(constants.AudioRequestReason.batch))
             self.assertTrue(cm.exception.retryable)
 
+    def test_googletranslate_chunked_encoding_error(self):
+        # pytest tests/test_tts_services/ -k 'test_googletranslate_chunked_encoding_error'
+        # Fixes ANKI-HYPER-TTS-K1Y: a ChunkedEncodingError wrapping a ConnectionResetError
+        # (server closed the connection mid-response body) must surface as ServiceConnectionError,
+        # not the UnknownServiceError catch-all. ChunkedEncodingError does not inherit from
+        # requests.exceptions.ConnectionError so it needs its own branch.
+        from unittest.mock import patch
+        import requests
+        from urllib3.exceptions import ProtocolError
+
+        selected_voice = self._googletranslate_voice()
+        reset = ConnectionResetError(54, 'Connection reset by peer')
+        protocol_error = ProtocolError(f'Connection broken: {reset!r}', reset)
+        underlying = requests.exceptions.ChunkedEncodingError(protocol_error)
+
+        with patch('gtts.gTTS.write_to_fp', side_effect=lambda *a, **kw: self._raise_gtts_error_from(underlying)):
+            with self.assertRaises(errors.ServiceConnectionError) as cm:
+                self.manager.get_tts_audio(
+                    'test',
+                    selected_voice,
+                    {},
+                    context.AudioRequestContext(constants.AudioRequestReason.batch))
+            self.assertTrue(cm.exception.retryable)
+
     def test_googletranslate_gateway_error(self):
         # pytest tests/test_tts_services/ -k 'test_googletranslate_gateway_error'
         # 5xx upstream gateway responses (no Retry-After) should be ServiceGatewayError.

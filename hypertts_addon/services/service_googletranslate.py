@@ -108,7 +108,11 @@ class GoogleTranslate(service.ServiceBase):
             underlying = e.__cause__ or e.__context__
             if isinstance(underlying, requests.exceptions.Timeout):
                 raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out') from e
-            if isinstance(underlying, requests.exceptions.ConnectionError):
+            # ChunkedEncodingError inherits from RequestException (not ConnectionError) but
+            # signals a transport-level break mid-response — e.g. ConnectionResetError wrapped
+            # inside ProtocolError (Sentry ANKI-HYPER-TTS-K1Y).
+            if isinstance(underlying, (requests.exceptions.ConnectionError,
+                                       requests.exceptions.ChunkedEncodingError)):
                 raise errors.ServiceConnectionError(source_text, voice, str(e)) from e
             raise errors.UnknownServiceError(source_text, voice, str(e)) from e
         except AssertionError as e:
