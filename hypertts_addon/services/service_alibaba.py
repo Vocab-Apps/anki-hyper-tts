@@ -14,11 +14,26 @@ from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 
+# Alibaba TTS encodes error reasons in the response body using a
+# "Meta:CODE:Description" or "Gateway:CODE:Description" format, and the HTTP
+# status for these credential failures isn't always 401/403 (Sentry
+# ANKI-HYPER-TTS-K1P observed a non-auth status with body
+# "Meta:APPKEY_NOT_EXIST:Appkey not exist!"). These substrings identify the
+# permanent credential / configuration failures so retry logic doesn't repeat
+# them.
+ALIBABA_PERMANENT_CREDENTIAL_CODES = (
+    'APPKEY_NOT_EXIST',
+    'APPKEY_INVALID',
+    'ACCESS_DENIED',
+    'InvalidAccessKeyId',
+)
+
+
 class Alibaba(service.ServiceBase):
     CONFIG_ACCESS_KEY_ID = 'access_key_id'
     CONFIG_ACCESS_KEY_SECRET = 'access_key_secret'
     CONFIG_APP_KEY = 'app_key'
- 
+
     access_token = None
 
     def cloudlanguagetools_enabled(self):
@@ -140,6 +155,8 @@ class Alibaba(service.ServiceBase):
                 raise errors.ServicePermissionError(source_text, voice, error_message)
             if response.status_code in (502, 503, 504):
                 raise errors.ServiceGatewayError(source_text, voice, error_message)
+            if any(code in error_message for code in ALIBABA_PERMANENT_CREDENTIAL_CODES):
+                raise errors.ServicePermissionError(source_text, voice, error_message)
             raise errors.UnknownServiceError(source_text, voice, error_message)
 
         if response.headers['Content-Type'] != 'audio/mpeg':

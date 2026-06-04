@@ -379,6 +379,43 @@ class TestAlibabaErrorMapping(unittest.TestCase):
         self.assertEqual(ctx.exception.retryable, True)
         self.assertIn('bad content type', ctx.exception.error_message)
 
+    def test_tts_appkey_not_exist_is_permission_error(self):
+        # ANKI-HYPER-TTS-K1P: Alibaba TTS gateway returns a non-auth HTTP
+        # status with body {"message":"Meta:APPKEY_NOT_EXIST:Appkey not
+        # exist!", ...} when the configured app key is wrong. Was previously
+        # raised as UnknownServiceError (retryable) — permanent until the user
+        # fixes their credentials.
+        with self.assertRaises(errors.ServicePermissionError) as ctx:
+            self._call_tts(400, json_body={
+                'status': 40000005,
+                'message': 'Meta:APPKEY_NOT_EXIST:Appkey not exist!',
+            })
+        self.assertIsInstance(ctx.exception, errors.PermanentError)
+        self.assertEqual(ctx.exception.retryable, False)
+        self.assertIn('APPKEY_NOT_EXIST', ctx.exception.error_message)
+
+    def test_tts_appkey_invalid_is_permission_error(self):
+        with self.assertRaises(errors.ServicePermissionError) as ctx:
+            self._call_tts(400, json_body={
+                'message': 'Meta:APPKEY_INVALID:Appkey is invalid',
+            })
+        self.assertEqual(ctx.exception.retryable, False)
+
+    def test_tts_access_denied_is_permission_error(self):
+        with self.assertRaises(errors.ServicePermissionError) as ctx:
+            self._call_tts(400, json_body={
+                'message': 'Gateway:ACCESS_DENIED:The token is invalid',
+            })
+        self.assertEqual(ctx.exception.retryable, False)
+
+    def test_tts_unrelated_400_still_unknown_service_error(self):
+        # A 400 whose body doesn't match a known credential pattern keeps the
+        # existing retryable fallback so genuinely transient or unclassified
+        # failures aren't accidentally marked permanent.
+        with self.assertRaises(errors.UnknownServiceError) as ctx:
+            self._call_tts(400, json_body={'message': 'some other failure'})
+        self.assertEqual(ctx.exception.retryable, True)
+
 
 class TestAmazonErrorMapping(unittest.TestCase):
     """service_amazon ClientError code -> error mapping."""
