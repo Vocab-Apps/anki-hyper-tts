@@ -16,10 +16,13 @@ from hypertts_addon.services import service_alibaba
 from hypertts_addon.services import service_amazon
 from hypertts_addon.services import service_azure
 from hypertts_addon.services import service_google
+from hypertts_addon.services import service_googletranslate
 from hypertts_addon.services import service_gemini
 from hypertts_addon.services import service_elevenlabscustom
 from hypertts_addon import logging_utils
 from hypertts_addon import errors
+from hypertts_addon import constants
+from hypertts_addon import languages
 
 logger = logging_utils.get_test_child_logger(__name__)
 
@@ -154,6 +157,70 @@ class TestGoogleErrorMapping(unittest.TestCase):
     def test_other_status_still_legacy_request_error(self):
         with self.assertRaises(errors.RequestError):
             self._call(500, {'error': {'message': 'internal error'}})
+
+
+class TestGoogleTranslateLocaleHandling(unittest.TestCase):
+    """service_googletranslate must preserve regional language tags."""
+
+    def setUp(self):
+        self.service = service_googletranslate.GoogleTranslate()
+
+    def _voice_for_language(self, audio_language):
+        with mock.patch(
+                'hypertts_addon.services.service_googletranslate.gtts.lang.tts_langs',
+                return_value={
+                    'pt': 'Portuguese (Brazil)',
+                    'pt-PT': 'Portuguese (Portugal)',
+                    'fr': 'French',
+                    'fr-CA': 'French (Canada)',
+                }):
+            return [
+                voice for voice in self.service.voice_list()
+                if voice.audio_languages == [audio_language]
+            ][0]
+
+    def test_voice_list_keeps_regional_google_translate_keys(self):
+        portuguese_brazil = self._voice_for_language(languages.AudioLanguage.pt_BR)
+        portuguese_portugal = self._voice_for_language(languages.AudioLanguage.pt_PT)
+        french_canada = self._voice_for_language(languages.AudioLanguage.fr_CA)
+
+        self.assertEqual(portuguese_brazil.voice_key, 'pt')
+        self.assertEqual(portuguese_portugal.voice_key, 'pt-PT')
+        self.assertEqual(french_canada.voice_key, 'fr-CA')
+
+    def test_audio_generation_preserves_portuguese_portugal_key(self):
+        voice = self._voice_for_language(languages.AudioLanguage.pt_PT)
+
+        with mock.patch(
+                'hypertts_addon.services.service_googletranslate.gtts.gTTS'
+        ) as mock_gtts:
+            mock_gtts.return_value.write_to_fp.side_effect = lambda fp: fp.write(b'audio')
+
+            audio = self.service.get_tts_audio('bom dia a todos', voice, {})
+
+        self.assertEqual(bytes(audio), b'audio')
+        mock_gtts.assert_called_once_with(
+            text='bom dia a todos',
+            lang='pt-PT',
+            lang_check=False,
+            timeout=constants.RequestTimeout)
+
+    def test_audio_generation_preserves_french_canada_key(self):
+        voice = self._voice_for_language(languages.AudioLanguage.fr_CA)
+
+        with mock.patch(
+                'hypertts_addon.services.service_googletranslate.gtts.gTTS'
+        ) as mock_gtts:
+            mock_gtts.return_value.write_to_fp.side_effect = lambda fp: fp.write(b'audio')
+
+            audio = self.service.get_tts_audio("Le son de la voix n'est pas correct.", voice, {})
+
+        self.assertEqual(bytes(audio), b'audio')
+        mock_gtts.assert_called_once_with(
+            text="Le son de la voix n'est pas correct.",
+            lang='fr-CA',
+            lang_check=False,
+            timeout=constants.RequestTimeout)
 
 
 class TestGeminiContentBlockMapping(unittest.TestCase):
