@@ -68,6 +68,39 @@ def _extract_retry_after_seconds(response_text):
     return DEFAULT_RETRY_AFTER_SECONDS
 
 
+def _raise_for_error_status(status_code, response_text, source_text, voice):
+    # Map a non-OK Gemini response to the appropriate ServiceRequestError
+    # subclass. Caller handles 200 (success) and 429 (rate-limit-with-
+    # Retry-After) before reaching here.
+    #
+    # Previously this site raised the legacy errors.RequestError for every
+    # non-200 response, which is not retry-aware — so a permanent 403
+    # ("User location is not supported for the API use", Sentry
+    # ANKI-HYPER-TTS-K4V) was retried 3× and grouped under the legacy class
+    # instead of being surfaced as a permanent permission error.
+    try:
+        data = json.loads(response_text)
+        error_message = data.get('error', {}).get('message', str(data))
+    except (ValueError, TypeError, AttributeError):
+        error_message = response_text or f'HTTP {status_code}'
+
+    full_msg = f'Gemini API error (HTTP {status_code}): {error_message}'
+
+    if status_code == 400:
+        # INVALID_ARGUMENT — bad/unsupported input
+        raise errors.ServiceInputError(source_text, voice, full_msg)
+    if status_code in (401, 403):
+        # UNAUTHENTICATED / PERMISSION_DENIED — bad key, regional restriction
+        raise errors.ServicePermissionError(source_text, voice, full_msg)
+    if status_code == 404:
+        # NOT_FOUND — model not available to this key
+        raise errors.ServicePermissionError(source_text, voice, full_msg)
+    if 500 <= status_code < 600:
+        # 5xx — upstream/server-side failure
+        raise errors.ServiceGatewayError(source_text, voice, full_msg)
+    raise errors.UnknownServiceError(source_text, voice, full_msg)
+
+
 class Gemini(service.ServiceBase):
     CONFIG_API_KEY = 'api_key'
 
@@ -151,9 +184,7 @@ class Gemini(service.ServiceBase):
 
         if response.status_code != 200:
             logger.warning(f'HTTP {response.status_code}, headers: {dict(response.headers)}, body: {response.text}')
-            data = response.json()
-            error_message = data.get('error', {}).get('message', str(data))
-            raise errors.RequestError(source_text, voice, error_message)
+            _raise_for_error_status(response.status_code, response.text, source_text, voice)
 
         data = response.json()
 
