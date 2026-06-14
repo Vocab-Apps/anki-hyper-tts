@@ -552,6 +552,48 @@ class TestFreeServices(TTSTests):
                 self.assertEqual(kwargs.get('tld'), expected_tld,
                                  f'tld for {voice_key}: expected {expected_tld}, got {kwargs.get("tld")}')
 
+    def test_googletranslate_dev_branch_voice_keys_still_emit(self):
+        # pytest tests/test_tts_services/ -k 'test_googletranslate_dev_branch_voice_keys_still_emit'
+        # Comprehensive backward-compat guard: reproduce the OLD voice_list() algorithm
+        # (as it lived on the `dev` branch) and assert every voice_key it would have
+        # emitted is also emitted by the current voice_list(). Without this guard,
+        # adding a new key to GTTS_KEY_TO_EMITTED_VOICE_KEYS without listing the
+        # corresponding legacy voice_key would silently break user presets.
+        import gtts
+        from hypertts_addon import voice as voice_module
+
+        service_name = 'GoogleTranslate'
+        service_obj = self.manager.get_service(service_name)
+        if service_obj.enabled == False:
+            raise unittest.SkipTest(f'service {service_name} not enabled, skipping')
+
+        # Re-implement dev's voice_list() voice_key emission. Dev iterated
+        # gtts.lang.tts_langs() and emitted voice_key=language_key whenever
+        # get_language(language_key) returned non-None.
+        dev_voice_keys = []
+        for language_key in gtts.lang.tts_langs().keys():
+            if service_obj.get_language(language_key) is not None:
+                dev_voice_keys.append(language_key)
+
+        # Current voice_list — collect every voice_key actually emitted today
+        current_voice_keys = {
+            v.voice_key for v in self.manager.full_voice_list()
+            if v.service == service_name
+        }
+
+        missing = [k for k in dev_voice_keys if k not in current_voice_keys]
+        self.assertEqual(missing, [],
+            f'voice_keys emitted by dev are no longer emitted: {missing}. '
+            'Saved presets pointing at these keys would fail locate_voice.')
+
+        # Every dev voice_key must also resolve to a valid TtsVoice via locate_voice —
+        # this is the exact path the addon uses when loading a serialized preset.
+        for vk in dev_voice_keys:
+            with self.subTest(voice_key=vk):
+                located = self.manager.locate_voice(
+                    voice_module.TtsVoiceId_v3(voice_key=vk, service=service_name))
+                self.assertEqual(located.voice_key, vk)
+
     def test_googletranslate_legacy_voice_key_locates(self):
         # pytest tests/test_tts_services/ -k 'test_googletranslate_legacy_voice_key_locates'
         # Issues #297 and #346: simulate a saved preset built by an older version of the
