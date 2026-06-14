@@ -293,6 +293,7 @@ class TTSTests(unittest.TestCase):
             languages.AudioLanguage.en_US: 'en-US',
             languages.AudioLanguage.en_GB: 'en-GB',
             languages.AudioLanguage.fr_FR: 'fr-FR',
+            languages.AudioLanguage.fr_CA: 'fr-CA',
             languages.AudioLanguage.zh_CN: 'zh-CN',
             languages.AudioLanguage.ja_JP: 'ja-JP',
             languages.AudioLanguage.de_DE: 'de-DE',
@@ -304,6 +305,8 @@ class TTSTests(unittest.TestCase):
             languages.AudioLanguage.tr_TR: 'tr-TR',
             languages.AudioLanguage.ru_RU: 'ru-RU',
             languages.AudioLanguage.th_TH: 'th-TH',
+            languages.AudioLanguage.pt_PT: 'pt-PT',
+            languages.AudioLanguage.pt_BR: 'pt-BR',
         }
 
         recognition_language = recognition_language_map[audio_language]

@@ -32,6 +32,57 @@ GENDER_MAP = {
     'ko': constants.Gender.Male
 }
 
+# Regional voice variants. gTTS exposes a single language code (e.g. "pt", "en", "fr") via
+# tts_langs(), but the underlying Google Translate API produces different accents depending
+# on the top-level domain ("translate.google.<tld>"). For languages with multiple useful
+# accents we emit one voice per voice_key below, each routed to the right tld.
+#
+# Backward compatibility: every voice_key that the OLD voice_list() emitted is preserved
+# here so existing saved presets continue to resolve. The OLD voice_list() iterated
+# gtts.lang.tts_langs() directly — at the time of writing that returns 'en', 'fr', 'fr-CA',
+# 'pt', 'pt-PT', 'es' (and many others). All of those are still emitted; their tld is now
+# corrected so the audio matches the AudioLanguage label.
+#
+# Notably for issue #346: 'pt' and 'pt-PT' were both legacy voice_keys labelled Portuguese
+# (Portugal) but routed to tld='com' (Brazilian audio). Both now route to tld='pt'.
+# Similarly 'fr-CA' was emitted by gTTS but silently fell back to lang='fr' (France audio);
+# it now routes to tld='ca' for actual Canadian audio.
+#
+# voice_key -> (gtts_lang, tld, AudioLanguage)
+EXPLICIT_VOICES = {
+    # English (issue #297 adds the regional variants beyond 'en')
+    'en':    ('en', 'com',    lang.en_US),
+    'en-GB': ('en', 'co.uk',  lang.en_GB),
+    'en-AU': ('en', 'com.au', lang.en_AU),
+    'en-CA': ('en', 'ca',     lang.en_CA),
+    'en-IN': ('en', 'co.in',  lang.en_IN),
+    'en-IE': ('en', 'ie',     lang.en_IE),
+    'en-ZA': ('en', 'co.za',  lang.en_ZA),
+    # French
+    'fr':    ('fr', 'fr',     lang.fr_FR),
+    'fr-CA': ('fr', 'ca',     lang.fr_CA),
+    # Portuguese — 'pt' and 'pt-PT' are both legacy keys, both route to Portugal audio.
+    # 'pt-BR' is the new Brazilian voice (issue #346).
+    'pt':    ('pt', 'pt',     lang.pt_PT),
+    'pt-PT': ('pt', 'pt',     lang.pt_PT),
+    'pt-BR': ('pt', 'com.br', lang.pt_BR),
+    # Spanish
+    'es':    ('es', 'com',    lang.es_ES),
+    'es-MX': ('es', 'com.mx', lang.es_MX),
+}
+
+# When iterating gTTS's tts_langs(), if a gtts key appears here, emit the listed voice_keys
+# (in this order) instead of using the generic single-voice-per-gtts-key path. Each listed
+# voice_key must exist in EXPLICIT_VOICES.
+GTTS_KEY_TO_EMITTED_VOICE_KEYS = {
+    'en':    ['en', 'en-GB', 'en-AU', 'en-CA', 'en-IN', 'en-IE', 'en-ZA'],
+    'fr':    ['fr'],
+    'fr-CA': ['fr-CA'],
+    'pt':    ['pt', 'pt-BR'],
+    'pt-PT': ['pt-PT'],
+    'es':    ['es', 'es-MX'],
+}
+
 class GoogleTranslate(service.ServiceBase):
     CONFIG_THROTTLE_SECONDS = 'throttle_seconds'
 
@@ -63,14 +114,26 @@ class GoogleTranslate(service.ServiceBase):
         return None
 
     def voice_list(self) -> List[voice.TtsVoice_v3]:
-        languages = gtts.lang.tts_langs()
+        gtts_languages = gtts.lang.tts_langs()
         voices = []
-        for language_key, language_name in languages.items():
+        for language_key, language_name in gtts_languages.items():
+            gender = GENDER_MAP.get(language_key, constants.Gender.Female)
+            if language_key in GTTS_KEY_TO_EMITTED_VOICE_KEYS:
+                for voice_key in GTTS_KEY_TO_EMITTED_VOICE_KEYS[language_key]:
+                    _, _, audio_language = EXPLICIT_VOICES[voice_key]
+                    voices.append(voice.build_voice_v3(
+                        name=audio_language.audio_lang_name,
+                        gender=gender,
+                        language=audio_language,
+                        service=self,
+                        voice_key=voice_key,
+                        options={}
+                    ))
+                continue
             language = self.get_language(language_key)
             if language == None:
                 logger.error(f'{self.name}: could not process language {language_key}')
             else:
-                gender = GENDER_MAP.get(language_key, constants.Gender.Female)
                 voices.append(voice.build_voice_v3(
                     name=language_name,
                     gender=gender,
@@ -88,8 +151,19 @@ class GoogleTranslate(service.ServiceBase):
         if throttle_seconds > 0:
             time.sleep(throttle_seconds)
 
+        # Resolve voice_key to (gtts_lang, tld). Voice keys not in EXPLICIT_VOICES
+        # (the long-tail of single-accent languages) pass straight through with tld='com'.
+        explicit = EXPLICIT_VOICES.get(voice.voice_key)
+        if explicit is not None:
+            gtts_lang, tld, _ = explicit
+        else:
+            gtts_lang, tld = voice.voice_key, 'com'
+
+        logger.info(f'gtts.gTTS request: voice_key={voice.voice_key!r}, lang={gtts_lang!r}, '
+                    f'tld={tld!r}, timeout={constants.RequestTimeout}, text={source_text!r}')
+
         try:
-            tts = gtts.gTTS(text=source_text, lang=voice.voice_key, timeout=constants.RequestTimeout)
+            tts = gtts.gTTS(text=source_text, lang=gtts_lang, tld=tld, timeout=constants.RequestTimeout)
             buffer = io.BytesIO()
             tts.write_to_fp(buffer)
 
