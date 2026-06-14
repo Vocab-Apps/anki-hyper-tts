@@ -465,11 +465,12 @@ class TestFreeServices(TTSTests):
         # the old code emitted all of them — preserve that.
         for legacy_key in ('en', 'fr', 'fr-CA', 'pt', 'pt-PT', 'es'):
             self.assertIn(legacy_key, voice_keys, f'legacy voice_key {legacy_key} missing')
-        # new regional variants for #297
-        for expected in ('en-GB', 'en-AU', 'en-CA', 'en-IN', 'en-IE', 'en-ZA'):
+        # new regional variants for #297 — full set from the gTTS localized-accents docs
+        for expected in ('en-GB', 'en-AU', 'en-CA', 'en-IN', 'en-IE', 'en-ZA', 'en-NG'):
             self.assertIn(expected, voice_keys, f'missing regional voice {expected}')
-        # new Brazilian voice for #346
+        # new Brazilian voice for #346 plus Spanish (North America)
         self.assertIn('pt-BR', voice_keys)
+        self.assertIn('es-US', voice_keys)
 
         # Each variant must advertise the right AudioLanguage so the GUI filter shows it
         # under the correct locale.
@@ -498,21 +499,25 @@ class TestFreeServices(TTSTests):
 
         # (voice_key, expected_lang_kwarg, expected_tld_kwarg)
         # Verifies both new variants and backward compat for every legacy voice_key that
-        # the OLD voice_list() emitted (from gtts.lang.tts_langs()).
-        # - 'en' keeps tld='com' (US English) — unchanged behaviour.
+        # the OLD voice_list() emitted (from gtts.lang.tts_langs()). The (lang, tld) pairs
+        # mirror the gTTS docs table at
+        # https://gtts.readthedocs.io/en/latest/module.html#localized-accents
         # - 'pt' and 'pt-PT' must now route to tld='pt' (fixes #346: the voices labelled
         #   Portuguese (Portugal) were producing Brazilian audio).
         # - 'fr-CA' must now route to tld='ca' (was silently falling back to 'fr').
         # - 'fr' moves to tld='fr' so it remains distinct from fr-CA.
+        # - 'en' moves to tld='us' and 'es' to tld='es' so each base voice matches the
+        #   explicit accent listed in the docs rather than the geo-dependent 'com' default.
         cases = [
-            # English: default + new regional variants for #297
-            ('en', 'en', 'com'),
+            # English: default + regional variants from the docs (issue #297)
+            ('en', 'en', 'us'),
             ('en-GB', 'en', 'co.uk'),
             ('en-AU', 'en', 'com.au'),
             ('en-CA', 'en', 'ca'),
             ('en-IN', 'en', 'co.in'),
             ('en-IE', 'en', 'ie'),
             ('en-ZA', 'en', 'co.za'),
+            ('en-NG', 'en', 'com.ng'),
             # French: legacy 'fr' and legacy 'fr-CA' both routed correctly
             ('fr', 'fr', 'fr'),
             ('fr-CA', 'fr', 'ca'),
@@ -521,8 +526,9 @@ class TestFreeServices(TTSTests):
             ('pt-PT', 'pt', 'pt'),
             ('pt-BR', 'pt', 'com.br'),
             # Spanish
-            ('es', 'es', 'com'),
+            ('es', 'es', 'es'),
             ('es-MX', 'es', 'com.mx'),
+            ('es-US', 'es', 'us'),
         ]
 
         for voice_key, expected_lang, expected_tld in cases:

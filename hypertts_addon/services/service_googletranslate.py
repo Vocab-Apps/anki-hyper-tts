@@ -37,6 +37,9 @@ GENDER_MAP = {
 # on the top-level domain ("translate.google.<tld>"). For languages with multiple useful
 # accents we emit one voice per voice_key below, each routed to the right tld.
 #
+# The (lang, tld) pairings below mirror the table in the gTTS docs for localized accents:
+# https://gtts.readthedocs.io/en/latest/module.html#localized-accents
+#
 # Backward compatibility: every voice_key that the OLD voice_list() emitted is preserved
 # here so existing saved presets continue to resolve. The OLD voice_list() iterated
 # gtts.lang.tts_langs() directly — at the time of writing that returns 'en', 'fr', 'fr-CA',
@@ -51,13 +54,14 @@ GENDER_MAP = {
 # voice_key -> (gtts_lang, tld, AudioLanguage)
 EXPLICIT_VOICES = {
     # English (issue #297 adds the regional variants beyond 'en')
-    'en':    ('en', 'com',    lang.en_US),
+    'en':    ('en', 'us',     lang.en_US),
     'en-GB': ('en', 'co.uk',  lang.en_GB),
     'en-AU': ('en', 'com.au', lang.en_AU),
     'en-CA': ('en', 'ca',     lang.en_CA),
     'en-IN': ('en', 'co.in',  lang.en_IN),
     'en-IE': ('en', 'ie',     lang.en_IE),
     'en-ZA': ('en', 'co.za',  lang.en_ZA),
+    'en-NG': ('en', 'com.ng', lang.en_NG),
     # French
     'fr':    ('fr', 'fr',     lang.fr_FR),
     'fr-CA': ('fr', 'ca',     lang.fr_CA),
@@ -67,20 +71,21 @@ EXPLICIT_VOICES = {
     'pt-PT': ('pt', 'pt',     lang.pt_PT),
     'pt-BR': ('pt', 'com.br', lang.pt_BR),
     # Spanish
-    'es':    ('es', 'com',    lang.es_ES),
+    'es':    ('es', 'es',     lang.es_ES),
     'es-MX': ('es', 'com.mx', lang.es_MX),
+    'es-US': ('es', 'us',     lang.es_US),
 }
 
 # When iterating gTTS's tts_langs(), if a gtts key appears here, emit the listed voice_keys
 # (in this order) instead of using the generic single-voice-per-gtts-key path. Each listed
 # voice_key must exist in EXPLICIT_VOICES.
 GTTS_KEY_TO_EMITTED_VOICE_KEYS = {
-    'en':    ['en', 'en-GB', 'en-AU', 'en-CA', 'en-IN', 'en-IE', 'en-ZA'],
+    'en':    ['en', 'en-GB', 'en-AU', 'en-CA', 'en-IN', 'en-IE', 'en-ZA', 'en-NG'],
     'fr':    ['fr'],
     'fr-CA': ['fr-CA'],
     'pt':    ['pt', 'pt-BR'],
     'pt-PT': ['pt-PT'],
-    'es':    ['es', 'es-MX'],
+    'es':    ['es', 'es-MX', 'es-US'],
 }
 
 class GoogleTranslate(service.ServiceBase):
