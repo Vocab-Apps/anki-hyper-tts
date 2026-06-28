@@ -1,11 +1,5 @@
-import sys
 import requests
-import base64
 import time
-import uuid
-import hmac
-import hashlib
-import datetime
 from typing import List
 
 from hypertts_addon import voice
@@ -21,10 +15,11 @@ logger = logging_utils.get_child_logger(__name__)
 class NaverPapago(service.ServiceBase):
     CONFIG_THROTTLE_SECONDS = 'throttle_seconds'
 
-    TRANSLATE_ENDPOINT = 'https://papago.naver.com/apis/tts/'
-    TRANSLATE_MKID = TRANSLATE_ENDPOINT + 'makeID'    
-    HMAC_KEY = 'v1.8.12_7cf22c1499'
-    UUID = str(uuid.uuid4())
+    # The site was rewritten to Next.js and the TTS endpoints moved from
+    # /apis/tts/* to /api/tts/* (2025). The old HMAC-based PPG authorization
+    # scheme was dropped with the rewrite; the endpoints now require no auth.
+    TTS_ENDPOINT = 'https://papago.naver.com/api/tts/'
+    MAKE_ID_ENDPOINT = TTS_ENDPOINT + 'makeID'
 
     def __init__(self):
         service.ServiceBase.__init__(self)
@@ -67,50 +62,13 @@ class NaverPapago(service.ServiceBase):
             self.build_voice(languages.AudioLanguage.th_TH, constants.Gender.Female, 'somsi'),
         ]
 
-    # This function implements function I(a,t) found at
-    # https://papago.naver.com/main.87cbe57a9fc46d3db5c1.chunk.js
-    # 2021/05/27 update:
-    # HMAC_KEY has changed, and the timestamp is now in milliseconds
-    # use this tool: https://lelinhtinh.github.io/de4js/
-    #  var b = function (e, a) {
-    #     var t = Object(E.a)(),
-    #         n = (new Date).getTime() + a - d;
-    #     return {
-    #         Authorization: "PPG " + t + ":" + p.a.HmacMD5(t + "\n" + e.split("?")[0] + "\n" + n, "v1.8.1_b443f57e55").toString(p.a.enc.Base64),
-    #         Timestamp: n
-    #     }
-    # },
-
-    def compute_token(self, timestamp, uuid_str):
-        msg = uuid_str + '\n' + self.TRANSLATE_MKID + '\n' + timestamp
-        signature = hmac.new(bytes(self.HMAC_KEY, 'ascii'), bytes(msg, 'ascii'),
-                            hashlib.md5).digest()
-        signature = base64.b64encode(signature).decode()
-        auth = 'PPG ' + uuid_str + ':' + signature
-        return auth
-
     def generate_headers(self):
-        timestamp_seconds_float = datetime.datetime.now().timestamp()
-        timestamp_milliseconds = timestamp_seconds_float * 1000.0
-        timestamp_str = str(int(timestamp_milliseconds))
-        auth = self.compute_token(timestamp_str, self.UUID)
-
-        return {'authorization': auth, 
-                'timestamp': timestamp_str,
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Host': 'papago.naver.com',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0',
-                'Accept': 'application/json',
-                'Accept-Language': 'en-US',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                'Content-Length': '64',
-                'Origin': 'https://papago.naver.com',
-                'Referer': 'https://papago.naver.com/',
-                'Connection': 'keep-alive',
-                'Pragma': 'no-cache',
-                'Cache-Control': 'no-cache',
-                'TE': 'Trailers'
+        return {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0',
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Origin': 'https://papago.naver.com',
+            'Referer': 'https://papago.naver.com/',
         }
 
     def get_tts_audio(self, source_text, voice: voice.TtsVoice_v3, options):
@@ -119,7 +77,7 @@ class NaverPapago(service.ServiceBase):
         if throttle_seconds > 0:
             time.sleep(throttle_seconds)
 
-        url = self.TRANSLATE_MKID
+        url = self.MAKE_ID_ENDPOINT
         params = {
             'alpha': 0,
             'pitch': 0,
@@ -140,10 +98,10 @@ class NaverPapago(service.ServiceBase):
         # actually retrieve sound file
         # ============================
 
-        final_url = self.TRANSLATE_ENDPOINT + sound_id
+        final_url = self.TTS_ENDPOINT + sound_id
         logger.info(f'final_url: {final_url}')
 
-        response = requests.get(final_url, timeout=constants.RequestTimeout)
+        response = requests.get(final_url, headers=headers, timeout=constants.RequestTimeout)
         if response.status_code != 200:
             raise errors.RequestError(source_text, voice, f'got status_code {response.status_code} from {final_url}: {response.content}')
         return response.content
