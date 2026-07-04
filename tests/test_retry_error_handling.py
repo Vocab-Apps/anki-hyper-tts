@@ -1,7 +1,9 @@
 import unittest
 from unittest import mock
 import datetime
+import socket
 import requests.exceptions
+import urllib3.exceptions
 
 import sys
 import os
@@ -30,6 +32,26 @@ def make_mock_voice():
 def make_mock_context():
     ctx = context.AudioRequestContext(constants.AudioRequestReason.batch)
     return ctx
+
+
+def make_wrapped_read_timeout_error():
+    """Build the exception chain requests/urllib3 produce when a read timeout
+    fires during the response body read (stream=False default): a plain
+    requests.exceptions.ConnectionError (NOT a Timeout subclass) wrapping a
+    urllib3 ReadTimeoutError wrapping a socket.timeout. Reproduces Sentry
+    ANKI-HYPER-TTS-KC2."""
+    try:
+        raise socket.timeout('The read operation timed out')
+    except socket.timeout as low:
+        try:
+            raise urllib3.exceptions.ReadTimeoutError(
+                'app.vocab.ai', '/languagetools-api/v5/audio', 'Read timed out.') from low
+        except urllib3.exceptions.ReadTimeoutError as rte:
+            try:
+                raise requests.exceptions.ConnectionError(
+                    "HTTPSConnectionPool(host='app.vocab.ai', port=443): Read timed out.") from rte
+            except requests.exceptions.ConnectionError as outer:
+                return outer
 
 
 class TestErrorHierarchy(unittest.TestCase):
@@ -267,6 +289,37 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         self.assertIn('connection refused', cm.exception.error_message)
 
     @mock.patch('requests.Session.post')
+    def test_wrapped_read_timeout_is_service_timeout(self, mock_post):
+        """A read timeout during the body read (stream=False default) is wrapped
+        by requests in a plain ConnectionError, not a Timeout subclass. It must
+        be reclassified as ServiceTimeoutError so retry logic and Sentry grouping
+        are correct. Sentry ANKI-HYPER-TTS-KC2."""
+        mock_post.side_effect = make_wrapped_read_timeout_error()
+        with self.assertRaises(errors.ServiceTimeoutError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertIsInstance(cm.exception, errors.TransientError)
+        self.assertIn('Read timed out', cm.exception.error_message)
+
+    @mock.patch('requests.Session.post')
+    def test_read_timeout_string_fallback(self, mock_post):
+        """If the cause chain can't be introspected, the 'Read timed out' string
+        in the message alone is enough to classify as ServiceTimeoutError."""
+        mock_post.side_effect = requests.exceptions.ConnectionError(
+            "HTTPSConnectionPool(host='app.vocab.ai', port=443): Read timed out.")
+        with self.assertRaises(errors.ServiceTimeoutError):
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+
+    @mock.patch('requests.Session.post')
+    def test_plain_connection_error_still_service_connection(self, mock_post):
+        """A ConnectionError that is NOT a wrapped read timeout must still map to
+        ServiceConnectionError (regression guard for the KC2 fix)."""
+        mock_post.side_effect = requests.exceptions.ConnectionError(
+            "NewConnectionError: Failed to establish a new connection: [Errno 111] Connection refused")
+        with self.assertRaises(errors.ServiceConnectionError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertNotIsInstance(cm.exception, errors.ServiceTimeoutError)
+
+    @mock.patch('requests.Session.post')
     def test_chunked_encoding_error_is_connection_error(self, mock_post):
         """ChunkedEncodingError (e.g. RST while streaming the body) is mapped to
         ServiceConnectionError. Sentry ANKI-HYPER-TTS-JM3: requests raises this
@@ -387,6 +440,15 @@ class TestCloudLanguageToolsCLTErrorMapping(unittest.TestCase):
         with self.assertRaises(errors.ServiceConnectionError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
         self.assertIn('connection refused', cm.exception.error_message)
+
+    @mock.patch('requests.Session.post')
+    def test_wrapped_read_timeout_is_service_timeout(self, mock_post):
+        """Wrapped read timeout on the CLT path is also reclassified as
+        ServiceTimeoutError (same KC2 fix as the vocabai branch)."""
+        mock_post.side_effect = make_wrapped_read_timeout_error()
+        with self.assertRaises(errors.ServiceTimeoutError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertIn('Read timed out', cm.exception.error_message)
 
     @mock.patch('requests.Session.post')
     def test_chunked_encoding_error_is_connection_error(self, mock_post):

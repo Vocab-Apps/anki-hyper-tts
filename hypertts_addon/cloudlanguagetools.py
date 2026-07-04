@@ -1,5 +1,6 @@
 import sys
 import os
+import socket
 import requests
 import json
 import base64
@@ -13,6 +14,37 @@ from . import voice as voice_module
 from . import logging_utils
 from . import config_models
 logger = logging_utils.get_child_logger(__name__)
+
+try:
+    from urllib3.exceptions import ReadTimeoutError as _Urllib3ReadTimeoutError
+except Exception:  # pragma: no cover - urllib3 is a hard dep of requests
+    _Urllib3ReadTimeoutError = None
+
+
+def _is_wrapped_read_timeout(exc):
+    """Return True if exc is a read timeout that requests re-raised as a plain
+    ConnectionError (not a Timeout subclass).
+
+    When ``Session.post`` is called with ``stream=False`` (the default),
+    requests reads the response body during the call. A urllib3
+    ReadTimeoutError raised mid-read is wrapped in
+    ``requests.exceptions.ConnectionError`` rather than
+    ``requests.exceptions.Timeout``, so the ``except requests.exceptions.Timeout``
+    handler misses it and the error is mis-tagged as ServiceConnectionError
+    (Sentry ANKI-HYPER-TTS-KC2). The cause chain is linked via __context__
+    (implicit "during handling"), not __cause__, so walk both.
+    """
+    seen = set()
+    cur = exc
+    while cur is not None and id(cur) not in seen:
+        seen.add(id(cur))
+        if isinstance(cur, socket.timeout):
+            return True
+        if _Urllib3ReadTimeoutError is not None and isinstance(cur, _Urllib3ReadTimeoutError):
+            return True
+        cur = cur.__cause__ or cur.__context__
+    # Fallback: urllib3 ReadTimeoutError's canonical message.
+    return 'Read timed out' in str(exc)
 
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
@@ -171,6 +203,12 @@ class CloudLanguageTools():
             # in requests, not a subclass, so it must be listed explicitly — otherwise
             # it falls through to the generic handler and gets mis-tagged as
             # UnknownServiceError (Sentry ANKI-HYPER-TTS-JM3).
+            # A read timeout during the body read (stream=False default) is wrapped by
+            # requests in ConnectionError, not Timeout — reclassify it so it lands in
+            # the ServiceTimeoutError Sentry group instead of ServiceConnectionError
+            # (Sentry ANKI-HYPER-TTS-KC2).
+            if _is_wrapped_read_timeout(e):
+                raise errors.ServiceTimeoutError(source_text, voice, str(e)) from e
             raise errors.ServiceConnectionError(source_text, voice, str(e))
         except Exception as e:
             # eventually we should not have any exceptions coming through here
@@ -212,7 +250,10 @@ class CloudLanguageTools():
         except (requests.exceptions.ConnectionError,
                 requests.exceptions.ChunkedEncodingError) as e:
             # See _get_tts_audio_vocabai for why ChunkedEncodingError must be
-            # listed explicitly alongside ConnectionError.
+            # listed explicitly alongside ConnectionError, and why a wrapped read
+            # timeout must be reclassified as ServiceTimeoutError (KC2).
+            if _is_wrapped_read_timeout(e):
+                raise errors.ServiceTimeoutError(source_text, voice, str(e)) from e
             raise errors.ServiceConnectionError(source_text, voice, str(e))
         except Exception as e:
             logger.error(f'cloudlanguagetools service error: {e!r}', exc_info=True)
