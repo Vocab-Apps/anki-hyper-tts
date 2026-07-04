@@ -41,6 +41,12 @@ bump2version patch
 pip install -r requirements.txt
 ```
 
+### GitHub Issues
+```bash
+# List open issues
+gh issue list
+```
+
 ## Code Architecture
 
 ### Core Components
