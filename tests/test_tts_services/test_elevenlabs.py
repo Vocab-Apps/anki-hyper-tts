@@ -343,5 +343,191 @@ class TestElevenLabsQuotaError(unittest.TestCase):
                 service.get_tts_audio('Hello', mock_voice, {})
 
 
+class TestElevenLabsBitrate(unittest.TestCase):
+    """Mock tests for the 192 kbps mp3 request + 128 kbps tier fallback."""
+
+    def _make_mock_voice(self, service_name):
+        from hypertts_addon import voice as voice_module
+        return voice_module.TtsVoice_v3(
+            name='Test Voice',
+            voice_key={'voice_id': 'test_id', 'model_id': 'eleven_monolingual_v1'},
+            options={
+                'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5},
+                'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75},
+            },
+            service=service_name,
+            gender=constants.Gender.Male,
+            audio_languages=[AudioLanguage.en_US],
+            service_fee=constants.ServiceFee.paid,
+        )
+
+    def _resp(self, status_code, content=b'audio-bytes', text=''):
+        from unittest.mock import MagicMock
+        r = MagicMock()
+        r.status_code = status_code
+        r.content = content
+        r.text = text
+        return r
+
+    def _urls(self, mock_post):
+        # url is the first positional arg to requests.post(url, json=..., ...)
+        return [call.args[0] for call in mock_post.call_args_list]
+
+    # --- ElevenLabs (managed) ---------------------------------------------
+
+    def test_mp3_requests_192kbps_first(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_mp3_requests_192kbps_first'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabs import ElevenLabs
+
+        service = ElevenLabs()
+        service.configure({'api_key': 'fake_key'})
+        voice = self._make_mock_voice('ElevenLabs')
+
+        with patch('hypertts_addon.services.service_elevenlabs.requests.post',
+                   return_value=self._resp(200, content=b'hq')) as mock_post:
+            result = service.get_tts_audio('Hello', voice, {})
+
+        self.assertEqual(result, b'hq')
+        urls = self._urls(mock_post)
+        self.assertEqual(len(urls), 1)
+        self.assertIn('output_format=mp3_44100_192', urls[0])
+        self.assertFalse(service._mp3_hq_unsupported)
+
+    def test_mp3_falls_back_to_128kbps_on_tier_rejection(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_mp3_falls_back_to_128kbps_on_tier_rejection'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabs import ElevenLabs
+
+        service = ElevenLabs()
+        service.configure({'api_key': 'fake_key'})
+        voice = self._make_mock_voice('ElevenLabs')
+
+        responses = [self._resp(401, text='tier too low'), self._resp(200, content=b'sd')]
+        with patch('hypertts_addon.services.service_elevenlabs.requests.post',
+                   side_effect=responses) as mock_post:
+            result = service.get_tts_audio('Hello', voice, {})
+
+        self.assertEqual(result, b'sd')
+        urls = self._urls(mock_post)
+        self.assertEqual(len(urls), 2)
+        self.assertIn('output_format=mp3_44100_192', urls[0])
+        self.assertIn('output_format=mp3_44100_128', urls[1])
+        # tier limitation should be remembered
+        self.assertTrue(service._mp3_hq_unsupported)
+
+    def test_mp3_skips_192kbps_after_tier_rejection_cached(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_mp3_skips_192kbps_after_tier_rejection_cached'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabs import ElevenLabs
+
+        service = ElevenLabs()
+        service.configure({'api_key': 'fake_key'})
+        service._mp3_hq_unsupported = True
+        voice = self._make_mock_voice('ElevenLabs')
+
+        with patch('hypertts_addon.services.service_elevenlabs.requests.post',
+                   return_value=self._resp(200, content=b'sd')) as mock_post:
+            result = service.get_tts_audio('Hello', voice, {})
+
+        self.assertEqual(result, b'sd')
+        urls = self._urls(mock_post)
+        self.assertEqual(len(urls), 1)
+        self.assertIn('output_format=mp3_44100_128', urls[0])
+
+    def test_mp3_genuine_error_fails_at_both_bitrates(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_mp3_genuine_error_fails_at_both_bitrates'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabs import ElevenLabs
+
+        service = ElevenLabs()
+        service.configure({'api_key': 'fake_key'})
+        voice = self._make_mock_voice('ElevenLabs')
+
+        # 401 at both bitrates (e.g. quota_exceeded) -> surfaced, not silently downgraded
+        responses = [self._resp(401, text='quota_exceeded'), self._resp(401, text='quota_exceeded')]
+        with patch('hypertts_addon.services.service_elevenlabs.requests.post',
+                   side_effect=responses):
+            with self.assertRaises(errors.ServicePermissionError):
+                service.get_tts_audio('Hello', voice, {})
+        # must NOT be remembered as tier-limited when 128 kbps also failed
+        self.assertFalse(service._mp3_hq_unsupported)
+
+    def test_mp3_5xx_not_downgraded(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_mp3_5xx_not_downgraded'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabs import ElevenLabs
+
+        service = ElevenLabs()
+        service.configure({'api_key': 'fake_key'})
+        voice = self._make_mock_voice('ElevenLabs')
+
+        with patch('hypertts_addon.services.service_elevenlabs.requests.post',
+                   return_value=self._resp(500, text='server error')) as mock_post:
+            with self.assertRaises(errors.RequestError):
+                service.get_tts_audio('Hello', voice, {})
+        # transient error must not trigger a 128 kbps retry
+        self.assertEqual(len(self._urls(mock_post)), 1)
+
+    def test_ogg_still_uses_opus_192(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_ogg_still_uses_opus_192'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabs import ElevenLabs
+
+        service = ElevenLabs()
+        service.configure({'api_key': 'fake_key'})
+        voice = self._make_mock_voice('ElevenLabs')
+
+        with patch('hypertts_addon.services.service_elevenlabs.requests.post',
+                   return_value=self._resp(200, content=b'ogg')) as mock_post:
+            result = service.get_tts_audio('Hello', voice, {'format': 'ogg_opus'})
+
+        self.assertEqual(result, b'ogg')
+        urls = self._urls(mock_post)
+        self.assertEqual(len(urls), 1)
+        self.assertIn('output_format=opus_48000_192', urls[0])
+
+    # --- ElevenLabsCustom -------------------------------------------------
+
+    def test_custom_mp3_falls_back_to_128kbps(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_custom_mp3_falls_back_to_128kbps'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabscustom import ElevenLabsCustom
+
+        service = ElevenLabsCustom()
+        service.configure({'api_key': 'fake_key'})
+        voice = self._make_mock_voice('ElevenLabsCustom')
+
+        responses = [self._resp(401, text='tier too low'), self._resp(200, content=b'sd')]
+        with patch('hypertts_addon.services.service_elevenlabscustom.requests.post',
+                   side_effect=responses) as mock_post:
+            result = service.get_tts_audio('Hello', voice, {})
+
+        self.assertEqual(result, b'sd')
+        urls = self._urls(mock_post)
+        self.assertEqual(len(urls), 2)
+        self.assertIn('output_format=mp3_44100_192', urls[0])
+        self.assertIn('output_format=mp3_44100_128', urls[1])
+        self.assertTrue(service._mp3_hq_unsupported)
+
+    def test_custom_mp3_400_input_error_preserved(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_custom_mp3_400_input_error_preserved'
+        from unittest.mock import patch
+        from hypertts_addon.services.service_elevenlabscustom import ElevenLabsCustom
+
+        service = ElevenLabsCustom()
+        service.configure({'api_key': 'fake_key'})
+        voice = self._make_mock_voice('ElevenLabsCustom')
+
+        # 400 at both bitrates (e.g. unsupported language_code) -> ServiceInputError,
+        # and the account must not be remembered as tier-limited
+        responses = [self._resp(400, text='bad language_code'), self._resp(400, text='bad language_code')]
+        with patch('hypertts_addon.services.service_elevenlabscustom.requests.post',
+                   side_effect=responses):
+            with self.assertRaises(errors.ServiceInputError):
+                service.get_tts_audio('Hello', voice, {})
+        self.assertFalse(service._mp3_hq_unsupported)
+
+
 class TestElevenLabsCLT(TestElevenLabs):
     CONFIG_MODE = 'clt'

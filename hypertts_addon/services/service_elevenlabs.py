@@ -13,8 +13,17 @@ logger = logging_utils.get_child_logger(__name__)
 class ElevenLabs(service.ServiceBase):
     CONFIG_API_KEY = 'api_key'
 
+    # 192 kbps mp3 requires an ElevenLabs Creator tier (or above); 128 kbps is
+    # available on every tier including Free. We request the higher bitrate and
+    # transparently fall back to 128 kbps for accounts whose tier rejects it.
+    MP3_OUTPUT_FORMAT_HQ = 'mp3_44100_192'
+    MP3_OUTPUT_FORMAT_DEFAULT = 'mp3_44100_128'
+
     def __init__(self):
         service.ServiceBase.__init__(self)
+        # flips to True once we observe this account cannot produce 192 kbps
+        # mp3, so we stop probing the higher bitrate on every request
+        self._mp3_hq_unsupported = False
 
     def cloudlanguagetools_enabled(self):
         return True
@@ -35,6 +44,9 @@ class ElevenLabs(service.ServiceBase):
     def configure(self, config):
         self._config = config
         self.api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
+        # re-probe the high-bitrate capability after a (re)configuration, e.g.
+        # when the user switches key or upgrades their subscription tier
+        self._mp3_hq_unsupported = False
 
     def voice_list(self):
         return self.basic_voice_list()
@@ -43,12 +55,10 @@ class ElevenLabs(service.ServiceBase):
         api_key = self.get_configuration_value_mandatory(self.CONFIG_API_KEY)
 
         voice_id = voice.voice_key['voice_id']
-        url = f'https://api.elevenlabs.io/v1/text-to-speech/{voice_id}'
+        base_url = f'https://api.elevenlabs.io/v1/text-to-speech/{voice_id}'
 
         # Handle audio format
         audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, voice.options.get(options.AUDIO_FORMAT_PARAMETER, {}).get('default', 'mp3'))
-        if audio_format_str == 'ogg_opus':
-            url += '?output_format=opus_48000_192'
 
         headers = {
             "Accept": "audio/mpeg",
@@ -74,12 +84,46 @@ class ElevenLabs(service.ServiceBase):
         if language_code:
             data['language_code'] = language_code
 
-        response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)
-        if response.status_code != 200:
-            error_message = f'{self.name}: error processing TTS request: {response.status_code} {response.text}'
-            logger.warning(error_message)
-            if response.status_code in (401, 402):
-                raise errors.ServicePermissionError(source_text, voice, error_message)
-            raise errors.RequestError(source_text, voice, error_message)
+        if audio_format_str == 'ogg_opus':
+            return self._request_audio(f'{base_url}?output_format=opus_48000_192', data, headers, source_text, voice)
 
-        return response.content
+        return self._request_mp3_audio(base_url, data, headers, source_text, voice)
+
+    def _request_mp3_audio(self, base_url, data, headers, source_text, voice):
+        # Request 192 kbps first, then fall back to the universally-available
+        # 128 kbps when the account tier rejects the higher bitrate. We don't
+        # know the exact status code ElevenLabs uses to signal that, so we only
+        # treat it as tier-limited when the 128 kbps retry actually succeeds --
+        # a genuine error (bad key, quota, unsupported voice) fails at both
+        # bitrates and is surfaced unchanged.
+        if not self._mp3_hq_unsupported:
+            url = f'{base_url}?output_format={self.MP3_OUTPUT_FORMAT_HQ}'
+            response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)
+            if response.status_code == 200:
+                return response.content
+            # 5xx / timeout is transient and 429 is a rate limit; neither is
+            # fixed by a lower bitrate, so surface those directly.
+            if not (400 <= response.status_code < 500 and response.status_code != 429):
+                self._raise_for_response(response, source_text, voice)
+            logger.info(f'{self.name}: 192kbps mp3 request returned {response.status_code}; retrying at 128kbps')
+
+        url = f'{base_url}?output_format={self.MP3_OUTPUT_FORMAT_DEFAULT}'
+        response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)
+        if response.status_code == 200:
+            # 128 kbps worked (possibly where 192 kbps did not): tier-limited
+            self._mp3_hq_unsupported = True
+            return response.content
+        self._raise_for_response(response, source_text, voice)
+
+    def _request_audio(self, url, data, headers, source_text, voice):
+        response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)
+        if response.status_code == 200:
+            return response.content
+        self._raise_for_response(response, source_text, voice)
+
+    def _raise_for_response(self, response, source_text, voice):
+        error_message = f'{self.name}: error processing TTS request: {response.status_code} {response.text}'
+        logger.warning(error_message)
+        if response.status_code in (401, 402):
+            raise errors.ServicePermissionError(source_text, voice, error_message)
+        raise errors.RequestError(source_text, voice, error_message)
