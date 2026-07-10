@@ -285,3 +285,44 @@ class TestGeminiErrorStatusMapping(unittest.TestCase):
                 with self.assertRaises(expected_cls) as ctx:
                     _raise_for_error_status(status, '{}', self.SOURCE_TEXT, self.VOICE)
                 self.assertIsInstance(ctx.exception, errors.ServiceRequestError)
+
+
+class TestGeminiMp3Bitrate(unittest.TestCase):
+    """Mock test: Gemini's raw PCM is re-encoded to mp3 at the configured bitrate.
+
+    Previously the PCM was handed to aqt.sound._encode_mp3, which passes no
+    bitrate to lame and so defaulted to ~32 kbps for the 24 kHz mono source.
+    """
+
+    def _voice(self):
+        return voice_module.TtsVoice_v3(
+            name='Test', voice_key={'name': 'Orus'},
+            options={'model': {'type': 'list', 'values': ['gemini-2.5-flash-tts'], 'default': 'gemini-2.5-flash-tts'},
+                     'prompt': {'type': 'text', 'default': ''},
+                     'language_code': {'type': 'text', 'default': 'en-US'}},
+            service='Gemini', gender=constants.Gender.Male,
+            audio_languages=[languages.AudioLanguage.en_US], service_fee=constants.ServiceFee.paid)
+
+    def test_pcm_reencoded_at_target_bitrate(self):
+        # pytest tests/test_tts_services/test_gemini.py -k 'test_pcm_reencoded_at_target_bitrate'
+        import base64
+        from unittest import mock
+        from hypertts_addon.services.service_gemini import Gemini
+
+        service = Gemini()
+        service.configure({'api_key': 'fake_key'})
+
+        resp = mock.Mock()
+        resp.status_code = 200
+        resp.json.return_value = {'candidates': [{'content': {'parts': [
+            {'inlineData': {'data': base64.b64encode(b'\x00\x01' * 2400).decode()}}]}}]}
+
+        with mock.patch('hypertts_addon.services.service_gemini.requests.post', return_value=resp), \
+             mock.patch('hypertts_addon.services.service_gemini.audio_utils.encode_wav_to_mp3',
+                        return_value=b'MP3BYTES') as mock_encode:
+            out = service.get_tts_audio('hello', self._voice(), {})
+
+        self.assertEqual(out, b'MP3BYTES')
+        self.assertEqual(mock_encode.call_args.args[1], constants.AUDIO_MP3_ENCODE_BITRATE_KBPS)
+        # the encoder receives a WAV container built from the raw PCM
+        self.assertEqual(mock_encode.call_args.args[0][:4], b'RIFF')

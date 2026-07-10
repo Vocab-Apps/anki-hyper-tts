@@ -9,6 +9,7 @@ from hypertts_addon import service
 from hypertts_addon import errors
 from hypertts_addon import constants
 from hypertts_addon import options
+from hypertts_addon import audio_utils
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
@@ -55,8 +56,12 @@ class Google(service.ServiceBase):
 
         audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
         audio_format = options.AudioFormat[audio_format_str]
+        # Google's native MP3 encoding is a fixed ~32 kbps, noticeably lossy
+        # (especially for tonal languages). For mp3 output we instead request
+        # lossless LINEAR16 and re-encode locally at a higher bitrate. OGG Opus
+        # is already good quality and returned directly.
         audio_format_map = {
-            options.AudioFormat.mp3: 'MP3',
+            options.AudioFormat.mp3: 'LINEAR16',
             options.AudioFormat.ogg_opus: 'OGG_OPUS'
         }
 
@@ -122,5 +127,10 @@ class Google(service.ServiceBase):
         data = response.json()
         encoded = data['audioContent']
         audio_content = base64.b64decode(encoded)
+
+        # LINEAR16 comes back as a lossless WAV; re-encode to MP3 at our target
+        # bitrate so the user gets a much better mp3 than Google's native ~32 kbps.
+        if audio_format == options.AudioFormat.mp3:
+            audio_content = audio_utils.encode_wav_to_mp3(audio_content, constants.AUDIO_MP3_ENCODE_BITRATE_KBPS)
 
         return audio_content

@@ -17,6 +17,13 @@ RequestTimeoutShort = 3
 BATCH_RETRY_DELAYS = [1, 2, 4]
 BATCH_RETRY_MAX = 3
 
+# Bitrate used when re-encoding lossless audio (Google LINEAR16, Gemini PCM) to
+# MP3. Google/Gemini only emit MP3 at ~32 kbps, so we request lossless and
+# re-encode at this bitrate for much better quality while staying MP3 (OGG is
+# not supported by the iOS Anki client). 24 kHz mono source -> 128 kbps is
+# generous headroom.
+AUDIO_MP3_ENCODE_BITRATE_KBPS = 128
+
 CLOUDLANGUAGETOOLS_API_BASE_URL = 'https://cloudlanguagetools-api.vocab.ai'
 VOCABAI_API_BASE_URL = 'https://app.vocab.ai'
 
