@@ -59,6 +59,31 @@ class TestEncodeWavToMp3(unittest.TestCase):
         self.assertIn('128', captured['cmd'])
         self.assertIn('--quiet', captured['cmd'])
 
+    def test_missing_lame_raises_clear_error(self):
+        # On Linux without lame installed, Popen raises FileNotFoundError; this
+        # must surface as an actionable HyperTTSError (not a raw OSError, which
+        # would be mis-reported to Sentry as a crash).
+        from hypertts_addon import errors
+
+        def fake_popen(cmd, **kwargs):
+            raise FileNotFoundError(2, 'No such file or directory', 'lame')
+
+        fake_sound = types.ModuleType('aqt.sound')
+        fake_sound._packagedCmd = lambda c: (c, {})
+        fake_sound.retryWait = lambda p: p.wait()
+        fake_utils = types.ModuleType('aqt.utils')
+        fake_utils.startup_info = lambda: None
+        fake_aqt = types.ModuleType('aqt')
+        fake_aqt.sound = fake_sound
+        fake_aqt.utils = fake_utils
+
+        with mock.patch.dict('sys.modules', {'aqt': fake_aqt, 'aqt.sound': fake_sound, 'aqt.utils': fake_utils}), \
+             mock.patch('hypertts_addon.audio_utils.subprocess.Popen', side_effect=fake_popen):
+            with self.assertRaises(errors.Mp3EncoderNotFound) as ctx:
+                audio_utils.encode_wav_to_mp3(b'RIFFxxxxWAVE', 128)
+        self.assertIn('lame', str(ctx.exception).lower())
+        self.assertIsInstance(ctx.exception, errors.HyperTTSError)
+
     def test_raises_when_lame_fails(self):
         def fake_popen(cmd, **kwargs):
             proc = mock.Mock()

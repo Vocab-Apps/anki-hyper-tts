@@ -4,6 +4,7 @@ import wave
 import tempfile
 import subprocess
 
+from hypertts_addon import errors
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
@@ -40,7 +41,15 @@ def encode_wav_to_mp3(wav_bytes, bitrate_kbps):
             f.write(wav_bytes)
         cmd = ['lame', wav_path, mp3_path, '--noreplaygain', '--quiet', '-b', str(bitrate_kbps)]
         cmd, env = aqt.sound._packagedCmd(cmd)
-        retcode = aqt.sound.retryWait(subprocess.Popen(cmd, startupinfo=aqt.utils.startup_info(), env=env))
+        try:
+            process = subprocess.Popen(cmd, startupinfo=aqt.utils.startup_info(), env=env)
+        except FileNotFoundError as e:
+            # The lame binary is bundled on Windows/macOS but may be absent on
+            # Linux. Surface an actionable, non-retryable HyperTTSError instead
+            # of a raw OSError (which would be mis-reported to Sentry as a crash).
+            logger.warning(f'lame mp3 encoder not found: {e}')
+            raise errors.Mp3EncoderNotFound() from e
+        retcode = aqt.sound.retryWait(process)
         if retcode != 0:
             raise Exception(f'lame mp3 encoding failed (exit code {retcode}) for command: {" ".join(cmd)}')
         with open(mp3_path, 'rb') as f:
