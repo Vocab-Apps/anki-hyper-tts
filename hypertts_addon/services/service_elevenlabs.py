@@ -91,21 +91,23 @@ class ElevenLabs(service.ServiceBase):
 
     def _request_mp3_audio(self, base_url, data, headers, source_text, voice):
         # Request 192 kbps first, then fall back to the universally-available
-        # 128 kbps when the account tier rejects the higher bitrate. We don't
-        # know the exact status code ElevenLabs uses to signal that, so we only
-        # treat it as tier-limited when the 128 kbps retry actually succeeds --
-        # a genuine error (bad key, quota, unsupported voice) fails at both
-        # bitrates and is surfaced unchanged.
+        # 128 kbps when the account tier rejects the higher bitrate. As a
+        # safety net we only treat it as tier-limited when the 128 kbps retry
+        # actually succeeds -- a genuine error is surfaced unchanged.
         if not self._mp3_hq_unsupported:
             url = f'{base_url}?output_format={self.MP3_OUTPUT_FORMAT_HQ}'
             response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)
             if response.status_code == 200:
                 return response.content
-            # 5xx / timeout is transient and 429 is a rate limit; neither is
-            # fixed by a lower bitrate, so surface those directly.
-            if not (400 <= response.status_code < 500 and response.status_code != 429):
+            # A tier that cannot use 192 kbps is rejected with HTTP 403, e.g.
+            # {"detail":{"code":"subscription_required","status":"output_format_not_allowed",
+            #  "message":"Output format 'mp3_44100_192' is only available on the
+            #  Creator tier and above."}}. Every other error (401 quota/auth,
+            # 402 paid plan, 400 input, 429 rate limit, 5xx transient) is not
+            # fixed by a lower bitrate, so surface it directly.
+            if response.status_code != 403:
                 self._raise_for_response(response, source_text, voice)
-            logger.info(f'{self.name}: 192kbps mp3 request returned {response.status_code}; retrying at 128kbps')
+            logger.info(f'{self.name}: 192kbps mp3 not allowed on this tier; retrying at 128kbps')
 
         url = f'{base_url}?output_format={self.MP3_OUTPUT_FORMAT_DEFAULT}'
         response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)

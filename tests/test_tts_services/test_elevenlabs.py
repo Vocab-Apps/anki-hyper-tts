@@ -403,7 +403,11 @@ class TestElevenLabsBitrate(unittest.TestCase):
         service.configure({'api_key': 'fake_key'})
         voice = self._make_mock_voice('ElevenLabs')
 
-        responses = [self._resp(401, text='tier too low'), self._resp(200, content=b'sd')]
+        # real ElevenLabs rejection for a too-high bitrate: HTTP 403
+        rejection = self._resp(403, text='{"detail":{"code":"subscription_required",'
+                               '"status":"output_format_not_allowed","message":"Output format '
+                               "'mp3_44100_192' is only available on the Creator tier and above.\"}}")
+        responses = [rejection, self._resp(200, content=b'sd')]
         with patch('hypertts_addon.services.service_elevenlabs.requests.post',
                    side_effect=responses) as mock_post:
             result = service.get_tts_audio('Hello', voice, {})
@@ -435,8 +439,8 @@ class TestElevenLabsBitrate(unittest.TestCase):
         self.assertEqual(len(urls), 1)
         self.assertIn('output_format=mp3_44100_128', urls[0])
 
-    def test_mp3_genuine_error_fails_at_both_bitrates(self):
-        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_mp3_genuine_error_fails_at_both_bitrates'
+    def test_mp3_non_tier_error_surfaced_without_retry(self):
+        # pytest tests/test_tts_services/test_elevenlabs.py -k 'test_mp3_non_tier_error_surfaced_without_retry'
         from unittest.mock import patch
         from hypertts_addon.services.service_elevenlabs import ElevenLabs
 
@@ -444,13 +448,13 @@ class TestElevenLabsBitrate(unittest.TestCase):
         service.configure({'api_key': 'fake_key'})
         voice = self._make_mock_voice('ElevenLabs')
 
-        # 401 at both bitrates (e.g. quota_exceeded) -> surfaced, not silently downgraded
-        responses = [self._resp(401, text='quota_exceeded'), self._resp(401, text='quota_exceeded')]
+        # 401 quota_exceeded is not a tier/format problem: surface it immediately,
+        # do not probe 128 kbps, and do not remember the account as tier-limited
         with patch('hypertts_addon.services.service_elevenlabs.requests.post',
-                   side_effect=responses):
+                   return_value=self._resp(401, text='quota_exceeded')) as mock_post:
             with self.assertRaises(errors.ServicePermissionError):
                 service.get_tts_audio('Hello', voice, {})
-        # must NOT be remembered as tier-limited when 128 kbps also failed
+        self.assertEqual(len(self._urls(mock_post)), 1)
         self.assertFalse(service._mp3_hq_unsupported)
 
     def test_mp3_5xx_not_downgraded(self):
@@ -498,7 +502,8 @@ class TestElevenLabsBitrate(unittest.TestCase):
         service.configure({'api_key': 'fake_key'})
         voice = self._make_mock_voice('ElevenLabsCustom')
 
-        responses = [self._resp(401, text='tier too low'), self._resp(200, content=b'sd')]
+        rejection = self._resp(403, text='{"detail":{"status":"output_format_not_allowed"}}')
+        responses = [rejection, self._resp(200, content=b'sd')]
         with patch('hypertts_addon.services.service_elevenlabscustom.requests.post',
                    side_effect=responses) as mock_post:
             result = service.get_tts_audio('Hello', voice, {})
@@ -519,13 +524,13 @@ class TestElevenLabsBitrate(unittest.TestCase):
         service.configure({'api_key': 'fake_key'})
         voice = self._make_mock_voice('ElevenLabsCustom')
 
-        # 400 at both bitrates (e.g. unsupported language_code) -> ServiceInputError,
-        # and the account must not be remembered as tier-limited
-        responses = [self._resp(400, text='bad language_code'), self._resp(400, text='bad language_code')]
+        # 400 (e.g. unsupported language_code) is an input error, not a tier
+        # problem: surface ServiceInputError immediately without a 128 kbps retry
         with patch('hypertts_addon.services.service_elevenlabscustom.requests.post',
-                   side_effect=responses):
+                   return_value=self._resp(400, text='bad language_code')) as mock_post:
             with self.assertRaises(errors.ServiceInputError):
                 service.get_tts_audio('Hello', voice, {})
+        self.assertEqual(len(self._urls(mock_post)), 1)
         self.assertFalse(service._mp3_hq_unsupported)
 
 
