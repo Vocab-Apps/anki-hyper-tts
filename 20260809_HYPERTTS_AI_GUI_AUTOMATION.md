@@ -5,7 +5,7 @@ Create a skill (or multiple) which describe how to test a live running Anki sess
 The guidelines are the following
 - use a standalone GUI mechanism to start a full Anki instance
 - we should use a separate Anki profile to avoid interfering with the existing one
-- use AnkiConnect to inject data (notes / cards) into Anki: https://github.com/amikey/anki-connect
+- use AnkiConnect to inject data (notes / cards) into Anki: https://github.com/amikey/anki-connect , so that HyperTTS can operate on those notes.
 - Claude Code should be able to start up an Anki instance with HyperTTS, navigate its GUI, make sure that HyperTTS dialogs (for the feature being implemented) are correct
 - Adding a new feature should still include pytest-qt tests as is already the case.
 - the API key for the vocab backend is available in `/home/luc/code/secrets/hypertts/clt_tts_vocabai_qa.sh`
