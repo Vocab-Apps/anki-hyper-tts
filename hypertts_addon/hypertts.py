@@ -506,7 +506,7 @@ class HyperTTS():
             options.AudioFormat.ogg_opus: 'ogg',
         }
         extension = extension_map[format]
-        filename = f'hypertts-{hash_str}.{extension}'
+        filename = f'{constants.AUDIO_FILENAME_PREFIX}{hash_str}.{extension}'
         return filename
 
     def get_hash_for_audio_request(self, source_text, voice_id: voice_module.TtsVoiceId_v3, options):
@@ -520,6 +520,67 @@ class HyperTTS():
     def keep_only_sound_tags(self, field_value):
         matches = re.findall(r'\[sound:[^\]]+\]', field_value)
         return ' '.join(matches)
+
+
+    # removing audio from notes
+    # =========================
+
+    def get_note_remove_audio_changes(self, note, remove_audio_config: config_models.RemoveAudioConfig) -> List[config_models.RemoveAudioFieldChange]:
+        """return the list of field changes which removing audio from this note would produce"""
+        if remove_audio_config.field_name != None:
+            field_name_list = [remove_audio_config.field_name]
+        else:
+            field_name_list = self.get_fields_from_note(note)
+
+        change_list = []
+        for field_name in field_name_list:
+            if field_name not in note:
+                # the user may have selected notes of different note types
+                continue
+            original_text = note[field_name]
+            new_text, removed_filenames = text_utils.remove_sound_tags(original_text,
+                remove_audio_config.hypertts_only)
+            if len(removed_filenames) == 0:
+                continue
+            change_list.append(config_models.RemoveAudioFieldChange(
+                note_id=note.id,
+                field_name=field_name,
+                original_text=original_text,
+                new_text=new_text,
+                removed_filenames=removed_filenames))
+        return change_list
+
+    def get_remove_audio_changes(self, note_id_list, remove_audio_config: config_models.RemoveAudioConfig) -> List[config_models.RemoveAudioFieldChange]:
+        """preview: which fields of which notes would be modified"""
+        change_list = []
+        for note_id in note_id_list:
+            note = self.anki_utils.get_note_by_id(note_id)
+            change_list.extend(self.get_note_remove_audio_changes(note, remove_audio_config))
+        logger.debug(f'get_remove_audio_changes: {len(change_list)} changes for {len(note_id_list)} notes')
+        return change_list
+
+    def remove_audio_from_notes(self, note_id_list, remove_audio_config: config_models.RemoveAudioConfig, anki_collection):
+        """
+        actually remove the audio. must run inside a collection op so that the
+        changes are grouped into a single undoable entry.
+        returns (modified_note_count, removed_sound_tag_count)
+        """
+        modified_note_count = 0
+        removed_sound_tag_count = 0
+        for note_id in note_id_list:
+            note = self.anki_utils.get_note_by_id(note_id)
+            change_list = self.get_note_remove_audio_changes(note, remove_audio_config)
+            if len(change_list) == 0:
+                continue
+            for change in change_list:
+                logger.debug(f'removing {change.removed_count} sound tag(s) from note {note_id} '
+                             f'field {change.field_name}')
+                note[change.field_name] = change.new_text
+                removed_sound_tag_count += change.removed_count
+            anki_collection.update_note(note)
+            modified_note_count += 1
+        logger.info(f'removed {removed_sound_tag_count} sound tags from {modified_note_count} notes')
+        return modified_note_count, removed_sound_tag_count
 
 
     # processing of Anki TTS tags

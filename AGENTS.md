@@ -94,6 +94,20 @@ The `package.sh` script handles:
 4. GitHub release creation
 5. File cleanup (removing meta.json, audio files, cache)
 
+### GUI Development Against a Live Anki Instance
+
+When adding or changing a HyperTTS dialog, use the `anki-gui-automation` skill
+(`.claude/skills/anki-gui-automation/SKILL.md`). It launches a real Anki instance headlessly on a
+throwaway profile via `scripts/gui_automation/`, injects notes with AnkiConnect, and exposes the
+live Qt widget tree as text so dialogs can be inspected and driven without pixel hunting. Machine
+setup is documented in `20260809_HYPERTTS_GUI_AUTOMATION_SETUP.md`.
+
+- give every widget you create a stable `objectName` prefixed `hypertts_<screen>_`; see
+  `hypertts_addon/component_remove_audio.py` for the reference implementation
+- always run `scripts/gui_automation/teardown.sh` when finished
+- new dialogs still need pytest-qt tests plus a `test_<name>_manual` entry in
+  `scripts/openbox_menu_hypertts`
+
 ### Testing Architecture
 
 - Uses pytest with PyQt6 API configuration

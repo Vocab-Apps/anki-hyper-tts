@@ -43,6 +43,10 @@ items = [
         'command': 'HYPERTTS_SERVICES_CONFIG_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_services_configuration_manual -s -rPP'
     },
     {
+        'name': 'test remove audio dialog',
+        'command': 'HYPERTTS_REMOVE_AUDIO_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_component_remove_audio.py -k test_remove_audio_manual -s -rPP'
+    },
+    {
         'name': 'test trial signup step 1',
         'command': 'HYPERTTS_TRIAL_SIGNUP_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_trial_signup_manual_step_1 -s -rPP'
     },

@@ -273,3 +273,52 @@ def test_check_length(qtbot):
     pytest.raises(errors.SourceTextEmpty, text_utils.check_length, '  ')
     pytest.raises(errors.SourceTextEmpty, text_utils.check_length, ' \t\n ')
     pytest.raises(errors.SourceTextEmpty, text_utils.check_length, None)
+def test_get_sound_tag_filenames(qtbot):
+    assert text_utils.get_sound_tag_filenames('') == []
+    assert text_utils.get_sound_tag_filenames('no audio here') == []
+    assert text_utils.get_sound_tag_filenames('[sound:hypertts-42.mp3]') == ['hypertts-42.mp3']
+    assert text_utils.get_sound_tag_filenames('a [sound:one.mp3] b [sound:two.ogg]') == \
+        ['one.mp3', 'two.ogg']
+
+def test_is_hypertts_audio_filename(qtbot):
+    assert text_utils.is_hypertts_audio_filename('hypertts-deadbeef.mp3') == True
+    assert text_utils.is_hypertts_audio_filename('hypertts-deadbeef.ogg') == True
+    assert text_utils.is_hypertts_audio_filename('external-recording.mp3') == False
+    assert text_utils.is_hypertts_audio_filename('awesometts-1234.mp3') == False
+
+def test_remove_sound_tags_all(qtbot):
+    # nothing to remove, the field is returned untouched
+    assert text_utils.remove_sound_tags('') == ('', [])
+    assert text_utils.remove_sound_tags('  no audio  ') == ('  no audio  ', [])
+
+    # a lone sound tag
+    assert text_utils.remove_sound_tags('[sound:hypertts-1.mp3]') == ('', ['hypertts-1.mp3'])
+
+    # text is kept and the dangling whitespace is cleaned up
+    assert text_utils.remove_sound_tags('你好 [sound:hypertts-1.mp3]') == \
+        ('你好', ['hypertts-1.mp3'])
+    assert text_utils.remove_sound_tags('A [sound:one.mp3] B [sound:two.mp3] C') == \
+        ('A B C', ['one.mp3', 'two.mp3'])
+
+    # html around the sound tag is preserved
+    assert text_utils.remove_sound_tags('<b>bold</b>[sound:one.mp3]') == \
+        ('<b>bold</b>', ['one.mp3'])
+
+    # malformed tags are left alone
+    assert text_utils.remove_sound_tags('[sound:] empty') == ('[sound:] empty', [])
+    assert text_utils.remove_sound_tags('[not a sound tag]') == ('[not a sound tag]', [])
+
+def test_remove_sound_tags_hypertts_only(qtbot):
+    # audio hypertts did not generate is left in place
+    assert text_utils.remove_sound_tags('[sound:external-recording.mp3]', hypertts_only=True) == \
+        ('[sound:external-recording.mp3]', [])
+
+    # only the hypertts tag goes away
+    assert text_utils.remove_sound_tags(
+        '[sound:external-recording.mp3] [sound:hypertts-1.mp3]', hypertts_only=True) == \
+        ('[sound:external-recording.mp3]', ['hypertts-1.mp3'])
+
+    # and with the filter off, both go away
+    assert text_utils.remove_sound_tags(
+        '[sound:external-recording.mp3] [sound:hypertts-1.mp3]', hypertts_only=False) == \
+        ('', ['external-recording.mp3', 'hypertts-1.mp3'])

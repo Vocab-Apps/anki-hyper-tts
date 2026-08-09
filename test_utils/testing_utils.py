@@ -255,10 +255,12 @@ class MockAnkiUtils():
         logger.info('save_note_type_update')
         self.updated_note_model = note_model
 
-    def run_in_background_collection_op(self, parent_widget, update_fn, success_fn):
+    def run_in_background_collection_op(self, parent_widget, update_fn, success_fn,
+            undo_entry_name=constants.UNDO_ENTRY_NAME):
         # just run update_fn
         self.undo_started = True
-        update_fn(None)
+        self.undo_entry_name = undo_entry_name
+        update_fn(self.mock_collection)
         self.undo_finished = True
         success_fn(True)
 

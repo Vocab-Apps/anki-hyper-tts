@@ -22,6 +22,7 @@ from . import stats
 from . import config_models
 from . import errors
 from . import component_batch
+from . import component_remove_audio
 from . import component_realtime
 from . import component_presetmappingrules
 from . import component_configuration
@@ -191,6 +192,13 @@ def init(hypertts):
                     reset_browser_model(browser)
             return launch
 
+        def get_launch_remove_audio_dialog_fn(hypertts, browser):
+            def launch():
+                with hypertts.error_manager.get_single_action_context('Opening HyperTTS Remove Audio Dialog from Browser'):
+                    component_remove_audio.create_component_remove_audio_browser(hypertts, browser.selectedNotes())
+                    reset_browser_model(browser)
+            return launch
+
         def get_launch_realtime_dialog_browser_fn(hypertts, browser):
             def launch():
                 with hypertts.error_manager.get_single_action_context('Adding Realtime TTS'):
@@ -215,6 +223,12 @@ def init(hypertts):
             action = aqt.qt.QAction(f'Add Audio (Collection): {preset_info.name}...', browser)
             action.triggered.connect(get_launch_dialog_browser_existing_fn(hypertts, browser, preset_info.id))
             menu.addAction(action)
+
+        menu.addSeparator()
+
+        action = aqt.qt.QAction(f'Remove Audio (Collection)...', browser)
+        action.triggered.connect(get_launch_remove_audio_dialog_fn(hypertts, browser))
+        menu.addAction(action)
 
         menu.addSeparator()
 

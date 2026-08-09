@@ -221,6 +221,11 @@ class NoNotesSelectedPreview(HyperTTSError):
         message = f'No notes have been selected. Select one note to preview sound.'
         super().__init__(message)        
 
+class NoAudioToRemove(HyperTTSError):
+    def __init__(self):
+        message = 'There is no audio to remove in the notes you selected.'
+        super().__init__(message)
+
 class NoPresetMappingRulesDefined(HyperTTSError):
     def __init__(self):
         message = ('You have not configured any preset mapping rules, '

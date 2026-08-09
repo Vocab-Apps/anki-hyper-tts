@@ -33,6 +33,7 @@ class Event(enum.Enum):
     click_save = enum.auto()
     click_add = enum.auto()
     click_preview = enum.auto()
+    click_remove_audio = enum.auto()
     install = enum.auto()
     choose = enum.auto()
     # dialog-specific
@@ -65,3 +66,4 @@ class EventMode(enum.Enum):
     easy_editor = enum.auto()
     easy_mode = enum.auto()
     advanced_mode = enum.auto()
+    remove_audio_browser = enum.auto()
