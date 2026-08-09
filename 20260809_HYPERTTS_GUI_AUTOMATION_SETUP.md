@@ -14,8 +14,17 @@ sudo dnf install -y xorg-x11-server-Xvfb openbox at-spi2-core ffmpeg
 Installed while building the harness (2026-08-09):
 
 ```bash
-sudo dnf install -y x11vnc novnc python3-websockify xdotool wmctrl ImageMagick \
-    python3-gobject dbus-x11
+sudo dnf install -y x11vnc novnc python3-websockify xdotool wmctrl ImageMagick
+```
+
+`python3-gobject` and `dbus-x11` were installed too, for an AT-SPI based inspection channel that
+turned out to be unnecessary — the `anki_gui_probe` add-on replaced it. **Do not put them in
+ansible.** `dbus-x11` in particular drags in `dbus-daemon`, which is what lets
+`at-spi-bus-launcher` / `at-spi2-registryd` start; the harness has no use for either, and
+`start_anki.sh` now exports `QT_ACCESSIBILITY=0` / `NO_AT_BRIDGE=1`. To undo:
+
+```bash
+sudo dnf remove dbus-x11 dbus-tools dbus-daemon python3-gobject
 ```
 
 What each is for:
@@ -29,7 +38,6 @@ What each is for:
 | `ImageMagick` | `import -window root` full-screen grabs in `screenshot.sh` |
 | `xdotool` | checking the display is up (`getdisplaygeometry`), and real X11 input events if ever needed |
 | `wmctrl` | window list in `status.sh` |
-| `at-spi2-core`, `python3-gobject`, `dbus-x11` | AT-SPI accessibility tree as a fallback inspection channel (`QT_LINUX_ACCESSIBILITY_ALWAYS_ON=1`) |
 | `ffmpeg` | optional session recording (`ffmpeg -f x11grab -i :99 ...`) |
 
 ## Python packages

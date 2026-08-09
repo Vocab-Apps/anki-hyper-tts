@@ -74,9 +74,11 @@ export LIBGL_ALWAYS_SOFTWARE=1
 export QT_QUICK_BACKEND=software
 export QTWEBENGINE_DISABLE_SANDBOX=1
 export QTWEBENGINE_CHROMIUM_FLAGS="--no-sandbox --disable-gpu"
-# expose the qt widget hierarchy over at-spi as a fallback inspection channel
-export QT_LINUX_ACCESSIBILITY_ALWAYS_ON=1
-export QT_ACCESSIBILITY=1
+# the anki_gui_probe add-on is the inspection channel, so the AT-SPI accessibility
+# bridge is not needed. keep it off: it costs nothing to skip, and forcing it on
+# makes qt publish the whole widget tree over d-bus for no benefit here.
+export QT_ACCESSIBILITY=0
+export NO_AT_BRIDGE=1
 # hypertts debug logging to a file we can tail
 export HYPER_TTS_DEBUG_LOGGING=file
 export HYPER_TTS_DEBUG_LOGFILE="$HYPERTTS_GUI_LOG_DIR/hypertts.log"

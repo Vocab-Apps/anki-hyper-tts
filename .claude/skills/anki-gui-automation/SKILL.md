@@ -196,10 +196,13 @@ a couple can fail for unrelated network/speech-recognition reasons.
 
 System packages (Fedora, installed with `sudo dnf install`; see
 `20260809_HYPERTTS_GUI_AUTOMATION_SETUP.md`):
-`xorg-x11-server-Xvfb openbox x11vnc novnc python3-websockify xdotool wmctrl ImageMagick
-at-spi2-core python3-gobject dbus-x11`
+`xorg-x11-server-Xvfb openbox x11vnc novnc python3-websockify xdotool wmctrl ImageMagick`
 
 The helper scripts only use the python standard library, so there are no additions to
 `requirements.txt`. `xdotool`/`wmctrl` are available for real X11 input events if a widget ever
-resists `QWidget.click()`; `QT_LINUX_ACCESSIBILITY_ALWAYS_ON=1` is exported so the AT-SPI tree is
-available as a fallback inspection channel, but the probe is cheaper and more precise.
+resists `QWidget.click()`.
+
+The harness deliberately does **not** use the AT-SPI accessibility tree — the probe is cheaper and
+more precise — and `start_anki.sh` exports `QT_ACCESSIBILITY=0` / `NO_AT_BRIDGE=1` so Qt does not
+publish the widget tree over D-Bus. Do not install `dbus-x11` / `at-spi2-core` for this workflow:
+nothing here needs them.
