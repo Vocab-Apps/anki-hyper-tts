@@ -100,7 +100,7 @@ When adding or changing a HyperTTS dialog, use the `anki-gui-automation` skill
 (`.claude/skills/anki-gui-automation/SKILL.md`). It launches a real Anki instance headlessly on a
 throwaway profile via `scripts/gui_automation/`, injects notes with AnkiConnect, and exposes the
 live Qt widget tree as text so dialogs can be inspected and driven without pixel hunting. Machine
-setup is documented in `20260809_HYPERTTS_GUI_AUTOMATION_SETUP.md`.
+setup is documented in `docs/AI_GUI_AUTOMATION_SETUP.md`.
 
 - give every widget you create a stable `objectName` prefixed `hypertts_<screen>_`; see
   `hypertts_addon/component_remove_audio.py` for the reference implementation

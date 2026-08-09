@@ -195,7 +195,7 @@ a couple can fail for unrelated network/speech-recognition reasons.
 ## Requirements
 
 System packages (Fedora, installed with `sudo dnf install`; see
-`20260809_HYPERTTS_GUI_AUTOMATION_SETUP.md`):
+`docs/AI_GUI_AUTOMATION_SETUP.md`):
 `xorg-x11-server-Xvfb openbox x11vnc novnc python3-websockify xdotool wmctrl ImageMagick`
 
 The helper scripts only use the python standard library, so there are no additions to
