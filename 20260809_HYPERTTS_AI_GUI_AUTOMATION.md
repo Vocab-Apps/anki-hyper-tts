@@ -12,7 +12,8 @@ The guidelines are the following
 - if you had to install software packages, document it clearly (those packages will later be added to ansible). If you had to install python packages, add them to `requirements.txt`.
 - if there are initalization/shutdown steps for the Xvfb or similar, put scripts in `scripts/`.
 - after an agentic loop has finished, should shutdown leftover processes / xvfb or other.
+- new dialogs should be added to `scripts/openbox_menu_hypertts` to visually inspect them.
 
 The outcome of this project are the following
 - we should have a fully re-usable skill or procedure to agentically develop GUI screens for HyperTTS
-- the following issue should be implement: https://github.com/Vocab-Apps/anki-hyper-tts/issues/40 using the above created skill. This feature should be implemented in a standalone HyperTTS dialog, should operate on a collection of notes from the browser, should have undo support.
+- the following issue should be implemented: https://github.com/Vocab-Apps/anki-hyper-tts/issues/40 using the above created skill. This feature should be implemented in a standalone HyperTTS dialog, should operate on a collection of notes from the browser, should have undo support.
