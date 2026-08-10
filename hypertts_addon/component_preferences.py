@@ -4,6 +4,7 @@ import aqt.qt
 from . import component_common
 from . import component_shortcuts
 from . import component_errorhandling
+from . import component_extensions
 from . import config_models
 from . import constants
 from . import errors
@@ -18,15 +19,19 @@ class ComponentPreferences(component_common.ConfigComponentBase):
         self.model = config_models.Preferences()
         self.shortcuts = component_shortcuts.Shortcuts(self.hypertts, self.dialog, self.shortcuts_updated)
         self.error_handling = component_errorhandling.ErrorHandling(self.hypertts, self.dialog, self.error_handling_updated)
+        self.extensions = component_extensions.Extensions(self.hypertts, self.dialog, self.extensions_updated)
 
-        self.save_button = aqt.qt.QPushButton('Apply')   
-        self.cancel_button = aqt.qt.QPushButton('Cancel')        
+        self.save_button = aqt.qt.QPushButton('Apply')
+        self.save_button.setObjectName('hypertts_preferences_apply_button')
+        self.cancel_button = aqt.qt.QPushButton('Cancel')
+        self.cancel_button.setObjectName('hypertts_preferences_cancel_button')
 
     def load_model(self, model):
         logger.info('load_model')
         self.model = model
         self.shortcuts.load_model(self.model.keyboard_shortcuts)
         self.error_handling.load_model(self.model.error_handling)
+        self.extensions.load_model(self.model.extensions)
 
     def get_model(self):
         return self.model
@@ -37,6 +42,10 @@ class ComponentPreferences(component_common.ConfigComponentBase):
 
     def error_handling_updated(self, model):
         self.model.error_handling = model
+        self.model_part_updated_common()
+
+    def extensions_updated(self, model):
+        self.model.extensions = model
         self.model_part_updated_common()
 
     def model_part_updated_common(self):
@@ -61,8 +70,10 @@ class ComponentPreferences(component_common.ConfigComponentBase):
         # ====================
 
         self.tabs = aqt.qt.QTabWidget()
+        self.tabs.setObjectName('hypertts_preferences_tabs')
         self.tabs.addTab(self.shortcuts.draw(), 'Keyboard Shortcuts')
         self.tabs.addTab(self.error_handling.draw(), 'Error Handling')
+        self.tabs.addTab(self.extensions.draw(), 'Extensions')
         layout.addWidget(self.tabs)
 
         # setup bottom buttons

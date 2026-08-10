@@ -15,11 +15,21 @@ from hypertts_addon import config_models
 from hypertts_addon import logging_utils
 logger = logging_utils.get_test_child_logger(__name__)
 
-def get_test_services_dir():
+def get_repo_root_dir():
     current_script_path = os.path.realpath(__file__)
     current_script_dir = os.path.dirname(current_script_path)
-    root_dir = os.path.join(current_script_dir, '..')
-    return os.path.join(root_dir, f'{constants.DIR_HYPERTTS_ADDON}/test_services')
+    return os.path.join(current_script_dir, '..')
+
+def get_test_services_dir():
+    return os.path.join(get_repo_root_dir(), f'{constants.DIR_HYPERTTS_ADDON}/test_services')
+
+def get_test_extensions_dir():
+    """fixture standing in for a checkout of the anki-hyper-tts-extensions repository, it has the
+    same layout (service files inside a services/ subdirectory)"""
+    return os.path.join(get_repo_root_dir(), 'tests/test_extension_services')
+
+def get_test_extensions_collision_dir():
+    return os.path.join(get_repo_root_dir(), 'tests/test_extension_services_collision')
 
 def create_simple_batch(hypertts_instance, 
         preset_id='uuid_0', 

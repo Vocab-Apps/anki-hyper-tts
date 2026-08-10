@@ -430,6 +430,10 @@ class Configuration:
     trial_registration_step: TrialRegistrationStep = TrialRegistrationStep.finished
     # installation timestamp (stored as epoch timestamp)
     install_time: float = field(default_factory=lambda: datetime.datetime.now().timestamp())
+    # service names which came from third party extensions. remembered here so that their
+    # configuration is never pruned when the extensions directory is disabled or unavailable
+    # (see servicemanager.ServiceManager.remove_non_existent_services)
+    extension_service_names: List[str] = field(default_factory=list)
 
     # pro api key
     # ===========
@@ -619,9 +623,17 @@ class ErrorHandling:
     ipv4_only: bool = False
 
 @dataclass
+class Extensions:
+    # third party services, loaded from a directory outside of the addon so that they
+    # survive addon upgrades. see servicemanager.resolve_extensions_services_directory
+    enabled: bool = False
+    extensions_directory: Optional[str] = None
+
+@dataclass
 class Preferences:
     keyboard_shortcuts: KeyboardShortcuts = field(default_factory=KeyboardShortcuts)
     error_handling: ErrorHandling = field(default_factory=ErrorHandling)
+    extensions: Extensions = field(default_factory=Extensions)
 
 def serialize_preferences(preferences):
     return databind.json.dump(preferences, Preferences)

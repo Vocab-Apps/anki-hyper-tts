@@ -88,6 +88,11 @@ class MappingRuleType(enum.Enum):
 DIR_HYPERTTS_ADDON = 'hypertts_addon'
 DIR_SERVICES = 'services'
 
+# third party extension services are loaded from outside the addon directory, so they can't be
+# imported by package name. they get their own module name prefix in sys.modules to make sure they
+# never collide with the built-in hypertts_addon.services.* modules.
+EXTENSIONS_MODULE_PREFIX = 'hypertts_extension_'
+
 ANKIWEB_ADDON_ID = '111623432'
 
 CONFIG_ADDON_NAME = 'anki-hyper-tts'
@@ -107,6 +112,8 @@ CONFIG_REALTIME_CONFIG = 'realtime_config'
 CONFIG_CONFIGURATION = 'configuration'
 CONFIG_PREFERENCES = 'preferences'
 CONFIG_KEYBOARD_SHORTCUTS = 'keyboard_shortcuts'
+# nested inside CONFIG_PREFERENCES
+CONFIG_EXTENSIONS = 'extensions'
 CONFIG_LAST_USED_BATCH = 'last_used_batch'
 CONFIG_USE_SELECTION = 'use_selection' # whether to use the selected portion of the field
 
@@ -253,6 +260,10 @@ GUI_TEXT_BUTTON_BUY = """Sign Up"""
 
 BUY_PLAN_URL = """https://www.vocab.ai/hypertts-pro?utm_campaign=hypertts_config&utm_source=hypertts&utm_medium=addon"""
 
+# TODO: placeholder, replace with the real extensions tutorial URL once it's published
+EXTENSIONS_TUTORIAL_URL = """https://www.vocab.ai/tutorials"""
+EXTENSIONS_REPOSITORY_URL = """https://github.com/Vocab-Apps/anki-hyper-tts-extensions"""
+
 GUI_TEXT_HYPERTTS_PRO_TRIAL = """Free Trial access instantly, just enter your email."""
 GUI_TEXT_HYPERTTS_PRO_BUY_PLAN = """Subscribe to HyperTTS Pro. Get access in 5mn."""
 GUI_TEXT_HYPERTTS_PRO_ENTER_API_KEY = """Enter HyperTTS Pro / AwesomeTTS Plus / Language Tools API Key."""
@@ -302,6 +313,24 @@ GUI_TEXT_SHORTCUTS_EDITOR_ADD_AUDIO = """Add Audio to note using the selected pr
 GUI_TEXT_SHORTCUTS_EDITOR_PREVIEW_AUDIO = """Preview Audio for a note using the selected preset"""
 
 GUI_TEXT_ERROR_HANDLING_REALTIME_TTS = """How to display errors during Realtime TTS"""
+
+GUI_TEXT_EXTENSIONS = ("""Third party services are contributed by the community and live in the """
+    """<b>anki-hyper-tts-extensions</b> repository. Check out (or download) that repository somewhere """
+    """outside of your Anki addons directory, then point HyperTTS at it here. Because the services stay """
+    """outside the addon, they survive HyperTTS upgrades.""")
+GUI_TEXT_EXTENSIONS_ENABLE = """Enable third party extensions"""
+GUI_TEXT_EXTENSIONS_DIRECTORY = """Extensions repository directory:"""
+GUI_TEXT_EXTENSIONS_WARNING = ("""<b>Warning:</b> third party services are Python code which HyperTTS """
+    """will run every time Anki starts. They are not reviewed by the HyperTTS author. Only point this """
+    """at a directory you trust.""")
+GUI_TEXT_EXTENSIONS_ANKI_RESTART = """Note: You'll need to restart Anki after changing these settings. Once restarted, the third party services can be enabled and configured from HyperTTS: Services Configuration."""
+GUI_TEXT_EXTENSIONS_TUTORIAL = """Extensions tutorial"""
+GUI_TEXT_EXTENSIONS_NOT_CONFIGURED = """No directory configured."""
+GUI_TEXT_EXTENSIONS_DIRECTORY_NOT_FOUND = """Directory not found."""
+GUI_TEXT_EXTENSIONS_NO_SERVICES_FOUND = """No service files found. Please select the anki-hyper-tts-extensions directory (the one containing the 'services' folder)."""
+GUI_TEXT_EXTENSIONS_LOAD_ERRORS = ("""<b>Some third party HyperTTS services could not be loaded.</b> """
+    """HyperTTS started up normally without them. These services are contributed by the community, """
+    """so please report the problem on the anki-hyper-tts-extensions repository.""")
 
 # Enhanced variants for trial incentive experiment
 GUI_TEXT_SERVICES_CONFIG_ENHANCED_TITLE = """Get Started with HyperTTS - Choose Your Path"""

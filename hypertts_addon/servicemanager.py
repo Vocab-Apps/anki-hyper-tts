@@ -2,6 +2,8 @@ from re import sub
 import sys
 import os
 import importlib
+import importlib.util
+import dataclasses
 
 import typing
 import requests
@@ -28,18 +30,68 @@ COUNT_BY_BATCH_UUID = {}
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
 
+EXTENSIONS_MODULE_PREFIX = constants.EXTENSIONS_MODULE_PREFIX
+
+
+@dataclasses.dataclass
+class ExtensionLoadError:
+    """a third party service which could not be loaded. these are reported to the user rather than
+    raised, so that one broken extension doesn't prevent HyperTTS from starting up"""
+    source: str
+    message: str
+
+    def __str__(self):
+        return f'{self.source}: {self.message}'
+
+
+def find_service_files(directory: typing.Optional[str]) -> typing.List[str]:
+    """return the full paths of the service_*.py files directly inside directory"""
+    if directory == None or not os.path.isdir(directory):
+        return []
+    return sorted([
+        os.path.join(directory, filename)
+        for filename in os.listdir(directory)
+        if filename.startswith('service_') and filename.endswith('.py')
+    ])
+
+
+def resolve_extensions_services_directory(extensions_directory: typing.Optional[str]) -> typing.Optional[str]:
+    """the user is asked for the anki-hyper-tts-extensions repository directory, which contains the
+    service files in a services/ subdirectory. be lenient and also accept a directory which directly
+    contains service_*.py files, since users may point at the services/ subdirectory itself, or at an
+    extracted zip file. returns None if no service files could be found."""
+    if extensions_directory == None:
+        return None
+    extensions_directory = os.path.expanduser(extensions_directory.strip())
+    if len(extensions_directory) == 0:
+        return None
+    services_subdirectory = os.path.join(extensions_directory, constants.DIR_SERVICES)
+    if len(find_service_files(services_subdirectory)) > 0:
+        return services_subdirectory
+    if len(find_service_files(extensions_directory)) > 0:
+        return extensions_directory
+    return None
+
 class ServiceManager():
     """
     this class will discover the services that are available and query their voices. it can also route a request
     to the correct service.
     """
-    def __init__(self, services_directory, package_name, allow_test_services, cloudlanguagetools=cloudlanguagetools_module.CloudLanguageTools()):
+    def __init__(self, services_directory, package_name, allow_test_services,
+                 cloudlanguagetools=cloudlanguagetools_module.CloudLanguageTools(),
+                 extensions_directory=None):
         self.services_directory = services_directory
         self.package_name = package_name
         self.services = {}
         self.cloudlanguagetools_enabled = False
         self.allow_test_services = allow_test_services
         self.cloudlanguagetools = cloudlanguagetools
+        # anki-hyper-tts-extensions repository directory, None when extensions are disabled
+        self.extensions_directory = extensions_directory
+        # names of the services which were loaded from extensions_directory
+        self.extension_service_names = set()
+        # extensions which couldn't be loaded, reported to the user at startup
+        self.extension_load_errors: typing.List[ExtensionLoadError] = []
 
     def configure(self, configuration_model, disable_ssl_verification: bool = False) -> bool:
         # will return true if at least one service is enabled
@@ -72,18 +124,28 @@ class ServiceManager():
         return return_value
 
     def remove_non_existent_services(self, configuration_model):
+        # third party services are only loaded when the extensions directory is enabled and
+        # available. their configuration (which includes API keys) must survive a disabled or
+        # missing extensions directory, so remember their names and never prune them.
+        protected_service_names = self.extension_service_names.union(
+            configuration_model.extension_service_names)
+        configuration_model.extension_service_names = sorted(protected_service_names)
+
+        def keep_service(service_name):
+            return self.service_exists(service_name) or service_name in protected_service_names
+
         # remove non existent services from the service enabled map
         service_enabled_map = configuration_model.get_service_enabled_map()
         service_list = list(service_enabled_map.keys())
         for service_name in service_list:
-            if not self.service_exists(service_name):
+            if not keep_service(service_name):
                 del service_enabled_map[service_name]
         # do the same thing from the service config map
         service_config_map = configuration_model.get_service_config()
         service_list = list(service_config_map.keys())
         for service_name in service_list:
-            if not self.service_exists(service_name):
-                del service_config_map[service_name]        
+            if not keep_service(service_name):
+                del service_config_map[service_name]
         configuration_model.set_service_enabled_map(service_enabled_map)
         configuration_model.set_service_config(service_config_map)
 
@@ -106,6 +168,68 @@ class ServiceManager():
     def init_services(self):
         self.import_services()
         self.instantiate_services()
+        self.init_extension_services()
+
+    def init_extension_services(self):
+        """load third party services from self.extensions_directory. never raises: a broken
+        extension must not prevent HyperTTS from starting up"""
+        if self.extensions_directory == None:
+            return
+        services_directory = resolve_extensions_services_directory(self.extensions_directory)
+        if services_directory == None:
+            logger.warning(f'no extension services found in {self.extensions_directory}')
+            self.extension_load_errors.append(ExtensionLoadError(
+                self.extensions_directory, 'no service files found in this directory'))
+            return
+        logger.info(f'loading extension services from {services_directory}')
+        # diff the ServiceBase subclasses before/after importing, so that we know which services
+        # came from extensions (built-in services are already imported at this point)
+        known_subclasses = set(service.ServiceBase.__subclasses__())
+        self.import_extension_services(services_directory)
+        new_subclasses = [subclass for subclass in service.ServiceBase.__subclasses__()
+                          if subclass not in known_subclasses]
+        self.instantiate_extension_services(new_subclasses)
+
+    def import_extension_services(self, services_directory):
+        service_files = find_service_files(services_directory)
+        logger.info(f'discovered {len(service_files)} extension services')
+        for file_path in service_files:
+            filename = os.path.basename(file_path)
+            module_name = EXTENSIONS_MODULE_PREFIX + filename[:-len('.py')]
+            logger.info(f'importing extension service {file_path} as {module_name}')
+            try:
+                # spec_from_file_location sets __file__ on the module, which extension services
+                # rely on to locate data files sitting next to them
+                spec = importlib.util.spec_from_file_location(module_name, file_path)
+                module = importlib.util.module_from_spec(spec)
+                sys.modules[module_name] = module
+                spec.loader.exec_module(module)
+            except Exception as e:
+                logger.exception(f'could not import extension service {file_path}')
+                sys.modules.pop(module_name, None)
+                self.extension_load_errors.append(ExtensionLoadError(filename, str(e)))
+
+    def instantiate_extension_services(self, subclasses):
+        for subclass in subclasses:
+            try:
+                subclass_instance = subclass()
+            except Exception as e:
+                logger.exception(f'could not instantiate extension service {subclass.__name__}')
+                self.extension_load_errors.append(ExtensionLoadError(subclass.__name__, str(e)))
+                continue
+            if subclass_instance.test_service() and self.allow_test_services == False:
+                logger.info(f'skipping test service {subclass_instance.name}')
+                continue
+            if subclass_instance.name in self.services:
+                # built-in services take precedence, otherwise an extension could silently shadow a
+                # built-in service and inherit its stored configuration (they're keyed by name)
+                logger.warning(f'extension service {subclass_instance.name} conflicts with an existing service, skipping')
+                self.extension_load_errors.append(ExtensionLoadError(
+                    subclass_instance.name, 'a service with this name already exists, extension skipped'))
+                continue
+            logger.info(f'instantiating extension service {subclass_instance.name}')
+            self.services[subclass_instance.name] = subclass_instance
+            self.extension_service_names.add(subclass_instance.name)
 
     def import_services(self):
         module_names = self.discover_services()
@@ -116,6 +240,11 @@ class ServiceManager():
 
     def instantiate_services(self):
         for subclass in service.ServiceBase.__subclasses__():
+            if subclass.__module__.startswith(EXTENSIONS_MODULE_PREFIX):
+                # extension services are handled by instantiate_extension_services. ServiceBase
+                # subclasses are process-wide, so without this an extension loaded by one
+                # ServiceManager would leak into every other one.
+                continue
             subclass_instance = subclass()
             if subclass_instance.test_service() and self.allow_test_services == False:
                 logger.info(f'skipping test service {subclass_instance.name}')

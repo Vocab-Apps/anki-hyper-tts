@@ -65,8 +65,24 @@ def sentry_filter_dump_json(event, hint):
         f.flush()
     return event
 
+def _event_from_extension(event):
+    """third party extension services are not part of HyperTTS and are not reviewed by us. their
+    stack traces always run through hypertts_addon (servicemanager calls into them), so without this
+    check they would show up as HyperTTS crashes."""
+    if 'exception' not in event:
+        return False
+    for value in event.get('exception', {}).get('values', []):
+        for frame in value.get('stacktrace', {}).get('frames', []):
+            module = frame.get('module', '') or ''
+            if module.startswith(constants.EXTENSIONS_MODULE_PREFIX):
+                return True
+    return False
+
 # this is the implementation of the before_send function
 def sentry_filter(event, hint):
+
+    if _event_from_extension(event):
+        return None
 
     # if no exception info, check if event is from our module
     if 'logger' in event:

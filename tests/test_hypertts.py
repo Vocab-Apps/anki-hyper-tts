@@ -145,7 +145,8 @@ yoyo
             'user_uuid': None,
             'user_choice_easy_advanced': False,
             'display_introduction_message': False,
-            'trial_registration_step': 'finished'
+            'trial_registration_step': 'finished',
+            'extension_service_names': []
         }
         actual_output = hypertts_instance.anki_utils.written_config['configuration']
         del actual_output['install_time']

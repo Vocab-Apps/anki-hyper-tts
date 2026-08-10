@@ -121,7 +121,19 @@ def launch_preferences_dialog(hypertts):
         logger.info('launch_preferences_dialog')
         dialog = PreferencesDialog(hypertts)
         dialog.setupUi()
-        dialog.exec()        
+        dialog.exec()
+
+def report_extension_load_errors(hypertts):
+    """tell the user about third party services which couldn't be loaded. those failures are
+    swallowed at startup so that a broken extension doesn't prevent HyperTTS from loading, so this
+    is the only place the user gets to find out about them. shown once per Anki session."""
+    load_errors = hypertts.service_manager.extension_load_errors
+    if len(load_errors) == 0:
+        return
+    logger.info(f'reporting {len(load_errors)} extension load errors')
+    error_list = ''.join([f'<li>{error}</li>' for error in load_errors])
+    message = (f'{constants.GUI_TEXT_EXTENSIONS_LOAD_ERRORS}<ul>{error_list}</ul>')
+    hypertts.anki_utils.info_message(message, aqt.mw)
 
 def launch_realtime_dialog_browser(hypertts, note_id_list):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Realtime Dialog from Browser'):
@@ -338,6 +350,11 @@ def init(hypertts):
         if hasattr(sys, '_hypertts_stats_global'):
             # load required data
             sys._hypertts_stats_global.init_load()
+
+        # report third party services which failed to load, once per Anki session
+        if not hasattr(sys, '_hypertts_extension_errors_reported'):
+            sys._hypertts_extension_errors_reported = True
+            report_extension_load_errors(hypertts)
 
         if should_show_welcome_message(hypertts):
             configuration = hypertts.get_configuration()

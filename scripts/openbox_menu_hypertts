@@ -20,7 +20,11 @@ items = [
     },
     {
         'name': 'test preferences manual',
-        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual'
+        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components_3.py -k test_preferences_manual'
+    },
+    {
+        'name': 'test preferences extensions manual',
+        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components_3.py -k test_preferences_extensions_manual -s -rPP'
     },
     {
         'name': 'test preset mapping rules manual',
@@ -32,8 +36,8 @@ items = [
     },        
     {
         'name': 'test preferences',
-        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual -s -rPP'
-    },            
+        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components_3.py -k test_preferences_manual -s -rPP'
+    },
     {
         'name': 'test hyperttspro',
         'command': 'HYPERTTS_PRO_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_hyperttspro_manual -s -rPP'

@@ -649,7 +649,8 @@ class ConfigModelsTests(unittest.TestCase):
                 },
             },
             'user_uuid': None,
-            'user_choice_easy_advanced': False
+            'user_choice_easy_advanced': False,
+            'extension_service_names': []
         }
 
         actual_output = config_models.serialize_configuration(configuration)
@@ -709,7 +710,8 @@ class ConfigModelsTests(unittest.TestCase):
                 },
             },
             'user_uuid': None,
-            'user_choice_easy_advanced': False
+            'user_choice_easy_advanced': False,
+            'extension_service_names': []
         }
 
         actual_output = config_models.serialize_configuration(configuration)
@@ -960,6 +962,10 @@ class ConfigModelsTests(unittest.TestCase):
                 'error_stats_reporting': True,
                 'disable_ssl_verification': False,
                 'ipv4_only': False
+            },
+            'extensions': {
+                'enabled': False,
+                'extensions_directory': None
             }
         }
         self.assertEqual(config_models.serialize_preferences(preferences), expected_output)
@@ -984,6 +990,10 @@ class ConfigModelsTests(unittest.TestCase):
                 'error_stats_reporting': True,
                 'disable_ssl_verification': False,
                 'ipv4_only': False
+            },
+            'extensions': {
+                'enabled': False,
+                'extensions_directory': None
             }
         })
 
@@ -1008,6 +1018,10 @@ class ConfigModelsTests(unittest.TestCase):
                 'error_stats_reporting': True,
                 'disable_ssl_verification': False,
                 'ipv4_only': False
+            },
+            'extensions': {
+                'enabled': False,
+                'extensions_directory': None
             }
         })        
 

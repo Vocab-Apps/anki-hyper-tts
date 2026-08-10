@@ -164,7 +164,18 @@ else:
         current_script_path = os.path.realpath(__file__)
         current_script_dir = os.path.dirname(current_script_path)
         return os.path.join(current_script_dir, 'services')
-    service_manager = servicemanager.ServiceManager(services_dir(), f'{constants.DIR_HYPERTTS_ADDON}.{constants.DIR_SERVICES}', False)
+
+    def extensions_dir():
+        # third party services directory. read straight from the addon config, the same way
+        # ipv4_only is read above, because ServiceManager is built before HyperTTS exists
+        extensions_config = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
+            get(constants.CONFIG_EXTENSIONS, {})
+        if not extensions_config.get('enabled', False):
+            return None
+        return extensions_config.get('extensions_directory', None)
+
+    service_manager = servicemanager.ServiceManager(services_dir(), f'{constants.DIR_HYPERTTS_ADDON}.{constants.DIR_SERVICES}', False,
+        extensions_directory=extensions_dir())
     service_manager.init_services()
     hyper_tts = hypertts.HyperTTS(ankiutils, service_manager)
     # configure services based on config

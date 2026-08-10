@@ -111,6 +111,44 @@ def _make_logger_event(user_id, logger_name, message, log_location=None):
     return event
 
 
+def test_extension_exceptions_are_not_reported():
+    """third party extension services are not reviewed by us and must stay out of HyperTTS crash
+    triage. their stack traces always run through hypertts_addon (servicemanager calls into them),
+    so the addon filename whitelist alone would let them through."""
+    sentry_utils.reset_rate_limits()
+
+    event = {
+        'user': {'id': 'user_a'},
+        'exception': {
+            'values': [{
+                'type': 'KeyError',
+                'value': 'test KeyError',
+                'stacktrace': {
+                    'frames': [
+                        {
+                            'filename': 'hypertts_addon/servicemanager.py',
+                            'module': f'{constants.DIR_HYPERTTS_ADDON}.servicemanager',
+                            'function': 'get_tts_audio',
+                            'lineno': 42,
+                        },
+                        {
+                            'filename': 'service_voicevox.py',
+                            'module': f'{constants.EXTENSIONS_MODULE_PREFIX}service_voicevox',
+                            'function': 'voice_list',
+                            'lineno': 12,
+                        },
+                    ]
+                }
+            }]
+        }
+    }
+    assert sentry_utils.sentry_filter(event, {}) is None
+
+    # the same event without the extension frame is still reported
+    del event['exception']['values'][0]['stacktrace']['frames'][1]
+    assert sentry_utils.sentry_filter(event, {}) is not None
+
+
 def test_exception_rate_limit_basic():
     """Same exception event sent MAX+1 times: first MAX accepted, next dropped."""
     sentry_utils.reset_rate_limits()
