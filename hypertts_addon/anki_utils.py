@@ -78,6 +78,12 @@ class AnkiUtils():
             return constants.RED_STYLESHEET_NIGHTMODE
         return constants.RED_STYLESHEET
 
+    def get_red_text_color(self):
+        night_mode = self.night_mode_enabled()
+        if night_mode:
+            return constants.RED_TEXT_COLOR_NIGHTMODE
+        return constants.RED_TEXT_COLOR_REGULAR
+
     def get_user_files_dir(self):
         addon_dir = os.path.dirname(os.path.realpath(__file__))
         user_files_dir = os.path.join(addon_dir, '..', 'user_files')

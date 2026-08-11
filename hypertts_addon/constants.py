@@ -173,6 +173,10 @@ RED_COLOR_NIGHTMODE = '#B71C1C'
 GREEN_STYLESHEET_NIGHTMODE = f'background-color: {GREEN_COLOR_NIGHTMODE};'
 RED_STYLESHEET_NIGHTMODE = f'background-color: {RED_COLOR_NIGHTMODE};'
 
+# the colors above are backgrounds, these are for red text drawn straight on the window background
+RED_TEXT_COLOR_REGULAR = '#C62828'
+RED_TEXT_COLOR_NIGHTMODE = '#EF9A9A'
+
 COLOR_GRADIENT_PURPLE_START = '#6975dd'
 COLOR_GRADIENT_PURPLE_END = '#7355b0'
 COLOR_GRADIENT_PURPLE_HOVER_START = '#7985ed'
@@ -277,9 +281,11 @@ GUI_TEXT_SERVICES_COLUMN_NAME = """Service"""
 GUI_TEXT_SERVICES_COLUMN_FEE = """Fee"""
 GUI_TEXT_SERVICES_COLUMN_TYPE = """Type"""
 GUI_TEXT_SERVICES_ENABLED_BY_PRO = """via Pro"""
-GUI_TEXT_NO_SERVICES_CONFIGURED = ("""<b>You don't have any services configured yet.</b> Either start a """
-    """HyperTTS Pro trial on the <b>HyperTTS Pro</b> tab, which enables all premium services at once, or """
-    """enable individual services on the <b>Services</b> tab.""")
+# drawn in red and bold, the color is picked at draw time so that it works in night mode too
+GUI_TEXT_NO_SERVICES_CONFIGURED_HEADLINE = """You don't have any services configured yet."""
+GUI_TEXT_NO_SERVICES_CONFIGURED = ("""Either start a HyperTTS Pro trial on the <b>HyperTTS Pro</b> tab, """
+    """which enables all premium services at once, or enable individual services on the """
+    """<b>Services</b> tab.""")
 
 GUI_TEXT_HYPERTTS_PRO_TRIAL = """Free Trial access instantly, just enter your email."""
 GUI_TEXT_HYPERTTS_PRO_BUY_PLAN = """Subscribe to HyperTTS Pro. Get access in 5mn."""

@@ -46,7 +46,10 @@ class Configuration(component_common.ConfigComponentBase):
 
         # created here rather than in draw() so that callbacks fired while the tabs are being drawn
         # always have something to update
-        self.alert_label = aqt.qt.QLabel(constants.GUI_TEXT_NO_SERVICES_CONFIGURED)
+        red = self.hypertts.anki_utils.get_red_text_color()
+        self.alert_label = aqt.qt.QLabel(
+            f"""<span style="color: {red};"><b>{constants.GUI_TEXT_NO_SERVICES_CONFIGURED_HEADLINE}</b></span> """
+            f"""{constants.GUI_TEXT_NO_SERVICES_CONFIGURED}""")
         self.alert_label.setObjectName('hypertts_configuration_alert')
         self.alert_label.setWordWrap(True)
         self.alert_label.setStyleSheet('border: 1px solid palette(mid); border-radius: 4px; padding: 6px;')
