@@ -253,7 +253,7 @@ Undo HyperTTS: Add Audio to Notes. You may close this dialog.
 """
 
 GUI_TEXT_HYPERTTS_PRO = """HyperTTS Pro gives you access to <b>all premium TTS services</b>."""\
-""" Azure, Google, Amazon, Watson and others. Over <b>1200 voices, 60+ languages</b>. """ +\
+""" OpenAI, ElevenLabs, Azure, Google, Amazon, Watson and others. Over <b>1200 voices, 60+ languages</b>. """ +\
 """"""
 
 GUI_TEXT_BUTTON_TRIAL = """Free Trial"""
