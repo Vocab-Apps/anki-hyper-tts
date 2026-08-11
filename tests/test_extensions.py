@@ -184,25 +184,25 @@ def test_unknown_services_are_still_pruned():
 # preferences model
 # =================
 
-def test_preferences_extensions_round_trip():
-    preferences = config_models.Preferences()
-    preferences.extensions.enabled = True
-    preferences.extensions.extensions_directory = '/home/user/anki-hyper-tts-extensions'
+def test_configuration_extensions_round_trip():
+    configuration = config_models.Configuration()
+    configuration.extensions.enabled = True
+    configuration.extensions.extensions_directory = '/home/user/anki-hyper-tts-extensions'
 
-    serialized = config_models.serialize_preferences(preferences)
+    serialized = config_models.serialize_configuration(configuration)
     assert serialized[constants.CONFIG_EXTENSIONS] == {
         'enabled': True,
         'extensions_directory': '/home/user/anki-hyper-tts-extensions'
     }
 
-    deserialized = config_models.deserialize_preferences(serialized)
+    deserialized = config_models.deserialize_configuration(serialized)
     assert deserialized.extensions.enabled == True
     assert deserialized.extensions.extensions_directory == '/home/user/anki-hyper-tts-extensions'
 
-def test_preferences_without_extensions_still_deserializes():
+def test_configuration_without_extensions_still_deserializes():
     # configs written by previous HyperTTS versions don't have the extensions key
-    preferences = config_models.deserialize_preferences({
-        'keyboard_shortcuts': {'shortcut_editor_add_audio': 'Ctrl+H'}
+    configuration = config_models.deserialize_configuration({
+        'hypertts_pro_api_key': 'some_key'
     })
-    assert preferences.extensions.enabled == False
-    assert preferences.extensions.extensions_directory == None
+    assert configuration.extensions.enabled == False
+    assert configuration.extensions.extensions_directory == None

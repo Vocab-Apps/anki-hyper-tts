@@ -46,11 +46,12 @@ class ConfigurationDialog(aqt.qt.QDialog):
         self.configuration.load_model(hypertts.get_configuration())
 
     def setupUi(self):
-        self.setMinimumSize(500, 300)
+        # the services grid needs the width, service names get long
+        self.setMinimumSize(700, 300)
         self.setWindowTitle(constants.GUI_CONFIGURATION_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
         self.configuration.draw(self.main_layout)
-        self.resize(500, 700)
+        self.resize(700, 700)
 
     def close(self):
         self.accept()

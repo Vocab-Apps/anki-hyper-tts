@@ -159,6 +159,14 @@ class HyperTTSPro(component_common.ConfigComponentBase):
         return enabled_stack
 
 
+    def draw_widget(self):
+        """draw into a widget of our own, for callers which put this component in a tab"""
+        widget = aqt.qt.QWidget()
+        vlayout = aqt.qt.QVBoxLayout(widget)
+        self.draw(vlayout)
+        vlayout.addStretch()
+        return widget
+
     def draw(self, global_vlayout):
         groupbox = aqt.qt.QGroupBox('HyperTTS Pro')
 

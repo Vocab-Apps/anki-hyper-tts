@@ -409,6 +409,13 @@ class TrialRegistrationStep(enum.Enum):
     finished = 3
 
 @dataclass
+class Extensions:
+    # third party services, loaded from a directory outside of the addon so that they
+    # survive addon upgrades. see servicemanager.resolve_extensions_services_directory
+    enabled: bool = False
+    extensions_directory: Optional[str] = None
+
+@dataclass
 class Configuration:
     service_enabled: Mapping[str, bool] = field(default_factory=dict)
     service_config: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
@@ -434,6 +441,9 @@ class Configuration:
     # configuration is never pruned when the extensions directory is disabled or unavailable
     # (see servicemanager.ServiceManager.remove_non_existent_services)
     extension_service_names: List[str] = field(default_factory=list)
+    # third party services directory, configured from the Extensions tab of the services
+    # configuration screen
+    extensions: Extensions = field(default_factory=Extensions)
 
     # pro api key
     # ===========
@@ -623,17 +633,9 @@ class ErrorHandling:
     ipv4_only: bool = False
 
 @dataclass
-class Extensions:
-    # third party services, loaded from a directory outside of the addon so that they
-    # survive addon upgrades. see servicemanager.resolve_extensions_services_directory
-    enabled: bool = False
-    extensions_directory: Optional[str] = None
-
-@dataclass
 class Preferences:
     keyboard_shortcuts: KeyboardShortcuts = field(default_factory=KeyboardShortcuts)
     error_handling: ErrorHandling = field(default_factory=ErrorHandling)
-    extensions: Extensions = field(default_factory=Extensions)
 
 def serialize_preferences(preferences):
     return databind.json.dump(preferences, Preferences)

@@ -265,112 +265,113 @@ def test_preferences_load(qtbot):
     assert preferences.shortcuts.editor_preview_audio_key_sequence.keySequence().toString() == 'Alt+P'
 
 
-def test_preferences_extensions_save(qtbot):
-    # pytest tests/test_components_3.py -k test_preferences_extensions_save -s -rPP
+def test_configuration_extensions_save(qtbot):
+    # pytest tests/test_components_3.py -k test_configuration_extensions_save -s -rPP
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
     dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    preferences = component_preferences.ComponentPreferences(hypertts_instance, dialog)
-    preferences.draw(dialog.getLayout())
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())
 
-    assert preferences.save_button.isEnabled() == False
+    assert configuration.save_button.isEnabled() == False
 
     # the directory field is only editable once extensions are enabled
-    assert preferences.extensions.extensions_directory.isEnabled() == False
-    assert preferences.extensions.status_label.text() == constants.GUI_TEXT_EXTENSIONS_NOT_CONFIGURED
+    assert configuration.extensions.extensions_directory.isEnabled() == False
+    assert configuration.extensions.status_label.text() == constants.GUI_TEXT_EXTENSIONS_NOT_CONFIGURED
 
-    preferences.extensions.enable_extensions.setChecked(True)
-    assert preferences.extensions.extensions_directory.isEnabled() == True
-    assert preferences.save_button.isEnabled() == True
+    configuration.extensions.enable_extensions.setChecked(True)
+    assert configuration.extensions.extensions_directory.isEnabled() == True
+    assert configuration.save_button.isEnabled() == True
 
     extensions_dir = testing_utils.get_test_extensions_dir()
-    preferences.extensions.extensions_directory.setText(extensions_dir)
+    configuration.extensions.extensions_directory.setText(extensions_dir)
 
     # the dialog validates the directory, this is the only place the user finds out it's wrong
-    assert 'Found 3 services' in preferences.extensions.status_label.text()
+    assert 'Found 3 services' in configuration.extensions.status_label.text()
 
-    qtbot.mouseClick(preferences.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
 
-    written_extensions = hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES][constants.CONFIG_EXTENSIONS]
+    # the extensions settings are saved along with the rest of the services configuration
+    written_extensions = hypertts_instance.anki_utils.written_config[constants.CONFIG_CONFIGURATION][constants.CONFIG_EXTENSIONS]
     assert written_extensions['enabled'] == True
     assert written_extensions['extensions_directory'] == extensions_dir
 
-    deserialized_preferences = hypertts_instance.deserialize_preferences(
-        hypertts_instance.anki_utils.written_config[constants.CONFIG_PREFERENCES])
-    assert deserialized_preferences.extensions.enabled == True
-    assert deserialized_preferences.extensions.extensions_directory == extensions_dir
+    deserialized_configuration = hypertts_instance.deserialize_configuration(
+        hypertts_instance.anki_utils.written_config[constants.CONFIG_CONFIGURATION])
+    assert deserialized_configuration.extensions.enabled == True
+    assert deserialized_configuration.extensions.extensions_directory == extensions_dir
 
 
-def test_preferences_extensions_load(qtbot):
-    # pytest tests/test_components_3.py -k test_preferences_extensions_load -s -rPP
+def test_configuration_extensions_load(qtbot):
+    # pytest tests/test_components_3.py -k test_configuration_extensions_load -s -rPP
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
     dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    preferences = component_preferences.ComponentPreferences(hypertts_instance, dialog)
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
 
-    preferences_model = config_models.Preferences()
-    preferences_model.extensions.enabled = True
-    preferences_model.extensions.extensions_directory = testing_utils.get_test_extensions_dir()
+    configuration_model = config_models.Configuration()
+    configuration_model.extensions.enabled = True
+    configuration_model.extensions.extensions_directory = testing_utils.get_test_extensions_dir()
 
-    preferences.load_model(preferences_model)
-    preferences.draw(dialog.getLayout())
+    configuration.load_model(configuration_model)
+    configuration.draw(dialog.getLayout())
 
-    assert preferences.save_button.isEnabled() == False
-    assert preferences.extensions.enable_extensions.isChecked() == True
-    assert preferences.extensions.extensions_directory.text() == testing_utils.get_test_extensions_dir()
-    assert 'Found 3 services' in preferences.extensions.status_label.text()
+    assert configuration.save_button.isEnabled() == False
+    assert configuration.extensions.enable_extensions.isChecked() == True
+    assert configuration.extensions.extensions_directory.text() == testing_utils.get_test_extensions_dir()
+    assert 'Found 3 services' in configuration.extensions.status_label.text()
 
 
-def test_preferences_extensions_validation(qtbot):
-    # pytest tests/test_components_3.py -k test_preferences_extensions_validation -s -rPP
+def test_configuration_extensions_validation(qtbot):
+    # pytest tests/test_components_3.py -k test_configuration_extensions_validation -s -rPP
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
     dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    preferences = component_preferences.ComponentPreferences(hypertts_instance, dialog)
-    preferences.draw(dialog.getLayout())
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())
 
-    preferences.extensions.enable_extensions.setChecked(True)
+    configuration.extensions.enable_extensions.setChecked(True)
 
     # directory doesn't exist
-    preferences.extensions.extensions_directory.setText('/does/not/exist/hypertts')
-    assert preferences.extensions.status_label.text() == constants.GUI_TEXT_EXTENSIONS_DIRECTORY_NOT_FOUND
+    configuration.extensions.extensions_directory.setText('/does/not/exist/hypertts')
+    assert configuration.extensions.status_label.text() == constants.GUI_TEXT_EXTENSIONS_DIRECTORY_NOT_FOUND
 
     # directory exists but holds no service files
-    preferences.extensions.extensions_directory.setText(testing_utils.get_repo_root_dir())
-    assert preferences.extensions.status_label.text() == constants.GUI_TEXT_EXTENSIONS_NO_SERVICES_FOUND
+    configuration.extensions.extensions_directory.setText(testing_utils.get_repo_root_dir())
+    assert configuration.extensions.status_label.text() == constants.GUI_TEXT_EXTENSIONS_NO_SERVICES_FOUND
 
     # pointing directly at the services subdirectory is accepted too
     services_dir = os.path.join(testing_utils.get_test_extensions_dir(), constants.DIR_SERVICES)
-    preferences.extensions.extensions_directory.setText(services_dir)
-    assert 'Found 3 services' in preferences.extensions.status_label.text()
+    configuration.extensions.extensions_directory.setText(services_dir)
+    assert 'Found 3 services' in configuration.extensions.status_label.text()
 
 
-def test_preferences_extensions_manual(qtbot):
-    # HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components_3.py -k test_preferences_extensions_manual -s -rPP
+def test_configuration_extensions_manual(qtbot):
+    # HYPERTTS_CONFIGURATION_DIALOG_DEBUG=yes pytest tests/test_components_3.py -k test_configuration_extensions_manual -s -rPP
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
 
     dialog = gui_testing_utils.EmptyDialog()
     dialog.setupUi()
 
-    preferences = component_preferences.ComponentPreferences(hypertts_instance, dialog)
-    preferences_model = config_models.Preferences()
-    preferences_model.extensions.enabled = True
-    preferences_model.extensions.extensions_directory = testing_utils.get_test_extensions_dir()
-    preferences.load_model(preferences_model)
-    preferences.draw(dialog.getLayout())
-    preferences.tabs.setCurrentIndex(2)
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration_model = config_models.Configuration()
+    configuration_model.extensions.enabled = True
+    configuration_model.extensions.extensions_directory = testing_utils.get_test_extensions_dir()
+    configuration.load_model(configuration_model)
+    configuration.draw(dialog.getLayout())
+    configuration.tabs.setCurrentIndex(configuration.TAB_INDEX_EXTENSIONS)
 
-    if os.environ.get('HYPERTTS_PREFERENCES_DIALOG_DEBUG', 'no') == 'yes':
+    if os.environ.get('HYPERTTS_CONFIGURATION_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec()
 
 

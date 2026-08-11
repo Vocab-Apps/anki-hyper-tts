@@ -146,7 +146,8 @@ yoyo
             'user_choice_easy_advanced': False,
             'display_introduction_message': False,
             'trial_registration_step': 'finished',
-            'extension_service_names': []
+            'extension_service_names': [],
+            'extensions': {'enabled': False, 'extensions_directory': None}
         }
         actual_output = hypertts_instance.anki_utils.written_config['configuration']
         del actual_output['install_time']

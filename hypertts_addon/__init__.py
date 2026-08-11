@@ -168,7 +168,7 @@ else:
     def extensions_dir():
         # third party services directory. read straight from the addon config, the same way
         # ipv4_only is read above, because ServiceManager is built before HyperTTS exists
-        extensions_config = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
+        extensions_config = addon_config.get(constants.CONFIG_CONFIGURATION, {}).\
             get(constants.CONFIG_EXTENSIONS, {})
         if not extensions_config.get('enabled', False):
             return None

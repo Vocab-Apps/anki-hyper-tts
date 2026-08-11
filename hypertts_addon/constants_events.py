@@ -39,6 +39,13 @@ class Event(enum.Enum):
     # dialog-specific
     click_disable_all_services = enum.auto()
     click_enable_free_services = enum.auto()
+    # services configuration screen tabs and per-service configuration panel
+    click_tab_hypertts_pro = enum.auto()
+    click_tab_services = enum.auto()
+    click_tab_extensions = enum.auto()
+    open_service_config = enum.auto()
+    click_service_config_ok = enum.auto()
+    click_service_config_cancel = enum.auto()
     click_free_trial = enum.auto()
     click_enter_api_key = enum.auto() # to be replaced
     click_remove_api_key = enum.auto()

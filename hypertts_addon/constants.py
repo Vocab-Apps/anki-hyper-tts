@@ -21,10 +21,12 @@ CLOUDLANGUAGETOOLS_API_BASE_URL = 'https://cloudlanguagetools-api.vocab.ai'
 VOCABAI_API_BASE_URL = 'https://app.vocab.ai'
 
 class ServiceType(enum.Enum):
-    dictionary = ("Dictionary, contains recordings of words.")
-    tts = ("Text To Speech, can generate audio for full sentences.")
-    def __init__(self, description):
+    # short_label is used in the compact services grid, description in longer form text
+    dictionary = ("Dictionary, contains recordings of words.", 'dict')
+    tts = ("Text To Speech, can generate audio for full sentences.", 'TTS')
+    def __init__(self, description, short_label):
         self.description = description
+        self.short_label = short_label
 
 class ServiceFee(enum.Enum):
     free = enum.auto()
@@ -112,7 +114,7 @@ CONFIG_REALTIME_CONFIG = 'realtime_config'
 CONFIG_CONFIGURATION = 'configuration'
 CONFIG_PREFERENCES = 'preferences'
 CONFIG_KEYBOARD_SHORTCUTS = 'keyboard_shortcuts'
-# nested inside CONFIG_PREFERENCES
+# nested inside CONFIG_CONFIGURATION
 CONFIG_EXTENSIONS = 'extensions'
 CONFIG_LAST_USED_BATCH = 'last_used_batch'
 CONFIG_USE_SELECTION = 'use_selection' # whether to use the selected portion of the field
@@ -264,6 +266,21 @@ BUY_PLAN_URL = """https://www.vocab.ai/hypertts-pro?utm_campaign=hypertts_config
 EXTENSIONS_TUTORIAL_URL = """https://www.vocab.ai/tutorials"""
 EXTENSIONS_REPOSITORY_URL = """https://github.com/Vocab-Apps/anki-hyper-tts-extensions"""
 
+# services grid (Services tab of the services configuration screen)
+GUI_TEXT_SERVICES_GRID_HEADER = ("""Enable the services you want to use. <b>Pro</b> marks services included with """
+    """HyperTTS Pro, <b>Fee</b> whether the service is free or requires a paid account of your own, and """
+    """<b>Type</b> whether it generates speech from sentences (TTS) or plays back word recordings (dict). """
+    """Enabling a service opens its configuration options below the row.""")
+GUI_TEXT_SERVICES_COLUMN_ENABLED = """Enabled"""
+GUI_TEXT_SERVICES_COLUMN_PRO = """Pro"""
+GUI_TEXT_SERVICES_COLUMN_NAME = """Service"""
+GUI_TEXT_SERVICES_COLUMN_FEE = """Fee"""
+GUI_TEXT_SERVICES_COLUMN_TYPE = """Type"""
+GUI_TEXT_SERVICES_ENABLED_BY_PRO = """via Pro"""
+GUI_TEXT_NO_SERVICES_CONFIGURED = ("""<b>You don't have any services configured yet.</b> Either start a """
+    """HyperTTS Pro trial on the <b>HyperTTS Pro</b> tab, which enables all premium services at once, or """
+    """enable individual services on the <b>Services</b> tab.""")
+
 GUI_TEXT_HYPERTTS_PRO_TRIAL = """Free Trial access instantly, just enter your email."""
 GUI_TEXT_HYPERTTS_PRO_BUY_PLAN = """Subscribe to HyperTTS Pro. Get access in 5mn."""
 GUI_TEXT_HYPERTTS_PRO_ENTER_API_KEY = """Enter HyperTTS Pro / AwesomeTTS Plus / Language Tools API Key."""
@@ -323,7 +340,7 @@ GUI_TEXT_EXTENSIONS_DIRECTORY = """Extensions repository directory:"""
 GUI_TEXT_EXTENSIONS_WARNING = ("""<b>Warning:</b> third party services are Python code which HyperTTS """
     """will run every time Anki starts. They are not reviewed by the HyperTTS author. Only point this """
     """at a directory you trust.""")
-GUI_TEXT_EXTENSIONS_ANKI_RESTART = """Note: You'll need to restart Anki after changing these settings. Once restarted, the third party services can be enabled and configured from HyperTTS: Services Configuration."""
+GUI_TEXT_EXTENSIONS_ANKI_RESTART = """Note: You'll need to restart Anki after changing these settings. Third party services only show up in the <b>Services</b> tab once Anki has been restarted."""
 GUI_TEXT_EXTENSIONS_TUTORIAL = """Extensions tutorial"""
 GUI_TEXT_EXTENSIONS_NOT_CONFIGURED = """No directory configured."""
 GUI_TEXT_EXTENSIONS_DIRECTORY_NOT_FOUND = """Directory not found."""

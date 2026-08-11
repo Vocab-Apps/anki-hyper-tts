@@ -1,10 +1,9 @@
-from pydoc import describe
-import sys
 import aqt.qt
-import webbrowser
 
 from . import component_common
+from . import component_extensions
 from . import component_hyperttspro
+from . import component_services
 from . import config_models
 from . import constants
 from . import constants_events
@@ -15,31 +14,51 @@ from . import stats
 
 logger = logging_utils.get_child_logger(__name__)
 
-class ScrollAreaCustom(aqt.qt.QScrollArea):
-    def __init__(self):
-        aqt.qt.QScrollArea.__init__(self)
-
-    def sizeHint(self):
-        return aqt.qt.QSize(100, 100)
-
-
 sc = stats.StatsContext(constants_events.EventContext.services)
 
 class Configuration(component_common.ConfigComponentBase):
+    """the services configuration screen. three tabs (HyperTTS Pro, Services, Extensions) which all
+    edit a single config_models.Configuration model, saved in one go by the Save button."""
 
     STACK_LEVEL_LITE = 0
     STACK_LEVEL_PRO = 1
+
+    TAB_INDEX_HYPERTTS_PRO = 0
+    TAB_INDEX_SERVICES = 1
+    TAB_INDEX_EXTENSIONS = 2
+
+    TAB_EVENTS = {
+        TAB_INDEX_HYPERTTS_PRO: Event.click_tab_hypertts_pro,
+        TAB_INDEX_SERVICES: Event.click_tab_services,
+        TAB_INDEX_EXTENSIONS: Event.click_tab_extensions,
+    }
 
     @sc.event(Event.open)
     def __init__(self, hypertts, dialog):
         self.hypertts = hypertts
         self.dialog = dialog
-        self.model = config_models.Configuration()
-        self.service_stack_map = {}
-        self.clt_stack_map = {}
         self.enable_model_change = False
         self.api_key_valid = False
+
         self.hyperttspro = component_hyperttspro.HyperTTSPro(self.hypertts, self.hyperttspro_account_config_change)
+        self.services = component_services.Services(self.hypertts, self.dialog, self.services_updated)
+        self.extensions = component_extensions.Extensions(self.hypertts, self.dialog, self.extensions_updated)
+
+        # created here rather than in draw() so that callbacks fired while the tabs are being drawn
+        # always have something to update
+        self.alert_label = aqt.qt.QLabel(constants.GUI_TEXT_NO_SERVICES_CONFIGURED)
+        self.alert_label.setObjectName('hypertts_configuration_alert')
+        self.alert_label.setWordWrap(True)
+        self.alert_label.setStyleSheet('border: 1px solid palette(mid); border-radius: 4px; padding: 6px;')
+
+        self.save_button = aqt.qt.QPushButton('Save')
+        self.save_button.setObjectName('hypertts_configuration_save_button')
+        self.cancel_button = aqt.qt.QPushButton('Cancel')
+        self.cancel_button.setObjectName('hypertts_configuration_cancel_button')
+
+        # the sub-components edit parts of this same model, so they all have to be handed the very
+        # same instance, including the empty one we start with
+        self.load_model(config_models.Configuration())
 
     def get_model(self):
         return self.model
@@ -47,6 +66,12 @@ class Configuration(component_common.ConfigComponentBase):
     def load_model(self, model):
         self.model = model
         self.hyperttspro.load_model(self.model.get_hypertts_pro_config())
+        self.services.load_model(self.model)
+        self.extensions.load_model(self.model.extensions)
+        self.update_alert()
+
+    # model changes
+    # =============
 
     def hyperttspro_account_config_change(self, account_config: config_models.HyperTTSProAccountConfig):
         self.api_key_valid = account_config.api_key_valid
@@ -56,54 +81,21 @@ class Configuration(component_common.ConfigComponentBase):
         if is_change:
             self.model_change()
 
+    def services_updated(self):
+        self.update_alert()
+        self.model_change()
+
+    def extensions_updated(self, model):
+        self.model.extensions = model
+        self.model_change()
+
     def model_change(self):
         if self.enable_model_change:
             self.save_button.setEnabled(True)
             self.save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
 
-    def get_service_enable_change_fn(self, service):
-        def enable_change(value):
-            enabled = value == 2
-            logger.info(f'{service.name} enabled: {enabled}')
-            self.model.set_service_enabled(service.name, enabled)
-            self.model_change()
-        return enable_change
-
-    def get_service_config_str_change_fn(self, service, key):
-        def str_change(text):
-            logger.info(f'{service.name} {key}: {text}')
-            self.model.set_service_configuration_key(service.name, key, text)
-            self.model_change()
-        return str_change
-
-    def get_service_config_int_change_fn(self, service, key):
-        def int_change(value):
-            logger.info(f'{service.name} {key}: {value}')
-            self.model.set_service_configuration_key(service.name, key, value)
-            self.model_change()
-        return int_change
-
-    def get_service_config_float_change_fn(self, service, key):
-        def float_change(value):
-            logger.info(f'{service.name} {key}: {value}')
-            self.model.set_service_configuration_key(service.name, key, value)
-            self.model_change()
-        return float_change
-
-    def get_service_config_list_change_fn(self, service, key):
-        def list_change(text):
-            logger.info(f'{service.name} {key}: {text}')
-            self.model.set_service_configuration_key(service.name, key, text)
-            self.model_change()
-        return list_change
-
-    def get_service_config_bool_change_fn(self, service, key):
-        def bool_change(checkbox_value):
-            value = checkbox_value == 2
-            logger.info(f'{service.name} {key}: {value}')
-            self.model.set_service_configuration_key(service.name, key, value)
-            self.model_change()
-        return bool_change
+    # hypertts pro state
+    # ==================
 
     def cloud_language_tools_enabled(self):
         return self.api_key_valid
@@ -113,163 +105,25 @@ class Configuration(component_common.ConfigComponentBase):
             self.header_logo_stack_widget.setCurrentIndex(self.STACK_LEVEL_PRO)
         else:
             self.header_logo_stack_widget.setCurrentIndex(self.STACK_LEVEL_LITE)
-        # will enable/disable checkboxes
-        for service in self.hypertts.service_manager.get_all_services():
-            self.manage_service_stack(service, self.service_stack_map[service.name], self.clt_stack_map[service.name])
+        # services covered by HyperTTS Pro don't need to be enabled or configured individually
+        self.services.set_pro_enabled(self.cloud_language_tools_enabled())
+        self.update_alert()
 
-    def manage_service_stack(self, service, service_stack, clt_stack):
-        if self.cloud_language_tools_enabled() and service.cloudlanguagetools_enabled():
-            logger.info(f'{service.name}: show CLT stack')
-            service_stack.setVisible(False)
-            clt_stack.setVisible(True)
-        else:
-            logger.info(f'{service.name}: show service stack')
-            service_stack.setVisible(True)
-            clt_stack.setVisible(False)
+    # bottom alert
+    # ============
 
-    @sc.event(Event.click_disable_all_services)
-    def disable_all_services(self):
-        for service in self.get_service_list():
-            checkbox_name = self.get_service_enabled_widget_name(service)
-            # find the checkbox
-            checkbox = self.dialog.findChild(aqt.qt.QCheckBox, checkbox_name)
-            checkbox.setChecked(False)
+    def no_services_configured(self):
+        """the user can either use HyperTTS Pro, or enable individual services. if they've done
+        neither, HyperTTS can't generate any audio at all."""
+        if self.model.hypertts_pro_api_key_set():
+            return False
+        return not self.services.any_service_enabled()
 
-    @sc.event(Event.click_enable_free_services)
-    def enable_all_free_services(self):
-        for service in self.get_service_list():
-            if service.service_fee == constants.ServiceFee.free:
-                checkbox_name = self.get_service_enabled_widget_name(service)
-                # find the checkbox
-                checkbox = self.dialog.findChild(aqt.qt.QCheckBox, checkbox_name)
-                checkbox.setChecked(True)
+    def update_alert(self):
+        self.alert_label.setVisible(self.no_services_configured())
 
-    def get_service_enabled_widget_name(self, service):
-        return f'{service.name}_enabled'
-
-    def draw_service_options(self, service, layout):
-        service_enabled_checkbox = aqt.qt.QCheckBox('Enable')
-        service_enabled_checkbox.setObjectName(self.get_service_enabled_widget_name(service))
-        service_enabled_checkbox.setChecked(service.enabled)
-        service_enabled_checkbox.stateChanged.connect(self.get_service_enable_change_fn(service))
-        layout.addWidget(service_enabled_checkbox)
-
-        configuration_options = service.configuration_options()
-        options_gridlayout = aqt.qt.QGridLayout()
-        row = 0
-        for key, type in configuration_options.items():
-            widget_name = f'{service.name}_{key}'
-            options_gridlayout.addWidget(aqt.qt.QLabel(key + ':'), row, 0, 1, 1)
-            if type == str:
-                lineedit = aqt.qt.QLineEdit()
-                lineedit.setText(self.model.get_service_configuration_key(service.name, key))
-                lineedit.setObjectName(widget_name)
-                lineedit.textChanged.connect(self.get_service_config_str_change_fn(service, key))
-                options_gridlayout.addWidget(lineedit, row, 1, 1, 1)
-            elif type == int:
-                spinbox = aqt.qt.QSpinBox()
-                saved_value = self.model.get_service_configuration_key(service.name, key)
-                if saved_value != None:
-                    spinbox.setValue(saved_value)
-                spinbox.setObjectName(widget_name)
-                spinbox.valueChanged.connect(self.get_service_config_int_change_fn(service, key))
-                options_gridlayout.addWidget(spinbox, row, 1, 1, 1)
-            elif type == float:
-                spinbox = aqt.qt.QDoubleSpinBox()
-                saved_value = self.model.get_service_configuration_key(service.name, key)
-                if saved_value != None:
-                    spinbox.setValue(saved_value)
-                spinbox.setObjectName(widget_name)
-                spinbox.valueChanged.connect(self.get_service_config_float_change_fn(service, key))
-                options_gridlayout.addWidget(spinbox, row, 1, 1, 1)                
-            elif type == bool:
-                checkbox = aqt.qt.QCheckBox()
-                saved_value = self.model.get_service_configuration_key(service.name, key)
-                if saved_value != None:
-                    checkbox.setChecked(saved_value)
-                checkbox.setObjectName(widget_name)
-                checkbox.stateChanged.connect(self.get_service_config_bool_change_fn(service, key))
-                options_gridlayout.addWidget(checkbox, row, 1, 1, 1)
-            elif isinstance(type, list):
-                combobox = aqt.qt.QComboBox()
-                combobox.setObjectName(widget_name)
-                combobox.addItems(type)
-                combobox.setCurrentText(self.model.get_service_configuration_key(service.name, key))
-                combobox.currentTextChanged.connect(self.get_service_config_list_change_fn(service, key))
-                options_gridlayout.addWidget(combobox, row, 1, 1, 1)
-            row += 1
-        
-        layout.addLayout(options_gridlayout)
-
-    def draw_service(self, service, layout):
-        logger.info(f'draw_service {service.name}')
-        
-        def get_service_header_label(service):
-            header_label = gui_utils.get_service_header_label(service.name)
-            return header_label        
-
-        def get_service_description_label(service):
-            service_description = f'{service.service_fee.name}, {service.service_type.description}'
-            service_description_label = aqt.qt.QLabel(service_description)
-            service_description_label.setMargin(0)
-            return service_description_label            
-
-        combined_service_vlayout = aqt.qt.QVBoxLayout()
-        # leave some space above/below services
-        combined_service_vlayout.setContentsMargins(0, 5, 0, 5)
-
-        # draw service header and description
-        # ===================================
-
-        combined_service_vlayout.addWidget(get_service_header_label(service))
-        combined_service_vlayout.addWidget(get_service_description_label(service))
-
-        # add service config options, when cloudlanguagetools not enabled
-        # ===============================================================
-
-        invisible_widget = aqt.qt.QWidget()
-        invisible_widget.setVisible(False)
-
-
-        service_stack = aqt.qt.QWidget(invisible_widget)
-        service_vlayout = aqt.qt.QVBoxLayout()
-        service_vlayout.setContentsMargins(0, 0, 0, 0)
-        if service.cloudlanguagetools_enabled():
-            buttons_layout = aqt.qt.QHBoxLayout()
-            logo = gui_utils.get_graphic(constants.GRAPHICS_SERVICE_COMPATIBLE)
-            buttons_layout.addStretch()
-            buttons_layout.addWidget(logo)
-            service_vlayout.addLayout(buttons_layout)
-        self.draw_service_options(service, service_vlayout)
-        service_stack.setLayout(service_vlayout)
-
-        # when cloudlanguagetools is enabled
-        # ==================================
-        clt_stack = aqt.qt.QWidget(invisible_widget)
-        clt_vlayout = aqt.qt.QVBoxLayout()
-        clt_vlayout.setContentsMargins(0, 0, 0, 0)
-        logo = gui_utils.get_graphic(constants.GRAPHICS_SERVICE_ENABLED)
-        clt_vlayout.addWidget(logo)
-        clt_stack.setLayout(clt_vlayout)
-
-
-        self.manage_service_stack(service, service_stack, clt_stack)
-
-        self.service_stack_map[service.name] = service_stack
-        self.clt_stack_map[service.name] = clt_stack
-
-        combined_service_vlayout.addWidget(service_stack)
-        combined_service_vlayout.addWidget(clt_stack)
-
-        layout.addLayout(combined_service_vlayout)
-
-    def get_service_list(self):
-        def service_sort_key(service):
-            return service.name
-        service_list = self.hypertts.service_manager.get_all_services()
-        service_list.sort(key=service_sort_key)
-        return service_list
-
+    # drawing
+    # =======
 
     def draw(self, layout):
         self.global_vlayout = aqt.qt.QVBoxLayout()
@@ -289,48 +143,31 @@ class Configuration(component_common.ConfigComponentBase):
         self.header_logo_stack_widget.setCurrentIndex(self.STACK_LEVEL_LITE) # lite
         self.global_vlayout.addWidget(self.header_logo_stack_widget)
 
-        # hypertts pro
-        # ============
-        self.hyperttspro.draw(self.global_vlayout)
+        # tabs
+        # ====
 
-        # services
-        # ========
+        self.tabs = aqt.qt.QTabWidget()
+        self.tabs.setObjectName('hypertts_configuration_tabs')
+        # the services tab is drawn first, so that it's ready for the callbacks which the hypertts
+        # pro tab fires while verifying a saved API key
+        services_widget = self.services.draw()
+        hyperttspro_widget = self.hyperttspro.draw_widget()
+        extensions_widget = self.extensions.draw()
+        self.tabs.addTab(hyperttspro_widget, 'HyperTTS Pro')
+        self.tabs.addTab(services_widget, 'Services')
+        self.tabs.addTab(extensions_widget, 'Extensions')
+        self.global_vlayout.addWidget(self.tabs, 1)
 
-        def get_separator():
-            separator = aqt.qt.QFrame()
-            separator.setFrameShape(aqt.qt.QFrame.Shape.HLine)
-            separator.setSizePolicy(aqt.qt.QSizePolicy.Policy.Minimum, aqt.qt.QSizePolicy.Policy.Expanding)
-            separator.setStyleSheet('color: #cccccc;')
-            separator.setLineWidth(2)
-            return separator
+        # alert, outside of the tabs
+        # ==========================
 
-        self.global_vlayout.addWidget(aqt.qt.QLabel('Services'))
-        buttons_layout = aqt.qt.QHBoxLayout()
-        self.enable_all_free_services_button = aqt.qt.QPushButton('Enable All Free Services')
-        self.disable_all_services_button = aqt.qt.QPushButton('Disable All Services')
-        buttons_layout.addWidget(self.enable_all_free_services_button)
-        buttons_layout.addWidget(self.disable_all_services_button)
-        self.global_vlayout.addLayout(buttons_layout)
-        services_scroll_area = ScrollAreaCustom()
-        services_scroll_area.setHorizontalScrollBarPolicy(aqt.qt.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        services_scroll_area.setAlignment(aqt.qt.Qt.AlignmentFlag.AlignHCenter)
-        services_widget = aqt.qt.QWidget()
-        self.services_vlayout = aqt.qt.QVBoxLayout(services_widget)
-        
-        for service in self.get_service_list():
-            self.draw_service(service, self.services_vlayout)
-            self.services_vlayout.addWidget(get_separator())
-
-        services_scroll_area.setWidget(services_widget)
-        self.global_vlayout.addWidget(services_scroll_area, 1)
+        self.global_vlayout.addWidget(self.alert_label)
 
         # bottom buttons
         # ==============
 
         buttons_layout = aqt.qt.QHBoxLayout()
-        self.save_button = aqt.qt.QPushButton('Save')
         self.save_button.setEnabled(False)
-        self.cancel_button = aqt.qt.QPushButton('Cancel')
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
         buttons_layout.addStretch()
         buttons_layout.addWidget(self.save_button)
@@ -340,17 +177,22 @@ class Configuration(component_common.ConfigComponentBase):
         # wire events
         # ===========
 
-        self.enable_all_free_services_button.pressed.connect(self.enable_all_free_services)
-        self.disable_all_services_button.pressed.connect(self.disable_all_services)
-
+        self.tabs.currentChanged.connect(self.tab_changed)
         self.save_button.pressed.connect(self.save_button_pressed)
         self.cancel_button.pressed.connect(self.cancel_button_pressed)
 
-        # run event once
-        # self.pro_api_key_entered()
+        self.update_alert()
         self.enable_model_change = True
 
         layout.addLayout(self.global_vlayout)
+
+    # events
+    # ======
+
+    def tab_changed(self, index):
+        event = self.TAB_EVENTS.get(index, None)
+        if event != None:
+            sc.send_event(event)
 
     @sc.event(Event.click_save)
     def save_button_pressed(self):
