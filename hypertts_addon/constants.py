@@ -266,8 +266,7 @@ GUI_TEXT_BUTTON_BUY = """Sign Up"""
 
 BUY_PLAN_URL = """https://www.vocab.ai/hypertts-pro?utm_campaign=hypertts_config&utm_source=hypertts&utm_medium=addon"""
 
-# TODO: placeholder, replace with the real extensions tutorial URL once it's published
-EXTENSIONS_TUTORIAL_URL = """https://www.vocab.ai/tutorials"""
+EXTENSIONS_TUTORIAL_URL = """https://www.vocab.ai/tips/hypertts-extensions-community-services"""
 EXTENSIONS_REPOSITORY_URL = """https://github.com/Vocab-Apps/anki-hyper-tts-extensions"""
 
 # services grid (Services tab of the services configuration screen)
