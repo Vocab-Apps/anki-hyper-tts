@@ -5,6 +5,7 @@ import aqt.utils
 from . import component_common
 from . import config_models
 from . import constants
+from . import gui_utils
 from . import servicemanager
 from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
@@ -34,8 +35,10 @@ class Extensions(component_common.ConfigComponentBase):
         self.status_label.setObjectName('hypertts_extensions_status_label')
         self.status_label.setWordWrap(True)
 
+        tutorial_url = gui_utils.get_vocab_ai_url(
+            constants.EXTENSIONS_TUTORIAL_URL_PATH, constants.EXTENSIONS_TUTORIAL_UTM_CAMPAIGN)
         self.tutorial_link = aqt.qt.QLabel(
-            f'<a href="{constants.EXTENSIONS_TUTORIAL_URL}">{constants.GUI_TEXT_EXTENSIONS_TUTORIAL}</a>')
+            f'<a href="{tutorial_url}">{constants.GUI_TEXT_EXTENSIONS_TUTORIAL}</a>')
         self.tutorial_link.setObjectName('hypertts_extensions_tutorial_link')
 
     def get_model(self):
