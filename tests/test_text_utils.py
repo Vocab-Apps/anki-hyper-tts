@@ -273,6 +273,7 @@ def test_check_length(qtbot):
     pytest.raises(errors.SourceTextEmpty, text_utils.check_length, '  ')
     pytest.raises(errors.SourceTextEmpty, text_utils.check_length, ' \t\n ')
     pytest.raises(errors.SourceTextEmpty, text_utils.check_length, None)
+
 def test_get_sound_tag_filenames(qtbot):
     assert text_utils.get_sound_tag_filenames('') == []
     assert text_utils.get_sound_tag_filenames('no audio here') == []
@@ -322,3 +323,62 @@ def test_remove_sound_tags_hypertts_only(qtbot):
     assert text_utils.remove_sound_tags(
         '[sound:external-recording.mp3] [sound:hypertts-1.mp3]', hypertts_only=False) == \
         ('', ['external-recording.mp3', 'hypertts-1.mp3'])
+
+def test_remove_sound_tags_preserves_rest_of_field(qtbot):
+    """regression: removing a sound tag used to re-flow whitespace over the whole field
+    (every run of spaces/tabs collapsed to one, then stripped), which mangled html markup,
+    indented content and deliberate spacing that had nothing to do with the audio"""
+
+    # indentation and newlines inside a code block survive
+    assert text_utils.remove_sound_tags('<pre>def f():\n    return 1</pre> [sound:hypertts-1.mp3]') == \
+        ('<pre>def f():\n    return 1</pre>', ['hypertts-1.mp3'])
+
+    # spacing inside html attributes survives
+    assert text_utils.remove_sound_tags('<div style="a: b;   c: d">x</div>[sound:hypertts-1.mp3]') == \
+        ('<div style="a: b;   c: d">x</div>', ['hypertts-1.mp3'])
+
+    # the user's own spacing is not reformatted, and only the whitespace which separated the
+    # tag from the text is taken away with it
+    assert text_utils.remove_sound_tags('  hello    world  [sound:hypertts-1.mp3]') == \
+        ('  hello    world', ['hypertts-1.mp3'])
+    assert text_utils.remove_sound_tags('[sound:hypertts-1.mp3]   trailing   ') == \
+        ('trailing   ', ['hypertts-1.mp3'])
+    assert text_utils.remove_sound_tags('one\ttwo\t[sound:hypertts-1.mp3]') == \
+        ('one\ttwo', ['hypertts-1.mp3'])
+
+    # newlines are part of the field layout, they are never treated as tag separators
+    assert text_utils.remove_sound_tags('line1\n[sound:hypertts-1.mp3]\nline2') == \
+        ('line1\n\nline2', ['hypertts-1.mp3'])
+    assert text_utils.remove_sound_tags('line1\n\n[sound:hypertts-1.mp3]') == \
+        ('line1\n\n', ['hypertts-1.mp3'])
+
+    # a single separator is put back when the tag sat between two pieces of text...
+    assert text_utils.remove_sound_tags('before [sound:hypertts-1.mp3] after') == \
+        ('before after', ['hypertts-1.mp3'])
+    assert text_utils.remove_sound_tags('before [sound:hypertts-1.mp3]after') == \
+        ('before after', ['hypertts-1.mp3'])
+    # ...but never inserted where there was no whitespace to begin with
+    assert text_utils.remove_sound_tags('<b>bold</b>[sound:hypertts-1.mp3]more') == \
+        ('<b>bold</b>more', ['hypertts-1.mp3'])
+
+    # adjacent tags share the whitespace between them, it doesn't get duplicated
+    assert text_utils.remove_sound_tags('A [sound:hypertts-1.mp3] [sound:hypertts-2.mp3] B') == \
+        ('A B', ['hypertts-1.mp3', 'hypertts-2.mp3'])
+    assert text_utils.remove_sound_tags('[sound:hypertts-1.mp3] [sound:hypertts-2.mp3]') == \
+        ('', ['hypertts-1.mp3', 'hypertts-2.mp3'])
+
+    # a kept tag keeps the whitespace around it too
+    assert text_utils.remove_sound_tags(
+        'word [sound:external-recording.mp3] [sound:hypertts-1.mp3]', hypertts_only=True) == \
+        ('word [sound:external-recording.mp3]', ['hypertts-1.mp3'])
+    assert text_utils.remove_sound_tags(
+        '[sound:hypertts-1.mp3] [sound:external-recording.mp3] tail', hypertts_only=True) == \
+        ('[sound:external-recording.mp3] tail', ['hypertts-1.mp3'])
+
+    # html entities are not whitespace, they are left exactly as they are
+    assert text_utils.remove_sound_tags('a&nbsp;&nbsp;b [sound:hypertts-1.mp3]') == \
+        ('a&nbsp;&nbsp;b', ['hypertts-1.mp3'])
+
+    # a field with no removals is returned completely untouched, whatever it holds
+    unchanged = '  <pre>  keep\t\tthis  </pre>  [sound:external-recording.mp3]  '
+    assert text_utils.remove_sound_tags(unchanged, hypertts_only=True) == (unchanged, [])
