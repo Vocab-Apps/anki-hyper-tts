@@ -80,6 +80,12 @@ class ElevenLabs(service.ServiceBase):
             logger.warning(error_message)
             if response.status_code in (401, 402):
                 raise errors.ServicePermissionError(source_text, voice, error_message)
+            if response.status_code == 400:
+                # ElevenLabs uses HTTP 400 for permanent input-validation
+                # failures, including input_text_empty after it strips speaker
+                # tags and emojis. Retrying the same input cannot succeed.
+                # Sentry ANKI-HYPER-TTS-KPC.
+                raise errors.ServiceInputError(source_text, voice, error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
         return response.content
