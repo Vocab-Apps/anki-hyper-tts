@@ -29,7 +29,9 @@ LCIDS = {
 	"1": "ar_SA",
 	"2": "bg_BG",
 	"3": "ca_ES",
-	"4": "zh_CHS",
+	# Windows reports zh-Hans as 0x0004. HyperTTS uses zh_CN for
+	# Simplified Chinese rather than Windows' legacy zh_CHS name.
+	"4": "zh_CN",
 	"5": "cs_CZ",
 	"6": "da_DK",
 	"7": "de_DE",
@@ -270,7 +272,11 @@ LCIDS = {
 	"19466": "es_NI",
 	"20490": "es_PR",
 	"21514": "es_US",
-	"31748": "zh_CHT"
+	# Legacy generic Chinese LCID. Microsoft documents this as Simplified
+	# Chinese, and current SAPI voices can report it alongside 0x0004/0x0804
+	# (for example Microsoft Xiaoxiao; Sentry ANKI-HYPER-TTS-JSV).
+	"30724": "zh_CN",
+	"31748": "zh_TW"
 }
 
 

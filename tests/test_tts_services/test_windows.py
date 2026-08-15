@@ -19,3 +19,17 @@ def test_windows_service_does_not_import_comtypes():
         module_name == 'comtypes' or module_name.startswith('comtypes.')
         for module_name in imported_modules
     )
+
+
+def test_windows_simplified_chinese_multi_lcid_sequence():
+    """Normalize every LCID reported by Microsoft Xiaoxiao to zh_CN."""
+    assert service_windows.lcid_hex_str_to_lang_codes('804;4;7804') == [
+        'zh_CN',
+        'zh_CN',
+        'zh_CN',
+    ]
+
+
+def test_windows_neutral_traditional_chinese_lcid():
+    """Use HyperTTS' supported zh_TW enum for Windows' neutral zh-Hant LCID."""
+    assert service_windows.lcid_hex_str_to_lang_codes('7c04') == ['zh_TW']
