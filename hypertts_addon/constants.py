@@ -119,6 +119,21 @@ CONFIG_EXTENSIONS = 'extensions'
 CONFIG_LAST_USED_BATCH = 'last_used_batch'
 CONFIG_USE_SELECTION = 'use_selection' # whether to use the selected portion of the field
 
+# configuration backups (github issue #360). every time the addon configuration is written, a copy
+# is kept inside user_files (which anki preserves across addon upgrades), so that a user whose
+# configuration disappeared can restore it from the preferences screen.
+CONFIG_BACKUP_DIR_NAME = 'config_backup'
+CONFIG_BACKUP_FILE_PREFIX = 'hypertts_config_'
+CONFIG_BACKUP_FILE_EXTENSION = '.json'
+# how many backup files we keep around
+CONFIG_BACKUP_MAX_COUNT = 30
+# keys of the backup file envelope
+CONFIG_BACKUP_KEY_METADATA = 'backup_metadata'
+CONFIG_BACKUP_KEY_CONFIG = 'config'
+# name of the file anki uses to store addon configuration
+ANKI_ADDON_META_FILENAME = 'meta.json'
+ANKI_ADDON_META_CONFIG_KEY = 'config'
+
 ADDON_NAME = 'HyperTTS'
 MENU_PREFIX = ADDON_NAME + ':'
 TITLE_PREFIX = ADDON_NAME + ': '
@@ -336,6 +351,19 @@ GUI_TEXT_SHORTCUTS_EDITOR_ADD_AUDIO = """Add Audio to note using the selected pr
 GUI_TEXT_SHORTCUTS_EDITOR_PREVIEW_AUDIO = """Preview Audio for a note using the selected preset"""
 
 GUI_TEXT_ERROR_HANDLING_REALTIME_TTS = """How to display errors during Realtime TTS"""
+
+GUI_TEXT_CONFIG_BACKUP = ("""HyperTTS keeps a copy of your configuration (presets, preset rules, services and """
+    """API keys) every time it is saved. If your configuration ever disappears, choose the most recent backup """
+    """which looks correct and restore it. Backups are stored inside the addon's <b>user_files</b> directory, """
+    """which Anki preserves when HyperTTS is upgraded.""")
+GUI_TEXT_CONFIG_BACKUP_RESTORE_WARNING = ("""Restoring a backup replaces your current HyperTTS configuration. """
+    """Your current configuration is backed up first, so this operation can be undone by restoring the """
+    """most recent backup.""")
+GUI_TEXT_CONFIG_BACKUP_RESTART = ("""HyperTTS configuration restored. Please restart Anki to make sure all """
+    """screens pick up the restored configuration.""")
+GUI_TEXT_CONFIG_LOSS_DETECTED = ("""HyperTTS could not read your configuration, it looks like it was lost or """
+    """corrupted. Your presets and API keys have not been overwritten. Go to <b>Anki: Tools -> HyperTTS """
+    """Preferences -> Configuration Backups</b> to restore your configuration from a backup.""")
 
 GUI_TEXT_EXTENSIONS = ("""Third party services are contributed by the community and live in the """
     """<b>anki-hyper-tts-extensions</b> repository. Check out (or download) that repository somewhere """

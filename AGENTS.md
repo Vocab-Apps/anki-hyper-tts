@@ -77,6 +77,20 @@ The addon uses a sophisticated configuration system:
 - **`meta.json`** - Runtime configuration including API keys (excluded from releases)
 - **`config_models.py`** - Pydantic models for type-safe configuration
 
+Configuration safety (github issue #360, configuration loss):
+- **`config_backup.py`** - rolling backups in `user_files/config_backup/` (written atomically, most
+  recent 30 kept, identical configurations deduplicated), configuration statistics, and detection of
+  data loss / corrupt `meta.json`, reported to Sentry as `errors.ConfigurationAnomaly`
+- **`component_config_backup.py`** - the *Configuration Backups* tab of the Preferences screen, where
+  a user can inspect and restore a backup
+- all configuration writes go through `HyperTTS.persist_config()`, never
+  `anki_utils.write_config()` directly: it takes the backup and refuses to persist a configuration
+  which lost all its data (anki hands out `config.json` defaults when `meta.json` cannot be parsed,
+  and writing those back is what makes the loss permanent)
+- HyperTTS never writes the configuration on startup unless a migration actually changed it, and
+  `hypertts_addon/__init__.py` only writes a newly generated `user_uuid` when the backups agree that
+  this really is a first install
+
 ### Important Development Notes
 
 - Tests use PyQt6 and require special handling for Qt components

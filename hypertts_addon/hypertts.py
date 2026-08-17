@@ -25,6 +25,7 @@ from . import voice as voice_module
 from . import errors
 from . import text_utils
 from . import config_models
+from . import config_backup
 from . import context
 from . import logging_utils
 from . import gui
@@ -57,9 +58,70 @@ class HyperTTS():
         self.error_manager = errors.ErrorManager(self.anki_utils)
         self.config = self.anki_utils.get_config()
         self.latest_saved_batch_name = None
+        self.config_backup_manager = config_backup.ConfigBackupManager(self.anki_utils)
+        self.config_loss_notified = False
+
+        # check whether the configuration we just loaded can be trusted. if it can't (empty
+        # configuration while backups contain data, or a meta.json which doesn't parse), we must not
+        # write anything back, otherwise the loss becomes permanent (github issue #360)
+        self.config_writes_blocked = not self.config_backup_manager.check_startup_config_state(self.config)
+        if self.config_writes_blocked:
+            self.notify_configuration_loss()
+        else:
+            # keep a backup of the configuration we start with
+            self.config_backup_manager.save_backup(self.config)
 
         # do maintenance on the configuration
         self.perform_config_migration()
+
+    # configuration persistence
+    # =========================
+
+    def persist_config(self) -> bool:
+        """single choke point for writing the addon configuration. keeps a backup of every
+        configuration we write, and refuses to persist a configuration which looks like it was
+        lost rather than modified by the user (github issue #360). returns whether the
+        configuration was written."""
+        if self.config_writes_blocked:
+            logger.error('not writing configuration, configuration writes are blocked')
+            self.notify_configuration_loss()
+            return False
+        if not self.config_backup_manager.check_config_before_write(self.config):
+            self.config_writes_blocked = True
+            self.notify_configuration_loss()
+            return False
+        self.anki_utils.write_config(self.config)
+        self.config_backup_manager.save_backup(self.config)
+        return True
+
+    def notify_configuration_loss(self):
+        """tell the user, once, that their configuration couldn't be read and how to restore it"""
+        if self.config_loss_notified:
+            return
+        self.config_loss_notified = True
+        try:
+            self.anki_utils.run_on_main_delayed(lambda:
+                self.anki_utils.critical_message(constants.GUI_TEXT_CONFIG_LOSS_DETECTED, None))
+        except Exception as e:
+            logger.warning(f'could not display configuration loss message: {e}')
+
+    def restore_config_backup(self, filename: str) -> config_models.Configuration:
+        """restore the configuration from one of the backup files in user_files/config_backup"""
+        logger.info(f'restoring configuration backup {filename}')
+        restored_config = self.config_backup_manager.load_backup_config(filename)
+        # keep a backup of the configuration we are about to replace, so that the restore itself
+        # can be undone
+        self.config_backup_manager.save_backup(self.config)
+        self.config = restored_config
+        # a backup may come from an older version of HyperTTS
+        self.config = config_models.migrate_configuration(self.anki_utils, self.config)
+        # the configuration was restored on purpose, don't let the loss detection block the write
+        self.config_writes_blocked = False
+        self.config_loss_notified = False
+        self.anki_utils.write_config(self.config)
+        self.config_backup_manager.save_backup(self.config)
+        self.reconfigure_service_manager()
+        return self.get_configuration()
 
 
     def process_batch_audio(self, note_id_list, batch, batch_status, anki_collection):
@@ -798,7 +860,7 @@ class HyperTTS():
         if constants.CONFIG_PRESETS not in self.config:
             self.config[constants.CONFIG_PRESETS] = {}
         self.config[constants.CONFIG_PRESETS][preset.uuid] = preset.serialize()
-        self.anki_utils.write_config(self.config)
+        self.persist_config()
         logger.info(f'saved preset [{preset.name}] {pprint.pformat(preset.serialize(), compact=True, width=500)}')
 
     def load_preset(self, preset_id: str) -> config_models.BatchConfig:
@@ -816,7 +878,7 @@ class HyperTTS():
         if preset_id not in self.config[constants.CONFIG_PRESETS]:
             raise errors.PresetNotFound(preset_id)
         del self.config[constants.CONFIG_PRESETS][preset_id]
-        self.anki_utils.write_config(self.config)        
+        self.persist_config()
 
     def get_next_preset_name(self) -> str:
         """returns the next available preset name which doesn't collide with others"""
@@ -856,7 +918,7 @@ class HyperTTS():
     # mapping rules
     def save_mapping_rules(self, mapping_rules: config_models.PresetMappingRules):
         self.config[constants.CONFIG_MAPPING_RULES] = config_models.serialize_preset_mapping_rules(mapping_rules)
-        self.anki_utils.write_config(self.config)
+        self.persist_config()
         logger.info('saved mapping rules')
 
     def load_mapping_rules(self) -> config_models.PresetMappingRules:
@@ -883,7 +945,7 @@ class HyperTTS():
             # use the key provided
             final_key = settings_key
         self.config[constants.CONFIG_REALTIME_CONFIG][final_key] = realtime_model.serialize()
-        self.anki_utils.write_config(self.config)
+        self.persist_config()
         return final_key
 
     def load_realtime_config(self, settings_key):
@@ -903,7 +965,7 @@ class HyperTTS():
         configuration_model = self.service_manager.remove_non_existent_services(configuration_model)
         configuration_model.validate()
         self.config[constants.CONFIG_CONFIGURATION] = config_models.serialize_configuration(configuration_model)
-        self.anki_utils.write_config(self.config)
+        self.persist_config()
 
     def get_configuration(self) -> config_models.Configuration:
         return self.deserialize_configuration(self.config.get(constants.CONFIG_CONFIGURATION, {}))
@@ -975,7 +1037,7 @@ class HyperTTS():
 
     def set_editor_use_selection(self, use_selection):
         self.config[constants.CONFIG_USE_SELECTION] = use_selection
-        self.anki_utils.write_config(self.config)
+        self.persist_config()
 
     def get_editor_use_selection(self):
         return self.config.get(constants.CONFIG_USE_SELECTION, False)
@@ -986,7 +1048,7 @@ class HyperTTS():
 
     def save_preferences(self, preferences_model):
         self.config[constants.CONFIG_PREFERENCES] = config_models.serialize_preferences(preferences_model)
-        self.anki_utils.write_config(self.config)
+        self.persist_config()
         # reconfigure service manager to apply new SSL settings
         self.reconfigure_service_manager()
 
@@ -994,8 +1056,14 @@ class HyperTTS():
     # ================================================
 
     def perform_config_migration(self):
+        # only write the configuration back if the migration actually changed something. writing on
+        # every single startup is what turns a transient read failure into permanent data loss
+        # (github issue #360)
+        config_before_migration = copy.deepcopy(self.config)
         self.config = config_models.migrate_configuration(self.anki_utils, self.config)
-        self.anki_utils.write_config(self.config)
+        if self.config != config_before_migration:
+            logger.info('configuration was migrated, saving it')
+            self.persist_config()
 
     def deserialize_batch_config(self, batch_config):
         batch = config_models.BatchConfig(self.anki_utils)

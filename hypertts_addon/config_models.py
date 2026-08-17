@@ -11,6 +11,7 @@ from . import constants
 from . import constants_events
 from . import voice
 from . import errors
+from . import config_backup
 from . import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
@@ -814,26 +815,73 @@ class TrialRequestReponse:
     error: Optional[str] = None
 
 
+def config_contains_modern_data(config) -> bool:
+    """whether the config contains data which can only have been written by a schema 2 or later
+    version of HyperTTS. used to recognize a config whose config_schema key went missing, which must
+    not be run through the old migrations (they would destroy the presets)."""
+    presets = config.get(constants.CONFIG_PRESETS, {})
+    mapping_rules = config.get(constants.CONFIG_MAPPING_RULES, {})
+    return bool(presets) or bool(mapping_rules)
+
+def get_config_schema_version(anki_utils, config) -> int:
+    """determine which schema version the config is at, defensively: a config which has no schema
+    version but contains modern data has lost its config_schema key somehow, and migrating it would
+    wipe the presets (github issue #360)"""
+    schema_version = config.get(constants.CONFIG_SCHEMA, None)
+
+    if schema_version == None:
+        if config_contains_modern_data(config):
+            anki_utils.report_config_anomaly(
+                'configuration has no config_schema but contains presets or preset rules, '
+                'skipping migrations to avoid data loss',
+                config_backup.ANOMALY_SEVERITY_ERROR,
+                {'schema_version': schema_version})
+            return constants.CONFIG_SCHEMA_VERSION
+        # new install, or a genuinely old configuration
+        return 0
+
+    if not isinstance(schema_version, int) or isinstance(schema_version, bool):
+        anki_utils.report_config_anomaly(
+            f'configuration has an invalid config_schema: {schema_version}, '
+            'skipping migrations to avoid data loss',
+            config_backup.ANOMALY_SEVERITY_ERROR,
+            {'schema_version': str(schema_version)})
+        return constants.CONFIG_SCHEMA_VERSION
+
+    if schema_version > constants.CONFIG_SCHEMA_VERSION:
+        anki_utils.report_config_anomaly(
+            f'configuration schema {schema_version} is newer than the schema this version of '
+            f'HyperTTS knows about ({constants.CONFIG_SCHEMA_VERSION})',
+            config_backup.ANOMALY_SEVERITY_WARNING,
+            {'schema_version': schema_version})
+
+    return schema_version
+
 def migrate_configuration(anki_utils, config):
-    current_config_schema_version = config.get(constants.CONFIG_SCHEMA, 0)
+    current_config_schema_version = get_config_schema_version(anki_utils, config)
     if current_config_schema_version < 2:
-        config[constants.CONFIG_PRESETS] = {}
-        # need to convert presets to the uuid format
-        if constants.CONFIG_BATCH_CONFIG in config:
-            for key, value in config[constants.CONFIG_BATCH_CONFIG].items():
+        existing_presets = config.get(constants.CONFIG_PRESETS, None)
+        if not isinstance(existing_presets, dict):
+            existing_presets = {}
+            config[constants.CONFIG_PRESETS] = existing_presets
+        # need to convert presets to the uuid format. never reset the presets which are already
+        # there, only add the ones converted from the legacy batch_config format
+        legacy_batch_config = config.get(constants.CONFIG_BATCH_CONFIG, {})
+        if isinstance(legacy_batch_config, dict):
+            for key, value in legacy_batch_config.items():
                 batch_name = key
                 batch = value
                 batch_uuid = anki_utils.get_uuid()
                 batch['uuid'] = batch_uuid
                 batch['name'] = batch_name
-                config[constants.CONFIG_PRESETS][batch_uuid] = batch
+                existing_presets[batch_uuid] = batch
 
     if current_config_schema_version < 3:
 
 
 
         def voice_to_voice_id_conversion(voice_data):
-            service = voice['service']
+            service = voice_data['service']
             voice_key = voice_data['voice_key']
             if service in ['ElevenLabs', 'OpenAI']:
                 if 'language' in voice_key:
@@ -887,8 +935,12 @@ def migrate_configuration(anki_utils, config):
         if 'unique_id' in config:
             del config['unique_id']
 
-    # Update config schema version
-    config[constants.CONFIG_SCHEMA] = constants.CONFIG_SCHEMA_VERSION
+    # Update config schema version. never lower an existing schema version, a configuration written
+    # by a newer version of HyperTTS must keep its own version
+    existing_schema_version = config.get(constants.CONFIG_SCHEMA, None)
+    if not isinstance(existing_schema_version, int) or isinstance(existing_schema_version, bool) or \
+            existing_schema_version < constants.CONFIG_SCHEMA_VERSION:
+        config[constants.CONFIG_SCHEMA] = constants.CONFIG_SCHEMA_VERSION
 
     return config
     

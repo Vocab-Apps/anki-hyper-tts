@@ -106,8 +106,30 @@ else:
         addon_config[constants.CONFIG_CONFIGURATION] = config_models.serialize_configuration(configuration)
         aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, addon_config)
 
+    def looks_like_lost_configuration() -> bool:
+        """we are about to treat this as a first install, but do the configuration backups say
+        otherwise ? if anki couldn't read meta.json it hands us the packaged defaults, which look
+        exactly like a first install. writing a freshly generated user_uuid on top of that is what
+        turns a damaged meta.json into permanent loss of presets and API keys (github issue #360)."""
+        from . import anki_utils
+        from . import config_backup
+        backup_manager = config_backup.ConfigBackupManager(anki_utils.AnkiUtils())
+        latest_backup = backup_manager.get_latest_readable_backup()
+        return latest_backup != None and latest_backup.stats.has_user_data()
+
     configuration, first_install = get_configuration()
-    save_configuration(configuration)
+    if first_install:
+        if looks_like_lost_configuration():
+            # don't write anything. HyperTTS reports this to sentry and tells the user how to
+            # restore a backup once it is initialized (crash reporting isn't set up yet here)
+            first_install = False
+            logger.error('configuration looks like a first install, but configuration backups '
+                'contain data: not writing the configuration')
+        else:
+            # only write the configuration when we actually created something (the user_uuid and the
+            # new install settings). writing on every startup risks persisting a configuration we
+            # failed to read, which is how a transient failure becomes permanent data loss
+            save_configuration(configuration)
 
     # setup sentry crash reporting
     # ============================

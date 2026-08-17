@@ -45,10 +45,35 @@ class AnkiUtils():
         pass
 
     def get_config(self):
-        return aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
+        config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
+        if config == None:
+            # anki returns None when it cannot find config.json (see anki's addon docs). this
+            # should never happen with a correct installation, don't let it crash the addon.
+            logger.error('anki returned no addon configuration')
+            self.report_config_anomaly('anki returned no addon configuration (getConfig -> None)',
+                'error', {})
+            return {}
+        return config
 
     def write_config(self, config):
         aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, config)
+
+    def report_config_anomaly(self, message: str, severity: str, extra: dict):
+        """report a configuration anomaly (truncated / wiped / unusual configuration) to sentry, so
+        that we can diagnose github issue #360"""
+        logger.error(f'configuration anomaly ({severity}): {message} {extra}')
+        if not hasattr(sys, '_sentry_crash_reporting'):
+            return
+        try:
+            with sentry_sdk.new_scope() as scope:
+                scope.level = severity
+                scope.set_context('hypertts_configuration', extra or {})
+                try:
+                    raise errors.ConfigurationAnomaly(message)
+                except errors.ConfigurationAnomaly as exception:
+                    sentry_sdk.capture_exception(exception)
+        except Exception as e:
+            logger.warning(f'could not report configuration anomaly: {e}')
 
     def night_mode_enabled(self):
         night_mode = aqt.theme.theme_manager.night_mode
@@ -84,10 +109,18 @@ class AnkiUtils():
             return constants.RED_TEXT_COLOR_NIGHTMODE
         return constants.RED_TEXT_COLOR_REGULAR
 
+    def get_addon_dir(self):
+        """the addon's installation directory, which is where anki keeps meta.json"""
+        try:
+            # ask anki, so that we get the directory anki itself reads meta.json from. this matters
+            # for development installs, where the addon directory is a symlink to a git checkout
+            return aqt.mw.addonManager.addonsFolder(constants.CONFIG_ADDON_NAME)
+        except Exception as e:
+            logger.warning(f'could not get addon directory from anki: {e}')
+            return os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+
     def get_user_files_dir(self):
-        addon_dir = os.path.dirname(os.path.realpath(__file__))
-        user_files_dir = os.path.join(addon_dir, '..', 'user_files')
-        return user_files_dir        
+        return os.path.join(self.get_addon_dir(), 'user_files')
 
     def play_anki_sound_tag(self, text):
         ensure_anki_collection_open()
@@ -207,6 +240,12 @@ class AnkiUtils():
 
     def run_on_main(self, task_fn):
         aqt.mw.taskman.run_on_main(task_fn)
+
+    def run_on_main_delayed(self, task_fn, delay_ms=3000):
+        """run on the main thread, but only once the event loop has been running for a while. used
+        to display messages from addon startup code: showing a modal dialog straight from there
+        blocks anki's own startup until the user dismisses it."""
+        aqt.qt.QTimer.singleShot(delay_ms, lambda: self.run_on_main(task_fn))
 
     def wire_typing_timer(self, text_input, text_input_changed):
         typing_timer = TextInputTypingTimer(text_input, text_input_changed)

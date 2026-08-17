@@ -7,6 +7,7 @@ htmlcov/
 test_audio_files/
 user_files/*.mp3
 user_files/*.ogg
+user_files/config_backup/
 web/node_modules/
 web/package-lock.json
 # comtypes generated
