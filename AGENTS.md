@@ -102,6 +102,8 @@ throwaway profile via `scripts/gui_automation/`, injects notes with AnkiConnect,
 live Qt widget tree as text so dialogs can be inspected and driven without pixel hunting. Machine
 setup is documented in `docs/AI_GUI_AUTOMATION_SETUP.md`.
 
+The Anki source code is available locally at `/home/luc/src/anki/`.
+
 - give every widget you create a stable `objectName` prefixed `hypertts_<screen>_`; see
   `hypertts_addon/component_remove_audio.py` for the reference implementation
 - always run `scripts/gui_automation/teardown.sh` when finished
