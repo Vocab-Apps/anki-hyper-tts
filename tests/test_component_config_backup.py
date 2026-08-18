@@ -63,6 +63,34 @@ def test_config_backup_table(qtbot):
     assert component.restore_button.isEnabled() == False
 
 
+def test_config_backup_object_names(qtbot):
+    # pytest tests/test_component_config_backup.py -k test_config_backup_object_names
+    # every widget needs a stable objectName so that the live anki gui automation can find it
+    # (see AGENTS.md)
+    hypertts_instance = build_hypertts_instance()
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+    component = component_config_backup.ConfigBackup(hypertts_instance, dialog)
+    tab_widget = component.draw()
+    dialog.addChildWidget(tab_widget)
+
+    expected_object_names = [
+        'hypertts_config_backup_tab',
+        'hypertts_config_backup_description_label',
+        'hypertts_config_backup_current_config_label',
+        'hypertts_config_backup_table',
+        'hypertts_config_backup_refresh_button',
+        'hypertts_config_backup_restore_button',
+        'hypertts_config_backup_directory_label',
+    ]
+    found_object_names = [tab_widget.objectName()] + [
+        widget.objectName() for widget in tab_widget.findChildren(aqt.qt.QWidget)
+        if widget.objectName().startswith('hypertts_')
+    ]
+    for object_name in expected_object_names:
+        assert object_name in found_object_names
+
+
 def test_config_backup_table_empty(qtbot):
     # pytest tests/test_component_config_backup.py -k test_config_backup_table_empty
     # a fresh install: no backups, empty configuration

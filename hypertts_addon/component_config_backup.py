@@ -37,6 +37,7 @@ class ConfigBackup(component_common.ComponentBase):
         self.backup_list: List[config_backup.ConfigBackupInfo] = []
 
         self.description_label = aqt.qt.QLabel(constants.GUI_TEXT_CONFIG_BACKUP)
+        self.description_label.setObjectName('hypertts_config_backup_description_label')
         self.description_label.setWordWrap(True)
 
         self.current_config_label = aqt.qt.QLabel()
@@ -71,6 +72,7 @@ class ConfigBackup(component_common.ComponentBase):
 
     def draw(self):
         layout_widget = aqt.qt.QWidget()
+        layout_widget.setObjectName('hypertts_config_backup_tab')
         layout = aqt.qt.QVBoxLayout(layout_widget)
 
         layout.addWidget(self.description_label)

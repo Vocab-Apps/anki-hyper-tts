@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 import unittest
@@ -39,6 +40,22 @@ def get_populated_config():
     }
 
 
+def get_pro_only_config():
+    """a HyperTTS Pro user who has no presets yet: the API key is the only thing they would be
+    upset to lose"""
+    return {
+        constants.CONFIG_SCHEMA: constants.CONFIG_SCHEMA_VERSION,
+        constants.CONFIG_PRESETS: {},
+        constants.CONFIG_CONFIGURATION: {
+            'service_enabled': {},
+            'service_config': {},
+            'hypertts_pro_api_key': 'secret_pro_api_key',
+            'use_vocabai_api': True,
+            'user_uuid': 'user_uuid_1'
+        }
+    }
+
+
 def get_backup_manager():
     anki_utils = testing_utils.MockAnkiUtils({})
     return config_backup.ConfigBackupManager(anki_utils), anki_utils
@@ -55,7 +72,8 @@ class ConfigStatsTests(unittest.TestCase):
         # ServiceB has an empty configuration, it doesn't count
         self.assertEqual(stats.service_config_count, 1)
         self.assertEqual(stats.service_enabled_count, 1)
-        self.assertEqual(stats.user_uuid_set, True)
+        self.assertEqual(stats.user_uuid, 'user_uuid_1')
+        self.assertEqual(stats.has_user_uuid(), True)
         self.assertEqual(stats.pro_api_key_set, True)
         self.assertEqual(stats.has_user_data(), True)
         self.assertEqual(stats.looks_empty(), False)
@@ -159,9 +177,21 @@ class AnomalyDetectionTests(unittest.TestCase):
         previous = config_backup.analyze_config(get_populated_config())
         current = config_backup.analyze_config({})
         anomalies = config_backup.detect_anomalies(previous, current)
+        messages = [anomaly.message for anomaly in anomalies]
+        self.assertEqual(len(anomalies), 2)
+        self.assertEqual(set([anomaly.severity for anomaly in anomalies]),
+            {config_backup.ANOMALY_SEVERITY_ERROR})
+        self.assertIn('user_uuid disappeared', messages[0])
+        self.assertIn('configuration is empty', messages[1])
+
+    def test_user_uuid_disappeared_from_empty_config(self):
+        # the previous configuration had nothing in it but the user_uuid: losing that is still worth
+        # reporting, it means the configuration was replaced rather than edited
+        previous = config_backup.analyze_config({
+            constants.CONFIG_CONFIGURATION: {'user_uuid': 'user_uuid_1'}})
+        anomalies = config_backup.detect_anomalies(previous, config_backup.analyze_config({}))
         self.assertEqual(len(anomalies), 1)
-        self.assertEqual(anomalies[0].severity, config_backup.ANOMALY_SEVERITY_ERROR)
-        self.assertIn('configuration is empty', anomalies[0].message)
+        self.assertIn('user_uuid disappeared', anomalies[0].message)
 
     def test_user_uuid_disappeared(self):
         previous = config_backup.analyze_config(get_populated_config())
@@ -208,6 +238,42 @@ class AnomalyDetectionTests(unittest.TestCase):
         self.assertEqual(len(anomalies), 1)
         self.assertIn('API key disappeared', anomalies[0].message)
         self.assertEqual(anomalies[0].severity, config_backup.ANOMALY_SEVERITY_WARNING)
+
+    def test_user_emptied_their_own_configuration(self):
+        # the user deleted their last preset and removed their API key. the configuration is empty,
+        # but it is still their configuration: report what disappeared, don't claim it was lost
+        previous = config_backup.analyze_config(get_pro_only_config())
+        emptied_config = get_pro_only_config()
+        emptied_config[constants.CONFIG_CONFIGURATION]['hypertts_pro_api_key'] = None
+        anomalies = config_backup.detect_anomalies(previous,
+            config_backup.analyze_config(emptied_config))
+        self.assertEqual([anomaly.severity for anomaly in anomalies],
+            [config_backup.ANOMALY_SEVERITY_WARNING])
+        self.assertIn('API key disappeared', anomalies[0].message)
+
+    def test_user_uuid_changed(self):
+        # a freshly generated user_uuid means the configuration was regenerated from defaults
+        previous = config_backup.analyze_config(get_populated_config())
+        current_config = get_populated_config()
+        current_config[constants.CONFIG_CONFIGURATION]['user_uuid'] = 'brand_new_uuid'
+        anomalies = config_backup.detect_anomalies(previous,
+            config_backup.analyze_config(current_config))
+        self.assertEqual(len(anomalies), 1)
+        self.assertIn('user_uuid changed', anomalies[0].message)
+        self.assertEqual(anomalies[0].severity, config_backup.ANOMALY_SEVERITY_ERROR)
+
+    def test_config_wiped_keeps_user_uuid(self):
+        # an empty configuration which kept the user_uuid of the configuration we last saw is the
+        # user emptying their own configuration, not data loss
+        previous = config_backup.analyze_config(get_populated_config())
+        emptied_config = {
+            constants.CONFIG_SCHEMA: constants.CONFIG_SCHEMA_VERSION,
+            constants.CONFIG_CONFIGURATION: {'user_uuid': 'user_uuid_1'}
+        }
+        anomalies = config_backup.detect_anomalies(previous,
+            config_backup.analyze_config(emptied_config))
+        severities = set([anomaly.severity for anomaly in anomalies])
+        self.assertEqual(severities, {config_backup.ANOMALY_SEVERITY_WARNING})
 
     def test_preset_added(self):
         # normal operation, no anomaly
@@ -431,9 +497,10 @@ class ConfigBackupManagerTests(unittest.TestCase):
 
         # writing an empty config over it: refused and reported
         self.assertEqual(backup_manager.check_config_before_write({}), False)
-        self.assertEqual(len(anki_utils.config_anomalies), 1)
-        anomaly = anki_utils.config_anomalies[0]
+        self.assertEqual(len(anki_utils.config_anomalies), 2)
+        anomaly = anki_utils.config_anomalies[1]
         self.assertEqual(anomaly['severity'], config_backup.ANOMALY_SEVERITY_ERROR)
+        self.assertIn('user_uuid disappeared', anki_utils.config_anomalies[0]['message'])
         self.assertIn('configuration is empty', anomaly['message'])
         # the report contains diagnostics, but no secret values
         self.assertEqual(anomaly['extra']['previous']['preset_count'], 2)
@@ -453,6 +520,55 @@ class ConfigBackupManagerTests(unittest.TestCase):
         self.assertEqual(len(anki_utils.config_anomalies), 1)
         self.assertEqual(anki_utils.config_anomalies[0]['severity'],
             config_backup.ANOMALY_SEVERITY_WARNING)
+
+    def test_check_config_before_write_removing_last_api_key(self):
+        # removing the HyperTTS Pro API key when it is the only thing configured empties the
+        # configuration, but it is a deliberate user action and must go through
+        backup_manager, anki_utils = get_backup_manager()
+        backup_manager.save_backup(get_pro_only_config())
+
+        config_without_api_key = get_pro_only_config()
+        config_without_api_key[constants.CONFIG_CONFIGURATION]['hypertts_pro_api_key'] = None
+        self.assertEqual(config_backup.analyze_config(config_without_api_key).looks_empty(), True)
+        self.assertEqual(backup_manager.check_config_before_write(config_without_api_key), True)
+        self.assertEqual([anomaly['severity'] for anomaly in anki_utils.config_anomalies],
+            [config_backup.ANOMALY_SEVERITY_WARNING])
+
+        # and the empty configuration is backed up, so it becomes the baseline: saving it again
+        # reports nothing at all
+        anki_utils.tick_time()
+        backup_manager.save_backup(config_without_api_key)
+        anki_utils.config_anomalies = []
+        self.assertEqual(backup_manager.check_config_before_write(config_without_api_key), True)
+        self.assertEqual(anki_utils.config_anomalies, [])
+
+    def test_check_config_before_write_removing_last_preset(self):
+        backup_manager, anki_utils = get_backup_manager()
+        config = {
+            constants.CONFIG_SCHEMA: constants.CONFIG_SCHEMA_VERSION,
+            constants.CONFIG_PRESETS: {'uuid_1': {'uuid': 'uuid_1', 'name': 'preset 1'}},
+            constants.CONFIG_CONFIGURATION: {'user_uuid': 'user_uuid_1'}
+        }
+        backup_manager.save_backup(config)
+
+        config_without_presets = copy.deepcopy(config)
+        config_without_presets[constants.CONFIG_PRESETS] = {}
+        self.assertEqual(backup_manager.check_config_before_write(config_without_presets), True)
+        self.assertEqual([anomaly['severity'] for anomaly in anki_utils.config_anomalies],
+            [config_backup.ANOMALY_SEVERITY_WARNING])
+
+    def test_check_config_before_write_wiped_config_with_different_uuid(self):
+        # a configuration which is empty and carries a freshly generated user_uuid is the issue #360
+        # scenario, it must still be refused
+        backup_manager, anki_utils = get_backup_manager()
+        backup_manager.save_backup(get_populated_config())
+        regenerated_config = {
+            constants.CONFIG_SCHEMA: constants.CONFIG_SCHEMA_VERSION,
+            constants.CONFIG_CONFIGURATION: {'user_uuid': 'brand_new_uuid'}
+        }
+        self.assertEqual(backup_manager.check_config_before_write(regenerated_config), False)
+        self.assertEqual(anki_utils.config_anomalies[0]['severity'],
+            config_backup.ANOMALY_SEVERITY_ERROR)
 
     def test_meta_json_status_missing(self):
         backup_manager, anki_utils = get_backup_manager()
@@ -553,6 +669,17 @@ class ConfigBackupManagerTests(unittest.TestCase):
         self.assertEqual(backup_manager.check_config_before_write(emptied_config), True)
         self.assertEqual(anki_utils.config_anomalies, [])
 
+    def test_check_startup_config_state_emptied_by_user(self):
+        # the user removed their API key in the previous session: at startup their configuration is
+        # empty but it is still theirs, nothing to report and writes stay allowed
+        backup_manager, anki_utils = get_backup_manager()
+        backup_manager.save_backup(get_pro_only_config())
+        config_without_api_key = get_pro_only_config()
+        config_without_api_key[constants.CONFIG_CONFIGURATION]['hypertts_pro_api_key'] = None
+
+        self.assertEqual(backup_manager.check_startup_config_state(config_without_api_key), True)
+        self.assertEqual(anki_utils.config_anomalies, [])
+
     def test_check_startup_config_state_first_install(self):
         # empty configuration, no backups: this is a new install, nothing to report
         backup_manager, anki_utils = get_backup_manager()
@@ -640,6 +767,58 @@ class HyperTTSConfigBackupTests(unittest.TestCase):
         # and the backups are still intact
         self.assertEqual(len(broken_hypertts.config_backup_manager.list_backups()), 1)
 
+    def test_remove_last_api_key(self):
+        # a HyperTTS Pro user with no presets removes their API key: their configuration becomes
+        # empty, but this is a deliberate action and must be saved (issue #360 follow up)
+        hypertts_instance = self.build_hypertts_instance(get_pro_only_config())
+        hypertts_instance.anki_utils.written_config = None
+        hypertts_instance.anki_utils.tick_time()
+
+        configuration = hypertts_instance.get_configuration()
+        configuration.set_hypertts_pro_api_key(None)
+        hypertts_instance.save_configuration(configuration)
+
+        written_config = hypertts_instance.anki_utils.written_config
+        self.assertNotEqual(written_config, None)
+        self.assertEqual(written_config[constants.CONFIG_CONFIGURATION]['hypertts_pro_api_key'], None)
+        self.assertEqual(hypertts_instance.get_configuration().hypertts_pro_api_key_set(), False)
+        # writes keep working afterwards
+        self.assertEqual(hypertts_instance.config_writes_blocked, False)
+        self.assertEqual(hypertts_instance.persist_config(), True)
+        # the API key can still be recovered from the backup taken at startup
+        latest_valid_backup = hypertts_instance.config_backup_manager.get_latest_valid_backup()
+        self.assertEqual(latest_valid_backup.stats.pro_api_key_set, True)
+
+    def test_remove_last_preset(self):
+        # deleting the last preset of a user who has nothing else configured must also go through
+        config = {
+            constants.CONFIG_SCHEMA: constants.CONFIG_SCHEMA_VERSION,
+            constants.CONFIG_PRESETS: {'uuid_1': {'uuid': 'uuid_1', 'name': 'preset 1'}},
+            constants.CONFIG_CONFIGURATION: {'user_uuid': 'user_uuid_1'}
+        }
+        hypertts_instance = self.build_hypertts_instance(config)
+        hypertts_instance.anki_utils.written_config = None
+        hypertts_instance.anki_utils.tick_time()
+
+        hypertts_instance.delete_preset('uuid_1')
+
+        self.assertEqual(hypertts_instance.anki_utils.written_config[constants.CONFIG_PRESETS], {})
+        self.assertEqual(hypertts_instance.get_preset_list(), [])
+        self.assertEqual(hypertts_instance.config_writes_blocked, False)
+
+    def test_startup_after_removing_last_api_key(self):
+        # and the next time anki starts, that empty configuration is not mistaken for a lost one
+        hypertts_instance = self.build_hypertts_instance(get_pro_only_config())
+        configuration = hypertts_instance.get_configuration()
+        configuration.set_hypertts_pro_api_key(None)
+        hypertts_instance.anki_utils.tick_time()
+        hypertts_instance.save_configuration(configuration)
+
+        next_session = self.build_hypertts_instance(hypertts_instance.config,
+            previous_instance=hypertts_instance)
+        self.assertEqual(next_session.config_writes_blocked, False)
+        self.assertEqual(next_session.anki_utils.config_anomalies, [])
+
     def test_startup_config_lost_looks_like_first_install(self):
         # what anki + HyperTTS produced before this was fixed: meta.json couldn't be read, so
         # HyperTTS wrote a brand new user_uuid over the packaged defaults. that configuration is
@@ -706,7 +885,10 @@ class HyperTTSConfigBackupTests(unittest.TestCase):
         self.assertEqual(hypertts_instance.persist_config(), False)
         self.assertEqual(hypertts_instance.anki_utils.written_config, None)
         self.assertEqual(hypertts_instance.config_writes_blocked, True)
-        self.assertEqual(len(hypertts_instance.anki_utils.config_anomalies), 1)
+        anomaly_messages = [anomaly['message'] for anomaly in hypertts_instance.anki_utils.config_anomalies]
+        self.assertEqual(len(anomaly_messages), 2)
+        self.assertIn('user_uuid disappeared', anomaly_messages[0])
+        self.assertIn('configuration is empty', anomaly_messages[1])
 
     def test_restore_config_backup(self):
         hypertts_instance = self.build_hypertts_instance(get_populated_config())

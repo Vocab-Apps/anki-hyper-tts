@@ -56,9 +56,12 @@ class ConfigStats():
     legacy_batch_config_count: int = 0
     default_preset_count: int = 0
     preferences_count: int = 0
-    user_uuid_set: bool = False
+    user_uuid: Optional[str] = None
     pro_api_key_set: bool = False
     top_level_key_count: int = 0
+
+    def has_user_uuid(self) -> bool:
+        return bool(self.user_uuid)
 
     def has_user_data(self) -> bool:
         """whether this configuration contains anything the user would be upset to lose. kept
@@ -81,7 +84,15 @@ class ConfigStats():
         """no user data at all, not even the anonymous user_uuid which every installation gets on
         its first startup. a configuration in that state was never produced by the user going
         through the HyperTTS screens, it means we failed to read the real configuration."""
-        return self.looks_empty() and not self.user_uuid_set
+        return self.looks_empty() and not self.has_user_uuid()
+
+    def same_installation_as(self, other: 'ConfigStats') -> bool:
+        """whether both configurations belong to the same HyperTTS installation. the anonymous
+        user_uuid is generated once, when HyperTTS is first installed, and no screen ever changes
+        it: a configuration carrying the same user_uuid as our last backup is the user's own
+        configuration, no matter how much of it they emptied. a configuration with no user_uuid, or
+        with a freshly generated one, is a configuration we failed to read (github issue #360)."""
+        return self.has_user_uuid() and self.user_uuid == other.user_uuid
 
     def describe(self) -> str:
         api_key_str = 'API key set' if self.pro_api_key_set else 'no API key'
@@ -173,7 +184,9 @@ def analyze_config(config) -> ConfigStats:
             stats.service_enabled_count = len([
                 service_name for service_name, enabled in service_enabled.items() if enabled
             ])
-        stats.user_uuid_set = bool(configuration.get('user_uuid', None))
+        user_uuid = configuration.get('user_uuid', None)
+        if isinstance(user_uuid, str):
+            stats.user_uuid = user_uuid
         stats.pro_api_key_set = bool(configuration.get('hypertts_pro_api_key', None))
 
     return stats
@@ -187,23 +200,30 @@ def detect_anomalies(previous: Optional[ConfigStats], current: ConfigStats) -> L
     if previous == None:
         return anomalies
 
+    # identity first: the anonymous user_uuid is written once on install and no screen ever removes
+    # or changes it, so losing it is worth knowing about even when there was no user data at stake
+    if previous.has_user_uuid() and not current.has_user_uuid():
+        anomalies.append(ConfigAnomaly('user_uuid disappeared from the configuration',
+            ANOMALY_SEVERITY_ERROR))
+    elif previous.has_user_uuid() and not current.same_installation_as(previous):
+        # a different user_uuid means the configuration was regenerated from scratch rather than
+        # edited: it belongs to a fresh install, not to this one
+        anomalies.append(ConfigAnomaly('user_uuid changed, the configuration was regenerated',
+            ANOMALY_SEVERITY_ERROR))
+
     if previous.looks_empty():
-        # nothing was there to lose
+        # nothing else was there to lose
         return anomalies
 
-    if current.looks_empty():
-        # every trace of the user's configuration is gone. this is never the result of using the
-        # HyperTTS screens, it means the configuration we are holding is not the user's
+    if current.looks_empty() and not current.same_installation_as(previous):
+        # every trace of the user's configuration is gone, and it doesn't even carry the user_uuid
+        # of the configuration we last saw. this is not something the HyperTTS screens can produce,
+        # it means the configuration we are holding is not the user's
         anomalies.append(ConfigAnomaly(
             f'configuration is empty, previously had {previous.describe()}',
             ANOMALY_SEVERITY_ERROR))
         # no point reporting every individual section as well
         return anomalies
-
-    if previous.user_uuid_set and not current.user_uuid_set:
-        # the anonymous user_uuid is written once on install and never removed by any screen
-        anomalies.append(ConfigAnomaly('user_uuid disappeared from the configuration',
-            ANOMALY_SEVERITY_ERROR))
 
     if previous.schema_version != None and current.schema_version == None:
         anomalies.append(ConfigAnomaly(
@@ -495,10 +515,14 @@ class ConfigBackupManager():
         for anomaly in anomalies:
             self.report_anomaly(anomaly, current_stats, previous_stats, latest_backup)
 
-        if current_stats.looks_empty() and previous_stats != None and previous_stats.has_user_data():
-            # we are about to replace a configuration which had presets/API keys with an empty one.
-            # this is the scenario described in issue #360: refuse, so that the loss doesn't become
-            # permanent and the user can restore a backup.
+        if (current_stats.looks_empty() and previous_stats != None and
+                previous_stats.has_user_data() and
+                not current_stats.same_installation_as(previous_stats)):
+            # we are about to replace a configuration which had presets/API keys with an empty one
+            # which isn't even from this installation. this is the scenario described in issue #360:
+            # refuse, so that the loss doesn't become permanent and the user can restore a backup.
+            # a user deliberately deleting their last preset or removing their API key keeps their
+            # user_uuid, so their save goes through as normal.
             logger.error('refusing to overwrite the configuration with an empty one')
             return False
 
@@ -578,7 +602,8 @@ class ConfigBackupManager():
 
         if current_stats.looks_empty():
             latest_backup = self.get_latest_readable_backup()
-            if latest_backup != None and latest_backup.stats.has_user_data():
+            if (latest_backup != None and latest_backup.stats.has_user_data() and
+                    not current_stats.same_installation_as(latest_backup.stats)):
                 self.anki_utils.report_config_anomaly(
                     f'configuration is empty at startup, latest backup has '
                     f'{latest_backup.stats.describe()}',

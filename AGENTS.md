@@ -85,8 +85,11 @@ Configuration safety (github issue #360, configuration loss):
   a user can inspect and restore a backup
 - all configuration writes go through `HyperTTS.persist_config()`, never
   `anki_utils.write_config()` directly: it takes the backup and refuses to persist a configuration
-  which lost all its data (anki hands out `config.json` defaults when `meta.json` cannot be parsed,
-  and writing those back is what makes the loss permanent)
+  which lost all its data *and* no longer carries the `user_uuid` of the last backup (anki hands out
+  `config.json` defaults when `meta.json` cannot be parsed, and writing those back is what makes the
+  loss permanent). the `user_uuid` is what distinguishes a configuration we failed to read from one
+  the user emptied on purpose, e.g. by deleting their last preset or removing their API key — those
+  saves must always go through
 - HyperTTS never writes the configuration on startup unless a migration actually changed it, and
   `hypertts_addon/__init__.py` only writes a newly generated `user_uuid` when the backups agree that
   this really is a first install
