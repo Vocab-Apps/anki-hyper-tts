@@ -236,6 +236,10 @@ class HyperTTSPro(component_common.ConfigComponentBase):
 
     @sc.event(Event.click_remove_api_key)
     def remove_api_key_button_pressed(self):
+        # logged explicitly (and not only through the stats event) so that the sentry breadcrumbs
+        # always tell us the API key was removed by the user, rather than cleared by HyperTTS
+        # itself after a failed verification (github issue #360)
+        logger.info('user pressed the remove API key button, clearing the API key')
         self.model.clear_api_key()
         self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_BUTTONS)
         self.hypertts_pro_api_key.setText('')
@@ -310,6 +314,8 @@ class HyperTTSPro(component_common.ConfigComponentBase):
             self.account_cancel_button.setVisible(False)
             self.hypertts_pro_stack.setCurrentIndex(self.PRO_STACK_LEVEL_API_KEY)       
             # clear API key, it's not valid
+            logger.info('api key verification failed, clearing the API key: '
+                f'{account_info_result.api_key_error}')
             account_info_result.api_key = None     
         else:
             # API key valid

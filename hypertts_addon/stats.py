@@ -33,7 +33,9 @@ class StatsGlobal:
                 event: constants_events.Event,
                 event_mode: constants_events.EventMode,
                 event_properties: dict):
-        logger.debug('publish')
+        # log the event name: this ends up as a sentry breadcrumb, which is how we reconstruct what
+        # the user clicked before a configuration anomaly (github issue #360)
+        logger.info(f'user event {self.construct_event_name(context, event)}')
         def get_publish_lambda(context: constants_events.EventContext, event: constants_events.Event,
                                event_mode: constants_events.EventMode,
                                event_properties: dict):
@@ -50,7 +52,7 @@ class StatsGlobal:
                 event: constants_events.Event,
                 event_mode: constants_events.EventMode,
                 event_properties: dict):
-        logger.debug('publishing event')
+        logger.debug(f'publishing event {self.construct_event_name(context, event)}')
         # in background thread
         if event_mode:
             event_properties['mode'] = event_mode.name
