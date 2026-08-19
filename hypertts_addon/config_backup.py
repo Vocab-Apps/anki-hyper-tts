@@ -37,6 +37,9 @@ logger = logging_utils.get_child_logger(__name__)
 ANOMALY_SEVERITY_WARNING = 'warning'
 ANOMALY_SEVERITY_ERROR = 'error'
 
+# how many recent backups to summarize when reporting a configuration anomaly to sentry
+CONFIG_ANOMALY_BACKUP_HISTORY_COUNT = 10
+
 
 @dataclasses.dataclass
 class ConfigAnomaly():
@@ -511,6 +514,11 @@ class ConfigBackupManager():
         latest_backup = self.get_latest_readable_backup()
         previous_stats = latest_backup.stats if latest_backup != None else None
 
+        # a breadcrumb for every single configuration write, whether or not it looks anomalous. this
+        # is what tells us, when an anomaly is reported, how the configuration got there
+        logger.info(f'about to write configuration: {current_stats.describe()}, '
+            f'previously {previous_stats.describe() if previous_stats != None else "no backup"}')
+
         anomalies = detect_anomalies(previous_stats, current_stats)
         for anomaly in anomalies:
             self.report_anomaly(anomaly, current_stats, previous_stats, latest_backup)
@@ -530,14 +538,40 @@ class ConfigBackupManager():
 
     def report_anomaly(self, anomaly: ConfigAnomaly, current_stats: ConfigStats,
             previous_stats: Optional[ConfigStats], latest_backup: Optional[ConfigBackupInfo]) -> None:
+        backup_filenames = self.get_backup_filenames()
         extra = {
             'current': current_stats.as_dict(),
             'previous': previous_stats.as_dict() if previous_stats != None else None,
             'latest_backup': latest_backup.filename if latest_backup != None else None,
-            'backup_count': len(self.get_backup_filenames()),
+            'backup_count': len(backup_filenames),
+            'backup_history': self.get_backup_history(),
             'meta_json': self.get_meta_json_status()
         }
         self.anki_utils.report_config_anomaly(anomaly.message, anomaly.severity, extra)
+
+    def get_backup_history(self) -> List[Dict[str, Any]]:
+        """a one line summary of each recent backup, most recent first. this is what distinguishes a
+        user emptying their configuration one preset at a time (a gradual decline, each step a
+        separate backup) from the sudden wipe of github issue #360, without having to rely on
+        breadcrumbs, which may have been trimmed or may come from an earlier anki session."""
+        history = []
+        try:
+            for filename in self.get_backup_filenames()[:CONFIG_ANOMALY_BACKUP_HISTORY_COUNT]:
+                backup_info = self.get_backup_info(filename)
+                entry: Dict[str, Any] = {'filename': filename}
+                if backup_info.parse_error != None:
+                    entry['parse_error'] = backup_info.parse_error
+                elif backup_info.stats != None:
+                    entry['presets'] = backup_info.stats.preset_count
+                    entry['mapping_rules'] = backup_info.stats.mapping_rule_count
+                    entry['service_config'] = backup_info.stats.service_config_count
+                    entry['pro_api_key_set'] = backup_info.stats.pro_api_key_set
+                    entry['user_uuid'] = backup_info.stats.user_uuid
+                    entry['hypertts_version'] = backup_info.hypertts_version
+                history.append(entry)
+        except Exception as e:
+            logger.warning(f'could not build backup history: {e}')
+        return history
 
     def get_meta_json_status(self) -> Dict[str, Any]:
         """look at anki's meta.json (where our configuration really lives) without going through

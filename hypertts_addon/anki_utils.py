@@ -61,7 +61,12 @@ class AnkiUtils():
     def report_config_anomaly(self, message: str, severity: str, extra: dict):
         """report a configuration anomaly (truncated / wiped / unusual configuration) to sentry, so
         that we can diagnose github issue #360"""
-        logger.error(f'configuration anomaly ({severity}): {message} {extra}')
+        # deliberately logged at warning level, whatever the anomaly's severity. logging at error
+        # level would send a second, separate sentry event through the logging integration, on top
+        # of the exception captured below: the same anomaly would then show up as two escalating
+        # sentry issues, with different levels, and eat two rate limit budgets instead of one. at
+        # warning level this only becomes a breadcrumb, and the exception carries the real severity
+        logger.warning(f'configuration anomaly ({severity}): {message} {extra}')
         if not hasattr(sys, '_sentry_crash_reporting'):
             return
         try:

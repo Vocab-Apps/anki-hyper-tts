@@ -859,6 +859,10 @@ class HyperTTS():
         preset.validate()
         if constants.CONFIG_PRESETS not in self.config:
             self.config[constants.CONFIG_PRESETS] = {}
+        # log before persisting: persist_config may report a configuration anomaly to sentry, and we
+        # want the breadcrumbs to already say which preset we were saving (github issue #360)
+        logger.info(f'saving preset [{preset.name}] [{preset.uuid}], '
+            f'{len(self.config[constants.CONFIG_PRESETS])} presets before save')
         self.config[constants.CONFIG_PRESETS][preset.uuid] = preset.serialize()
         self.persist_config()
         logger.info(f'saved preset [{preset.name}] {pprint.pformat(preset.serialize(), compact=True, width=500)}')
@@ -877,6 +881,12 @@ class HyperTTS():
     def delete_preset(self, preset_id: str):
         if preset_id not in self.config[constants.CONFIG_PRESETS]:
             raise errors.PresetNotFound(preset_id)
+        # log before persisting, so that a configuration anomaly reported by persist_config carries
+        # a breadcrumb saying the user deleted a preset. without it, a preset count going down looks
+        # exactly like the configuration loss described in github issue #360
+        preset_name = self.config[constants.CONFIG_PRESETS][preset_id].get('name', 'unknown')
+        logger.info(f'deleting preset [{preset_name}] [{preset_id}], '
+            f'{len(self.config[constants.CONFIG_PRESETS])} presets before delete')
         del self.config[constants.CONFIG_PRESETS][preset_id]
         self.persist_config()
 

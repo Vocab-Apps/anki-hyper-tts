@@ -521,6 +521,52 @@ class ConfigBackupManagerTests(unittest.TestCase):
         self.assertEqual(anki_utils.config_anomalies[0]['severity'],
             config_backup.ANOMALY_SEVERITY_WARNING)
 
+    def test_anomaly_report_contains_backup_history(self):
+        # the anomaly report carries a summary of the recent backups, which is what lets us tell a
+        # user deleting their presets one at a time from a configuration which was wiped at once
+        backup_manager, anki_utils = get_backup_manager()
+
+        # three presets, then two, then one: the user deleting them one by one
+        for preset_count in [3, 2, 1]:
+            config = get_populated_config()
+            config[constants.CONFIG_PRESETS] = {
+                f'preset_{index}': {'name': f'preset {index}'} for index in range(preset_count)
+            }
+            anki_utils.tick_time()
+            backup_manager.save_backup(config)
+
+        config_without_presets = get_populated_config()
+        config_without_presets[constants.CONFIG_PRESETS] = {}
+        self.assertEqual(backup_manager.check_config_before_write(config_without_presets), True)
+
+        self.assertEqual(len(anki_utils.config_anomalies), 1)
+        history = anki_utils.config_anomalies[0]['extra']['backup_history']
+        # most recent first
+        self.assertEqual([entry['presets'] for entry in history], [1, 2, 3])
+        for entry in history:
+            self.assertIn('filename', entry)
+            self.assertEqual(entry['user_uuid'], history[0]['user_uuid'])
+        self.assertNotIn('secret_pro_api_key', json.dumps(history))
+
+    def test_backup_history_is_capped_and_tolerates_corrupted_backups(self):
+        backup_manager, anki_utils = get_backup_manager()
+        for index in range(config_backup.CONFIG_ANOMALY_BACKUP_HISTORY_COUNT + 3):
+            config = get_populated_config()
+            config[constants.CONFIG_PRESETS] = {f'preset_{index}': {'name': f'preset {index}'}}
+            anki_utils.tick_time()
+            backup_manager.save_backup(config)
+
+        # corrupt the most recent backup on disk
+        latest_filename = backup_manager.get_backup_filenames()[0]
+        with open(os.path.join(backup_manager.get_backup_dir(), latest_filename), 'w') as file_handle:
+            file_handle.write('not json')
+
+        history = backup_manager.get_backup_history()
+        self.assertEqual(len(history), config_backup.CONFIG_ANOMALY_BACKUP_HISTORY_COUNT)
+        self.assertIn('parse_error', history[0])
+        self.assertNotIn('presets', history[0])
+        self.assertEqual(history[1]['presets'], 1)
+
     def test_check_config_before_write_removing_last_api_key(self):
         # removing the HyperTTS Pro API key when it is the only thing configured empties the
         # configuration, but it is a deliberate user action and must go through
