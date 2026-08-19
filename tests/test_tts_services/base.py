@@ -133,6 +133,11 @@ class TTSTests(unittest.TestCase):
         self.manager.get_service('OpenAI').configure({
             'api_key': os.environ['OPENAI_API_KEY']
         })
+        # mistral
+        self.manager.get_service('Mistral').enabled = True
+        self.manager.get_service('Mistral').configure({
+            'api_key': os.environ['MISTRAL_API_KEY']
+        })
         # forvo
         self.manager.get_service('Forvo').enabled = True
         self.manager.get_service('Forvo').configure({

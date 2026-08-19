@@ -54723,3 +54723,49 @@ VOICE_LIST = [
             service_fee=constants.ServiceFee.paid
         )
 ]
+
+
+_MISTRAL_VOICE_OPTIONS = {
+    'model': {
+        'type': 'list',
+        'values': ['voxtral-mini-tts-2603'],
+        'default': 'voxtral-mini-tts-2603',
+    },
+}
+
+
+_MISTRAL_VOICES = [
+    ('casual_male',      'Casual (Male)',      constants.Gender.Male,   languages.AudioLanguage.en_US),
+    ('casual_female',    'Casual (Female)',    constants.Gender.Female, languages.AudioLanguage.en_US),
+    ('cheerful_female',  'Cheerful (Female)',  constants.Gender.Female, languages.AudioLanguage.en_US),
+    ('neutral_male',     'Neutral (Male)',     constants.Gender.Male,   languages.AudioLanguage.en_US),
+    ('neutral_female',   'Neutral (Female)',   constants.Gender.Female, languages.AudioLanguage.en_US),
+    ('fr_male',          'French (Male)',      constants.Gender.Male,   languages.AudioLanguage.fr_FR),
+    ('fr_female',        'French (Female)',    constants.Gender.Female, languages.AudioLanguage.fr_FR),
+    ('es_male',          'Spanish (Male)',     constants.Gender.Male,   languages.AudioLanguage.es_ES),
+    ('es_female',        'Spanish (Female)',   constants.Gender.Female, languages.AudioLanguage.es_ES),
+    ('de_male',          'German (Male)',      constants.Gender.Male,   languages.AudioLanguage.de_DE),
+    ('de_female',        'German (Female)',    constants.Gender.Female, languages.AudioLanguage.de_DE),
+    ('it_male',          'Italian (Male)',     constants.Gender.Male,   languages.AudioLanguage.it_IT),
+    ('it_female',        'Italian (Female)',   constants.Gender.Female, languages.AudioLanguage.it_IT),
+    ('pt_male',          'Portuguese (Male)',  constants.Gender.Male,   languages.AudioLanguage.pt_PT),
+    ('pt_female',        'Portuguese (Female)', constants.Gender.Female, languages.AudioLanguage.pt_PT),
+    ('nl_male',          'Dutch (Male)',       constants.Gender.Male,   languages.AudioLanguage.nl_NL),
+    ('nl_female',        'Dutch (Female)',     constants.Gender.Female, languages.AudioLanguage.nl_NL),
+    ('ar_male',          'Arabic (Male)',      constants.Gender.Male,   languages.AudioLanguage.ar_XA),
+    ('hi_male',          'Hindi (Male)',       constants.Gender.Male,   languages.AudioLanguage.hi_IN),
+    ('hi_female',        'Hindi (Female)',     constants.Gender.Female, languages.AudioLanguage.hi_IN),
+]
+
+for _voice_id, _display_name, _gender, _audio_language in _MISTRAL_VOICES:
+    VOICE_LIST.append(
+        voice.TtsVoice_v3(
+            name=_display_name,
+            voice_key={'voice_id': _voice_id},
+            options=_MISTRAL_VOICE_OPTIONS,
+            service='Mistral',
+            gender=_gender,
+            audio_languages=[_audio_language],
+            service_fee=constants.ServiceFee.paid,
+        )
+    )
