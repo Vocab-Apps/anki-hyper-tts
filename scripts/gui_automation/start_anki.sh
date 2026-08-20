@@ -85,6 +85,10 @@ export HYPER_TTS_DEBUG_LOGFILE="$HYPERTTS_GUI_LOG_DIR/hypertts.log"
 export HYPERTTS_GUI_PROBE_PORT
 # never let the automation instance sync
 export ANKI_NOSYNC=1
+# anki's single instance check is keyed on the unix user, not on the base folder, so an anki the
+# developer has open would otherwise make this instance exit with "Already running; reusing
+# existing instance." give the automation instance a key of its own (aqt.AnkiApp.KEY)
+export ANKI_SINGLE_INSTANCE_KEY="anki_hypertts_gui_automation"
 
 : > "$HYPERTTS_GUI_LOG_DIR/anki.log"
 gui_log "launching anki"

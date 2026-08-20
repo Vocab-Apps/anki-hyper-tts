@@ -2943,6 +2943,236 @@ def test_configuration_pro_key_exception(qtbot):
     assert widget_shown(configuration.services.rows['ServiceB'].pro_badge_label) == False
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
+def build_configuration_screen(hypertts_instance, configuration_model=None):
+    """the services configuration screen, drawn, optionally loaded with an existing configuration"""
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    if configuration_model != None:
+        configuration.load_model(configuration_model)
+    configuration.draw(dialog.getLayout())
+    return dialog, configuration
+
+
+def test_configuration_saved_api_key_verification_failure_keeps_key(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_saved_api_key_verification_failure_keeps_key
+    # github issue #360: verifying the API key stored in the configuration fails just as much when
+    # the HyperTTS servers are unreachable as when the key is wrong. HyperTTS used to drop the key
+    # from the model, and the next save made the loss permanent.
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    hypertts_instance.service_manager.get_service('ServiceA').enabled = False
+    hypertts_instance.service_manager.get_service('ServiceB').enabled = False
+
+    configuration_model = config_models.Configuration()
+    configuration_model.set_hypertts_pro_api_key('invalid_key')
+
+    dialog, configuration = build_configuration_screen(hypertts_instance, configuration_model)
+
+    # the key didn't verify, so we're on the API key screen with the error displayed
+    hyperttspro = configuration.hyperttspro
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
+    assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
+    assert hyperttspro.hypertts_pro_api_key.text() == 'invalid_key'
+    # the API key is still there, and the user is told it was kept, with a way to remove it
+    assert configuration.model.hypertts_pro_api_key == 'invalid_key'
+    assert widget_shown(hyperttspro.api_key_kept_label) == True
+    assert widget_shown(hyperttspro.remove_kept_api_key_button) == True
+    # a failed verification isn't a change, there is nothing to save
+    assert configuration.save_button.isEnabled() == False
+
+    # the user enables a service and saves: their API key survives
+    get_service_enabled_checkbox(dialog, 'ServiceA').setChecked(True)
+    assert configuration.save_button.isEnabled() == True
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    written_configuration = hypertts_instance.anki_utils.written_config['configuration']
+    assert written_configuration['hypertts_pro_api_key'] == 'invalid_key'
+    assert written_configuration['service_enabled']['ServiceA'] == True
+
+
+def test_configuration_saved_api_key_verification_failure_user_removes_key(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_saved_api_key_verification_failure_user_removes_key
+    # the flip side of the above: HyperTTS keeps an API key it couldn't verify, so the user must
+    # have a way to get rid of it themselves (github issue #360)
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    configuration_model = config_models.Configuration()
+    configuration_model.set_hypertts_pro_api_key('invalid_key')
+
+    dialog, configuration = build_configuration_screen(hypertts_instance, configuration_model)
+    hyperttspro = configuration.hyperttspro
+
+    qtbot.mouseClick(hyperttspro.remove_kept_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_BUTTONS
+    assert hyperttspro.hypertts_pro_api_key.text() == ''
+    assert widget_shown(hyperttspro.api_key_kept_label) == False
+    assert widget_shown(hyperttspro.remove_kept_api_key_button) == False
+    assert configuration.model.hypertts_pro_api_key == None
+    # removing the key is a change, and it can be saved
+    assert configuration.save_button.isEnabled() == True
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    assert hypertts_instance.anki_utils.written_config['configuration']['hypertts_pro_api_key'] == None
+
+
+def test_configuration_entered_api_key_invalid_not_saved(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_entered_api_key_invalid_not_saved
+    # an API key the user types which doesn't verify is never written to the configuration
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    hypertts_instance.service_manager.get_service('ServiceA').enabled = False
+    hypertts_instance.service_manager.get_service('ServiceB').enabled = False
+
+    dialog, configuration = build_configuration_screen(hypertts_instance)
+    hyperttspro = configuration.hyperttspro
+
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    qtbot.keyClicks(hyperttspro.hypertts_pro_api_key, 'invalid_key')
+
+    assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
+    assert configuration.model.hypertts_pro_api_key == None
+    # there was no API key in the configuration, so there is nothing we kept
+    assert widget_shown(hyperttspro.api_key_kept_label) == False
+    assert widget_shown(hyperttspro.remove_kept_api_key_button) == False
+
+    get_service_enabled_checkbox(dialog, 'ServiceA').setChecked(True)
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    assert hypertts_instance.anki_utils.written_config['configuration']['hypertts_pro_api_key'] == None
+
+
+def test_configuration_entered_api_key_invalid_doesnt_replace_saved_key(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_entered_api_key_invalid_doesnt_replace_saved_key
+    # typing an API key which doesn't verify leaves the API key already in the configuration alone
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    configuration_model = config_models.Configuration()
+    configuration_model.set_hypertts_pro_api_key('invalid_key')
+
+    dialog, configuration = build_configuration_screen(hypertts_instance, configuration_model)
+    hyperttspro = configuration.hyperttspro
+
+    # we're on the API key screen, with the saved key which failed verification
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
+    # the user tries another key, which doesn't verify either
+    hyperttspro.hypertts_pro_api_key.setText('another_invalid_key')
+
+    assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
+    assert configuration.model.hypertts_pro_api_key == 'invalid_key'
+
+    # and one which does
+    hyperttspro.hypertts_pro_api_key.setText('valid_key')
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_ENABLED
+    assert configuration.model.hypertts_pro_api_key == 'valid_key'
+
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert hypertts_instance.anki_utils.written_config['configuration']['hypertts_pro_api_key'] == 'valid_key'
+
+
+def test_configuration_save_disabled_while_verifying_api_key(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_save_disabled_while_verifying_api_key
+    # github issue #360: the user removed their API key, entered a new one, and pressed Save 80ms
+    # later, while the verification request was still in flight. the new key hadn't reached the
+    # configuration model yet, so the save wrote the removal and the key was lost.
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    configuration_model = config_models.Configuration()
+    configuration_model.set_hypertts_pro_api_key('valid_key')
+
+    dialog, configuration = build_configuration_screen(hypertts_instance, configuration_model)
+    hyperttspro = configuration.hyperttspro
+
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_ENABLED
+    assert configuration.save_button.isEnabled() == False
+    assert widget_shown(configuration.save_blocked_label) == False
+
+    # the user removes their API key, which by itself is saveable
+    qtbot.mouseClick(hyperttspro.remove_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert configuration.model.hypertts_pro_api_key == None
+    assert configuration.save_button.isEnabled() == True
+
+    # then enters a new one, whose verification doesn't come back right away
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    hypertts_instance.anki_utils.defer_background_tasks = True
+    hyperttspro.hypertts_pro_api_key.setText('valid_key')
+
+    # saving now would write the removal rather than the key which is being verified
+    assert configuration.save_button.isEnabled() == False
+    assert widget_shown(configuration.save_blocked_label) == True
+    assert configuration.save_blocked_label.text() == constants.GUI_TEXT_HYPERTTS_PRO_VERIFYING_API_KEY
+
+    # once the verification comes back, the key is in the model and saving is possible again
+    hypertts_instance.anki_utils.run_deferred_background_tasks()
+    assert configuration.model.hypertts_pro_api_key == 'valid_key'
+    assert configuration.save_button.isEnabled() == True
+    assert widget_shown(configuration.save_blocked_label) == False
+
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert hypertts_instance.anki_utils.written_config['configuration']['hypertts_pro_api_key'] == 'valid_key'
+
+
+def test_configuration_save_blocked_before_verification_starts(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_save_blocked_before_verification_starts
+    # the typing timer only fires a second after the user stops typing: saving has to be blocked
+    # from the first keystroke, not only once the request is on its way (github issue #360)
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog, configuration = build_configuration_screen(hypertts_instance)
+    hyperttspro = configuration.hyperttspro
+
+    # something changed, so saving would normally be possible
+    get_service_enabled_checkbox(dialog, 'ServiceA').setChecked(True)
+    assert configuration.save_button.isEnabled() == True
+
+    # the user starts typing an API key. the typing timer hasn't fired yet, so no verification has
+    # started, but what is in the field is not what would be saved
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    hyperttspro.hypertts_pro_api_key_timer.enabled = False
+    hyperttspro.hypertts_pro_api_key.setText('valid_key')
+
+    assert configuration.save_button.isEnabled() == False
+    assert widget_shown(configuration.save_blocked_label) == True
+
+    # the typing timer fires, the key verifies, and saving becomes possible again
+    hyperttspro.hypertts_pro_api_key_timer.enabled = True
+    hyperttspro.pro_api_key_entered()
+    assert configuration.model.hypertts_pro_api_key == 'valid_key'
+    assert configuration.save_button.isEnabled() == True
+    assert widget_shown(configuration.save_blocked_label) == False
+
+
+def test_configuration_save_reenabled_after_verification_error(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_save_reenabled_after_verification_error
+    # a verification request which blows up must not leave the Save button disabled forever
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog, configuration = build_configuration_screen(hypertts_instance)
+    hyperttspro = configuration.hyperttspro
+
+    get_service_enabled_checkbox(dialog, 'ServiceA').setChecked(True)
+    assert configuration.save_button.isEnabled() == True
+
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    hypertts_instance.anki_utils.defer_background_tasks = True
+    hyperttspro.hypertts_pro_api_key.setText('exception_key')
+    assert configuration.save_button.isEnabled() == False
+
+    hypertts_instance.anki_utils.run_deferred_background_tasks()
+
+    assert configuration.save_blocked_reason == None
+    assert configuration.save_button.isEnabled() == True
+    assert widget_shown(configuration.save_blocked_label) == False
+    # the API key is not written to the configuration when we couldn't verify it
+    assert configuration.model.hypertts_pro_api_key == None
+
+
 def test_configuration_enable_disable_services(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
@@ -3115,8 +3345,28 @@ def test_hyperttspro_test_1(qtbot):
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
     assert hyperttspro.hypertts_pro_api_key.text() == 'invalid_key'
     assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
+    # the API key which was already in the configuration is kept, HyperTTS never removes it by
+    # itself after a failed verification (github issue #360). the user is told it was kept and
+    # gets a button to remove it themselves.
     assert model_change_callback.model == config_models.HyperTTSProAccountConfig(
+        api_key='invalid_key',
+        api_key_valid=False,
         api_key_error='Key invalid',
+    )
+    assert widget_shown(hyperttspro.api_key_kept_label) == True
+    assert widget_shown(hyperttspro.remove_kept_api_key_button) == True
+
+    # removing it from there clears the API key and reports the removal
+    qtbot.mouseClick(hyperttspro.remove_kept_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_BUTTONS
+    assert hyperttspro.hypertts_pro_api_key.text() == ''
+    assert widget_shown(hyperttspro.api_key_kept_label) == False
+    assert widget_shown(hyperttspro.remove_kept_api_key_button) == False
+    assert model_change_callback.model == config_models.HyperTTSProAccountConfig(
+        api_key=None,
+        api_key_valid=False,
+        api_key_error=None,
+        account_info=None,
     )
     # dialog.exec()
 

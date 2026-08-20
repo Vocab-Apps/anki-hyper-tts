@@ -305,6 +305,12 @@ GUI_TEXT_NO_SERVICES_CONFIGURED = ("""Either start a HyperTTS Pro trial on the <
 GUI_TEXT_HYPERTTS_PRO_TRIAL = """Free Trial access instantly, just enter your email."""
 GUI_TEXT_HYPERTTS_PRO_BUY_PLAN = """Subscribe to HyperTTS Pro. Get access in 5mn."""
 GUI_TEXT_HYPERTTS_PRO_ENTER_API_KEY = """Enter HyperTTS Pro / AwesomeTTS Plus / Language Tools API Key."""
+# shown on the API key screen when the API key which is already in the configuration didn't verify.
+# HyperTTS keeps it rather than removing it by itself, see github issue #360
+GUI_TEXT_HYPERTTS_PRO_API_KEY_KEPT = """<i>Your API key could not be verified, so HyperTTS has <b>kept</b> it. This also happens when the HyperTTS servers cannot be reached. Try again later, or remove the API key below.</i>"""
+# shown next to the Save button of the services configuration screen while an API key is on its way
+# to being verified. saving during that window is what used to drop the API key (github issue #360)
+GUI_TEXT_HYPERTTS_PRO_VERIFYING_API_KEY = """Verifying your HyperTTS Pro API key, please wait before saving."""
 
 GUI_TEXT_HYPERTTS_PRO_ENABLED = """<b>HyperTTS Pro Enabled</b>"""
 GUI_TEXT_HYPERTTS_PRO_TRIAL_ENTER_EMAIL = """<i>Enter your email and choose a password to get instant access to premium TTS services such as Azure, Google, ElevenLabs, OpenAI, Amazon, Forvo. 7 day trial limited to 50k characters.</i>"""

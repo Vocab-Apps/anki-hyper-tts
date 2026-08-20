@@ -165,6 +165,12 @@ class MockAnkiUtils():
         # configuration anomalies reported (see config_backup.py)
         self.config_anomalies = []
 
+        # background tasks. when defer_background_tasks is set, run_in_background queues the tasks
+        # instead of running them right away, so that tests can look at the screen while a request
+        # is in flight (the API key verification of github issue #360, for instance)
+        self.defer_background_tasks = False
+        self.deferred_background_tasks = []
+
         # exception handling
         self.last_exception = None
         self.last_action = None
@@ -293,13 +299,26 @@ class MockAnkiUtils():
         return self.mock_collection
 
     def run_in_background(self, task_fn, task_done_fn):
+        if self.defer_background_tasks:
+            self.deferred_background_tasks.append((task_fn, task_done_fn))
+            return
         # just run the two tasks immediately
+        self.run_background_task(task_fn, task_done_fn)
+
+    def run_background_task(self, task_fn, task_done_fn):
         try:
             result = task_fn()
             task_done_fn(MockFuture(result))
         except Exception as e:
             task_done_fn(MockFutureException(e))
-        
+
+    def run_deferred_background_tasks(self):
+        """run the background tasks which piled up while defer_background_tasks was set"""
+        deferred_background_tasks = self.deferred_background_tasks
+        self.deferred_background_tasks = []
+        for task_fn, task_done_fn in deferred_background_tasks:
+            self.run_background_task(task_fn, task_done_fn)
+
 
     def run_on_main(self, task_fn):
         # just run the task immediately

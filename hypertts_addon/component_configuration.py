@@ -38,9 +38,14 @@ class Configuration(component_common.ConfigComponentBase):
         self.hypertts = hypertts
         self.dialog = dialog
         self.enable_model_change = False
+        self.model_changed = False
         self.api_key_valid = False
+        # set while the HyperTTS Pro tab is verifying an API key, see update_save_button_state
+        self.save_blocked_reason = None
+        self.drawn = False
 
-        self.hyperttspro = component_hyperttspro.HyperTTSPro(self.hypertts, self.hyperttspro_account_config_change)
+        self.hyperttspro = component_hyperttspro.HyperTTSPro(self.hypertts,
+            self.hyperttspro_account_config_change, self.hyperttspro_save_blocked_change)
         self.services = component_services.Services(self.hypertts, self.dialog, self.services_updated)
         self.extensions = component_extensions.Extensions(self.hypertts, self.dialog, self.extensions_updated)
 
@@ -53,6 +58,12 @@ class Configuration(component_common.ConfigComponentBase):
         self.alert_label.setObjectName('hypertts_configuration_alert')
         self.alert_label.setWordWrap(True)
         self.alert_label.setStyleSheet('border: 1px solid palette(mid); border-radius: 4px; padding: 6px;')
+
+        self.save_blocked_label = aqt.qt.QLabel()
+        self.save_blocked_label.setObjectName('hypertts_configuration_save_blocked_label')
+        self.save_blocked_label.setWordWrap(True)
+        self.save_blocked_label.setStyleSheet('font-style: italic;')
+        self.save_blocked_label.setVisible(False)
 
         self.save_button = aqt.qt.QPushButton('Save')
         self.save_button.setObjectName('hypertts_configuration_save_button')
@@ -92,10 +103,32 @@ class Configuration(component_common.ConfigComponentBase):
         self.model.extensions = model
         self.model_change()
 
+    def hyperttspro_save_blocked_change(self, reason):
+        """the HyperTTS Pro tab tells us whether the API key it is holding can be saved yet"""
+        self.save_blocked_reason = reason
+        self.update_save_button_state()
+
     def model_change(self):
         if self.enable_model_change:
-            self.save_button.setEnabled(True)
+            self.model_changed = True
+            self.update_save_button_state()
+
+    def update_save_button_state(self):
+        """saving is offered once something changed, but never while an API key is on its way to
+        being verified: a save landing in that window writes the API key the screen was holding
+        before the user started typing, which is how API keys got lost (github issue #360)"""
+        save_blocked = self.save_blocked_reason != None
+        save_enabled = self.model_changed and not save_blocked
+        self.save_button.setEnabled(save_enabled)
+        if save_enabled:
             self.save_button.setStyleSheet(self.hypertts.anki_utils.get_green_stylesheet())
+        else:
+            self.save_button.setStyleSheet('')
+        if save_blocked:
+            self.save_blocked_label.setText(self.save_blocked_reason)
+        if self.drawn:
+            # before the layout is drawn the label has no parent, showing it would make it a window
+            self.save_blocked_label.setVisible(save_blocked)
 
     # hypertts pro state
     # ==================
@@ -172,6 +205,7 @@ class Configuration(component_common.ConfigComponentBase):
         buttons_layout = aqt.qt.QHBoxLayout()
         self.save_button.setEnabled(False)
         self.cancel_button.setStyleSheet(self.hypertts.anki_utils.get_red_stylesheet())
+        buttons_layout.addWidget(self.save_blocked_label)
         buttons_layout.addStretch()
         buttons_layout.addWidget(self.save_button)
         buttons_layout.addWidget(self.cancel_button)
@@ -188,6 +222,10 @@ class Configuration(component_common.ConfigComponentBase):
         self.enable_model_change = True
 
         layout.addLayout(self.global_vlayout)
+
+        # only now do our widgets have a parent, so only now can we show or hide them
+        self.drawn = True
+        self.update_save_button_state()
 
     # events
     # ======
