@@ -58,11 +58,9 @@ else:
 
 class CloudLanguageTools():
     def __init__(self):
-        self.clt_api_base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_BASE_URL', constants.CLOUDLANGUAGETOOLS_API_BASE_URL)
         self.vocabai_api_base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_VOCABAI_BASE_URL', constants.VOCABAI_API_BASE_URL)
         self.disable_ssl_verification = False
         self.session = requests.Session()
-        logger.info(f'using CLT API base URL: {self.clt_api_base_url}')
         logger.info(f'using VocabAi API base URL: {self.vocabai_api_base_url}')
 
     def configure(self, config: config_models.Configuration, disable_ssl_verification: bool = False):
@@ -72,30 +70,15 @@ class CloudLanguageTools():
             logger.warning('SSL verification is disabled for cloud language tools connections')
 
     def get_request_headers(self):
-        if self.config.use_vocabai_api:
-            return {
-                'Authorization': f'Api-Key {self.config.hypertts_pro_api_key}',
-            }
-        else:
-            return {
-                'api_key': self.config.hypertts_pro_api_key, 
-                'client': 'hypertts', 
-                'client_version': version.ANKI_HYPER_TTS_VERSION,
-                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'}
+        return {
+            'Authorization': f'Api-Key {self.config.hypertts_pro_api_key}',
+        }
 
     def get_trial_request_headers(self):
         return {
             'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}',
             'X-Vocab-Addon-ID': self.config.user_uuid
         }
-
-    def get_base_url(self):
-        if self.config.use_vocabai_api:
-            if self.config.vocabai_api_url_override != None:
-                return self.config.vocabai_api_url_override
-            return self.vocabai_api_base_url
-        else:
-            return self.clt_api_base_url
 
     def get_vocabai_url(self, path):
         if self.config.vocabai_api_url_override != None:
@@ -112,10 +95,7 @@ class CloudLanguageTools():
     #   PermanentError  – non-retryable (400, 403, 404)
     #   TransientError  – retryable (502, 503, 504, timeout, unknown)
     def get_tts_audio(self, source_text, voice, options, audio_request_context):
-        if self.config.use_vocabai_api:
-            return self._get_tts_audio_vocabai(source_text, voice, options, audio_request_context)
-        else:
-            return self._get_tts_audio_clt(source_text, voice, options, audio_request_context)
+        return self._get_tts_audio_vocabai(source_text, voice, options, audio_request_context)
 
     def _get_tts_audio_vocabai(self, source_text, voice, options, audio_request_context):
         # API v5
@@ -215,52 +195,7 @@ class CloudLanguageTools():
             # for now, classify them as unknown service errors, which is a TransientError
             raise errors.UnknownServiceError(source_text, voice, str(e))
 
-    def _get_tts_audio_clt(self, source_text, voice, options, audio_request_context):
-        full_url = self.get_base_url() + '/audio_v2'
-        data = {
-            'text': source_text,
-            'service': voice.service,
-            'request_mode': audio_request_context.get_request_mode().name,
-            'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,
-            'voice_key': voice.voice_key,
-            'options': options
-        }
-        logger.info(f'_get_tts_audio_clt: request url: {full_url}, data: {data}')
-        headers = self.get_request_headers()
-        logger.debug(f'_get_tts_audio_clt: headers: {headers} data: {data}')
-
-        try:
-            response = self.session.post(full_url, json=data, headers=headers,
-                timeout=constants.RequestTimeout, verify=self.get_verify_ssl())
-            logger.info(f'_get_tts_audio_clt: response status_code: {response.status_code}')
-
-            if response.status_code == 200:
-                return response.content
-            elif response.status_code == 404:
-                raise errors.AudioNotFoundError(source_text, voice)
-            elif response.status_code == 502:
-                raise errors.ServiceGatewayError(source_text, voice, 'bad gateway')
-            else:
-                error_message = f"Status code: {response.status_code} ({response.content})"
-                raise errors.UnknownServiceError(source_text, voice, error_message)
-        except errors.HyperTTSError:
-            raise
-        except requests.exceptions.Timeout:
-            raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
-        except (requests.exceptions.ConnectionError,
-                requests.exceptions.ChunkedEncodingError) as e:
-            # See _get_tts_audio_vocabai for why ChunkedEncodingError must be
-            # listed explicitly alongside ConnectionError, and why a wrapped read
-            # timeout must be reclassified as ServiceTimeoutError (KC2).
-            if _is_wrapped_read_timeout(e):
-                raise errors.ServiceTimeoutError(source_text, voice, str(e)) from e
-            raise errors.ServiceConnectionError(source_text, voice, str(e))
-        except Exception as e:
-            logger.error(f'cloudlanguagetools service error: {e!r}', exc_info=True)
-            raise errors.UnknownServiceError(source_text, voice, str(e))
-
     def account_info(self, api_key):
-        # try to get account data on vocabai first
         vocabai_url = self.get_vocabai_url('account')
         logger.info(f'account_info: request url: {vocabai_url}, data: None')
         response = self.session.get(vocabai_url, headers={
@@ -276,29 +211,6 @@ class CloudLanguageTools():
                 api_key=api_key,
                 api_key_valid=True,
                 use_vocabai_api=True,
-                account_info=response.json()
-            )
-
-        # now try to get account data on CLT API
-        clt_url = self.clt_api_base_url + '/account'
-        logger.info(f'account_info: request url: {clt_url}, data: None')
-        response = self.session.get(clt_url, headers={'api_key': api_key},
-            verify=self.get_verify_ssl())
-        logger.info(f'account_info: response status_code: {response.status_code}')
-        if response.status_code == 200:
-            # API key is valid on CLT API
-            # check if there are errors
-            if 'error' in response.json():
-                return config_models.HyperTTSProAccountConfig(
-                    api_key=api_key,
-                    api_key_valid=False,
-                    api_key_error=response.json()['error'])
-
-            # otherwise, it's considered valid
-            return config_models.HyperTTSProAccountConfig(
-                api_key=api_key,
-                api_key_valid=True,
-                use_vocabai_api=False,
                 account_info=response.json()
             )
 
