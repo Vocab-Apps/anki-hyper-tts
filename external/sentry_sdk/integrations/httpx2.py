@@ -24,31 +24,31 @@ if TYPE_CHECKING:
 
 
 try:
-    from httpx import AsyncClient, Client, Request, Response
+    from httpx2 import AsyncClient, Client, Request, Response
 except ImportError:
-    raise DidNotEnable("httpx is not installed")
+    raise DidNotEnable("httpx2 is not installed")
 
-__all__ = ["HttpxIntegration"]
+__all__ = ["Httpx2Integration"]
 
 
-class HttpxIntegration(Integration):
-    identifier = "httpx"
+class Httpx2Integration(Integration):
+    identifier = "httpx2"
     origin = f"auto.http.{identifier}"
 
     @staticmethod
     def setup_once() -> None:
         """
-        httpx has its own transport layer and can be customized when needed,
+        httpx2 has its own transport layer and can be customized when needed,
         so patch Client.send and AsyncClient.send to support both synchronous and async interfaces.
         """
-        _install_httpx_client()
-        _install_httpx_async_client()
+        _install_httpx2_client()
+        _install_httpx2_async_client()
 
 
-def _install_httpx_client() -> None:
+def _install_httpx2_client() -> None:
     real_send = Client.send
 
-    @ensure_integration_enabled(HttpxIntegration, real_send)
+    @ensure_integration_enabled(Httpx2Integration, real_send)
     def send(self: "Client", request: "Request", **kwargs: "Any") -> "Response":
         client = sentry_sdk.get_client()
         is_span_streaming_enabled = has_span_streaming_enabled(client.options)
@@ -60,6 +60,7 @@ def _install_httpx_client() -> None:
         if is_span_streaming_enabled:
             if sentry_sdk.traces.get_current_span() is None:
                 propagate_trace_headers(client, request)
+
                 return real_send(self, request, **kwargs)
 
             with sentry_sdk.traces.start_span(
@@ -70,7 +71,7 @@ def _install_httpx_client() -> None:
                 ),
                 attributes={
                     "sentry.op": OP.HTTP_CLIENT,
-                    "sentry.origin": HttpxIntegration.origin,
+                    "sentry.origin": Httpx2Integration.origin,
                     "http.request.method": request.method,
                 },
             ) as streamed_span:
@@ -111,7 +112,7 @@ def _install_httpx_client() -> None:
                     request.method,
                     parsed_url.url if parsed_url else SENSITIVE_DATA_SUBSTITUTE,
                 ),
-                origin=HttpxIntegration.origin,
+                origin=Httpx2Integration.origin,
             ) as span:
                 span.set_data(SPANDATA.HTTP_METHOD, request.method)
                 if parsed_url is not None:
@@ -134,7 +135,6 @@ def _install_httpx_client() -> None:
             SPANDATA.HTTP_STATUS_CODE: rv.status_code,
             "reason": rv.reason_phrase,
         }
-
         if parsed_url and (not is_span_streaming_enabled or should_send_default_pii()):
             breadcrumb_data.update(
                 {
@@ -151,14 +151,14 @@ def _install_httpx_client() -> None:
     Client.send = send  # type: ignore
 
 
-def _install_httpx_async_client() -> None:
+def _install_httpx2_async_client() -> None:
     real_send = AsyncClient.send
 
     async def send(
         self: "AsyncClient", request: "Request", **kwargs: "Any"
     ) -> "Response":
         client = sentry_sdk.get_client()
-        if client.get_integration(HttpxIntegration) is None:
+        if client.get_integration(Httpx2Integration) is None:
             return await real_send(self, request, **kwargs)
 
         is_span_streaming_enabled = has_span_streaming_enabled(client.options)
@@ -169,6 +169,7 @@ def _install_httpx_async_client() -> None:
         if is_span_streaming_enabled:
             if sentry_sdk.traces.get_current_span() is None:
                 propagate_trace_headers(client, request)
+
                 return await real_send(self, request, **kwargs)
 
             with sentry_sdk.traces.start_span(
@@ -179,7 +180,7 @@ def _install_httpx_async_client() -> None:
                 ),
                 attributes={
                     "sentry.op": OP.HTTP_CLIENT,
-                    "sentry.origin": HttpxIntegration.origin,
+                    "sentry.origin": Httpx2Integration.origin,
                     "http.request.method": request.method,
                 },
             ) as streamed_span:
@@ -220,7 +221,7 @@ def _install_httpx_async_client() -> None:
                     request.method,
                     parsed_url.url if parsed_url else SENSITIVE_DATA_SUBSTITUTE,
                 ),
-                origin=HttpxIntegration.origin,
+                origin=Httpx2Integration.origin,
             ) as span:
                 span.set_data(SPANDATA.HTTP_METHOD, request.method)
                 if parsed_url is not None:

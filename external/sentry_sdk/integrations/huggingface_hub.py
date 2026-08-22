@@ -1,22 +1,35 @@
 import inspect
 import sys
 from functools import wraps
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 import sentry_sdk
 from sentry_sdk.ai.monitoring import record_token_usage
-from sentry_sdk.ai.utils import set_data_normalized
+from sentry_sdk.ai.utils import (
+    _set_span_data_attribute,
+    get_start_span_function,
+    set_data_normalized,
+)
 from sentry_sdk.consts import OP, SPANDATA
 from sentry_sdk.integrations import DidNotEnable, Integration
 from sentry_sdk.scope import should_send_default_pii
+from sentry_sdk.traces import StreamedSpan
+from sentry_sdk.tracing_utils import has_span_streaming_enabled
 from sentry_sdk.utils import (
     capture_internal_exceptions,
     event_from_exception,
+    has_data_collection_enabled,
     reraise,
 )
 
 if TYPE_CHECKING:
-    from typing import Any, Callable, Iterable
+    from typing import Any, Callable, Iterable, Union
+
+    from huggingface_hub import (
+        ChatCompletionStreamOutput,
+    )
+
+    from sentry_sdk.tracing import Span
 
 try:
     import huggingface_hub.inference._client
@@ -36,13 +49,13 @@ class HuggingfaceHubIntegration(Integration):
     @staticmethod
     def setup_once() -> None:
         # Other tasks that can be called: https://huggingface.co/docs/huggingface_hub/guides/inference#supported-providers-and-tasks
-        huggingface_hub.inference._client.InferenceClient.text_generation = (
+        huggingface_hub.inference._client.InferenceClient.text_generation = (  # type: ignore[method-assign]
             _wrap_huggingface_task(
                 huggingface_hub.inference._client.InferenceClient.text_generation,
                 OP.GEN_AI_TEXT_COMPLETION,
             )
         )
-        huggingface_hub.inference._client.InferenceClient.chat_completion = (
+        huggingface_hub.inference._client.InferenceClient.chat_completion = (  # type: ignore[method-assign]
             _wrap_huggingface_task(
                 huggingface_hub.inference._client.InferenceClient.chat_completion,
                 OP.GEN_AI_CHAT,
@@ -62,7 +75,8 @@ def _capture_exception(exc: "Any") -> None:
 def _wrap_huggingface_task(f: "Callable[..., Any]", op: str) -> "Callable[..., Any]":
     @wraps(f)
     def new_huggingface_task(*args: "Any", **kwargs: "Any") -> "Any":
-        integration = sentry_sdk.get_client().get_integration(HuggingfaceHubIntegration)
+        client = sentry_sdk.get_client()
+        integration = client.get_integration(HuggingfaceHubIntegration)
         if integration is None:
             return f(*args, **kwargs)
 
@@ -79,30 +93,33 @@ def _wrap_huggingface_task(f: "Callable[..., Any]", op: str) -> "Callable[..., A
             # invalid call, dont instrument, let it return error
             return f(*args, **kwargs)
 
-        client = args[0]
-        model = client.model or kwargs.get("model") or ""
+        hf_client = args[0]
+        model = hf_client.model or kwargs.get("model") or ""
         operation_name = op.split(".")[-1]
 
-        span = sentry_sdk.start_span(
-            op=op,
-            name=f"{operation_name} {model}",
-            origin=HuggingfaceHubIntegration.origin,
-        )
+        span: "Union[Span, StreamedSpan]"
+        if has_span_streaming_enabled(client.options):
+            span = sentry_sdk.traces.start_span(
+                name=f"{operation_name} {model}",
+                attributes={
+                    "sentry.op": op,
+                    "sentry.origin": HuggingfaceHubIntegration.origin,
+                },
+            )
+        else:
+            span = get_start_span_function()(
+                op=op,
+                name=f"{operation_name} {model}",
+                origin=HuggingfaceHubIntegration.origin,
+            )
         span.__enter__()
 
-        span.set_data(SPANDATA.GEN_AI_OPERATION_NAME, operation_name)
+        _set_span_data_attribute(span, SPANDATA.GEN_AI_OPERATION_NAME, operation_name)
 
         if model:
-            span.set_data(SPANDATA.GEN_AI_REQUEST_MODEL, model)
-
-        # Input attributes
-        if should_send_default_pii() and integration.include_prompts:
-            set_data_normalized(
-                span, SPANDATA.GEN_AI_REQUEST_MESSAGES, prompt, unpack=False
-            )
+            _set_span_data_attribute(span, SPANDATA.GEN_AI_REQUEST_MODEL, model)
 
         attribute_mapping = {
-            "tools": SPANDATA.GEN_AI_REQUEST_AVAILABLE_TOOLS,
             "frequency_penalty": SPANDATA.GEN_AI_REQUEST_FREQUENCY_PENALTY,
             "max_tokens": SPANDATA.GEN_AI_REQUEST_MAX_TOKENS,
             "presence_penalty": SPANDATA.GEN_AI_REQUEST_PRESENCE_PENALTY,
@@ -112,11 +129,29 @@ def _wrap_huggingface_task(f: "Callable[..., Any]", op: str) -> "Callable[..., A
             "stream": SPANDATA.GEN_AI_RESPONSE_STREAMING,
         }
 
+        if has_data_collection_enabled(client.options):
+            if client.options["data_collection"]["gen_ai"]["inputs"]:
+                attribute_mapping["tools"] = SPANDATA.GEN_AI_REQUEST_AVAILABLE_TOOLS
+        else:
+            # Legacy behaviour where we unconditionally set this. Remove when data collection is fully rolled out
+            attribute_mapping["tools"] = SPANDATA.GEN_AI_REQUEST_AVAILABLE_TOOLS
+
+        # Input attributes
+        if has_data_collection_enabled(client.options):
+            if client.options["data_collection"]["gen_ai"]["inputs"]:
+                set_data_normalized(
+                    span, SPANDATA.GEN_AI_REQUEST_MESSAGES, prompt, unpack=False
+                )
+        elif should_send_default_pii() and integration.include_prompts:
+            set_data_normalized(
+                span, SPANDATA.GEN_AI_REQUEST_MESSAGES, prompt, unpack=False
+            )
+
         for attribute, span_attribute in attribute_mapping.items():
             value = kwargs.get(attribute, None)
             if value is not None:
                 if isinstance(value, (int, float, bool, str)):
-                    span.set_data(span_attribute, value)
+                    _set_span_data_attribute(span, span_attribute, value)
                 else:
                     set_data_normalized(span, span_attribute, value, unpack=False)
 
@@ -177,7 +212,9 @@ def _wrap_huggingface_task(f: "Callable[..., Any]", op: str) -> "Callable[..., A
                         response_text_buffer.append(choice.message.content)
 
             if response_model is not None:
-                span.set_data(SPANDATA.GEN_AI_RESPONSE_MODEL, response_model)
+                _set_span_data_attribute(
+                    span, SPANDATA.GEN_AI_RESPONSE_MODEL, response_model
+                )
 
             if finish_reason is not None:
                 set_data_normalized(
@@ -186,8 +223,16 @@ def _wrap_huggingface_task(f: "Callable[..., Any]", op: str) -> "Callable[..., A
                     finish_reason,
                 )
 
-            if should_send_default_pii() and integration.include_prompts:
-                if tool_calls is not None and len(tool_calls) > 0:
+            if tool_calls is not None and len(tool_calls) > 0:
+                if has_data_collection_enabled(client.options):
+                    if client.options["data_collection"]["gen_ai"]["inputs"]:
+                        set_data_normalized(
+                            span,
+                            SPANDATA.GEN_AI_RESPONSE_TOOL_CALLS,
+                            tool_calls,
+                            unpack=False,
+                        )
+                elif should_send_default_pii() and integration.include_prompts:
                     set_data_normalized(
                         span,
                         SPANDATA.GEN_AI_RESPONSE_TOOL_CALLS,
@@ -195,9 +240,17 @@ def _wrap_huggingface_task(f: "Callable[..., Any]", op: str) -> "Callable[..., A
                         unpack=False,
                     )
 
-                if len(response_text_buffer) > 0:
-                    text_response = "".join(response_text_buffer)
-                    if text_response:
+            if len(response_text_buffer) > 0:
+                text_response = "".join(response_text_buffer)
+                if text_response:
+                    if has_data_collection_enabled(client.options):
+                        if client.options["data_collection"]["gen_ai"]["outputs"]:
+                            set_data_normalized(
+                                span,
+                                SPANDATA.GEN_AI_RESPONSE_TEXT,
+                                text_response,
+                            )
+                    elif should_send_default_pii() and integration.include_prompts:
                         set_data_normalized(
                             span,
                             SPANDATA.GEN_AI_RESPONSE_TEXT,
@@ -260,7 +313,14 @@ def _wrap_huggingface_task(f: "Callable[..., Any]", op: str) -> "Callable[..., A
                                 finish_reason,
                             )
 
-                        if should_send_default_pii() and integration.include_prompts:
+                        should_set_response_text = False
+                        if has_data_collection_enabled(client.options):
+                            if client.options["data_collection"]["gen_ai"]["outputs"]:
+                                should_set_response_text = True
+                        elif should_send_default_pii() and integration.include_prompts:
+                            should_set_response_text = True
+
+                        if should_set_response_text:
                             if len(response_text_buffer) > 0:
                                 text_response = "".join(response_text_buffer)
                                 if text_response:
@@ -282,7 +342,7 @@ def _wrap_huggingface_task(f: "Callable[..., Any]", op: str) -> "Callable[..., A
 
             else:
                 # chat-completion stream output
-                def new_iterator() -> "Iterable[str]":
+                def new_iterator() -> "Iterable[ChatCompletionStreamOutput]":
                     finish_reason = None
                     response_model = None
                     response_text_buffer: "list[str]" = []
@@ -290,7 +350,7 @@ def _wrap_huggingface_task(f: "Callable[..., Any]", op: str) -> "Callable[..., A
                     usage = None
 
                     with capture_internal_exceptions():
-                        for chunk in res:
+                        for chunk in cast("Iterable[ChatCompletionStreamOutput]", res):
                             if hasattr(chunk, "model") and chunk.model is not None:
                                 response_model = chunk.model
 
@@ -328,8 +388,8 @@ def _wrap_huggingface_task(f: "Callable[..., Any]", op: str) -> "Callable[..., A
                             yield chunk
 
                         if response_model is not None:
-                            span.set_data(
-                                SPANDATA.GEN_AI_RESPONSE_MODEL, response_model
+                            _set_span_data_attribute(
+                                span, SPANDATA.GEN_AI_RESPONSE_MODEL, response_model
                             )
 
                         if finish_reason is not None:
@@ -339,8 +399,21 @@ def _wrap_huggingface_task(f: "Callable[..., Any]", op: str) -> "Callable[..., A
                                 finish_reason,
                             )
 
-                        if should_send_default_pii() and integration.include_prompts:
-                            if tool_calls is not None and len(tool_calls) > 0:
+                        if tool_calls is not None and len(tool_calls) > 0:
+                            if has_data_collection_enabled(client.options):
+                                if client.options["data_collection"]["gen_ai"][
+                                    "inputs"
+                                ]:
+                                    set_data_normalized(
+                                        span,
+                                        SPANDATA.GEN_AI_RESPONSE_TOOL_CALLS,
+                                        tool_calls,
+                                        unpack=False,
+                                    )
+                            elif (
+                                should_send_default_pii()
+                                and integration.include_prompts
+                            ):
                                 set_data_normalized(
                                     span,
                                     SPANDATA.GEN_AI_RESPONSE_TOOL_CALLS,
@@ -348,9 +421,22 @@ def _wrap_huggingface_task(f: "Callable[..., Any]", op: str) -> "Callable[..., A
                                     unpack=False,
                                 )
 
-                            if len(response_text_buffer) > 0:
-                                text_response = "".join(response_text_buffer)
-                                if text_response:
+                        if len(response_text_buffer) > 0:
+                            text_response = "".join(response_text_buffer)
+                            if text_response:
+                                if has_data_collection_enabled(client.options):
+                                    if client.options["data_collection"]["gen_ai"][
+                                        "outputs"
+                                    ]:
+                                        set_data_normalized(
+                                            span,
+                                            SPANDATA.GEN_AI_RESPONSE_TEXT,
+                                            text_response,
+                                        )
+                                elif (
+                                    should_send_default_pii()
+                                    and integration.include_prompts
+                                ):
                                     set_data_normalized(
                                         span,
                                         SPANDATA.GEN_AI_RESPONSE_TEXT,

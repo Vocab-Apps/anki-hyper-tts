@@ -1,25 +1,24 @@
 import sys
 from functools import wraps
+from typing import TYPE_CHECKING
 
-from sentry_sdk.integrations import DidNotEnable
 import sentry_sdk
+from sentry_sdk.integrations import DidNotEnable
 from sentry_sdk.utils import capture_internal_exceptions, reraise
 
 from ..spans import execute_tool_span, update_execute_tool_span
 from ..utils import _capture_exception, get_current_agent
-
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from typing import Any
 
 try:
     try:
-        from pydantic_ai.tool_manager import ToolManager  # type: ignore
+        from pydantic_ai.tool_manager import ToolManager
     except ImportError:
         from pydantic_ai._tool_manager import ToolManager  # type: ignore
 
-    from pydantic_ai.exceptions import ToolRetryError  # type: ignore
+    from pydantic_ai.exceptions import ToolRetryError
 except ImportError:
     raise DidNotEnable("pydantic-ai not installed")
 
@@ -96,7 +95,7 @@ def _patch_execute_tool_call() -> None:
 
         return await original_execute_tool_call(self, validated, *args, **kwargs)
 
-    ToolManager.execute_tool_call = wrapped_execute_tool_call
+    ToolManager.execute_tool_call = wrapped_execute_tool_call  # type: ignore[method-assign]
 
 
 def _patch_call_tool() -> None:
@@ -111,7 +110,7 @@ def _patch_call_tool() -> None:
     - Dealing with signature mismatches from instrumented MCP servers
     - Complex nested toolset handling
     """
-    original_call_tool = ToolManager._call_tool
+    original_call_tool = ToolManager._call_tool  # type: ignore[attr-defined]
 
     @wraps(original_call_tool)
     async def wrapped_call_tool(
@@ -175,4 +174,4 @@ def _patch_call_tool() -> None:
             **kwargs,
         )
 
-    ToolManager._call_tool = wrapped_call_tool
+    ToolManager._call_tool = wrapped_call_tool  # type: ignore[attr-defined]

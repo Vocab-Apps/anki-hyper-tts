@@ -1,31 +1,31 @@
 import functools
 
 from sentry_sdk.integrations import DidNotEnable, Integration
-from sentry_sdk.utils import capture_internal_exceptions
+from sentry_sdk.utils import capture_internal_exceptions, parse_version
 
 try:
-    import pydantic_ai  # type: ignore # noqa: F401
+    import pydantic_ai  # noqa: F401
     from pydantic_ai import Agent
 except ImportError:
     raise DidNotEnable("pydantic-ai not installed")
 
 
+from importlib.metadata import PackageNotFoundError, version
+from typing import TYPE_CHECKING
+
 from .patches import (
     _patch_agent_run,
     _patch_graph_nodes,
-    _patch_model_request,
     _patch_tool_execution,
 )
-
 from .spans.ai_client import ai_client_span, update_ai_client_span
-
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from typing import Any
+
     from pydantic_ai import ModelRequestContext, RunContext
-    from pydantic_ai.messages import ModelResponse  # type: ignore
-    from pydantic_ai.capabilities import Hooks  # type: ignore
+    from pydantic_ai.capabilities import Hooks
+    from pydantic_ai.messages import ModelResponse
 
 
 def register_hooks(hooks: "Hooks") -> None:
@@ -33,7 +33,7 @@ def register_hooks(hooks: "Hooks") -> None:
     Creates hooks for chat model calls and register the hooks by adding the hooks to the `capabilities` argument passed to `Agent.__init__()`.
     """
 
-    @hooks.on.before_model_request  # type: ignore
+    @hooks.on.before_model_request
     async def on_request(
         ctx: "RunContext[None]", request_context: "ModelRequestContext"
     ) -> "ModelRequestContext":
@@ -53,7 +53,7 @@ def register_hooks(hooks: "Hooks") -> None:
 
         return request_context
 
-    @hooks.on.after_model_request  # type: ignore
+    @hooks.on.after_model_request
     async def on_response(
         ctx: "RunContext[None]",
         *,
@@ -73,7 +73,7 @@ def register_hooks(hooks: "Hooks") -> None:
 
         return response
 
-    @hooks.on.model_request_error  # type: ignore
+    @hooks.on.model_request_error
     async def on_error(
         ctx: "RunContext[None]",
         *,
@@ -108,7 +108,7 @@ def register_hooks(hooks: "Hooks") -> None:
 
         return original_init(self, *args, **kwargs)
 
-    Agent.__init__ = patched_init
+    Agent.__init__ = patched_init  # type: ignore[method-assign]
 
 
 class PydanticAIIntegration(Integration):
@@ -129,7 +129,7 @@ class PydanticAIIntegration(Integration):
 
     identifier = "pydantic_ai"
     origin = f"auto.ai.{identifier}"
-    are_request_hooks_available = True
+    using_request_hooks = False
 
     def __init__(
         self, include_prompts: bool = True, handled_tool_call_exceptions: bool = True
@@ -159,16 +159,29 @@ class PydanticAIIntegration(Integration):
         _patch_agent_run()
         _patch_tool_execution()
 
+        PydanticAIIntegration.using_request_hooks = False
+        try:
+            PYDANTIC_AI_VERSION = version("pydantic-ai-slim")
+        except PackageNotFoundError:
+            return
+
+        PYDANTIC_AI_VERSION = parse_version(PYDANTIC_AI_VERSION)
+        if PYDANTIC_AI_VERSION is None:
+            return
+
+        # ModelRequestContext.model added in https://github.com/pydantic/pydantic-ai/commit/f1260dfe09907f17688eee1646daf898fc428d4c
+        if PYDANTIC_AI_VERSION < (
+            1,
+            73,
+        ):
+            _patch_graph_nodes()
+            return
+
         try:
             from pydantic_ai.capabilities import Hooks
         except ImportError:
-            Hooks = None
-            PydanticAIIntegration.are_request_hooks_available = False
-
-        if Hooks is None:
-            _patch_graph_nodes()
-            _patch_model_request()
             return
 
+        PydanticAIIntegration.using_request_hooks = True
         hooks = Hooks()
         register_hooks(hooks)
