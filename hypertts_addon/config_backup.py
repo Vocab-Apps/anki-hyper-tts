@@ -265,7 +265,11 @@ def detect_anomalies(previous: Optional[ConfigStats], current: ConfigStats) -> L
 def config_hash(config) -> str:
     """stable hash of a configuration, used to avoid writing identical backups"""
     canonical = json.dumps(config, sort_keys=True, ensure_ascii=False, default=str)
-    return hashlib.sha256(canonical.encode('utf-8')).hexdigest()
+    # Anki configurations can contain an unpaired UTF-16 surrogate. JSON can preserve it as a
+    # \uXXXX escape, but strict UTF-8 cannot encode the literal surrogate produced by
+    # ensure_ascii=False. backslashreplace escapes only characters UTF-8 cannot represent while
+    # leaving normal non-ASCII text readable.
+    return hashlib.sha256(canonical.encode('utf-8', errors='backslashreplace')).hexdigest()
 
 
 def atomic_write_json(filepath: str, data) -> None:
@@ -276,7 +280,10 @@ def atomic_write_json(filepath: str, data) -> None:
     file_handle_id, temp_filepath = tempfile.mkstemp(
         prefix=f'.{os.path.basename(filepath)}.', suffix='.tmp', dir=directory)
     try:
-        with os.fdopen(file_handle_id, 'w', encoding='utf-8') as file_handle:
+        # Match config_hash(): preserve unpaired surrogates as valid JSON \uXXXX escapes without
+        # escaping ordinary Unicode text.
+        with os.fdopen(file_handle_id, 'w', encoding='utf-8',
+                errors='backslashreplace') as file_handle:
             json.dump(data, file_handle, ensure_ascii=False, indent=2, default=str)
             file_handle.write('\n')
             file_handle.flush()

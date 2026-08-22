@@ -313,6 +313,30 @@ class ConfigBackupManagerTests(unittest.TestCase):
         # no temporary files left behind
         self.assertEqual(os.listdir(expected_dir), [filename])
 
+    def test_save_backup_with_unpaired_surrogate(self):
+        backup_manager, anki_utils = get_backup_manager()
+        config = get_populated_config()
+        config[constants.CONFIG_PRESETS]['uuid_1']['name'] = 'Chinese: 中文, surrogate: \udd03'
+
+        filename = backup_manager.save_backup(config)
+        self.assertNotEqual(filename, None)
+        filepath = os.path.join(backup_manager.get_backup_dir(), filename)
+        with open(filepath, 'r', encoding='utf-8') as file_handle:
+            file_contents = file_handle.read()
+
+        # Ordinary Unicode stays readable, while the invalid Unicode surrogate is safely escaped.
+        self.assertIn('中文', file_contents)
+        self.assertIn('\\udd03', file_contents)
+        backup_data = json.loads(file_contents)
+        self.assertEqual(backup_data[constants.CONFIG_BACKUP_KEY_CONFIG], config)
+        self.assertEqual(backup_data[constants.CONFIG_BACKUP_KEY_METADATA]['config_hash'],
+            config_backup.config_hash(config))
+
+        # The hash remains stable after the escaped surrogate has been read back from JSON.
+        anki_utils.tick_time()
+        self.assertEqual(backup_manager.save_backup(
+            backup_data[constants.CONFIG_BACKUP_KEY_CONFIG]), None)
+
     def test_save_backup_identical_config(self):
         # saving the same configuration twice should only produce a single backup
         backup_manager, anki_utils = get_backup_manager()
