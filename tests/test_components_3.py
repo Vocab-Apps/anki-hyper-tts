@@ -174,6 +174,10 @@ def test_error_handling(qtbot):
     # Test remote logging checkbox
     assert error_handling.remote_logging.isChecked() == False  # default should be False
     assert error_handling.remote_logging_description.text() == constants.GUI_TEXT_ERROR_HANDLING_REMOTE_LOGGING
+    # the description wraps to two lines, it must ask the layout for the height it needs, otherwise
+    # it is laid out at its single line minimum and cropped
+    assert error_handling.remote_logging_description.wordWrap() == True
+    assert error_handling.remote_logging_description.sizePolicy().hasHeightForWidth() == True
     error_handling.remote_logging.setChecked(True)
     assert model_change_callback.model.remote_logging == True
     # enabling it arms the expiry, detailed logging disables itself after a while

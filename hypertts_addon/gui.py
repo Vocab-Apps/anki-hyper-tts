@@ -66,7 +66,11 @@ class PreferencesDialog(aqt.qt.QDialog):
         self.setWindowTitle(constants.GUI_PREFERENCES_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
         self.preferences.draw(self.main_layout)
-        self.resize(450, 500)
+        # never open smaller than the tallest tab needs. a word wrapped QLabel reports a single
+        # line as its minimum height, so a dialog which is too short doesn't grow a scrollbar, it
+        # silently crops the descriptions (see gui_utils.get_wrapped_label)
+        size_hint = self.sizeHint()
+        self.resize(max(450, size_hint.width()), max(500, size_hint.height()))
 
     def close(self):
         self.accept()

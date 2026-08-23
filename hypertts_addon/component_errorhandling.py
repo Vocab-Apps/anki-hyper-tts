@@ -30,9 +30,9 @@ class ErrorHandling(component_common.ConfigComponentBase):
         self.remote_logging = aqt.qt.QCheckBox('Send detailed HyperTTS logs')
         self.remote_logging.setObjectName('hypertts_errorhandling_remote_logging')
 
-        self.remote_logging_description = aqt.qt.QLabel(constants.GUI_TEXT_ERROR_HANDLING_REMOTE_LOGGING)
+        self.remote_logging_description = gui_utils.get_wrapped_label(
+            constants.GUI_TEXT_ERROR_HANDLING_REMOTE_LOGGING)
         self.remote_logging_description.setObjectName('hypertts_errorhandling_remote_logging_description')
-        self.remote_logging_description.setWordWrap(True)
 
         self.disable_ssl_verification = aqt.qt.QCheckBox('Disable SSL certificate verification (not recommended)')
 
@@ -68,8 +68,7 @@ class ErrorHandling(component_common.ConfigComponentBase):
         realtime_groupbox = aqt.qt.QGroupBox('Realtime TTS Errors')
         realtime_vlayout = aqt.qt.QVBoxLayout()
 
-        realtime_tts_error_dialog = aqt.qt.QLabel(constants.GUI_TEXT_ERROR_HANDLING_REALTIME_TTS)
-        realtime_tts_error_dialog.setWordWrap(True)
+        realtime_tts_error_dialog = gui_utils.get_wrapped_label(constants.GUI_TEXT_ERROR_HANDLING_REALTIME_TTS)
         realtime_vlayout.addWidget(realtime_tts_error_dialog)
         realtime_vlayout.addWidget(self.realtime_tts_errors_dialog_type)
 
@@ -88,8 +87,7 @@ class ErrorHandling(component_common.ConfigComponentBase):
         # Network Connection group
         network_groupbox = aqt.qt.QGroupBox('Network Connection')
         network_vlayout = aqt.qt.QVBoxLayout()
-        settings_description = aqt.qt.QLabel('The following settings may be required for people experiencing connection problems or slowness (for example, behind a corporate proxy or firewall, or on a network with broken IPv6 routing).')
-        settings_description.setWordWrap(True)
+        settings_description = gui_utils.get_wrapped_label('The following settings may be required for people experiencing connection problems or slowness (for example, behind a corporate proxy or firewall, or on a network with broken IPv6 routing).')
         network_vlayout.addWidget(settings_description)
         network_vlayout.addWidget(self.disable_ssl_verification)
         network_vlayout.addWidget(self.ipv4_only)
