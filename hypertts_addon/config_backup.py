@@ -366,7 +366,7 @@ class ConfigBackupManager():
             constants.CONFIG_BACKUP_KEY_CONFIG: config
         }
         atomic_write_json(filepath, backup_data)
-        logger.info(f'wrote configuration backup {filename} ({stats.describe()})')
+        logger.info(f'wrote configuration backup {filepath} ({stats.describe()})')
         self.prune_backups()
         return filename
 
