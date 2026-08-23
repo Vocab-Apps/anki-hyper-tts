@@ -6,6 +6,9 @@ ENABLE_SENTRY_CRASH_REPORTING = True
 MAX_SENTRY_EVENTS_PER_USER_PER_GROUP = 2
 # posthog feature flag: full trace sampling and remote logging to sentry logs
 FEATURE_FLAG_SENTRY_FULL_REPORTING = 'sentry-full-reporting'
+# how long the "Send detailed HyperTTS logs" preference stays on before it disables itself. we ask
+# users to turn it on while we diagnose a problem they reported, it shouldn't stay on forever
+REMOTE_LOGGING_ENABLED_DAYS = 14
 
 LOGGER_NAME = 'hypertts'
 LOGGER_NAME_TEST = 'test_hypertts'
@@ -359,6 +362,13 @@ GUI_TEXT_SHORTCUTS_EDITOR_ADD_AUDIO = """Add Audio to note using the selected pr
 GUI_TEXT_SHORTCUTS_EDITOR_PREVIEW_AUDIO = """Preview Audio for a note using the selected preset"""
 
 GUI_TEXT_ERROR_HANDLING_REALTIME_TTS = """How to display errors during Realtime TTS"""
+
+GUI_TEXT_ERROR_HANDLING_REMOTE_LOGGING = ("""Only enable detailed logs if we asked you to while diagnosing """
+    """a problem you reported. Requires an Anki restart. This setting turns itself off after """
+    f"""{REMOTE_LOGGING_ENABLED_DAYS} days.""")
+GUI_TEXT_ERROR_HANDLING_REMOTE_LOGGING_EXPIRY = ("""Only enable detailed logs if we asked you to while """
+    """diagnosing a problem you reported. Requires an Anki restart. Detailed logs will be sent until """
+    """<b>{expiry_date}</b>, after which this setting turns itself off.""")
 
 GUI_TEXT_CONFIG_BACKUP = ("""HyperTTS keeps a copy of your configuration (presets, preset rules, services and """
     """API keys) every time it is saved. If your configuration ever disappears, choose the most recent backup """

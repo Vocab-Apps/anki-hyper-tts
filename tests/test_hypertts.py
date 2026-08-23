@@ -606,3 +606,105 @@ yoyo
             patched_datetime.now.return_value = datetime.fromtimestamp(thirty_days_ago + 86400 * 30)  # +30 days in seconds
             days = config_with_older_install.days_since_install()
             self.assertEqual(days, 30)
+
+
+class RemoteLoggingExpiryTests(unittest.TestCase):
+    """detailed logging ("Send detailed HyperTTS logs") is only meant to stay on while we diagnose
+    a problem the user reported, it disables itself after constants.REMOTE_LOGGING_ENABLED_DAYS"""
+
+    def test_set_remote_logging_arms_expiry(self):
+        # pytest tests/test_hypertts.py -k test_set_remote_logging_arms_expiry
+        error_handling = config_models.ErrorHandling()
+        self.assertEqual(error_handling.remote_logging, False)
+        self.assertEqual(error_handling.remote_logging_disable_after, None)
+
+        before = datetime.datetime.now().timestamp()
+        error_handling.set_remote_logging(True)
+        after = datetime.datetime.now().timestamp()
+
+        self.assertEqual(error_handling.remote_logging, True)
+        expected_seconds = constants.REMOTE_LOGGING_ENABLED_DAYS * 86400
+        self.assertGreaterEqual(error_handling.remote_logging_disable_after, before + expected_seconds)
+        self.assertLessEqual(error_handling.remote_logging_disable_after, after + expected_seconds)
+        # not expired yet
+        self.assertEqual(error_handling.remote_logging_expired(), False)
+        self.assertEqual(error_handling.expire_remote_logging(), False)
+
+        # turning it off clears the expiry
+        error_handling.set_remote_logging(False)
+        self.assertEqual(error_handling.remote_logging, False)
+        self.assertEqual(error_handling.remote_logging_disable_after, None)
+
+    def test_remote_logging_expired(self):
+        # pytest tests/test_hypertts.py -k test_remote_logging_expired
+        now = datetime.datetime.now().timestamp()
+
+        # off: never expired, there is nothing to disable
+        error_handling = config_models.ErrorHandling(remote_logging=False)
+        self.assertEqual(error_handling.remote_logging_expired(), False)
+        self.assertEqual(error_handling.expire_remote_logging(), False)
+
+        # on, expiry in the future
+        error_handling = config_models.ErrorHandling(remote_logging=True,
+            remote_logging_disable_after=now + 86400)
+        self.assertEqual(error_handling.remote_logging_expired(), False)
+        self.assertEqual(error_handling.expire_remote_logging(), False)
+        self.assertEqual(error_handling.remote_logging, True)
+
+        # on, expiry in the past
+        error_handling = config_models.ErrorHandling(remote_logging=True,
+            remote_logging_disable_after=now - 1)
+        self.assertEqual(error_handling.remote_logging_expired(), True)
+        self.assertEqual(error_handling.expire_remote_logging(), True)
+        self.assertEqual(error_handling.remote_logging, False)
+        self.assertEqual(error_handling.remote_logging_disable_after, None)
+
+        # on with no expiry: enabled by a version which had no expiry, disable it now
+        error_handling = config_models.ErrorHandling(remote_logging=True,
+            remote_logging_disable_after=None)
+        self.assertEqual(error_handling.remote_logging_expired(), True)
+        self.assertEqual(error_handling.expire_remote_logging(), True)
+        self.assertEqual(error_handling.remote_logging, False)
+
+        # the rule used at startup, before any HyperTTS object exists
+        self.assertEqual(config_models.remote_logging_expired(None), True)
+        self.assertEqual(config_models.remote_logging_expired(now - 1), True)
+        self.assertEqual(config_models.remote_logging_expired(now + 86400), False)
+
+    def build_hypertts_instance_with_remote_logging(self, remote_logging, disable_after):
+        config_gen = testing_utils.TestConfigGenerator()
+        addon_config = config_gen.get_default_config()
+        addon_config[constants.CONFIG_PREFERENCES] = {
+            'error_handling': {
+                'remote_logging': remote_logging,
+                'remote_logging_disable_after': disable_after
+            }
+        }
+        return config_gen.build_hypertts_instance_test_servicemanager_config(addon_config)
+
+    def test_startup_disables_expired_remote_logging(self):
+        # pytest tests/test_hypertts.py -k test_startup_disables_expired_remote_logging
+        now = datetime.datetime.now().timestamp()
+
+        hypertts_instance = self.build_hypertts_instance_with_remote_logging(True, now - 1)
+        error_handling = hypertts_instance.get_preferences().error_handling
+        self.assertEqual(error_handling.remote_logging, False)
+        self.assertEqual(error_handling.remote_logging_disable_after, None)
+        # the disabled preference was persisted
+        written_config = hypertts_instance.anki_utils.written_config
+        self.assertEqual(
+            written_config[constants.CONFIG_PREFERENCES]['error_handling']['remote_logging'], False)
+
+    def test_startup_keeps_remote_logging_until_expiry(self):
+        # pytest tests/test_hypertts.py -k test_startup_keeps_remote_logging_until_expiry
+        disable_after = datetime.datetime.now().timestamp() + 86400
+
+        hypertts_instance = self.build_hypertts_instance_with_remote_logging(True, disable_after)
+        error_handling = hypertts_instance.get_preferences().error_handling
+        self.assertEqual(error_handling.remote_logging, True)
+        self.assertEqual(error_handling.remote_logging_disable_after, disable_after)
+        # nothing changed, so the expiry check itself must not write the configuration (the
+        # config migration may have written it during construction, ignore that write)
+        hypertts_instance.anki_utils.written_config = None
+        hypertts_instance.expire_remote_logging()
+        self.assertEqual(hypertts_instance.anki_utils.written_config, None)

@@ -631,9 +631,46 @@ class ErrorHandling:
     error_stats_reporting: bool = True
     # ship hypertts log records to sentry logs, for diagnosing a problem the user reported
     remote_logging: bool = False
+    # epoch timestamp at which remote_logging turns itself off. we ask users to switch detailed logs
+    # on while we diagnose a problem they reported, and they routinely forget to switch them back
+    # off, so the setting expires on its own after constants.REMOTE_LOGGING_ENABLED_DAYS days.
+    # remote_logging on with no timestamp means it was enabled by a version of HyperTTS which had no
+    # expiry, that one expires immediately
+    remote_logging_disable_after: Optional[float] = None
     # Network Connection settings
     disable_ssl_verification: bool = False
     ipv4_only: bool = False
+
+    def set_remote_logging(self, enabled: bool):
+        """turn detailed logging on or off, arming (or clearing) the expiry timestamp"""
+        self.remote_logging = enabled
+        if enabled:
+            expiry = datetime.datetime.now() + datetime.timedelta(
+                days=constants.REMOTE_LOGGING_ENABLED_DAYS)
+            self.remote_logging_disable_after = expiry.timestamp()
+        else:
+            self.remote_logging_disable_after = None
+
+    def remote_logging_expired(self) -> bool:
+        """whether detailed logging is on but has outlived its expiry timestamp"""
+        return self.remote_logging and remote_logging_expired(self.remote_logging_disable_after)
+
+    def expire_remote_logging(self) -> bool:
+        """turn detailed logging off if it stayed on past its expiry. returns whether the
+        setting actually changed"""
+        if not self.remote_logging_expired():
+            return False
+        self.set_remote_logging(False)
+        return True
+
+def remote_logging_expired(remote_logging_disable_after: Optional[float]) -> bool:
+    """whether a remote logging expiry timestamp has passed. a missing timestamp counts as expired,
+    it means detailed logging was enabled before the expiry existed. this is the single source of
+    truth for the rule, hypertts_addon/__init__.py checks it against the raw config dict, before
+    any HyperTTS object exists"""
+    if remote_logging_disable_after == None:
+        return True
+    return datetime.datetime.now().timestamp() >= remote_logging_disable_after
 
 @dataclass
 class Preferences:

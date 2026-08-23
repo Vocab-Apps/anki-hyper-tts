@@ -1,5 +1,6 @@
 import sys
 import os
+import datetime
 import pprint
 import pytest
 
@@ -172,16 +173,52 @@ def test_error_handling(qtbot):
 
     # Test remote logging checkbox
     assert error_handling.remote_logging.isChecked() == False  # default should be False
+    assert error_handling.remote_logging_description.text() == constants.GUI_TEXT_ERROR_HANDLING_REMOTE_LOGGING
     error_handling.remote_logging.setChecked(True)
     assert model_change_callback.model.remote_logging == True
+    # enabling it arms the expiry, detailed logging disables itself after a while
+    disable_after = model_change_callback.model.remote_logging_disable_after
+    assert disable_after != None
+    expected_expiry = datetime.datetime.now() + datetime.timedelta(days=constants.REMOTE_LOGGING_ENABLED_DAYS)
+    assert abs(disable_after - expected_expiry.timestamp()) < 60
+    # the description tells the user when it will turn itself off
+    assert expected_expiry.strftime('%Y-%m-%d') in error_handling.remote_logging_description.text()
+
     error_handling.remote_logging.setChecked(False)
     assert model_change_callback.model.remote_logging == False
+    assert model_change_callback.model.remote_logging_disable_after == None
+    assert error_handling.remote_logging_description.text() == constants.GUI_TEXT_ERROR_HANDLING_REMOTE_LOGGING
 
     # remote logging is only available when error reporting is enabled
     error_handling.error_stats_reporting.setChecked(False)
     assert error_handling.remote_logging.isEnabled() == False
     error_handling.error_stats_reporting.setChecked(True)
     assert error_handling.remote_logging.isEnabled() == True
+
+
+def test_error_handling_remote_logging_expiry_loaded(qtbot):
+    # pytest tests/test_components_3.py -k test_error_handling_remote_logging_expiry_loaded -s -rPP
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+
+    model_change_callback = gui_testing_utils.MockModelChangeCallback()
+    error_handling = component_errorhandling.ErrorHandling(hypertts_instance, dialog, model_change_callback.model_updated)
+    dialog.addChildWidget(error_handling.draw())
+
+    # detailed logging already on, with an expiry a few days out
+    expiry = datetime.datetime.now() + datetime.timedelta(days=3)
+    model = config_models.ErrorHandling(remote_logging=True,
+        remote_logging_disable_after=expiry.timestamp())
+    error_handling.load_model(model)
+
+    assert error_handling.remote_logging.isChecked() == True
+    # the description tells the user when it will turn itself off
+    assert expiry.strftime('%Y-%m-%d') in error_handling.remote_logging_description.text()
+    # loading the model doesn't extend the expiry
+    assert model.remote_logging_disable_after == expiry.timestamp()
 
 
 def test_preferences_manual(qtbot):

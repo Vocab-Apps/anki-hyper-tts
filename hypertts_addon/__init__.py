@@ -30,6 +30,8 @@ else:
         get('error_handling', {}).get('ipv4_only', False)
     remote_logging = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
         get('error_handling', {}).get('remote_logging', False)
+    remote_logging_disable_after = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
+        get('error_handling', {}).get('remote_logging_disable_after', None)
     if ipv4_only:
         import socket
         import urllib3.util.connection as urllib3_cn
@@ -173,7 +175,9 @@ else:
         sentry_sdk.set_user({"id": configuration.user_uuid})
         sentry_sdk.set_tag("anki_version", anki.version)
         sentry_sdk.set_tag("hypertts_pro_user", configuration.hypertts_pro_api_key_set())
-        if remote_logging:
+        # detailed logging disables itself after a while, HyperTTS.expire_remote_logging() writes
+        # the preference back, but that happens later, so check the expiry before turning it on
+        if remote_logging and not config_models.remote_logging_expired(remote_logging_disable_after):
             logging_utils.enable_sentry_remote_logging()
     else:
         logger.info(f'disabling crash reporting')

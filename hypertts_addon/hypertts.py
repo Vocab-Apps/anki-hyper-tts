@@ -73,6 +73,7 @@ class HyperTTS():
 
         # do maintenance on the configuration
         self.perform_config_migration()
+        self.expire_remote_logging()
 
     # configuration persistence
     # =========================
@@ -1061,6 +1062,20 @@ class HyperTTS():
         self.persist_config()
         # reconfigure service manager to apply new SSL settings
         self.reconfigure_service_manager()
+
+    def expire_remote_logging(self):
+        """detailed logging is only meant to stay on while we diagnose a problem the user reported.
+        turn the preference back off once it has been on for
+        constants.REMOTE_LOGGING_ENABLED_DAYS days. runs at startup, so like the config migration it
+        only writes the configuration when it actually changed something"""
+        preferences = self.get_preferences()
+        if not preferences.error_handling.expire_remote_logging():
+            return
+        logger.info('detailed logging expired, disabling it')
+        # not save_preferences: this runs from the constructor, the service manager isn't
+        # configured yet and there is nothing to reconfigure, the SSL settings didn't change
+        self.config[constants.CONFIG_PREFERENCES] = config_models.serialize_preferences(preferences)
+        self.persist_config()
 
     # deserialization routines for loading from config
     # ================================================

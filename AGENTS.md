@@ -119,7 +119,12 @@ happen. To get output locally, set `HYPER_TTS_DEBUG_LOGGING=enable` (stdout) or
 
 Log records can additionally be shipped to Sentry Logs, off by default and enabled either by the
 *Send detailed HyperTTS logs* preference or by the `sentry-full-reporting` PostHog feature flag
-(`logging_utils.enable_sentry_remote_logging()`).
+(`logging_utils.enable_sentry_remote_logging()`). The preference is meant to be switched on only
+while we diagnose a problem a user reported, so it expires on its own after
+`constants.REMOTE_LOGGING_ENABLED_DAYS` days: enabling it stamps
+`ErrorHandling.remote_logging_disable_after`, `hypertts_addon/__init__.py` checks that timestamp
+before turning remote logging on at startup, and `HyperTTS.expire_remote_logging()` writes the
+preference back off once it has passed.
 
 ### Build and Package Process
 
