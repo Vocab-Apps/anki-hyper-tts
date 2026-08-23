@@ -102,6 +102,25 @@ Configuration safety (github issue #360, configuration loss):
 - Version is managed in `hypertts_addon/version.py`
 - Sentry integration is used for error tracking in production
 
+### Logging
+
+Get a logger with `logging_utils.get_child_logger(__name__)` — never `print()`, and never a bare
+`logging.getLogger()` (that logger sits outside the `hypertts` tree, propagates to Anki's root
+logger, and is dropped by `sentry_utils.sentry_filter`). It is a plain `logging.Logger`, so the
+whole stdlib API is available, `exception()` and `exc_info=True` included.
+
+Inside Anki nothing is written to stdout or stderr: the `hypertts` logger has `propagate = False`
+and only a `NullHandler`, because Anki turns anything appearing on stderr into a confusing error
+message for the user. Records are still seen by Sentry, whose `LoggingIntegration` hooks
+`logging.Logger.callHandlers` rather than installing a handler — every record becomes a breadcrumb
+and **ERROR and above becomes a Sentry issue**, so use `warning` for conditions you expect to
+happen. To get output locally, set `HYPER_TTS_DEBUG_LOGGING=enable` (stdout) or
+`HYPER_TTS_DEBUG_LOGGING=file` with `HYPER_TTS_DEBUG_LOGFILE=<path>`.
+
+Log records can additionally be shipped to Sentry Logs, off by default and enabled either by the
+*Send detailed HyperTTS logs* preference or by the `sentry-full-reporting` PostHog feature flag
+(`logging_utils.enable_sentry_remote_logging()`).
+
 ### Build and Package Process
 
 The `package.sh` script handles:

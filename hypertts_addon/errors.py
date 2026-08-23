@@ -1,9 +1,9 @@
 import sys
-import logging
 
 from . import constants
+from . import logging_utils
 
-logger = logging.getLogger(__name__)
+logger = logging_utils.get_child_logger(__name__)
 
 # Exception class hierarchy
 # =========================

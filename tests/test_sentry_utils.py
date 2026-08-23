@@ -1,5 +1,6 @@
 import os
 import json
+import logging
 import pprint
 import pytest
 
@@ -109,6 +110,42 @@ def _make_logger_event(user_id, logger_name, message, log_location=None):
     if log_location:
         event['extra'] = {'log_location': log_location}
     return event
+
+
+def test_sentry_filter_log_location_from_hint():
+    """the sentry logging integration keeps the record's call site out of the event, we recover it
+    from hint['log_record'] so that log based events stay fingerprinted by call site"""
+    sentry_utils.reset_rate_limits()
+
+    record = logging.LogRecord(
+        name='hypertts.service_windows',
+        level=logging.ERROR,
+        pathname='/home/user/anki-hyper-tts/hypertts_addon/services/service_windows.py',
+        lineno=336,
+        msg='unknown language: unknown, could not process voice [Microsoft Harri Online]',
+        args=None,
+        exc_info=None)
+
+    event = {
+        'user': {'id': 'user_hint'},
+        'logger': 'hypertts.service_windows',
+        'message': record.msg,
+    }
+    result = sentry_utils.sentry_filter(event, {'log_record': record})
+    assert result is not None
+    assert result['extra']['log_location'] == {'filename': 'service_windows.py', 'line_number': 336}
+    assert result['fingerprint'] == ['hypertts.service_windows', 'service_windows.py', '336']
+
+    # a log_location already present in the event wins over the hint
+    event_2 = {
+        'user': {'id': 'user_hint_2'},
+        'logger': 'hypertts.service_windows',
+        'message': 'other message',
+        'extra': {'log_location': {'filename': 'other.py', 'line_number': 12}}
+    }
+    result_2 = sentry_utils.sentry_filter(event_2, {'log_record': record})
+    assert result_2 is not None
+    assert result_2['fingerprint'] == ['hypertts.service_windows', 'other.py', '12']
 
 
 def test_extension_exceptions_are_not_reported():

@@ -962,6 +962,7 @@ class ConfigModelsTests(unittest.TestCase):
             'error_handling': {
                 'realtime_tts_errors_dialog_type': 'Dialog',
                 'error_stats_reporting': True,
+                'remote_logging': False,
                 'disable_ssl_verification': False,
                 'ipv4_only': False
             }
@@ -986,6 +987,7 @@ class ConfigModelsTests(unittest.TestCase):
             'error_handling': {
                 'realtime_tts_errors_dialog_type': 'Dialog',
                 'error_stats_reporting': True,
+                'remote_logging': False,
                 'disable_ssl_verification': False,
                 'ipv4_only': False
             }
@@ -1010,6 +1012,7 @@ class ConfigModelsTests(unittest.TestCase):
             'error_handling': {
                 'realtime_tts_errors_dialog_type': 'Dialog',
                 'error_stats_reporting': True,
+                'remote_logging': False,
                 'disable_ssl_verification': False,
                 'ipv4_only': False
             }

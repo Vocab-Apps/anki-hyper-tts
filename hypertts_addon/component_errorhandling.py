@@ -24,6 +24,10 @@ class ErrorHandling(component_common.ConfigComponentBase):
             self.realtime_tts_errors_dialog_type.addItem(error_dialog_type.name, error_dialog_type)
 
         self.error_stats_reporting = aqt.qt.QCheckBox('Send anonymous usage statistics and error reports to help improve HyperTTS')
+        self.error_stats_reporting.setObjectName('hypertts_errorhandling_error_stats_reporting')
+
+        self.remote_logging = aqt.qt.QCheckBox('Send detailed HyperTTS logs')
+        self.remote_logging.setObjectName('hypertts_errorhandling_remote_logging')
 
         self.disable_ssl_verification = aqt.qt.QCheckBox('Disable SSL certificate verification (not recommended)')
 
@@ -37,6 +41,8 @@ class ErrorHandling(component_common.ConfigComponentBase):
         self.propagate_model_change = False
         self.realtime_tts_errors_dialog_type.setCurrentText(self.model.realtime_tts_errors_dialog_type.name)
         self.error_stats_reporting.setChecked(self.model.error_stats_reporting)
+        self.remote_logging.setChecked(self.model.remote_logging)
+        self.remote_logging.setEnabled(self.model.error_stats_reporting)
         self.disable_ssl_verification.setChecked(self.model.disable_ssl_verification)
         self.ipv4_only.setChecked(self.model.ipv4_only)
         self.propagate_model_change = True
@@ -68,6 +74,10 @@ class ErrorHandling(component_common.ConfigComponentBase):
         reporting_groupbox = aqt.qt.QGroupBox('Error Reporting')
         reporting_vlayout = aqt.qt.QVBoxLayout()
         reporting_vlayout.addWidget(self.error_stats_reporting)
+        reporting_vlayout.addWidget(self.remote_logging)
+        remote_logging_description = aqt.qt.QLabel('Only enable detailed logs if we asked you to while diagnosing a problem you reported. Requires an Anki restart.')
+        remote_logging_description.setWordWrap(True)
+        reporting_vlayout.addWidget(remote_logging_description)
         reporting_groupbox.setLayout(reporting_vlayout)
         layout.addWidget(reporting_groupbox)
 
@@ -87,6 +97,7 @@ class ErrorHandling(component_common.ConfigComponentBase):
         # wire events
         self.realtime_tts_errors_dialog_type.currentIndexChanged.connect(self.realtime_tts_errors_dialog_type_changed)
         self.error_stats_reporting.stateChanged.connect(self.error_stats_reporting_changed)
+        self.remote_logging.stateChanged.connect(self.remote_logging_changed)
         self.disable_ssl_verification.stateChanged.connect(self.disable_ssl_verification_changed)
         self.ipv4_only.stateChanged.connect(self.ipv4_only_changed)
 
@@ -100,6 +111,13 @@ class ErrorHandling(component_common.ConfigComponentBase):
     def error_stats_reporting_changed(self, state):
         logger.info(f'error_stats_reporting_changed {state}')
         self.model.error_stats_reporting = bool(state)
+        # remote logging goes through the same crash reporting pipeline, it's meaningless on its own
+        self.remote_logging.setEnabled(self.model.error_stats_reporting)
+        self.notify_model_update()
+
+    def remote_logging_changed(self, state):
+        logger.info(f'remote_logging_changed {state}')
+        self.model.remote_logging = bool(state)
         self.notify_model_update()
 
     def disable_ssl_verification_changed(self, state):

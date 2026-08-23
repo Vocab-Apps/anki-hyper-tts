@@ -4,6 +4,8 @@ ENV_VAR_ANKI_LANGUAGE_TOOLS_BASE_URL = 'ANKI_LANGUAGE_TOOLS_BASE_URL'
 
 ENABLE_SENTRY_CRASH_REPORTING = True
 MAX_SENTRY_EVENTS_PER_USER_PER_GROUP = 2
+# posthog feature flag: full trace sampling and remote logging to sentry logs
+FEATURE_FLAG_SENTRY_FULL_REPORTING = 'sentry-full-reporting'
 
 LOGGER_NAME = 'hypertts'
 LOGGER_NAME_TEST = 'test_hypertts'

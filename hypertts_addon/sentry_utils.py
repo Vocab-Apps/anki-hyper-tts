@@ -78,11 +78,25 @@ def _event_from_extension(event):
                 return True
     return False
 
+def _annotate_log_location(event, hint):
+    """sentry's logging integration keeps the record's call site out of the event. copy it into
+    extra so that log based events get fingerprinted and rate limited by call site rather than by
+    the formatted message: we log with f-strings, so the message varies with the data"""
+    record = (hint or {}).get('log_record', None)
+    if record == None:
+        return
+    event.setdefault('extra', {}).setdefault('log_location', {
+        'filename': record.filename,
+        'line_number': record.lineno
+    })
+
 # this is the implementation of the before_send function
 def sentry_filter(event, hint):
 
     if _event_from_extension(event):
         return None
+
+    _annotate_log_location(event, hint)
 
     # if no exception info, check if event is from our module
     if 'logger' in event:
@@ -127,7 +141,7 @@ def make_traces_sampler(base_sample_rate: float):
     def traces_sampler(sampling_context):
         # lazy import: stats global is initialized after sentry_sdk.init
         from . import stats
-        if stats.feature_flag_enabled('sentry-full-reporting'):
+        if stats.feature_flag_enabled(constants.FEATURE_FLAG_SENTRY_FULL_REPORTING):
             return 1.0
         return base_sample_rate
     return traces_sampler

@@ -28,6 +28,8 @@ else:
         get('error_handling', {}).get('error_stats_reporting', True)
     ipv4_only = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
         get('error_handling', {}).get('ipv4_only', False)
+    remote_logging = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
+        get('error_handling', {}).get('remote_logging', False)
     if ipv4_only:
         import socket
         import urllib3.util.connection as urllib3_cn
@@ -44,15 +46,9 @@ else:
 
     from . import logging_utils
 
-    if os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'enable':
-        # log everything to stdout
-        logging_utils.configure_console_logging()
-    elif os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'file':
-        # log everything to file
-        logging_utils.configure_file_logging(os.environ['HYPER_TTS_DEBUG_LOGFILE'])
-    else:
-        # log at info level, but with null handler, so that sentry picks up breadcrumbs and errors
-        logging_utils.configure_silent()
+    # nothing is written to stdout/stderr unless HYPER_TTS_DEBUG_LOGGING asks for it, but sentry
+    # still picks up breadcrumbs and errors
+    logging_utils.configure_addon_logging()
 
     logger = logging_utils.get_child_logger(__name__)
 
@@ -141,6 +137,7 @@ else:
         from . import version
         from . import sentry_utils
         from sentry_sdk.integrations.socket import SocketIntegration
+        from sentry_sdk.integrations.logging import LoggingIntegration
 
         production_sample_rate = 0.025 if configuration.hypertts_pro_api_key_set() else 0.01
         traces_sample_rate_map = {
@@ -161,11 +158,23 @@ else:
             send_default_pii=True,
             integrations=[
                 SocketIntegration(),
+                LoggingIntegration(
+                    # breadcrumbs: leave the decision to each logger's own level. only the hypertts
+                    # logger is set to DEBUG, everything else in the anki process filters itself
+                    level=logging.DEBUG,
+                    # errors and above become sentry issues
+                    event_level=logging.ERROR,
+                    # no process wide stdlib -> sentry logs. enable_sentry_remote_logging() scopes
+                    # sentry logs to the hypertts logger when the user or a feature flag asks for it
+                    sentry_logs_level=None,
+                ),
             ],
         )
         sentry_sdk.set_user({"id": configuration.user_uuid})
         sentry_sdk.set_tag("anki_version", anki.version)
         sentry_sdk.set_tag("hypertts_pro_user", configuration.hypertts_pro_api_key_set())
+        if remote_logging:
+            logging_utils.enable_sentry_remote_logging()
     else:
         logger.info(f'disabling crash reporting')
 

@@ -170,6 +170,19 @@ def test_error_handling(qtbot):
     error_handling.error_stats_reporting.setChecked(True) 
     assert model_change_callback.model.error_stats_reporting == True
 
+    # Test remote logging checkbox
+    assert error_handling.remote_logging.isChecked() == False  # default should be False
+    error_handling.remote_logging.setChecked(True)
+    assert model_change_callback.model.remote_logging == True
+    error_handling.remote_logging.setChecked(False)
+    assert model_change_callback.model.remote_logging == False
+
+    # remote logging is only available when error reporting is enabled
+    error_handling.error_stats_reporting.setChecked(False)
+    assert error_handling.remote_logging.isEnabled() == False
+    error_handling.error_stats_reporting.setChecked(True)
+    assert error_handling.remote_logging.isEnabled() == True
+
 
 def test_preferences_manual(qtbot):
     # HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest test_components.py -k test_preferences_manual -s -rPP

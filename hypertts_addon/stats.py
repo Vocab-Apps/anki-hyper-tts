@@ -214,6 +214,9 @@ class StatsGlobal:
         # first, load the feature flags syncronously (for pro users too,
         # so flags like sentry-full-reporting can opt them into full sampling)
         self.load_feature_flags()
+        # a sentry-full-reporting user opts into remote logging as well as full trace sampling
+        if self.get_feature_flag_enabled(constants.FEATURE_FLAG_SENTRY_FULL_REPORTING):
+            logging_utils.enable_sentry_remote_logging()
         # but after that, everything should be asynchronous
         self.anki_utils.run_in_background(self.load_background, None)
 

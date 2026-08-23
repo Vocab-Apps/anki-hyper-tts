@@ -629,6 +629,8 @@ class KeyboardShortcuts:
 class ErrorHandling:
     realtime_tts_errors_dialog_type: constants.ErrorDialogType = constants.ErrorDialogType.Dialog
     error_stats_reporting: bool = True
+    # ship hypertts log records to sentry logs, for diagnosing a problem the user reported
+    remote_logging: bool = False
     # Network Connection settings
     disable_ssl_verification: bool = False
     ipv4_only: bool = False

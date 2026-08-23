@@ -2,84 +2,25 @@ import sys
 import os
 import io
 import logging
-import inspect
-
-if hasattr(sys, '_sentry_crash_reporting'):
-    import sentry_sdk
 
 from . import constants
 
-SILENT_LOGGING_MODE = True
+LOG_FORMAT = '%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(name)s: %(message)s'
+DATE_FORMAT = '%H:%M:%S'
 
-class NullLogger():
-    def __init__(self):
-        pass
-    
-    def debug(self, msg, *args, **kwargs):
-        pass
+ENV_DEBUG_LOGGING = 'HYPER_TTS_DEBUG_LOGGING'
+ENV_DEBUG_LOGFILE = 'HYPER_TTS_DEBUG_LOGFILE'
 
-    def info(self, msg, *args, **kwargs):
-        pass    
+_remote_logging_enabled = False
 
-    def warning(self, msg, *args, **kwargs):
-        pass   
 
-    def error(self, msg, *args, **kwargs):
-        pass             
+def get_root_logger():
+    return logging.getLogger(constants.LOGGER_NAME)
 
-    def critical(self, msg, *args, **kwargs):
-        pass
+def _get_formatter():
+    return logging.Formatter(fmt=LOG_FORMAT, datefmt=DATE_FORMAT)
 
-"""use this logger class to avoid any possibility of logging to stdout/stderr,
-which may be caught by anki and will display a confusing error message to the user"""
-class SentryLogger():
-    def __init__(self, name):
-        self.name = name
-    
-    def send_event(self, level, msg):
-        if msg == None:
-            return
-
-        log_location = {}
-        if level >= logging.ERROR:
-            # extract data from stack
-            caller = inspect.getframeinfo(inspect.stack()[2][0])
-            pathname = caller.filename
-            lineno = caller.lineno
-            file = os.path.basename(pathname)
-            log_location['line_number'] = lineno
-            log_location['filename'] = file
-        
-        record = logging.LogRecord(self.name, level, '', 0, msg, None, None)
-        if log_location != {}:
-            record.__dict__['log_location'] = log_location
-        integration = sentry_sdk.hub.Hub.current.get_integration(sentry_sdk.integrations.logging.LoggingIntegration)
-        if integration != None:
-            integration._handle_record(record)
-
-    def debug(self, msg, *args, **kwargs):
-        if msg == None:
-            return
-        self.send_event(logging.INFO, '[debug] ' + msg)
-
-    def info(self, msg, *args, **kwargs):
-        self.send_event(logging.INFO, msg)
-
-    def warning(self, msg, *args, **kwargs):
-        self.send_event(logging.WARNING, msg)
-
-    def error(self, msg, *args, **kwargs):
-        if kwargs.get('exc_info'):
-            _, exception, _ = sys.exc_info()
-            if exception is not None:
-                sentry_sdk.capture_exception(exception)
-                return
-        self.send_event(logging.ERROR, msg)
-
-    def critical(self, msg, *args, **kwargs):
-        self.send_event(logging.CRITICAL, msg)
-
-def get_stream_handler():
+def _console_handler():
     # Wrap stdout to handle encoding errors gracefully on Windows (cp1252)
     # This prevents UnicodeEncodeError when logging non-ASCII characters
     wrapped_stdout = io.TextIOWrapper(
@@ -89,48 +30,62 @@ def get_stream_handler():
         line_buffering=True
     )
     handler = logging.StreamHandler(stream=wrapped_stdout)
-    handler.setFormatter(logging.Formatter(fmt='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(name)s: %(message)s', datefmt='%H:%M:%S'))
+    handler.setFormatter(_get_formatter())
     return handler
 
-def get_file_handler(filename):
+def _file_handler(filename):
     # Use UTF-8 encoding to properly handle all Unicode characters
     handler = logging.FileHandler(filename, encoding='utf-8')
-    handler.setFormatter(logging.Formatter(fmt='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(name)s: %(message)s', datefmt='%H:%M:%S'))
-    return handler    
+    handler.setFormatter(_get_formatter())
+    return handler
 
-def configure_console_logging():
-    global SILENT_LOGGING_MODE
-    SILENT_LOGGING_MODE = False
-    root_logger = logging.getLogger(constants.LOGGER_NAME)
+def _reset_root_logger():
+    """the hypertts logger never propagates to anki's root logger, and always carries a
+    NullHandler so that logging.lastResort (stderr, WARNING and above) can never fire: anki turns
+    anything written to stderr into a confusing error message for the user"""
+    root_logger = get_root_logger()
     root_logger.handlers.clear()
     root_logger.propagate = False
     root_logger.setLevel(logging.DEBUG)
-    root_logger.addHandler(get_stream_handler())
+    root_logger.addHandler(logging.NullHandler())
+    return root_logger
 
-def configure_file_logging(filename):
-    global SILENT_LOGGING_MODE
-    SILENT_LOGGING_MODE = False
-    root_logger = logging.getLogger(constants.LOGGER_NAME)
-    root_logger.handlers.clear()
-    root_logger.propagate = False
-    root_logger.setLevel(logging.DEBUG)    
-    root_logger.addHandler(get_file_handler(filename))
+def configure_addon_logging():
+    """running inside anki: nothing is written to stdout or stderr unless the user asks for it with
+    HYPER_TTS_DEBUG_LOGGING. sentry still sees every record, its LoggingIntegration hooks
+    logging.Logger.callHandlers rather than installing a handler."""
+    root_logger = _reset_root_logger()
+    debug_logging = os.environ.get(ENV_DEBUG_LOGGING, '')
+    if debug_logging == 'enable':
+        root_logger.addHandler(_console_handler())
+    elif debug_logging == 'file':
+        logfile = os.environ.get(ENV_DEBUG_LOGFILE, '')
+        if logfile:
+            root_logger.addHandler(_file_handler(logfile))
 
-def configure_silent():
-    global SILENT_LOGGING_MODE
-    SILENT_LOGGING_MODE = True
+def configure_console_logging():
+    """used by the test suite and command line tools, which are free to write to stdout"""
+    root_logger = _reset_root_logger()
+    root_logger.addHandler(_console_handler())
+
+def enable_sentry_remote_logging():
+    """ship hypertts log records to sentry logs. this is the single switch for the feature: it's
+    called from the startup preference, and from the sentry-full-reporting feature flag, which is
+    only known well after sentry_sdk.init, so it has to be safe to call late and more than once."""
+    global _remote_logging_enabled
+    if _remote_logging_enabled or not hasattr(sys, '_sentry_crash_reporting'):
+        return
+    from sentry_sdk.integrations.logging import LoggingIntegration, SentryLogsHandler
+    # class level switch which gates SentryLogsHandler.emit. sentry_sdk.init normally sets it from
+    # the LoggingIntegration constructor, but the feature flag can turn this on afterwards
+    LoggingIntegration.capture_sentry_logs = True
+    # our own logger only, so that we don't upload anki's logging or that of other addons
+    get_root_logger().addHandler(SentryLogsHandler(level=logging.DEBUG))
+    _remote_logging_enabled = True
 
 def get_child_logger(name):
     child_logger_name = name.split('.')[-1]
-    if SILENT_LOGGING_MODE:
-        if hasattr(sys, '_sentry_crash_reporting'):
-            return SentryLogger(constants.LOGGER_NAME + '.' + child_logger_name)
-        else:
-            return NullLogger()
-    else:
-        root_logger = logging.getLogger(constants.LOGGER_NAME)
-        return root_logger.getChild(child_logger_name)
-
+    return get_root_logger().getChild(child_logger_name)
 
 def get_test_child_logger(name):
     root_logger = logging.getLogger(constants.LOGGER_NAME_TEST)
