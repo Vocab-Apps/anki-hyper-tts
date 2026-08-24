@@ -83,6 +83,20 @@ def enable_sentry_remote_logging():
     get_root_logger().addHandler(SentryLogsHandler(level=logging.DEBUG))
     _remote_logging_enabled = True
 
+def disable_sentry_remote_logging():
+    """stop shipping hypertts log records to sentry logs. the counterpart of
+    enable_sentry_remote_logging(), so that turning the preference off takes effect right away
+    instead of at the next anki restart."""
+    global _remote_logging_enabled
+    if not _remote_logging_enabled:
+        return
+    from sentry_sdk.integrations.logging import SentryLogsHandler
+    root_logger = get_root_logger()
+    for handler in list(root_logger.handlers):
+        if isinstance(handler, SentryLogsHandler):
+            root_logger.removeHandler(handler)
+    _remote_logging_enabled = False
+
 def get_child_logger(name):
     child_logger_name = name.split('.')[-1]
     return get_root_logger().getChild(child_logger_name)

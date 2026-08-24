@@ -1058,10 +1058,23 @@ class HyperTTS():
         return self.deserialize_preferences(self.config.get(constants.CONFIG_PREFERENCES, {}))
 
     def save_preferences(self, preferences_model):
+        # apply detailed logging before writing anything: we ask users to turn it on precisely when
+        # we suspect their configuration doesn't survive a restart, so it has to take effect for
+        # this anki session even if the write below fails or the preference is lost afterwards
+        self.apply_remote_logging_preference(preferences_model.error_handling)
         self.config[constants.CONFIG_PREFERENCES] = config_models.serialize_preferences(preferences_model)
         self.persist_config()
         # reconfigure service manager to apply new SSL settings
         self.reconfigure_service_manager()
+
+    def apply_remote_logging_preference(self, error_handling):
+        """turn detailed logging on or off right away, no anki restart required. a no-op when
+        crash reporting is disabled, there is no sentry client to ship the records to"""
+        if error_handling.remote_logging and not error_handling.remote_logging_expired():
+            logger.info('enabling detailed logging')
+            logging_utils.enable_sentry_remote_logging()
+        else:
+            logging_utils.disable_sentry_remote_logging()
 
     def expire_remote_logging(self):
         """detailed logging is only meant to stay on while we diagnose a problem the user reported.

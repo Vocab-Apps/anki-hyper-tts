@@ -1,6 +1,7 @@
 import sys
 import os
 import unittest
+import unittest.mock
 import pytest
 import json
 import pprint
@@ -13,6 +14,7 @@ from hypertts_addon import errors
 from hypertts_addon import config_models
 from hypertts_addon import constants
 from hypertts_addon import cloudlanguagetools
+from hypertts_addon import logging_utils
 
 class HyperTTSTests(unittest.TestCase):
 
@@ -708,3 +710,60 @@ class RemoteLoggingExpiryTests(unittest.TestCase):
         hypertts_instance.anki_utils.written_config = None
         hypertts_instance.expire_remote_logging()
         self.assertEqual(hypertts_instance.anki_utils.written_config, None)
+
+
+class RemoteLoggingImmediateApplyTests(unittest.TestCase):
+    """turning detailed logging on in the preferences must take effect for the running anki
+    session: we ask users to enable it when we suspect their configuration isn't being written,
+    and waiting for a restart which loses the preference would get us nothing"""
+
+    def build_hypertts_instance(self):
+        config_gen = testing_utils.TestConfigGenerator()
+        return config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    def save_preferences_with_remote_logging(self, hypertts_instance, remote_logging):
+        preferences = hypertts_instance.get_preferences()
+        preferences.error_handling.set_remote_logging(remote_logging)
+        with unittest.mock.patch.object(logging_utils, 'enable_sentry_remote_logging') as enable, \
+                unittest.mock.patch.object(logging_utils, 'disable_sentry_remote_logging') as disable:
+            hypertts_instance.save_preferences(preferences)
+        return enable, disable
+
+    def test_save_preferences_enables_remote_logging(self):
+        # pytest tests/test_hypertts.py -k test_save_preferences_enables_remote_logging
+        hypertts_instance = self.build_hypertts_instance()
+
+        enable, disable = self.save_preferences_with_remote_logging(hypertts_instance, True)
+
+        enable.assert_called_once()
+        disable.assert_not_called()
+        # and the preference was persisted as usual
+        written_config = hypertts_instance.anki_utils.written_config
+        self.assertEqual(
+            written_config[constants.CONFIG_PREFERENCES]['error_handling']['remote_logging'], True)
+
+    def test_save_preferences_disables_remote_logging(self):
+        # pytest tests/test_hypertts.py -k test_save_preferences_disables_remote_logging
+        hypertts_instance = self.build_hypertts_instance()
+        self.save_preferences_with_remote_logging(hypertts_instance, True)
+
+        enable, disable = self.save_preferences_with_remote_logging(hypertts_instance, False)
+
+        disable.assert_called_once()
+        enable.assert_not_called()
+
+    def test_save_preferences_ignores_expired_remote_logging(self):
+        # pytest tests/test_hypertts.py -k test_save_preferences_ignores_expired_remote_logging
+        hypertts_instance = self.build_hypertts_instance()
+        preferences = hypertts_instance.get_preferences()
+        # a preference which is on but already past its expiry, straight from the configuration
+        preferences.error_handling.remote_logging = True
+        preferences.error_handling.remote_logging_disable_after = \
+            datetime.datetime.now().timestamp() - 1
+
+        with unittest.mock.patch.object(logging_utils, 'enable_sentry_remote_logging') as enable, \
+                unittest.mock.patch.object(logging_utils, 'disable_sentry_remote_logging') as disable:
+            hypertts_instance.save_preferences(preferences)
+
+        enable.assert_not_called()
+        disable.assert_called_once()

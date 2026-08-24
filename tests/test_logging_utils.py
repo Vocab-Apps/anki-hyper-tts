@@ -184,3 +184,29 @@ def test_enable_sentry_remote_logging_is_idempotent(monkeypatch):
         if isinstance(handler, SentryLogsHandler)]
     assert len(sentry_handlers) == 1
     assert LoggingIntegration.capture_sentry_logs == True
+
+
+def test_disable_sentry_remote_logging(monkeypatch):
+    """turning the preference back off must stop shipping logs right away, without a restart"""
+    # pytest tests/test_logging_utils.py -k test_disable_sentry_remote_logging
+    from sentry_sdk.integrations.logging import LoggingIntegration, SentryLogsHandler
+
+    monkeypatch.setattr(sys, '_sentry_crash_reporting', True, raising=False)
+    monkeypatch.setattr(logging_utils, '_remote_logging_enabled', False)
+    monkeypatch.setattr(LoggingIntegration, 'capture_sentry_logs', False)
+    logging_utils.configure_addon_logging()
+
+    logging_utils.enable_sentry_remote_logging()
+    logging_utils.disable_sentry_remote_logging()
+
+    root_logger = logging_utils.get_root_logger()
+    assert [handler for handler in root_logger.handlers
+        if isinstance(handler, SentryLogsHandler)] == []
+    assert logging_utils._remote_logging_enabled == False
+
+    # off again is a no-op, and it can be turned back on
+    logging_utils.disable_sentry_remote_logging()
+    logging_utils.enable_sentry_remote_logging()
+    assert len([handler for handler in root_logger.handlers
+        if isinstance(handler, SentryLogsHandler)]) == 1
+    assert logging_utils._remote_logging_enabled == True

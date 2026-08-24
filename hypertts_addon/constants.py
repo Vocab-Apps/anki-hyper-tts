@@ -364,10 +364,10 @@ GUI_TEXT_SHORTCUTS_EDITOR_PREVIEW_AUDIO = """Preview Audio for a note using the 
 GUI_TEXT_ERROR_HANDLING_REALTIME_TTS = """How to display errors during Realtime TTS"""
 
 GUI_TEXT_ERROR_HANDLING_REMOTE_LOGGING = ("""Only enable detailed logs if we asked you to while diagnosing """
-    """a problem you reported. Requires an Anki restart. This setting turns itself off after """
-    f"""{REMOTE_LOGGING_ENABLED_DAYS} days.""")
+    """a problem you reported. This setting takes effect as soon as you press Apply, and turns itself """
+    f"""off after {REMOTE_LOGGING_ENABLED_DAYS} days.""")
 GUI_TEXT_ERROR_HANDLING_REMOTE_LOGGING_EXPIRY = ("""Only enable detailed logs if we asked you to while """
-    """diagnosing a problem you reported. Requires an Anki restart. Detailed logs will be sent until """
+    """diagnosing a problem you reported. Detailed logs are being sent until """
     """<b>{expiry_date}</b>, after which this setting turns itself off.""")
 
 GUI_TEXT_CONFIG_BACKUP = ("""HyperTTS keeps a copy of your configuration (presets, preset rules, services and """

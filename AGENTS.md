@@ -124,7 +124,10 @@ while we diagnose a problem a user reported, so it expires on its own after
 `constants.REMOTE_LOGGING_ENABLED_DAYS` days: enabling it stamps
 `ErrorHandling.remote_logging_disable_after`, `hypertts_addon/__init__.py` checks that timestamp
 before turning remote logging on at startup, and `HyperTTS.expire_remote_logging()` writes the
-preference back off once it has passed.
+preference back off once it has passed. `HyperTTS.save_preferences()` also applies the preference
+to the running anki session through `HyperTTS.apply_remote_logging_preference()`, before it writes
+the configuration: we ask users to turn detailed logs on precisely when we suspect their
+configuration isn't being written, so it must not depend on the preference surviving a restart.
 
 ### Build and Package Process
 
