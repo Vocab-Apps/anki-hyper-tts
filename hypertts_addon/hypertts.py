@@ -1071,8 +1071,10 @@ class HyperTTS():
         """turn detailed logging on or off right away, no anki restart required. a no-op when
         crash reporting is disabled, there is no sentry client to ship the records to"""
         if error_handling.remote_logging and not error_handling.remote_logging_expired():
-            logger.info('enabling detailed logging')
             logging_utils.enable_sentry_remote_logging()
+            # after the fact on purpose: this record goes out over the channel we just turned on,
+            # which is what tells us in sentry that detailed logging is live for this user
+            logger.info('detailed logging enabled')
         else:
             logging_utils.disable_sentry_remote_logging()
 
