@@ -83,6 +83,8 @@ class HyperTTS():
         configuration we write, and refuses to persist a configuration which looks like it was
         lost rather than modified by the user (github issue #360). returns whether the
         configuration was written."""
+        logger.info(f'persisting configuration: '
+            f'{config_backup.analyze_config(self.config).describe()}')
         if self.config_writes_blocked:
             logger.error('not writing configuration, configuration writes are blocked')
             self.notify_configuration_loss()
@@ -92,7 +94,12 @@ class HyperTTS():
             self.notify_configuration_loss()
             return False
         self.anki_utils.write_config(self.config)
-        self.config_backup_manager.save_backup(self.config)
+        # read anki's meta.json back, where our configuration really lives. this confirms, for every
+        # single write, that the configuration made it to disk (github issue #360)
+        logger.info(f'meta.json after writing the configuration: '
+            f'{self.config_backup_manager.get_meta_json_status()}')
+        backup_filename = self.config_backup_manager.save_backup(self.config)
+        logger.info(f'configuration persisted, backup: {backup_filename}')
         return True
 
     def notify_configuration_loss(self):
@@ -928,6 +935,9 @@ class HyperTTS():
 
     # mapping rules
     def save_mapping_rules(self, mapping_rules: config_models.PresetMappingRules):
+        # log before persisting, so that a configuration anomaly reported by persist_config already
+        # says how many rules we meant to write (github issue #360)
+        logger.info(f'saving {len(mapping_rules.rules)} preset mapping rules')
         self.config[constants.CONFIG_MAPPING_RULES] = config_models.serialize_preset_mapping_rules(mapping_rules)
         self.persist_config()
         logger.info('saved mapping rules')
@@ -955,6 +965,8 @@ class HyperTTS():
         else:
             # use the key provided
             final_key = settings_key
+        logger.info(f'saving realtime config [{final_key}], '
+            f'{len(self.config[constants.CONFIG_REALTIME_CONFIG])} realtime configs before save')
         self.config[constants.CONFIG_REALTIME_CONFIG][final_key] = realtime_model.serialize()
         self.persist_config()
         return final_key
@@ -975,6 +987,14 @@ class HyperTTS():
     def save_configuration(self, configuration_model):
         configuration_model = self.service_manager.remove_non_existent_services(configuration_model)
         configuration_model.validate()
+        # log before persisting, so that a configuration anomaly reported by persist_config carries
+        # a breadcrumb saying what the user was saving (github issue #360)
+        enabled_service_count = len([enabled
+            for enabled in configuration_model.service_enabled.values() if enabled])
+        logger.info(f'saving configuration: {len(configuration_model.service_config)} services '
+            f'with settings, {enabled_service_count} services enabled, API key set: '
+            f'{configuration_model.hypertts_pro_api_key_set()}, '
+            f'user_uuid {configuration_model.user_uuid}')
         self.config[constants.CONFIG_CONFIGURATION] = config_models.serialize_configuration(configuration_model)
         self.persist_config()
 
@@ -983,6 +1003,7 @@ class HyperTTS():
 
     def save_hypertts_pro_api_key(self, api_key: str):
         """saves the HyperTTS Pro API key to the configuration"""
+        logger.info('saving the HyperTTS Pro API key')
         configuration = self.get_configuration()
         configuration.hypertts_pro_api_key = api_key
         configuration.use_vocabai_api = True
@@ -1047,6 +1068,7 @@ class HyperTTS():
         return self.get_configuration().hypertts_pro_api_key_set()
 
     def set_editor_use_selection(self, use_selection):
+        logger.info(f'saving editor use selection setting [{use_selection}]')
         self.config[constants.CONFIG_USE_SELECTION] = use_selection
         self.persist_config()
 
@@ -1062,7 +1084,10 @@ class HyperTTS():
         # we suspect their configuration doesn't survive a restart, so it has to take effect for
         # this anki session even if the write below fails or the preference is lost afterwards
         self.apply_remote_logging_preference(preferences_model.error_handling)
-        self.config[constants.CONFIG_PREFERENCES] = config_models.serialize_preferences(preferences_model)
+        serialized_preferences = config_models.serialize_preferences(preferences_model)
+        logger.info(f'saving preferences '
+            f'{pprint.pformat(serialized_preferences, compact=True, width=500)}')
+        self.config[constants.CONFIG_PREFERENCES] = serialized_preferences
         self.persist_config()
         # reconfigure service manager to apply new SSL settings
         self.reconfigure_service_manager()

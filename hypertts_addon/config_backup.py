@@ -197,7 +197,21 @@ def analyze_config(config) -> ConfigStats:
 
 def detect_anomalies(previous: Optional[ConfigStats], current: ConfigStats) -> List[ConfigAnomaly]:
     """compare the configuration we are about to persist with the last known good one (the most
-    recent backup) and flag anything which looks like data loss rather than a user action."""
+    recent backup) and flag anything which looks like data loss rather than a user action. logs the
+    outcome, including the clean one: knowing the check ran and found nothing is what tells us, when
+    a user reports lost configuration, that the write was a normal one (github issue #360)."""
+    anomalies = _detect_anomalies(previous, current)
+    if len(anomalies) == 0:
+        logger.info(f'anomaly check: no anomalies detected, '
+            f'current: {current.describe()}, '
+            f'previous: {previous.describe() if previous != None else "no previous configuration"}')
+    else:
+        logger.info(f'anomaly check: {len(anomalies)} anomalies detected: '
+            f'{[f"({anomaly.severity}) {anomaly.message}" for anomaly in anomalies]}')
+    return anomalies
+
+
+def _detect_anomalies(previous: Optional[ConfigStats], current: ConfigStats) -> List[ConfigAnomaly]:
     anomalies = []
 
     if previous == None:
@@ -275,6 +289,7 @@ def config_hash(config) -> str:
 def atomic_write_json(filepath: str, data) -> None:
     """write json to filepath without ever truncating an existing file: serialize into a temporary
     file in the same directory, flush it all the way to disk, then rename over the target."""
+    logger.info(f'atomically writing {filepath}')
     directory = os.path.dirname(filepath)
     os.makedirs(directory, exist_ok=True)
     file_handle_id, temp_filepath = tempfile.mkstemp(
@@ -289,6 +304,8 @@ def atomic_write_json(filepath: str, data) -> None:
             file_handle.flush()
             os.fsync(file_handle.fileno())
         os.replace(temp_filepath, filepath)
+        logger.info(f'atomically wrote {filepath} through temporary file '
+            f'{os.path.basename(temp_filepath)}')
     except Exception:
         try:
             os.remove(temp_filepath)
@@ -331,8 +348,11 @@ class ConfigBackupManager():
     def save_backup(self, config) -> Optional[str]:
         """save a backup of the configuration. returns the filename written, or None if no backup
         was needed (identical to the latest backup) or possible. never raises."""
+        logger.info('saving configuration backup')
         try:
-            return self._save_backup(config)
+            filename = self._save_backup(config)
+            logger.info(f'configuration backup finished, backup written: {filename}')
+            return filename
         except Exception as e:
             logger.error(f'could not save configuration backup: {e}', exc_info=True)
             self.anki_utils.report_config_anomaly(f'could not save configuration backup: {e}',
@@ -341,6 +361,9 @@ class ConfigBackupManager():
 
     def _save_backup(self, config) -> Optional[str]:
         stats = analyze_config(config)
+        logger.info(f'configuration to back up: {stats.describe()}, '
+            f'{stats.top_level_key_count} top level keys, user_uuid {stats.user_uuid}, '
+            f'backup directory {self.get_backup_dir()}')
         if stats.looks_wiped():
             # never store an empty configuration, it would be useless to restore and it would push
             # a good backup out of the rolling window
@@ -349,8 +372,11 @@ class ConfigBackupManager():
 
         new_hash = config_hash(config)
         latest_backup = self.get_latest_backup()
+        logger.info(f'configuration hash {new_hash}, latest backup '
+            f'{latest_backup.filename if latest_backup != None else "none"} hash '
+            f'{latest_backup.config_hash if latest_backup != None else "none"}')
         if latest_backup != None and latest_backup.config_hash == new_hash:
-            logger.debug('configuration unchanged since last backup, not saving a new one')
+            logger.info('configuration unchanged since last backup, not saving a new one')
             return None
 
         timestamp = self.anki_utils.get_current_time()
@@ -365,6 +391,8 @@ class ConfigBackupManager():
             },
             constants.CONFIG_BACKUP_KEY_CONFIG: config
         }
+        logger.info(f'writing configuration backup {filepath}, HyperTTS version '
+            f'{version.ANKI_HYPER_TTS_VERSION}, timestamp {timestamp.isoformat()}')
         atomic_write_json(filepath, backup_data)
         logger.info(f'wrote configuration backup {filepath} ({stats.describe()})')
         self.prune_backups()
@@ -373,6 +401,8 @@ class ConfigBackupManager():
     def prune_backups(self) -> List[str]:
         """keep only the most recent constants.CONFIG_BACKUP_MAX_COUNT backups"""
         filenames = self.get_backup_filenames()
+        logger.info(f'{len(filenames)} configuration backups on disk, keeping the most recent '
+            f'{constants.CONFIG_BACKUP_MAX_COUNT}')
         removed = []
         for filename in filenames[constants.CONFIG_BACKUP_MAX_COUNT:]:
             filepath = os.path.join(self.get_backup_dir(), filename)
@@ -382,7 +412,7 @@ class ConfigBackupManager():
             except OSError as e:
                 logger.warning(f'could not remove old configuration backup {filename}: {e}')
         if len(removed) > 0:
-            logger.debug(f'removed {len(removed)} old configuration backups')
+            logger.info(f'removed {len(removed)} old configuration backups: {removed}')
         return removed
 
     # reading backups
@@ -422,9 +452,14 @@ class ConfigBackupManager():
         """the most recent backup we could parse, whether or not it contains any user data. this is
         the baseline for detecting data loss: comparing against the most recent *non empty* backup
         instead would keep flagging a configuration the user emptied on purpose."""
-        for backup_info in self.list_backups():
+        backup_list = self.list_backups()
+        for index, backup_info in enumerate(backup_list):
             if backup_info.parse_error == None and backup_info.stats != None:
+                logger.info(f'latest readable configuration backup: {backup_info.filename} '
+                    f'({backup_info.timestamp_str()}, {backup_info.stats.describe()}), '
+                    f'skipped {index} unreadable backups out of {len(backup_list)}')
                 return backup_info
+        logger.info(f'no readable configuration backup among {len(backup_list)} backups')
         return None
 
     def get_backup_info(self, filename: str) -> ConfigBackupInfo:
@@ -510,8 +545,11 @@ class ConfigBackupManager():
         """called before the configuration is persisted. reports anomalies to sentry, and returns
         False if the write should be blocked because it would destroy the user's configuration.
         never raises."""
+        logger.info('checking configuration before write')
         try:
-            return self._check_config_before_write(config)
+            write_allowed = self._check_config_before_write(config)
+            logger.info(f'configuration check before write done, write allowed: {write_allowed}')
+            return write_allowed
         except Exception as e:
             logger.error(f'could not check configuration before write: {e}', exc_info=True)
             return True
@@ -525,6 +563,12 @@ class ConfigBackupManager():
         # is what tells us, when an anomaly is reported, how the configuration got there
         logger.info(f'about to write configuration: {current_stats.describe()}, '
             f'previously {previous_stats.describe() if previous_stats != None else "no backup"}')
+
+        logger.info(f'comparing the configuration against backup '
+            f'{latest_backup.filename if latest_backup != None else "none"}, '
+            f'user_uuid {current_stats.user_uuid}, '
+            f'same installation as the backup: '
+            f'{previous_stats != None and current_stats.same_installation_as(previous_stats)}')
 
         anomalies = detect_anomalies(previous_stats, current_stats)
         for anomaly in anomalies:
@@ -541,6 +585,7 @@ class ConfigBackupManager():
             logger.error('refusing to overwrite the configuration with an empty one')
             return False
 
+        logger.info('configuration looks safe to write')
         return True
 
     def report_anomaly(self, anomaly: ConfigAnomaly, current_stats: ConfigStats,
@@ -617,8 +662,12 @@ class ConfigBackupManager():
         """called at startup, once the configuration has been loaded. reports anything which looks
         wrong to sentry. returns False if the configuration we loaded cannot be trusted, in which
         case the caller must not write it back. never raises."""
+        logger.info('checking the configuration loaded at startup')
         try:
-            return self._check_startup_config_state(config)
+            config_trusted = self._check_startup_config_state(config)
+            logger.info(f'startup configuration check done, configuration trusted: '
+                f'{config_trusted}')
+            return config_trusted
         except Exception as e:
             logger.error(f'could not check startup configuration state: {e}', exc_info=True)
             return True

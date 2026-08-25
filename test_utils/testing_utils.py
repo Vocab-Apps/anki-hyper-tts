@@ -203,6 +203,7 @@ class MockAnkiUtils():
         return self.config
 
     def write_config(self, config):
+        logger.info(f'writing addon configuration, {len(config)} top level keys')
         self.written_config = config
 
     def get_user_files_dir(self):

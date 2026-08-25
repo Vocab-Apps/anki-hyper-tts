@@ -56,7 +56,10 @@ class AnkiUtils():
         return config
 
     def write_config(self, config):
+        logger.info(f'writing addon configuration through anki, '
+            f'{len(config) if isinstance(config, dict) else "?"} top level keys')
         aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, config)
+        logger.info('anki accepted the addon configuration write')
 
     def report_config_anomaly(self, message: str, severity: str, extra: dict):
         """report a configuration anomaly (truncated / wiped / unusual configuration) to sentry, so
