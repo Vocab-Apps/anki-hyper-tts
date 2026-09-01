@@ -19,6 +19,8 @@ class BatchTarget(component_common.ConfigComponentBase):
 
         # initialize widgets
         self.target_field_combobox = aqt.qt.QComboBox()
+        self.transcript_field_combobox = aqt.qt.QComboBox()
+        self.transcript_checkbox = aqt.qt.QCheckBox('Write transcript JSON to field')
         # text and sound
         self.text_sound_group = aqt.qt.QButtonGroup()
         self.radio_button_sound_only = aqt.qt.QRadioButton('Sound Tag only')
@@ -46,6 +48,7 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.radio_button_sound_only.setChecked(not self.batch_target_model.text_and_sound_tag)
         self.radio_button_remove_sound.setChecked(self.batch_target_model.remove_sound_tag)
         self.radio_button_keep_sound.setChecked(not self.batch_target_model.remove_sound_tag)
+        self.load_transcript_field()
 
         # ensure model at the higher level gets updated
         # this is important for example if the target field doesn't exist in the field list, we want to make
@@ -97,6 +100,8 @@ class BatchTarget(component_common.ConfigComponentBase):
         groupbox.setLayout(vlayout)
         self.batch_target_layout.addWidget(groupbox)                
 
+        self.batch_target_layout.addWidget(self.draw_transcript_groupbox())
+
         self.batch_target_layout.addStretch()
 
         # connect events
@@ -115,6 +120,8 @@ class BatchTarget(component_common.ConfigComponentBase):
         self.radio_button_text_sound.toggled.connect(self.update_text_sound)
         self.radio_button_remove_sound.toggled.connect(self.update_remove_sound)
         self.radio_button_keep_sound.toggled.connect(self.update_remove_sound)
+        self.transcript_checkbox.toggled.connect(self.update_transcript_field)
+        self.transcript_field_combobox.currentIndexChanged.connect(lambda x: self.update_transcript_field())
 
     def update_text_sound(self):
         self.batch_target_model.text_and_sound_tag = self.radio_button_text_sound.isChecked()
@@ -128,6 +135,36 @@ class BatchTarget(component_common.ConfigComponentBase):
         logger.info('update_field')
         self.batch_target_model.target_field = self.field_list[self.target_field_combobox.currentIndex()]
         self.notify_model_update()
+
+    def draw_transcript_groupbox(self):
+        groupbox = aqt.qt.QGroupBox('Transcript JSON')
+        vlayout = aqt.qt.QVBoxLayout()
+        vlayout.addWidget(self.transcript_checkbox)
+        self.transcript_field_combobox.addItems(self.field_list)
+        vlayout.addWidget(self.transcript_field_combobox)
+        groupbox.setLayout(vlayout)
+        self.update_transcript_visibility()
+        return groupbox
+
+    def load_transcript_field(self):
+        transcript_field = self.batch_target_model.transcript_field
+        self.transcript_checkbox.setChecked(transcript_field not in [None, ''])
+        if transcript_field in self.field_list:
+            self.transcript_field_combobox.setCurrentText(transcript_field)
+        self.update_transcript_visibility()
+
+    def update_transcript_field(self):
+        if not self.transcript_checkbox.isChecked():
+            self.batch_target_model.transcript_field = None
+            self.update_transcript_visibility()
+            self.notify_model_update()
+            return
+        self.batch_target_model.transcript_field = self.field_list[self.transcript_field_combobox.currentIndex()]
+        self.update_transcript_visibility()
+        self.notify_model_update()
+
+    def update_transcript_visibility(self):
+        self.transcript_field_combobox.setEnabled(self.transcript_checkbox.isChecked())
 
     def notify_model_update(self):
         self.model_change_callback(self.batch_target_model)

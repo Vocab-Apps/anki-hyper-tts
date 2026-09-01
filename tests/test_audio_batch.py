@@ -6,6 +6,7 @@ from test_utils import testing_utils
 from hypertts_addon import constants
 from hypertts_addon import config_models
 from hypertts_addon import batch_status
+from hypertts_addon import transcription
 from hypertts_addon import logging_utils
 
 logger = logging_utils.get_test_child_logger(__name__)
@@ -124,6 +125,32 @@ def test_simple_1(qtbot):
     # verify batch error manager stats
     assert batch_status_obj[0].sound_file != None
     assert batch_status_obj[1].sound_file != None
+
+def test_simple_with_transcript_field(qtbot):
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    mock_collection = testing_utils.MockCollection()
+
+    voice_a_1 = get_default_voice_id(hypertts_instance)
+    single = config_models.VoiceSelectionSingle()
+    single.set_voice(config_models.VoiceWithOptions(voice_a_1, {'speed': 42}))
+
+    batch = config_models.BatchConfig(hypertts_instance.anki_utils)
+    batch.set_source(config_models.BatchSource(mode=constants.BatchMode.simple, source_field='Chinese'))
+    batch.set_target(config_models.BatchTarget('Sound', False, True, transcript_field='Pinyin'))
+    batch.set_voice_selection(single)
+    batch.set_text_processing(config_models.TextProcessing())
+
+    transcript_result = transcription.TtsAudioTranscript(b'mock audio', '[{"s":0,"e":0.2,"w":"hello"}]')
+    hypertts_instance.service_manager.get_tts_audio_transcript = lambda source_text, voice, options, context: transcript_result
+
+    listener = MockBatchStatusListener(hypertts_instance.anki_utils)
+    batch_status_obj = batch_status.BatchStatus(hypertts_instance.anki_utils, [config_gen.note_id_1], listener)
+    hypertts_instance.process_batch_audio([config_gen.note_id_1], batch, batch_status_obj, mock_collection)
+
+    note_1 = hypertts_instance.anki_utils.get_note_by_id(config_gen.note_id_1)
+    assert note_1.set_values['Pinyin'] == '[{"s":0,"e":0.2,"w":"hello"}]'
+    assert 'Sound' in note_1.set_values
 
 def test_simple_text_processing(qtbot):
     # create batch configuration

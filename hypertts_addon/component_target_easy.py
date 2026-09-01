@@ -80,6 +80,7 @@ class BatchTargetEasy(component_target.BatchTarget):
         sound_options_layout.addWidget(sound_tag_container)
 
         self.batch_target_layout.addWidget(self.sound_options_widget)
+        self.batch_target_layout.addWidget(self.draw_transcript_groupbox())
         self.batch_target_layout.addStretch()
 
         # Set initial state
@@ -160,4 +161,5 @@ class BatchTargetEasy(component_target.BatchTarget):
         self.radio_button_sound_only.setChecked(not model.text_and_sound_tag)
         self.radio_button_remove_sound.setChecked(model.remove_sound_tag)
         self.radio_button_keep_sound.setChecked(not model.remove_sound_tag)
+        self.load_transcript_field()
 

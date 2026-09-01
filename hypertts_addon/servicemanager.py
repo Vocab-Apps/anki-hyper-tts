@@ -296,6 +296,15 @@ class ServiceManager():
         else:
             return self.get_tts_audio_implementation(source_text, voice, options, audio_request_context)
 
+    def get_tts_audio_transcript(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):
+        logger.debug(f'get_tts_audio_transcript for voice: {voice}')
+        assert isinstance(voice, voice_module.TtsVoice_v3), f"Expected voice to be TtsVoice_v3, got {type(voice).__name__}"
+        if self.use_cloud_language_tools(voice):
+            error_message = f'{voice.service}: transcript generation is not supported through Cloud Language Tools'
+            raise errors.RequestError(source_text, voice, error_message)
+        service_instance = self.services[voice.service]
+        return self._get_tts_audio_transcript_service(service_instance, source_text, voice, options)
+
     def get_tts_audio_instrumented(self, source_text, voice: voice_module.TtsVoice_v3, options, audio_request_context):
         with sentry_sdk.new_scope() as sentry_scope:
             # inside this scope, we can set tags and context which will get unwound when this scope closes
@@ -442,6 +451,22 @@ class ServiceManager():
             # so this is a permanent configuration error. Previously it fell
             # through to the generic handler below and was mis-classified as
             # the retryable UnknownServiceError.
+            raise errors.ServicePermissionError(source_text, voice,
+                f'Invalid credential / request header — check your API key for '
+                f'stray whitespace or newlines: {e}') from e
+        except requests.exceptions.ConnectionError as e:
+            raise errors.ServiceConnectionError(source_text, voice, str(e)) from e
+        except Exception as e:
+            raise errors.UnknownServiceError(source_text, voice, str(e)) from e
+
+    def _get_tts_audio_transcript_service(self, service_instance, source_text, voice, options):
+        try:
+            return service_instance.get_tts_audio_transcript(source_text, voice, options)
+        except errors.HyperTTSError:
+            raise
+        except requests.exceptions.Timeout as e:
+            raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out') from e
+        except requests.exceptions.InvalidHeader as e:
             raise errors.ServicePermissionError(source_text, voice,
                 f'Invalid credential / request header — check your API key for '
                 f'stray whitespace or newlines: {e}') from e
