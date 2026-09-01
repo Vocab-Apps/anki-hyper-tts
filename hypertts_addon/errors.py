@@ -204,6 +204,15 @@ class MissingGraphicsFile(HyperTTSError):
         super().__init__(message)
 
 
+class Mp3EncoderNotFound(HyperTTSError):
+    def __init__(self):
+        message = ('The lame MP3 encoder could not be found, so MP3 audio cannot be generated. '
+                   'lame is bundled with Anki on Windows and macOS, but on Linux it must be installed '
+                   'separately, for example "sudo apt install lame" (or your distribution\'s equivalent). '
+                   'Install it and restart Anki.')
+        super().__init__(message)
+
+
 class RequestError(HyperTTSError):
     def __init__(self, source_text, voice, error_message):
         message = f'Could not request audio for [{source_text}]: {error_message} (voice: {voice})'
