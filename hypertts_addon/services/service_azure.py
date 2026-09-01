@@ -120,7 +120,7 @@ class Azure(service.ServiceBase):
         audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
         audio_format = options.AudioFormat[audio_format_str]
         audio_format_map = {
-            options.AudioFormat.mp3: 'audio-24khz-96kbitrate-mono-mp3',
+            options.AudioFormat.mp3: 'audio-48khz-192kbitrate-mono-mp3',
             options.AudioFormat.ogg_opus: 'ogg-48khz-16bit-mono-opus'
         }
 
