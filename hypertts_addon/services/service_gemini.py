@@ -1,11 +1,7 @@
-import os
 import json
 import math
-import wave
 import base64
-import tempfile
 import requests
-import aqt.sound
 
 
 from hypertts_addon import voice as voice_module
@@ -13,6 +9,7 @@ from hypertts_addon import service
 from hypertts_addon import errors
 from hypertts_addon import constants
 from hypertts_addon import options
+from hypertts_addon import audio_utils
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
@@ -218,22 +215,9 @@ class Gemini(service.ServiceBase):
 
     def _encode_pcm_to_mp3(self, pcm_bytes):
         # Gemini returns raw signed little-endian PCM at 24kHz / 16-bit / mono.
-        # Per PCM_TO_MP3.md: wrap the bytes in a WAV container via stdlib `wave`,
-        # then hand off to Anki's bundled `lame` via aqt.sound._encode_mp3.
-        wav_fh, wav_path = tempfile.mkstemp(prefix='hypertts_gemini_', suffix='.wav')
-        os.close(wav_fh)
-        mp3_fh, mp3_path = tempfile.mkstemp(prefix='hypertts_gemini_', suffix='.mp3')
-        os.close(mp3_fh)
-        try:
-            with wave.open(wav_path, 'wb') as w:
-                w.setnchannels(1)
-                w.setsampwidth(2)
-                w.setframerate(24000)
-                w.writeframes(pcm_bytes)
-            aqt.sound._encode_mp3(wav_path, mp3_path)
-            with open(mp3_path, 'rb') as f:
-                return f.read()
-        finally:
-            for p in (wav_path, mp3_path):
-                if os.path.exists(p):
-                    os.remove(p)
+        # Wrap it in a WAV container and encode to MP3 at our target bitrate.
+        # (Anki's own aqt.sound._encode_mp3 passes no bitrate to lame, so it
+        # defaults to ~32 kbps for this 24 kHz mono source, which is noticeably
+        # lossy — encode_wav_to_mp3 sets an explicit, higher bitrate instead.)
+        wav_bytes = audio_utils.pcm_to_wav_bytes(pcm_bytes, sample_rate=24000)
+        return audio_utils.encode_wav_to_mp3(wav_bytes, constants.AUDIO_MP3_ENCODE_BITRATE_KBPS)

@@ -1,4 +1,7 @@
 import copy
+import base64
+import unittest
+from unittest import mock
 
 from .base import TTSTests, logger
 from hypertts_addon import constants
@@ -65,6 +68,60 @@ class TestGoogle(TTSTests):
             assert e.voice.service == 'Google'
             exception_caught = True
         assert exception_caught
+
+
+class TestGoogleMp3Reencode(unittest.TestCase):
+    """Mock tests: mp3 output requests lossless LINEAR16 and re-encodes locally.
+
+    Google's native MP3 is a fixed ~32 kbps; we request LINEAR16 and re-encode
+    at constants.AUDIO_MP3_ENCODE_BITRATE_KBPS so the user gets a better mp3.
+    """
+
+    def _voice(self):
+        return voice_module.TtsVoice_v3(
+            name='Test', voice_key={'name': 'en-US-Standard-A', 'language_code': 'en-US'},
+            options={'speaking_rate': {'type': 'number', 'min': 0.25, 'max': 4.0, 'default': 1.0}},
+            service='Google', gender=constants.Gender.Male,
+            audio_languages=[languages.AudioLanguage.en_US], service_fee=constants.ServiceFee.paid)
+
+    def _resp(self, raw_bytes):
+        r = mock.Mock()
+        r.status_code = 200
+        r.json.return_value = {'audioContent': base64.b64encode(raw_bytes).decode()}
+        return r
+
+    def test_mp3_requests_linear16_and_reencodes(self):
+        # pytest tests/test_tts_services/test_google.py -k 'test_mp3_requests_linear16_and_reencodes'
+        from hypertts_addon.services.service_google import Google
+        service = Google()
+        service.configure({'api_key': 'fake_key'})
+
+        with mock.patch('hypertts_addon.services.service_google.requests.post',
+                        return_value=self._resp(b'RIFF....WAVE....')) as mock_post, \
+             mock.patch('hypertts_addon.services.service_google.audio_utils.encode_wav_to_mp3',
+                        return_value=b'MP3BYTES') as mock_encode:
+            out = service.get_tts_audio('hello', self._voice(), {})
+
+        self.assertEqual(mock_post.call_args.kwargs['json']['audioConfig']['audioEncoding'], 'LINEAR16')
+        self.assertEqual(out, b'MP3BYTES')
+        # the lossless WAV is handed to the encoder at the configured bitrate
+        self.assertEqual(mock_encode.call_args.args[0], b'RIFF....WAVE....')
+        self.assertEqual(mock_encode.call_args.args[1], constants.AUDIO_MP3_ENCODE_BITRATE_KBPS)
+
+    def test_ogg_opus_returned_directly(self):
+        # pytest tests/test_tts_services/test_google.py -k 'test_ogg_opus_returned_directly'
+        from hypertts_addon.services.service_google import Google
+        service = Google()
+        service.configure({'api_key': 'fake_key'})
+
+        with mock.patch('hypertts_addon.services.service_google.requests.post',
+                        return_value=self._resp(b'OGGDATA')) as mock_post, \
+             mock.patch('hypertts_addon.services.service_google.audio_utils.encode_wav_to_mp3') as mock_encode:
+            out = service.get_tts_audio('hi', self._voice(), {'format': 'ogg_opus'})
+
+        self.assertEqual(mock_post.call_args.kwargs['json']['audioConfig']['audioEncoding'], 'OGG_OPUS')
+        self.assertEqual(out, b'OGGDATA')
+        self.assertFalse(mock_encode.called)
 
 
 class TestGoogleCLT(TestGoogle):
