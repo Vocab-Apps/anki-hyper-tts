@@ -32,6 +32,14 @@ MODEL_NAME_MAP = {
     'gemini-2.5-pro-tts': 'gemini-2.5-pro-preview-tts',
 }
 
+# These models speak the text verbatim, so a prompt goes in speech_metadata, and they return a WAV
+# unless raw PCM is requested; older models reject both fields with HTTP 400.
+# https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash-tts#migration_guide
+GEMINI_3_8_MODELS = {
+    'gemini-3.8-flash-tts',
+    'gemini-3.8-flash-lite-tts',
+}
+
 DEFAULT_RETRY_AFTER_SECONDS = 60
 
 # Gemini can return HTTP 200 with *no audio* when it refuses to synthesize the
@@ -66,6 +74,15 @@ def _extract_retry_after_seconds(response_text):
     except Exception:
         pass
     return DEFAULT_RETRY_AFTER_SECONDS
+
+
+def _is_encoder_pcm(mime_type):
+    # the only format _encode_pcm_to_mp3 writes; an L16 label without rate/channels means 24 kHz mono
+    media_type, *params = (mime_type or '').lower().split(';')
+    params = {key.strip(): value.strip() for key, _, value in (p.partition('=') for p in params)}
+    return (media_type.strip() == 'audio/l16'
+            and params.get('rate', '24000') == '24000'
+            and params.get('channels', '1') == '1')
 
 
 def _raise_for_error_status(status_code, response_text, source_text, voice):
@@ -141,7 +158,11 @@ class Gemini(service.ServiceBase):
             raise errors.ServiceInputError(source_text, voice,
                 f'Gemini service only supports mp3 output; {audio_format.name} is not supported')
 
-        text = f'{prompt}: {source_text}' if prompt else source_text
+        part = {'text': source_text}
+        if prompt and api_model in GEMINI_3_8_MODELS:
+            part['speech_metadata'] = {'style': prompt}
+        elif prompt:
+            part['text'] = f'{prompt}: {source_text}'
 
         speech_config = {
             'voiceConfig': {
@@ -152,13 +173,15 @@ class Gemini(service.ServiceBase):
             speech_config['languageCode'] = language_code
 
         payload = {
-            'contents': [{'parts': [{'text': text}]}],
+            'contents': [{'parts': [part]}],
             'generationConfig': {
                 'responseModalities': ['AUDIO'],
                 'speechConfig': speech_config,
             },
             'model': api_model,
         }
+        if api_model in GEMINI_3_8_MODELS:
+            payload['generationConfig']['responseFormat'] = {'audio': {'mimeType': 'AUDIO_L16'}}
 
         logger.debug(f'requesting audio with payload {payload}')
 
@@ -208,9 +231,14 @@ class Gemini(service.ServiceBase):
                     f'Gemini refused to generate audio (finishReason: {finish_reason}): {data}')
 
         try:
-            encoded = data['candidates'][0]['content']['parts'][0]['inlineData']['data']
+            inline_data = data['candidates'][0]['content']['parts'][0]['inlineData']
+            encoded = inline_data['data']
         except (KeyError, IndexError):
             raise errors.RequestError(source_text, voice, f'Gemini returned no audio: {data}')
+
+        if api_model in GEMINI_3_8_MODELS and not _is_encoder_pcm(inline_data.get('mimeType')):
+            raise errors.ServiceGatewayError(source_text, voice,
+                f"Gemini returned audio in an unexpected format: {inline_data.get('mimeType')}")
 
         pcm_bytes = base64.b64decode(encoded)
 
