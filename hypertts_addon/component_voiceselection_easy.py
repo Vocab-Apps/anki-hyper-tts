@@ -93,9 +93,7 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
             # we have access to the voice_id, but we need to locate the proper voice
             voice_id = model.voice.voice_id
         try:
-            voice = self.hypertts.service_manager.locate_voice(voice_id)
-            voice_index = self.voice_list.index(voice)
-            self.voices_combobox.setCurrentIndex(voice_index)
+            self.select_voice(self.hypertts.service_manager.locate_voice(voice_id))
         except ValueError as e:
             logger.warning(f'Voice not found: {voice_id}: {e}')
             logger.error(f'while loading model: voice not found')
@@ -114,9 +112,7 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (en-US, JennyMultilingualNeural)'}, 
             service='Azure')
         try:
-            voice = self.hypertts.service_manager.locate_voice(voice_id)
-            voice_index = self.voice_list.index(voice)
-            self.voices_combobox.setCurrentIndex(voice_index)
+            self.select_voice(self.hypertts.service_manager.locate_voice(voice_id))
         except ValueError as e:
             logger.warning(f'Voice not found: {voice_id}: {e}')
         except errors.VoiceIdNotFound as e:

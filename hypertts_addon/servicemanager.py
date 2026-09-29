@@ -468,7 +468,9 @@ class ServiceManager():
     def get_service_voice_list(self, service_name: str) -> typing.List[voice_module.TtsVoice_v3]:
         service_instance = self.services[service_name]
         voices = service_instance.voice_list()
-        return voices
+        return [listed_voice
+                for voice in voices
+                for listed_voice in (voice_module.expand_languages(voice) if service_instance.can_send_audio_language(voice) else [voice])]
 
 
     def deserialize_voice(self, voice_data) -> voice_module.TtsVoice_v3:

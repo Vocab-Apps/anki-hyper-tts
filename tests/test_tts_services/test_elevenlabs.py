@@ -8,6 +8,7 @@ from hypertts_addon import context
 from hypertts_addon import errors
 from hypertts_addon import languages
 from hypertts_addon.languages import AudioLanguage
+from hypertts_addon import voice as voice_module
 
 
 class TestElevenLabs(TTSTests):
@@ -384,3 +385,88 @@ class TestElevenLabsQuotaError(unittest.TestCase):
 
 class TestElevenLabsCLT(TestElevenLabs):
     CONFIG_MODE = 'clt'
+
+
+class TestElevenLabsChosenLanguage(unittest.TestCase):
+    """ElevenLabs is sent the ISO 639 code of the chosen language, except on multilingual_v2"""
+
+    def setUp(self):
+        from hypertts_addon.services import service_elevenlabs
+        self.service = service_elevenlabs.ElevenLabs()
+        self.service.configure({'api_key': 'test_key'})
+        multilingual = [v for v in self.service.voice_list() if len(v.audio_languages) > 1]
+        self.flash_voice = [v for v in multilingual if v.voice_key['model_id'] == 'eleven_flash_v2_5'][0]
+        self.multilingual_v2_voice = [v for v in multilingual if v.voice_key['model_id'] == 'eleven_multilingual_v2'][0]
+
+    def sent_json(self, voice, voice_options):
+        from unittest import mock
+        response = mock.Mock(status_code=500, text='server error', headers={})
+        with mock.patch('hypertts_addon.services.service_elevenlabs.requests.post', return_value=response) as post:
+            with self.assertRaises(errors.HyperTTSError):
+                self.service.get_tts_audio('¿Dónde está la biblioteca?', voice, voice_options)
+        return post.call_args.kwargs['json']
+
+    def test_chosen_language_is_sent_as_an_iso_639_code(self):
+        voice_spain = [v for v in voice_module.expand_languages(self.flash_voice) if v.audio_languages == [AudioLanguage.es_ES]][0]
+        self.assertEqual(self.sent_json(voice_spain, {})['language_code'], 'es')
+
+    def test_multilingual_voice_sends_the_saved_free_text_option(self):
+        self.assertEqual(self.sent_json(self.flash_voice, {'language_code': 'de'})['language_code'], 'de')
+
+    def test_multilingual_voice_without_a_saved_option_sends_no_language(self):
+        self.assertNotIn('language_code', self.sent_json(self.flash_voice, {}))
+
+    def test_multilingual_v2_voices_cannot_be_told_a_language(self):
+        self.assertTrue(self.service.can_send_audio_language(self.flash_voice))
+        self.assertFalse(self.service.can_send_audio_language(self.multilingual_v2_voice))
+
+    def test_language_code_for_a_chosen_language(self):
+        for audio_language, expected in [(AudioLanguage.es_ES, 'es'), (AudioLanguage.zh_CN, 'zh'), (AudioLanguage.as_IN, 'as'),
+                (AudioLanguage.pt_PT, 'pt'), (AudioLanguage.fil_PH, 'fil'), (AudioLanguage.jv_ID, 'jv'), (AudioLanguage.zh_HK, 'yue'), (AudioLanguage.nb_NO, 'no')]:
+            with self.subTest(audio_language=audio_language):
+                self.assertEqual(self.service.get_language_code(audio_language), expected)
+
+
+class TestElevenLabsCustomChosenLanguage(unittest.TestCase):
+    """ElevenLabsCustom (the user's own voices) is sent the chosen language like ElevenLabs"""
+
+    def setUp(self):
+        from hypertts_addon.services import service_elevenlabscustom
+        self.module = service_elevenlabscustom
+        self.service = service_elevenlabscustom.ElevenLabsCustom()
+        self.service.configure({'api_key': 'test_key'})
+
+    def account_voice(self, model_id):
+        # as voice_list builds it from the account's models: language ids mapped by the service itself
+        return voice_module.TtsVoice_v3(
+            name='Rachel (Flash v2.5)', voice_key={'voice_id': '21m00Tcm4TlvDq8ikWAM', 'model_id': model_id},
+            options=self.module.VOICE_OPTIONS, service='ElevenLabsCustom', gender=constants.Gender.Female,
+            audio_languages=[self.service.get_audio_language(language_id) for language_id in ['en', 'es', 'jv']],
+            service_fee=constants.ServiceFee.paid)
+
+    def sent_json(self, voice, voice_options):
+        from unittest import mock
+        response = mock.Mock(status_code=500, text='server error', headers={})
+        with mock.patch('hypertts_addon.services.service_elevenlabscustom.requests.post', return_value=response) as post:
+            with self.assertRaises(errors.HyperTTSError):
+                self.service.get_tts_audio('Sugeng enjing', voice, voice_options)
+        return post.call_args.kwargs['json']
+
+    def test_chosen_language_is_sent_as_the_accounts_language_id(self):
+        voice_javanese = [v for v in voice_module.expand_languages(self.account_voice('eleven_flash_v2_5'))
+                          if v.audio_languages == [AudioLanguage.jv_ID]][0]
+        self.assertEqual(self.sent_json(voice_javanese, {})['language_code'], 'jv')
+
+    def test_multilingual_voice_sends_the_saved_free_text_option(self):
+        self.assertEqual(self.sent_json(self.account_voice('eleven_flash_v2_5'), {'language_code': 'es'})['language_code'], 'es')
+
+    def test_multilingual_v2_voices_cannot_be_told_a_language(self):
+        self.assertTrue(self.service.can_send_audio_language(self.account_voice('eleven_flash_v2_5')))
+        self.assertFalse(self.service.can_send_audio_language(self.account_voice('eleven_multilingual_v2')))
+
+    def test_language_code_is_the_inverse_of_get_audio_language(self):
+        # the account's language ids, including every one get_audio_language maps specially
+        for language_id in ['es', 'fil', 'pt', 'en-uk', 'zh', 'id', 'as', 'is', 'jv', 'sr', 'sd', 'yue', 'no', 'he']:
+            with self.subTest(language_id=language_id):
+                audio_language = self.service.get_audio_language(language_id)
+                self.assertEqual(self.service.get_language_code(audio_language), language_id.split('-')[0])

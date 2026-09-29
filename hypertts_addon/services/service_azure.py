@@ -4,6 +4,8 @@ import datetime
 import time
 
 from hypertts_addon import voice
+from hypertts_addon import voice as voice_module
+from hypertts_addon import languages
 from hypertts_addon import service
 from hypertts_addon import errors
 from hypertts_addon import constants
@@ -22,6 +24,13 @@ class Azure(service.ServiceBase):
 
     def cloudlanguagetools_enabled(self):
         return True
+
+    def can_send_audio_language(self, voice: voice_module.TtsVoice_v3) -> bool:
+        return True
+
+    # AudioLanguage names match Azure's SecondaryLocaleList: sr_RS is sr-RS there, not sr-Latn-RS
+    def get_locale(self, audio_language: languages.AudioLanguage) -> str:
+        return audio_language.name.replace('_', '-')
 
     @property
     def service_type(self) -> constants.ServiceType:
@@ -161,8 +170,14 @@ class Azure(service.ServiceBase):
             'User-Agent': 'anki-hyper-tts'
         }
 
+        # Azure honours <lang> inside <prosody>, although Microsoft's SSML reference doesn't list it there
+        chosen_audio_language = voice_module.get_chosen_audio_language(voice)
+        spoken_text = source_text
+        if chosen_audio_language is not None:
+            spoken_text = f'<lang xml:lang="{self.get_locale(chosen_audio_language)}">{source_text}</lang>'
+
         ssml_str = f"""<speak version="1.0" xmlns="https://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="en-US">
-<voice name="{voice_name}"{parameters_attr}>{express_as_open}<prosody rate="{rate:0.1f}" pitch="{pitch:+.0f}Hz" >{source_text}</prosody>{express_as_close}</voice>
+<voice name="{voice_name}"{parameters_attr}>{express_as_open}<prosody rate="{rate:0.1f}" pitch="{pitch:+.0f}Hz" >{spoken_text}</prosody>{express_as_close}</voice>
 </speak>""".replace('\n', '')
         
         body = ssml_str.encode(encoding='utf-8')

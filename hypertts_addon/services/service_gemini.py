@@ -9,6 +9,7 @@ import aqt.sound
 
 
 from hypertts_addon import voice as voice_module
+from hypertts_addon import languages
 from hypertts_addon import service
 from hypertts_addon import errors
 from hypertts_addon import constants
@@ -110,6 +111,15 @@ class Gemini(service.ServiceBase):
     def cloudlanguagetools_enabled(self):
         return True
 
+    def can_send_audio_language(self, voice: voice_module.TtsVoice_v3) -> bool:
+        return True
+
+    def get_language_code(self, audio_language: languages.AudioLanguage) -> str:
+        override_map = {
+            languages.AudioLanguage.es_LA: 'es-419', # Latin America is region 419, LA is Laos
+        }
+        return override_map.get(audio_language, audio_language.name.replace('_', '-'))
+
     @property
     def service_type(self) -> constants.ServiceType:
         return constants.ServiceType.tts
@@ -132,7 +142,11 @@ class Gemini(service.ServiceBase):
         model = voice_options.get('model', voice.options['model']['default'])
         api_model = MODEL_NAME_MAP.get(model, model)
         prompt = voice_options.get('prompt', voice.options['prompt']['default'])
-        language_code = voice_options.get('language_code', voice.options['language_code']['default'])
+        chosen_audio_language = voice_module.get_chosen_audio_language(voice)
+        if chosen_audio_language is not None:
+            language_code = self.get_language_code(chosen_audio_language)
+        else:
+            language_code = voice_options.get('language_code', voice.options.get('language_code', {}).get('default', 'en-US'))
 
         audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
         audio_format = options.AudioFormat[audio_format_str]
