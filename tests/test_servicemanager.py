@@ -27,7 +27,7 @@ class ServiceManagerTests(unittest.TestCase):
     def test_discover(self):
         # discover available services
         actual_module_names = self.manager.discover_services()
-        expected_module_names = ['service_a', 'service_c', 'service_b'] 
+        expected_module_names = ['service_a', 'service_c', 'service_b', 'service_d']
         actual_module_names.sort()
         expected_module_names.sort()
         self.assertEqual(expected_module_names, actual_module_names)

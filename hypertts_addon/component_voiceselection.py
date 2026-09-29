@@ -93,18 +93,21 @@ class VoiceSelection(component_common.ConfigComponentBase):
             # we have access to the voice_id, but we need to locate the proper voice
             voice_id = model.voice.voice_id
             voice = self.hypertts.service_manager.locate_voice(voice_id)
-            voice_index = self.voice_list.index(voice)
-            self.voices_combobox.setCurrentIndex(voice_index)
+            self.select_voice(voice)
             # self.voice_options_layout
             #self.voice_options_widgets[widget_name]
             logger.info(f'options: {model.voice.options}')
             for key, value in model.voice.options.items():
                 widget_name = f'voice_option_{key}'
                 logger.info(f'setting value of {key} to {value}')
-                # the saved preset may contain options that the current voice no longer exposes
-                # (e.g. a service updated its schema and dropped 'pitch'); skip rather than crash.
                 if widget_name not in self.voice_options_widgets:
-                    logger.warning(f'voice option {key!r} no longer supported by voice {voice_id!r}, skipping')
+                    # not an option of this voice, but still sent with every request: show it
+                    if key not in voice.options:
+                        logger.warning(f'voice option {key!r} not exposed by voice {voice_id!r}, keeping it read-only')
+                        saved_option_label = aqt.qt.QLabel(f'{key}: {value}')
+                        saved_option_label.setObjectName(f'voice_option_saved_{key}')
+                        saved_option_label.setStyleSheet('color: palette(placeholder-text);')
+                        self.voice_options_layout.addWidget(saved_option_label, self.voice_options_layout.rowCount(), 0, 1, 2)
                     continue
                 voice_option_widget = self.voice_options_widgets[widget_name]
                 setCurrentTextFn = getattr(voice_option_widget, 'setCurrentText', None)
@@ -120,6 +123,9 @@ class VoiceSelection(component_common.ConfigComponentBase):
                     else:
                         # slider
                         self.voice_options_widgets[widget_name].setValue(value)
+            # keep the saved settings as they are: the widgets miss values at their default and settings without a widget
+            self.current_voice_options = copy.copy(model.voice.options) # a copy: the widgets' callbacks edit this dict
+            self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice_id, self.current_voice_options))
         elif model.selection_mode == constants.VoiceSelectionMode.random:
             self.radio_button_random.setChecked(True)
             self.voice_selection_model = model
@@ -130,6 +136,19 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.redraw_selected_voices()
 
         self.enable_model_change_callback = True
+
+    def select_voice(self, voice):
+        if voice not in self.filtered_voice_list:
+            self.reset_filters()
+            chosen_audio_language = voice_module.get_chosen_audio_language(voice)
+            if chosen_audio_language is not None:
+                self.languages_combobox.setCurrentIndex(self.languages.index(chosen_audio_language.lang) + 2)
+        voice_index = self.filtered_voice_list.index(voice)
+        if voice_index == self.voices_combobox.currentIndex():
+            # selecting the voice already shown does nothing, so redraw its settings directly
+            self.voice_selected(voice_index)
+        else:
+            self.voices_combobox.setCurrentIndex(voice_index)
 
     def sample_text_selected(self, text):
         logger.debug(f'sample_text_selected: {text}')
@@ -460,6 +479,9 @@ class VoiceSelection(component_common.ConfigComponentBase):
             gender = self.genders[self.genders_combobox.currentIndex() - 2]
             voice_list = [voice for voice in voice_list if voice.gender == gender]
             logger.debug(f'filtered by gender {gender}, voice count: {len(voice_list)}')
+        # without a language filter, list each multilingual voice once
+        if self.audio_languages_combobox.currentIndex() == 0 and self.languages_combobox.currentIndex() == 0:
+            voice_list = [voice for voice in voice_list if voice_module.get_chosen_audio_language(voice) is None]
         def voice_sort_key(voice):
             return str(voice)
         # sort

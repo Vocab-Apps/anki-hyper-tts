@@ -100,6 +100,13 @@ class CloudLanguageTools():
     def _get_tts_audio_vocabai(self, source_text, voice, options, audio_request_context):
         # API v5
         full_url = self.get_vocabai_url('audio')
+        # keep voice_key exactly as the server lists it (its handling isn't public); the language goes in the options
+        voice_key = voice.voice_key
+        request_options = options
+        chosen_audio_language = voice_module.get_chosen_audio_language(voice)
+        if chosen_audio_language is not None:
+            voice_key = {key: value for key, value in voice.voice_key.items() if key != voice_module.AUDIO_LANGUAGE_KEY}
+            request_options = {**options, voice_module.AUDIO_LANGUAGE_KEY: chosen_audio_language.name}
         data = {
             'text': source_text,
             'service': voice.service,
@@ -109,8 +116,8 @@ class CloudLanguageTools():
             'client_uuid': self.config.user_uuid,
             'batch_uuid': audio_request_context.get_batch_uuid_str(),
             'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,
-            'voice_key': voice.voice_key,
-            'options': options,
+            'voice_key': voice_key,
+            'options': request_options,
             'retry_count': audio_request_context.retry_count,
             'retry_max': audio_request_context.retry_max,
         }

@@ -3,6 +3,8 @@ import requests
 
 
 from hypertts_addon import voice
+from hypertts_addon import voice as voice_module
+from hypertts_addon import languages
 from hypertts_addon import service
 from hypertts_addon import errors
 from hypertts_addon import constants
@@ -18,6 +20,18 @@ class ElevenLabs(service.ServiceBase):
 
     def cloudlanguagetools_enabled(self):
         return True
+
+    # eleven_multilingual_v2 does not support language_code (ElevenLabs API reference)
+    def can_send_audio_language(self, voice: voice_module.TtsVoice_v3) -> bool:
+        return voice.voice_key['model_id'] != 'eleven_multilingual_v2'
+
+    # language_code is ISO 639: the AudioLanguage name's prefix, not the Language name (jv_ID is Language.jw)
+    def get_language_code(self, audio_language: languages.AudioLanguage) -> str:
+        override_map = {
+            languages.AudioLanguage.zh_HK: 'yue', # zh_HK is Cantonese (yue), not Mandarin (zh)
+            languages.AudioLanguage.nb_NO: 'no', # ElevenLabs' models list Norwegian as no, not nb
+        }
+        return override_map.get(audio_language, audio_language.name.split('_')[0])
 
     @property
     def service_type(self) -> constants.ServiceType:
@@ -70,7 +84,11 @@ class ElevenLabs(service.ServiceBase):
         }
 
         # Add language_code if provided and not empty
-        language_code = voice_options.get('language_code', voice.options.get('language_code', {}).get('default', ''))
+        chosen_audio_language = voice_module.get_chosen_audio_language(voice)
+        if chosen_audio_language is not None:
+            language_code = self.get_language_code(chosen_audio_language)
+        else:
+            language_code = voice_options.get('language_code', voice.options.get('language_code', {}).get('default', ''))
         if language_code:
             data['language_code'] = language_code
 

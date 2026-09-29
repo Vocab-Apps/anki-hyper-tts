@@ -285,3 +285,53 @@ class TestGeminiErrorStatusMapping(unittest.TestCase):
                 with self.assertRaises(expected_cls) as ctx:
                     _raise_for_error_status(status, '{}', self.SOURCE_TEXT, self.VOICE)
                 self.assertIsInstance(ctx.exception, errors.ServiceRequestError)
+
+
+class TestGeminiChosenLanguage(unittest.TestCase):
+    """the language Gemini is sent: the chosen one, else the Multilingual entry's free-text option"""
+
+    def setUp(self):
+        from hypertts_addon.services import service_gemini
+        self.service = service_gemini.Gemini()
+        self.service.configure({'api_key': 'test_key'})
+        self.kore = [v for v in self.service.voice_list() if v.voice_key == {'name': 'Kore'}][0]
+
+    def kore_in(self, audio_language):
+        return [v for v in voice_module.expand_languages(self.kore) if v.audio_languages == [audio_language]][0]
+
+    def sent_language_code(self, voice, voice_options):
+        from unittest import mock
+        response = mock.Mock(status_code=500, text='{}', headers={})
+        with mock.patch('hypertts_addon.services.service_gemini.requests.post', return_value=response) as post:
+            with self.assertRaises(errors.ServiceGatewayError):
+                self.service.get_tts_audio('¿Dónde está la biblioteca?', voice, voice_options)
+        return post.call_args.kwargs['json']['generationConfig']['speechConfig'].get('languageCode')
+
+    def test_chosen_language_is_sent_as_a_locale(self):
+        self.assertEqual(self.sent_language_code(self.kore_in(languages.AudioLanguage.es_MX), {}), 'es-MX')
+
+    def test_language_code_for_a_chosen_language(self):
+        self.assertEqual(self.service.get_language_code(languages.AudioLanguage.es_MX), 'es-MX')
+        self.assertEqual(self.service.get_language_code(languages.AudioLanguage.es_LA), 'es-419')
+        self.assertEqual(self.service.get_language_code(languages.AudioLanguage.la), 'la')
+
+    def test_latin_america_is_sent_as_region_419(self):
+        self.assertEqual(self.sent_language_code(self.kore_in(languages.AudioLanguage.es_LA), {}), 'es-419')
+
+    def test_multilingual_voice_sends_the_saved_free_text_option(self):
+        self.assertEqual(self.sent_language_code(self.kore, {'language_code': 'es-MX'}), 'es-MX')
+
+    def test_multilingual_voice_without_a_saved_option_sends_the_default_as_today(self):
+        self.assertEqual(self.sent_language_code(self.kore, {}), 'en-US')
+
+    def test_gemini_voices_are_listed_per_language(self):
+        self.assertTrue(self.service.can_send_audio_language(self.kore))
+
+    def test_saved_free_text_option_is_sent_after_the_box_is_removed(self):
+        import dataclasses
+        kore_without_box = dataclasses.replace(self.kore, options={k: v for k, v in self.kore.options.items() if k != 'language_code'})
+        self.assertEqual(self.sent_language_code(kore_without_box, {'language_code': 'es-MX'}), 'es-MX')
+        self.assertEqual(self.sent_language_code(kore_without_box, {}), 'en-US')
+
+    def test_saved_empty_free_text_option_sends_no_language(self):
+        self.assertIsNone(self.sent_language_code(self.kore, {'language_code': ''}))

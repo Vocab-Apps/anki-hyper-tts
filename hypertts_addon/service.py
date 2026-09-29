@@ -45,6 +45,10 @@ class ServiceBase(abc.ABC):
     def cloudlanguagetools_enabled(self):
         return False # default
 
+    # whether this voice's requests can carry a chosen AudioLanguage; if so, multilingual voices are also listed once per language
+    def can_send_audio_language(self, voice: voice_module.TtsVoice_v3) -> bool:
+        return False # default
+
     # whether the service is enabled by default
     def enabled_by_default(self):
         return False

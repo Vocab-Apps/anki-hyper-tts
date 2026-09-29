@@ -3,7 +3,7 @@ import abc
 import dataclasses
 import databind.json
 import functools
-from typing import Dict, Any, List, Union
+from typing import Dict, Any, List, Optional, Union
 
 from . import constants
 from . import languages
@@ -189,7 +189,7 @@ def generate_voice_with_options_str(voice: TtsVoice_v3, options) -> str:
 
     options_array = []
     for key, value in options.items():
-        if value != voice.options[key]['default']:
+        if key not in voice.options or value != voice.options[key]['default']:
             options_array.append(f'{key}: {value}')
     if len(options_array) > 0:
         result += ' (' + ', '.join(options_array) + ')'
@@ -201,3 +201,29 @@ def get_audio_language_for_voice(voice: TtsVoice_v3) -> languages.AudioLanguage:
         return voice.audio_languages[0]
     # otherwise, we are dealing with a multilingual voice. default to en_US for now
     return languages.AudioLanguage.en_US
+
+AUDIO_LANGUAGE_KEY = 'audio_language'
+LANGUAGE_CODE_OPTION = 'language_code'
+
+def expand_languages(voice: TtsVoice_v3) -> List[TtsVoice_v3]:
+    """the voice itself, followed by one voice per language when it speaks more than one"""
+    if len(voice.audio_languages) < 2:
+        return [voice]
+    options = {key: value for key, value in voice.options.items() if key != LANGUAGE_CODE_OPTION}
+    # the original stays listed, so old presets still find it and keep their audio cache keys
+    return [voice] + [
+        dataclasses.replace(voice,
+            voice_key={**voice.voice_key, AUDIO_LANGUAGE_KEY: audio_language.name},
+            audio_languages=[audio_language],
+            options=options)
+        for audio_language in dict.fromkeys(voice.audio_languages)]
+
+def get_chosen_audio_language(voice: TtsVoice_v3) -> Optional[languages.AudioLanguage]:
+    """the language of a per-language copy (see expand_languages), else None"""
+    if not isinstance(voice.voice_key, dict):
+        # DWDS, Google Translate, eSpeak-NG, Naver Papago and Windows key their voices by a plain string
+        return None
+    audio_language_name = voice.voice_key.get(AUDIO_LANGUAGE_KEY)
+    if audio_language_name is None:
+        return None
+    return languages.AudioLanguage[audio_language_name]
