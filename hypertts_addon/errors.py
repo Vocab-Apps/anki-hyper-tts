@@ -1,9 +1,9 @@
 import sys
-import logging
 
 from . import constants
+from . import logging_utils
 
-logger = logging.getLogger(__name__)
+logger = logging_utils.get_child_logger(__name__)
 
 # Exception class hierarchy
 # =========================
@@ -36,6 +36,8 @@ logger = logging.getLogger(__name__)
 # +-- PresetNotFound                     Preset ID missing from config
 # +-- RealtimePresetNotFound             Realtime preset settings key missing from config
 # +-- MissingDirectory                   User files directory for audio storage doesn't exist
+# +-- ConfigurationAnomaly               Addon configuration looks truncated/wiped/unusual (issue #360)
+# +-- ConfigBackupError                  Configuration backup file unreadable or not restorable
 # +-- MissingGraphicsFile                UI graphics file missing (corrupted installation)
 # +-- RequestError                       Legacy service request error (non-retry-aware services)
 # +-- NoVoiceSelected                    Single voice mode but no voice picked
@@ -180,6 +182,22 @@ class MissingDirectory(HyperTTSError):
         super().__init__(message)        
 
 
+class ConfigurationAnomaly(HyperTTSError):
+    """the addon configuration looks wrong (truncated, wiped, unexpected schema). reported to
+    sentry so that we can get to the bottom of github issue #360"""
+    def __init__(self, message):
+        super().__init__(message)
+
+
+class ConfigBackupError(HyperTTSError):
+    """a configuration backup file could not be read or restored"""
+    def __init__(self, filename, error_message):
+        message = f'Could not read configuration backup {filename}: {error_message}'
+        super().__init__(message)
+        self.filename = filename
+        self.error_message = error_message
+
+
 class MissingGraphicsFile(HyperTTSError):
     def __init__(self, filename):
         message = f'Could not find graphics file {filename}. This is likely due to a corrupted installation. Please re-install HyperTTS from AnkiWeb.'
@@ -220,6 +238,11 @@ class NoNotesSelectedPreview(HyperTTSError):
     def __init__(self):
         message = f'No notes have been selected. Select one note to preview sound.'
         super().__init__(message)        
+
+class NoAudioToRemove(HyperTTSError):
+    def __init__(self):
+        message = 'There is no audio to remove in the notes you selected.'
+        super().__init__(message)
 
 class NoPresetMappingRulesDefined(HyperTTSError):
     def __init__(self):

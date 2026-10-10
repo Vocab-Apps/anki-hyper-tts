@@ -330,12 +330,14 @@ class ComponentBatch(component_common.ConfigComponentBase):
         return None
 
     def open_profile_button_pressed(self):
+        logger.info('user pressed the open preset button')
         with self.hypertts.error_manager.get_single_action_context('Opening Profile'):
             preset_id = self.choose_existing_preset('Choose a preset to open')
             if preset_id != None:
                 self.load_preset(preset_id)
 
     def duplicate_profile_button_pressed(self):
+        logger.info('user pressed the duplicate preset button')
         with self.hypertts.error_manager.get_single_action_context('Duplicating Profile'):
             preset_id = self.choose_existing_preset('Choose a preset to duplicate')
             if preset_id != None:
@@ -368,6 +370,7 @@ class ComponentBatch(component_common.ConfigComponentBase):
                 self.save_profile()
 
     def save_profile_button_pressed(self):
+        logger.info('user pressed the save preset button')
         self.save_profile()
 
     def rename_profile_button_pressed(self):
@@ -386,7 +389,11 @@ class ComponentBatch(component_common.ConfigComponentBase):
     def delete_profile_button_pressed(self):
         profile_name = self.batch_model.name
         preset_id = self.batch_model.uuid
+        # logged explicitly so that the sentry breadcrumbs always show that presets disappearing was
+        # the user deleting them, rather than HyperTTS losing the configuration (github issue #360)
+        logger.info(f'user pressed the delete preset button for [{profile_name}] [{preset_id}]')
         proceed = self.hypertts.anki_utils.ask_user(f'Delete Preset {profile_name} ?', self.dialog)
+        logger.info(f'user answered {proceed} to the delete preset confirmation')
         if proceed == True:
             with self.hypertts.error_manager.get_single_action_context('Deleting Preset'):
                 self.hypertts.delete_preset(preset_id)

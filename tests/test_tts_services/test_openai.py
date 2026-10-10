@@ -78,3 +78,21 @@ class TestOpenAIErrorHandling(unittest.TestCase):
 
             self.assertIsInstance(context.exception, errors.PermanentError)
             self.assertIn('401', str(context.exception))
+
+    def test_openai_bad_request_400(self):
+        # Regression test for Sentry ANKI-HYPER-TTS-JRS: OpenAI 400 Bad Request
+        # was falling through raise_for_status() and being re-tagged as the
+        # transient UnknownServiceError. Must surface as a PermanentError so
+        # retry logic stops and triage groups it correctly.
+        # pytest tests/test_tts_services/test_openai.py -k 'test_openai_bad_request_400'
+        mock_response = mock.Mock()
+        mock_response.status_code = 400
+        mock_response.text = '{"error": {"message": "Invalid request"}}'
+        mock_response.headers = {}
+
+        with mock.patch('requests.post', return_value=mock_response):
+            with self.assertRaises(errors.ServiceInputError) as context:
+                self.service.get_tts_audio('hello', self.mock_voice, {})
+
+            self.assertIsInstance(context.exception, errors.PermanentError)
+            self.assertIn('400', str(context.exception))

@@ -37,6 +37,7 @@ from hypertts_addon import component_voiceselection_easy
 from hypertts_addon import component_source_easy
 from hypertts_addon import component_choose_easy_advanced
 from hypertts_addon import component_services_configuration
+from hypertts_addon import component_services
 
 logger = logging_utils.get_test_child_logger(__name__)
 
@@ -2314,11 +2315,140 @@ def test_text_processing_manual(qtbot):
     if os.environ.get('HYPERTTS_TEXT_PROCESSING_DIALOG_DEBUG', 'no') == 'yes':
         dialog.exec()        
 
+def widget_shown(widget):
+    """whether the widget has been explicitly hidden by us. can't use isVisible() because the
+    dialogs aren't shown during tests, nor isVisibleTo(dialog) because a QTabWidget hides the
+    pages of the tabs which aren't selected."""
+    return widget.isVisibleTo(widget.parentWidget())
+
+def get_service_enabled_checkbox(dialog, service_name):
+    return dialog.findChild(aqt.qt.QCheckBox, f'hypertts_services_enable_{service_name}')
+
+def get_service_config_widget(dialog, widget_type, service_name, key):
+    return dialog.findChild(widget_type, f'hypertts_services_config_{service_name}_{key}')
+
+def get_services_grid_widget(services, grid_row, column):
+    """the widget the services grid holds at the given position, None if the cell is empty"""
+    item = services.services_gridlayout.itemAtPosition(grid_row, column)
+    if item == None:
+        return None
+    return item.widget()
+
+def test_configuration_services_grid_layout(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_services_grid_layout
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())
+    services = configuration.services
+
+    # the description and the bulk enable/disable buttons are part of the tab. finding them by
+    # object name only works once they've been added to a layout, so this checks both
+    assert dialog.findChild(aqt.qt.QLabel, 'hypertts_services_description_label') != None
+    assert dialog.findChild(aqt.qt.QPushButton, 'hypertts_services_enable_all_free_button') != None
+    assert dialog.findChild(aqt.qt.QPushButton, 'hypertts_services_disable_all_button') != None
+    assert dialog.findChild(aqt.qt.QScrollArea, 'hypertts_services_scroll_area') != None
+    assert dialog.findChild(aqt.qt.QGridLayout, 'hypertts_services_gridlayout') != None
+
+    # header row
+    # ==========
+
+    header_labels = [
+        (component_services.COLUMN_ENABLED, constants.GUI_TEXT_SERVICES_COLUMN_ENABLED),
+        (component_services.COLUMN_PRO, constants.GUI_TEXT_SERVICES_COLUMN_PRO),
+        (component_services.COLUMN_NAME, constants.GUI_TEXT_SERVICES_COLUMN_NAME),
+        (component_services.COLUMN_FEE, constants.GUI_TEXT_SERVICES_COLUMN_FEE),
+        (component_services.COLUMN_TYPE, constants.GUI_TEXT_SERVICES_COLUMN_TYPE),
+    ]
+    for column, text in header_labels:
+        label = get_services_grid_widget(services, 0, column)
+        assert label != None
+        assert label.text() == text
+        assert label.font().bold() == True
+
+    # service rows
+    # ============
+
+    # the services are listed alphabetically, not in the order the service manager loaded them.
+    # other tests in this process may have registered the real services too (ServiceBase
+    # subclasses are process-wide), so go by the order rather than by an exact list
+    service_names = [service.name for service in services.get_service_list()]
+    assert service_names == sorted(service_names)
+    assert set(['ServiceA', 'ServiceB', 'ServiceC']).issubset(set(service_names))
+
+    # each service row is followed by its configuration panel, so the rows are two grid rows apart
+    expected_rows = [
+        ('ServiceA', '', 'free', 'TTS'),
+        ('ServiceB', component_services.PRO_CHECKMARK, 'paid', 'TTS'),
+        ('ServiceC', component_services.PRO_CHECKMARK, 'paid', 'TTS'),
+    ]
+    for service_name, pro_text, fee_text, type_text in expected_rows:
+        grid_row = 1 + 2 * service_names.index(service_name)
+        assert get_services_grid_widget(services, grid_row, component_services.COLUMN_ENABLED) is \
+            get_service_enabled_checkbox(dialog, service_name)
+
+        # the Pro column marks the services which come with HyperTTS Pro
+        pro_label = get_services_grid_widget(services, grid_row, component_services.COLUMN_PRO)
+        assert pro_label.text() == pro_text
+
+        name_label = get_services_grid_widget(services, grid_row, component_services.COLUMN_NAME)
+        assert name_label.text() == service_name
+        assert name_label.font().bold() == True
+
+        fee_label = get_services_grid_widget(services, grid_row, component_services.COLUMN_FEE)
+        assert fee_label.text() == fee_text
+        # the grid uses the short label of the service type, not the long description
+        type_label = get_services_grid_widget(services, grid_row, component_services.COLUMN_TYPE)
+        assert type_label.text() == type_text
+
+        # the labels carry stable object names, which the gui automation scripts rely on
+        assert pro_label.objectName() == f'hypertts_services_pro_{service_name}'
+        assert name_label.objectName() == f'hypertts_services_name_{service_name}'
+        assert fee_label.objectName() == f'hypertts_services_fee_{service_name}'
+        assert type_label.objectName() == f'hypertts_services_type_{service_name}'
+
+        # the actions cell holds the configure button and the 'via Pro' badge
+        actions_widget = get_services_grid_widget(services, grid_row, component_services.COLUMN_ACTIONS)
+        assert actions_widget.findChild(aqt.qt.QPushButton, f'hypertts_services_configure_{service_name}') is \
+            services.rows[service_name].configure_button
+        assert actions_widget.findChild(aqt.qt.QLabel, f'hypertts_services_pro_badge_{service_name}') is \
+            services.rows[service_name].pro_badge_label
+
+        # the configuration panel sits on the grid row underneath, spanning the whole width
+        panel = dialog.findChild(aqt.qt.QGroupBox, f'hypertts_services_panel_{service_name}')
+        assert panel is services.rows[service_name].panel
+        assert get_services_grid_widget(services, grid_row + 1, 0) is panel
+        assert panel.findChild(aqt.qt.QPushButton, f'hypertts_services_panel_ok_{service_name}') is \
+            services.rows[service_name].panel_ok_button
+        assert panel.findChild(aqt.qt.QPushButton, f'hypertts_services_panel_cancel_{service_name}') is \
+            services.rows[service_name].panel_cancel_button
+
+    # configuration panel options
+    # ===========================
+
+    # each configuration option gets its own row in the panel, label on the left, widget on the right
+    panel = services.rows['ServiceA'].panel
+    options_gridlayout = panel.layout().itemAt(0).layout()
+    expected_options = [
+        ('api_key', aqt.qt.QLineEdit),
+        ('region', aqt.qt.QComboBox),
+        ('delay', aqt.qt.QSpinBox),
+        ('demo_key', aqt.qt.QCheckBox),
+    ]
+    for options_row, (key, widget_type) in enumerate(expected_options):
+        assert options_gridlayout.itemAtPosition(options_row, 0).widget().text() == key + ':'
+        widget = options_gridlayout.itemAtPosition(options_row, 1).widget()
+        assert isinstance(widget, widget_type)
+        assert widget is get_service_config_widget(dialog, widget_type, 'ServiceA', key)
+
 def test_configuration(qtbot):
     # pytest test_components.py -k test_configuration -o log_cli_level=DEBUG -o capture=no
     import unittest.mock
     import datetime
-    
+
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     # start by disabling both services
@@ -2334,6 +2464,9 @@ def test_configuration(qtbot):
 
     # dialog.exec()
 
+    # nothing is configured yet, so the alert is displayed
+    assert widget_shown(configuration.alert_label) == True
+
     # try making changes to the service config and saving
     # ===================================================
 
@@ -2343,47 +2476,63 @@ def test_configuration(qtbot):
 
     assert configuration.hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
 
-    # we entered an error key, so pro mode is not enabled
-    assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
-    assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == False
-    assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
+    # we entered an error key, so pro mode is not enabled, all services are configured individually
+    service_b_enabled_checkbox = get_service_enabled_checkbox(dialog, 'ServiceB')
+    assert service_b_enabled_checkbox.isEnabled() == True
+    assert service_b_enabled_checkbox.isChecked() == False
+    assert widget_shown(configuration.services.rows['ServiceB'].pro_badge_label) == False
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
 
-    service_a_enabled_checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceA_enabled")
+    # enabling a service opens its configuration panel
+    service_a_enabled_checkbox = get_service_enabled_checkbox(dialog, 'ServiceA')
+    service_a_row = configuration.services.rows['ServiceA']
+    assert service_a_row.panel_open() == False
     service_a_enabled_checkbox.setChecked(True)
     assert configuration.model.get_service_enabled('ServiceA') == True
-    service_a_enabled_checkbox.setChecked(False)
-    assert configuration.model.get_service_enabled('ServiceA') == False
+    assert service_a_row.panel_open() == True
+    # a service is enabled now, so the alert goes away
+    assert widget_shown(configuration.alert_label) == False
 
-    service_a_region = dialog.findChild(aqt.qt.QComboBox, "ServiceA_region")
+    service_a_region = get_service_config_widget(dialog, aqt.qt.QComboBox, 'ServiceA', 'region')
     service_a_region.setCurrentText('europe')
     assert configuration.model.get_service_configuration_key('ServiceA', 'region') == 'europe'
     service_a_region.setCurrentText('us')
     assert configuration.model.get_service_configuration_key('ServiceA', 'region') == 'us'
-    
-    service_a_api_key = dialog.findChild(aqt.qt.QLineEdit, "ServiceA_api_key")
+
+    service_a_api_key = get_service_config_widget(dialog, aqt.qt.QLineEdit, 'ServiceA', 'api_key')
     qtbot.keyClicks(service_a_api_key, '6789')
     assert configuration.model.get_service_configuration_key('ServiceA', 'api_key') == '6789'
 
-    service_a_delay = dialog.findChild(aqt.qt.QSpinBox, "ServiceA_delay")
+    service_a_delay = get_service_config_widget(dialog, aqt.qt.QSpinBox, 'ServiceA', 'delay')
     service_a_delay.setValue(42)
     assert configuration.model.get_service_configuration_key('ServiceA', 'delay') == 42
 
-    service_a_demokey = dialog.findChild(aqt.qt.QCheckBox, "ServiceA_demo_key")
+    service_a_demokey = get_service_config_widget(dialog, aqt.qt.QCheckBox, 'ServiceA', 'demo_key')
     service_a_demokey.setChecked(True)
     assert configuration.model.get_service_configuration_key('ServiceA', 'demo_key') == True
     service_a_demokey.setChecked(False)
     assert configuration.model.get_service_configuration_key('ServiceA', 'demo_key') == False
     service_a_demokey.setChecked(True)
 
+    # keep the configuration, the panel closes and the configure button becomes available
+    qtbot.mouseClick(service_a_row.panel_ok_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert service_a_row.panel_open() == False
+    assert widget_shown(service_a_row.configure_button) == True
+
+    # disabling the service retains its configuration
+    service_a_enabled_checkbox.setChecked(False)
+    assert configuration.model.get_service_enabled('ServiceA') == False
+    assert widget_shown(service_a_row.configure_button) == False
+    assert widget_shown(configuration.alert_label) == True
+
     assert configuration.save_button.isEnabled() == True
 
     qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
-            
+
     assert 'configuration' in hypertts_instance.anki_utils.written_config
     expected_output = {
         'hypertts_pro_api_key': None,
-        'use_vocabai_api': False, 
+        'use_vocabai_api': False,
         'vocabai_api_url_override': None,
         'service_enabled': {
             'ServiceA': False,
@@ -2400,6 +2549,11 @@ def test_configuration(qtbot):
         'user_choice_easy_advanced': False,
         'display_introduction_message': False,
         'trial_registration_step': 'finished',
+        'extension_service_names': [],
+        'extensions': {
+            'enabled': False,
+            'extensions_directory': None,
+        },
     }
     actual_output = hypertts_instance.anki_utils.written_config['configuration']
     # remove install_time because it's variable and hard to test
@@ -2424,10 +2578,20 @@ def test_configuration(qtbot):
     qtbot.keyClicks(configuration.hyperttspro.hypertts_pro_api_key, 'valid_key')
     assert '250 chars' in configuration.hyperttspro.account_info_label.text()
 
-    assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == False
-    assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == True # clt displayed
-    assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
+    # ServiceB is included with HyperTTS Pro: shown as enabled, but not for the user to change,
+    # and the model is left alone so that removing the key doesn't leave it enabled
+    service_b_enabled_checkbox = get_service_enabled_checkbox(dialog, 'ServiceB')
+    assert service_b_enabled_checkbox.isChecked() == True
+    assert service_b_enabled_checkbox.isEnabled() == False
+    assert configuration.model.get_service_enabled('ServiceB') == None
+    assert widget_shown(configuration.services.rows['ServiceB'].pro_badge_label) == True
+    assert widget_shown(configuration.services.rows['ServiceB'].configure_button) == False
+    # ServiceA is not included with HyperTTS Pro, the user configures it themselves
+    service_a_enabled_checkbox = get_service_enabled_checkbox(dialog, 'ServiceA')
+    assert service_a_enabled_checkbox.isEnabled() == True
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_PRO
+    # HyperTTS Pro counts as configured
+    assert widget_shown(configuration.alert_label) == False
 
     assert configuration.model.hypertts_pro_api_key == 'valid_key'
 
@@ -2437,10 +2601,12 @@ def test_configuration(qtbot):
     qtbot.mouseClick(configuration.hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
     configuration.hyperttspro.hypertts_pro_api_key.setText('invalid_key')
     assert configuration.model.hypertts_pro_api_key == None
-    assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
-    assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == False
-    assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
+    # ServiceB goes back to being disabled and configurable by the user
+    assert service_b_enabled_checkbox.isChecked() == False
+    assert service_b_enabled_checkbox.isEnabled() == True
+    assert widget_shown(configuration.services.rows['ServiceB'].pro_badge_label) == False
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
+    assert widget_shown(configuration.alert_label) == True
 
     assert configuration.hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
 
@@ -2471,29 +2637,37 @@ def test_configuration(qtbot):
 
     assert configuration.hyperttspro.hypertts_pro_api_key.text() == ''
 
-    assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
-    assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
+    # ServiceB is enabled, so no alert
+    assert widget_shown(configuration.alert_label) == False
 
-    service_a_enabled_checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceA_enabled")
+    service_a_enabled_checkbox = get_service_enabled_checkbox(dialog, 'ServiceA')
     assert service_a_enabled_checkbox.isChecked() == False
-    service_b_enabled_checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceB_enabled")
+    service_b_enabled_checkbox = get_service_enabled_checkbox(dialog, 'ServiceB')
     assert service_b_enabled_checkbox.isChecked() == True
+    assert service_b_enabled_checkbox.isEnabled() == True
 
-    service_a_region = dialog.findChild(aqt.qt.QComboBox, "ServiceA_region")
+    # ServiceA isn't enabled, so there's no configure button to click
+    service_a_row = configuration.services.rows['ServiceA']
+    assert service_a_row.panel_open() == False
+    assert widget_shown(service_a_row.configure_button) == False
+
+    # ServiceB is enabled, so it can be configured
+    service_b_row = configuration.services.rows['ServiceB']
+    assert widget_shown(service_b_row.configure_button) == True
+    qtbot.mouseClick(service_b_row.configure_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert service_b_row.panel_open() == True
+
+    # enabling ServiceA opens its panel, populated from the model
+    service_a_enabled_checkbox.setChecked(True)
+    service_a_region = get_service_config_widget(dialog, aqt.qt.QComboBox, 'ServiceA', 'region')
     assert service_a_region.currentText() == 'europe'
-    service_a_api_key = dialog.findChild(aqt.qt.QLineEdit, "ServiceA_api_key")
+    service_a_api_key = get_service_config_widget(dialog, aqt.qt.QLineEdit, 'ServiceA', 'api_key')
     assert service_a_api_key.text() == '123456'
-    service_a_delay = dialog.findChild(aqt.qt.QSpinBox, "ServiceA_delay")
+    service_a_delay = get_service_config_widget(dialog, aqt.qt.QSpinBox, 'ServiceA', 'delay')
     assert service_a_delay.value() == 7
-    service_a_demokey = dialog.findChild(aqt.qt.QCheckBox, "ServiceA_demo_key")
+    service_a_demokey = get_service_config_widget(dialog, aqt.qt.QCheckBox, 'ServiceA', 'demo_key')
     assert service_a_demokey.isChecked() == True
-
-    # setting the API key should make ServiceB's enable checkbox disabled and checked
-    service_b_enabled_checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceB_enabled")
-    assert service_b_enabled_checkbox.isChecked() == True
-
-    assert configuration.save_button.isEnabled() == False
 
     # dialog.exec()
 
@@ -2514,12 +2688,230 @@ def test_configuration(qtbot):
     assert configuration.hyperttspro.api_key_label.text() == '<b>API Key:</b> valid_key'
 
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_PRO
-    assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == True
-    assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
+    assert get_service_enabled_checkbox(dialog, 'ServiceB').isEnabled() == False
+    assert get_service_enabled_checkbox(dialog, 'ServiceA').isEnabled() == True
+    assert widget_shown(configuration.alert_label) == False
 
     assert configuration.save_button.isEnabled() == False # since we didn't change anything
 
-    # dialog.exec()    
+    # dialog.exec()
+
+def test_configuration_service_config_cancel(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_service_config_cancel
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())
+
+    service_a_enabled_checkbox = get_service_enabled_checkbox(dialog, 'ServiceA')
+    service_a_row = configuration.services.rows['ServiceA']
+
+    # cancelling a panel which was opened by enabling the service disables the service again
+    # ======================================================================================
+
+    service_a_enabled_checkbox.setChecked(True)
+    assert service_a_row.panel_open() == True
+    service_a_api_key = get_service_config_widget(dialog, aqt.qt.QLineEdit, 'ServiceA', 'api_key')
+    qtbot.keyClicks(service_a_api_key, 'abandoned_key')
+    assert configuration.model.get_service_configuration_key('ServiceA', 'api_key') == 'abandoned_key'
+
+    qtbot.mouseClick(service_a_row.panel_cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert service_a_row.panel_open() == False
+    assert configuration.model.get_service_configuration_key('ServiceA', 'api_key') == None
+    assert service_a_enabled_checkbox.isChecked() == False
+    assert configuration.model.get_service_enabled('ServiceA') == False
+    assert widget_shown(configuration.alert_label) == True
+
+    # cancelling a panel opened with the configure button only reverts the configuration
+    # =================================================================================
+
+    service_a_enabled_checkbox.setChecked(True)
+    service_a_api_key = get_service_config_widget(dialog, aqt.qt.QLineEdit, 'ServiceA', 'api_key')
+    qtbot.keyClicks(service_a_api_key, 'good_key')
+    qtbot.mouseClick(service_a_row.panel_ok_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert configuration.model.get_service_configuration_key('ServiceA', 'api_key') == 'good_key'
+
+    qtbot.mouseClick(service_a_row.configure_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert service_a_row.panel_open() == True
+    service_a_api_key.setText('typo_key')
+    assert configuration.model.get_service_configuration_key('ServiceA', 'api_key') == 'typo_key'
+    qtbot.mouseClick(service_a_row.panel_cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    assert configuration.model.get_service_configuration_key('ServiceA', 'api_key') == 'good_key'
+    assert service_a_api_key.text() == 'good_key'
+    assert service_a_row.panel_open() == False
+    # the service stays enabled, the user only cancelled out of the configuration panel
+    assert service_a_enabled_checkbox.isChecked() == True
+    assert configuration.model.get_service_enabled('ServiceA') == True
+
+def test_configuration_service_panel_configure_button(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_service_panel_configure_button
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())
+
+    service_a_enabled_checkbox = get_service_enabled_checkbox(dialog, 'ServiceA')
+    service_a_row = configuration.services.rows['ServiceA']
+
+    # a disabled service can't be configured
+    assert widget_shown(service_a_row.configure_button) == False
+
+    # enabling the service opens the panel, and while it's open there's no point offering the
+    # configure button as well
+    service_a_enabled_checkbox.setChecked(True)
+    assert service_a_row.panel_open() == True
+    assert widget_shown(service_a_row.configure_button) == False
+
+    # once the panel is closed the button comes back
+    qtbot.mouseClick(service_a_row.panel_ok_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert service_a_row.panel_open() == False
+    assert widget_shown(service_a_row.configure_button) == True
+
+    # and re-opening the panel with it hides it again
+    qtbot.mouseClick(service_a_row.configure_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert service_a_row.panel_open() == True
+    assert widget_shown(service_a_row.configure_button) == False
+
+    # cancelling out of the panel closes it just like OK does
+    qtbot.mouseClick(service_a_row.panel_cancel_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert service_a_row.panel_open() == False
+    assert widget_shown(service_a_row.configure_button) == True
+
+def test_configuration_service_panel_ok_enables_save(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_service_panel_ok_enables_save
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    # start from a configuration which already has ServiceA enabled and configured, so that
+    # nothing needs to change on screen for the model to be complete
+    configuration_model = config_models.Configuration()
+    configuration_model.set_service_enabled('ServiceA', True)
+    configuration_model.set_service_configuration_key('ServiceA', 'api_key', 'old_key')
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.load_model(configuration_model)
+    configuration.draw(dialog.getLayout())
+
+    assert configuration.save_button.isEnabled() == False
+
+    service_a_row = configuration.services.rows['ServiceA']
+    qtbot.mouseClick(service_a_row.configure_button, aqt.qt.Qt.MouseButton.LeftButton)
+    service_a_api_key = get_service_config_widget(dialog, aqt.qt.QLineEdit, 'ServiceA', 'api_key')
+    service_a_api_key.setText('new_key')
+    # editing the fields alone doesn't offer to save, the user hasn't committed to the change yet
+    assert configuration.save_button.isEnabled() == False
+
+    # keeping the configuration does
+    qtbot.mouseClick(service_a_row.panel_ok_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert configuration.model.get_service_configuration_key('ServiceA', 'api_key') == 'new_key'
+    assert configuration.save_button.isEnabled() == True
+
+def test_configuration_bulk_enable_disable_restores_panel_opening(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_bulk_enable_disable_restores_panel_opening
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())
+
+    # bulk enabling doesn't pop panels open, but it must not stop them opening afterwards either
+    qtbot.mouseClick(configuration.services.enable_all_free_services_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert configuration.model.get_service_enabled('ServiceA') == True
+    assert configuration.services.rows['ServiceA'].panel_open() == False
+    assert configuration.services.auto_open_panels == True
+    # the row still gets refreshed, even though no panel was opened
+    assert configuration.services.rows['ServiceA'].name_label.isEnabled() == True
+
+    get_service_enabled_checkbox(dialog, 'ServiceB').setChecked(True)
+    assert configuration.services.rows['ServiceB'].panel_open() == True
+
+    # same after a bulk disable
+    qtbot.mouseClick(configuration.services.disable_all_services_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert configuration.model.get_service_enabled('ServiceB') == False
+    assert configuration.services.rows['ServiceB'].panel_open() == False
+    assert configuration.services.auto_open_panels == True
+
+    get_service_enabled_checkbox(dialog, 'ServiceC').setChecked(True)
+    assert configuration.services.rows['ServiceC'].panel_open() == True
+
+def test_configuration_service_float_and_unsupported_options(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_service_float_and_unsupported_options
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    # none of the test services has a float option, and the grid has to cope with an option type
+    # it doesn't know how to draw, so give ServiceC both
+    service_c = hypertts_instance.service_manager.get_service('ServiceC')
+    service_c.configuration_options = lambda: {'speed': float, 'mystery': dict}
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())
+
+    # the option HyperTTS doesn't know how to draw is skipped, the rest of the panel still works
+    assert get_service_config_widget(dialog, aqt.qt.QWidget, 'ServiceC', 'mystery') == None
+    assert list(configuration.services.rows['ServiceC'].config_widgets.keys()) == ['speed']
+
+    get_service_enabled_checkbox(dialog, 'ServiceC').setChecked(True)
+    service_c_speed = get_service_config_widget(dialog, aqt.qt.QDoubleSpinBox, 'ServiceC', 'speed')
+    assert service_c_speed != None
+    service_c_speed.setValue(1.5)
+    assert configuration.model.get_service_configuration_key('ServiceC', 'speed') == 1.5
+
+    # and the value is read back from the model when the panel is re-opened
+    service_c_row = configuration.services.rows['ServiceC']
+    qtbot.mouseClick(service_c_row.panel_ok_button, aqt.qt.Qt.MouseButton.LeftButton)
+    configuration.model.set_service_configuration_key('ServiceC', 'speed', 2.5)
+    qtbot.mouseClick(service_c_row.configure_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert service_c_speed.value() == 2.5
+
+def test_configuration_service_without_config_options(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_service_without_config_options
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    # all the test services have configuration options, so take ServiceC's away
+    hypertts_instance.service_manager.get_service('ServiceC').configuration_options = lambda: {}
+
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    configuration.draw(dialog.getLayout())
+
+    service_c_row = configuration.services.rows['ServiceC']
+    assert service_c_row.has_config_options == False
+    # no options means no configuration panel is drawn at all
+    assert service_c_row.panel == None
+    assert dialog.findChild(aqt.qt.QGroupBox, 'hypertts_services_panel_ServiceC') == None
+
+    # enabling the service works, there's just nothing to configure
+    assert service_c_row.name_label.isEnabled() == False
+    get_service_enabled_checkbox(dialog, 'ServiceC').setChecked(True)
+    assert configuration.model.get_service_enabled('ServiceC') == True
+    assert service_c_row.panel_open() == False
+    assert widget_shown(service_c_row.configure_button) == False
+    # there's no panel to open or close, so the row refresh has to happen on the toggle itself
+    assert service_c_row.name_label.isEnabled() == True
+    get_service_enabled_checkbox(dialog, 'ServiceC').setChecked(False)
+    assert service_c_row.name_label.isEnabled() == False
+
+    # the services which do have options are unaffected
+    service_a_row = configuration.services.rows['ServiceA']
+    assert service_a_row.has_config_options == True
+    get_service_enabled_checkbox(dialog, 'ServiceA').setChecked(True)
+    assert service_a_row.panel_open() == True
 
 def test_configuration_pro_key_exception(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
@@ -2545,11 +2937,241 @@ def test_configuration_pro_key_exception(qtbot):
 
     # assert configuration.account_info_label.text() == '<b>error</b>: Key invalid'
 
-    # we entered an error key, so pro mode is not enabled
-    assert configuration.service_stack_map['ServiceB'].isVisibleTo(dialog) == True
-    assert configuration.clt_stack_map['ServiceB'].isVisibleTo(dialog) == False
-    assert configuration.service_stack_map['ServiceA'].isVisibleTo(dialog) == True
+    # we entered an error key, so pro mode is not enabled and services are configured individually
+    service_b_enabled_checkbox = get_service_enabled_checkbox(dialog, 'ServiceB')
+    assert service_b_enabled_checkbox.isEnabled() == True
+    assert widget_shown(configuration.services.rows['ServiceB'].pro_badge_label) == False
     assert configuration.header_logo_stack_widget.currentIndex() == configuration.STACK_LEVEL_LITE
+
+def build_configuration_screen(hypertts_instance, configuration_model=None):
+    """the services configuration screen, drawn, optionally loaded with an existing configuration"""
+    dialog = gui_testing_utils.EmptyDialog()
+    dialog.setupUi()
+    configuration = component_configuration.Configuration(hypertts_instance, dialog)
+    if configuration_model != None:
+        configuration.load_model(configuration_model)
+    configuration.draw(dialog.getLayout())
+    return dialog, configuration
+
+
+def test_configuration_saved_api_key_verification_failure_keeps_key(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_saved_api_key_verification_failure_keeps_key
+    # github issue #360: verifying the API key stored in the configuration fails just as much when
+    # the HyperTTS servers are unreachable as when the key is wrong. HyperTTS used to drop the key
+    # from the model, and the next save made the loss permanent.
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    hypertts_instance.service_manager.get_service('ServiceA').enabled = False
+    hypertts_instance.service_manager.get_service('ServiceB').enabled = False
+
+    configuration_model = config_models.Configuration()
+    configuration_model.set_hypertts_pro_api_key('invalid_key')
+
+    dialog, configuration = build_configuration_screen(hypertts_instance, configuration_model)
+
+    # the key didn't verify, so we're on the API key screen with the error displayed
+    hyperttspro = configuration.hyperttspro
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
+    assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
+    assert hyperttspro.hypertts_pro_api_key.text() == 'invalid_key'
+    # the API key is still there, and the user is told it was kept, with a way to remove it
+    assert configuration.model.hypertts_pro_api_key == 'invalid_key'
+    assert widget_shown(hyperttspro.api_key_kept_label) == True
+    assert widget_shown(hyperttspro.remove_kept_api_key_button) == True
+    # a failed verification isn't a change, there is nothing to save
+    assert configuration.save_button.isEnabled() == False
+
+    # the user enables a service and saves: their API key survives
+    get_service_enabled_checkbox(dialog, 'ServiceA').setChecked(True)
+    assert configuration.save_button.isEnabled() == True
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    written_configuration = hypertts_instance.anki_utils.written_config['configuration']
+    assert written_configuration['hypertts_pro_api_key'] == 'invalid_key'
+    assert written_configuration['service_enabled']['ServiceA'] == True
+
+
+def test_configuration_saved_api_key_verification_failure_user_removes_key(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_saved_api_key_verification_failure_user_removes_key
+    # the flip side of the above: HyperTTS keeps an API key it couldn't verify, so the user must
+    # have a way to get rid of it themselves (github issue #360)
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    configuration_model = config_models.Configuration()
+    configuration_model.set_hypertts_pro_api_key('invalid_key')
+
+    dialog, configuration = build_configuration_screen(hypertts_instance, configuration_model)
+    hyperttspro = configuration.hyperttspro
+
+    qtbot.mouseClick(hyperttspro.remove_kept_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_BUTTONS
+    assert hyperttspro.hypertts_pro_api_key.text() == ''
+    assert widget_shown(hyperttspro.api_key_kept_label) == False
+    assert widget_shown(hyperttspro.remove_kept_api_key_button) == False
+    assert configuration.model.hypertts_pro_api_key == None
+    # removing the key is a change, and it can be saved
+    assert configuration.save_button.isEnabled() == True
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    assert hypertts_instance.anki_utils.written_config['configuration']['hypertts_pro_api_key'] == None
+
+
+def test_configuration_entered_api_key_invalid_not_saved(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_entered_api_key_invalid_not_saved
+    # an API key the user types which doesn't verify is never written to the configuration
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+    hypertts_instance.service_manager.get_service('ServiceA').enabled = False
+    hypertts_instance.service_manager.get_service('ServiceB').enabled = False
+
+    dialog, configuration = build_configuration_screen(hypertts_instance)
+    hyperttspro = configuration.hyperttspro
+
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    qtbot.keyClicks(hyperttspro.hypertts_pro_api_key, 'invalid_key')
+
+    assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
+    assert configuration.model.hypertts_pro_api_key == None
+    # there was no API key in the configuration, so there is nothing we kept
+    assert widget_shown(hyperttspro.api_key_kept_label) == False
+    assert widget_shown(hyperttspro.remove_kept_api_key_button) == False
+
+    get_service_enabled_checkbox(dialog, 'ServiceA').setChecked(True)
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+
+    assert hypertts_instance.anki_utils.written_config['configuration']['hypertts_pro_api_key'] == None
+
+
+def test_configuration_entered_api_key_invalid_doesnt_replace_saved_key(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_entered_api_key_invalid_doesnt_replace_saved_key
+    # typing an API key which doesn't verify leaves the API key already in the configuration alone
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    configuration_model = config_models.Configuration()
+    configuration_model.set_hypertts_pro_api_key('invalid_key')
+
+    dialog, configuration = build_configuration_screen(hypertts_instance, configuration_model)
+    hyperttspro = configuration.hyperttspro
+
+    # we're on the API key screen, with the saved key which failed verification
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
+    # the user tries another key, which doesn't verify either
+    hyperttspro.hypertts_pro_api_key.setText('another_invalid_key')
+
+    assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
+    assert configuration.model.hypertts_pro_api_key == 'invalid_key'
+
+    # and one which does
+    hyperttspro.hypertts_pro_api_key.setText('valid_key')
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_ENABLED
+    assert configuration.model.hypertts_pro_api_key == 'valid_key'
+
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert hypertts_instance.anki_utils.written_config['configuration']['hypertts_pro_api_key'] == 'valid_key'
+
+
+def test_configuration_save_disabled_while_verifying_api_key(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_save_disabled_while_verifying_api_key
+    # github issue #360: the user removed their API key, entered a new one, and pressed Save 80ms
+    # later, while the verification request was still in flight. the new key hadn't reached the
+    # configuration model yet, so the save wrote the removal and the key was lost.
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    configuration_model = config_models.Configuration()
+    configuration_model.set_hypertts_pro_api_key('valid_key')
+
+    dialog, configuration = build_configuration_screen(hypertts_instance, configuration_model)
+    hyperttspro = configuration.hyperttspro
+
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_ENABLED
+    assert configuration.save_button.isEnabled() == False
+    assert widget_shown(configuration.save_blocked_label) == False
+
+    # the user removes their API key, which by itself is saveable
+    qtbot.mouseClick(hyperttspro.remove_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert configuration.model.hypertts_pro_api_key == None
+    assert configuration.save_button.isEnabled() == True
+
+    # then enters a new one, whose verification doesn't come back right away
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    hypertts_instance.anki_utils.defer_background_tasks = True
+    hyperttspro.hypertts_pro_api_key.setText('valid_key')
+
+    # saving now would write the removal rather than the key which is being verified
+    assert configuration.save_button.isEnabled() == False
+    assert widget_shown(configuration.save_blocked_label) == True
+    assert configuration.save_blocked_label.text() == constants.GUI_TEXT_HYPERTTS_PRO_VERIFYING_API_KEY
+
+    # once the verification comes back, the key is in the model and saving is possible again
+    hypertts_instance.anki_utils.run_deferred_background_tasks()
+    assert configuration.model.hypertts_pro_api_key == 'valid_key'
+    assert configuration.save_button.isEnabled() == True
+    assert widget_shown(configuration.save_blocked_label) == False
+
+    qtbot.mouseClick(configuration.save_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert hypertts_instance.anki_utils.written_config['configuration']['hypertts_pro_api_key'] == 'valid_key'
+
+
+def test_configuration_save_blocked_before_verification_starts(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_save_blocked_before_verification_starts
+    # the typing timer only fires a second after the user stops typing: saving has to be blocked
+    # from the first keystroke, not only once the request is on its way (github issue #360)
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog, configuration = build_configuration_screen(hypertts_instance)
+    hyperttspro = configuration.hyperttspro
+
+    # something changed, so saving would normally be possible
+    get_service_enabled_checkbox(dialog, 'ServiceA').setChecked(True)
+    assert configuration.save_button.isEnabled() == True
+
+    # the user starts typing an API key. the typing timer hasn't fired yet, so no verification has
+    # started, but what is in the field is not what would be saved
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    hyperttspro.hypertts_pro_api_key_timer.enabled = False
+    hyperttspro.hypertts_pro_api_key.setText('valid_key')
+
+    assert configuration.save_button.isEnabled() == False
+    assert widget_shown(configuration.save_blocked_label) == True
+
+    # the typing timer fires, the key verifies, and saving becomes possible again
+    hyperttspro.hypertts_pro_api_key_timer.enabled = True
+    hyperttspro.pro_api_key_entered()
+    assert configuration.model.hypertts_pro_api_key == 'valid_key'
+    assert configuration.save_button.isEnabled() == True
+    assert widget_shown(configuration.save_blocked_label) == False
+
+
+def test_configuration_save_reenabled_after_verification_error(qtbot):
+    # pytest tests/test_components_1.py -k test_configuration_save_reenabled_after_verification_error
+    # a verification request which blows up must not leave the Save button disabled forever
+    config_gen = testing_utils.TestConfigGenerator()
+    hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+
+    dialog, configuration = build_configuration_screen(hypertts_instance)
+    hyperttspro = configuration.hyperttspro
+
+    get_service_enabled_checkbox(dialog, 'ServiceA').setChecked(True)
+    assert configuration.save_button.isEnabled() == True
+
+    qtbot.mouseClick(hyperttspro.enter_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    hypertts_instance.anki_utils.defer_background_tasks = True
+    hyperttspro.hypertts_pro_api_key.setText('exception_key')
+    assert configuration.save_button.isEnabled() == False
+
+    hypertts_instance.anki_utils.run_deferred_background_tasks()
+
+    assert configuration.save_blocked_reason == None
+    assert configuration.save_button.isEnabled() == True
+    assert widget_shown(configuration.save_blocked_label) == False
+    # the API key is not written to the configuration when we couldn't verify it
+    assert configuration.model.hypertts_pro_api_key == None
+
 
 def test_configuration_enable_disable_services(qtbot):
     config_gen = testing_utils.TestConfigGenerator()
@@ -2567,17 +3189,17 @@ def test_configuration_enable_disable_services(qtbot):
 
     # enable all free services
     # ========================
-    qtbot.mouseClick(configuration.enable_all_free_services_button, aqt.qt.Qt.MouseButton.LeftButton)
+    qtbot.mouseClick(configuration.services.enable_all_free_services_button, aqt.qt.Qt.MouseButton.LeftButton)
 
     # check effect on model
     assert configuration.model.get_service_enabled('ServiceA') == True
+    # bulk enabling doesn't pop configuration panels open
+    assert configuration.services.rows['ServiceA'].panel_open() == False
 
     # now enable services B and C
     # ============================
-    checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceB_enabled")
-    checkbox.setChecked(True)    
-    checkbox = dialog.findChild(aqt.qt.QCheckBox, "ServiceC_enabled")
-    checkbox.setChecked(True)
+    get_service_enabled_checkbox(dialog, 'ServiceB').setChecked(True)
+    get_service_enabled_checkbox(dialog, 'ServiceC').setChecked(True)
 
     assert configuration.model.get_service_enabled('ServiceA') == True
     assert configuration.model.get_service_enabled('ServiceB') == True
@@ -2585,14 +3207,14 @@ def test_configuration_enable_disable_services(qtbot):
 
     # now disable all services
     # ========================
-    qtbot.mouseClick(configuration.disable_all_services_button, aqt.qt.Qt.MouseButton.LeftButton)
+    qtbot.mouseClick(configuration.services.disable_all_services_button, aqt.qt.Qt.MouseButton.LeftButton)
     assert configuration.model.get_service_enabled('ServiceA') == False
     assert configuration.model.get_service_enabled('ServiceB') == False
-    assert configuration.model.get_service_enabled('ServiceC') == False   
+    assert configuration.model.get_service_enabled('ServiceC') == False
 
 
 def test_configuration_manual(qtbot):
-    # HYPERTTS_CONFIGURATION_DIALOG_DEBUG=yes pytest test_components.py -k test_configuration_manual
+    # HYPERTTS_CONFIGURATION_DIALOG_DEBUG=yes pytest tests/test_components_1.py -k test_configuration_manual
     config_gen = testing_utils.TestConfigGenerator()
     hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
     # start by disabling both services
@@ -2604,10 +3226,12 @@ def test_configuration_manual(qtbot):
 
     # model_change_callback = gui_testing_utils.MockModelChangeCallback()
     configuration = component_configuration.Configuration(hypertts_instance, dialog)
-    configuration.draw(dialog.getLayout())    
+    configuration.draw(dialog.getLayout())
+    # open on the services grid, which is what this screen is mostly about
+    configuration.tabs.setCurrentIndex(configuration.TAB_INDEX_SERVICES)
 
     if os.environ.get('HYPERTTS_CONFIGURATION_DIALOG_DEBUG', 'no') == 'yes':
-        dialog.exec()    
+        dialog.exec()
 
 def test_hyperttspro_test_1(qtbot):
     # pytest test_components.py -k test_hyperttspro_test_1
@@ -2721,8 +3345,28 @@ def test_hyperttspro_test_1(qtbot):
     assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_API_KEY
     assert hyperttspro.hypertts_pro_api_key.text() == 'invalid_key'
     assert hyperttspro.api_key_validation_label.text() == '<b>error</b>: Key invalid'
+    # the API key which was already in the configuration is kept, HyperTTS never removes it by
+    # itself after a failed verification (github issue #360). the user is told it was kept and
+    # gets a button to remove it themselves.
     assert model_change_callback.model == config_models.HyperTTSProAccountConfig(
+        api_key='invalid_key',
+        api_key_valid=False,
         api_key_error='Key invalid',
+    )
+    assert widget_shown(hyperttspro.api_key_kept_label) == True
+    assert widget_shown(hyperttspro.remove_kept_api_key_button) == True
+
+    # removing it from there clears the API key and reports the removal
+    qtbot.mouseClick(hyperttspro.remove_kept_api_key_button, aqt.qt.Qt.MouseButton.LeftButton)
+    assert hyperttspro.hypertts_pro_stack.currentIndex() == hyperttspro.PRO_STACK_LEVEL_BUTTONS
+    assert hyperttspro.hypertts_pro_api_key.text() == ''
+    assert widget_shown(hyperttspro.api_key_kept_label) == False
+    assert widget_shown(hyperttspro.remove_kept_api_key_button) == False
+    assert model_change_callback.model == config_models.HyperTTSProAccountConfig(
+        api_key=None,
+        api_key_valid=False,
+        api_key_error=None,
+        account_info=None,
     )
     # dialog.exec()
 

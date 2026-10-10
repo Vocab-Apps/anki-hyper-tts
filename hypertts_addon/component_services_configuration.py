@@ -7,7 +7,7 @@ from . import constants_events
 from .constants_events import Event, EventMode
 from . import stats
 
-logger = logging_utils.get_test_child_logger(__name__)
+logger = logging_utils.get_child_logger(__name__)
 
 sc = stats.StatsContext(constants_events.EventContext.services_configuration)
 

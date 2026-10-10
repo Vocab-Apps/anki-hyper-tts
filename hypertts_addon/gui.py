@@ -22,6 +22,7 @@ from . import stats
 from . import config_models
 from . import errors
 from . import component_batch
+from . import component_remove_audio
 from . import component_realtime
 from . import component_presetmappingrules
 from . import component_configuration
@@ -45,11 +46,12 @@ class ConfigurationDialog(aqt.qt.QDialog):
         self.configuration.load_model(hypertts.get_configuration())
 
     def setupUi(self):
-        self.setMinimumSize(500, 300)
+        # the services grid needs the width, service names get long
+        self.setMinimumSize(700, 300)
         self.setWindowTitle(constants.GUI_CONFIGURATION_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
         self.configuration.draw(self.main_layout)
-        self.resize(500, 700)
+        self.resize(700, 700)
 
     def close(self):
         self.accept()
@@ -64,7 +66,11 @@ class PreferencesDialog(aqt.qt.QDialog):
         self.setWindowTitle(constants.GUI_PREFERENCES_DIALOG_TITLE)
         self.main_layout = aqt.qt.QVBoxLayout(self)
         self.preferences.draw(self.main_layout)
-        self.resize(450, 500)
+        # never open smaller than the tallest tab needs. a word wrapped QLabel reports a single
+        # line as its minimum height, so a dialog which is too short doesn't grow a scrollbar, it
+        # silently crops the descriptions (see gui_utils.get_wrapped_label)
+        size_hint = self.sizeHint()
+        self.resize(max(450, size_hint.width()), max(500, size_hint.height()))
 
     def close(self):
         self.accept()
@@ -120,7 +126,19 @@ def launch_preferences_dialog(hypertts):
         logger.info('launch_preferences_dialog')
         dialog = PreferencesDialog(hypertts)
         dialog.setupUi()
-        dialog.exec()        
+        dialog.exec()
+
+def report_extension_load_errors(hypertts):
+    """tell the user about third party services which couldn't be loaded. those failures are
+    swallowed at startup so that a broken extension doesn't prevent HyperTTS from loading, so this
+    is the only place the user gets to find out about them. shown once per Anki session."""
+    load_errors = hypertts.service_manager.extension_load_errors
+    if len(load_errors) == 0:
+        return
+    logger.info(f'reporting {len(load_errors)} extension load errors')
+    error_list = ''.join([f'<li>{error}</li>' for error in load_errors])
+    message = (f'{constants.GUI_TEXT_EXTENSIONS_LOAD_ERRORS}<ul>{error_list}</ul>')
+    hypertts.anki_utils.info_message(message, aqt.mw)
 
 def launch_realtime_dialog_browser(hypertts, note_id_list):
     with hypertts.error_manager.get_single_action_context('Launching HyperTTS Realtime Dialog from Browser'):
@@ -191,6 +209,13 @@ def init(hypertts):
                     reset_browser_model(browser)
             return launch
 
+        def get_launch_remove_audio_dialog_fn(hypertts, browser):
+            def launch():
+                with hypertts.error_manager.get_single_action_context('Opening HyperTTS Remove Audio Dialog from Browser'):
+                    component_remove_audio.create_component_remove_audio_browser(hypertts, browser.selectedNotes())
+                    reset_browser_model(browser)
+            return launch
+
         def get_launch_realtime_dialog_browser_fn(hypertts, browser):
             def launch():
                 with hypertts.error_manager.get_single_action_context('Adding Realtime TTS'):
@@ -215,6 +240,12 @@ def init(hypertts):
             action = aqt.qt.QAction(f'Add Audio (Collection): {preset_info.name}...', browser)
             action.triggered.connect(get_launch_dialog_browser_existing_fn(hypertts, browser, preset_info.id))
             menu.addAction(action)
+
+        menu.addSeparator()
+
+        action = aqt.qt.QAction(f'Remove Audio (Collection)...', browser)
+        action.triggered.connect(get_launch_remove_audio_dialog_fn(hypertts, browser))
+        menu.addAction(action)
 
         menu.addSeparator()
 
@@ -324,6 +355,11 @@ def init(hypertts):
         if hasattr(sys, '_hypertts_stats_global'):
             # load required data
             sys._hypertts_stats_global.init_load()
+
+        # report third party services which failed to load, once per Anki session
+        if not hasattr(sys, '_hypertts_extension_errors_reported'):
+            sys._hypertts_extension_errors_reported = True
+            report_extension_load_errors(hypertts)
 
         if should_show_welcome_message(hypertts):
             configuration = hypertts.get_configuration()

@@ -25,6 +25,7 @@ from . import voice as voice_module
 from . import errors
 from . import text_utils
 from . import config_models
+from . import config_backup
 from . import context
 from . import logging_utils
 from . import gui
@@ -57,9 +58,78 @@ class HyperTTS():
         self.error_manager = errors.ErrorManager(self.anki_utils)
         self.config = self.anki_utils.get_config()
         self.latest_saved_batch_name = None
+        self.config_backup_manager = config_backup.ConfigBackupManager(self.anki_utils)
+        self.config_loss_notified = False
+
+        # check whether the configuration we just loaded can be trusted. if it can't (empty
+        # configuration while backups contain data, or a meta.json which doesn't parse), we must not
+        # write anything back, otherwise the loss becomes permanent (github issue #360)
+        self.config_writes_blocked = not self.config_backup_manager.check_startup_config_state(self.config)
+        if self.config_writes_blocked:
+            self.notify_configuration_loss()
+        else:
+            # keep a backup of the configuration we start with
+            self.config_backup_manager.save_backup(self.config)
 
         # do maintenance on the configuration
         self.perform_config_migration()
+        self.expire_remote_logging()
+
+    # configuration persistence
+    # =========================
+
+    def persist_config(self) -> bool:
+        """single choke point for writing the addon configuration. keeps a backup of every
+        configuration we write, and refuses to persist a configuration which looks like it was
+        lost rather than modified by the user (github issue #360). returns whether the
+        configuration was written."""
+        logger.info(f'persisting configuration: '
+            f'{config_backup.analyze_config(self.config).describe()}')
+        if self.config_writes_blocked:
+            logger.error('not writing configuration, configuration writes are blocked')
+            self.notify_configuration_loss()
+            return False
+        if not self.config_backup_manager.check_config_before_write(self.config):
+            self.config_writes_blocked = True
+            self.notify_configuration_loss()
+            return False
+        self.anki_utils.write_config(self.config)
+        # read anki's meta.json back, where our configuration really lives. this confirms, for every
+        # single write, that the configuration made it to disk (github issue #360)
+        logger.info(f'meta.json after writing the configuration: '
+            f'{self.config_backup_manager.get_meta_json_status()}')
+        backup_filename = self.config_backup_manager.save_backup(self.config)
+        logger.info(f'configuration persisted, backup: {backup_filename}')
+        return True
+
+    def notify_configuration_loss(self):
+        """tell the user, once, that their configuration couldn't be read and how to restore it"""
+        if self.config_loss_notified:
+            return
+        self.config_loss_notified = True
+        try:
+            self.anki_utils.run_on_main_delayed(lambda:
+                self.anki_utils.critical_message(constants.GUI_TEXT_CONFIG_LOSS_DETECTED, None))
+        except Exception as e:
+            logger.warning(f'could not display configuration loss message: {e}')
+
+    def restore_config_backup(self, filename: str) -> config_models.Configuration:
+        """restore the configuration from one of the backup files in user_files/config_backup"""
+        logger.info(f'restoring configuration backup {filename}')
+        restored_config = self.config_backup_manager.load_backup_config(filename)
+        # keep a backup of the configuration we are about to replace, so that the restore itself
+        # can be undone
+        self.config_backup_manager.save_backup(self.config)
+        self.config = restored_config
+        # a backup may come from an older version of HyperTTS
+        self.config = config_models.migrate_configuration(self.anki_utils, self.config)
+        # the configuration was restored on purpose, don't let the loss detection block the write
+        self.config_writes_blocked = False
+        self.config_loss_notified = False
+        self.anki_utils.write_config(self.config)
+        self.config_backup_manager.save_backup(self.config)
+        self.reconfigure_service_manager()
+        return self.get_configuration()
 
 
     def process_batch_audio(self, note_id_list, batch, batch_status, anki_collection):
@@ -506,7 +576,7 @@ class HyperTTS():
             options.AudioFormat.ogg_opus: 'ogg',
         }
         extension = extension_map[format]
-        filename = f'hypertts-{hash_str}.{extension}'
+        filename = f'{constants.AUDIO_FILENAME_PREFIX}{hash_str}.{extension}'
         return filename
 
     def get_hash_for_audio_request(self, source_text, voice_id: voice_module.TtsVoiceId_v3, options):
@@ -520,6 +590,67 @@ class HyperTTS():
     def keep_only_sound_tags(self, field_value):
         matches = re.findall(r'\[sound:[^\]]+\]', field_value)
         return ' '.join(matches)
+
+
+    # removing audio from notes
+    # =========================
+
+    def get_note_remove_audio_changes(self, note, remove_audio_config: config_models.RemoveAudioConfig) -> List[config_models.RemoveAudioFieldChange]:
+        """return the list of field changes which removing audio from this note would produce"""
+        if remove_audio_config.field_name != None:
+            field_name_list = [remove_audio_config.field_name]
+        else:
+            field_name_list = self.get_fields_from_note(note)
+
+        change_list = []
+        for field_name in field_name_list:
+            if field_name not in note:
+                # the user may have selected notes of different note types
+                continue
+            original_text = note[field_name]
+            new_text, removed_filenames = text_utils.remove_sound_tags(original_text,
+                remove_audio_config.hypertts_only)
+            if len(removed_filenames) == 0:
+                continue
+            change_list.append(config_models.RemoveAudioFieldChange(
+                note_id=note.id,
+                field_name=field_name,
+                original_text=original_text,
+                new_text=new_text,
+                removed_filenames=removed_filenames))
+        return change_list
+
+    def get_remove_audio_changes(self, note_id_list, remove_audio_config: config_models.RemoveAudioConfig) -> List[config_models.RemoveAudioFieldChange]:
+        """preview: which fields of which notes would be modified"""
+        change_list = []
+        for note_id in note_id_list:
+            note = self.anki_utils.get_note_by_id(note_id)
+            change_list.extend(self.get_note_remove_audio_changes(note, remove_audio_config))
+        logger.debug(f'get_remove_audio_changes: {len(change_list)} changes for {len(note_id_list)} notes')
+        return change_list
+
+    def remove_audio_from_notes(self, note_id_list, remove_audio_config: config_models.RemoveAudioConfig, anki_collection):
+        """
+        actually remove the audio. must run inside a collection op so that the
+        changes are grouped into a single undoable entry.
+        returns (modified_note_count, removed_sound_tag_count)
+        """
+        modified_note_count = 0
+        removed_sound_tag_count = 0
+        for note_id in note_id_list:
+            note = self.anki_utils.get_note_by_id(note_id)
+            change_list = self.get_note_remove_audio_changes(note, remove_audio_config)
+            if len(change_list) == 0:
+                continue
+            for change in change_list:
+                logger.debug(f'removing {change.removed_count} sound tag(s) from note {note_id} '
+                             f'field {change.field_name}')
+                note[change.field_name] = change.new_text
+                removed_sound_tag_count += change.removed_count
+            anki_collection.update_note(note)
+            modified_note_count += 1
+        logger.info(f'removed {removed_sound_tag_count} sound tags from {modified_note_count} notes')
+        return modified_note_count, removed_sound_tag_count
 
 
     # processing of Anki TTS tags
@@ -736,8 +867,12 @@ class HyperTTS():
         preset.validate()
         if constants.CONFIG_PRESETS not in self.config:
             self.config[constants.CONFIG_PRESETS] = {}
+        # log before persisting: persist_config may report a configuration anomaly to sentry, and we
+        # want the breadcrumbs to already say which preset we were saving (github issue #360)
+        logger.info(f'saving preset [{preset.name}] [{preset.uuid}], '
+            f'{len(self.config[constants.CONFIG_PRESETS])} presets before save')
         self.config[constants.CONFIG_PRESETS][preset.uuid] = preset.serialize()
-        self.anki_utils.write_config(self.config)
+        self.persist_config()
         logger.info(f'saved preset [{preset.name}] {pprint.pformat(preset.serialize(), compact=True, width=500)}')
 
     def load_preset(self, preset_id: str) -> config_models.BatchConfig:
@@ -754,8 +889,14 @@ class HyperTTS():
     def delete_preset(self, preset_id: str):
         if preset_id not in self.config[constants.CONFIG_PRESETS]:
             raise errors.PresetNotFound(preset_id)
+        # log before persisting, so that a configuration anomaly reported by persist_config carries
+        # a breadcrumb saying the user deleted a preset. without it, a preset count going down looks
+        # exactly like the configuration loss described in github issue #360
+        preset_name = self.config[constants.CONFIG_PRESETS][preset_id].get('name', 'unknown')
+        logger.info(f'deleting preset [{preset_name}] [{preset_id}], '
+            f'{len(self.config[constants.CONFIG_PRESETS])} presets before delete')
         del self.config[constants.CONFIG_PRESETS][preset_id]
-        self.anki_utils.write_config(self.config)        
+        self.persist_config()
 
     def get_next_preset_name(self) -> str:
         """returns the next available preset name which doesn't collide with others"""
@@ -794,8 +935,11 @@ class HyperTTS():
 
     # mapping rules
     def save_mapping_rules(self, mapping_rules: config_models.PresetMappingRules):
+        # log before persisting, so that a configuration anomaly reported by persist_config already
+        # says how many rules we meant to write (github issue #360)
+        logger.info(f'saving {len(mapping_rules.rules)} preset mapping rules')
         self.config[constants.CONFIG_MAPPING_RULES] = config_models.serialize_preset_mapping_rules(mapping_rules)
-        self.anki_utils.write_config(self.config)
+        self.persist_config()
         logger.info('saved mapping rules')
 
     def load_mapping_rules(self) -> config_models.PresetMappingRules:
@@ -821,8 +965,10 @@ class HyperTTS():
         else:
             # use the key provided
             final_key = settings_key
+        logger.info(f'saving realtime config [{final_key}], '
+            f'{len(self.config[constants.CONFIG_REALTIME_CONFIG])} realtime configs before save')
         self.config[constants.CONFIG_REALTIME_CONFIG][final_key] = realtime_model.serialize()
-        self.anki_utils.write_config(self.config)
+        self.persist_config()
         return final_key
 
     def load_realtime_config(self, settings_key):
@@ -841,14 +987,23 @@ class HyperTTS():
     def save_configuration(self, configuration_model):
         configuration_model = self.service_manager.remove_non_existent_services(configuration_model)
         configuration_model.validate()
+        # log before persisting, so that a configuration anomaly reported by persist_config carries
+        # a breadcrumb saying what the user was saving (github issue #360)
+        enabled_service_count = len([enabled
+            for enabled in configuration_model.service_enabled.values() if enabled])
+        logger.info(f'saving configuration: {len(configuration_model.service_config)} services '
+            f'with settings, {enabled_service_count} services enabled, API key set: '
+            f'{configuration_model.hypertts_pro_api_key_set()}, '
+            f'user_uuid {configuration_model.user_uuid}')
         self.config[constants.CONFIG_CONFIGURATION] = config_models.serialize_configuration(configuration_model)
-        self.anki_utils.write_config(self.config)
+        self.persist_config()
 
     def get_configuration(self) -> config_models.Configuration:
         return self.deserialize_configuration(self.config.get(constants.CONFIG_CONFIGURATION, {}))
 
     def save_hypertts_pro_api_key(self, api_key: str):
         """saves the HyperTTS Pro API key to the configuration"""
+        logger.info('saving the HyperTTS Pro API key')
         configuration = self.get_configuration()
         configuration.hypertts_pro_api_key = api_key
         configuration.use_vocabai_api = True
@@ -913,8 +1068,9 @@ class HyperTTS():
         return self.get_configuration().hypertts_pro_api_key_set()
 
     def set_editor_use_selection(self, use_selection):
+        logger.info(f'saving editor use selection setting [{use_selection}]')
         self.config[constants.CONFIG_USE_SELECTION] = use_selection
-        self.anki_utils.write_config(self.config)
+        self.persist_config()
 
     def get_editor_use_selection(self):
         return self.config.get(constants.CONFIG_USE_SELECTION, False)
@@ -924,17 +1080,55 @@ class HyperTTS():
         return self.deserialize_preferences(self.config.get(constants.CONFIG_PREFERENCES, {}))
 
     def save_preferences(self, preferences_model):
-        self.config[constants.CONFIG_PREFERENCES] = config_models.serialize_preferences(preferences_model)
-        self.anki_utils.write_config(self.config)
+        # apply detailed logging before writing anything: we ask users to turn it on precisely when
+        # we suspect their configuration doesn't survive a restart, so it has to take effect for
+        # this anki session even if the write below fails or the preference is lost afterwards
+        self.apply_remote_logging_preference(preferences_model.error_handling)
+        serialized_preferences = config_models.serialize_preferences(preferences_model)
+        logger.info(f'saving preferences '
+            f'{pprint.pformat(serialized_preferences, compact=True, width=500)}')
+        self.config[constants.CONFIG_PREFERENCES] = serialized_preferences
+        self.persist_config()
         # reconfigure service manager to apply new SSL settings
         self.reconfigure_service_manager()
+
+    def apply_remote_logging_preference(self, error_handling):
+        """turn detailed logging on or off right away, no anki restart required. a no-op when
+        crash reporting is disabled, there is no sentry client to ship the records to"""
+        if error_handling.remote_logging and not error_handling.remote_logging_expired():
+            logging_utils.enable_sentry_remote_logging()
+            # after the fact on purpose: this record goes out over the channel we just turned on,
+            # which is what tells us in sentry that detailed logging is live for this user
+            logger.info('detailed logging enabled')
+        else:
+            logging_utils.disable_sentry_remote_logging()
+
+    def expire_remote_logging(self):
+        """detailed logging is only meant to stay on while we diagnose a problem the user reported.
+        turn the preference back off once it has been on for
+        constants.REMOTE_LOGGING_ENABLED_DAYS days. runs at startup, so like the config migration it
+        only writes the configuration when it actually changed something"""
+        preferences = self.get_preferences()
+        if not preferences.error_handling.expire_remote_logging():
+            return
+        logger.info('detailed logging expired, disabling it')
+        # not save_preferences: this runs from the constructor, the service manager isn't
+        # configured yet and there is nothing to reconfigure, the SSL settings didn't change
+        self.config[constants.CONFIG_PREFERENCES] = config_models.serialize_preferences(preferences)
+        self.persist_config()
 
     # deserialization routines for loading from config
     # ================================================
 
     def perform_config_migration(self):
+        # only write the configuration back if the migration actually changed something. writing on
+        # every single startup is what turns a transient read failure into permanent data loss
+        # (github issue #360)
+        config_before_migration = copy.deepcopy(self.config)
         self.config = config_models.migrate_configuration(self.anki_utils, self.config)
-        self.anki_utils.write_config(self.config)
+        if self.config != config_before_migration:
+            logger.info('configuration was migrated, saving it')
+            self.persist_config()
 
     def deserialize_batch_config(self, batch_config):
         batch = config_models.BatchConfig(self.anki_utils)

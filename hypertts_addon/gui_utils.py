@@ -89,6 +89,20 @@ def process_label_text(text):
     return text.replace('\n', '<br/>')
 
 
+def get_wrapped_label(text):
+    """a QLabel whose text wraps and which is actually given the height the wrapped text needs.
+    a word wrapped QLabel does reimplement heightForWidth(), but a layout only asks for it when the
+    widget's size policy says the widget has one, and QLabel never sets that flag itself. without
+    it the label is laid out at its sizeHint, which assumes a much wider single block of text, and
+    the lines that don't fit are cropped"""
+    label = aqt.qt.QLabel(text)
+    label.setWordWrap(True)
+    size_policy = label.sizePolicy()
+    size_policy.setHeightForWidth(True)
+    label.setSizePolicy(size_policy)
+    return label
+
+
 def get_graphics_path(filename):
     current_dir = os.path.dirname(__file__)
     root_dir = os.path.join(current_dir, os.pardir)

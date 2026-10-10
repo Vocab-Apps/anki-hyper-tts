@@ -1,5 +1,6 @@
 import sys
 import os
+import socket
 import requests
 import json
 import base64
@@ -14,6 +15,37 @@ from . import logging_utils
 from . import config_models
 logger = logging_utils.get_child_logger(__name__)
 
+try:
+    from urllib3.exceptions import ReadTimeoutError as _Urllib3ReadTimeoutError
+except Exception:  # pragma: no cover - urllib3 is a hard dep of requests
+    _Urllib3ReadTimeoutError = None
+
+
+def _is_wrapped_read_timeout(exc):
+    """Return True if exc is a read timeout that requests re-raised as a plain
+    ConnectionError (not a Timeout subclass).
+
+    When ``Session.post`` is called with ``stream=False`` (the default),
+    requests reads the response body during the call. A urllib3
+    ReadTimeoutError raised mid-read is wrapped in
+    ``requests.exceptions.ConnectionError`` rather than
+    ``requests.exceptions.Timeout``, so the ``except requests.exceptions.Timeout``
+    handler misses it and the error is mis-tagged as ServiceConnectionError
+    (Sentry ANKI-HYPER-TTS-KC2). The cause chain is linked via __context__
+    (implicit "during handling"), not __cause__, so walk both.
+    """
+    seen = set()
+    cur = exc
+    while cur is not None and id(cur) not in seen:
+        seen.add(id(cur))
+        if isinstance(cur, socket.timeout):
+            return True
+        if _Urllib3ReadTimeoutError is not None and isinstance(cur, _Urllib3ReadTimeoutError):
+            return True
+        cur = cur.__cause__ or cur.__context__
+    # Fallback: urllib3 ReadTimeoutError's canonical message.
+    return 'Read timed out' in str(exc)
+
 if hasattr(sys, '_sentry_crash_reporting'):
     import sentry_sdk
     def _start_span(op, name=None):
@@ -26,11 +58,9 @@ else:
 
 class CloudLanguageTools():
     def __init__(self):
-        self.clt_api_base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_BASE_URL', constants.CLOUDLANGUAGETOOLS_API_BASE_URL)
         self.vocabai_api_base_url = os.environ.get('ANKI_LANGUAGE_TOOLS_VOCABAI_BASE_URL', constants.VOCABAI_API_BASE_URL)
         self.disable_ssl_verification = False
         self.session = requests.Session()
-        logger.info(f'using CLT API base URL: {self.clt_api_base_url}')
         logger.info(f'using VocabAi API base URL: {self.vocabai_api_base_url}')
 
     def configure(self, config: config_models.Configuration, disable_ssl_verification: bool = False):
@@ -40,30 +70,15 @@ class CloudLanguageTools():
             logger.warning('SSL verification is disabled for cloud language tools connections')
 
     def get_request_headers(self):
-        if self.config.use_vocabai_api:
-            return {
-                'Authorization': f'Api-Key {self.config.hypertts_pro_api_key}',
-            }
-        else:
-            return {
-                'api_key': self.config.hypertts_pro_api_key, 
-                'client': 'hypertts', 
-                'client_version': version.ANKI_HYPER_TTS_VERSION,
-                'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}'}
+        return {
+            'Authorization': f'Api-Key {self.config.hypertts_pro_api_key}',
+        }
 
     def get_trial_request_headers(self):
         return {
             'User-Agent': f'anki-hyper-tts/{version.ANKI_HYPER_TTS_VERSION}',
             'X-Vocab-Addon-ID': self.config.user_uuid
         }
-
-    def get_base_url(self):
-        if self.config.use_vocabai_api:
-            if self.config.vocabai_api_url_override != None:
-                return self.config.vocabai_api_url_override
-            return self.vocabai_api_base_url
-        else:
-            return self.clt_api_base_url
 
     def get_vocabai_url(self, path):
         if self.config.vocabai_api_url_override != None:
@@ -80,10 +95,7 @@ class CloudLanguageTools():
     #   PermanentError  – non-retryable (400, 403, 404)
     #   TransientError  – retryable (502, 503, 504, timeout, unknown)
     def get_tts_audio(self, source_text, voice, options, audio_request_context):
-        if self.config.use_vocabai_api:
-            return self._get_tts_audio_vocabai(source_text, voice, options, audio_request_context)
-        else:
-            return self._get_tts_audio_clt(source_text, voice, options, audio_request_context)
+        return self._get_tts_audio_vocabai(source_text, voice, options, audio_request_context)
 
     def _get_tts_audio_vocabai(self, source_text, voice, options, audio_request_context):
         # API v5
@@ -159,58 +171,31 @@ class CloudLanguageTools():
             raise errors.UnknownServiceError(source_text, voice, error_message)
 
         except errors.HyperTTSError:
-            # we need to let the exceptions created by parsing the payload through, 
+            # we need to let the exceptions created by parsing the payload through,
             # since they have the correct error type and message
             raise
         except requests.exceptions.Timeout:
             raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
-        except requests.exceptions.ConnectionError as e:
+        except (requests.exceptions.ConnectionError,
+                requests.exceptions.ChunkedEncodingError) as e:
+            # ChunkedEncodingError is raised when the connection drops mid-response
+            # (e.g. RST while streaming the body). It is a sibling of ConnectionError
+            # in requests, not a subclass, so it must be listed explicitly — otherwise
+            # it falls through to the generic handler and gets mis-tagged as
+            # UnknownServiceError (Sentry ANKI-HYPER-TTS-JM3).
+            # A read timeout during the body read (stream=False default) is wrapped by
+            # requests in ConnectionError, not Timeout — reclassify it so it lands in
+            # the ServiceTimeoutError Sentry group instead of ServiceConnectionError
+            # (Sentry ANKI-HYPER-TTS-KC2).
+            if _is_wrapped_read_timeout(e):
+                raise errors.ServiceTimeoutError(source_text, voice, str(e)) from e
             raise errors.ServiceConnectionError(source_text, voice, str(e))
         except Exception as e:
             # eventually we should not have any exceptions coming through here
             # for now, classify them as unknown service errors, which is a TransientError
             raise errors.UnknownServiceError(source_text, voice, str(e))
 
-    def _get_tts_audio_clt(self, source_text, voice, options, audio_request_context):
-        full_url = self.get_base_url() + '/audio_v2'
-        data = {
-            'text': source_text,
-            'service': voice.service,
-            'request_mode': audio_request_context.get_request_mode().name,
-            'language_code': voice_module.get_audio_language_for_voice(voice).lang.name,
-            'voice_key': voice.voice_key,
-            'options': options
-        }
-        logger.info(f'_get_tts_audio_clt: request url: {full_url}, data: {data}')
-        headers = self.get_request_headers()
-        logger.debug(f'_get_tts_audio_clt: headers: {headers} data: {data}')
-
-        try:
-            response = self.session.post(full_url, json=data, headers=headers,
-                timeout=constants.RequestTimeout, verify=self.get_verify_ssl())
-            logger.info(f'_get_tts_audio_clt: response status_code: {response.status_code}')
-
-            if response.status_code == 200:
-                return response.content
-            elif response.status_code == 404:
-                raise errors.AudioNotFoundError(source_text, voice)
-            elif response.status_code == 502:
-                raise errors.ServiceGatewayError(source_text, voice, 'bad gateway')
-            else:
-                error_message = f"Status code: {response.status_code} ({response.content})"
-                raise errors.UnknownServiceError(source_text, voice, error_message)
-        except errors.HyperTTSError:
-            raise
-        except requests.exceptions.Timeout:
-            raise errors.ServiceTimeoutError(source_text, voice, 'HTTP request timed out')
-        except requests.exceptions.ConnectionError as e:
-            raise errors.ServiceConnectionError(source_text, voice, str(e))
-        except Exception as e:
-            logger.error(e, exc_info=True)
-            raise errors.UnknownServiceError(source_text, voice, str(e))
-
     def account_info(self, api_key):
-        # try to get account data on vocabai first
         vocabai_url = self.get_vocabai_url('account')
         logger.info(f'account_info: request url: {vocabai_url}, data: None')
         response = self.session.get(vocabai_url, headers={
@@ -226,29 +211,6 @@ class CloudLanguageTools():
                 api_key=api_key,
                 api_key_valid=True,
                 use_vocabai_api=True,
-                account_info=response.json()
-            )
-
-        # now try to get account data on CLT API
-        clt_url = self.clt_api_base_url + '/account'
-        logger.info(f'account_info: request url: {clt_url}, data: None')
-        response = self.session.get(clt_url, headers={'api_key': api_key},
-            verify=self.get_verify_ssl())
-        logger.info(f'account_info: response status_code: {response.status_code}')
-        if response.status_code == 200:
-            # API key is valid on CLT API
-            # check if there are errors
-            if 'error' in response.json():
-                return config_models.HyperTTSProAccountConfig(
-                    api_key=api_key,
-                    api_key_valid=False,
-                    api_key_error=response.json()['error'])
-
-            # otherwise, it's considered valid
-            return config_models.HyperTTSProAccountConfig(
-                api_key=api_key,
-                api_key_valid=True,
-                use_vocabai_api=False,
                 account_info=response.json()
             )
 

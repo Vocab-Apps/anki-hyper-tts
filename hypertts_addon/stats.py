@@ -33,7 +33,9 @@ class StatsGlobal:
                 event: constants_events.Event,
                 event_mode: constants_events.EventMode,
                 event_properties: dict):
-        logger.debug('publish')
+        # log the event name: this ends up as a sentry breadcrumb, which is how we reconstruct what
+        # the user clicked before a configuration anomaly (github issue #360)
+        logger.info(f'user event {self.construct_event_name(context, event)}')
         def get_publish_lambda(context: constants_events.EventContext, event: constants_events.Event,
                                event_mode: constants_events.EventMode,
                                event_properties: dict):
@@ -50,7 +52,7 @@ class StatsGlobal:
                 event: constants_events.Event,
                 event_mode: constants_events.EventMode,
                 event_properties: dict):
-        logger.debug('publishing event')
+        logger.debug(f'publishing event {self.construct_event_name(context, event)}')
         # in background thread
         if event_mode:
             event_properties['mode'] = event_mode.name
@@ -212,6 +214,9 @@ class StatsGlobal:
         # first, load the feature flags syncronously (for pro users too,
         # so flags like sentry-full-reporting can opt them into full sampling)
         self.load_feature_flags()
+        # a sentry-full-reporting user opts into remote logging as well as full trace sampling
+        if self.get_feature_flag_enabled(constants.FEATURE_FLAG_SENTRY_FULL_REPORTING):
+            logging_utils.enable_sentry_remote_logging()
         # but after that, everything should be asynchronous
         self.anki_utils.run_in_background(self.load_background, None)
 

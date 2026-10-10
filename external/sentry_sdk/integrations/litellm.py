@@ -7,36 +7,45 @@ from sentry_sdk.ai.monitoring import record_token_usage
 from sentry_sdk.ai.utils import (
     get_start_span_function,
     set_data_normalized,
-    truncate_and_annotate_messages,
     transform_openai_content_part,
     truncate_and_annotate_embedding_inputs,
+    truncate_and_annotate_messages,
 )
 from sentry_sdk.consts import SPANDATA
 from sentry_sdk.integrations import DidNotEnable, Integration
 from sentry_sdk.scope import should_send_default_pii
+from sentry_sdk.tracing_utils import (
+    has_span_streaming_enabled,
+    should_truncate_gen_ai_input,
+)
 from sentry_sdk.utils import event_from_exception
 
 if TYPE_CHECKING:
-    from typing import Any, Dict, List
     from datetime import datetime
+    from typing import Any, Dict, List
 
 try:
     import litellm  # type: ignore[import-not-found]
-    from litellm import input_callback, success_callback, failure_callback
+    from litellm import failure_callback, input_callback, success_callback
 except ImportError:
     raise DidNotEnable("LiteLLM not installed")
 
 
-def _get_metadata_dict(kwargs: "Dict[str, Any]") -> "Dict[str, Any]":
-    """Get the metadata dictionary from the kwargs."""
-    litellm_params = kwargs.setdefault("litellm_params", {})
+# Stash the span on a top-level key of the per-request kwargs dict litellm passes
+# to every callback, so it lives and dies with the request.
+_SPAN_KEY = "_sentry_span"
 
-    # we need this weird little dance, as metadata might be set but may be None initially
-    metadata = litellm_params.get("metadata")
-    if metadata is None:
-        metadata = {}
-        litellm_params["metadata"] = metadata
-    return metadata
+
+def _store_span(kwargs: "Dict[str, Any]", span: "Any") -> None:
+    kwargs[_SPAN_KEY] = span
+
+
+def _peek_span(kwargs: "Dict[str, Any]") -> "Any":
+    return kwargs.get(_SPAN_KEY)
+
+
+def _pop_span(kwargs: "Dict[str, Any]") -> "Any":
+    return kwargs.pop(_SPAN_KEY, None)
 
 
 def _convert_message_parts(messages: "List[Dict[str, Any]]") -> "List[Dict[str, Any]]":
@@ -68,7 +77,8 @@ def _convert_message_parts(messages: "List[Dict[str, Any]]") -> "List[Dict[str, 
 
 def _input_callback(kwargs: "Dict[str, Any]") -> None:
     """Handle the start of a request."""
-    integration = sentry_sdk.get_client().get_integration(LiteLLMIntegration)
+    client = sentry_sdk.get_client()
+    integration = client.get_integration(LiteLLMIntegration)
 
     if integration is None:
         return
@@ -88,19 +98,31 @@ def _input_callback(kwargs: "Dict[str, Any]") -> None:
         operation = "chat"
 
     # Start a new span/transaction
-    span = get_start_span_function()(
-        op=(
-            consts.OP.GEN_AI_CHAT
-            if operation == "chat"
-            else consts.OP.GEN_AI_EMBEDDINGS
-        ),
-        name=f"{operation} {model}",
-        origin=LiteLLMIntegration.origin,
-    )
-    span.__enter__()
+    if has_span_streaming_enabled(client.options):
+        span = sentry_sdk.traces.start_span(
+            name=f"{operation} {model}",
+            attributes={
+                "sentry.op": (
+                    consts.OP.GEN_AI_CHAT
+                    if operation == "chat"
+                    else consts.OP.GEN_AI_EMBEDDINGS
+                ),
+                "sentry.origin": LiteLLMIntegration.origin,
+            },
+        )
+    else:
+        span = get_start_span_function()(
+            op=(
+                consts.OP.GEN_AI_CHAT
+                if operation == "chat"
+                else consts.OP.GEN_AI_EMBEDDINGS
+            ),
+            name=f"{operation} {model}",
+            origin=LiteLLMIntegration.origin,
+        )
+        span.__enter__()
 
-    # Store span for later
-    _get_metadata_dict(kwargs)["_sentry_span"] = span
+    _store_span(kwargs, span)
 
     # Set basic data
     set_data_normalized(span, SPANDATA.GEN_AI_SYSTEM, provider)
@@ -119,8 +141,11 @@ def _input_callback(kwargs: "Dict[str, Any]") -> None:
                     if isinstance(embedding_input, list)
                     else [embedding_input]
                 )
-                messages_data = truncate_and_annotate_embedding_inputs(
-                    input_list, span, scope
+                client = sentry_sdk.get_client()
+                messages_data = (
+                    truncate_and_annotate_embedding_inputs(input_list, span, scope)
+                    if should_truncate_gen_ai_input(client.options)
+                    else input_list
                 )
                 if messages_data is not None:
                     set_data_normalized(
@@ -133,9 +158,14 @@ def _input_callback(kwargs: "Dict[str, Any]") -> None:
             # For chat, look for the 'messages' parameter
             messages = kwargs.get("messages", [])
             if messages:
+                client = sentry_sdk.get_client()
                 scope = sentry_sdk.get_current_scope()
                 messages = _convert_message_parts(messages)
-                messages_data = truncate_and_annotate_messages(messages, span, scope)
+                messages_data = (
+                    truncate_and_annotate_messages(messages, span, scope)
+                    if should_truncate_gen_ai_input(client.options)
+                    else messages
+                )
                 if messages_data is not None:
                     set_data_normalized(
                         span,
@@ -172,8 +202,7 @@ def _success_callback(
 ) -> None:
     """Handle successful completion."""
 
-    metadata = _get_metadata_dict(kwargs)
-    span = metadata.get("_sentry_span")
+    span = _peek_span(kwargs)
     if span is None:
         return
 
@@ -233,7 +262,7 @@ def _success_callback(
             or "complete_streaming_response" in kwargs
             or "async_complete_streaming_response" in kwargs
         ):
-            span = metadata.pop("_sentry_span", None)
+            span = _pop_span(kwargs)
             if span is not None:
                 span.__exit__(None, None, None)
 
@@ -259,7 +288,7 @@ def _failure_callback(
     end_time: "datetime",
 ) -> None:
     """Handle request failure."""
-    span = _get_metadata_dict(kwargs).get("_sentry_span")
+    span = _pop_span(kwargs)
     if span is None:
         return
 

@@ -45,10 +45,43 @@ class AnkiUtils():
         pass
 
     def get_config(self):
-        return aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
+        config = aqt.mw.addonManager.getConfig(constants.CONFIG_ADDON_NAME)
+        if config == None:
+            # anki returns None when it cannot find config.json (see anki's addon docs). this
+            # should never happen with a correct installation, don't let it crash the addon.
+            logger.error('anki returned no addon configuration')
+            self.report_config_anomaly('anki returned no addon configuration (getConfig -> None)',
+                'error', {})
+            return {}
+        return config
 
     def write_config(self, config):
+        logger.info(f'writing addon configuration through anki, '
+            f'{len(config) if isinstance(config, dict) else "?"} top level keys')
         aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, config)
+        logger.info('anki accepted the addon configuration write')
+
+    def report_config_anomaly(self, message: str, severity: str, extra: dict):
+        """report a configuration anomaly (truncated / wiped / unusual configuration) to sentry, so
+        that we can diagnose github issue #360"""
+        # deliberately logged at warning level, whatever the anomaly's severity. logging at error
+        # level would send a second, separate sentry event through the logging integration, on top
+        # of the exception captured below: the same anomaly would then show up as two escalating
+        # sentry issues, with different levels, and eat two rate limit budgets instead of one. at
+        # warning level this only becomes a breadcrumb, and the exception carries the real severity
+        logger.warning(f'configuration anomaly ({severity}): {message} {extra}')
+        if not hasattr(sys, '_sentry_crash_reporting'):
+            return
+        try:
+            with sentry_sdk.new_scope() as scope:
+                scope.level = severity
+                scope.set_context('hypertts_configuration', extra or {})
+                try:
+                    raise errors.ConfigurationAnomaly(message)
+                except errors.ConfigurationAnomaly as exception:
+                    sentry_sdk.capture_exception(exception)
+        except Exception as e:
+            logger.warning(f'could not report configuration anomaly: {e}')
 
     def night_mode_enabled(self):
         night_mode = aqt.theme.theme_manager.night_mode
@@ -78,10 +111,24 @@ class AnkiUtils():
             return constants.RED_STYLESHEET_NIGHTMODE
         return constants.RED_STYLESHEET
 
+    def get_red_text_color(self):
+        night_mode = self.night_mode_enabled()
+        if night_mode:
+            return constants.RED_TEXT_COLOR_NIGHTMODE
+        return constants.RED_TEXT_COLOR_REGULAR
+
+    def get_addon_dir(self):
+        """the addon's installation directory, which is where anki keeps meta.json"""
+        try:
+            # ask anki, so that we get the directory anki itself reads meta.json from. this matters
+            # for development installs, where the addon directory is a symlink to a git checkout
+            return aqt.mw.addonManager.addonsFolder(constants.CONFIG_ADDON_NAME)
+        except Exception as e:
+            logger.warning(f'could not get addon directory from anki: {e}')
+            return os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+
     def get_user_files_dir(self):
-        addon_dir = os.path.dirname(os.path.realpath(__file__))
-        user_files_dir = os.path.join(addon_dir, '..', 'user_files')
-        return user_files_dir        
+        return os.path.join(self.get_addon_dir(), 'user_files')
 
     def play_anki_sound_tag(self, text):
         ensure_anki_collection_open()
@@ -171,11 +218,12 @@ class AnkiUtils():
         logger.info(f"""updating note type: {note_model['name']}""")
         aqt.mw.col.models.update_dict(note_model)
 
-    def run_in_background_collection_op(self, parent_widget, update_fn, success_fn):
+    def run_in_background_collection_op(self, parent_widget, update_fn, success_fn,
+            undo_entry_name=constants.UNDO_ENTRY_NAME):
         # update fn takes collection as a parameter
         def update_fn_with_undo(col):
             # start new undo entry
-            undo_id = aqt.mw.col.add_custom_undo_entry(constants.UNDO_ENTRY_NAME)
+            undo_id = aqt.mw.col.add_custom_undo_entry(undo_entry_name)
             # run actual operation
             update_fn(col)
             # merge undo entries
@@ -201,6 +249,12 @@ class AnkiUtils():
     def run_on_main(self, task_fn):
         aqt.mw.taskman.run_on_main(task_fn)
 
+    def run_on_main_delayed(self, task_fn, delay_ms=3000):
+        """run on the main thread, but only once the event loop has been running for a while. used
+        to display messages from addon startup code: showing a modal dialog straight from there
+        blocks anki's own startup until the user dismisses it."""
+        aqt.qt.QTimer.singleShot(delay_ms, lambda: self.run_on_main(task_fn))
+
     def wire_typing_timer(self, text_input, text_input_changed):
         typing_timer = TextInputTypingTimer(text_input, text_input_changed)
         return typing_timer
@@ -221,11 +275,20 @@ class AnkiUtils():
 
     def info_message(self, message, parent):
         message = self.restrict_message_length(message)
-        aqt.utils.showInfo(message, title=constants.ADDON_NAME, textFormat='rich', parent=parent)
+        try:
+            aqt.utils.showInfo(message, title=constants.ADDON_NAME, textFormat='rich', parent=parent)
+        except RuntimeError as e:
+            # the parent/main window may already be torn down (e.g. during shutdown), in which
+            # case showing a dialog raises "wrapped C/C++ object has been deleted" (Sentry
+            # ANKI-HYPER-TTS-JYQ). Don't let displaying a message raise a fresh exception.
+            logger.warning(f'could not show info message, UI likely torn down: {e}')
 
     def critical_message(self, message, parent):
         message = self.restrict_message_length(message)
-        aqt.utils.showCritical(message, title=constants.ADDON_NAME, parent=parent)
+        try:
+            aqt.utils.showCritical(message, title=constants.ADDON_NAME, parent=parent)
+        except RuntimeError as e:
+            logger.warning(f'could not show critical message, UI likely torn down: {e}')
 
     def tooltip_message(self, message):
         message = self.restrict_message_length(message)

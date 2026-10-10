@@ -1,7 +1,9 @@
 import unittest
 from unittest import mock
 import datetime
+import socket
 import requests.exceptions
+import urllib3.exceptions
 
 import sys
 import os
@@ -30,6 +32,26 @@ def make_mock_voice():
 def make_mock_context():
     ctx = context.AudioRequestContext(constants.AudioRequestReason.batch)
     return ctx
+
+
+def make_wrapped_read_timeout_error():
+    """Build the exception chain requests/urllib3 produce when a read timeout
+    fires during the response body read (stream=False default): a plain
+    requests.exceptions.ConnectionError (NOT a Timeout subclass) wrapping a
+    urllib3 ReadTimeoutError wrapping a socket.timeout. Reproduces Sentry
+    ANKI-HYPER-TTS-KC2."""
+    try:
+        raise socket.timeout('The read operation timed out')
+    except socket.timeout as low:
+        try:
+            raise urllib3.exceptions.ReadTimeoutError(
+                'app.vocab.ai', '/languagetools-api/v5/audio', 'Read timed out.') from low
+        except urllib3.exceptions.ReadTimeoutError as rte:
+            try:
+                raise requests.exceptions.ConnectionError(
+                    "HTTPSConnectionPool(host='app.vocab.ai', port=443): Read timed out.") from rte
+            except requests.exceptions.ConnectionError as outer:
+                return outer
 
 
 class TestErrorHierarchy(unittest.TestCase):
@@ -247,6 +269,18 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         self.assertIn('/v5/audio', url)
 
     @mock.patch('requests.Session.post')
+    def test_legacy_api_flag_still_uses_vocabai(self, mock_post):
+        mock_post.return_value = mock.Mock(status_code=200, content=b'audio')
+        self.clt.config.use_vocabai_api = False
+
+        self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+
+        url = mock_post.call_args.args[0]
+        headers = mock_post.call_args.kwargs['headers']
+        self.assertIn('/languagetools-api/v5/audio', url)
+        self.assertEqual(headers, {'Authorization': 'Api-Key test_key'})
+
+    @mock.patch('requests.Session.post')
     def test_retry_fields_in_request(self, mock_post):
         mock_post.return_value = mock.Mock(status_code=200, content=b'audio')
         self.ctx.retry_count = 1
@@ -267,12 +301,50 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         self.assertIn('connection refused', cm.exception.error_message)
 
     @mock.patch('requests.Session.post')
-    def test_non_timeout_request_exception(self, mock_post):
-        """Non-Timeout/non-ConnectionError exception from requests.post is raised as UnknownServiceError."""
-        mock_post.side_effect = requests.exceptions.ChunkedEncodingError('broken stream')
-        with self.assertRaises(errors.UnknownServiceError) as cm:
+    def test_wrapped_read_timeout_is_service_timeout(self, mock_post):
+        """A read timeout during the body read (stream=False default) is wrapped
+        by requests in a plain ConnectionError, not a Timeout subclass. It must
+        be reclassified as ServiceTimeoutError so retry logic and Sentry grouping
+        are correct. Sentry ANKI-HYPER-TTS-KC2."""
+        mock_post.side_effect = make_wrapped_read_timeout_error()
+        with self.assertRaises(errors.ServiceTimeoutError) as cm:
             self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
-        self.assertIn('broken stream', cm.exception.error_message)
+        self.assertIsInstance(cm.exception, errors.TransientError)
+        self.assertIn('Read timed out', cm.exception.error_message)
+
+    @mock.patch('requests.Session.post')
+    def test_read_timeout_string_fallback(self, mock_post):
+        """If the cause chain can't be introspected, the 'Read timed out' string
+        in the message alone is enough to classify as ServiceTimeoutError."""
+        mock_post.side_effect = requests.exceptions.ConnectionError(
+            "HTTPSConnectionPool(host='app.vocab.ai', port=443): Read timed out.")
+        with self.assertRaises(errors.ServiceTimeoutError):
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+
+    @mock.patch('requests.Session.post')
+    def test_plain_connection_error_still_service_connection(self, mock_post):
+        """A ConnectionError that is NOT a wrapped read timeout must still map to
+        ServiceConnectionError (regression guard for the KC2 fix)."""
+        mock_post.side_effect = requests.exceptions.ConnectionError(
+            "NewConnectionError: Failed to establish a new connection: [Errno 111] Connection refused")
+        with self.assertRaises(errors.ServiceConnectionError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertNotIsInstance(cm.exception, errors.ServiceTimeoutError)
+
+    @mock.patch('requests.Session.post')
+    def test_chunked_encoding_error_is_connection_error(self, mock_post):
+        """ChunkedEncodingError (e.g. RST while streaming the body) is mapped to
+        ServiceConnectionError. Sentry ANKI-HYPER-TTS-JM3: requests raises this
+        as a sibling of ConnectionError, not a subclass, so before the fix it
+        slipped through to the generic Exception handler and was mis-tagged as
+        UnknownServiceError."""
+        mock_post.side_effect = requests.exceptions.ChunkedEncodingError(
+            "Connection broken: ConnectionResetError(54, 'Connection reset by peer')")
+        with self.assertRaises(errors.ServiceConnectionError) as cm:
+            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertIn('Connection broken', cm.exception.error_message)
+        # confirm retryable disposition: it's a TransientError, not Permanent
+        self.assertIsInstance(cm.exception, errors.TransientError)
 
     @mock.patch('requests.Session.post')
     def test_400_unparseable_json_raises_permanent(self, mock_post):
@@ -324,62 +396,36 @@ class TestCloudLanguageToolsVocabAiErrorMapping(unittest.TestCase):
         self.assertEqual(cm.exception.error_message, 'Forbidden')
 
 
-class TestCloudLanguageToolsCLTErrorMapping(unittest.TestCase):
+class TestCloudLanguageToolsAccountInfo(unittest.TestCase):
 
     def setUp(self):
         self.clt = clt_module.CloudLanguageTools()
-        self.clt.config = mock.Mock()
-        self.clt.config.use_vocabai_api = False
-        self.clt.config.hypertts_pro_api_key = 'test_key'
-        self.clt.disable_ssl_verification = False
-        self.voice = make_mock_voice()
-        self.ctx = make_mock_context()
-        self.lang_patcher = mock.patch.object(voice_module, 'get_audio_language_for_voice')
-        mock_get_lang = self.lang_patcher.start()
-        mock_lang = mock.Mock()
-        mock_lang.lang.name = 'fr'
-        mock_get_lang.return_value = mock_lang
+        self.clt.config = mock.Mock(vocabai_api_url_override=None)
 
-    def tearDown(self):
-        self.lang_patcher.stop()
+    @mock.patch('requests.Session.get')
+    def test_valid_vocabai_key(self, mock_get):
+        account_data = {'email': 'user@example.com'}
+        mock_get.return_value = mock.Mock(
+            status_code=200,
+            json=lambda: account_data,
+        )
 
-    @mock.patch('requests.Session.post')
-    def test_200_success(self, mock_post):
-        mock_post.return_value = mock.Mock(status_code=200, content=b'audio_data')
-        result = self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
-        self.assertEqual(result, b'audio_data')
+        result = self.clt.account_info('test_key')
 
-    @mock.patch('requests.Session.post')
-    def test_404_audio_not_found(self, mock_post):
-        mock_post.return_value = mock.Mock(status_code=404)
-        with self.assertRaises(errors.AudioNotFoundError):
-            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        self.assertTrue(result.api_key_valid)
+        self.assertTrue(result.use_vocabai_api)
+        self.assertEqual(result.account_info, account_data)
 
-    @mock.patch('requests.Session.post')
-    def test_other_status_unknown_service_error(self, mock_post):
-        mock_post.return_value = mock.Mock(status_code=500, content=b'error')
-        with self.assertRaises(errors.UnknownServiceError):
-            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+    @mock.patch('requests.Session.get')
+    def test_invalid_vocabai_key_does_not_fall_back_to_clt(self, mock_get):
+        mock_get.return_value = mock.Mock(status_code=404)
 
-    @mock.patch('requests.Session.post')
-    def test_502_bad_gateway(self, mock_post):
-        mock_post.return_value = mock.Mock(status_code=502, content=b'')
-        with self.assertRaises(errors.ServiceGatewayError):
-            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
+        result = self.clt.account_info('test_key')
 
-    @mock.patch('requests.Session.post')
-    def test_timeout(self, mock_post):
-        mock_post.side_effect = requests.exceptions.Timeout('timed out')
-        with self.assertRaises(errors.ServiceTimeoutError):
-            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
-
-    @mock.patch('requests.Session.post')
-    def test_connection_error(self, mock_post):
-        """ConnectionError from requests.post is wrapped as ServiceConnectionError."""
-        mock_post.side_effect = requests.exceptions.ConnectionError('connection refused')
-        with self.assertRaises(errors.ServiceConnectionError) as cm:
-            self.clt.get_tts_audio('bonjour', self.voice, {}, self.ctx)
-        self.assertIn('connection refused', cm.exception.error_message)
+        self.assertFalse(result.api_key_valid)
+        self.assertEqual(result.api_key_error, 'API key not found')
+        mock_get.assert_called_once()
+        self.assertIn('/languagetools-api/v5/account', mock_get.call_args.args[0])
 
 
 class TestServiceManagerNoRetry(unittest.TestCase):

@@ -2,28 +2,24 @@ import logging
 import sys
 from datetime import datetime, timezone
 from fnmatch import fnmatch
+from typing import TYPE_CHECKING
 
 import sentry_sdk
 from sentry_sdk.client import BaseClient
+from sentry_sdk.integrations import Integration
 from sentry_sdk.logger import _log_level_to_otel
 from sentry_sdk.utils import (
+    capture_internal_exceptions,
+    current_stacktrace,
+    event_from_exception,
     safe_repr,
     to_string,
-    event_from_exception,
-    current_stacktrace,
-    capture_internal_exceptions,
-    has_logs_enabled,
 )
-from sentry_sdk.integrations import Integration
-
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from collections.abc import MutableMapping
     from logging import LogRecord
-    from typing import Any
-    from typing import Dict
-    from typing import Optional
+    from typing import Any, Dict, Optional
 
 DEFAULT_LEVEL = logging.INFO
 DEFAULT_EVENT_LEVEL = logging.ERROR
@@ -118,13 +114,17 @@ def unignore_logger_for_sentry_logs(
 
 class LoggingIntegration(Integration):
     identifier = "logging"
+    capture_sentry_logs: "Optional[bool]" = False
 
     def __init__(
         self,
         level: "Optional[int]" = DEFAULT_LEVEL,
         event_level: "Optional[int]" = DEFAULT_EVENT_LEVEL,
         sentry_logs_level: "Optional[int]" = DEFAULT_LEVEL,
+        capture_sentry_logs: "Optional[bool]" = False,
     ) -> None:
+        LoggingIntegration.capture_sentry_logs = capture_sentry_logs
+
         self._handler = None
         self._breadcrumb_handler = None
         self._sentry_logs_handler = None
@@ -381,7 +381,7 @@ class SentryLogsHandler(_BaseHandler):
     """
     A logging handler that records Sentry logs for each Python log record.
 
-    Note that you do not have to use this class if the logging integration is enabled, which it is by default.
+    Note that you do not have to use this class if the LoggingIntegration's capture_sentry_logs option is enabled.
     """
 
     def _can_record(self, record: "LogRecord") -> bool:
@@ -401,7 +401,7 @@ class SentryLogsHandler(_BaseHandler):
             if not client.is_active():
                 return
 
-            if not has_logs_enabled(client.options):
+            if not LoggingIntegration.capture_sentry_logs:
                 return
 
             self._capture_log_from_record(client, record)
@@ -465,7 +465,6 @@ class SentryLogsHandler(_BaseHandler):
         if record.name:
             attrs["logger.name"] = record.name
 
-        # noinspection PyProtectedMember
         sentry_sdk.get_current_scope()._capture_log(
             {
                 "severity_text": otel_severity_text,

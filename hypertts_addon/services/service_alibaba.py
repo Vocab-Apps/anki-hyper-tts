@@ -14,11 +14,26 @@ from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 
+# Alibaba TTS encodes error reasons in the response body using a
+# "Meta:CODE:Description" or "Gateway:CODE:Description" format, and the HTTP
+# status for these credential failures isn't always 401/403 (Sentry
+# ANKI-HYPER-TTS-K1P observed a non-auth status with body
+# "Meta:APPKEY_NOT_EXIST:Appkey not exist!"). These substrings identify the
+# permanent credential / configuration failures so retry logic doesn't repeat
+# them.
+ALIBABA_PERMANENT_CREDENTIAL_CODES = (
+    'APPKEY_NOT_EXIST',
+    'APPKEY_INVALID',
+    'ACCESS_DENIED',
+    'InvalidAccessKeyId',
+)
+
+
 class Alibaba(service.ServiceBase):
     CONFIG_ACCESS_KEY_ID = 'access_key_id'
     CONFIG_ACCESS_KEY_SECRET = 'access_key_secret'
     CONFIG_APP_KEY = 'app_key'
- 
+
     access_token = None
 
     def cloudlanguagetools_enabled(self):
@@ -80,15 +95,24 @@ class Alibaba(service.ServiceBase):
         params_str = f"Signature={signature}&{params_str}"
 
         r = requests.get(f"http://nlsmeta.ap-southeast-1.aliyuncs.com/?{params_str}", timeout=constants.RequestTimeout)
-        
+
         # API definition says any error will return non-200 RC
         if r.status_code != 200:
-            logger.warning(f"Request to http://nlsmeta.ap-southeast-1.aliyuncs.com/?{params_str} failed:\n {r.text}")
-            raise errors.RequestError(source_text, voice, f'Failed to refresh Alibaba access token (HTTP {r.status_code}): {r.text}')
+            logger.warning(f"Alibaba access-token refresh failed (HTTP {r.status_code}): {r.text}")
+            message = f'Failed to refresh Alibaba access token (HTTP {r.status_code}): {r.text}'
+            # The token endpoint only returns 4xx when the AccessKey is invalid,
+            # inactive, or the signature doesn't match — i.e. permanent until
+            # the user fixes credentials (Sentry ANKI-HYPER-TTS-JY4: HTTP 404
+            # with Code "InvalidAccessKeyId.NotFound").
+            if 400 <= r.status_code < 500:
+                raise errors.ServicePermissionError(source_text, voice, message)
+            if r.status_code in (502, 503, 504):
+                raise errors.ServiceGatewayError(source_text, voice, message)
+            raise errors.UnknownServiceError(source_text, voice, message)
 
         j = r.json()
         if "Token" not in j:
-            raise errors.RequestError(source_text, voice, f'Failed to refresh Alibaba access token, no Token in response: {j}')
+            raise errors.UnknownServiceError(source_text, voice, f'Failed to refresh Alibaba access token, no Token in response: {j}')
         self.access_token = j["Token"]
         logger.info(f"Got access token: {self.access_token}")
 
@@ -121,14 +145,23 @@ class Alibaba(service.ServiceBase):
         )
         
         if response.status_code != 200:
-            data = response.json()
-            error_message = data.get('message', str(data))
-            logger.warning(error_message)
-            raise errors.RequestError(source_text, voice, error_message)
-        
+            try:
+                data = response.json()
+                error_message = data.get('message', str(data))
+            except ValueError:
+                error_message = response.text
+            logger.warning(f'Alibaba TTS error (HTTP {response.status_code}): {error_message}')
+            if response.status_code in (401, 403):
+                raise errors.ServicePermissionError(source_text, voice, error_message)
+            if response.status_code in (502, 503, 504):
+                raise errors.ServiceGatewayError(source_text, voice, error_message)
+            if any(code in error_message for code in ALIBABA_PERMANENT_CREDENTIAL_CODES):
+                raise errors.ServicePermissionError(source_text, voice, error_message)
+            raise errors.UnknownServiceError(source_text, voice, error_message)
+
         if response.headers['Content-Type'] != 'audio/mpeg':
             logger.warning(f'Unexpected response type. Response as text: {response.text}')
-            raise errors.RequestError(
+            raise errors.UnknownServiceError(
                 source_text, voice,
                 f'Got bad content type in response: {response.headers["Content-Type"]}'
             )

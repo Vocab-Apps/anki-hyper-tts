@@ -1,22 +1,27 @@
-from typing import TYPE_CHECKING, Any, List, TypedDict, Optional
+from typing import TYPE_CHECKING, Any, List, Optional, TypedDict, Union
 
+import sentry_sdk
 from sentry_sdk.ai.utils import set_data_normalized
 from sentry_sdk.consts import SPANDATA
 from sentry_sdk.scope import should_send_default_pii
+from sentry_sdk.traces import StreamedSpan
 from sentry_sdk.utils import (
+    has_data_collection_enabled,
     safe_serialize,
 )
+
 from .utils import (
-    extract_tool_calls,
-    extract_finish_reasons,
-    extract_contents_text,
-    extract_usage_data,
     UsageData,
+    extract_contents_text,
+    extract_finish_reasons,
+    extract_tool_calls,
+    extract_usage_data,
 )
 
 if TYPE_CHECKING:
-    from sentry_sdk.tracing import Span
     from google.genai.types import GenerateContentResponse
+
+    from sentry_sdk.tracing import Span
 
 
 class AccumulatedResponse(TypedDict):
@@ -95,18 +100,15 @@ def accumulate_streaming_response(
 
 
 def set_span_data_for_streaming_response(
-    span: "Span", integration: "Any", accumulated_response: "AccumulatedResponse"
+    span: "Union[Span, StreamedSpan]",
+    integration: "Any",
+    accumulated_response: "AccumulatedResponse",
 ) -> None:
     """Set span data for accumulated streaming response."""
-    if (
-        should_send_default_pii()
-        and integration.include_prompts
-        and accumulated_response.get("text")
-    ):
-        span.set_data(
-            SPANDATA.GEN_AI_RESPONSE_TEXT,
-            safe_serialize([accumulated_response["text"]]),
-        )
+    set_on_span = (
+        span.set_attribute if isinstance(span, StreamedSpan) else span.set_data
+    )
+    client = sentry_sdk.get_client()
 
     if accumulated_response.get("finish_reasons"):
         set_data_normalized(
@@ -115,46 +117,71 @@ def set_span_data_for_streaming_response(
             accumulated_response["finish_reasons"],
         )
 
-    if accumulated_response.get("tool_calls"):
-        span.set_data(
-            SPANDATA.GEN_AI_RESPONSE_TOOL_CALLS,
-            safe_serialize(accumulated_response["tool_calls"]),
-        )
+    response_id = accumulated_response.get("id")
+    if response_id is not None:
+        set_on_span(SPANDATA.GEN_AI_RESPONSE_ID, response_id)
 
-    if accumulated_response.get("id"):
-        span.set_data(SPANDATA.GEN_AI_RESPONSE_ID, accumulated_response["id"])
-    if accumulated_response.get("model"):
-        span.set_data(SPANDATA.GEN_AI_RESPONSE_MODEL, accumulated_response["model"])
+    response_model = accumulated_response.get("model")
+    if response_model is not None:
+        set_on_span(SPANDATA.GEN_AI_RESPONSE_MODEL, response_model)
 
     if accumulated_response["usage_metadata"] is None:
         return
 
     if accumulated_response["usage_metadata"]["input_tokens"]:
-        span.set_data(
+        set_on_span(
             SPANDATA.GEN_AI_USAGE_INPUT_TOKENS,
             accumulated_response["usage_metadata"]["input_tokens"],
         )
 
     if accumulated_response["usage_metadata"]["input_tokens_cached"]:
-        span.set_data(
+        set_on_span(
             SPANDATA.GEN_AI_USAGE_INPUT_TOKENS_CACHED,
             accumulated_response["usage_metadata"]["input_tokens_cached"],
         )
 
     if accumulated_response["usage_metadata"]["output_tokens"]:
-        span.set_data(
+        set_on_span(
             SPANDATA.GEN_AI_USAGE_OUTPUT_TOKENS,
             accumulated_response["usage_metadata"]["output_tokens"],
         )
 
     if accumulated_response["usage_metadata"]["output_tokens_reasoning"]:
-        span.set_data(
+        set_on_span(
             SPANDATA.GEN_AI_USAGE_OUTPUT_TOKENS_REASONING,
             accumulated_response["usage_metadata"]["output_tokens_reasoning"],
         )
 
     if accumulated_response["usage_metadata"]["total_tokens"]:
-        span.set_data(
+        set_on_span(
             SPANDATA.GEN_AI_USAGE_TOTAL_TOKENS,
             accumulated_response["usage_metadata"]["total_tokens"],
         )
+
+    if accumulated_response.get("tool_calls"):
+        if has_data_collection_enabled(client.options):
+            if client.options["data_collection"]["gen_ai"]["inputs"]:
+                set_on_span(
+                    SPANDATA.GEN_AI_RESPONSE_TOOL_CALLS,
+                    safe_serialize(accumulated_response["tool_calls"]),
+                )
+        else:
+            # Before data collection was introduced this was unconditionally set
+            set_on_span(
+                SPANDATA.GEN_AI_RESPONSE_TOOL_CALLS,
+                safe_serialize(accumulated_response["tool_calls"]),
+            )
+
+    if accumulated_response.get("text"):
+        if has_data_collection_enabled(client.options):
+            if client.options["data_collection"]["gen_ai"]["outputs"]:
+                set_on_span(
+                    SPANDATA.GEN_AI_RESPONSE_TEXT,
+                    safe_serialize([accumulated_response["text"]]),
+                )
+
+        elif should_send_default_pii() and integration.include_prompts:
+            set_on_span(
+                SPANDATA.GEN_AI_RESPONSE_TEXT,
+                safe_serialize([accumulated_response["text"]]),
+            )

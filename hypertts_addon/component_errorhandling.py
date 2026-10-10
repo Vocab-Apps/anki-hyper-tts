@@ -1,4 +1,5 @@
 import sys
+import datetime
 import aqt.qt
 
 from . import component_common
@@ -24,6 +25,14 @@ class ErrorHandling(component_common.ConfigComponentBase):
             self.realtime_tts_errors_dialog_type.addItem(error_dialog_type.name, error_dialog_type)
 
         self.error_stats_reporting = aqt.qt.QCheckBox('Send anonymous usage statistics and error reports to help improve HyperTTS')
+        self.error_stats_reporting.setObjectName('hypertts_errorhandling_error_stats_reporting')
+
+        self.remote_logging = aqt.qt.QCheckBox('Send detailed HyperTTS logs')
+        self.remote_logging.setObjectName('hypertts_errorhandling_remote_logging')
+
+        self.remote_logging_description = gui_utils.get_wrapped_label(
+            constants.GUI_TEXT_ERROR_HANDLING_REMOTE_LOGGING)
+        self.remote_logging_description.setObjectName('hypertts_errorhandling_remote_logging_description')
 
         self.disable_ssl_verification = aqt.qt.QCheckBox('Disable SSL certificate verification (not recommended)')
 
@@ -37,6 +46,9 @@ class ErrorHandling(component_common.ConfigComponentBase):
         self.propagate_model_change = False
         self.realtime_tts_errors_dialog_type.setCurrentText(self.model.realtime_tts_errors_dialog_type.name)
         self.error_stats_reporting.setChecked(self.model.error_stats_reporting)
+        self.remote_logging.setChecked(self.model.remote_logging)
+        self.remote_logging.setEnabled(self.model.error_stats_reporting)
+        self.update_remote_logging_description()
         self.disable_ssl_verification.setChecked(self.model.disable_ssl_verification)
         self.ipv4_only.setChecked(self.model.ipv4_only)
         self.propagate_model_change = True
@@ -56,8 +68,7 @@ class ErrorHandling(component_common.ConfigComponentBase):
         realtime_groupbox = aqt.qt.QGroupBox('Realtime TTS Errors')
         realtime_vlayout = aqt.qt.QVBoxLayout()
 
-        realtime_tts_error_dialog = aqt.qt.QLabel(constants.GUI_TEXT_ERROR_HANDLING_REALTIME_TTS)
-        realtime_tts_error_dialog.setWordWrap(True)
+        realtime_tts_error_dialog = gui_utils.get_wrapped_label(constants.GUI_TEXT_ERROR_HANDLING_REALTIME_TTS)
         realtime_vlayout.addWidget(realtime_tts_error_dialog)
         realtime_vlayout.addWidget(self.realtime_tts_errors_dialog_type)
 
@@ -68,14 +79,15 @@ class ErrorHandling(component_common.ConfigComponentBase):
         reporting_groupbox = aqt.qt.QGroupBox('Error Reporting')
         reporting_vlayout = aqt.qt.QVBoxLayout()
         reporting_vlayout.addWidget(self.error_stats_reporting)
+        reporting_vlayout.addWidget(self.remote_logging)
+        reporting_vlayout.addWidget(self.remote_logging_description)
         reporting_groupbox.setLayout(reporting_vlayout)
         layout.addWidget(reporting_groupbox)
 
         # Network Connection group
         network_groupbox = aqt.qt.QGroupBox('Network Connection')
         network_vlayout = aqt.qt.QVBoxLayout()
-        settings_description = aqt.qt.QLabel('The following settings may be required for people experiencing connection problems or slowness (for example, behind a corporate proxy or firewall, or on a network with broken IPv6 routing).')
-        settings_description.setWordWrap(True)
+        settings_description = gui_utils.get_wrapped_label('The following settings may be required for people experiencing connection problems or slowness (for example, behind a corporate proxy or firewall, or on a network with broken IPv6 routing).')
         network_vlayout.addWidget(settings_description)
         network_vlayout.addWidget(self.disable_ssl_verification)
         network_vlayout.addWidget(self.ipv4_only)
@@ -87,6 +99,7 @@ class ErrorHandling(component_common.ConfigComponentBase):
         # wire events
         self.realtime_tts_errors_dialog_type.currentIndexChanged.connect(self.realtime_tts_errors_dialog_type_changed)
         self.error_stats_reporting.stateChanged.connect(self.error_stats_reporting_changed)
+        self.remote_logging.stateChanged.connect(self.remote_logging_changed)
         self.disable_ssl_verification.stateChanged.connect(self.disable_ssl_verification_changed)
         self.ipv4_only.stateChanged.connect(self.ipv4_only_changed)
 
@@ -100,6 +113,32 @@ class ErrorHandling(component_common.ConfigComponentBase):
     def error_stats_reporting_changed(self, state):
         logger.info(f'error_stats_reporting_changed {state}')
         self.model.error_stats_reporting = bool(state)
+        # remote logging goes through the same crash reporting pipeline, it's meaningless on its own
+        self.remote_logging.setEnabled(self.model.error_stats_reporting)
+        self.notify_model_update()
+
+    def update_remote_logging_description(self):
+        """detailed logging turns itself off on its own, tell the user when that will happen"""
+        if self.model.remote_logging and self.model.remote_logging_disable_after != None:
+            expiry_date = datetime.datetime.fromtimestamp(
+                self.model.remote_logging_disable_after).strftime('%Y-%m-%d')
+            self.remote_logging_description.setText(
+                constants.GUI_TEXT_ERROR_HANDLING_REMOTE_LOGGING_EXPIRY.format(expiry_date=expiry_date))
+        else:
+            self.remote_logging_description.setText(constants.GUI_TEXT_ERROR_HANDLING_REMOTE_LOGGING)
+
+    def remote_logging_changed(self, state):
+        logger.info(f'remote_logging_changed {state}')
+        enabled = bool(state)
+        if enabled == self.model.remote_logging:
+            # the checkbox was set from the model by load_model, not by the user. re-arming the
+            # expiry here would push it out by another
+            # constants.REMOTE_LOGGING_ENABLED_DAYS days every time the preferences are opened
+            return
+        # arms the expiry timestamp, detailed logging is only meant to stay on while we diagnose
+        # a problem the user reported
+        self.model.set_remote_logging(enabled)
+        self.update_remote_logging_description()
         self.notify_model_update()
 
     def disable_ssl_verification_changed(self, state):

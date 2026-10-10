@@ -12,6 +12,9 @@ from hypertts_addon import options
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
+GOOGLE_RATE_LIMIT_DEFAULT_RETRY_AFTER = 60
+
+
 class Google(service.ServiceBase):
     CONFIG_API_KEY = 'api_key'
     CONFIG_EXPLORER_API_KEY = 'explorer_api_key'
@@ -100,13 +103,20 @@ class Google(service.ServiceBase):
             # 403 (PERMISSION_DENIED) for problems the user must fix before any
             # retry can succeed, e.g. "This API method requires billing to be
             # enabled. Please enable billing on project #... then retry."
-            # (Sentry ANKI-HYPER-TTS-HHQ). These were previously raised as the
-            # legacy, non-retry-aware RequestError, which hid them from retry
-            # logic and from triage grouping. Map them to the permanent
-            # ServicePermissionError so they are correctly treated as
-            # non-retryable.
+            # These were previously raised as the legacy, non-retry-aware
+            # RequestError, which hid them from retry logic and from triage
+            # grouping. Map them to the permanent ServicePermissionError so
+            # they are correctly treated as non-retryable.
             if response.status_code in (401, 403):
                 raise errors.ServicePermissionError(source_text, voice, error_message)
+            # HTTP 429 (RESOURCE_EXHAUSTED) is Google's per-minute quota
+            # response, e.g. "Resource has been exhausted (e.g. check quota)."
+            # (Sentry ANKI-HYPER-TTS-HHQ). Treat as retryable — retry logic
+            # backs off and the request normally succeeds on the next window.
+            if response.status_code == 429:
+                raise errors.RateLimitRetryAfterError(
+                    source_text, voice, error_message,
+                    GOOGLE_RATE_LIMIT_DEFAULT_RETRY_AFTER)
             raise errors.RequestError(source_text, voice, error_message)
 
         data = response.json()

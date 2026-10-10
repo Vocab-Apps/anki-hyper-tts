@@ -472,6 +472,17 @@ class AudioLanguage(enum.Enum):
     zh_CN_anhui = (Language.zh_cn, 'Chinese (Jianghuai Mandarin Anhui, Simplified)')
     zh_CN_hunan = (Language.zh_cn, 'Chinese (Hunan Accent Mandarin, Simplified)')
 
+    # additional chinese varieties available on forvo
+    hak_CN = (Language.zh_cn, 'Chinese (Hakka, Simplified)')
+    gan_CN = (Language.zh_cn, 'Chinese (Gan, Simplified)')
+    cjy_CN = (Language.zh_cn, 'Chinese (Jin, Simplified)')
+    cdo_CN = (Language.zh_cn, 'Chinese (Min Dong, Simplified)')
+    cdo_CN_fuzhou = (Language.zh_cn, 'Chinese (Fuzhou, Simplified)')
+    wuu_CN_shanghai = (Language.zh_cn, 'Chinese (Shanghainese, Simplified)')
+    wuu_CN_changzhou = (Language.zh_cn, 'Chinese (Changzhou Wu, Simplified)')
+    ltc_CN = (Language.zh_cn, 'Chinese (Middle Chinese)')
+    yue_CN_toisan = (Language.yue, 'Chinese (Toisanese, Simplified)')
+
 
     fa_IR = (Language.fa, "Persian (Iran)")
     zu_ZA = (Language.zu, "Zulu (South Africa)")

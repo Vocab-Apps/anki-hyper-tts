@@ -3043,7 +3043,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -3069,7 +3069,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -3180,6 +3180,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Alejo MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'es-MX-Alejo:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Alejo MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'es-MX-Alejo:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Aleksandar Александар (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (mk-MK, AleksandarNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -3212,7 +3238,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -3290,7 +3316,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -3355,7 +3381,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -3505,6 +3531,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Andrei MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'ro-RO-Andrei:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Andrei MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'ro-RO-Andrei:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Andres Andrés (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (es-GT, AndresNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -3563,7 +3615,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -3603,6 +3655,19 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.fil_PH
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Angelo Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'fil-PH-Angelo:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -3706,7 +3771,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -3720,6 +3785,19 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.id_ID
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Ardi Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'id-ID-Ardi:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -3804,6 +3882,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Arjun MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'hi-IN-Arjun:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'sad', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Arjun MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'hi-IN-Arjun:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'sad', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Arjun अर्जुन (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (hi-IN, ArjunNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -3862,7 +3966,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -3953,7 +4057,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -3980,6 +4084,32 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.he_IL
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Aydın MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'tr-TR-Aydın:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Aydın MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'tr-TR-Aydın:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4103,6 +4233,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Bence MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'hu-HU-Bence:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Bence MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'hu-HU-Bence:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Benigno (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (it-IT, BenignoNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -4142,6 +4298,19 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Blessica Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'fil-PH-Blessica:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Blue (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (en-US, BlueNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -4149,6 +4318,45 @@ VOICE_LIST = [
             gender=constants.Gender.Any,
             audio_languages=[
                 languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Blushzephyr Dragon HD Omni Latest (NeuralHD)',
+            voice_key={'name': 'en-us-blushzephyr:DragonHDOmniLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Bo MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'zh-CN-Bo:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Bo MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'zh-CN-Bo:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4200,7 +4408,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4265,7 +4473,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4279,6 +4487,45 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.fr_FR
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Cahya MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'id-ID-Cahya:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.id_ID
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Caio MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'pt-BR-Caio:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Caio MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'pt-BR-Caio:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4525,7 +4772,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4629,7 +4876,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4643,6 +4890,19 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.fr_FR
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Cyanspark Dragon HD Omni Latest (NeuralHD)',
+            voice_key={'name': 'en-au-cyanspark:DragonHDOmniLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_AU
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4681,7 +4941,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4798,7 +5058,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4837,7 +5097,33 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Dhruv MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'hi-IN-Dhruv:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Dhruv MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'hi-IN-Dhruv:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4896,6 +5182,19 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Diya Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'en-IN-Diya:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Dmitry Дмитрий (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (ru-RU, DmitryNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -4916,6 +5215,45 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.pt_BR
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='DragonHD Andrew Preview (NeuralHD)',
+            voice_key={'name': 'en-US-Andrew-Preview:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='DragonHD Ava Preview (NeuralHD)',
+            voice_key={'name': 'en-US-Ava-Preview:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='DragonHD Serena Preview (NeuralHD)',
+            voice_key={'name': 'en-US-Serena-Preview:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4954,7 +5292,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -4967,7 +5305,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -5000,6 +5338,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Elena MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'ro-RO-Elena:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Elena MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'ro-RO-Elena:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Elias (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (es-ES, EliasNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -5007,6 +5371,32 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.es_ES
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Elif MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'tr-TR-Elif:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Elif MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'tr-TR-Elif:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -5208,13 +5598,26 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Emma Dragon HD Omni Latest (NeuralHD)',
+            voice_key={'name': 'en-us-emma:DragonHDOmniLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Emma Multilingual (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (en-US, EmmaMultilingualNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -5299,13 +5702,52 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Ethan MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'en-US-Ethan:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Ethan MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'en-US-Ethan:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Evelyn Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'en-US-Evelyn:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Evelyn Multilingual (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (en-US, EvelynMultilingualNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -5370,7 +5812,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Any,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -5494,6 +5936,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Fleur MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'nl-NL-Fleur:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.nl_NL
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Fleur MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'nl-NL-Fleur:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.nl_NL
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Florian Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'de-DE-Florian:DragonHDLatestNeural'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
@@ -5513,7 +5981,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -5579,6 +6047,19 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.id_ID
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Gadis Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'id-ID-Gadis:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -5695,7 +6176,20 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Goldenspark Dragon HD Omni Latest (NeuralHD)',
+            voice_key={'name': 'en-us-goldenspark:DragonHDOmniLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -5757,6 +6251,32 @@ VOICE_LIST = [
             name='Grant MAI-Voice-1 (NeuralHD)',
             voice_key={'name': 'en-US-Grant:MAI-Voice-1'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'anger', 'confusion', 'determination', 'disgust', 'embarrassment', 'excitement', 'fear', 'generalconversation', 'happiness', 'hope', 'jealousy', 'joy', 'neutral', 'professional', 'regret', 'relief', 'sadness', 'shouting', 'softvoice', 'surprise', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Grant MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'en-US-Grant:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Grant MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'en-US-Grant:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
@@ -5832,6 +6352,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Haena MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'ko-KR-Haena:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'embarrassed', 'excited', 'happy', 'hopeful', 'joyful', 'regretful', 'relieved', 'sad', 'softvoice', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Haena MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'ko-KR-Haena:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'embarrassed', 'excited', 'happy', 'hopeful', 'joyful', 'regretful', 'relieved', 'sad', 'softvoice', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Hamdan حمدان (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (ar-AE, HamdanNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -5858,6 +6404,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Harper MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'en-US-Harper:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'embarrassed', 'excited', 'happy', 'hopeful', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Harper MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'en-US-Harper:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'embarrassed', 'excited', 'happy', 'hopeful', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Harri (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (fi-FI, HarriNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -5865,6 +6437,19 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.fi_FI
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Haruto MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'ja-JP-Haruto:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.ja_JP
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -6059,7 +6644,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -6157,6 +6742,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Ioana MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'ro-RO-Ioana:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Ioana MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'ro-RO-Ioana:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Irene (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (es-ES, IreneNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -6173,6 +6784,32 @@ VOICE_LIST = [
             name='Iris MAI-Voice-1 (NeuralHD)',
             voice_key={'name': 'en-US-Iris:MAI-Voice-1'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'anger', 'confusion', 'determination', 'disgust', 'embarrassment', 'excitement', 'fear', 'generalconversation', 'happiness', 'hope', 'jealousy', 'joy', 'narration', 'neutral', 'regret', 'relief', 'sadness', 'shouting', 'softvoice', 'surprise', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Iris MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'en-US-Iris:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Iris MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'en-US-Iris:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
@@ -6228,7 +6865,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -6254,7 +6891,33 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Isla MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'en-AU-Isla:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Isla MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'en-AU-Isla:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -6404,6 +7067,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Jasper MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'en-US-Jasper:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Jasper MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'en-US-Jasper:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Javier (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (es-GQ, JavierNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -6424,6 +7113,19 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.fr_CA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Jelly Dragon HD Omni Latest (NeuralHD)',
+            voice_key={'name': 'en-us-jelly:DragonHDOmniLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -6462,7 +7164,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_HK, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sv_SE, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW
+                languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_HK, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sv_SE, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -6515,6 +7217,19 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Jimmie Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'en-US-Jimmie:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -6579,7 +7294,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -6658,6 +7373,45 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Junho MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'ko-KR-Junho:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'embarrassed', 'excited', 'happy', 'hopeful', 'joyful', 'relieved', 'sad', 'softvoice'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Junho MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'ko-KR-Junho:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'embarrassed', 'excited', 'happy', 'hopeful', 'joyful', 'relieved', 'sad', 'softvoice'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Juno Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'en-US-Juno:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -6762,6 +7516,32 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.en_IN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Kavya MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'hi-IN-Kavya:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Kavya MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'hi-IN-Kavya:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -6885,6 +7665,58 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Klaus MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'de-DE-Klaus:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Klaus MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'de-DE-Klaus:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Krit MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'th-TH-Krit:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Krit MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'th-TH-Krit:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Kumar குமார் (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (ta-LK, KumarNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -6963,6 +7795,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Lan MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'zh-CN-Lan:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'joyful', 'sad', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Lan MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'zh-CN-Lan:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'joyful', 'sad', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Larissa (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (es-MX, LarissaNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -6983,6 +7841,19 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.ps_AF
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Lavanya Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'en-IN-Lavanya:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -7067,6 +7938,58 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Lev MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'ru-RU-Lev:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Lev MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'ru-RU-Lev:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Levente MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'hu-HU-Levente:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Levente MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'hu-HU-Levente:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Lewis Dragon HD Omni Latest (NeuralHD)',
             voice_key={'name': 'en-US-Lewis:DragonHDOmniLatestNeural'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
@@ -7086,7 +8009,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -7145,6 +8068,45 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Lilla MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'hu-HU-Lilla:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Lilla MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'hu-HU-Lilla:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Linh MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'vi-VN-Linh:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.vi_VN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Lisandro (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (it-IT, LisandroNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -7164,7 +8126,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -7210,6 +8172,58 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Luana MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'pt-BR-Luana:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Luana MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'pt-BR-Luana:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Luca MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'it-IT-Luca:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Luca MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'it-IT-Luca:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Luciano (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (es-MX, LucianoNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -7229,7 +8243,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -7333,7 +8347,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -7431,13 +8445,39 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Marc MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'fr-FR-Marc:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Marc MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'fr-FR-Marc:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Marcello Multilingual (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (it-IT, MarcelloMultilingualNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -7535,6 +8575,19 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Maroonallegro Dragon HD Omni Latest (NeuralHD)',
+            voice_key={'name': 'zh-CN-Maroonallegro:DragonHDOmniLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Marta (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (es-GT, MartaNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -7542,6 +8595,32 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.es_GT
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Marta MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'es-ES-Marta:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Marta MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'es-ES-Marta:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -7580,7 +8659,33 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Masha MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'ru-RU-Masha:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Masha MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'ru-RU-Masha:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -7652,13 +8757,26 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Meera2 Dragon HD Latest (NeuralHD)',
-            voice_key={'name': 'en-IN-Meera2:DragonHDLatestNeural'},
-            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            name='Mei MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'zh-CN-Mei:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Mei MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'zh-CN-Mei:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -7691,6 +8809,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Mia MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'de-DE-Mia:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Mia MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'de-DE-Mia:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Michelle (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (en-US, MichelleNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -7711,6 +8855,19 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ml_IN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Mila Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'en-US-Mila:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -7879,7 +9036,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -7912,6 +9069,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Nattapong MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'th-TH-Nattapong:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Nattapong MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'th-TH-Nattapong:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Neerja (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (en-IN, NeerjaNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'style': {'type': 'list', 'values': ['', 'newscast', 'cheerful', 'empathetic'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
@@ -7919,6 +9102,19 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.en_IN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Neerja Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'en-IN-Neerja:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -7977,7 +9173,7 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Nicholas (Neural)',
+            name='Nicholas (Latin) Nicholas (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (sr-Latn-RS, NicholasNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Azure',
@@ -8152,7 +9348,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -8211,6 +9407,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Olivia MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'en-US-Olivia:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Olivia MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'en-US-Olivia:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Ollie Dragon HD Latest (NeuralHD)',
             voice_key={'name': 'en-GB-Ollie:DragonHDLatestNeural'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
@@ -8230,7 +9452,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -8269,7 +9491,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -8296,6 +9518,19 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ms_MY
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Osman Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'ms-MY-Osman:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -8361,6 +9596,32 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.es_VE
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Pedro MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'pt-BR-Pedro:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'confused', 'determined', 'embarrassed', 'excited', 'happy', 'hopeful', 'joyful', 'regretful', 'relieved', 'sad', 'softvoice', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Pedro MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'pt-BR-Pedro:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'confused', 'determined', 'embarrassed', 'excited', 'happy', 'hopeful', 'joyful', 'regretful', 'relieved', 'sad', 'softvoice', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -8438,7 +9699,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -8536,6 +9797,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Priya MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'hi-IN-Priya:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Priya MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'hi-IN-Priya:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Priyom প্ৰিয়ম (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (as-IN, PriyomNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -8543,6 +9830,58 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.as_IN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Radu MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'ro-RO-Radu:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Radu MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'ro-RO-Radu:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Rafael MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'pt-BR-Rafael:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'embarrassed', 'excited', 'happy', 'hopeful', 'joyful', 'regretful', 'relieved', 'sad', 'softvoice', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Rafael MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'pt-BR-Rafael:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'embarrassed', 'excited', 'happy', 'hopeful', 'joyful', 'regretful', 'relieved', 'sad', 'softvoice', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -8711,7 +10050,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -8822,6 +10161,58 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Rosa MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'it-IT-Rosa:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Rosa MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'it-IT-Rosa:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Rui MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'pt-PT-Rui:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'embarrassed', 'excited', 'happy', 'hopeful', 'joyful', 'regretful', 'relieved', 'sad', 'softvoice', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Rui MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'pt-PT-Rui:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'embarrassed', 'excited', 'happy', 'hopeful', 'joyful', 'regretful', 'relieved', 'sad', 'softvoice', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Ryan (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (en-GB, RyanNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'style': {'type': 'list', 'values': ['', 'cheerful', 'chat', 'whispering', 'sad'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
@@ -8854,7 +10245,33 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_HK, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sv_SE, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW
+                languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_HK, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sv_SE, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Réka MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'hu-HU-Réka:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Réka MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'hu-HU-Réka:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -8881,6 +10298,19 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ne_NP
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Sakura MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'ja-JP-Sakura:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.ja_JP
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -8971,7 +10401,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -8985,6 +10415,32 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.ar_JO
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Sander MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'nl-NL-Sander:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Sander MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'nl-NL-Sander:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'adventurous', 'caringempathy', 'curious', 'encouraging', 'excited', 'friendlycheerful', 'nostalgic', 'reflective', 'saddisappointed', 'serious'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -9037,6 +10493,19 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.uz_UZ
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Sari MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'id-ID-Sari:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.id_ID
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -9114,7 +10583,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -9140,7 +10609,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -9166,7 +10635,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -9193,6 +10662,19 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.te_IN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Siennatopaz Dragon HD Omni Latest (NeuralHD)',
+            voice_key={'name': 'en-au-siennatopaz:DragonHDOmniLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_AU
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -9277,6 +10759,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Soleil MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'fr-FR-Soleil:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Soleil MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'fr-FR-Soleil:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Sonia (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (en-GB, SoniaNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'style': {'type': 'list', 'values': ['', 'cheerful', 'sad'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
@@ -9316,7 +10824,7 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Sophie (Neural)',
+            name='Sophie (Latin) Sophie (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (sr-Latn-RS, SophieNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
             service='Azure',
@@ -9400,7 +10908,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -9641,6 +11149,19 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Tessa Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'en-US-Tessa:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Thalita (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (pt-BR, ThalitaNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -9673,7 +11194,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -9784,6 +11305,19 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Tiana Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'en-US-Tiana:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Tim (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (en-AU, TimNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -9881,7 +11415,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -9908,6 +11442,19 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.en_US
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Tyler Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'en-US-Tyler:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -9966,6 +11513,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Valeria MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'es-MX-Valeria:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Valeria MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'es-MX-Valeria:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'determined', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'relieved', 'sad', 'shouting', 'softvoice', 'surprised', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Valerio (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (pt-BR, ValerioNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -9986,6 +11559,19 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ta_IN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Vance Dragon HD Latest (NeuralHD)',
+            voice_key={'name': 'en-US-Vance:DragonHDLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -10076,7 +11662,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -10122,6 +11708,32 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Wei MAI-Voice-2 (NeuralHD)',
+            voice_key={'name': 'zh-CN-Wei:MAI-Voice-2'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'sad', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Wei MAI-Voice-2-Flash (NeuralHD)',
+            voice_key={'name': 'zh-CN-Wei:MAI-Voice-2-Flash'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'confused', 'disgusted', 'embarrassed', 'excited', 'fearful', 'happy', 'hopeful', 'jealous', 'joyful', 'regretful', 'sad', 'surprised'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.de_DE, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hu_HU, languages.AudioLanguage.it_IT, languages.AudioLanguage.ko_KR, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Willem (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (af-ZA, WillemNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -10154,7 +11766,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -10219,7 +11831,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -10265,6 +11877,19 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Xiaoke Dragon HD Flash Latest (Neural)',
+            voice_key={'name': 'zh-CN-Xiaoke:DragonHDFlashLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'customer-service', 'cute', 'excited', 'fearful', 'sad', 'sorry', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Xiaomeng 晓梦 (Neural)',
             voice_key={'name': 'Microsoft Server Speech Text to Speech Voice (zh-CN, XiaomengNeural)'},
             options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'style': {'type': 'list', 'values': ['', 'chat'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
@@ -10298,6 +11923,19 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.zh_CN_shaanxi
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Xiaoqi Dragon HD Flash Latest (Neural)',
+            voice_key={'name': 'zh-CN-Xiaoqi:DragonHDFlashLatestNeural'},
+            options={'rate': {'type': 'number', 'min': 0.5, 'max': 3.0, 'default': 1.0}, 'pitch': {'type': 'number', 'min': -100, 'max': 100, 'default': 0}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}, 'temperature': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_p': {'type': 'number', 'min': 0.3, 'max': 1.0, 'default': 0.7}, 'top_k': {'type': 'number_int', 'min': 1, 'max': 50, 'default': 22}, 'cfg_scale': {'type': 'number', 'min': 1.0, 'max': 2.0, 'default': 1.4}, 'style': {'type': 'list', 'values': ['', 'angry', 'cheerful', 'customer-service', 'excited', 'fearful', 'sad', 'sorry', 'whispering'], 'default': ''}, 'styledegree': {'type': 'number', 'min': 0.01, 'max': 2.0, 'default': 1.0}},
+            service='Azure',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -10362,7 +12000,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -10427,7 +12065,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -10518,7 +12156,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -10557,7 +12195,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -10635,7 +12273,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Female,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -10830,7 +12468,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -11025,7 +12663,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -11090,7 +12728,7 @@ VOICE_LIST = [
             service='Azure',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
+                languages.AudioLanguage.af_ZA, languages.AudioLanguage.am_ET, languages.AudioLanguage.ar_EG, languages.AudioLanguage.ar_SA, languages.AudioLanguage.az_AZ, languages.AudioLanguage.bg_BG, languages.AudioLanguage.bn_BD, languages.AudioLanguage.bn_IN, languages.AudioLanguage.bs_BA, languages.AudioLanguage.ca_ES, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.cy_GB, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_AT, languages.AudioLanguage.de_CH, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_AU, languages.AudioLanguage.en_CA, languages.AudioLanguage.en_GB, languages.AudioLanguage.en_IE, languages.AudioLanguage.en_IN, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.es_MX, languages.AudioLanguage.es_US, languages.AudioLanguage.et_EE, languages.AudioLanguage.eu_ES, languages.AudioLanguage.fa_IR, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_BE, languages.AudioLanguage.fr_CA, languages.AudioLanguage.fr_CH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.ga_IE, languages.AudioLanguage.gl_ES, languages.AudioLanguage.he_IL, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.hy_AM, languages.AudioLanguage.id_ID, languages.AudioLanguage.is_IS, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.jv_ID, languages.AudioLanguage.ka_GE, languages.AudioLanguage.kk_KZ, languages.AudioLanguage.km_KH, languages.AudioLanguage.kn_IN, languages.AudioLanguage.ko_KR, languages.AudioLanguage.lo_LA, languages.AudioLanguage.lt_LT, languages.AudioLanguage.lv_LV, languages.AudioLanguage.mk_MK, languages.AudioLanguage.ml_IN, languages.AudioLanguage.mn_MN, languages.AudioLanguage.ms_MY, languages.AudioLanguage.mt_MT, languages.AudioLanguage.my_MM, languages.AudioLanguage.nb_NO, languages.AudioLanguage.ne_NP, languages.AudioLanguage.nl_BE, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.ps_AF, languages.AudioLanguage.pt_BR, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.si_LK, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sl_SI, languages.AudioLanguage.so_SO, languages.AudioLanguage.sq_AL, languages.AudioLanguage.sr_RS, languages.AudioLanguage.su_ID, languages.AudioLanguage.sv_SE, languages.AudioLanguage.sw_KE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.te_IN, languages.AudioLanguage.th_TH, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.ur_PK, languages.AudioLanguage.uz_UZ, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN, languages.AudioLanguage.zh_HK, languages.AudioLanguage.zh_TW, languages.AudioLanguage.zu_ZA
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -14126,19 +15764,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Adam - Dominant, Firm (English v1)',
-            voice_key={'voice_id': 'pNInz6obpgDQGcFmaJgB', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Adam - Dominant, Firm (Flash v2)',
             voice_key={'voice_id': 'pNInz6obpgDQGcFmaJgB', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -14159,19 +15784,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Adam - Dominant, Firm (Multilingual v1)',
-            voice_key={'voice_id': 'pNInz6obpgDQGcFmaJgB', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -14230,19 +15842,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Alice - Clear, Engaging Educator (English v1)',
-            voice_key={'voice_id': 'Xb7hH8MSUJpSbSDYk0k2', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Alice - Clear, Engaging Educator (Flash v2)',
             voice_key={'voice_id': 'Xb7hH8MSUJpSbSDYk0k2', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -14263,19 +15862,6 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Alice - Clear, Engaging Educator (Multilingual v1)',
-            voice_key={'voice_id': 'Xb7hH8MSUJpSbSDYk0k2', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -14334,19 +15920,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Bella - Professional, Bright, Warm (English v1)',
-            voice_key={'voice_id': 'hpp4J3VqNfWAUOO0d1Us', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Bella - Professional, Bright, Warm (Flash v2)',
             voice_key={'voice_id': 'hpp4J3VqNfWAUOO0d1Us', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -14367,19 +15940,6 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Bella - Professional, Bright, Warm (Multilingual v1)',
-            voice_key={'voice_id': 'hpp4J3VqNfWAUOO0d1Us', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -14438,19 +15998,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Bill - Wise, Mature, Balanced (English v1)',
-            voice_key={'voice_id': 'pqHfZKP75CvOlQylNhV4', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Bill - Wise, Mature, Balanced (Flash v2)',
             voice_key={'voice_id': 'pqHfZKP75CvOlQylNhV4', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -14471,19 +16018,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Bill - Wise, Mature, Balanced (Multilingual v1)',
-            voice_key={'voice_id': 'pqHfZKP75CvOlQylNhV4', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -14542,19 +16076,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Brian - Deep, Resonant and Comforting (English v1)',
-            voice_key={'voice_id': 'nPczCjzI2devNBz1zQrb', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Brian - Deep, Resonant and Comforting (Flash v2)',
             voice_key={'voice_id': 'nPczCjzI2devNBz1zQrb', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -14575,19 +16096,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Brian - Deep, Resonant and Comforting (Multilingual v1)',
-            voice_key={'voice_id': 'nPczCjzI2devNBz1zQrb', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -14646,19 +16154,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Callum - Husky Trickster (English v1)',
-            voice_key={'voice_id': 'N2lVS1w4EtoT3dr4eOWO', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Callum - Husky Trickster (Flash v2)',
             voice_key={'voice_id': 'N2lVS1w4EtoT3dr4eOWO', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -14679,19 +16174,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Callum - Husky Trickster (Multilingual v1)',
-            voice_key={'voice_id': 'N2lVS1w4EtoT3dr4eOWO', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -14750,19 +16232,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Charlie - Deep, Confident, Energetic (English v1)',
-            voice_key={'voice_id': 'IKne3meq5aSn9XLyUdCD', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Charlie - Deep, Confident, Energetic (Flash v2)',
             voice_key={'voice_id': 'IKne3meq5aSn9XLyUdCD', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -14783,19 +16252,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Charlie - Deep, Confident, Energetic (Multilingual v1)',
-            voice_key={'voice_id': 'IKne3meq5aSn9XLyUdCD', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -14854,19 +16310,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Chris - Charming, Down-to-Earth (English v1)',
-            voice_key={'voice_id': 'iP95p4xoKVk53GoZ742B', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Chris - Charming, Down-to-Earth (Flash v2)',
             voice_key={'voice_id': 'iP95p4xoKVk53GoZ742B', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -14887,19 +16330,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Chris - Charming, Down-to-Earth (Multilingual v1)',
-            voice_key={'voice_id': 'iP95p4xoKVk53GoZ742B', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -14958,19 +16388,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Daniel - Steady Broadcaster (English v1)',
-            voice_key={'voice_id': 'onwK4e9ZLuTAKqWW03F9', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Daniel - Steady Broadcaster (Flash v2)',
             voice_key={'voice_id': 'onwK4e9ZLuTAKqWW03F9', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -14991,19 +16408,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Daniel - Steady Broadcaster (Multilingual v1)',
-            voice_key={'voice_id': 'onwK4e9ZLuTAKqWW03F9', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -15062,19 +16466,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Eric - Smooth, Trustworthy (English v1)',
-            voice_key={'voice_id': 'cjVigY5qzO86Huf0OWal', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Eric - Smooth, Trustworthy (Flash v2)',
             voice_key={'voice_id': 'cjVigY5qzO86Huf0OWal', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -15095,19 +16486,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Eric - Smooth, Trustworthy (Multilingual v1)',
-            voice_key={'voice_id': 'cjVigY5qzO86Huf0OWal', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -15166,19 +16544,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='George - Warm, Captivating Storyteller (English v1)',
-            voice_key={'voice_id': 'JBFqnCBsd6RMkjVDRZzb', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='George - Warm, Captivating Storyteller (Flash v2)',
             voice_key={'voice_id': 'JBFqnCBsd6RMkjVDRZzb', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -15199,19 +16564,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='George - Warm, Captivating Storyteller (Multilingual v1)',
-            voice_key={'voice_id': 'JBFqnCBsd6RMkjVDRZzb', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -15270,19 +16622,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Harry - Fierce Warrior (English v1)',
-            voice_key={'voice_id': 'SOYHLrjzK2X1ezoPC6cr', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Harry - Fierce Warrior (Flash v2)',
             voice_key={'voice_id': 'SOYHLrjzK2X1ezoPC6cr', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -15303,19 +16642,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Harry - Fierce Warrior (Multilingual v1)',
-            voice_key={'voice_id': 'SOYHLrjzK2X1ezoPC6cr', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -15374,19 +16700,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Jessica - Playful, Bright, Warm (English v1)',
-            voice_key={'voice_id': 'cgSgspJ2msm6clMCkdW9', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Jessica - Playful, Bright, Warm (Flash v2)',
             voice_key={'voice_id': 'cgSgspJ2msm6clMCkdW9', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -15407,19 +16720,6 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Jessica - Playful, Bright, Warm (Multilingual v1)',
-            voice_key={'voice_id': 'cgSgspJ2msm6clMCkdW9', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -15478,19 +16778,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Laura - Enthusiast, Quirky Attitude (English v1)',
-            voice_key={'voice_id': 'FGY2WhTYpPnrIDTdsKH5', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Laura - Enthusiast, Quirky Attitude (Flash v2)',
             voice_key={'voice_id': 'FGY2WhTYpPnrIDTdsKH5', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -15511,19 +16798,6 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Laura - Enthusiast, Quirky Attitude (Multilingual v1)',
-            voice_key={'voice_id': 'FGY2WhTYpPnrIDTdsKH5', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -15582,19 +16856,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Liam - Energetic, Social Media Creator (English v1)',
-            voice_key={'voice_id': 'TX3LPaxmHKxFdv7VOQHJ', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Liam - Energetic, Social Media Creator (Flash v2)',
             voice_key={'voice_id': 'TX3LPaxmHKxFdv7VOQHJ', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -15615,19 +16876,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Liam - Energetic, Social Media Creator (Multilingual v1)',
-            voice_key={'voice_id': 'TX3LPaxmHKxFdv7VOQHJ', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -15686,19 +16934,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Lily - Velvety Actress (English v1)',
-            voice_key={'voice_id': 'pFZP5JQG7iQjIQuC4Bku', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Lily - Velvety Actress (Flash v2)',
             voice_key={'voice_id': 'pFZP5JQG7iQjIQuC4Bku', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -15719,19 +16954,6 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Lily - Velvety Actress (Multilingual v1)',
-            voice_key={'voice_id': 'pFZP5JQG7iQjIQuC4Bku', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -15790,19 +17012,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Matilda - Knowledgable, Professional (English v1)',
-            voice_key={'voice_id': 'XrExE9yKIg1WjnnlVkGX', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Matilda - Knowledgable, Professional (Flash v2)',
             voice_key={'voice_id': 'XrExE9yKIg1WjnnlVkGX', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -15823,19 +17032,6 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Matilda - Knowledgable, Professional (Multilingual v1)',
-            voice_key={'voice_id': 'XrExE9yKIg1WjnnlVkGX', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -15894,19 +17090,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='River - Relaxed, Neutral, Informative (English v1)',
-            voice_key={'voice_id': 'SAz9YHcvj6GT2YYXdXww', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='River - Relaxed, Neutral, Informative (Flash v2)',
             voice_key={'voice_id': 'SAz9YHcvj6GT2YYXdXww', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -15927,19 +17110,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='River - Relaxed, Neutral, Informative (Multilingual v1)',
-            voice_key={'voice_id': 'SAz9YHcvj6GT2YYXdXww', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -15998,19 +17168,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Roger - Laid-Back, Casual, Resonant (English v1)',
-            voice_key={'voice_id': 'CwhRBWXzGAHq8TQ4Fs17', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Roger - Laid-Back, Casual, Resonant (Flash v2)',
             voice_key={'voice_id': 'CwhRBWXzGAHq8TQ4Fs17', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -16031,19 +17188,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Roger - Laid-Back, Casual, Resonant (Multilingual v1)',
-            voice_key={'voice_id': 'CwhRBWXzGAHq8TQ4Fs17', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -16102,19 +17246,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Sarah - Mature, Reassuring, Confident (English v1)',
-            voice_key={'voice_id': 'EXAVITQu4vr4xnSDxMaL', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Sarah - Mature, Reassuring, Confident (Flash v2)',
             voice_key={'voice_id': 'EXAVITQu4vr4xnSDxMaL', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -16135,19 +17266,6 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Sarah - Mature, Reassuring, Confident (Multilingual v1)',
-            voice_key={'voice_id': 'EXAVITQu4vr4xnSDxMaL', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -16206,19 +17324,6 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
-            name='Will - Relaxed Optimist (English v1)',
-            voice_key={'voice_id': 'bIHbv24MWmeRgasZH58o', 'model_id': 'eleven_monolingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.en_US
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
             name='Will - Relaxed Optimist (Flash v2)',
             voice_key={'voice_id': 'bIHbv24MWmeRgasZH58o', 'model_id': 'eleven_flash_v2'},
             options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
@@ -16239,19 +17344,6 @@ VOICE_LIST = [
             gender=constants.Gender.Male,
             audio_languages=[
                 languages.AudioLanguage.ar_XA, languages.AudioLanguage.bg_BG, languages.AudioLanguage.cs_CZ, languages.AudioLanguage.da_DK, languages.AudioLanguage.de_DE, languages.AudioLanguage.el_GR, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fi_FI, languages.AudioLanguage.fil_PH, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.hr_HR, languages.AudioLanguage.hu_HU, languages.AudioLanguage.id_ID, languages.AudioLanguage.it_IT, languages.AudioLanguage.ja_JP, languages.AudioLanguage.ko_KR, languages.AudioLanguage.ms_MY, languages.AudioLanguage.nb_NO, languages.AudioLanguage.nl_NL, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT, languages.AudioLanguage.ro_RO, languages.AudioLanguage.ru_RU, languages.AudioLanguage.sk_SK, languages.AudioLanguage.sv_SE, languages.AudioLanguage.ta_IN, languages.AudioLanguage.tr_TR, languages.AudioLanguage.uk_UA, languages.AudioLanguage.vi_VN, languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='Will - Relaxed Optimist (Multilingual v1)',
-            voice_key={'voice_id': 'bIHbv24MWmeRgasZH58o', 'model_id': 'eleven_multilingual_v1'},
-            options={'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5}, 'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75}, 'style': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.0}, 'speed': {'type': 'number', 'min': 0.7, 'max': 1.2, 'default': 1.0}, 'use_speaker_boost': {'type': 'list', 'values': ['true', 'false'], 'default': 'false'}, 'language_code': {'type': 'text', 'default': ''}, 'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'}},
-            service='ElevenLabs',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.ar_XA, languages.AudioLanguage.de_DE, languages.AudioLanguage.en_US, languages.AudioLanguage.es_ES, languages.AudioLanguage.fr_FR, languages.AudioLanguage.hi_IN, languages.AudioLanguage.it_IT, languages.AudioLanguage.pl_PL, languages.AudioLanguage.pt_PT
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -17357,6 +18449,84 @@ VOICE_LIST = [
             gender=constants.Gender.Any,
             audio_languages=[
                 languages.AudioLanguage.ca_ES
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='cdo-ANY',
+            voice_key={'language_code': 'cdo', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.cdo_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='cdo-ANY',
+            voice_key={'language_code': 'cdo', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.cdo_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='cdo-ANY',
+            voice_key={'language_code': 'cdo', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.cdo_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='cjy-ANY',
+            voice_key={'language_code': 'cjy', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.cjy_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='cjy-ANY',
+            voice_key={'language_code': 'cjy', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.cjy_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='cjy-ANY',
+            voice_key={'language_code': 'cjy', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.cjy_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -19469,6 +20639,45 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='fzho-ANY',
+            voice_key={'language_code': 'fzho', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.cdo_CN_fuzhou
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='fzho-ANY',
+            voice_key={'language_code': 'fzho', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.cdo_CN_fuzhou
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='fzho-ANY',
+            voice_key={'language_code': 'fzho', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.cdo_CN_fuzhou
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='ga-ANY',
             voice_key={'language_code': 'ga', 'country_code': 'ANY', 'gender': 'm'},
             options={},
@@ -19508,6 +20717,45 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='gan-ANY',
+            voice_key={'language_code': 'gan', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.gan_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='gan-ANY',
+            voice_key={'language_code': 'gan', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.gan_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='gan-ANY',
+            voice_key={'language_code': 'gan', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.gan_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='gl-ANY',
             voice_key={'language_code': 'gl', 'country_code': 'ANY', 'gender': 'm'},
             options={},
@@ -19541,6 +20789,45 @@ VOICE_LIST = [
             gender=constants.Gender.Any,
             audio_languages=[
                 languages.AudioLanguage.gl_ES
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='hak-ANY',
+            voice_key={'language_code': 'hak', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.hak_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='hak-ANY',
+            voice_key={'language_code': 'hak', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.hak_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='hak-ANY',
+            voice_key={'language_code': 'hak', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.hak_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -19658,6 +20945,45 @@ VOICE_LIST = [
             gender=constants.Gender.Any,
             audio_languages=[
                 languages.AudioLanguage.hr_HR
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='hsn-ANY',
+            voice_key={'language_code': 'hsn', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_hunan
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='hsn-ANY',
+            voice_key={'language_code': 'hsn', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_hunan
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='hsn-ANY',
+            voice_key={'language_code': 'hsn', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_hunan
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -19853,6 +21179,162 @@ VOICE_LIST = [
             gender=constants.Gender.Any,
             audio_languages=[
                 languages.AudioLanguage.ja_JP
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='jliu-ANY',
+            voice_key={'language_code': 'jliu', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_liaoning
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='jliu-ANY',
+            voice_key={'language_code': 'jliu', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_liaoning
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='jliu-ANY',
+            voice_key={'language_code': 'jliu', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_liaoning
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='jlua-ANY',
+            voice_key={'language_code': 'jlua', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_shandong
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='jlua-ANY',
+            voice_key={'language_code': 'jlua', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_shandong
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='jlua-ANY',
+            voice_key={'language_code': 'jlua', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_shandong
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='juai-ANY',
+            voice_key={'language_code': 'juai', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_anhui
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='juai-ANY',
+            voice_key={'language_code': 'juai', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_anhui
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='juai-ANY',
+            voice_key={'language_code': 'juai', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_anhui
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='jusi-ANY',
+            voice_key={'language_code': 'jusi', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.wuu_CN_shanghai
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='jusi-ANY',
+            voice_key={'language_code': 'jusi', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.wuu_CN_shanghai
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='jusi-ANY',
+            voice_key={'language_code': 'jusi', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.wuu_CN_shanghai
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -20132,6 +21614,45 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='ltc-ANY',
+            voice_key={'language_code': 'ltc', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.ltc_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='ltc-ANY',
+            voice_key={'language_code': 'ltc', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.ltc_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='ltc-ANY',
+            voice_key={'language_code': 'ltc', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.ltc_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='lv-ANY',
             voice_key={'language_code': 'lv', 'country_code': 'ANY', 'gender': 'm'},
             options={},
@@ -20204,6 +21725,45 @@ VOICE_LIST = [
             gender=constants.Gender.Any,
             audio_languages=[
                 languages.AudioLanguage.mk_MK
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='nan-ANY',
+            voice_key={'language_code': 'nan', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.nan_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='nan-ANY',
+            voice_key={'language_code': 'nan', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.nan_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='nan-ANY',
+            voice_key={'language_code': 'nan', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.nan_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -20399,6 +21959,45 @@ VOICE_LIST = [
             gender=constants.Gender.Any,
             audio_languages=[
                 languages.AudioLanguage.pl_PL
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='plig-ANY',
+            voice_key={'language_code': 'plig', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.wuu_CN_changzhou
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='plig-ANY',
+            voice_key={'language_code': 'plig', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.wuu_CN_changzhou
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='plig-ANY',
+            voice_key={'language_code': 'plig', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.wuu_CN_changzhou
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -20912,6 +22511,45 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='tisa-ANY',
+            voice_key={'language_code': 'tisa', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.yue_CN_toisan
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='tisa-ANY',
+            voice_key={'language_code': 'tisa', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.yue_CN_toisan
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='tisa-ANY',
+            voice_key={'language_code': 'tisa', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.yue_CN_toisan
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='tl-ANY',
             voice_key={'language_code': 'tl', 'country_code': 'ANY', 'gender': 'm'},
             options={},
@@ -21224,6 +22862,84 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='wuu-ANY',
+            voice_key={'language_code': 'wuu', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.wuu_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='wuu-ANY',
+            voice_key={'language_code': 'wuu', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.wuu_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='wuu-ANY',
+            voice_key={'language_code': 'wuu', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.wuu_CN
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='xghu-ANY',
+            voice_key={'language_code': 'xghu', 'country_code': 'ANY', 'gender': 'm'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Male,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_sichuan
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='xghu-ANY',
+            voice_key={'language_code': 'xghu', 'country_code': 'ANY', 'gender': 'f'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_sichuan
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='xghu-ANY',
+            voice_key={'language_code': 'xghu', 'country_code': 'ANY'},
+            options={},
+            service='Forvo',
+            gender=constants.Gender.Any,
+            audio_languages=[
+                languages.AudioLanguage.zh_CN_sichuan
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='yue-CHN',
             voice_key={'language_code': 'yue', 'country_code': 'CHN', 'gender': 'm'},
             options={},
@@ -21308,163 +23024,7 @@ VOICE_LIST = [
             service='Forvo',
             gender=constants.Gender.Male,
             audio_languages=[
-                languages.AudioLanguage.nan_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'm'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Male,
-            audio_languages=[
                 languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'm'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.wuu_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'm'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_henan
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'm'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_liaoning
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'm'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_shaanxi
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'm'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_shandong
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'm'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_sichuan
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'm'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_guangxi
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'm'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_gansu
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'm'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_anhui
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'm'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Male,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_hunan
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'f'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.nan_CN
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -21485,285 +23045,12 @@ VOICE_LIST = [
 
         voice.TtsVoice_v3(
             name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'f'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.wuu_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'f'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_henan
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'f'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_liaoning
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'f'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_shaanxi
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'f'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_shandong
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'f'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_sichuan
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'f'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_guangxi
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'f'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_gansu
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'f'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_anhui
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN', 'gender': 'f'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Female,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_hunan
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Any,
-            audio_languages=[
-                languages.AudioLanguage.nan_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
             voice_key={'language_code': 'zh', 'country_code': 'CHN'},
             options={},
             service='Forvo',
             gender=constants.Gender.Any,
             audio_languages=[
                 languages.AudioLanguage.zh_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Any,
-            audio_languages=[
-                languages.AudioLanguage.wuu_CN
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Any,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_henan
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Any,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_liaoning
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Any,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_shaanxi
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Any,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_shandong
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Any,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_sichuan
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Any,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_guangxi
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Any,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_gansu
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Any,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_anhui
-            ],
-            service_fee=constants.ServiceFee.paid
-        )
-, 
-
-        voice.TtsVoice_v3(
-            name='zh-CHN',
-            voice_key={'language_code': 'zh', 'country_code': 'CHN'},
-            options={},
-            service='Forvo',
-            gender=constants.Gender.Any,
-            audio_languages=[
-                languages.AudioLanguage.zh_CN_hunan
             ],
             service_fee=constants.ServiceFee.paid
         )
@@ -52867,7 +54154,7 @@ VOICE_LIST = [
 
         voice.TtsVoice_v3(
             name='Dieter (Dnn)',
-            voice_key={'name': 'de-DE_DieterV3Voice'},
+            voice_key={'name': 'de-DE_DieterV2Voice'},
             options={'format': {'type': 'list', 'values': ['mp3', 'ogg_opus', 'ogg_vorbis'], 'default': 'mp3'}},
             service='Watson',
             gender=constants.Gender.Male,
@@ -52880,7 +54167,7 @@ VOICE_LIST = [
 
         voice.TtsVoice_v3(
             name='Dieter (Dnn)',
-            voice_key={'name': 'de-DE_DieterV2Voice'},
+            voice_key={'name': 'de-DE_DieterV3Voice'},
             options={'format': {'type': 'list', 'values': ['mp3', 'ogg_opus', 'ogg_vorbis'], 'default': 'mp3'}},
             service='Watson',
             gender=constants.Gender.Male,
@@ -53100,6 +54387,19 @@ VOICE_LIST = [
 , 
 
         voice.TtsVoice_v3(
+            name='Isabela',
+            voice_key={'name': 'pt-BR_IsabelaNatural'},
+            options={'format': {'type': 'list', 'values': ['mp3', 'ogg_opus', 'ogg_vorbis'], 'default': 'mp3'}},
+            service='Watson',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.pt_BR
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
             name='Isabela (Dnn)',
             voice_key={'name': 'pt-BR_IsabelaV3Voice'},
             options={'format': {'type': 'list', 'values': ['mp3', 'ogg_opus', 'ogg_vorbis'], 'default': 'mp3'}},
@@ -53309,7 +54609,7 @@ VOICE_LIST = [
 
         voice.TtsVoice_v3(
             name='Michael (Dnn)',
-            voice_key={'name': 'en-US_MichaelV2Voice'},
+            voice_key={'name': 'en-US_MichaelExpressive'},
             options={'format': {'type': 'list', 'values': ['mp3', 'ogg_opus', 'ogg_vorbis'], 'default': 'mp3'}},
             service='Watson',
             gender=constants.Gender.Male,
@@ -53322,7 +54622,7 @@ VOICE_LIST = [
 
         voice.TtsVoice_v3(
             name='Michael (Dnn)',
-            voice_key={'name': 'en-US_MichaelExpressive'},
+            voice_key={'name': 'en-US_MichaelV2Voice'},
             options={'format': {'type': 'list', 'values': ['mp3', 'ogg_opus', 'ogg_vorbis'], 'default': 'mp3'}},
             service='Watson',
             gender=constants.Gender.Male,
@@ -53367,6 +54667,19 @@ VOICE_LIST = [
             gender=constants.Gender.Female,
             audio_languages=[
                 languages.AudioLanguage.fr_FR
+            ],
+            service_fee=constants.ServiceFee.paid
+        )
+, 
+
+        voice.TtsVoice_v3(
+            name='Sofia',
+            voice_key={'name': 'es-LA_SofiaNatural'},
+            options={'format': {'type': 'list', 'values': ['mp3', 'ogg_opus', 'ogg_vorbis'], 'default': 'mp3'}},
+            service='Watson',
+            gender=constants.Gender.Female,
+            audio_languages=[
+                languages.AudioLanguage.es_LA
             ],
             service_fee=constants.ServiceFee.paid
         )

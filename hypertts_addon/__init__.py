@@ -28,6 +28,10 @@ else:
         get('error_handling', {}).get('error_stats_reporting', True)
     ipv4_only = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
         get('error_handling', {}).get('ipv4_only', False)
+    remote_logging = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
+        get('error_handling', {}).get('remote_logging', False)
+    remote_logging_disable_after = addon_config.get(constants.CONFIG_PREFERENCES, {}).\
+        get('error_handling', {}).get('remote_logging_disable_after', None)
     if ipv4_only:
         import socket
         import urllib3.util.connection as urllib3_cn
@@ -44,15 +48,9 @@ else:
 
     from . import logging_utils
 
-    if os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'enable':
-        # log everything to stdout
-        logging_utils.configure_console_logging()
-    elif os.environ.get('HYPER_TTS_DEBUG_LOGGING', '') == 'file':
-        # log everything to file
-        logging_utils.configure_file_logging(os.environ['HYPER_TTS_DEBUG_LOGFILE'])
-    else:
-        # log at info level, but with null handler, so that sentry picks up breadcrumbs and errors
-        logging_utils.configure_silent()
+    # nothing is written to stdout/stderr unless HYPER_TTS_DEBUG_LOGGING asks for it, but sentry
+    # still picks up breadcrumbs and errors
+    logging_utils.configure_addon_logging()
 
     logger = logging_utils.get_child_logger(__name__)
 
@@ -106,8 +104,30 @@ else:
         addon_config[constants.CONFIG_CONFIGURATION] = config_models.serialize_configuration(configuration)
         aqt.mw.addonManager.writeConfig(constants.CONFIG_ADDON_NAME, addon_config)
 
+    def looks_like_lost_configuration() -> bool:
+        """we are about to treat this as a first install, but do the configuration backups say
+        otherwise ? if anki couldn't read meta.json it hands us the packaged defaults, which look
+        exactly like a first install. writing a freshly generated user_uuid on top of that is what
+        turns a damaged meta.json into permanent loss of presets and API keys (github issue #360)."""
+        from . import anki_utils
+        from . import config_backup
+        backup_manager = config_backup.ConfigBackupManager(anki_utils.AnkiUtils())
+        latest_backup = backup_manager.get_latest_readable_backup()
+        return latest_backup != None and latest_backup.stats.has_user_data()
+
     configuration, first_install = get_configuration()
-    save_configuration(configuration)
+    if first_install:
+        if looks_like_lost_configuration():
+            # don't write anything. HyperTTS reports this to sentry and tells the user how to
+            # restore a backup once it is initialized (crash reporting isn't set up yet here)
+            first_install = False
+            logger.error('configuration looks like a first install, but configuration backups '
+                'contain data: not writing the configuration')
+        else:
+            # only write the configuration when we actually created something (the user_uuid and the
+            # new install settings). writing on every startup risks persisting a configuration we
+            # failed to read, which is how a transient failure becomes permanent data loss
+            save_configuration(configuration)
 
     # setup sentry crash reporting
     # ============================
@@ -119,6 +139,7 @@ else:
         from . import version
         from . import sentry_utils
         from sentry_sdk.integrations.socket import SocketIntegration
+        from sentry_sdk.integrations.logging import LoggingIntegration
 
         production_sample_rate = 0.025 if configuration.hypertts_pro_api_key_set() else 0.01
         traces_sample_rate_map = {
@@ -139,11 +160,25 @@ else:
             send_default_pii=True,
             integrations=[
                 SocketIntegration(),
+                LoggingIntegration(
+                    # breadcrumbs: leave the decision to each logger's own level. only the hypertts
+                    # logger is set to DEBUG, everything else in the anki process filters itself
+                    level=logging.DEBUG,
+                    # errors and above become sentry issues
+                    event_level=logging.ERROR,
+                    # no process wide stdlib -> sentry logs. enable_sentry_remote_logging() scopes
+                    # sentry logs to the hypertts logger when the user or a feature flag asks for it
+                    sentry_logs_level=None,
+                ),
             ],
         )
         sentry_sdk.set_user({"id": configuration.user_uuid})
         sentry_sdk.set_tag("anki_version", anki.version)
         sentry_sdk.set_tag("hypertts_pro_user", configuration.hypertts_pro_api_key_set())
+        # detailed logging disables itself after a while, HyperTTS.expire_remote_logging() writes
+        # the preference back, but that happens later, so check the expiry before turning it on
+        if remote_logging and not config_models.remote_logging_expired(remote_logging_disable_after):
+            logging_utils.enable_sentry_remote_logging()
     else:
         logger.info(f'disabling crash reporting')
 
@@ -164,7 +199,18 @@ else:
         current_script_path = os.path.realpath(__file__)
         current_script_dir = os.path.dirname(current_script_path)
         return os.path.join(current_script_dir, 'services')
-    service_manager = servicemanager.ServiceManager(services_dir(), f'{constants.DIR_HYPERTTS_ADDON}.{constants.DIR_SERVICES}', False)
+
+    def extensions_dir():
+        # third party services directory. read straight from the addon config, the same way
+        # ipv4_only is read above, because ServiceManager is built before HyperTTS exists
+        extensions_config = addon_config.get(constants.CONFIG_CONFIGURATION, {}).\
+            get(constants.CONFIG_EXTENSIONS, {})
+        if not extensions_config.get('enabled', False):
+            return None
+        return extensions_config.get('extensions_directory', None)
+
+    service_manager = servicemanager.ServiceManager(services_dir(), f'{constants.DIR_HYPERTTS_ADDON}.{constants.DIR_SERVICES}', False,
+        extensions_directory=extensions_dir())
     service_manager.init_services()
     hyper_tts = hypertts.HyperTTS(ankiutils, service_manager)
     # configure services based on config

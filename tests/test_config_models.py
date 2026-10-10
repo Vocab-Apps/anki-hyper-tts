@@ -649,7 +649,9 @@ class ConfigModelsTests(unittest.TestCase):
                 },
             },
             'user_uuid': None,
-            'user_choice_easy_advanced': False
+            'user_choice_easy_advanced': False,
+            'extension_service_names': [],
+            'extensions': {'enabled': False, 'extensions_directory': None}
         }
 
         actual_output = config_models.serialize_configuration(configuration)
@@ -709,7 +711,9 @@ class ConfigModelsTests(unittest.TestCase):
                 },
             },
             'user_uuid': None,
-            'user_choice_easy_advanced': False
+            'user_choice_easy_advanced': False,
+            'extension_service_names': [],
+            'extensions': {'enabled': False, 'extensions_directory': None}
         }
 
         actual_output = config_models.serialize_configuration(configuration)
@@ -958,6 +962,8 @@ class ConfigModelsTests(unittest.TestCase):
             'error_handling': {
                 'realtime_tts_errors_dialog_type': 'Dialog',
                 'error_stats_reporting': True,
+                'remote_logging': False,
+                'remote_logging_disable_after': None,
                 'disable_ssl_verification': False,
                 'ipv4_only': False
             }
@@ -982,6 +988,8 @@ class ConfigModelsTests(unittest.TestCase):
             'error_handling': {
                 'realtime_tts_errors_dialog_type': 'Dialog',
                 'error_stats_reporting': True,
+                'remote_logging': False,
+                'remote_logging_disable_after': None,
                 'disable_ssl_verification': False,
                 'ipv4_only': False
             }
@@ -1006,6 +1014,8 @@ class ConfigModelsTests(unittest.TestCase):
             'error_handling': {
                 'realtime_tts_errors_dialog_type': 'Dialog',
                 'error_stats_reporting': True,
+                'remote_logging': False,
+                'remote_logging_disable_after': None,
                 'disable_ssl_verification': False,
                 'ipv4_only': False
             }
@@ -1164,8 +1174,99 @@ class ConfigModelsTests(unittest.TestCase):
         updated_config = config_models.migrate_configuration(anki_utils, updated_config)
         self.assertIn(expected_preset_1_uuid, updated_config['presets'])
         self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['name'], 'preset_1')
-        self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['uuid'], expected_preset_1_uuid)        
+        self.assertEqual(updated_config['presets'][expected_preset_1_uuid]['uuid'], expected_preset_1_uuid)
 
+    def test_migration_idempotent(self):
+        # running the migration on a current configuration must not change anything, otherwise
+        # HyperTTS writes the configuration on every single startup (github issue #360)
+        anki_utils = testing_utils.MockAnkiUtils({})
+        config = {
+            'config_schema': constants.CONFIG_SCHEMA_VERSION,
+            'presets': {
+                'uuid_1': {'uuid': 'uuid_1', 'name': 'preset 1'}
+            },
+            'mapping_rules': {'rules': [], 'use_easy_mode': False},
+            'configuration': {'user_uuid': 'user_uuid_1'}
+        }
+        original_config = copy.deepcopy(config)
+        updated_config = config_models.migrate_configuration(anki_utils, config)
+        self.assertEqual(updated_config, original_config)
+        self.assertEqual(anki_utils.config_anomalies, [])
+
+    def test_migration_missing_schema_with_presets(self):
+        # a configuration which has lost its config_schema key, but still has presets. the old
+        # migrations would wipe the presets, we must keep them and report the anomaly
+        anki_utils = testing_utils.MockAnkiUtils({})
+        config = {
+            'presets': {
+                'uuid_1': {'uuid': 'uuid_1', 'name': 'preset 1'},
+                'uuid_2': {'uuid': 'uuid_2', 'name': 'preset 2'}
+            },
+            'mapping_rules': {'rules': [{'preset_id': 'uuid_1'}], 'use_easy_mode': False},
+            'configuration': {'user_uuid': 'user_uuid_1', 'hypertts_pro_api_key': 'secret'}
+        }
+        updated_config = config_models.migrate_configuration(anki_utils, config)
+
+        self.assertEqual(len(updated_config['presets']), 2)
+        self.assertEqual(updated_config['presets']['uuid_1']['name'], 'preset 1')
+        self.assertEqual(len(updated_config['mapping_rules']['rules']), 1)
+        self.assertEqual(updated_config['configuration']['hypertts_pro_api_key'], 'secret')
+        # the schema is stamped back in, so this is only reported once
+        self.assertEqual(updated_config['config_schema'], constants.CONFIG_SCHEMA_VERSION)
+        self.assertEqual(len(anki_utils.config_anomalies), 1)
+        self.assertIn('no config_schema', anki_utils.config_anomalies[0]['message'])
+        self.assertEqual(anki_utils.config_anomalies[0]['severity'], 'error')
+
+        # running it again is a no-op and doesn't report anything
+        anki_utils.config_anomalies = []
+        original_config = copy.deepcopy(updated_config)
+        updated_config = config_models.migrate_configuration(anki_utils, updated_config)
+        self.assertEqual(updated_config, original_config)
+        self.assertEqual(anki_utils.config_anomalies, [])
+
+    def test_migration_legacy_presets_preserved(self):
+        # schema 1 configuration which somehow also has presets: the legacy batch_config presets are
+        # added, the existing presets are kept
+        anki_utils = testing_utils.MockAnkiUtils({})
+        config = {
+            'config_schema': 1,
+            'presets': {
+                'uuid_existing': {'uuid': 'uuid_existing', 'name': 'existing preset'}
+            },
+            'batch_config': {
+                'legacy preset': {'source': {}, 'target': {}}
+            }
+        }
+        updated_config = config_models.migrate_configuration(anki_utils, config)
+        preset_names = sorted([preset['name'] for preset in updated_config['presets'].values()])
+        self.assertEqual(preset_names, ['existing preset', 'legacy preset'])
+
+    def test_migration_invalid_schema(self):
+        anki_utils = testing_utils.MockAnkiUtils({})
+        config = {
+            'config_schema': 'four',
+            'presets': {'uuid_1': {'uuid': 'uuid_1', 'name': 'preset 1'}}
+        }
+        updated_config = config_models.migrate_configuration(anki_utils, config)
+        # presets survive, schema is repaired, anomaly reported
+        self.assertEqual(len(updated_config['presets']), 1)
+        self.assertEqual(updated_config['config_schema'], constants.CONFIG_SCHEMA_VERSION)
+        self.assertEqual(len(anki_utils.config_anomalies), 1)
+        self.assertIn('invalid config_schema', anki_utils.config_anomalies[0]['message'])
+
+    def test_migration_newer_schema(self):
+        # a configuration written by a newer version of HyperTTS: leave it alone, and don't lower
+        # its schema version
+        anki_utils = testing_utils.MockAnkiUtils({})
+        config = {
+            'config_schema': constants.CONFIG_SCHEMA_VERSION + 1,
+            'presets': {'uuid_1': {'uuid': 'uuid_1', 'name': 'preset 1'}}
+        }
+        original_config = copy.deepcopy(config)
+        updated_config = config_models.migrate_configuration(anki_utils, config)
+        self.assertEqual(updated_config, original_config)
+        self.assertEqual(len(anki_utils.config_anomalies), 1)
+        self.assertEqual(anki_utils.config_anomalies[0]['severity'], 'warning')
 
     def test_migration_2_to_3_a(self):
         anki_utils = testing_utils.MockAnkiUtils({})

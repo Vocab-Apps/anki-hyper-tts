@@ -1,9 +1,10 @@
 from functools import wraps
+from typing import TYPE_CHECKING
 
 import sentry_sdk
-from sentry_sdk.tracing_utils import set_span_errored
-
-from typing import TYPE_CHECKING
+from sentry_sdk.consts import SPANSTATUS
+from sentry_sdk.traces import SpanStatus
+from sentry_sdk.tracing_utils import has_span_streaming_enabled
 
 if TYPE_CHECKING:
     from typing import Any
@@ -55,9 +56,15 @@ def _patch_error_tracing() -> None:
         the agents library swallows exceptions.
         """
         # Set the current Sentry span to errored
-        current_span = sentry_sdk.get_current_span()
-        if current_span is not None:
-            set_span_errored(current_span)
+        span_streaming = has_span_streaming_enabled(sentry_sdk.get_client().options)
+        if span_streaming:
+            current_span = sentry_sdk.get_current_scope().streamed_span
+            if current_span is not None:
+                current_span.status = SpanStatus.ERROR
+        else:
+            current_span = sentry_sdk.get_current_span()
+            if current_span is not None:
+                current_span.set_status(SPANSTATUS.INTERNAL_ERROR)
 
         # Call the original function
         return original_attach_error(error, *args, **kwargs)

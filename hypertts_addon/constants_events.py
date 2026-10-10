@@ -6,7 +6,7 @@ import enum
 PREFIX = 'anki_addon_v2'
 ADDON = 'hypertts'
 
-GENERATE_MAX_EVENTS = 5
+GENERATE_MAX_EVENTS = 3
 
 # feature flags
 FEATURE_FLAG_DEFAULT_VALUE = 'control'
@@ -33,11 +33,19 @@ class Event(enum.Enum):
     click_save = enum.auto()
     click_add = enum.auto()
     click_preview = enum.auto()
+    click_remove_audio = enum.auto()
     install = enum.auto()
     choose = enum.auto()
     # dialog-specific
     click_disable_all_services = enum.auto()
     click_enable_free_services = enum.auto()
+    # services configuration screen tabs and per-service configuration panel
+    click_tab_hypertts_pro = enum.auto()
+    click_tab_services = enum.auto()
+    click_tab_extensions = enum.auto()
+    open_service_config = enum.auto()
+    click_service_config_ok = enum.auto()
+    click_service_config_cancel = enum.auto()
     click_free_trial = enum.auto()
     click_enter_api_key = enum.auto() # to be replaced
     click_remove_api_key = enum.auto()
@@ -65,3 +73,4 @@ class EventMode(enum.Enum):
     easy_editor = enum.auto()
     easy_mode = enum.auto()
     advanced_mode = enum.auto()
+    remove_audio_browser = enum.auto()

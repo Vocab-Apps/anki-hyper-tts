@@ -20,7 +20,19 @@ items = [
     },
     {
         'name': 'test preferences manual',
-        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual'
+        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components_3.py -k test_preferences_manual'
+    },
+    {
+        'name': 'test configuration backups manual',
+        'command': 'HYPERTTS_CONFIG_BACKUP_DIALOG_DEBUG=yes pytest tests/test_component_config_backup.py -k test_config_backup_manual -s -rPP'
+    },
+    {
+        'name': 'test services configuration screen manual',
+        'command': 'HYPERTTS_CONFIGURATION_DIALOG_DEBUG=yes pytest tests/test_components_1.py -k test_configuration_manual -s -rPP'
+    },
+    {
+        'name': 'test services configuration extensions tab manual',
+        'command': 'HYPERTTS_CONFIGURATION_DIALOG_DEBUG=yes pytest tests/test_components_3.py -k test_configuration_extensions_manual -s -rPP'
     },
     {
         'name': 'test preset mapping rules manual',
@@ -32,8 +44,8 @@ items = [
     },        
     {
         'name': 'test preferences',
-        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_preferences_manual -s -rPP'
-    },            
+        'command': 'HYPERTTS_PREFERENCES_DIALOG_DEBUG=yes pytest tests/test_components_3.py -k test_preferences_manual -s -rPP'
+    },
     {
         'name': 'test hyperttspro',
         'command': 'HYPERTTS_PRO_DIALOG_DEBUG=yes pytest tests/test_components.py -k test_hyperttspro_manual -s -rPP'
@@ -41,6 +53,10 @@ items = [
     {
         'name': 'test services configuration',
         'command': 'HYPERTTS_SERVICES_CONFIG_DIALOG_DEBUG=yes pytest tests/test_components_4.py -k test_services_configuration_manual -s -rPP'
+    },
+    {
+        'name': 'test remove audio dialog',
+        'command': 'HYPERTTS_REMOVE_AUDIO_DIALOG_DEBUG=yes pytest --log-cli-level=DEBUG tests/test_component_remove_audio.py -k test_remove_audio_manual -s -rPP'
     },
     {
         'name': 'test trial signup step 1',

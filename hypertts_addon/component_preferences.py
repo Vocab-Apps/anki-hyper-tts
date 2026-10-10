@@ -4,6 +4,7 @@ import aqt.qt
 from . import component_common
 from . import component_shortcuts
 from . import component_errorhandling
+from . import component_config_backup
 from . import config_models
 from . import constants
 from . import errors
@@ -18,9 +19,12 @@ class ComponentPreferences(component_common.ConfigComponentBase):
         self.model = config_models.Preferences()
         self.shortcuts = component_shortcuts.Shortcuts(self.hypertts, self.dialog, self.shortcuts_updated)
         self.error_handling = component_errorhandling.ErrorHandling(self.hypertts, self.dialog, self.error_handling_updated)
+        self.config_backup = component_config_backup.ConfigBackup(self.hypertts, self.dialog)
 
-        self.save_button = aqt.qt.QPushButton('Apply')   
-        self.cancel_button = aqt.qt.QPushButton('Cancel')        
+        self.save_button = aqt.qt.QPushButton('Apply')
+        self.save_button.setObjectName('hypertts_preferences_apply_button')
+        self.cancel_button = aqt.qt.QPushButton('Cancel')
+        self.cancel_button.setObjectName('hypertts_preferences_cancel_button')
 
     def load_model(self, model):
         logger.info('load_model')
@@ -61,8 +65,10 @@ class ComponentPreferences(component_common.ConfigComponentBase):
         # ====================
 
         self.tabs = aqt.qt.QTabWidget()
+        self.tabs.setObjectName('hypertts_preferences_tabs')
         self.tabs.addTab(self.shortcuts.draw(), 'Keyboard Shortcuts')
         self.tabs.addTab(self.error_handling.draw(), 'Error Handling')
+        self.tabs.addTab(self.config_backup.draw(), 'Configuration Backups')
         layout.addWidget(self.tabs)
 
         # setup bottom buttons

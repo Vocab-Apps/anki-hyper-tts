@@ -39,6 +39,8 @@ rm -f meta.json
 rm -rf __pycache__
 rm -f user_files/*.mp3
 rm -f user_files/*.ogg
+# configuration backups are user data, never ship them
+rm -rf user_files/config_backup
 rm -f *.mp3 *.ogg *.wav
 rm -rvf htmlcov/
 ADDON_FILENAME=${HOME}/anki-addons-releases/anki-hyper-tts-${VERSION_NUMBER}.ankiaddon

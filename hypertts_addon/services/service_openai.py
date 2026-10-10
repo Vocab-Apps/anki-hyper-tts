@@ -85,6 +85,14 @@ class OpenAI(service.ServiceBase):
         if response.status_code == 401:
             raise errors.ServicePermissionError(source_text, voice, f'OpenAI authentication failed: {response.status_code} {response.text}')
 
+        # OpenAI returns HTTP 400 for unsupported input (e.g. text too long,
+        # invalid voice option). Retrying with the same input will not help, so
+        # raise as a PermanentError. Previously this fell through to
+        # raise_for_status() and was re-tagged as UnknownServiceError/transient
+        # (Sentry ANKI-HYPER-TTS-JRS).
+        if response.status_code == 400:
+            raise errors.ServiceInputError(source_text, voice, f'OpenAI bad request: {response.status_code} {response.text}')
+
         response.raise_for_status()
 
         return response.content
