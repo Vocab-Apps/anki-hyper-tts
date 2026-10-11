@@ -1182,12 +1182,14 @@ class HyperTTS():
         voice_selection_mode = constants.VoiceSelectionMode[voice_selection_config['voice_selection_mode']]
         if voice_selection_mode == constants.VoiceSelectionMode.single:
             single = config_models.VoiceSelectionSingle()
+            single.filters = config_models.VoiceFilters.deserialize(voice_selection_config.get('filters', {}))
             voice_id = voice_module.deserialize_voice_id_v3(voice_selection_config['voice']['voice_id'])
             voice_options = voice_selection_config['voice']['options']
             single.set_voice(config_models.VoiceWithOptions(voice_id, voice_options))
             return single
         elif voice_selection_mode == constants.VoiceSelectionMode.random:
             random = config_models.VoiceSelectionRandom()
+            random.filters = config_models.VoiceFilters.deserialize(voice_selection_config.get('filters', {}))
             for voice_data in voice_selection_config['voice_list']:
                 voice_id = voice_module.deserialize_voice_id_v3(voice_data['voice_id'])
                 try:
@@ -1199,6 +1201,7 @@ class HyperTTS():
             return random
         elif voice_selection_mode == constants.VoiceSelectionMode.priority:
             priority = config_models.VoiceSelectionPriority()
+            priority.filters = config_models.VoiceFilters.deserialize(voice_selection_config.get('filters', {}))
             for voice_data in voice_selection_config['voice_list']:
                 voice_id = voice_module.deserialize_voice_id_v3(voice_data['voice_id'])
                 try:

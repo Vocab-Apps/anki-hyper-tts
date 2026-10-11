@@ -44,6 +44,25 @@ class VoiceSelection(component_common.ConfigComponentBase):
         self.play_sample_button = aqt.qt.QPushButton('Play Sample')
 
         self.reset_filters_button = aqt.qt.QPushButton('Reset Filters')        
+        for name, widget in self.filter_widgets().items():
+            widget.setObjectName(f'hypertts_voice_selection_{name}')
+        self.voices_combobox.setObjectName('hypertts_voice_selection_voice')
+        self.reset_filters_button.setObjectName('hypertts_voice_selection_reset_filters')
+
+    def filter_widgets(self):
+        return dict(language=self.languages_combobox, audio_language=self.audio_languages_combobox,
+                    service=self.services_combobox, gender=self.genders_combobox)
+
+    def filter_values(self):
+        return dict(language=[x.name for x in self.languages],
+                    audio_language=[x.name for x in self.audio_languages],
+                    service=self.services, gender=[x.name for x in self.genders])
+
+    def read_filters(self):
+        values = self.filter_values()
+        return config_models.VoiceFilters(**{
+            name: values[name][widget.currentIndex() - 2] if widget.currentIndex() >= 2 else None
+            for name, widget in self.filter_widgets().items()})
 
 
     def get_voices(self):
@@ -80,8 +99,30 @@ class VoiceSelection(component_common.ConfigComponentBase):
         return self.voice_selection_model
 
     def load_model(self, model):
-        # don't report changes back to parent dialog as we adjust widgets
+        original_model = model
+        # Rebuilding the picker can mutate the current model, including on a reload.
+        model = copy.deepcopy(model)
+        previous_callback_state = self.enable_model_change_callback
         self.enable_model_change_callback = False
+        try:
+            values = self.filter_values()
+            for name, widget in self.filter_widgets().items():
+                saved = getattr(model.filters, name)
+                index = values[name].index(saved) + 2 if saved in values[name] else 0
+                blocker = aqt.qt.QSignalBlocker(widget)
+                widget.setCurrentIndex(index)
+                del blocker
+            # Populate options without changing the model retained by the parent.
+            self.voice_selection_model = config_models.VoiceSelectionSingle()
+            self.filter_and_draw_voices(0)
+            self._load_model(model)
+            self.voice_selection_model.filters = self.read_filters()
+            # The parent retains the original model until the next user change.
+            original_model.filters = copy.deepcopy(self.voice_selection_model.filters)
+        finally:
+            self.enable_model_change_callback = previous_callback_state
+
+    def _load_model(self, model):
         logger.info(f'load_model, model: {model}')
         # self.voice_selection_model = model
 
@@ -93,8 +134,12 @@ class VoiceSelection(component_common.ConfigComponentBase):
             # we have access to the voice_id, but we need to locate the proper voice
             voice_id = model.voice.voice_id
             voice = self.hypertts.service_manager.locate_voice(voice_id)
-            voice_index = self.voice_list.index(voice)
+            if voice not in self.filtered_voice_list:
+                self.filtered_voice_list.append(voice)
+                self.draw_all_voices(self.filtered_voice_list)
+            voice_index = self.filtered_voice_list.index(voice)
             self.voices_combobox.setCurrentIndex(voice_index)
+            self.voice_selected(voice_index)
             # self.voice_options_layout
             #self.voice_options_widgets[widget_name]
             logger.info(f'options: {model.voice.options}')
@@ -111,15 +156,20 @@ class VoiceSelection(component_common.ConfigComponentBase):
                 if callable(setCurrentTextFn):
                     # qcombobox detected
                     voice_option_widget.setCurrentText(value)
+                    self.current_voice_options[key] = voice_option_widget.currentText()
                 else:
                     # check if it's a QLineEdit (has setText method)
                     setTextFn = getattr(voice_option_widget, 'setText', None)
                     if callable(setTextFn):
                         # QLineEdit detected
                         voice_option_widget.setText(value)
+                        self.current_voice_options[key] = voice_option_widget.text()
                     else:
                         # slider
                         self.voice_options_widgets[widget_name].setValue(value)
+                        self.current_voice_options[key] = voice_option_widget.value()
+            # Explicitly saved defaults do not emit valueChanged when restored.
+            self.voice_selection_model.set_voice(config_models.VoiceWithOptions(voice_id, self.current_voice_options))
         elif model.selection_mode == constants.VoiceSelectionMode.random:
             self.radio_button_random.setChecked(True)
             self.voice_selection_model = model
@@ -129,7 +179,6 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.voice_selection_model = model
             self.redraw_selected_voices()
 
-        self.enable_model_change_callback = True
 
     def sample_text_selected(self, text):
         logger.debug(f'sample_text_selected: {text}')
@@ -301,6 +350,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
         return self.scroll_area
 
     def voice_selection_mode_change(self):
+        filters = self.read_filters()
         if self.radio_button_single.isChecked():
             self.voice_list_display_stack.setCurrentIndex(0)
             self.voice_selection_model = config_models.VoiceSelectionSingle()
@@ -311,13 +361,15 @@ class VoiceSelection(component_common.ConfigComponentBase):
             self.voice_list_display_stack.setCurrentIndex(1)
             self.voice_selection_model = config_models.VoiceSelectionPriority()
         self.redraw_selected_voices()
+        self.voice_selection_model.filters = filters
         self.notify_model_update()
 
     def reset_filters(self):
-        self.audio_languages_combobox.setCurrentIndex(0)
-        self.languages_combobox.setCurrentIndex(0)
-        self.services_combobox.setCurrentIndex(0)
-        self.genders_combobox.setCurrentIndex(0)
+        for widget in self.filter_widgets().values():
+            blocker = aqt.qt.QSignalBlocker(widget)
+            widget.setCurrentIndex(0)
+            del blocker
+        self.filter_and_draw_voices(0)
 
     def get_selected_voice(self):
         if len(self.filtered_voice_list) == 0:
@@ -438,6 +490,7 @@ class VoiceSelection(component_common.ConfigComponentBase):
 
     def filter_and_draw_voices(self, current_index):
         logger.info('filter_and_draw_voices')
+        self.voice_selection_model.filters = self.read_filters()
         voice_list = self.voice_list
         logger.debug(f'initial voice count: {len(voice_list)}')
         # check filtering by audio language
@@ -466,11 +519,20 @@ class VoiceSelection(component_common.ConfigComponentBase):
         voice_list.sort(key=voice_sort_key)
         self.filtered_voice_list = voice_list
         # logger.debug(f'filtered_voice_list: {self.filtered_voice_list}')
-        self.draw_all_voices(self.filtered_voice_list)
+        previous_callback_state = self.enable_model_change_callback
+        self.enable_model_change_callback = False
+        try:
+            self.draw_all_voices(self.filtered_voice_list)
+        finally:
+            self.enable_model_change_callback = previous_callback_state
+        self.notify_model_update()
 
     def draw_all_voices(self, voice_list):
+        blocker = aqt.qt.QSignalBlocker(self.voices_combobox)
         self.voices_combobox.clear()
         self.voices_combobox.addItems([str(voice) for voice in voice_list])
+        del blocker
+        self.voice_selected(self.voices_combobox.currentIndex())
         logger.debug(f'voices_combobox has {self.voices_combobox.count()} items')
 
     def clear_voice_list_grid_layout(self):

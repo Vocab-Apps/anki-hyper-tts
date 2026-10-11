@@ -66,9 +66,7 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
         self.notify_model_update()        
 
 
-    def load_model(self, model):
-        # don't report changes back to parent dialog as we adjust widgets
-        self.enable_model_change_callback = False
+    def _load_model(self, model):
         logger.info(f'load_model, model: {model}')
 
         # Check if the model is a VoiceSelectionSingle
@@ -82,11 +80,9 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
                     logger.warning(f'VoiceSelectionEasy received {type(model).__name__} model, using first voice: {voice_id}')
                 else:
                     logger.error(f'VoiceSelectionEasy received {type(model).__name__} model with empty voice list')
-                    self.enable_model_change_callback = True
                     return
             else:
                 logger.error(f'VoiceSelectionEasy cannot handle model type: {type(model).__name__}')
-                self.enable_model_change_callback = True
                 return
         else:
             # here we need to select the correct voice, based on what the user has saved in their preset (single voice)
@@ -94,17 +90,20 @@ class VoiceSelectionEasy(component_voiceselection.VoiceSelection):
             voice_id = model.voice.voice_id
         try:
             voice = self.hypertts.service_manager.locate_voice(voice_id)
-            voice_index = self.voice_list.index(voice)
+            if voice not in self.filtered_voice_list:
+                self.filtered_voice_list.append(voice)
+                self.draw_all_voices(self.filtered_voice_list)
+            voice_index = self.filtered_voice_list.index(voice)
             self.voices_combobox.setCurrentIndex(voice_index)
+            self.voice_selected(voice_index)
+            if isinstance(model, config_models.VoiceSelectionSingle):
+                self.voice_selection_model = model
         except ValueError as e:
             logger.warning(f'Voice not found: {voice_id}: {e}')
             logger.error(f'while loading model: voice not found')
         except errors.VoiceIdNotFound as e:
             logger.warning(f'VoiceId not found: {model.voice}: {e}')
             logger.error(f'while loading model: voice_id not found')
-
-        # OK to report changes after this
-        self.enable_model_change_callback = True
 
     def pick_default_voice(self):
         # no preset loaded, pick a reasonable default voice which should work for most users

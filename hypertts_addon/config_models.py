@@ -198,9 +198,29 @@ class VoiceWithOptionsPriority(VoiceWithOptions):
         VoiceWithOptions.__init__(self, voice_id, options)
 
 
+@dataclass
+class VoiceFilters:
+    language: Optional[str] = None
+    audio_language: Optional[str] = None
+    service: Optional[str] = None
+    gender: Optional[str] = None
+
+    def serialize(self):
+        return {key: value for key, value in vars(self).items() if value is not None}
+
+    @classmethod
+    def deserialize(cls, data):
+        return cls(**{key: data.get(key) for key in cls.__dataclass_fields__})
+
+
 class VoiceSelectionBase(ConfigModelBase):
     def __init__(self):
         self._selection_mode = None
+        self.filters = VoiceFilters()
+
+    def serialize_filters(self):
+        filters = self.filters.serialize()
+        return {'filters': filters} if filters else {}
 
     def get_selection_mode(self):
         return self._selection_mode
@@ -218,6 +238,7 @@ class VoiceSelectionSingle(VoiceSelectionBase):
     def serialize(self):
         return {
             'voice_selection_mode': self._selection_mode.name,
+            **self.serialize_filters(),
             'voice': self._voice_with_options.serialize()
         }
 
@@ -276,7 +297,8 @@ class VoiceSelectionMultipleBase(VoiceSelectionBase):
     def serialize(self):
         return {
             'voice_selection_mode': self._selection_mode.name,
-            'voice_list': [x.serialize() for x in self._voice_list]
+            'voice_list': [x.serialize() for x in self._voice_list],
+            **self.serialize_filters()
         }
 
     def validate(self):
