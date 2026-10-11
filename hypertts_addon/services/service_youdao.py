@@ -57,22 +57,43 @@ class Youdao(service.ServiceBase):
         }
         
         logger.info(f'Requesting Youdao audio for "{source_text}" with type={voice_type}')
-        
-        try:
-            response = requests.get(self.AUDIO_API_URL, params=params, headers=headers, timeout=constants.RequestTimeout)
-            
-            # Check if we got a valid response
-            if response.status_code == 200 and response.headers.get('Content-Type', '').startswith('audio/'):
+
+        # Network failures (requests.exceptions.Timeout / ConnectionError) are
+        # deliberately not caught here: ServiceManager._get_tts_audio_service
+        # maps them to the retryable ServiceTimeoutError / ServiceConnectionError.
+        # They used to be swallowed into the permanent AudioNotFoundError
+        # (Sentry ANKI-HYPER-TTS-M28: a ReadTimeout on dict.youdao.com was
+        # reported as "Audio not found" and never retried).
+        response = requests.get(self.AUDIO_API_URL, params=params, headers=headers, timeout=constants.RequestTimeout)
+
+        content_type = response.headers.get('Content-Type', '')
+        if response.status_code == 200:
+            if content_type.startswith('audio/'):
                 logger.info(f'Successfully retrieved audio for "{source_text}"')
                 return response.content
-            elif response.status_code == 500:
-                # Youdao returns 500 for words that don't have pronunciations
-                logger.warning(f'Word "{source_text}" not found in Youdao dictionary (HTTP 500)')
-                raise errors.AudioNotFoundError(source_text, voice)
-            else:
-                logger.warning(f'Failed to get audio for "{source_text}": status={response.status_code}, content-type={response.headers.get("Content-Type", "unknown")}')
-                raise errors.AudioNotFoundError(source_text, voice)
-                
-        except requests.exceptions.RequestException as e:
-            logger.error(f'Request error for "{source_text}": {str(e)}')
+            # 200 with a non-audio body: Youdao has no pronunciation for this text
+            logger.warning(f'Word "{source_text}" not found in Youdao dictionary (content-type={content_type or "unknown"})')
             raise errors.AudioNotFoundError(source_text, voice)
+        if response.status_code in (404, 500):
+            # Youdao returns 500 for words that don't have pronunciations
+            logger.warning(f'Word "{source_text}" not found in Youdao dictionary (HTTP {response.status_code})')
+            raise errors.AudioNotFoundError(source_text, voice)
+
+        error_message = f'got status_code {response.status_code} from {self.AUDIO_API_URL}, content-type={content_type or "unknown"}'
+        logger.warning(f'Failed to get audio for "{source_text}": {error_message}')
+        if response.status_code == 429:
+            raise errors.RateLimitRetryAfterError(source_text, voice, error_message,
+                                                  _retry_after_seconds(response))
+        if response.status_code in (502, 503, 504):
+            raise errors.ServiceGatewayError(source_text, voice, error_message)
+        raise errors.UnknownServiceError(source_text, voice, error_message)
+
+
+def _retry_after_seconds(response, default=60):
+    retry_after = response.headers.get('Retry-After')
+    if retry_after is None:
+        return default
+    try:
+        return max(1, int(float(retry_after)))
+    except (TypeError, ValueError):
+        return default

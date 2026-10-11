@@ -11,6 +11,7 @@ import unittest
 import unittest.mock as mock
 
 import botocore.exceptions
+import requests
 
 from hypertts_addon.services import service_alibaba
 from hypertts_addon.services import service_amazon
@@ -18,6 +19,9 @@ from hypertts_addon.services import service_azure
 from hypertts_addon.services import service_google
 from hypertts_addon.services import service_gemini
 from hypertts_addon.services import service_elevenlabscustom
+from hypertts_addon.services import service_naverpapago
+from hypertts_addon.services import service_youdao
+from hypertts_addon import servicemanager
 from hypertts_addon import logging_utils
 from hypertts_addon import errors
 
@@ -95,6 +99,17 @@ class TestAzureErrorMapping(unittest.TestCase):
             self._call(503, reason='Service Unavailable')
         self.assertIsInstance(ctx.exception, errors.TransientError)
         self.assertEqual(ctx.exception.retryable, True)
+
+    def test_400_bad_request_is_input_error(self):
+        # ANKI-HYPER-TTS-HHA: HTTP 400 Bad Request with an empty body on the
+        # ja-JP-Haruto:MAI-Voice-2-Flash voice. The same input keeps failing,
+        # so this is permanent. Was previously the legacy RequestError, which
+        # carries no retryable disposition at all.
+        with self.assertRaises(errors.ServiceInputError) as ctx:
+            self._call(400, reason='Bad Request', text='')
+        self.assertIsInstance(ctx.exception, errors.PermanentError)
+        self.assertEqual(ctx.exception.retryable, False)
+        self.assertIn('status code 400', str(ctx.exception))
 
     def test_other_status_still_legacy_request_error(self):
         # status codes we did not specifically classify keep the previous
@@ -516,6 +531,156 @@ class TestAmazonErrorMapping(unittest.TestCase):
             self._call()
         self.assertEqual(ctx.exception.retryable, True)
         self.assertIn('no audio stream', ctx.exception.error_message)
+
+
+class TestNaverPapagoErrorMapping(unittest.TestCase):
+    """service_naverpapago.get_tts_audio HTTP-status -> error mapping."""
+
+    def setUp(self):
+        self.service = service_naverpapago.NaverPapago()
+        self.voice = _make_voice(voice_key='meimei')
+
+    def _response(self, status_code, content=b'', headers=None):
+        mock_response = mock.Mock()
+        mock_response.status_code = status_code
+        mock_response.content = content
+        mock_response.headers = {} if headers is None else headers
+        return mock_response
+
+    def _call_make_id(self, status_code, content=b'', headers=None):
+        with mock.patch('requests.post', return_value=self._response(status_code, content, headers)):
+            return self.service.get_tts_audio('Test text', self.voice, {})
+
+    def _call_download(self, status_code, content=b''):
+        make_id_response = self._response(200)
+        make_id_response.json.return_value = {'id': 'sound-id'}
+        with mock.patch('requests.post', return_value=make_id_response):
+            with mock.patch('requests.get', return_value=self._response(status_code, content)):
+                return self.service.get_tts_audio('Test text', self.voice, {})
+
+    def test_400_invalid_request_is_input_error(self):
+        # ANKI-HYPER-TTS-HHB: makeID answers 400
+        # {"errorCode":"-10001","errorMessage":"INVALID_REQUEST"} (Korean text
+        # on the Chinese speaker). Was previously the legacy RequestError.
+        body = b'{"errorCode":"-10001","errorMessage":"INVALID_REQUEST"}'
+        with self.assertLogs('hypertts.service_naverpapago', level='WARNING'):
+            with self.assertRaises(errors.ServiceInputError) as ctx:
+                self._call_make_id(400, content=body)
+        self.assertIsInstance(ctx.exception, errors.PermanentError)
+        self.assertEqual(ctx.exception.retryable, False)
+        self.assertIn('INVALID_REQUEST', str(ctx.exception))
+        self.assertIn('makeID', str(ctx.exception))
+
+    def test_403_is_permission_error(self):
+        with self.assertRaises(errors.ServicePermissionError) as ctx:
+            self._call_make_id(403, content=b'Forbidden')
+        self.assertEqual(ctx.exception.retryable, False)
+
+    def test_429_with_retry_after_is_rate_limit(self):
+        with self.assertRaises(errors.RateLimitRetryAfterError) as ctx:
+            self._call_make_id(429, headers={'Retry-After': '7'})
+        self.assertEqual(ctx.exception.retryable, True)
+        self.assertEqual(ctx.exception.retry_after, 7)
+
+    def test_429_without_retry_after_defaults(self):
+        with self.assertRaises(errors.RateLimitRetryAfterError) as ctx:
+            self._call_make_id(429)
+        self.assertEqual(ctx.exception.retry_after, 60)
+
+    def test_503_is_gateway_error(self):
+        with self.assertRaises(errors.ServiceGatewayError) as ctx:
+            self._call_make_id(503)
+        self.assertIsInstance(ctx.exception, errors.TransientError)
+        self.assertEqual(ctx.exception.retryable, True)
+
+    def test_500_is_unknown_service_error(self):
+        with self.assertRaises(errors.UnknownServiceError) as ctx:
+            self._call_make_id(500, content=b'internal')
+        self.assertEqual(ctx.exception.retryable, True)
+
+    def test_download_step_400_is_input_error(self):
+        # the second request (fetching the generated sound) goes through the
+        # same mapping and names its own url
+        with self.assertRaises(errors.ServiceInputError) as ctx:
+            self._call_download(400, content=b'bad id')
+        self.assertEqual(ctx.exception.retryable, False)
+        self.assertIn('/api/tts/sound-id', str(ctx.exception))
+
+
+class TestYoudaoErrorMapping(unittest.TestCase):
+    """service_youdao.get_tts_audio: network errors must not become AudioNotFoundError."""
+
+    def setUp(self):
+        self.service = service_youdao.Youdao()
+        self.voice = _make_voice(voice_key={'type': 2})
+
+    def _response(self, status_code, content_type=None, content=b'', headers=None):
+        mock_response = mock.Mock()
+        mock_response.status_code = status_code
+        mock_response.content = content
+        mock_response.headers = {} if headers is None else dict(headers)
+        if content_type is not None:
+            mock_response.headers['Content-Type'] = content_type
+        return mock_response
+
+    def _call(self, response=None, side_effect=None):
+        with mock.patch('requests.get', return_value=response, side_effect=side_effect):
+            return self.service.get_tts_audio('Test text', self.voice, {})
+
+    def _call_via_servicemanager(self, side_effect):
+        # the fallback handler lives in ServiceManager._get_tts_audio_service,
+        # which does not touch self
+        with mock.patch('requests.get', side_effect=side_effect):
+            return servicemanager.ServiceManager._get_tts_audio_service(
+                None, self.service, 'Test text', self.voice, {})
+
+    def test_read_timeout_propagates(self):
+        # ANKI-HYPER-TTS-M28: ReadTimeout on dict.youdao.com used to be
+        # swallowed into the permanent AudioNotFoundError, so it was never
+        # retried and grouped with genuine "word not found" events.
+        with self.assertRaises(requests.exceptions.ReadTimeout):
+            self._call(side_effect=requests.exceptions.ReadTimeout('Read timed out.'))
+
+    def test_read_timeout_is_service_timeout_error_through_servicemanager(self):
+        with self.assertRaises(errors.ServiceTimeoutError) as ctx:
+            self._call_via_servicemanager(requests.exceptions.ReadTimeout('Read timed out.'))
+        self.assertIsInstance(ctx.exception, errors.TransientError)
+        self.assertEqual(ctx.exception.retryable, True)
+
+    def test_connection_error_is_service_connection_error_through_servicemanager(self):
+        with self.assertRaises(errors.ServiceConnectionError) as ctx:
+            self._call_via_servicemanager(requests.exceptions.ConnectionError('Connection reset by peer'))
+        self.assertEqual(ctx.exception.retryable, True)
+
+    def test_200_audio_returns_content(self):
+        content = self._call(self._response(200, content_type='audio/mpeg', content=b'mp3-bytes'))
+        self.assertEqual(content, b'mp3-bytes')
+
+    def test_500_is_audio_not_found(self):
+        # Youdao answers 500 for words without a pronunciation
+        with self.assertRaises(errors.AudioNotFoundError) as ctx:
+            self._call(self._response(500))
+        self.assertEqual(ctx.exception.retryable, False)
+
+    def test_200_non_audio_is_audio_not_found(self):
+        with self.assertRaises(errors.AudioNotFoundError) as ctx:
+            self._call(self._response(200, content_type='text/html', content=b'<html>'))
+        self.assertEqual(ctx.exception.retryable, False)
+
+    def test_503_is_gateway_error(self):
+        with self.assertRaises(errors.ServiceGatewayError) as ctx:
+            self._call(self._response(503))
+        self.assertEqual(ctx.exception.retryable, True)
+
+    def test_429_is_rate_limit(self):
+        with self.assertRaises(errors.RateLimitRetryAfterError) as ctx:
+            self._call(self._response(429, headers={'Retry-After': '3'}))
+        self.assertEqual(ctx.exception.retry_after, 3)
+
+    def test_other_status_is_unknown_service_error(self):
+        with self.assertRaises(errors.UnknownServiceError) as ctx:
+            self._call(self._response(418))
+        self.assertEqual(ctx.exception.retryable, True)
 
 
 if __name__ == '__main__':

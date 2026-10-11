@@ -199,6 +199,13 @@ class Azure(service.ServiceBase):
             if response.status_code in (502, 503, 504):
                 # upstream gateway / temporary server error — retryable
                 raise errors.ServiceGatewayError(source_text, voice, error_message)
+            if response.status_code == 400:
+                # Bad Request: the SSML, text or voice/format combination is
+                # rejected by Azure (Sentry ANKI-HYPER-TTS-HHA, empty body on a
+                # MAI-Voice-2-Flash voice). Retrying the same input will always
+                # fail -> permanent. Was previously the legacy, non-retry-aware
+                # RequestError.
+                raise errors.ServiceInputError(source_text, voice, error_message)
             raise errors.RequestError(source_text, voice, error_message)
 
         return response.content

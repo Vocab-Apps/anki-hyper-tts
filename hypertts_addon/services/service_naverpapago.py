@@ -89,7 +89,7 @@ class NaverPapago(service.ServiceBase):
         logger.info(f'executing POST request on {url} with headers={headers}, data={params}')
         response = requests.post(url, headers=headers, data=params, timeout=constants.RequestTimeout)
         if response.status_code != 200:
-            raise errors.RequestError(source_text, voice, f'got status_code {response.status_code} from {url}: {response.content}')
+            self._raise_for_status(source_text, voice, response, url)
 
         response_data = response.json()
         sound_id = response_data['id']
@@ -103,5 +103,34 @@ class NaverPapago(service.ServiceBase):
 
         response = requests.get(final_url, headers=headers, timeout=constants.RequestTimeout)
         if response.status_code != 200:
-            raise errors.RequestError(source_text, voice, f'got status_code {response.status_code} from {final_url}: {response.content}')
+            self._raise_for_status(source_text, voice, response, final_url)
         return response.content
+
+    def _raise_for_status(self, source_text, voice, response, url):
+        """Map a non-200 Papago response to the right ServiceRequestError subclass.
+
+        These used to be raised as the legacy, non-retry-aware RequestError
+        (Sentry ANKI-HYPER-TTS-HHB: HTTP 400 {"errorCode":"-10001",
+        "errorMessage":"INVALID_REQUEST"}, e.g. Korean text on the Chinese
+        'meimei' speaker), which left the retry logic without a disposition.
+        """
+        error_message = f'got status_code {response.status_code} from {url}: {response.content}'
+        logger.warning(error_message)
+        status_code = response.status_code
+        if status_code == 400:
+            # the text / speaker combination is rejected: retrying won't help
+            raise errors.ServiceInputError(source_text, voice, error_message)
+        if status_code in (401, 403):
+            raise errors.ServicePermissionError(source_text, voice, error_message)
+        if status_code == 429:
+            retry_after = response.headers.get('Retry-After')
+            retry_after_seconds = 60
+            if retry_after is not None:
+                try:
+                    retry_after_seconds = max(1, int(float(retry_after)))
+                except (TypeError, ValueError):
+                    pass
+            raise errors.RateLimitRetryAfterError(source_text, voice, error_message, retry_after_seconds)
+        if status_code in (502, 503, 504):
+            raise errors.ServiceGatewayError(source_text, voice, error_message)
+        raise errors.UnknownServiceError(source_text, voice, error_message)
