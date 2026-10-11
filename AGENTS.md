@@ -178,3 +178,10 @@ The Anki source code is available locally at `/home/luc/src/anki/`.
 - Coverage reporting is available
 - pytest-xdist enables parallel test execution
 - test for TTS services should be inside @tests/test_tts_services/ (per-service test files inheriting from base.py)
+- `tests/test_tts_services/base.py` verifies audio by transcribing it (OpenAI Whisper with a language
+  hint, then Azure speech recognition). `verify_audio_output` retries transient service errors the
+  way the addon does, and re-synthesizes once when neither recognizer matches, because generative
+  voices (Azure Dragon HD, ElevenLabs v3, Gemini) occasionally mangle a sentence. Pick test
+  sentences of at least four or five syllables (two-syllable Chinese words get misheard) and pass
+  `acceptable_solutions` for traditional/simplified Chinese variants. Voices the provider itself
+  can't synthesize go in `TTSTests.KNOWN_BROKEN_VOICES` so random voice selection skips them

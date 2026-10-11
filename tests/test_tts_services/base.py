@@ -200,33 +200,50 @@ class TTSTests(unittest.TestCase):
             replace(':', '').lower()
         return result_text
 
-    def verify_audio_output(self, voice, audio_language, source_text, expected_text_override=None, voice_options={}, acceptable_solutions=None):
-        max_retries = 3
-        retry_delay = 2  # second
+    # generative voices (Azure Dragon HD, ElevenLabs v3, Gemini) occasionally produce a mangled
+    # rendition which neither recognizer understands; synthesize again once before failing
+    RECOGNITION_MAX_ATTEMPTS = 2
 
+    # ISO-639-1 codes whisper accepts as a language hint. without a hint it sometimes guesses
+    # the language of a short clip wrong (vietnamese audio was transcribed as indonesian)
+    WHISPER_LANGUAGES = set('af ar hy az be bs bg ca zh hr cs da nl en et fi fr gl de el he hi hu is id it ja kn kk ko lv lt mk ms mr mi ne no fa pl pt ro ru sr sk sl es sw sv tl ta th tr uk ur vi cy'.split())
+
+    def whisper_language(self, audio_language):
+        code = audio_language.lang.name.split('_')[0]
+        if code == 'yue':
+            code = 'zh'
+        if code in self.WHISPER_LANGUAGES:
+            return code
+        return None
+
+    def verify_audio_output(self, voice, audio_language, source_text, expected_text_override=None, voice_options={}, acceptable_solutions=None):
         if acceptable_solutions:
             acceptable_solutions = [self.sanitize_recognized_text(solution) for solution in acceptable_solutions]
+        expected_text = self.sanitize_recognized_text(source_text)
+        if expected_text_override is not None:
+            expected_text = self.sanitize_recognized_text(expected_text_override)
 
-        for attempt in range(max_retries):
-            try:
-                audio_data = self.manager.get_tts_audio(source_text, voice, voice_options,
-                    context.AudioRequestContext(constants.AudioRequestReason.batch))
-                assert len(audio_data) > 0
-                break
-            except errors.RequestError as request_error:
-                if attempt < max_retries - 1:
-                    time.sleep(retry_delay)
-                else:
-                    # optionally we can add exceptions for unsupported voices here
-                    # if voice.service == 'Google' and 'Journey' in voice.name:
-                    #     raise unittest.SkipTest(f'skipping voice {voice} which is unsupported for now')
-                    raise Exception(f"Failed to get audio data for {voice} and {source_text} after {max_retries} tries: {request_error}")
-            except requests.exceptions.ReadTimeout:
-                if attempt < max_retries - 1:
-                    time.sleep(retry_delay)
-                else:
-                    raise Exception(f"Failed to get audio data for {voice} and {source_text} after {max_retries} tries: timeout")
+        failures = []
+        for attempt in range(self.RECOGNITION_MAX_ATTEMPTS):
+            audio_data = self.get_tts_audio_with_retries(voice, source_text, voice_options)
+            output_temp_filename, wav_filepath = self.write_audio_and_verify_format(voice, audio_data, voice_options)
 
+            error_message = self.recognize_and_compare(voice, audio_language, source_text, expected_text, acceptable_solutions, wav_filepath)
+            if error_message is None:
+                os.remove(wav_filepath)
+                os.remove(output_temp_filename)
+                return
+
+            problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
+            shutil.copy(wav_filepath, problem_file)
+            failures.append(f'attempt {attempt + 1}: {error_message}. Problematic audio file: {problem_file}')
+            logger.warning(failures[-1])
+
+        raise AssertionError(f'audio for [{source_text}] (voice: {voice}) not recognized after '
+                             f'{self.RECOGNITION_MAX_ATTEMPTS} attempts: ' + ' | '.join(failures))
+
+    def write_audio_and_verify_format(self, voice, audio_data, voice_options):
+        """write the audio to disk, check its container format, and return (audio file, 16khz wav file)"""
         audio_format = options.AudioFormat.mp3
         if options.AUDIO_FORMAT_PARAMETER in voice_options:
             audio_format = options.AudioFormat[voice_options[options.AUDIO_FORMAT_PARAMETER]]
@@ -264,30 +281,36 @@ class TTSTests(unittest.TestCase):
         # No speech could be recognized: NoMatchDetails(reason=NoMatchReason.InitialSilenceTimeout)
         sound = sound.set_frame_rate(16000)
         sound.export(wav_filepath, format="wav", parameters=["-ar", "16000"])
+        return output_temp_filename, wav_filepath
+
+    def text_matches(self, recognized_text, expected_text, acceptable_solutions):
+        return expected_text == recognized_text or (acceptable_solutions and recognized_text in acceptable_solutions)
+
+    def recognize_and_compare(self, voice, audio_language, source_text, expected_text, acceptable_solutions, wav_filepath):
+        """transcribe the wav file with whisper, then azure. returns None when either recognizer
+        matches the expected text, otherwise a message describing both results"""
 
         # First, try with OpenAI Whisper API
         openai_whisper_result = None
         try:
             client = openai.OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+            whisper_kwargs = {}
+            whisper_language = self.whisper_language(audio_language)
+            if whisper_language is not None:
+                whisper_kwargs['language'] = whisper_language
             with open(wav_filepath, "rb") as audio_file:
                 transcript = client.audio.transcriptions.create(
                     model="whisper-1",
-                    file=audio_file
+                    file=audio_file,
+                    **whisper_kwargs
                 )
 
             whisper_recognized_text = self.sanitize_recognized_text(transcript.text)
-            expected_text = self.sanitize_recognized_text(source_text)
-            if expected_text_override is not None:
-                expected_text = self.sanitize_recognized_text(expected_text_override)
-
-            if expected_text == whisper_recognized_text or (acceptable_solutions and whisper_recognized_text in acceptable_solutions):
+            if self.text_matches(whisper_recognized_text, expected_text, acceptable_solutions):
                 logger.info(f'OpenAI Whisper: actual text matches expected or acceptable solution [{whisper_recognized_text}]')
-                os.remove(wav_filepath)
-                os.remove(output_temp_filename)
-                return
-            else:
-                openai_whisper_result = f'OpenAI Whisper: Text mismatch. Expected: [{expected_text}], Actual: [{whisper_recognized_text}], Acceptable: {acceptable_solutions}'
-                logger.info(openai_whisper_result)
+                return None
+            openai_whisper_result = f'OpenAI Whisper: Text mismatch. Expected: [{expected_text}], Actual: [{whisper_recognized_text}], Acceptable: {acceptable_solutions}'
+            logger.info(openai_whisper_result)
         except Exception as e:
             openai_whisper_result = f'OpenAI Whisper transcription failed: {str(e)}'
             logger.warning(openai_whisper_result)
@@ -324,44 +347,73 @@ class TTSTests(unittest.TestCase):
         # to run problematic tests:
         # COLUMNS=500 pytest tests/test_tts_services/  -k 'test_all_services_mandarin or test_elevenlabs_chinese or test_elevenlabs_english or test_openai_french or test_all_services_french'
 
-        # Checks result.
         if result.reason == azure.cognitiveservices.speech.ResultReason.RecognizedSpeech:
             recognized_text = self.sanitize_recognized_text(result.text)
-            expected_text = self.sanitize_recognized_text(source_text)
-            if expected_text_override is not None:
-                expected_text = self.sanitize_recognized_text(expected_text_override)
-            if expected_text == recognized_text or (acceptable_solutions and recognized_text in acceptable_solutions):
+            if self.text_matches(recognized_text, expected_text, acceptable_solutions):
                 logger.info(f'Azure: actual text matches expected or acceptable solution [{recognized_text}]')
-            else:
-                problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
-                shutil.copy(wav_filepath, problem_file)
-                error_message = f'expected and actual text not matching (voice: {str(voice)}): expected: [{expected_text}] actual: [{recognized_text}] acceptable: {acceptable_solutions}. Problematic audio file: {problem_file}. openai_whisper_result: {openai_whisper_result}'
-                raise AssertionError(error_message)
+                return None
+            azure_result = f'Azure: expected and actual text not matching: expected: [{expected_text}] actual: [{recognized_text}] acceptable: {acceptable_solutions}'
         elif result.reason == azure.cognitiveservices.speech.ResultReason.NoMatch:
-            error_message = f"No speech could be recognized: {result.no_match_details} voice: {voice} source_text: {source_text}"
-            problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
-            shutil.copy(wav_filepath, problem_file)
-            raise Exception(f"{error_message}. Problematic audio file: {problem_file} openai_whisper_result: {openai_whisper_result}")
+            azure_result = f'Azure: No speech could be recognized: {result.no_match_details}'
         elif result.reason == azure.cognitiveservices.speech.ResultReason.Canceled:
-            cancellation_details = result.cancellation_details
-            error_message = f"Speech Recognition canceled: {cancellation_details} voice: {voice} source_text: {source_text}"
-            problem_file = self.create_problem_filename(voice.name, 'wav', audio_language.name)
-            shutil.copy(wav_filepath, problem_file)
-            raise Exception(f"{error_message}. Problematic audio file: {problem_file} openai_whisper_result: {openai_whisper_result}")
+            azure_result = f'Azure: Speech Recognition canceled: {result.cancellation_details}'
+        else:
+            azure_result = f'Azure: unexpected result: {result.reason}'
 
-        # cleanup
-        os.remove(wav_filepath)
-        os.remove(output_temp_filename)
+        return f'{azure_result}. {openai_whisper_result}'
+
+    # the addon retries TransientError in batch mode (hypertts.process_batch_audio); the tests
+    # mirror that so that a single upstream timeout or rate limit doesn't fail a run.
+    AUDIO_REQUEST_MAX_ATTEMPTS = 4
+    AUDIO_REQUEST_RETRY_DELAYS = [2, 4, 8]
+    AUDIO_REQUEST_MAX_RETRY_AFTER = 30
+
+    def get_tts_audio_with_retries(self, voice, source_text, voice_options={}):
+        last_error = None
+        for attempt in range(self.AUDIO_REQUEST_MAX_ATTEMPTS):
+            try:
+                audio_data = self.manager.get_tts_audio(source_text, voice, voice_options,
+                    context.AudioRequestContext(constants.AudioRequestReason.batch))
+                assert len(audio_data) > 0, f'empty audio returned for {voice} and [{source_text}]'
+                return audio_data
+            except errors.PermanentError:
+                # the service told us retrying won't help (bad input, auth, quota)
+                raise
+            except (errors.TransientError, errors.RequestError, requests.exceptions.RequestException) as e:
+                last_error = e
+                delay = self.AUDIO_REQUEST_RETRY_DELAYS[min(attempt, len(self.AUDIO_REQUEST_RETRY_DELAYS) - 1)]
+                if isinstance(e, errors.RateLimitRetryAfterError):
+                    delay = min(e.retry_after, self.AUDIO_REQUEST_MAX_RETRY_AFTER)
+                logger.warning(f'attempt {attempt + 1}/{self.AUDIO_REQUEST_MAX_ATTEMPTS} failed for {voice} '
+                               f'and [{source_text}], retrying in {delay}s: {e}')
+            if attempt < self.AUDIO_REQUEST_MAX_ATTEMPTS - 1:
+                time.sleep(delay)
+        raise Exception(f"Failed to get audio data for {voice} and [{source_text}] after "
+                        f"{self.AUDIO_REQUEST_MAX_ATTEMPTS} tries: {last_error}")
+
+    # (service, voice name) pairs which the provider itself cannot synthesize: as of 2026-10-11
+    # VocalWare answers "Error: [408 Request Timeout] Unable to process" for these two voices
+    # on every request, in both direct and CLT mode, while its other voices work fine
+    KNOWN_BROKEN_VOICES = {
+        ('VocalWare', 'Wang'),
+        ('VocalWare', 'Miyu'),
+    }
+
+    def candidate_voices(self, voice_list, service_name, language):
+        return [voice for voice in voice_list
+                if voice.service == service_name
+                and language in voice.audio_languages
+                and (voice.service, voice.name) not in self.KNOWN_BROKEN_VOICES]
 
     def pick_random_voice(self, voice_list, service_name, language):
-        voice_subset = [voice for voice in voice_list if voice.service == service_name and language in voice.audio_languages]
+        voice_subset = self.candidate_voices(voice_list, service_name, language)
         if len(voice_subset) == 0:
             logger.error(f'found no voices for service {service_name}, language {language}')
         random_voice = random.choice(voice_subset)
         return random_voice
 
     def pick_random_voices_sample(self, voice_list, service_name, language, count):
-        voice_subset = [voice for voice in voice_list if voice.service == service_name and language in voice.audio_languages]
+        voice_subset = self.candidate_voices(voice_list, service_name, language)
         if len(voice_subset) > count:
             return random.sample(voice_subset, count)
         return []

@@ -38,6 +38,8 @@ class VocalWare(service.ServiceBase):
             self.CONFIG_API_ID: str
         }
 
+    ERROR_BODY_PREFIX = b'Error:'
+
     def voice_list(self):
         return self.basic_voice_list()
 
@@ -61,6 +63,14 @@ class VocalWare(service.ServiceBase):
         while retry_count > 0:
             response = requests.get(url, timeout=constants.RequestTimeout)
             if response.status_code == 200:
+                if response.content.startswith(self.ERROR_BODY_PREFIX):
+                    # VocalWare answers HTTP 200 with a plain text body such as
+                    # "Error: [408 Request Timeout] Unable to process" when it could not
+                    # synthesize; don't hand that back to the user as an mp3 file
+                    error_message = response.content.decode('utf-8', errors='replace')
+                    if b'408' in response.content:
+                        raise errors.ServiceTimeoutError(source_text, voice, error_message)
+                    raise errors.UnknownServiceError(source_text, voice, error_message)
                 return response.content
             retry_count -= 1
             time.sleep(0.5)

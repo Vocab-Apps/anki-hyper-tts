@@ -13,7 +13,9 @@ class TestAllServices(TTSTests):
         self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.fr_FR, 'Il va pleuvoir demain.')
 
     def test_all_services_mandarin(self):
-        self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.zh_CN, '赚钱', acceptable_solutions=['赚钱', '賺錢'])
+        # two syllables are too short for reliable recognition, see test_alibaba.py
+        self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.zh_CN, '今天天气很好',
+                                          acceptable_solutions=['今天天气很好', '今天天氣很好'])
 
     def test_all_services_japanese(self):
         self.verify_all_services_language(constants.ServiceType.tts, languages.AudioLanguage.ja_JP, 'おはようございます')
