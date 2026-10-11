@@ -2,15 +2,18 @@
 
 Date: 2026-09-29
 Issue: https://github.com/Vocab-Apps/anki-hyper-tts/issues/371
-Sentry: ANKI-HYPER-TTS-KMK (`AttributeError: 'NewEditor' object has no attribute 'note'`, 61 events / 23 users, HyperTTS 3.6.0, Anki 26.09)
+Sentry: ANKI-HYPER-TTS-KMK (`AttributeError: 'NewEditor' object has no attribute 'note'`, 78 events / 32 users as of 2026-10-11, HyperTTS 3.6.0, Anki 26.08 – 26.09.3; see §11)
 
 ## 1. Summary
 
-Anki 26.09 ships a second editor implementation, `aqt.editor.NewEditor` (upstream commit
-`643187a05`, "Shift editor control to TypeScript", first tagged in `26.09b1`). The legacy editor
-still exists (`aqt/editor_legacy.py`, re-exported by `aqt/editor.py` through
-`from aqt.editor_legacy import *`), so in 26.09 a user can get **either** editor depending on a
-collection experiment flag and on whether Shift is held while opening the window.
+Anki 26.08 and later ship a second editor implementation, `aqt.editor.NewEditor` (upstream
+commit `643187a05`, "Shift editor control to TypeScript", announced in the 26.08 release notes as
+"an experimental rework of the editor ... can be enabled from Preferences>Experiments ... May affect
+addon compatibility"; the local `~/src/anki` clone has no 26.08 tags, which is why it looks like a
+26.09 change there). The legacy editor still exists (`aqt/editor_legacy.py`, re-exported by
+`aqt/editor.py` through `from aqt.editor_legacy import *`), so on 26.08+ a user can get **either**
+editor depending on a collection experiment flag and on whether Shift is held while opening the
+window.
 
 HyperTTS registers its three toolbar buttons through `gui_hooks.editor_did_init_buttons`. That hook
 still fires for `NewEditor`, so the buttons appear, but every callback assumes the legacy object
@@ -32,8 +35,14 @@ working byte-for-byte on every Anki version HyperTTS supports (the oldest pinned
 | Edit Current | `aqt/main.py:onEditCurrent` → same helper | `NewEditCurrent` vs legacy `EditCurrent` |
 | Browser | `aqt/browser/browser.py:setupEditor` (line ~618) | `aqt.editor.NewEditor` vs `aqt.editor.Editor`, same XOR rule |
 
-Consequence: **we must dispatch on the editor instance type, never on the Anki version.** A 26.09
+Consequence: **we must dispatch on the editor instance type, never on the Anki version.** A 26.08+
 user can have a legacy editor in one window and a `NewEditor` in another.
+
+The experiment flag defaults to off (`Collection.experiment_enabled` reads the `experimentalFeatures`
+config and returns `False` when unset) and no 26.08.x / 26.09.x point release changed the default.
+So every user hitting ANKI-HYPER-TTS-KMK either turned on "Svelte editor" under
+Preferences > Experiments or held Shift while opening the window. Sentry carries no tag that
+distinguishes the two.
 
 ### 2.2 `NewEditor` (`qt/aqt/editor.py`)
 
@@ -401,11 +410,11 @@ is a snapshot taken when the button was clicked. That is acceptable because:
 
 | Anki | Editor | Path | Expected |
 |---|---|---|---|
-| 2.1.49 … 25.x | legacy `Editor` (no `NewEditor` attribute) | `LegacyEditorAdapter` | identical to HyperTTS 3.6.0 |
-| 26.09 | legacy (experiment off, or Shift-inverted) | `LegacyEditorAdapter` | identical to 3.6.0 |
-| 26.09 | `NewEditor` in Edit Current | `NewEditorAdapter`, existing note | fixed |
-| 26.09 | `NewEditor` in Browser | `NewEditorAdapter`, existing note | fixed |
-| 26.09 | `NewEditor` in `NewAddCards` | `NewEditorAdapter`, add mode | fixed |
+| 2.1.49 … 26.05 | legacy `Editor` (no `NewEditor` attribute) | `LegacyEditorAdapter` | identical to HyperTTS 3.6.0 |
+| 26.08+ | legacy (experiment off, or Shift-inverted) | `LegacyEditorAdapter` | identical to 3.6.0 |
+| 26.08+ | `NewEditor` in Edit Current | `NewEditorAdapter`, existing note | fixed |
+| 26.08+ | `NewEditor` in Browser | `NewEditorAdapter`, existing note | fixed |
+| 26.08+ | `NewEditor` in `NewAddCards` | `NewEditorAdapter`, add mode | fixed |
 
 Import-time safety: no module may `from aqt.editor import NewEditor` or `import aqt.addcards.NewAddCards`
 at import time; use `getattr(aqt.editor, 'NewEditor', None)`. `anki.notes.Note(col, mid)` and
@@ -554,3 +563,86 @@ Also run the existing manual checks in `scripts/openbox_menu_hypertts` for the e
   audio to an IO note in Add Cards should be tested once, but is not a target use case.
 - **Selection inside shadow DOM** (§8 step 2) — the only piece of legacy behaviour that may need a
   JS-side fallback; to be confirmed during GUI testing.
+
+## 11. Upstream context (collected 2026-10-11)
+
+### 11.1 Sentry breakdown of ANKI-HYPER-TTS-KMK by Anki version (last 90 days)
+
+| `anki_version` | events | users |
+|---|---|---|
+| 26.08.1 | 42 | 18 |
+| 26.08 | 8 | 3 |
+| 26.09 | 17 | 5 |
+| 26.09.2 | 7 | 3 |
+| 26.09.3 | 6 | 4 |
+
+Most hits come from 26.08.x, consistent with the editor shipping in 26.08. The issue is currently
+in Sentry's "ignored / archived until condition met" state.
+
+### 11.2 GitHub (ankitects/anki)
+
+- **PR #4029 "Shift editor control to TypeScript"** (abdnh, merged 2026-07-03) —
+  https://github.com/ankitects/anki/pull/4029. The design discussion. abdnh's known-issues list
+  ends with "The elephant in the room: Add-on compatibility" (unchecked). On add-on APIs:
+  "`editor.addButton()` will keep working. Most editor hooks are broken in this PR right now
+  though, and we still need to think about reducing add-on breakages (and probably introduce a
+  JS API)." dae asked for a transition period with both editors and a Shift toggle, "hoping that
+  it's something we'd have in place for <6 months". Before merge dae noted the PR used the new
+  editor by default and asked to default to the old one; abdnh confirmed "It's disabled by default
+  and will be put behind a preferences toggle (#4871)".
+- **Issue #3830 "Shift editor control from Python to TypeScript"** (dae) —
+  https://github.com/ankitects/anki/issues/3830. Motivation: stop pushing note data from
+  `editor.py` via `eval()`, let the JS side pull from mediasrv, enable reuse in the mobile clients
+  and a future Svelte browser. Explicit warning: "Add-ons currently rely on Python hooks and monkey
+  patching to alter editor behaviour, and it may not be possible to preserve existing
+  functionality in a backwards-compatible way."
+- **Issue #5121 "New editor compatibility issues for add-ons"** (hssm, multi-column-note-editor
+  author, 2026-07-08, closed) — https://github.com/ankitects/anki/issues/5121. Reports exactly our
+  breakage: `NewEditor` has no `note` attribute, only `nid`; `editor_did_load_note` does not fire
+  for Add Cards. abdnh: "The new editor is completely experimental - no guarantees about add-on
+  compatibility or whether it'll stay in the next few versions" and "There will be a proper
+  announcement/migration guide when it's ready if needed." abdnh is collecting add-on developer
+  feedback via a Google form linked in that thread.
+- **Issue #4871** — https://github.com/ankitects/anki/issues/4871. Design of the Preferences
+  "Experiments" tab that gates the editor; implemented in PR #5057 (Luc-Mcgrady). The flag is
+  stored per collection in the `experimentalFeatures` config and only takes effect after restart.
+- **Issue #5202 "Review design of experimental editor components"** (abdnh, open) —
+  https://github.com/ankitects/anki/issues/5202. All UI introduced by #4029 (including the Svelte
+  deck/notetype choosers our §4.5 DOM scrape depends on) is awaiting design review and may change.
+- Open bugs against the new editor: #5569 (duplicate audio playback when attaching/recording
+  audio), #5226 (focus jumps back when duplicate status changes). Closed: #5567 (base64 images).
+- Related 26.09 fixes: #5337 audio copy & paste, #5329 pasted/dropped audio not playing, #5373
+  Add/Edit screens not closing, #5568 pasted images, #5348 "Ensure editor is initialized before
+  triggering browser hooks", #5255 "Unhook AnkiWebView when destroyed" (dead
+  `operation_did_execute` handlers after #4029 caused `RuntimeError`s with several add-ons).
+- Release notes: 26.08 — https://github.com/ankitects/anki/releases/tag/26.08 (announces the
+  experimental editor and the Experiments section). 26.09 —
+  https://github.com/ankitects/anki/releases/tag/26.09 (only experimental-editor fixes; the add-on
+  compatibility note is about `anki.importing` / `anki.exporting` removal, unrelated).
+- HyperTTS: https://github.com/Vocab-Apps/anki-hyper-tts/issues/371 is the only public report of
+  the `'NewEditor' object has no attribute` error for any add-on found on GitHub or the forums.
+
+### 11.3 Anki forums
+
+- **Svelte note editor dialogs** — https://forums.ankiweb.net/t/svelte-note-editor-dialogs/70603
+  (derdilla, 2026-08-05). Complaint that the in-page deck / notetype choosers are awkward. abdo:
+  design is preliminary, will get a designer review "once there's a release plan", and "add-on
+  support still needs to be looked into". Confirms the chooser UI is expected to change.
+- **Anki 26.09 Beta 1** — https://forums.ankiweb.net/t/anki-26-09-beta-1/70808 and
+  **Anki 26.09 Release** — https://forums.ankiweb.net/t/anki-26-09-release/71024: no editor
+  discussion at all.
+- No forum thread mentions HyperTTS together with the new editor.
+
+### 11.4 Implications for this plan
+
+- Anki's stated position: the editor is opt-in, unsupported for add-ons, and both its Python API
+  (`nid`, `get_note_info`) and its Svelte UI may change before a migration guide exists. The JS
+  globals (`saveNow`, `getNoteInfo`, `setFields`) and the `.deck-chooser` selectors are therefore
+  explicitly unstable; the timeout, `EditorNotResponding` and the §4.5 deck fallback are
+  load-bearing, not defensive extras. Re-run §8 on every Anki release.
+- The §4.6 upstream request (expose `deckId` from `getNoteInfo()` in Add mode) has a natural home:
+  comment on #5121 or the Google form abdnh linked there, since that is where add-on feedback is
+  being collected.
+- Support reply for affected users until the fix ships: disable "Svelte editor" under
+  Preferences > Experiments (restart required), or hold Shift when opening Add / Edit / Browse to
+  get the legacy editor for that window.
