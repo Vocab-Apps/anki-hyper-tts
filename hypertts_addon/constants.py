@@ -19,6 +19,12 @@ CLIENT_NAME='anki-hyper-tts'
 RequestTimeout = 20 # 20 seconds max
 RequestTimeoutShort = 3
 
+# Bitrate used when lossless audio is re-encoded to mp3 locally (AudioFormat.mp3_hq on
+# Google, and all mp3 output of the Gemini service, which only returns PCM/WAV). Anki's
+# bundled lame defaults to 32 kbps for the 24 kHz mono audio these services produce,
+# which is noticeably lossy; 128 kbps is generous headroom for that source material.
+AUDIO_MP3_HQ_ENCODE_BITRATE_KBPS = 128
+
 BATCH_RETRY_DELAYS = [1, 2, 4]
 BATCH_RETRY_MAX = 3
 

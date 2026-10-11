@@ -11,6 +11,7 @@ from hypertts_addon import service
 from hypertts_addon import errors
 from hypertts_addon import constants
 from hypertts_addon import options
+from hypertts_addon.services import elevenlabs_common
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
@@ -203,8 +204,7 @@ class ElevenLabsCustom(service.ServiceBase):
 
         # Handle audio format
         audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, voice.options.get(options.AUDIO_FORMAT_PARAMETER, {}).get('default', 'mp3'))
-        if audio_format_str == 'ogg_opus':
-            url += '?output_format=opus_48000_192'
+        output_format = elevenlabs_common.get_output_format(audio_format_str)
 
         headers = self.get_headers()
         headers['Accept'] = "audio/mpeg"
@@ -228,7 +228,7 @@ class ElevenLabsCustom(service.ServiceBase):
         if language_code:
             data['language_code'] = language_code
 
-        response = requests.post(url, json=data, headers=headers, timeout=constants.RequestTimeout)
+        response = elevenlabs_common.post_with_output_format_fallback(url, output_format, data, headers)
         if response.status_code != 200:
             error_message = f'{self.name}: error processing TTS request: {response.status_code} {response.text}'
             logger.warning(error_message)

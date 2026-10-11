@@ -13,6 +13,7 @@ from test_utils import gui_testing_utils
 from hypertts_addon import errors
 from hypertts_addon import config_models
 from hypertts_addon import constants
+from hypertts_addon import options
 from hypertts_addon import cloudlanguagetools
 from hypertts_addon import logging_utils
 
@@ -94,6 +95,22 @@ yoyo
 
         priority = config_models.VoiceSelectionPriority()
         self.assertRaises(errors.NoVoicesAdded, hypertts_instance.get_audio_file, 'yoyo', priority, None)
+
+    def test_get_audio_filename_extension(self):
+        # pytest tests/test_hypertts.py -k test_get_audio_filename_extension
+        # mp3_hq is a regular mp3 file as far as the collection is concerned
+        config_gen = testing_utils.TestConfigGenerator()
+        hypertts_instance = config_gen.build_hypertts_instance_test_servicemanager('default')
+        expected = {
+            options.AudioFormat.mp3: 'mp3',
+            options.AudioFormat.mp3_hq: 'mp3',
+            options.AudioFormat.ogg_opus: 'ogg',
+            options.AudioFormat.ogg_vorbis: 'ogg',
+        }
+        # every format must map to an extension
+        self.assertEqual(set(expected.keys()), set(options.AudioFormat))
+        for audio_format, extension in expected.items():
+            self.assertEqual(hypertts_instance.get_audio_filename('abc', audio_format), f'{constants.AUDIO_FILENAME_PREFIX}abc.{extension}')
 
     def test_process_hypertts_tag(self):
         config_gen = testing_utils.TestConfigGenerator()

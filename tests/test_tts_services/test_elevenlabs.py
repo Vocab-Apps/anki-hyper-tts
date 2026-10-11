@@ -382,5 +382,100 @@ class TestElevenLabsQuotaError(unittest.TestCase):
                 service.get_tts_audio('Hello', mock_voice, {})
 
 
+class TestElevenLabsOutputFormat(unittest.TestCase):
+    """Mock tests for the output_format query parameter: 192 kbps mp3, with a fallback to
+    128 kbps for accounts below the Creator tier."""
+
+    TIER_REJECTED_TEXT = '{"detail":{"status":"invalid_output_format","message":"The output_format mp3_44100_192 is not available on your current subscription tier."}}'
+
+    def _make_mock_voice(self, service_name):
+        from hypertts_addon import voice as voice_module
+        return voice_module.TtsVoice_v3(
+            name='Test Voice',
+            voice_key={'voice_id': 'test_id', 'model_id': 'eleven_multilingual_v2'},
+            options={
+                'stability': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.5},
+                'similarity_boost': {'type': 'number', 'min': 0.0, 'max': 1.0, 'default': 0.75},
+                'format': {'type': 'list', 'values': ['mp3', 'ogg_opus'], 'default': 'mp3'},
+            },
+            service=service_name,
+            gender=constants.Gender.Male,
+            audio_languages=[AudioLanguage.en_US],
+            service_fee=constants.ServiceFee.paid,
+        )
+
+    def _make_response(self, status_code, content=b'', text=''):
+        from unittest.mock import MagicMock
+        mock_response = MagicMock()
+        mock_response.status_code = status_code
+        mock_response.content = content
+        mock_response.text = text
+        return mock_response
+
+    def _service_and_patch_target(self, service_name):
+        if service_name == 'ElevenLabs':
+            from hypertts_addon.services.service_elevenlabs import ElevenLabs
+            service = ElevenLabs()
+        else:
+            from hypertts_addon.services.service_elevenlabscustom import ElevenLabsCustom
+            service = ElevenLabsCustom()
+        service.configure({'api_key': 'fake_key'})
+        return service, 'hypertts_addon.services.elevenlabs_common.requests.post'
+
+    def _urls(self, mock_post):
+        return [call.args[0] for call in mock_post.call_args_list]
+
+    def test_mp3_requests_192_kbps(self):
+        from unittest.mock import patch
+        for service_name in ['ElevenLabs', 'ElevenLabsCustom']:
+            with self.subTest(service=service_name):
+                service, target = self._service_and_patch_target(service_name)
+                with patch(target, return_value=self._make_response(200, b'mp3data')) as mock_post:
+                    audio = service.get_tts_audio('Hello', self._make_mock_voice(service_name), {})
+                self.assertEqual(audio, b'mp3data')
+                self.assertEqual(self._urls(mock_post),
+                    ['https://api.elevenlabs.io/v1/text-to-speech/test_id?output_format=mp3_44100_192'])
+
+    def test_ogg_opus_requests_opus(self):
+        from unittest.mock import patch
+        service, target = self._service_and_patch_target('ElevenLabs')
+        with patch(target, return_value=self._make_response(200, b'oggdata')) as mock_post:
+            service.get_tts_audio('Hello', self._make_mock_voice('ElevenLabs'), {'format': 'ogg_opus'})
+        self.assertEqual(self._urls(mock_post),
+            ['https://api.elevenlabs.io/v1/text-to-speech/test_id?output_format=opus_48000_192'])
+
+    def test_mp3_falls_back_to_128_kbps_when_tier_rejects_192(self):
+        from unittest.mock import patch
+        for service_name in ['ElevenLabs', 'ElevenLabsCustom']:
+            with self.subTest(service=service_name):
+                service, target = self._service_and_patch_target(service_name)
+                responses = [self._make_response(400, text=self.TIER_REJECTED_TEXT), self._make_response(200, b'mp3data')]
+                with patch(target, side_effect=responses) as mock_post:
+                    audio = service.get_tts_audio('Hello', self._make_mock_voice(service_name), {})
+                self.assertEqual(audio, b'mp3data')
+                self.assertEqual(self._urls(mock_post), [
+                    'https://api.elevenlabs.io/v1/text-to-speech/test_id?output_format=mp3_44100_192',
+                    'https://api.elevenlabs.io/v1/text-to-speech/test_id?output_format=mp3_44100_128',
+                ])
+
+    def test_unrelated_400_is_not_retried(self):
+        from unittest.mock import patch
+        service, target = self._service_and_patch_target('ElevenLabs')
+        text = '{"detail":{"status":"input_text_empty","message":"Input at position 0 has empty text."}}'
+        with patch(target, return_value=self._make_response(400, text=text)) as mock_post:
+            with self.assertRaises(errors.ServiceInputError):
+                service.get_tts_audio('[[pause]]', self._make_mock_voice('ElevenLabs'), {})
+        self.assertEqual(mock_post.call_count, 1)
+
+    def test_rejected_fallback_error_is_raised(self):
+        from unittest.mock import patch
+        service, target = self._service_and_patch_target('ElevenLabs')
+        responses = [self._make_response(400, text=self.TIER_REJECTED_TEXT), self._make_response(401, text='Unauthorized')]
+        with patch(target, side_effect=responses) as mock_post:
+            with self.assertRaises(errors.ServicePermissionError):
+                service.get_tts_audio('Hello', self._make_mock_voice('ElevenLabs'), {})
+        self.assertEqual(mock_post.call_count, 2)
+
+
 class TestElevenLabsCLT(TestElevenLabs):
     CONFIG_MODE = 'clt'

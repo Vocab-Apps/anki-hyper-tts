@@ -198,6 +198,11 @@ class ConfigBackupError(HyperTTSError):
         self.error_message = error_message
 
 
+class AudioEncodingError(HyperTTSError):
+    # the local lame encoder (bundled with anki) could not turn lossless audio into an mp3
+    def __init__(self, message):
+        super().__init__(f'Could not encode audio to mp3: {message}')
+
 class MissingGraphicsFile(HyperTTSError):
     def __init__(self, filename):
         message = f'Could not find graphics file {filename}. This is likely due to a corrupted installation. Please re-install HyperTTS from AnkiWeb.'

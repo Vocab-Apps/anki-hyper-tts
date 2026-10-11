@@ -572,6 +572,7 @@ class HyperTTS():
     def get_audio_filename(self, hash_str, format: options.AudioFormat):
         extension_map = {
             options.AudioFormat.mp3: 'mp3',
+            options.AudioFormat.mp3_hq: 'mp3',
             options.AudioFormat.ogg_vorbis: 'ogg',
             options.AudioFormat.ogg_opus: 'ogg',
         }

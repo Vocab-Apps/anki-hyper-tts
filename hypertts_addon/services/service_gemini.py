@@ -1,11 +1,7 @@
-import os
 import json
 import math
-import wave
 import base64
-import tempfile
 import requests
-import aqt.sound
 
 
 from hypertts_addon import voice as voice_module
@@ -13,6 +9,7 @@ from hypertts_addon import service
 from hypertts_addon import errors
 from hypertts_addon import constants
 from hypertts_addon import options
+from hypertts_addon import audio_encoding
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
@@ -30,6 +27,29 @@ logger = logging_utils.get_child_logger(__name__)
 MODEL_NAME_MAP = {
     'gemini-2.5-flash-tts': 'gemini-2.5-flash-preview-tts',
     'gemini-2.5-pro-tts': 'gemini-2.5-pro-preview-tts',
+}
+
+# The Gemini 3.8 TTS models use a revised request schema: the voice is given as
+# speechConfig.voiceConfig.voice (instead of prebuiltVoiceConfig.voiceName), the input
+# text is treated strictly as a verbatim transcript, so the style prompt goes in the
+# part's speechMetadata.style rather than inline in the text, and the response is a WAV
+# file (RIFF header) rather than headerless PCM.
+#   https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash-tts
+# The model IDs are the same on the Gemini API and in voicelist.py.
+GEMINI_3_8_MODELS = {
+    'gemini-3.8-flash-tts',
+    'gemini-3.8-flash-lite-tts',
+}
+
+# Gemini returns 24 kHz, mono, 16-bit audio (WAV, or headerless audio/L16;codec=pcm;rate=24000)
+GEMINI_PCM_SAMPLE_RATE = 24000
+
+# the Gemini API only returns lossless audio, there is no native mp3: mp3 and mp3_hq are
+# both encoded locally at the mp3_hq bitrate. ogg_opus is only available through
+# cloudlanguagetools, there is no opus encoder bundled with anki.
+SUPPORTED_AUDIO_FORMATS = {
+    options.AudioFormat.mp3,
+    options.AudioFormat.mp3_hq,
 }
 
 DEFAULT_RETRY_AFTER_SECONDS = 60
@@ -137,28 +157,11 @@ class Gemini(service.ServiceBase):
         audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
         audio_format = options.AudioFormat[audio_format_str]
 
-        if audio_format != options.AudioFormat.mp3:
+        if audio_format not in SUPPORTED_AUDIO_FORMATS:
             raise errors.ServiceInputError(source_text, voice,
                 f'Gemini service only supports mp3 output; {audio_format.name} is not supported')
 
-        text = f'{prompt}: {source_text}' if prompt else source_text
-
-        speech_config = {
-            'voiceConfig': {
-                'prebuiltVoiceConfig': {'voiceName': voice.voice_key['name']}
-            }
-        }
-        if language_code:
-            speech_config['languageCode'] = language_code
-
-        payload = {
-            'contents': [{'parts': [{'text': text}]}],
-            'generationConfig': {
-                'responseModalities': ['AUDIO'],
-                'speechConfig': speech_config,
-            },
-            'model': api_model,
-        }
+        payload = self.build_payload(source_text, voice.voice_key['name'], model, api_model, prompt, language_code)
 
         logger.debug(f'requesting audio with payload {payload}')
 
@@ -208,32 +211,42 @@ class Gemini(service.ServiceBase):
                     f'Gemini refused to generate audio (finishReason: {finish_reason}): {data}')
 
         try:
-            encoded = data['candidates'][0]['content']['parts'][0]['inlineData']['data']
+            inline_data = data['candidates'][0]['content']['parts'][0]['inlineData']
+            encoded = inline_data['data']
         except (KeyError, IndexError):
             raise errors.RequestError(source_text, voice, f'Gemini returned no audio: {data}')
 
-        pcm_bytes = base64.b64decode(encoded)
+        audio_bytes = base64.b64decode(encoded)
 
-        return self._encode_pcm_to_mp3(pcm_bytes)
+        return self.encode_audio_to_mp3(audio_bytes, inline_data.get('mimeType', ''))
 
-    def _encode_pcm_to_mp3(self, pcm_bytes):
-        # Gemini returns raw signed little-endian PCM at 24kHz / 16-bit / mono.
-        # Per PCM_TO_MP3.md: wrap the bytes in a WAV container via stdlib `wave`,
-        # then hand off to Anki's bundled `lame` via aqt.sound._encode_mp3.
-        wav_fh, wav_path = tempfile.mkstemp(prefix='hypertts_gemini_', suffix='.wav')
-        os.close(wav_fh)
-        mp3_fh, mp3_path = tempfile.mkstemp(prefix='hypertts_gemini_', suffix='.mp3')
-        os.close(mp3_fh)
-        try:
-            with wave.open(wav_path, 'wb') as w:
-                w.setnchannels(1)
-                w.setsampwidth(2)
-                w.setframerate(24000)
-                w.writeframes(pcm_bytes)
-            aqt.sound._encode_mp3(wav_path, mp3_path)
-            with open(mp3_path, 'rb') as f:
-                return f.read()
-        finally:
-            for p in (wav_path, mp3_path):
-                if os.path.exists(p):
-                    os.remove(p)
+    @staticmethod
+    def build_payload(source_text, voice_name, model, api_model, prompt, language_code):
+        if model in GEMINI_3_8_MODELS:
+            part = {'text': source_text}
+            if prompt:
+                part['speechMetadata'] = {'style': prompt}
+            speech_config = {'voiceConfig': {'voice': voice_name}}
+        else:
+            # the older models take the style prompt inline, as a prefix to the text
+            text = f'{prompt}: {source_text}' if prompt else source_text
+            part = {'text': text}
+            speech_config = {'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': voice_name}}}
+        if language_code:
+            speech_config['languageCode'] = language_code
+
+        return {
+            'contents': [{'parts': [part]}],
+            'generationConfig': {
+                'responseModalities': ['AUDIO'],
+                'speechConfig': speech_config,
+            },
+            'model': api_model,
+        }
+
+    @staticmethod
+    def encode_audio_to_mp3(audio_bytes, mime_type):
+        # the 3.8 models return a WAV file, the older models raw signed little-endian PCM at
+        # 24kHz / 16-bit / mono. either way, get a WAV and hand it to anki's bundled lame.
+        wav_bytes = audio_encoding.ensure_wav(audio_bytes, mime_type, GEMINI_PCM_SAMPLE_RATE)
+        return audio_encoding.encode_wav_to_mp3(wav_bytes)

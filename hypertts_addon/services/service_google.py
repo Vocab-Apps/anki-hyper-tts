@@ -9,10 +9,20 @@ from hypertts_addon import service
 from hypertts_addon import errors
 from hypertts_addon import constants
 from hypertts_addon import options
+from hypertts_addon import audio_encoding
 from hypertts_addon import logging_utils
 logger = logging_utils.get_child_logger(__name__)
 
 GOOGLE_RATE_LIMIT_DEFAULT_RETRY_AFTER = 60
+
+# the native mp3 encoding is a fixed 32 kbps on Chirp 3 HD voices (64 kbps on older voice
+# families), which is noticeably lossy. for mp3_hq we request lossless LINEAR16 (returned
+# with a WAV header) and re-encode locally at a higher bitrate instead.
+AUDIO_ENCODING_MAP = {
+    options.AudioFormat.mp3: 'MP3',
+    options.AudioFormat.mp3_hq: 'LINEAR16',
+    options.AudioFormat.ogg_opus: 'OGG_OPUS'
+}
 
 
 class Google(service.ServiceBase):
@@ -55,10 +65,9 @@ class Google(service.ServiceBase):
 
         audio_format_str = voice_options.get(options.AUDIO_FORMAT_PARAMETER, options.AudioFormat.mp3.name)
         audio_format = options.AudioFormat[audio_format_str]
-        audio_format_map = {
-            options.AudioFormat.mp3: 'MP3',
-            options.AudioFormat.ogg_opus: 'OGG_OPUS'
-        }
+        if audio_format not in AUDIO_ENCODING_MAP:
+            raise errors.ServiceInputError(source_text, voice,
+                f'Google service does not support the {audio_format.name} audio format')
 
         input_ssml = {
             "ssml": f"<speak>{source_text}</speak>"
@@ -72,7 +81,7 @@ class Google(service.ServiceBase):
 
 
         audio_config = {
-            "audioEncoding": audio_format_map[audio_format],
+            "audioEncoding": AUDIO_ENCODING_MAP[audio_format],
             "speakingRate": voice_options.get('speaking_rate', voice.options['speaking_rate']['default']),
         }
         if 'pitch' in voice_options:
@@ -122,5 +131,10 @@ class Google(service.ServiceBase):
         data = response.json()
         encoded = data['audioContent']
         audio_content = base64.b64decode(encoded)
+
+        if audio_format == options.AudioFormat.mp3_hq:
+            # we requested lossless LINEAR16, re-encode it to mp3 at our target bitrate
+            logger.debug('re-encoding LINEAR16 response to high quality mp3')
+            audio_content = audio_encoding.encode_wav_to_mp3(audio_content)
 
         return audio_content

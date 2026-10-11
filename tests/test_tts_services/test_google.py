@@ -67,5 +67,17 @@ class TestGoogle(TTSTests):
         assert exception_caught
 
 
+    def test_google_mp3_hq(self):
+        # pytest tests/test_tts_services/ -k 'TestGoogle and test_google_mp3_hq'
+        # mp3_hq requests lossless LINEAR16 and re-encodes it locally at a higher bitrate
+        # than the fixed 32 kbps native mp3 of Chirp 3 HD voices
+        voice_list = self.manager.full_voice_list()
+        chirp_voices = [voice for voice in voice_list if voice.service == 'Google' and 'en-US-Chirp3-HD-Charon' in voice.voice_key['name']]
+        self.assertEqual(len(chirp_voices), 1)
+        chirp_voice = chirp_voices[0]
+        self.assertIn('mp3_hq', chirp_voice.options['format']['values'])
+        self.verify_audio_output(chirp_voice, languages.AudioLanguage.en_US, 'This is the first sentence', voice_options={'format': 'mp3_hq'})
+
+
 class TestGoogleCLT(TestGoogle):
     CONFIG_MODE = 'clt'

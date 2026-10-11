@@ -62,6 +62,23 @@ All TTS services follow a standard pattern in `hypertts_addon/services/`:
 - Services handle voice discovery, audio generation, and error handling
 - Configuration is managed through service-specific config models
 
+### Audio Formats
+
+- `options.AudioFormat` lists the formats a voice can produce; `format` option values in
+  `voicelist.py` come from cloudlanguagetools and must stay a subset of that enum
+- `mp3_hq` is a regular `.mp3` file in the collection: it exists for Google and Gemini, whose
+  native mp3 is a fixed 32 kbps on Chirp 3 HD / Gemini voices. The direct services fetch lossless
+  audio and re-encode it through `audio_encoding.py`, which runs Anki's bundled `lame` at
+  `constants.AUDIO_MP3_HQ_ENCODE_BITRATE_KBPS` (`aqt.sound._encode_mp3` can't take a bitrate and
+  defaults to 32 kbps for 24 kHz mono input). The Gemini API only returns PCM/WAV, so its plain
+  `mp3` output is encoded the same way; `ogg_opus` for Gemini is only served by the
+  cloudlanguagetools backend
+- the `gemini-3.8-*` models use a different `generateContent` schema from the older Gemini
+  models (`voiceConfig.voice`, style prompt in `speechMetadata`, WAV response); see
+  `service_gemini.py`
+- ElevenLabs requests 192 kbps mp3 and falls back to 128 kbps once when the account's tier
+  rejects it (`services/elevenlabs_common.py`)
+
 ### Key Directories
 
 - **`hypertts_addon/`** - Main addon code

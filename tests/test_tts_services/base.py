@@ -232,6 +232,7 @@ class TTSTests(unittest.TestCase):
             audio_format = options.AudioFormat[voice_options[options.AUDIO_FORMAT_PARAMETER]]
         extension_map = {
             options.AudioFormat.mp3: 'mp3',
+            options.AudioFormat.mp3_hq: 'mp3',
             options.AudioFormat.ogg_vorbis: 'ogg',
             options.AudioFormat.ogg_opus: 'ogg',
         }
@@ -244,6 +245,11 @@ class TTSTests(unittest.TestCase):
         verify_format_voice_information = f'verifying format {audio_format} for {voice}'
         if audio_format == options.AudioFormat.mp3:
             self.assertIn('MPEG ADTS, layer III', file_type, verify_format_voice_information)
+            sound = pydub.AudioSegment.from_mp3(output_temp_filename)
+        elif audio_format == options.AudioFormat.mp3_hq:
+            # lossless audio re-encoded locally (or on the CLT backend) at the high quality bitrate
+            self.assertIn('MPEG ADTS, layer III', file_type, verify_format_voice_information)
+            self.assertIn(f'{constants.AUDIO_MP3_HQ_ENCODE_BITRATE_KBPS} kbps', file_type, verify_format_voice_information)
             sound = pydub.AudioSegment.from_mp3(output_temp_filename)
         elif audio_format == options.AudioFormat.ogg_opus:
             self.assertIn('Ogg data, Opus audio', file_type, verify_format_voice_information)
