@@ -10,6 +10,47 @@ from hypertts_addon import languages
 from hypertts_addon.languages import AudioLanguage
 
 
+class TestElevenLabsCustomVoiceDiscovery(unittest.TestCase):
+    def test_v4_models_with_odia_appear_in_voice_list(self):
+        from unittest.mock import Mock, patch
+        from hypertts_addon.services.service_elevenlabscustom import ElevenLabsCustom
+
+        service = ElevenLabsCustom()
+        service.configure({'api_key': 'test_key'})
+        models = [
+            {
+                'model_id': model_id,
+                'name': name,
+                'can_do_text_to_speech': True,
+                'languages': [
+                    {'language_id': 'en', 'name': 'English'},
+                    {'language_id': 'or', 'name': 'Odia'},
+                ],
+            }
+            for model_id, name in [
+                ('eleven_v4', 'Eleven v4'),
+                ('eleven_v4_turbo', 'Eleven v4 Turbo'),
+            ]
+        ]
+        model_response = Mock()
+        model_response.json.return_value = models
+        voice_response = Mock()
+        voice_response.json.return_value = {'voices': [
+            {'voice_id': 'test_voice', 'name': 'Test', 'labels': {'gender': 'female'}},
+        ]}
+
+        with patch('hypertts_addon.services.service_elevenlabscustom.requests.get',
+                   side_effect=[model_response, voice_response]):
+            voices = service._build_voice_list()
+
+        self.assertEqual({v.voice_key['model_id'] for v in voices},
+                         {'eleven_v4', 'eleven_v4_turbo'})
+        self.assertEqual({v.name for v in voices}, {'Test (v4)', 'Test (v4 Turbo)'})
+        for voice in voices:
+            self.assertIn(AudioLanguage.en_US, voice.audio_languages)
+            self.assertIn(AudioLanguage.or_IN, voice.audio_languages)
+
+
 class TestElevenLabs(TTSTests):
 
     def test_elevenlabs_english(self):

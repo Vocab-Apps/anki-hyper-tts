@@ -110,6 +110,7 @@ class ElevenLabsCustom(service.ServiceBase):
             'zh': languages.AudioLanguage.zh_CN,
             'id': languages.AudioLanguage.id_ID,
             'as': languages.AudioLanguage.as_IN, # Assamese
+            'or': languages.AudioLanguage.or_IN, # Odia
             'is': languages.AudioLanguage.is_IS, # Icelandic,
             'jv': languages.AudioLanguage.jv_ID, # Javanese,
             'sr': languages.AudioLanguage.sr_RS, # Serbian
