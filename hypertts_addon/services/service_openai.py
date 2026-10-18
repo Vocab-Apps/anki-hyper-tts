@@ -1,4 +1,5 @@
 import sys
+import json
 import requests
 
 
@@ -80,6 +81,12 @@ class OpenAI(service.ServiceBase):
             logger.warning(f'OpenAI response status: {response.status_code} headers: {dict(response.headers)}')
 
         if response.status_code == 429:
+            # OpenAI also returns 429 when the account has run out of credits
+            # (type insufficient_quota). Retrying will not help until the user
+            # adds credits, so raise as a PermanentError instead of a transient
+            # rate limit (Sentry ANKI-HYPER-TTS-HSN).
+            if self._is_insufficient_quota(response.text):
+                raise errors.ServicePermissionError(source_text, voice, f'OpenAI quota exhausted: {response.status_code} {response.text}')
             raise errors.RateLimitError(source_text, voice, f'OpenAI rate limit: {response.status_code} {response.text}')
 
         if response.status_code == 401:
@@ -96,3 +103,12 @@ class OpenAI(service.ServiceBase):
         response.raise_for_status()
 
         return response.content
+
+    def _is_insufficient_quota(self, response_text):
+        try:
+            error = json.loads(response_text).get('error', {})
+        except (ValueError, AttributeError):
+            return False
+        if not isinstance(error, dict):
+            return False
+        return error.get('type') == 'insufficient_quota' or error.get('code') in ('insufficient_quota', 'credit_balance_exhausted')

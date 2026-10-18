@@ -65,6 +65,24 @@ class TestOpenAIErrorHandling(unittest.TestCase):
             self.assertIsInstance(context.exception, errors.TransientError)
             self.assertIn('429', str(context.exception))
 
+    def test_openai_insufficient_quota_429(self):
+        # Regression test for Sentry ANKI-HYPER-TTS-HSN: OpenAI returns 429 with
+        # type insufficient_quota when the account has no credits left. This was
+        # raised as the transient RateLimitError and retried, but retrying cannot
+        # succeed until the user adds credits.
+        # pytest tests/test_tts_services/test_openai.py -k 'test_openai_insufficient_quota_429'
+        mock_response = mock.Mock()
+        mock_response.status_code = 429
+        mock_response.text = '{"error": {"message": "You have no credits remaining.", "type": "insufficient_quota", "param": null, "code": "credit_balance_exhausted"}}'
+        mock_response.headers = {}
+
+        with mock.patch('requests.post', return_value=mock_response):
+            with self.assertRaises(errors.ServicePermissionError) as context:
+                self.service.get_tts_audio('hello', self.mock_voice, {})
+
+            self.assertIsInstance(context.exception, errors.PermanentError)
+            self.assertIn('429', str(context.exception))
+
     def test_openai_unauthorized_401(self):
         # pytest tests/test_tts_services/test_openai.py -k 'test_openai_unauthorized_401'
         mock_response = mock.Mock()
