@@ -114,7 +114,8 @@ class Alibaba(service.ServiceBase):
         if "Token" not in j:
             raise errors.UnknownServiceError(source_text, voice, f'Failed to refresh Alibaba access token, no Token in response: {j}')
         self.access_token = j["Token"]
-        logger.info(f"Got access token: {self.access_token}")
+        # the token Id is a bearer credential, log only when it expires
+        logger.info(f"Got access token, expires at {self.access_token.get('ExpireTime')}")
 
     def voice_list(self):
         return self.basic_voice_list()
